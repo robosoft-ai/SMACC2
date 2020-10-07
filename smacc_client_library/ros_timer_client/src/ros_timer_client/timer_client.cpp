@@ -16,7 +16,9 @@ ClRosTimer::~ClRosTimer()
 
 void ClRosTimer::initialize()
 {
-    timer_ = this->getNode()->create_wall_timer(duration_, std::bind(&ClRosTimer::timerCallback, this));
+    auto clock = this->getNode()->get_clock();
+    
+    timer_ = rclcpp::create_timer(this->getNode(), clock, duration_, std::bind(&ClRosTimer::timerCallback, this));
 }
 
 void ClRosTimer::timerCallback()

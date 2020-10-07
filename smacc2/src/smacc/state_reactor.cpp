@@ -19,7 +19,7 @@ void StateReactor::onInitialized()
 {
 }
 
-void StateReactor::onEventNotified(const std::type_info *eventType)
+void StateReactor::onEventNotified(const std::type_info */*eventType*/)
 {
 }
 

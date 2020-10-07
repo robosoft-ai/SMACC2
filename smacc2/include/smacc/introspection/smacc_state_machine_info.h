@@ -153,7 +153,7 @@ template <typename Ev, typename Dst, typename Tag>
 void processTransition(smacc::Transition<Ev, boost::statechart::deep_history<Dst>, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState)
 {
     auto transitionTypeInfo = TypeInfo::getTypeInfoFromType<smacc::Transition<Ev, boost::statechart::deep_history<Dst>, Tag>>();
-    smacc::Transition<Ev, Dst, Tag> *mock;
+    smacc::Transition<Ev, Dst, Tag> *mock=nullptr;
     processTransitionAux(mock, sourceState, true, transitionTypeInfo);
 }
 
@@ -306,7 +306,7 @@ typename disable_if<boost::mpl::is_sequence<T>>::type
 processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
 {
     //RCLCPP_INFO_STREAM(getNode()->get_logger(),"state transition from: " << sourceState->demangledStateName << " of type: " << demangledTypeName<T>());
-    T *dummy;
+    T *dummy = nullptr;
     processTransition(dummy, sourceState);
 }
 

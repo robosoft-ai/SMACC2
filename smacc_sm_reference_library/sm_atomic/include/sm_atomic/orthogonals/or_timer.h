@@ -6,6 +6,7 @@ using namespace std::chrono_literals;
 
 namespace sm_atomic
 {
+    using namespace std::chrono_literals;
 class OrTimer : public smacc::Orthogonal<OrTimer>
 {
 public:

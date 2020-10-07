@@ -27,7 +27,7 @@ namespace smacc
     }
 
     template <typename TState, typename TTransitionTagName>
-    void specificNamedOnExit(TState &, TTransitionTagName tn, std::false_type)
+    void specificNamedOnExit(TState &, TTransitionTagName , std::false_type)
     {
     }
 

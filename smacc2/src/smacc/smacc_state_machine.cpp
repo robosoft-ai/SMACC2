@@ -147,8 +147,8 @@ void ISmaccStateMachine::initializeROS(std::string shortname)
     transitionHistoryService_ = nh_->create_service<smacc_msgs::srv::SmaccGetTransitionHistory>(shortname + "/smacc/transition_log_history", std::bind(&ISmaccStateMachine::getTransitionLogHistory,this, std::placeholders::_1,std::placeholders::_2, std::placeholders::_3));
 }
 
-void ISmaccStateMachine::getTransitionLogHistory(const std::shared_ptr<rmw_request_id_t> request_header,
-        const std::shared_ptr<smacc_msgs::srv::SmaccGetTransitionHistory::Request> req,
+void ISmaccStateMachine::getTransitionLogHistory(const std::shared_ptr<rmw_request_id_t> /*request_header*/,
+        const std::shared_ptr<smacc_msgs::srv::SmaccGetTransitionHistory::Request> /*req*/,
         std::shared_ptr<smacc_msgs::srv::SmaccGetTransitionHistory::Response> res)
 {
     RCLCPP_WARN(nh_->get_logger(),"Requesting Transition Log History, current size: %ld", this->transitionLogHistory_.size());

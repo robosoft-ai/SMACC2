@@ -99,6 +99,7 @@ private:
     ros::Subscriber sub_;
     bool firstMessage_;
     bool initialized_;
+    std::string topicName_;
 
     void messageCallback(const MessageType &msg)
     {

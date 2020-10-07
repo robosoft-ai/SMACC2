@@ -71,7 +71,11 @@ private:
     std::vector<StateReactorCallbackFunctor> callbacks_;
 
 public:
-    StateReactorHandler(rclcpp::Node::SharedPtr nh);
+    StateReactorHandler(rclcpp::Node::SharedPtr nh)
+        : nh_(nh)
+    {
+
+    }
 
     void configureStateReactor(std::shared_ptr<smacc::StateReactor> sr);
 
@@ -83,10 +87,12 @@ public:
 
     rclcpp::Node::SharedPtr getNode();
 
-    private:
-        rclcpp::Node::SharedPtr nh_;
-        std::shared_ptr<smacc::introspection::SmaccStateReactorInfo> srInfo_;
+    std::shared_ptr<smacc::introspection::SmaccStateReactorInfo> srInfo_;
+
+private:
+    rclcpp::Node::SharedPtr nh_;
 };
+
 //-------------------------------------------------------------
 struct SmaccStateReactorInfo
 {

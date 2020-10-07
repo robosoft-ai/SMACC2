@@ -375,7 +375,7 @@ namespace smacc
   }
 
   template <typename StateType>
-  void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *state)
+  void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
   {
     RCLCPP_INFO(getNode()->get_logger(),"[%s] State OnEntry code finished", demangleSymbol(typeid(StateType).name()).c_str());
 
@@ -429,7 +429,7 @@ namespace smacc
   }
 
   template <typename StateType>
-  void ISmaccStateMachine::notifyOnRuntimeConfigurationFinished(StateType *state)
+  void ISmaccStateMachine::notifyOnRuntimeConfigurationFinished(StateType *)
   {
     for (auto pair : this->orthogonals_)
     {
@@ -444,7 +444,7 @@ namespace smacc
   }
 
   template <typename StateType>
-  void ISmaccStateMachine::notifyOnRuntimeConfigured(StateType *state)
+  void ISmaccStateMachine::notifyOnRuntimeConfigured(StateType *)
   {
     stateMachineCurrentAction = StateMachineInternalAction::STATE_CONFIGURING;
   }
@@ -517,7 +517,7 @@ namespace smacc
   }
 
   template <typename StateType>
-  void ISmaccStateMachine::notifyOnStateExited(StateType *state)
+  void ISmaccStateMachine::notifyOnStateExited(StateType *)
   {
     auto fullname = demangleSymbol(typeid(StateType).name());
 

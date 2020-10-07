@@ -3,30 +3,30 @@
 namespace smacc
 {
 
-ISmaccUpdatable::ISmaccUpdatable(rclcpp::Node::SharedPtr& nh)
-    : nh_(nh), 
-      lastUpdate_(0)
+ISmaccUpdatable::ISmaccUpdatable()
+    : lastUpdate_(0)
 {
 }
 
-ISmaccUpdatable::ISmaccUpdatable(rclcpp::Node::SharedPtr& nh, rclcpp::Duration duration)
-    : nh_(nh),
-      lastUpdate_(0),
-      periodDuration_(duration)
+ISmaccUpdatable::ISmaccUpdatable(rclcpp::Duration duration)
+    : periodDuration_(duration),
+      lastUpdate_(0)
+      
 {
 }
+
 
 void ISmaccUpdatable::setUpdatePeriod(rclcpp::Duration duration)
 {
     periodDuration_ = duration;
 }
 
-void ISmaccUpdatable::executeUpdate()
+void ISmaccUpdatable::executeUpdate(rclcpp::Node::SharedPtr node)
 {
     bool update = true;
     if (periodDuration_)
     {
-        auto now = this->nh_->get_clock()->now();
+        auto now = node->get_clock()->now();
         auto ellapsed = now - this->lastUpdate_;
         update = ellapsed > *periodDuration_;
         if(update)

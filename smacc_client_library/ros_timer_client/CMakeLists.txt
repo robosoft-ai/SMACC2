@@ -26,7 +26,7 @@ add_library(${PROJECT_NAME}
    src/${PROJECT_NAME}/cb_timer_countdown_loop.cpp
    src/${PROJECT_NAME}/cb_timer_countdown_once.cpp
 )
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} smacc2)
+target_link_libraries(${PROJECT_NAME} SHARED ${Boost_LIBRARIES} smacc2)
 ament_target_dependencies(${PROJECT_NAME} smacc2)
  
 ament_export_include_directories(include)

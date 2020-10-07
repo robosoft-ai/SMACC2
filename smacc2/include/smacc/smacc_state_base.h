@@ -56,16 +56,17 @@ namespace smacc
       static_assert(std::is_base_of<ISmaccState, Context>::value || std::is_base_of<ISmaccStateMachine, Context>::value, "The context class must be a SmaccState or a SmaccStateMachine");
       static_assert(!std::is_same<MostDerived, Context>::value, "The context must be a different state or state machine than the current state");
       
-      auto sm = dynamic_cast<ISmaccStateMachine*>(ctx.pContext_);
-      if(sm!=nullptr)
-      {
-        this->contextNh = sm->getNode();
-      }
-      else
-      {
-        auto st = dynamic_cast<ISmaccState*>(ctx.pContext_);
-        this->contextNh = st->getNode();
-      }
+      // auto sm = dynamic_cast<ISmaccStateMachine*>(ctx.pContext_);
+      // if(sm!=nullptr)
+      // {
+      //   this->contextNh = sm->getNode();
+      // }
+      // else
+      // {
+      //   auto st = dynamic_cast<ISmaccState*>(ctx.pContext_);
+      //   this->contextNh = st->getNode();
+      // }
+      this->contextNh = static_cast<Context*>(optionalNodeHandle(ctx.pContext_))->getNode();//static_cast<Context*>(ctx.pContext_.get())->getNode();
 
       //stateNode_ = contextNh->create_sub_node(smacc::utils::cleanShortTypeName(typeid(MostDerived)));
       stateNode_ = rclcpp::Node::make_shared(smacc::utils::cleanShortTypeName(typeid(MostDerived)), std::string(this->contextNh->get_fully_qualified_name()));
@@ -242,7 +243,7 @@ namespace smacc
     template <typename TStateReactor, typename TOutputEvent, typename TInputEventList, typename... TArgs>
     static std::shared_ptr<smacc::introspection::StateReactorHandler> static_createStateReactor(TArgs... args)
     {
-      auto srh = std::make_shared<smacc::introspection::StateReactorHandler>();
+      auto srh = std::make_shared<smacc::introspection::StateReactorHandler>(globalNh_);
       auto srinfo = std::make_shared<SmaccStateReactorInfo>();
 
       srinfo->stateReactorType = &typeid(TStateReactor);
@@ -295,7 +296,7 @@ namespace smacc
     template <typename TStateReactor, typename... TUArgs>
     static std::shared_ptr<smacc::introspection::StateReactorHandler> static_createStateReactor_aux(TUArgs... args)
     {
-      auto srh = std::make_shared<smacc::introspection::StateReactorHandler>();
+      auto srh = std::make_shared<smacc::introspection::StateReactorHandler>(globalNh_);
       auto srinfo = std::make_shared<SmaccStateReactorInfo>();
 
       srinfo->stateReactorType = &typeid(TStateReactor);

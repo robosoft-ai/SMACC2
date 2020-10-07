@@ -1,11 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(smacc2)
 
-# Default to C99
-if(NOT CMAKE_C_STANDARD)
-  set(CMAKE_C_STANDARD 99)
-endif()
-
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
@@ -21,14 +16,11 @@ find_package(rclcpp REQUIRED)
 find_package(smacc_msgs REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
-message("-------------")
-message("${AMENT_PREFIX_PATH}")
-message("${CMAKE_PREFIX_PATH}")
-
 include_directories(include
                     ${smacc_msgs_INCLUDE_DIRS})
 
-file(GLOB_RECURSE SRC_FILES "src/smacc/*.cpp" "src/smacc/introspection/*.cpp" "src/smacc/state_reactors/*.cpp") # opcionalmente GLOB
+file(GLOB_RECURSE SRC_FILES src *.cpp) 
+#file(GLOB_RECURSE SRC_FILES "src/smacc/*.cpp" "src/smacc/client_bases/*.cpp""src/smacc/introspection/*.cpp" "src/smacc/state_reactors/*.cpp") # opcionalmente GLOB
 
 add_library(smacc2 SHARED ${SRC_FILES})
 target_link_libraries(smacc2 ${Boost_LIBRARIES})

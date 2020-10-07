@@ -136,7 +136,6 @@ namespace smacc
     std::shared_ptr<TStateReactor> ISmaccState::createStateReactor(TEvArgs... args)
     {
         auto sr = std::make_shared<TStateReactor>(args...);
-        TEventList *mock;
         sr->initialize(this);
         sr->template setOutputEvent<TTriggerEvent>();
 

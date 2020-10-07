@@ -1,0 +1,53 @@
+namespace sm_ferrari
+{
+namespace SS2
+{
+namespace sm_ferrari
+{
+namespace inner_states
+{
+//FORWARD DECLARATIONS OF ALL INNER STATES
+class StiState1;
+class StiState2;
+class StiState3;
+} // namespace ss1_states
+} // namespace sm_ferrari
+
+using namespace sm_ferrari::inner_states;
+
+// STATE DECLARATION
+struct Ss2 : smacc::SmaccState<Ss2, MsRun, StiState1>
+{
+public:
+    using SmaccState::SmaccState;
+
+// TRANSITION TABLE
+    typedef mpl::list<
+
+    Transition<EvLoopEnd<StiState1>, StState4>
+    
+    >reactions;
+
+// STATE VARIABLES
+    static constexpr int total_iterations() { return 5; }
+    int iteration_count = 0;
+
+// STATE FUNCTIONS
+    static void staticConfigure()
+    {
+    }
+
+    void runtimeConfigure()
+    {
+    }
+}; // namespace SS4
+
+//forward declaration for the superstate
+using SS = SS2::Ss2;
+
+#include <sm_ferrari/states/inner_states/sti_state_1.h>
+#include <sm_ferrari/states/inner_states/sti_state_2.h>
+#include <sm_ferrari/states/inner_states/sti_state_3.h>
+
+} // namespace SS1
+} // namespace sm_ferrari

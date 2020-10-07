@@ -17,18 +17,17 @@ namespace smacc
 class ISmaccUpdatable
 {
 public:
-    ISmaccUpdatable(rclcpp::Node::SharedPtr& nh);
-    ISmaccUpdatable(rclcpp::Node::SharedPtr& nh, rclcpp::Duration duration);
+    ISmaccUpdatable();
+    ISmaccUpdatable(rclcpp::Duration duration);
 
-    void executeUpdate();
+    void executeUpdate(rclcpp::Node::SharedPtr node);
     void setUpdatePeriod(rclcpp::Duration duration);
-
+    
 protected:
     virtual void update() = 0;
 
 private:
     std::optional<rclcpp::Duration> periodDuration_;
     rclcpp::Time lastUpdate_;
-    rclcpp::Node::SharedPtr nh_;
 };
 } // namespace smacc

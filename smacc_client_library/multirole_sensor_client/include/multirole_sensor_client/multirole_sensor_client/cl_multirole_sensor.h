@@ -6,7 +6,7 @@
 #include <ros/ros.h>
 #include <ros/duration.h>
 #include <boost/signals2.hpp>
-#include <boost/optional/optional_io.hpp>
+#include <optional>
 
 namespace cl_multirole_sensor
 {
@@ -15,7 +15,7 @@ using namespace smacc;
 template <typename TSource, typename TOrthogonal>
 struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource, TOrthogonal>>
 {
-  ros::TimerEvent timerData;
+  
 };
 
 using namespace smacc::client_bases;
@@ -26,7 +26,7 @@ class ClMultiroleSensor : public smacc::client_bases::SmaccSubscriberClient<Mess
 {
 public:
   typedef MessageType TMessageType;
-  SmaccSignal<void(const ros::TimerEvent &)> onMessageTimeout_;
+  SmaccSignal<void()> onMessageTimeout_;
 
   ClMultiroleSensor()
       : smacc::client_bases::SmaccSubscriberClient<MessageType>()
@@ -36,12 +36,12 @@ public:
   }
 
   template <typename T>
-  boost::signals2::connection onMessageTimeout(void (T::*callback)(const ros::TimerEvent &), T *object)
+  boost::signals2::connection onMessageTimeout(void (T::*callback)(), T *object)
   {
     return this->getStateMachine()->createSignalConnection(onMessageTimeout_, callback, object);
   }
 
-  std::function<void(const ros::TimerEvent &ev)> postTimeoutMessageEvent;
+  std::function<void()> postTimeoutMessageEvent;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
@@ -67,19 +67,20 @@ public:
 
       if (timeout_)
       {
-        timeoutTimer_ = nh_.createTimer(*timeout_, boost::bind(&ClMultiroleSensor<MessageType>::timeoutCallback, this, _1));
+        auto ros_clock = rclcpp::Clock::make_shared();
+        timeoutTimer_ = rclcpp::create_timer(getNode(), *timeout_, std::bind(&ClMultiroleSensor<MessageType>::timeoutCallback, this));
         timeoutTimer_.start();
       }
       else
       {
-        ROS_WARN("Timeout sensor client not set, skipping timeout watchdog funcionality");
+        RCLCPP_WARN(getNode()->get_logger(),"Timeout sensor client not set, skipping timeout watchdog funcionality");
       }
 
       initialized_ = true;
     }
   }
 
-  boost::optional<ros::Duration> timeout_;
+  std::optional<rclcpp::Duration> timeout_;
 
 protected:
   void resetTimer(const MessageType &msg)
@@ -93,9 +94,9 @@ private:
   ros::Timer timeoutTimer_;
   bool initialized_;
 
-  void timeoutCallback(const ros::TimerEvent &timerdata)
+  void timeoutCallback()
   {
-    postTimeoutMessageEvent(timerdata);
+    postTimeoutMessageEvent();
   }
 };
 } // namespace cl_multirole_sensor

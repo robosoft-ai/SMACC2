@@ -36,18 +36,28 @@ void transitionInfoToMsg(const SmaccTransitionInfo &transition, smacc_msgs::msg:
 
 typedef std::allocator<boost::statechart::none> SmaccAllocator;
 
-// template <class T>
-// auto optionalNodeHandle(boost::intrusive_ptr<T> &obj)
-//     -> rclcpp::Node::SharedPtr
-// {
-//     return obj->getROSNode();
-// }
 
-// template <class T>
-// auto optionalNodeHandle(T *) -> rclcpp::Node::SharedPtr
-// {
-//     return rclcpp::Node::make_shared("");
-// }
+template <class T>
+auto optionalNodeHandle(std::shared_ptr<T> &obj)
+    -> T*
+{
+    //return obj->getNode();
+    return obj.get;
+}
+
+template <class T>
+auto optionalNodeHandle(boost::intrusive_ptr<T> &obj)
+    -> T*
+{
+    //return obj->getNode();
+    return obj.get();
+}
+
+template <class T>
+auto optionalNodeHandle(T * obj) -> T*
+{
+    return obj;
+}
 
 inline std::string demangleSymbol(const std::string &name)
 {

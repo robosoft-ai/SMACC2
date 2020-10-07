@@ -196,10 +196,11 @@ rclcpp::Node::SharedPtr SignalDetector::getNode()
 
             if (this->updatableClients_.size())
             {
+                auto node = getNode();
                 for (auto *updatableClient : this->updatableClients_)
                 {
-                    RCLCPP_DEBUG_STREAM(getNode()->get_logger(),"[PollOnce] update client call:  " << demangleType(typeid(updatableClient)));
-                    updatableClient->executeUpdate();
+                    RCLCPP_DEBUG_STREAM(node->get_logger(),"[PollOnce] update client call:  " << demangleType(typeid(updatableClient)));
+                    updatableClient->executeUpdate(node);
                 }
             }
 
@@ -214,7 +215,6 @@ rclcpp::Node::SharedPtr SignalDetector::getNode()
                 RCLCPP_DEBUG_STREAM(getNode()->get_logger(),"[PollOnce] update behaviors. checking current state");
 
                 auto currentState = smaccStateMachine_->getCurrentState();
-                rclcpp::spin_some(currentState->getNode());
 
                 if (currentState != nullptr)
                 {
@@ -232,10 +232,11 @@ rclcpp::Node::SharedPtr SignalDetector::getNode()
                         }
 
                         RCLCPP_DEBUG_STREAM(getNode()->get_logger(),"updatable state elements: " << this->updatableStateElements_.size());
+                        auto node= getNode();
                         for (auto *udpatableStateElement : this->updatableStateElements_)
                         {
                             RCLCPP_DEBUG_STREAM(getNode()->get_logger(),"pollOnce update client behavior call: " << demangleType(typeid(*udpatableStateElement)));
-                            udpatableStateElement->executeUpdate();
+                            udpatableStateElement->executeUpdate(node);
                         }
                     }
                 }
@@ -245,7 +246,8 @@ rclcpp::Node::SharedPtr SignalDetector::getNode()
         {
             RCLCPP_ERROR(getNode()->get_logger(),"Exception during Signal Detector update loop. %s", ex.what());
         }
-        
+
+        rclcpp::spin_some(this->getNode());
         smaccStateMachine_->unlockStateMachine("update behaviors");
     }
 
