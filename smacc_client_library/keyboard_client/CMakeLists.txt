@@ -54,7 +54,7 @@ install(TARGETS
   DESTINATION lib/)
 
 install(PROGRAMS
-  scripts/keyboard_server_node.py
+  servers/keyboard_server_node.py
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
