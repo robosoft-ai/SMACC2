@@ -48,6 +48,20 @@ target_link_libraries(${PROJECT_NAME}_node
 
 ament_target_dependencies(${PROJECT_NAME}_node smacc2)
 
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(DIRECTORY
+  config
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(TARGETS
+        ${PROJECT_NAME}_node
+        DESTINATION lib/${PROJECT_NAME})
+        
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
