@@ -20,7 +20,9 @@ include_directories(include
                     ${smacc2_INCLUDE_DIRS}
                     ${ros_timer_client_INCLUDE_DIRS})
 
-add_executable(${PROJECT_NAME}_node src/sm_atomic/sm_atomic_node.cpp)
+add_executable(${PROJECT_NAME}_node 
+                src/sm_atomic/sm_atomic_node.cpp)
+                
 target_link_libraries(${PROJECT_NAME}_node 
                       ${smacc2_LIBRARIES} 
                       ${ros_timer_client_LIBRARIES}
