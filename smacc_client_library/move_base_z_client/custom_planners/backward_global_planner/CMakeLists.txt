@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(forward_global_planner)
+project(backward_global_planner)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
@@ -19,24 +19,26 @@ find_package(nav2_costmap_2d)
 find_package(geometry_msgs)
 find_package(tf2)
 find_package(pluginlib)
+find_package(forward_global_planner)
 
 set(dependencies
     nav2_core
     nav_msgs
     nav2_costmap_2d
     geometry_msgs
+    visualization_msgs
     tf2
-    pluginlib)
+    pluginlib
+    forward_global_planner)
 
 include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
-            src/${PROJECT_NAME}/forward_global_planner.cpp
-            src/${PROJECT_NAME}/path_tools.cpp)
+            src/${PROJECT_NAME}/backward_global_planner.cpp
+           )
 
-# prevent pluginlib from using boost
 target_compile_definitions(${PROJECT_NAME} PUBLIC "PLUGINLIB__DISABLE_BOOST_FUNCTIONS")
-pluginlib_export_plugin_description_file(nav2_core fgp_plugin.xml)
+pluginlib_export_plugin_description_file(nav2_core bgp_plugin.xml)
 
 ament_target_dependencies(${PROJECT_NAME}
   ${dependencies})
@@ -67,7 +69,7 @@ install(DIRECTORY include/
 )
 
 install(FILES
-   fgp_plugin.xml
+   bgp_plugin.xml
    DESTINATION share
 )
 

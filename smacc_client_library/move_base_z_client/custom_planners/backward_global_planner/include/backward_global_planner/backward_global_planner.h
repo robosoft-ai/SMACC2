@@ -8,22 +8,22 @@
 #include <rclcpp/rclcpp.hpp>
 #include <nav2_core/global_planner.hpp>
 #include <nav_msgs/msg/path.hpp>
+#include <visualization_msgs/msg/marker_array.hpp>
 
 namespace cl_move_base_z
 {
-namespace forward_global_planner
+namespace backward_global_planner
 {
-class ForwardGlobalPlanner : public nav2_core::GlobalPlanner
+class BackwardGlobalPlanner : public nav2_core::GlobalPlanner
 {
 public:
-  using Ptr = std::shared_ptr<ForwardGlobalPlanner>;
-
-  ForwardGlobalPlanner();
+    
+  BackwardGlobalPlanner();
 
   /**
    * @brief Virtual destructor
    */
-  virtual ~ForwardGlobalPlanner();
+  virtual ~BackwardGlobalPlanner();
 
   /**
    * @param  parent pointer to user's node
@@ -62,19 +62,28 @@ public:
     const geometry_msgs::msg::PoseStamped & goal);
 
 private:
-    //rclcpp::Node::SharedPtr nh_;
+    // ros::NodeHandle nh_;
     rclcpp_lifecycle::LifecycleNode::SharedPtr nh_;
 
     rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr planPub_;
 
-    /// stored but almost not used
-    std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros_;
+    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr markersPub_;
     
+    std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros_;
+
+    void onForwardTrailMsg(const nav_msgs::msg::Path::ConstPtr &trailMessage);
+
+    void publishGoalMarker(const geometry_msgs::msg::Pose &pose, double r, double g, double b);
+
     double skip_straight_motion_distance_; //meters
 
     double puresSpinningRadStep_; // rads
 
     std::string name_;
+
+    bool createDefaultBackwardPath(const geometry_msgs::msg::PoseStamped &start,
+                                   const geometry_msgs::msg::PoseStamped &goal, 
+                                   std::vector<geometry_msgs::msg::PoseStamped> &plan);
 };
-} // namespace forward_global_planner
+} // namespace backward_global_planner
 } // namespace cl_move_base_z

@@ -19,7 +19,7 @@
 #include <tf2/utils.h>
 #include <tf2/transform_datatypes.h>
 #include <angles/angles.h>
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 
 namespace cl_move_base_z
 {
@@ -107,7 +107,7 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(const geometry_msgs::msg::P
     cl_move_base_z::makePureSpinningSubPlan(prevState, goalOrientation, plan, puresSpinningRadStep_);
 
     planMsg.poses = plan;
-    planMsg.header.stamp = this->nh_->get_clock()->now();
+    planMsg.header.stamp = this->nh_->now();
     
     planMsg.header.frame_id = this->costmap_ros_->getGlobalFrameID();
 

@@ -27,7 +27,7 @@ int main(int argc, char** argv)
         if (i %100 ==0 )
             msg.data = 32;
         else
-            msg.data = 20 * sin(0.1 * node->get_clock()->now().nanoseconds()/1e-9);
+            msg.data = 20 * sin(0.1 * node->now().nanoseconds()/1e-9);
 
         
         pub->publish(msg);

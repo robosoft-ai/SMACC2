@@ -26,7 +26,7 @@ void ISmaccUpdatable::executeUpdate(rclcpp::Node::SharedPtr node)
     bool update = true;
     if (periodDuration_)
     {
-        auto now = node->get_clock()->now();
+        auto now = node->now();
         auto ellapsed = now - this->lastUpdate_;
         update = ellapsed > *periodDuration_;
         if(update)
