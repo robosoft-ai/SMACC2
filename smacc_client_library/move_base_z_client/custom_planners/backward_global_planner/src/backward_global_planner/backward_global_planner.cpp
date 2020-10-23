@@ -194,7 +194,7 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(
     // static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
     // static const unsigned char FREE_SPACE = 0;
 
-    nav2_costmap_2d::Costmap2D *costmap2d = this->costmap_ros_->getCostmap();
+    auto costmap2d = this->costmap_ros_->getCostmap();
     for (auto &p : plan)
     {
         unsigned int mx, my;
