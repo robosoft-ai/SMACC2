@@ -10,10 +10,12 @@
 #include <tf2/utils.h>
 
 #include <angles/angles.h>
+#include <move_base_z_planners_common/common.h>
+#include <move_base_z_planners_common/move_base_z_client_tools.h>
    
 namespace cl_move_base_z
 {
-    geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(const geometry_msgs::msg::PoseStamped& start, double dstRads, std::vector<geometry_msgs::msg::PoseStamped>& plan, double puresSpinningRadStep=1000)
+    geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(const geometry_msgs::msg::PoseStamped& start, double dstRads, std::vector<geometry_msgs::msg::PoseStamped>& plan, double puresSpinningRadStep)
     {
         double startYaw = tf2::getYaw(start.pose.orientation);
         //ROS_INFO("pure spining start yaw: %lf", startYaw);
@@ -95,4 +97,23 @@ namespace cl_move_base_z
     
         return plan.back();
     }
+
+std::ostream& operator<< (std::ostream &out, const geometry_msgs::msg::Twist &msg)
+{
+    out << "Twist [" << msg.linear.x << "m , " << msg.linear.y << "m , " << msg.angular.z << "rad ]";
+    return out;
+}
+
+std::ostream& operator<< (std::ostream &out, const geometry_msgs::msg::Pose &msg)
+{
+    out << "Position [" << msg.position.x << "m , " << msg.position.y << "m , " << msg.position.z << "m ]";
+    out << " Orientation [" << msg.orientation.x << " , " << msg.orientation.y << " , " << msg.orientation.z << ", " << msg.orientation.w <<"]";
+    return out;
+}
+
+std::ostream& operator<< (std::ostream &out, const geometry_msgs::msg::PoseStamped &msg)
+{
+    out << msg.pose;
+    return out;
+}
 }

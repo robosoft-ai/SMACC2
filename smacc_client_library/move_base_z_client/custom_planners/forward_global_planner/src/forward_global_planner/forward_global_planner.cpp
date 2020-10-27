@@ -8,7 +8,7 @@
 #include <boost/range/algorithm/copy.hpp>
 
 #include <forward_global_planner/forward_global_planner.h>
-#include <forward_global_planner/move_base_z_client_tools.h>
+#include <move_base_z_planners_common/move_base_z_client_tools.h>
 
 #include <fstream>
 #include <streambuf>
