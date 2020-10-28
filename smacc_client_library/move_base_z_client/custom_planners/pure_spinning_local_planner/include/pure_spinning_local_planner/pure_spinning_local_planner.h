@@ -4,29 +4,31 @@
  *
  ******************************************************************************************************************/
 #pragma once
-#include <Eigen/Eigen>
-
 //#include <dynamic_reconfigure/server.h>
+//#include <pure_spinning_local_planner/PureSpinningLocalPlannerConfig.h>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
 #include <nav2_core/controller.hpp>
 #include <tf2/utils.h>
 #include <tf2/transform_datatypes.h>
-#include <move_base_z_planners_common/common.h>
+#include <tf2_ros/buffer.h>
+#include <Eigen/Eigen>
 
 typedef double meter;
 typedef double rad;
+typedef double rad_s;
 
 namespace cl_move_base_z
 {
-  namespace forward_local_planner
+  namespace pure_spinning_local_planner
   {
-    class ForwardLocalPlanner : public nav2_core::Controller
+    class PureSpinningLocalPlanner : public nav2_core::Controller
     {
-    public:
-      ForwardLocalPlanner();
 
-      virtual ~ForwardLocalPlanner();
+    public:
+      PureSpinningLocalPlanner();
+
+      virtual ~PureSpinningLocalPlanner();
 
       void configure(
           const rclcpp_lifecycle::LifecycleNode::SharedPtr &node,
@@ -64,42 +66,25 @@ namespace cl_move_base_z
 
     private:
       nav2_util::LifecycleNode::SharedPtr nh_;
-
+      std::string name_;
       void publishGoalMarker(double x, double y, double phi);
 
       std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmapRos_;
-      std::string name_;
 
       rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr goalMarkerPublisher_;
 
-      double k_rho_;
-      double k_alpha_;
-      double k_betta_;
-      bool goalReached_;
-
-      const double alpha_offset_ = 0;
-      const double betta_offset_ = 0;
-
-      meter carrot_distance_;
-      rad carrot_angular_distance_;
-
-      double yaw_goal_tolerance_; // radians
-      double xy_goal_tolerance_;  // meters
-
-      double max_angular_z_speed_;
-      double max_linear_x_speed_;
-
-      void generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist, float maxangle, float maxtime, float dt, std::vector<Eigen::Vector3f> &outtraj);
-      Eigen::Vector3f computeNewPositions(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, double dt);
-
-      // references the current point inside the backwardsPlanPath were the robot is located
-      int currentPoseIndex_;
-
       std::vector<geometry_msgs::msg::PoseStamped> plan_;
 
-      bool waiting_;
-      rclcpp::Duration waitingTimeout_;
-      rclcpp::Time waitingStamp_;
+      //void reconfigCB(::pure_spinning_local_planner::PureSpinningLocalPlannerConfig &config, uint32_t level);
+
+      //dynamic_reconfigure::Server<::pure_spinning_local_planner::PureSpinningLocalPlannerConfig> paramServer_;
+
+      double k_betta_;
+      bool goalReached_;
+      int currentPoseIndex_;
+      rad yaw_goal_tolerance_;
+      rad intermediate_goal_yaw_tolerance_;
+      rad_s max_angular_z_speed_;
     };
-  } // namespace forward_local_planner
+  } // namespace pure_spinning_local_planner
 } // namespace cl_move_base_z
