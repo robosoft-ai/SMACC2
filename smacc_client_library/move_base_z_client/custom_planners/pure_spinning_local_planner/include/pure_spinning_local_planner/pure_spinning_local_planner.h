@@ -65,6 +65,7 @@ namespace cl_move_base_z
       bool isGoalReached();
 
     private:
+      void updateParameters();
       nav2_util::LifecycleNode::SharedPtr nh_;
       std::string name_;
       void publishGoalMarker(double x, double y, double phi);

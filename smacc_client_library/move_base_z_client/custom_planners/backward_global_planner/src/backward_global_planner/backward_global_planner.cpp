@@ -209,6 +209,8 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(
     }
     
     planPub_->publish(planMsg);
+
+    return planMsg;
 }
 
 } // namespace backward_global_planner

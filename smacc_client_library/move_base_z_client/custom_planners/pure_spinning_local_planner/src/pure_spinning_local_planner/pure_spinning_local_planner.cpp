@@ -30,7 +30,7 @@ namespace cl_move_base_z
       k_betta_ = 10.0;
       yaw_goal_tolerance_ = 0.08;
       intermediate_goal_yaw_tolerance_ = 0.12;
-       max_angular_z_speed_ = 1.0;
+      max_angular_z_speed_ = 1.0;
 
       nh_->declare_parameter("k_betta", k_betta_);
       nh_->declare_parameter("yaw_goal_tolerance", yaw_goal_tolerance_);
@@ -43,6 +43,13 @@ namespace cl_move_base_z
       //paramServer_.setCallback(f);
     }
 
+    void PureSpinningLocalPlanner::updateParameters()
+    {
+      nh_->get_parameter("k_betta", k_betta_);
+      nh_->get_parameter("yaw_goal_tolerance", yaw_goal_tolerance_);
+      nh_->get_parameter("intermediate_goals_yaw_tolerance", intermediate_goal_yaw_tolerance_);
+      nh_->get_parameter("max_angular_z_speed", max_angular_z_speed_);
+    }
     // void PureSpinningLocalPlanner::reconfigCB(::pure_spinning_local_planner::PureSpinningLocalPlannerConfig &config, uint32_t level)
     // {
     //   this->k_betta_ = config.k_betta;
@@ -54,30 +61,24 @@ namespace cl_move_base_z
         const geometry_msgs::msg::PoseStamped &pose,
         const geometry_msgs::msg::Twist &velocity)
     {
+      this->updateParameters();
+
       geometry_msgs::msg::TwistStamped cmd_vel;
       goalReached_ = false;
       // RCLCPP_DEBUG(nh_->get_logger(),"LOCAL PLANNER LOOP");
 
-      geometry_msgs::msg::PoseStamped tfpose;
+      geometry_msgs::msg::PoseStamped currentPose = pose;
 
-      if(!costmapRos_->getRobotPose(tfpose))
-      {
-        RCLCPP_ERROR(nh_->get_logger(), "Cannot perform computeVelocityCommands because the current robot pose is unknown.");
-        return cmd_vel;
-      }
-      
-      geometry_msgs::msg::PoseStamped currentPose = tfpose;
-      
       // RCLCPP_INFO_STREAM(nh_->get_logger(),"[PureSpinningLocalPlanner] current robot pose " << currentPose);
 
       tf2::Quaternion q;
-      tf2::fromMsg( currentPose.pose.orientation,q);
-      
+      tf2::fromMsg(currentPose.pose.orientation, q);
+
       auto currentYaw = tf2::getYaw(currentPose.pose.orientation);
       double angular_error;
       double targetYaw;
 
-      while (currentPoseIndex_ < plan_.size())
+      while (currentPoseIndex_ < (int)plan_.size())
       {
         auto &goal = plan_[currentPoseIndex_];
         targetYaw = tf2::getYaw(goal.pose.orientation);
@@ -120,8 +121,7 @@ namespace cl_move_base_z
       return goalReached_;
     }
 
-
-    void PureSpinningLocalPlanner::setPlan(const nav_msgs::msg::Path &path) 
+    void PureSpinningLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
     {
       RCLCPP_DEBUG_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] setting global plan to follow");
 

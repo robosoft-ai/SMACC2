@@ -66,6 +66,9 @@ public:
        bool isGoalReached();
 
 private:
+
+    void updateParameters();
+    
     // returns true if found
     bool findInitialCarrotGoal(geometry_msgs::msg::PoseStamped& pose);
 

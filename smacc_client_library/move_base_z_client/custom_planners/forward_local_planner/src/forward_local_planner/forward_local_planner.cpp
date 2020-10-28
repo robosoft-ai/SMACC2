@@ -57,6 +57,10 @@ namespace cl_move_base_z
 
             goalReached_ = false;
             carrot_distance_ = 0.4;
+            yaw_goal_tolerance_ = 0.05;
+            xy_goal_tolerance_ = 0.10;
+            max_linear_x_speed_ = 1.0;
+            max_angular_z_speed_ = 2.0;
 
             //rclcpp::Node::SharedPtr private_nh("~");
 
@@ -66,17 +70,9 @@ namespace cl_move_base_z
             nh_->declare_parameter("k_alpha", k_alpha_);
             nh_->declare_parameter("k_betta", k_betta_);
             nh_->declare_parameter("carrot_distance", carrot_distance_);
-
-            yaw_goal_tolerance_ = 0.05;
             nh_->declare_parameter("yaw_goal_tolerance", yaw_goal_tolerance_);
-
-            xy_goal_tolerance_ = 0.10;
             nh_->declare_parameter("xy_goal_tolerance", xy_goal_tolerance_);
-
-            max_linear_x_speed_ = 1.0;
             nh_->declare_parameter("max_linear_x_speed", max_linear_x_speed_);
-
-            max_angular_z_speed_ = 2.0;
             nh_->declare_parameter("max_angular_z_speed", max_angular_z_speed_);
 
             RCLCPP_INFO(nh_->get_logger(), "[ForwardLocalPlanner] max linear speed: %lf, max angular speed: %lf, k_rho: %lf, carrot_distance: %lf, ", max_linear_x_speed_, max_angular_z_speed_, k_rho_, carrot_distance_);
@@ -84,6 +80,18 @@ namespace cl_move_base_z
 
             waiting_ = false;
             waitingTimeout_ = rclcpp::Duration(10);
+        }
+
+        void ForwardLocalPlanner::updateParameters()
+        {
+            nh_->get_parameter("k_rho", k_rho_);
+            nh_->get_parameter("k_alpha", k_alpha_);
+            nh_->get_parameter("k_betta", k_betta_);
+            nh_->get_parameter("carrot_distance", carrot_distance_);
+            nh_->get_parameter("yaw_goal_tolerance", yaw_goal_tolerance_);
+            nh_->get_parameter("xy_goal_tolerance", xy_goal_tolerance_);
+            nh_->get_parameter("max_linear_x_speed", max_linear_x_speed_);
+            nh_->get_parameter("max_angular_z_speed", max_angular_z_speed_);
         }
 
         void ForwardLocalPlanner::generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist, float maxanglediff, float maxtime, float dt, std::vector<Eigen::Vector3f> &outtraj)
@@ -198,26 +206,6 @@ namespace cl_move_base_z
             goalMarkerPublisher_->publish(ma);
         }
 
-        // // MELODIC
-        // #if ROS_VERSION_MINIMUM(1, 13, 0)
-        // tf2::Stamped<tf2::Pose> optionalRobotPose(nav2_costmap_2d::Costmap2DROS *costmapRos)
-        // {
-        //     geometry_msgs::msg::PoseStamped paux;
-        //     costmapRos->getRobotPose(paux);
-        //     tf2::Stamped<tf2::Pose> tfpose;
-        //     tf2::poseStampedMsgToTF(paux, tfpose);
-        //     return tfpose;
-        // }
-        // #else
-        // // INDIGO AND PREVIOUS
-        // tf2::Stamped<tf2::Pose> optionalRobotPose(nav2_costmap_2d::Costmap2DROS *costmapRos)
-        // {
-        //     tf2::Stamped<tf2::Pose> tfpose;
-        //     costmapRos->getRobotPose(tfpose);
-        //     return tfpose;
-        // }
-        // #endif
-
         void clamp(rclcpp::Node::SharedPtr nh_, geometry_msgs::msg::Twist &cmd_vel, double max_linear_x_speed_, double max_angular_z_speed_)
         {
             if (max_angular_z_speed_ == 0 || max_linear_x_speed_ == 0)
@@ -259,6 +247,7 @@ namespace cl_move_base_z
             const geometry_msgs::msg::PoseStamped &currentPose,
             const geometry_msgs::msg::Twist &velocity)
         {
+            this->updateParameters();
             geometry_msgs::msg::TwistStamped cmd_vel;
             goalReached_ = false;
 
@@ -300,14 +289,14 @@ namespace cl_move_base_z
                     }
                 }
 
-                if (currentPoseIndex_ >= plan_.size())
+                if (currentPoseIndex_ >= (int)plan_.size())
                 {
                     // even the latest point is quite similar, then take the last since it is the final goal
                     cmd_vel.twist.linear.x = 0;
                     cmd_vel.twist.angular.z = 0;
                     //RCLCPP_INFO(nh_->get_logger(), "End Local planner");
                     ok = true;
-                    currentPoseIndex_ = plan_.size() - 1;
+                    currentPoseIndex_ = (int)plan_.size() - 1;
                     //return true;
                 }
             }
