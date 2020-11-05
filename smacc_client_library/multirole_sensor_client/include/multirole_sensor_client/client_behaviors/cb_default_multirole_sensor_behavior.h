@@ -38,13 +38,13 @@ public:
   }
 
   template <typename EvType>
-  void propagateEvent(const TMessageType &msg)
+  void propagateEvent(const TMessageType &/*msg*/)
   {
     this->postEvent<EvType>();
   }
 
   template <typename EvType>
-  void propagateEvent2(const ros::TimerEvent &tdata)
+  void propagateEvent2()
   {
     this->postEvent<EvType>();
   }
@@ -71,7 +71,7 @@ public:
   {
   }
 
-  virtual void onMessageCallback(const TMessageType &msg)
+  virtual void onMessageCallback(const TMessageType &/*msg*/)
   {
     // empty to fill by sensor customization based on inheritance
   }

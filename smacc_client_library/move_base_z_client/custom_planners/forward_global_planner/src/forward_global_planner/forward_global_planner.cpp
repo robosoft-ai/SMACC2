@@ -74,7 +74,7 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(const geometry_msgs::msg::P
     nav_msgs::msg::Path planMsg;
     std::vector<geometry_msgs::msg::PoseStamped> plan;
     
-    //ROS_WARN_STREAM("Forward global plan goal: " << goal);
+    //RCLCPP_WARN_STREAM(getNode()->get_logger(),"Forward global plan goal: " << goal);
 
     //three stages: 1 - heading to goal position, 2 - going forward keep orientation, 3 - heading to goal orientation
 

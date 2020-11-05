@@ -3,7 +3,7 @@
 namespace cl_ros_timer
 {
 
-ClRosTimer::ClRosTimer(std::chrono::seconds duration, bool oneshot)
+ClRosTimer::ClRosTimer(rclcpp::Duration duration, bool oneshot)
     : duration_(duration),
     oneshot_ (oneshot)
 {

@@ -72,6 +72,10 @@ namespace smacc
     //Delegates to ROS param access with the current NodeHandle
     void param(std::string param_name);
 
+    //Delegates to ROS param access with the current NodeHandle
+    template <typename T>
+    void param(std::string param_name, T default_value);
+
     template <typename TOrthogonal>
     TOrthogonal *getOrthogonal();
 

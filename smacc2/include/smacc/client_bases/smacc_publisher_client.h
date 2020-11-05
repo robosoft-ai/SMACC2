@@ -36,7 +36,7 @@ public:
       
       if (!queueSize)
         queueSize = 1;
-      rclcpp::QoS qos;
+      rclcpp::SensorDataQoS qos;
       qos.keep_last(*queueSize);
 
       RCLCPP_INFO_STREAM(getNode()->get_logger(), "[" << this->getName() << "] Client Publisher to topic: " << topicName);
@@ -49,7 +49,8 @@ public:
   template <typename MessageType>
   void publish(const MessageType &msg)
   {
-    std::dynamic_pointer_cast<rclcpp::Publisher<MessageType>::SharedPtr>(pub_)->publish(msg);
+    //pub_->publish(msg);
+    std::dynamic_pointer_cast<rclcpp::Publisher<MessageType>>(pub_)->publish(msg);
   }
 
   rclcpp::PublisherBase::SharedPtr pub_;

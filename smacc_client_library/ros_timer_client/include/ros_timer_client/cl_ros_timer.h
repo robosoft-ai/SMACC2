@@ -12,9 +12,9 @@ struct EvTimer : sc::event<EvTimer<TSource, TOrthogonal>>
 {
     /*
     ClRosTimer *sender;
-    ros::TimerEvent timedata;
+    rclcpp::TimerEvent timedata;
 
-    EvTimer(ClRosTimer *sender, const ros::TimerEvent &timedata)
+    EvTimer(ClRosTimer *sender, const rclcpp::TimerEvent &timedata)
     {
         this->sender = sender;
         this->timedata = timedata;
@@ -25,7 +25,7 @@ struct EvTimer : sc::event<EvTimer<TSource, TOrthogonal>>
 class ClRosTimer : public smacc::ISmaccClient
 {
 public:
-    ClRosTimer(std::chrono::seconds duration, bool oneshot = false);
+    ClRosTimer(rclcpp::Duration duration, bool oneshot = false);
 
     virtual ~ClRosTimer();
 
@@ -48,7 +48,7 @@ public:
 protected:
 
     rclcpp::TimerBase::SharedPtr timer_;
-    std::chrono::seconds duration_;
+    rclcpp::Duration duration_;
     bool oneshot_;
 
     void timerCallback();

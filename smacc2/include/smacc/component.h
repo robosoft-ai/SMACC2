@@ -51,6 +51,8 @@ protected:
     template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
     SmaccComponentType *createSiblingNamedComponent(std::string name, TArgs... targs);
 
+    rclcpp::Node::SharedPtr getNode();
+
     // A reference to the state machine object that owns this resource
     ISmaccStateMachine *stateMachine_;
 

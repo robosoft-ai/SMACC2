@@ -7,8 +7,8 @@
 #pragma once
 
 #include <smacc/smacc_client.h>
+#include <smacc/smacc_signal.h>
 #include <optional>
-#include "rclcpp/rclcpp.hpp"
 
 namespace smacc
 {

@@ -444,7 +444,7 @@ namespace cl_move_base_z
                 if (costmap2d->getCost(mx, my) >= nav2_costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
                 {
                     aceptedplan = false;
-                    // ROS_WARN("ABORTED LOCAL PLAN BECAUSE OBSTACLE DETEDTED");
+                    // RCLCPP_WARN(getNode()->get_logger(),"ABORTED LOCAL PLAN BECAUSE OBSTACLE DETEDTED");
                     break;
                 }
                 i++;

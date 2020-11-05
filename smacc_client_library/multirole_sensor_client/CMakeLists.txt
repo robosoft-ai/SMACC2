@@ -15,10 +15,21 @@ find_package(ament_cmake REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(smacc_msgs REQUIRED)
 
-include_directories(include
-                    ${smacc2_INCLUDE_DIRS}
-                    ${smacc_msgs_INCLUDE_DIRS})
+set(dependencies
+    smacc2
+    smacc_msgs)
 
+include_directories(include)
+
+add_library(${PROJECT_NAME} SHARED
+            src/${PROJECT_NAME}/cl_multirole_sensor.cpp)
+
+ament_target_dependencies(${PROJECT_NAME}
+                          ${dependencies})
+
+ament_export_include_directories(include)
+ament_export_libraries(${PROJECT_NAME})
+ament_export_dependencies(${dependencies})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -36,4 +47,8 @@ install(
   DESTINATION include
 )
 
+install(TARGETS
+  ${PROJECT_NAME}
+  DESTINATION lib/)
+  
 ament_package()

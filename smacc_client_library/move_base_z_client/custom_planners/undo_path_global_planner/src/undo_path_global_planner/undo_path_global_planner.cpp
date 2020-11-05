@@ -247,11 +247,11 @@ namespace cl_move_base_z
             //RCLCPP_INFO_STREAM(nh_->get_logger()," start - " << start);
             //RCLCPP_INFO_STREAM(nh_->get_logger()," end - " << goal.pose.position);
 
-            //ROS_INFO("3 - heading to goal orientation");
-            //double goalOrientation = angles::normalize_angle(tf::getYaw(goal.pose.orientation));
+            //RCLCPP_INFO(getNode()->get_logger(),"3 - heading to goal orientation");
+            //double goalOrientation = angles::normalize_angle(tf2::getYaw(goal.pose.orientation));
             //cl_move_base_z::makePureSpinningSubPlan(prevState,goalOrientation,plan);
 
-            //ROS_WARN_STREAM( "MAKE PLAN INVOKED, plan size:"<< plan.size());
+            //RCLCPP_WARN_STREAM(getNode()->get_logger(), "MAKE PLAN INVOKED, plan size:"<< plan.size());
             publishGoalMarker(forcedGoal.pose, 1.0, 0, 1.0);
 
             nav_msgs::msg::Path planMsg;

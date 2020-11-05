@@ -1,12 +1,9 @@
 #pragma once
 
 #include <smacc/client_bases/smacc_subscriber_client.h>
-#include <boost/statechart/event.hpp>
-
-#include <ros/ros.h>
-#include <ros/duration.h>
-#include <boost/signals2.hpp>
+#include <rclcpp/rclcpp.hpp>
 #include <optional>
+#include <smacc/smacc_signal.h>
 
 namespace cl_multirole_sensor
 {
@@ -48,11 +45,10 @@ public:
   {
     SmaccSubscriberClient<MessageType>::template onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
-    this->postTimeoutMessageEvent = [=](auto &timerdata) {
-      onMessageTimeout_(timerdata);
+    this->postTimeoutMessageEvent = [=]() {
+      onMessageTimeout_();
 
       auto event = new EvTopicMessageTimeout<TSourceObject, TOrthogonal>();
-      event->timerData = timerdata;
       this->postEvent(event);
     };
   }
@@ -68,12 +64,13 @@ public:
       if (timeout_)
       {
         auto ros_clock = rclcpp::Clock::make_shared();
-        timeoutTimer_ = rclcpp::create_timer(getNode(), *timeout_, std::bind(&ClMultiroleSensor<MessageType>::timeoutCallback, this));
-        timeoutTimer_.start();
+        timeoutTimer_ = rclcpp::create_timer(this->getNode(), this->getNode()->get_clock(),*timeout_, std::bind(&ClMultiroleSensor<MessageType>::timeoutCallback, this));
+        //timeoutTimer_->start();
+        timeoutTimer_->reset();
       }
       else
       {
-        RCLCPP_WARN(getNode()->get_logger(),"Timeout sensor client not set, skipping timeout watchdog funcionality");
+        RCLCPP_WARN(this->getNode()->get_logger(),"Timeout sensor client not set, skipping timeout watchdog funcionality");
       }
 
       initialized_ = true;
@@ -86,12 +83,13 @@ protected:
   void resetTimer(const MessageType &msg)
   {
     //reseting the timer
-    timeoutTimer_.stop();
-    timeoutTimer_.start();
+    timeoutTimer_->reset();
+    //timeoutTimer_->stop();
+    //timeoutTimer_->start();
   }
 
 private:
-  ros::Timer timeoutTimer_;
+  rclcpp::TimerBase::SharedPtr timeoutTimer_;
   bool initialized_;
 
   void timeoutCallback()

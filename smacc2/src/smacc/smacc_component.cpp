@@ -33,6 +33,11 @@ void ISmaccComponent::setStateMachine(ISmaccStateMachine *stateMachine)
     stateMachine_ = stateMachine;
 }
 
+rclcpp::Node::SharedPtr ISmaccComponent::getNode()
+{
+    return this->owner_->getNode();
+}
+
 std::string ISmaccComponent::getName() const
 {
     std::string keyname = demangleSymbol(typeid(*this).name());

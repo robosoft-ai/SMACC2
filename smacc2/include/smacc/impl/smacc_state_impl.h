@@ -35,7 +35,12 @@ namespace smacc
         getNode()->set_parameter(rclcpp::Parameter(param_name, param_val));
     }
     //-------------------------------------------------------------------------------------------------------
-
+    template <typename T>
+    void ISmaccState::param(std::string param_name, T default_value)
+    {
+        getNode()->declare_parameter(param_name, default_value);
+    }
+    //-------------------------------------------------------------------------------------------------------
 #define THIS_STATE_NAME ((demangleSymbol(typeid(*this).name()).c_str()))
     template <typename TOrthogonal, typename TBehavior, typename... Args>
     std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)

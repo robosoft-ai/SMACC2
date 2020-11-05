@@ -3,7 +3,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-// #include <ros/ros.h>
+// #include <rclcpp/rclcpp.hpp>
 
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <tf2/transform_datatypes.h>
@@ -18,24 +18,24 @@ namespace cl_move_base_z
     geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(const geometry_msgs::msg::PoseStamped& start, double dstRads, std::vector<geometry_msgs::msg::PoseStamped>& plan, double puresSpinningRadStep)
     {
         double startYaw = tf2::getYaw(start.pose.orientation);
-        //ROS_INFO("pure spining start yaw: %lf", startYaw);
-        //ROS_INFO("pure spining goal yaw: %lf", dstRads);
-        //ROS_WARN_STREAM("pure spinning start pose: " << start);
+        //RCLCPP_INFO(getNode()->get_logger(),"pure spining start yaw: %lf", startYaw);
+        //RCLCPP_INFO(getNode()->get_logger(),"pure spining goal yaw: %lf", dstRads);
+        //RCLCPP_WARN_STREAM(getNode()->get_logger(),"pure spinning start pose: " << start);
 
         double goalAngleOffset = angles::shortest_angular_distance(startYaw, dstRads);
-        //ROS_INFO("shortest angle: %lf", goalAngleOffset);
+        //RCLCPP_INFO(getNode()->get_logger(),"shortest angle: %lf", goalAngleOffset);
 
         double radstep = 0.005;
 
         if( goalAngleOffset>=0) 
         {
             // angle positive turn counterclockwise
-            //ROS_INFO("pure spining counterclockwise");
+            //RCLCPP_INFO(getNode()->get_logger(),"pure spining counterclockwise");
             for(double dangle = 0; dangle <= goalAngleOffset;dangle+=radstep )
             {
                 geometry_msgs::msg::PoseStamped p= start;
                 double yaw = startYaw+ dangle;
-                //ROS_INFO("pure spining counterclockwise, current path yaw: %lf, dangle: %lf, angleoffset %lf, radstep %lf pathsize(%ld)", yaw, dangle, goalAngleOffset, radstep, plan.size());
+                //RCLCPP_INFO(getNode()->get_logger(),"pure spining counterclockwise, current path yaw: %lf, dangle: %lf, angleoffset %lf, radstep %lf pathsize(%ld)", yaw, dangle, goalAngleOffset, radstep, plan.size());
                 tf2::Quaternion q;
                 q.setEuler(yaw,0,0);
                 p.pose.orientation = tf2::toMsg(q);
@@ -45,13 +45,13 @@ namespace cl_move_base_z
         else
         {
             // angle positive turn clockwise
-            //ROS_INFO("pure spining clockwise");
+            //RCLCPP_INFO(getNode()->get_logger(),"pure spining clockwise");
             for(double dangle = 0; dangle >= goalAngleOffset;dangle-=radstep )
             {
-                //ROS_INFO("dangle: %lf", dangle);
+                //RCLCPP_INFO(getNode()->get_logger(),"dangle: %lf", dangle);
                 geometry_msgs::msg::PoseStamped p= start;
                 double yaw = startYaw+ dangle;
-                //ROS_INFO("pure spining clockwise, yaw: %lf, dangle: %lf, angleoffset %lf radstep %lf", yaw, dangle, goalAngleOffset,radstep);
+                //RCLCPP_INFO(getNode()->get_logger(),"pure spining clockwise, yaw: %lf, dangle: %lf, angleoffset %lf radstep %lf", yaw, dangle, goalAngleOffset,radstep);
                 tf2::Quaternion q;
                 q.setEuler(yaw,0,0);
                 p.pose.orientation = tf2::toMsg(q);
@@ -59,7 +59,7 @@ namespace cl_move_base_z
             }     
         }
 
-        //ROS_INFO("pure spining end yaw: %lf", dstRads);        
+        //RCLCPP_INFO(getNode()->get_logger(),"pure spining end yaw: %lf", dstRads);        
         geometry_msgs::msg::PoseStamped end= start;
         tf2::Quaternion q;
         q.setEuler(dstRads,0,0);

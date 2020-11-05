@@ -15,7 +15,7 @@
 #include <tf2/utils.h>
 #include <tf2/transform_datatypes.h>
 #include <angles/angles.h>
-#include <forward_global_planner/move_base_z_client_tools.h>
+#include <move_base_z_planners_common/move_base_z_client_tools.h>
           
 namespace cl_move_base_z
 {
@@ -136,14 +136,14 @@ bool BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::msg::
     if (lenght > skip_straight_motion_distance_)
     {
         // skip initial pure spinning and initial straight motion
-        //ROS_INFO("1 - heading to goal position pure spinning");
+        //RCLCPP_INFO(getNode()->get_logger(),"1 - heading to goal position pure spinning");
         double heading_direction = atan2(dy, dx);
         double startyaw = tf2::getYaw(q);
         double offset = angles::shortest_angular_distance(startyaw, heading_direction);
         heading_direction = startyaw + offset;
 
         prevState = cl_move_base_z::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
-        //ROS_INFO("2 - going forward keep orientation pure straight");
+        //RCLCPP_INFO(getNode()->get_logger(),"2 - going forward keep orientation pure straight");
 
         prevState = cl_move_base_z::makePureStraightSubPlan(prevState, goal.pose.position, lenght, plan);
     }
@@ -176,10 +176,10 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(
     //RCLCPP_INFO_STREAM(" end - " << goal.pose.position);
 
     //RCLCPP_INFO_INFO("3 - heading to goal orientation");
-    //double goalOrientation = angles::normalize_angle(tf::getYaw(goal.pose.orientation));
+    //double goalOrientation = angles::normalize_angle(tf2::getYaw(goal.pose.orientation));
     //cl_move_base_z::makePureSpinningSubPlan(prevState,goalOrientation,plan);
 
-    //ROS_WARN_STREAM( "MAKE PLAN INVOKED, plan size:"<< plan.size());
+    //RCLCPP_WARN_STREAM(getNode()->get_logger(), "MAKE PLAN INVOKED, plan size:"<< plan.size());
     publishGoalMarker(goal.pose, 1.0, 0, 1.0);
 
     nav_msgs::msg::Path planMsg;

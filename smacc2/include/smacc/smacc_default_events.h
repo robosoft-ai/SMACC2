@@ -23,14 +23,14 @@ struct EvActionFeedback : sc::event<EvActionFeedback<ActionFeedback, TOrthogonal
 template <typename TSource, typename TOrthogonal>
 struct EvActionResult : sc::event<EvActionResult<TSource, TOrthogonal>>
 {
-  typename TSource::Result resultMessage;
+  typename TSource::WrappedResult resultMessage;
 };
 
 //--------------------------------
 template <typename TSource, typename TOrthogonal>
 struct EvActionSucceeded : sc::event<EvActionSucceeded<TSource, TOrthogonal>>
 {
-  typename TSource::Result resultMessage;
+  typename TSource::WrappedResult resultMessage;
 
   static std::string getEventLabel()
   {
@@ -54,7 +54,7 @@ struct EvActionSucceeded : sc::event<EvActionSucceeded<TSource, TOrthogonal>>
 template <typename TSource, typename TOrthogonal>
 struct EvActionAborted : sc::event<EvActionAborted<TSource, TOrthogonal>>
 {
-  typename TSource::Result resultMessage;
+  typename TSource::WrappedResult resultMessage;
 
   static std::string getEventLabel()
   {
@@ -78,7 +78,7 @@ struct EvActionAborted : sc::event<EvActionAborted<TSource, TOrthogonal>>
 template <typename TSource, typename TOrthogonal>
 struct EvActionCancelled : sc::event<EvActionCancelled<TSource, TOrthogonal>>
 {
-  typename TSource::Result resultMessage;
+  typename TSource::WrappedResult resultMessage;
 
   static std::string getEventLabel()
   {
@@ -104,7 +104,7 @@ struct EvActionCancelled : sc::event<EvActionCancelled<TSource, TOrthogonal>>
 template <typename TSource, typename TOrthogonal>
 struct EvActionPreempted : sc::event<EvActionPreempted<TSource, TOrthogonal>>
 {
-  typename TSource::Result resultMessage;
+  typename TSource::WrappedResult resultMessage;
 
   static std::string getEventLabel()
   {
@@ -129,7 +129,7 @@ struct EvActionPreempted : sc::event<EvActionPreempted<TSource, TOrthogonal>>
 template <typename TSource, typename TOrthogonal>
 struct EvActionRejected : sc::event<EvActionRejected<TSource, TOrthogonal>>
 {
-  typename TSource::Result resultMessage;
+  typename TSource::WrappedResult resultMessage;
 
   static std::string getEventLabel()
   {

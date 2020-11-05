@@ -9,7 +9,7 @@ class TemperatureClass
 int main(int argc, char** argv)
 {
     rclcpp::init(argc,argv);
-    // ros::init(argc,argv, "temperature_sensor_node");
+    // rclcpp::init(argc,argv, "temperature_sensor_node");
     // ros::NodeHandle nh;
     // auto pub = nh.advertise<std_msgs::Float32>("/temperature",1);
 
@@ -33,7 +33,7 @@ int main(int argc, char** argv)
         pub->publish(msg);
 
         r.sleep();
-        //ros::spinOnce();
+        //rclcpp::spinOnce();
         rclcpp::spin_some(node);
         i++;
     }
