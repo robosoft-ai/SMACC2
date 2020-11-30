@@ -77,6 +77,7 @@ bt_navigator:
     - nav2_transform_available_condition_bt_node
     - nav2_time_expired_condition_bt_node
     - nav2_distance_traveled_condition_bt_node
+    - nav2_planner_selector_bt_node
 
 bt_navigator_rclcpp_node:
   ros__parameters:
@@ -90,20 +91,43 @@ controller_server:
     min_y_velocity_threshold: 0.5
     min_theta_velocity_threshold: 0.001
     progress_checker_plugin: "progress_checker"
-    goal_checker_plugin: "goal_checker"
-    controller_plugins: ["FollowPath"]
+    goal_checker_plugins: ["goal_checker", "forward_goal_checker", "backward_goal_checker", "absolute_rotate_goal_checker", "undo_path_backwards_goal_checker"]
+    current_goal_checker: "goal_checker"
+    controller_plugins: ["FollowPath","BackwardLocalPlanner", "ForwardLocalPlanner", "PureSpinningLocalPlanner"]
 
     # Progress checker parameters
     progress_checker:
       plugin: "nav2_controller::SimpleProgressChecker"
-      required_movement_radius: 0.5
-      movement_time_allowance: 10.0
+      required_movement_radius: 0.001
+      movement_time_allowance: 3000.0
+
     # Goal checker parameters
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.25
-      yaw_goal_tolerance: 0.25
+      xy_goal_tolerance: 0.157
+      yaw_goal_tolerance: 0.016
       stateful: True
+    backward_goal_checker:
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 0.02
+      yaw_goal_tolerance: 0.3
+      stateful: True
+    forward_goal_checker:
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 0.04
+      yaw_goal_tolerance: 0.05
+      stateful: True
+    absolute_rotate_goal_checker:
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 0.15
+      yaw_goal_tolerance: 0.065
+      stateful: True
+    undo_path_backwards_goal_checker:
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 0.02
+      yaw_goal_tolerance: 0.2
+      stateful: True
+
     # DWB parameters
     FollowPath:
       plugin: "dwb_core::DWBLocalPlanner"
@@ -131,7 +155,8 @@ controller_server:
       linear_granularity: 0.05
       angular_granularity: 0.025
       transform_tolerance: 0.2
-      xy_goal_tolerance: 0.25
+      xy_goal_tolerance: 0.157
+      yaw_goal_tolerance: 0.15
       trans_stopped_velocity: 0.25
       short_circuit_trajectory_evaluation: True
       stateful: True
@@ -146,6 +171,32 @@ controller_server:
       RotateToGoal.scale: 32.0
       RotateToGoal.slowing_factor: 5.0
       RotateToGoal.lookahead_time: -1.0
+    BackwardLocalPlanner:
+      plugin: "backward_local_planner::BackwardLocalPlanner"
+      k_rho: -1.4 # linear distance to the goal gain, default = -1.0 (related with carrot distance)
+      k_alpha: 0.01 #-0.1
+      k_betta: -0.1 # -1.0
+      carrot_distance: 0.3 #meters default 0.5 
+      carrot_angular_distance: 0.3 # no constraint, max 3.1416
+      xy_goal_tolerance: 0.003 # 3 mm
+      yaw_goal_tolerance: 0.3
+      pure_spinning_straight_line_mode: true
+      max_linear_x_speed: 0.2
+    ForwardLocalPlanner:
+      plugin: "cl_move_base_z::forward_local_planner::ForwardLocalPlanner"
+      k_rho: 2.0
+      k_alpha: -0.4
+      k_betta: -1.0
+      carrot_distance: 0.2 #meters
+      carrot_angular_distance: 0.5 # no constraint, max 3.1416
+      xy_goal_tolerance: 0.04
+      yaw_goal_tolerance: 0.01
+      max_linear_x_speed: 0.2
+      max_angular_z_speed: 0.15
+    PureSpinningLocalPlanner:
+      plugin: "pure_spinning_local_planner::PureSpinningLocalPlanner"
+    
+  
 
 controller_server_rclcpp_node:
   ros__parameters:
@@ -244,12 +295,18 @@ planner_server:
   ros__parameters:
     expected_planner_frequency: 20.0
     use_sim_time: True
-    planner_plugins: ["GridBased"]
+    planner_plugins: ["GridBased", "ForwardGlobalPlanner", "BackwardGlobalPlanner", "UndoPathGlobalPlanner"]
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
       tolerance: 0.5
       use_astar: false
       allow_unknown: true
+    ForwardGlobalPlanner:
+      plugin: "forward_global_planner::ForwardGlobalPlanner"
+    BackwardGlobalPlanner:
+      plugin: "backward_global_planner::BackwardGlobalPlanner"
+    UndoPathGlobalPlanner:
+      plugin: "undo_path_global_planner::UndoPathGlobalPlanner"
 
 planner_server_rclcpp_node:
   ros__parameters:
@@ -261,6 +318,7 @@ recoveries_server:
     footprint_topic: local_costmap/published_footprint
     cycle_frequency: 10.0
     recovery_plugins: ["spin", "backup", "wait"]
+    #recovery_plugins: ["spin"]
     spin:
       plugin: "nav2_recoveries/Spin"
     backup:

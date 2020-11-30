@@ -11,24 +11,26 @@
 #include <std_msgs/msg/u_int8.hpp>
 #include <functional>
 #include <rclcpp_action/rclcpp_action.hpp>
-
-#include <sm_dance_bot/action/led_control.hpp>
+#include <thread>
+#include <sm_dance_bot_msgs/action/led_control.hpp>
 // #include <sm_dance_bot/action/LEDControlActionResult.h>
 // #include <sm_dance_bot/action/LEDControlResult.h>
 
 #include <memory>
 #include <visualization_msgs/msg/marker_array.hpp>
+#include <rclcpp/rclcpp.hpp>
 
 // This class describes a preemptable-on/off tool action server to be used from smacc
 // shows in rviz a sphere whoose color describe the current state (unknown, running, idle)
 class LEDActionServer: public rclcpp::Node
 {
 public:
-  std::shared_ptr<rclcpp_action::Server<sm_dance_bot::action::LEDControlAction>> as_ ;
+  std::shared_ptr<rclcpp_action::Server<sm_dance_bot_msgs::action::LEDControl>> as_ ;
+  using GoalHandleLEDControl = rclcpp_action::ServerGoalHandle<sm_dance_bot_msgs::action::LEDControl>;
 
   rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr stateMarkerPublisher_;
 
-  sm_dance_bot::action::LEDControlGoal cmd;
+  uint8_t cmd;
 
   uint8_t currentState_;
 
@@ -40,61 +42,81 @@ public:
   LEDActionServer(const rclcpp::NodeOptions & options = rclcpp::NodeOptions())
     : Node("led_action_server_node", options)
   {
-    currentState_ =  sm_dance_bot::LEDControlResult::STATE_UNKNOWN;
+    currentState_ =  sm_dance_bot_msgs::action::LEDControl::Result::STATE_UNKNOWN;
   }
-
-/**
-******************************************************************************************************************
-* publishFeedback()
-******************************************************************************************************************
-*/
-void publishFeedback()  // Note: "Action" is not appended to DoDishes here
-{
-    sm_dance_bot::LEDControlFeedback feedback_msg;
-    
-    as_->publishFeedback(feedback_msg);
-}
 
 /**
 ******************************************************************************************************************
 * execute()
 ******************************************************************************************************************
 */
-void execute(const sm_dance_bot::LEDControlGoalConstPtr& goal)  // Note: "Action" is not appended to DoDishes here
+void execute(const std::shared_ptr<GoalHandleLEDControl> gh)  // Note: "Action" is not appended to DoDishes here
 {
-  RCLCPP_INFO_STREAM(getNode()->get_logger(),"Tool action server request: "<< *goal);
-  cmd = *goal;
+  auto goal = gh->get_goal();
+  RCLCPP_INFO_STREAM(get_logger(),"Tool action server request: "<< goal->command);
+  
+  cmd = goal->command;
 
-  if(goal->command == sm_dance_bot::LEDControlGoal::CMD_ON)
+
+  if(goal->command == sm_dance_bot_msgs::action::LEDControl_Goal::CMD_ON)
   {
-    currentState_ =  sm_dance_bot::LEDControlResult::STATE_RUNNING;
+    RCLCPP_INFO(this->get_logger(), "ON");
+    currentState_ =  sm_dance_bot_msgs::action::LEDControl_Result::STATE_RUNNING;
   }
-  else  if (goal->command == sm_dance_bot::LEDControlGoal::CMD_OFF)
+  else  if (goal->command == sm_dance_bot_msgs::action::LEDControl_Goal::CMD_OFF)
   {
-    currentState_ =  sm_dance_bot::LEDControlResult::STATE_IDLE;
+    RCLCPP_INFO(this->get_logger(), "OFF");
+    currentState_ =  sm_dance_bot_msgs::action::LEDControl_Result::STATE_IDLE;
   }
+
+  auto feedback_msg = std::make_shared<sm_dance_bot_msgs::action::LEDControl::Feedback>() ;
 
   // 10Hz internal loop
   rclcpp::Rate rate(20);
-
-  while(ros::ok())
-  {
-    if(as_->isPreemptRequested())
-    {
-       // a new request is being executed, we will stop this one
-       RCLCPP_WARN(getNode()->get_logger(),"LEDActionServer request preempted. Forgetting older request.");
-       as_->setPreempted(); 
-       return;
-    }
     
-    publishFeedback();
+  while(rclcpp::ok())
+  {
+    gh->publish_feedback(feedback_msg);
+    
     publishStateMarker();
     rate.sleep();
+    RCLCPP_INFO_THROTTLE(this->get_logger(),*(this->get_clock()), 2000, "Loop feedback");
   }
 
+  auto result = std::make_shared<sm_dance_bot_msgs::action::LEDControl::Result>();
+  result->state = this->currentState_;
+
    // never reach succeded because were are interested in keeping the feedback alive
-   as_->setSucceeded();
+   //as_->setSucceeded();
+   gh->succeed(result);
 }
+
+rclcpp_action::GoalResponse handle_goal(const rclcpp_action::GoalUUID & /*uuid*/, std::shared_ptr<const sm_dance_bot_msgs::action::LEDControl::Goal> /*goal*/)
+{
+  // (void)uuid;
+  // // Let's reject sequences that are over 9000
+  // if (goal->order > 9000) {
+  //   return rclcpp_action::GoalResponse::REJECT;
+  // }
+
+  // lets accept everything
+  RCLCPP_INFO(this->get_logger(), "Handle goal");
+  return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+}
+
+rclcpp_action::CancelResponse handle_cancel(const std::shared_ptr<GoalHandleLEDControl> /*goal_handle*/)
+{
+  RCLCPP_INFO(rclcpp::get_logger("server"), "Got request to cancel goal");
+  //(void)goal_handle;
+  return rclcpp_action::CancelResponse::ACCEPT;
+}
+
+void handle_accepted(const std::shared_ptr<GoalHandleLEDControl> goal_handle)
+{
+  // this needs to return quickly to avoid blocking the executor, so spin up a new thread
+  std::thread{std::bind(&LEDActionServer::execute,this,std::placeholders::_1), goal_handle}.detach();
+}
+
 
 /**
 ******************************************************************************************************************
@@ -104,26 +126,19 @@ void execute(const sm_dance_bot::LEDControlGoalConstPtr& goal)  // Note: "Action
 void run()
 {
   
-  RCLCPP_INFO(getNode()->get_logger(),"Creating tool action server");
-  as_ = std::make_shared<Server>(n, "led_action_server", boost::bind(&LEDActionServer::execute, this,  _1), false);
-  RCLCPP_INFO(getNode()->get_logger(),"Starting Tool Action Server");
+  RCLCPP_INFO(this->get_logger(),"Creating tool action server");
+  //as_ = std::make_shared<Server>(n, "led_action_server", boost::bind(&LEDActionServer::execute, this,  _1), false);
+  
+  this->as_= rclcpp_action::create_server<sm_dance_bot_msgs::action::LEDControl>(
+    this,
+    "led_action_server",
+    std::bind(&LEDActionServer::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
+    std::bind(&LEDActionServer::handle_cancel, this, std::placeholders::_1),
+    std::bind(&LEDActionServer::handle_accepted, this, std::placeholders::_1)
+    );
 
-  as_ = rclcpp_action::create_server<Fibonacci>(
-        this->get_node_base_interface(),
-        this->get_node_clock_interface(),
-        this->get_node_logging_interface(),
-        this->get_node_waitables_interface(),
-        "fibonacci",
-        std::bind(&MinimalActionServer::handle_goal, this, _1, _2),
-        std::bind(&MinimalActionServer::handle_cancel, this, _1),
-        std::bind(&MinimalActionServer::handle_accepted, this, _1));
-  }
-
-  stateMarkerPublisher_ = n.advertise<visualization_msgs::MarkerArray>("tool_markers", 1); 
-
-  as_->start();
-
-  ros::spin();
+  RCLCPP_INFO(get_logger(),"Starting Tool Action Server");
+  stateMarkerPublisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("tool_markers", 1); 
 }
 
 /**
@@ -133,14 +148,14 @@ void run()
 */
 void publishStateMarker()
 {
-    visualization_msgs::Marker marker;
+    visualization_msgs::msg::Marker marker;
     marker.header.frame_id = "base_link";
-    marker.header.stamp = rclcpp::Time::now ();
+    marker.header.stamp = this->now ();
 
     marker.ns = "tool_namespace";
     marker.id = 0;
-    marker.type = visualization_msgs::Marker::SPHERE;
-    marker.action = visualization_msgs::Marker::ADD;
+    marker.type = visualization_msgs::msg::Marker::SPHERE;
+    marker.action = visualization_msgs::msg::Marker::ADD;
     
     marker.scale.x = 0.2;
     marker.scale.y = 0.2;
@@ -148,14 +163,14 @@ void publishStateMarker()
 
     marker.color.a = 1;
 
-    if(currentState_ == sm_dance_bot::LEDControlResult::STATE_RUNNING)
+    if(currentState_ == sm_dance_bot_msgs::action::LEDControl::Result::STATE_RUNNING)
     {
       // show green ball
       marker.color.r = 0;
       marker.color.g = 1;
       marker.color.b = 0;
     }
-    else if (currentState_ == sm_dance_bot::LEDControlResult::STATE_IDLE)
+    else if (currentState_ == sm_dance_bot_msgs::action::LEDControl::Result::STATE_IDLE)
     {
       // show gray ball
       marker.color.r = 0.7;
@@ -175,10 +190,10 @@ void publishStateMarker()
     marker.pose.position.y=0;
     marker.pose.position.z=1;
 
-    visualization_msgs::MarkerArray ma;
+    visualization_msgs::msg::MarkerArray ma;
     ma.markers.push_back(marker);
 
-    stateMarkerPublisher_.publish(ma);
+    stateMarkerPublisher_->publish(ma);
 }
 };
 
@@ -190,9 +205,11 @@ void publishStateMarker()
 int main(int argc, char** argv)
 {
   rclcpp::init(argc, argv);
-  LEDActionServer LEDActionServer;
-  LEDActionServer.run();
+  auto ledactionserver = std::make_shared<LEDActionServer>();
+  ledactionserver->run();
 
+  rclcpp::spin(ledactionserver);
+  rclcpp::shutdown();
   return 0;
 }
 

@@ -5,22 +5,26 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include "cb_move_base_client_behavior_base.h"
 #include <tf2_ros/buffer.h>
+
+#include "cb_move_base_client_behavior_base.h"
 
 namespace cl_move_base_z
 {
 class CbRotate : public CbMoveBaseClientBehaviorBase
 {
 public:
-    std::shared_ptr<tf2_ros::Buffer> listener;
+  std::optional<float> rotateDegree;
 
-    boost::optional<float> rotateDegree;
+  std::optional<std::string> goalChecker_;
 
-    CbRotate();
+  CbRotate();
 
-    CbRotate(float rotate_degree);
+  CbRotate(float rotate_degree);
 
-    virtual void onEntry() override;
+  virtual void onEntry() override;
+
+private:
+  std::shared_ptr<tf2_ros::Buffer> listener;
 };
-} // namespace cl_move_base_z
+}  // namespace cl_move_base_z

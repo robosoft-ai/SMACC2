@@ -9,6 +9,9 @@
 namespace cl_move_base_z
 {
 
+typedef smacc::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose> Base;
+typedef Base::WrappedResult WrappedResult;
+
 ClMoveBaseZ::ClMoveBaseZ(std::string moveBaseName)
  : Base(moveBaseName)
 {
@@ -18,11 +21,6 @@ ClMoveBaseZ::ClMoveBaseZ(std::string moveBaseName)
 std::string ClMoveBaseZ::getName() const
 {
     return "MOVE BASE ACTION CLIENT";
-}
-
-void ClMoveBaseZ::initialize()
-{
-    SmaccActionClientBase<nav2_msgs::action::NavigateToPose>::initialize();
 }
 
 ClMoveBaseZ::~ClMoveBaseZ()

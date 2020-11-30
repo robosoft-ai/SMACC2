@@ -47,7 +47,6 @@ namespace smacc
 
         virtual void dispose();
 
-    protected:
         virtual rclcpp::Node::SharedPtr getNode();
 
     private:

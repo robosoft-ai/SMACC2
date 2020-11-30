@@ -49,6 +49,8 @@ public:
 protected:
     virtual void onInitialize();
 
+    void initializeClients();
+
     template <typename TOrthogonal, typename TClient>
     void assignClientToOrthogonal(TClient* client);
 

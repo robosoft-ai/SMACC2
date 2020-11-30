@@ -27,8 +27,8 @@ from launch_ros.actions import PushRosNamespace
 
 def generate_launch_description():
     # Get the launch directory
-    bringup_dir = get_package_share_directory('nav2_bringup')
-    launch_dir = os.path.join(bringup_dir, 'launch')
+    sm_dance_bot_dir = get_package_share_directory('sm_dance_bot')
+    launch_dir = os.path.join(sm_dance_bot_dir, 'launch')
 
     # Create the launch configuration variables
     namespace = LaunchConfiguration('namespace')
@@ -69,7 +69,7 @@ def generate_launch_description():
 
     declare_params_file_cmd = DeclareLaunchArgument(
         'params_file',
-        default_value=os.path.join(bringup_dir, 'params', 'move_base_client', 'nav2_params.yaml'),
+        default_value=os.path.join(sm_dance_bot_dir, 'params', 'move_base_client', 'nav2_params.yaml'),
         description='Full path to the ROS2 parameters file to use for all launched nodes')
 
     declare_bt_xml_cmd = DeclareLaunchArgument(

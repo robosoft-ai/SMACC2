@@ -16,8 +16,12 @@ public:
 
     CbStringPublisher(std::string msg)
     {
-        RCLCPP_INFO_STREAM(getNode()->get_logger(),"Creating CbStringPublisher behavior with stored message: " << msg);
         msg_ = msg;
+    }
+
+    virtual void runtimeConfigure() override
+    {
+        RCLCPP_INFO_STREAM(getNode()->get_logger(),"Creating CbStringPublisher behavior with stored message: " << msg_);
     }
 
     virtual void onEntry()

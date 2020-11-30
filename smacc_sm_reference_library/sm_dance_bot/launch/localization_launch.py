@@ -54,6 +54,8 @@ def generate_launch_description():
         param_rewrites=param_substitutions,
         convert_types=True)
 
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
+
     return LaunchDescription([
         # Set env var to print messages to stdout immediately
         SetEnvironmentVariable('RCUTILS_LOGGING_BUFFERED_STREAM', '1'),
@@ -78,7 +80,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'params_file',
             default_value=os.path.join(bringup_dir, 'params', 'move_base_client', 'nav2_params.yaml'),
-            description='Full path to the ROS2 parameters file to use'),
+            description='Full path to the ROS2 parameters file to use'),        
 
         Node(
             package='nav2_map_server',
@@ -93,6 +95,7 @@ def generate_launch_description():
             executable='amcl',
             name='amcl',
             output='screen',
+            prefix = xtermprefix,
             parameters=[configured_params],
             remappings=remappings),
 

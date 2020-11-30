@@ -32,7 +32,7 @@ public:
    * @param  costmap_ros A pointer to the costmap
    */
   virtual void configure(
-    rclcpp_lifecycle::LifecycleNode::SharedPtr parent,
+    const rclcpp_lifecycle::LifecycleNode::WeakPtr& parent,
     std::string name, std::shared_ptr<tf2_ros::Buffer> tf,
     std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros);
 
@@ -67,9 +67,9 @@ private:
     rclcpp_lifecycle::LifecycleNode::SharedPtr nh_;
     rclcpp::Subscription<nav_msgs::msg::Path>::SharedPtr forwardPathSub_;
 
-    rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr planPub_;
+    rclcpp_lifecycle::LifecyclePublisher<nav_msgs::msg::Path>::SharedPtr planPub_;
 
-    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr markersPub_;
+    rclcpp_lifecycle::LifecyclePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr markersPub_;
 
     nav_msgs::msg::Path lastForwardPathMsg_;
 

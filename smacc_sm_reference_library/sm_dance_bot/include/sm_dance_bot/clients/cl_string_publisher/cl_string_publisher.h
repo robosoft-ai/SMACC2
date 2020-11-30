@@ -11,10 +11,17 @@ class ClStringPublisher : public smacc::client_bases::SmaccPublisherClient
 {
 public:
     ClStringPublisher(std::string topicName)
-        : smacc::client_bases::SmaccPublisherClient()
+        : topicName_(topicName)
     {
-        this->configure<std_msgs::msg::String>(topicName);
+        
     }
+
+    virtual void onInitialize() override
+    {
+        this->configure<std_msgs::msg::String>(topicName_);
+    }
+
+    std::string topicName_;
 };
 } // namespace cl_string_publisher
 } // namespace sm_dance_bot

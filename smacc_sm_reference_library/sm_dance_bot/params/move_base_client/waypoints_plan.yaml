@@ -1,0 +1,72 @@
+waypoints:
+  # POINT 0
+  - position:
+      x: 3.0
+      y: -2.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 1
+  - position:
+      x: -5.75
+      y: 3.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 2
+  - position:
+      x: -10.25
+      y: -4.25
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 3
+  - position:
+      x: 2.0
+      y: -8.58 # north west corner of the room
+      #y: -12.35 # south west corner of the room
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+    # POINT 4
+  - position:
+      x: -10
+      y: 13.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 4
+  - position:
+      x: -0.0
+      y: 0.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  #POINT 5
+  - position:
+      x: 6.0
+      y: 8.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0

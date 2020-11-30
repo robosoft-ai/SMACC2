@@ -13,6 +13,7 @@ int main(int argc, char** argv)
     while(rclcpp::ok())
     {
         sensor_msgs::msg::Temperature msg;
+        msg.temperature = sin(nh->now().seconds()/2.0) * 50;
         pub->publish(msg);
 
         r.sleep();

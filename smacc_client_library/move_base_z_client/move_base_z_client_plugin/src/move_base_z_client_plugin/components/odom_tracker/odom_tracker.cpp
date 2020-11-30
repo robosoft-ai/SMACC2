@@ -4,72 +4,62 @@
  *
  ******************************************************************************************************************/
 #include <angles/angles.h>
+#include <move_base_z_client_plugin/common.h>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
 #include <tf2/utils.h>
+
 #include <boost/range/adaptor/reversed.hpp>
-#include <move_base_z_client_plugin/common.h>
 
 namespace cl_move_base_z
 {
 namespace odom_tracker
 {
 OdomTracker::OdomTracker(std::string odomTopicName, std::string odomFrame)
-
 {
   workingMode_ = WorkingMode::RECORD_PATH;
   publishMessages = true;
   subscribeToOdometryTopic_ = true;
-  this->odomFrame_ = odomFrame;
+  odomFrame_ = odomFrame;
+  odomTopicName_ = odomTopicName;
+}
 
-  // ros::NodeHandle nh("~/odom_tracker");
-  // : paramServer_(ros::NodeHandle("~/odom_tracker"))
-  // f = boost::bind(&OdomTracker::reconfigCB, this, _1, _2);
-  // paramServer_.setCallback(f);
+template <typename T>
+void parameterDeclareAndtryGetOrSet(rclcpp::Node::SharedPtr &node, std::string param_name, T &value)
+{
+  if (!node->get_parameter(param_name, value))
+  {
+    node->declare_parameter(param_name);
+    node->set_parameter(rclcpp::Parameter(param_name, value));
+    RCLCPP_INFO_STREAM(node->get_logger(), "[OdomTracker] autoset " << param_name << ": " << value);
+  }
+  else
+  {
+    RCLCPP_INFO_STREAM(node->get_logger(), "[OdomTracker] " << param_name << ": " << value);
+  }
+}
+
+void OdomTracker::onInitialize()
+{
+  // default values
+  recordPointDistanceThreshold_ = 0.005;  // 5 mm
+  recordAngularDistanceThreshold_ = 0.1;  // radians
+  clearPointDistanceThreshold_ = 0.05;    // 5 cm
+  clearAngularDistanceThreshold_ = 0.1;   // radi
 
   auto nh = getNode();
-
   RCLCPP_WARN(getNode()->get_logger(), "Initializing Odometry Tracker");
 
-  if (!nh->get_parameter("odom_frame", this->odomFrame_))
-  {
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), "[OdomTracker] odomFrame:" << this->odomFrame_);
-  }
-  RCLCPP_INFO_STREAM(getNode()->get_logger(),
-                     "[OdomTracker] odomFrame overwriten by ros parameter:" << this->odomFrame_);
-
-  if (!nh->get_parameter("record_point_distance_threshold", recordPointDistanceThreshold_))
-  {
-    recordPointDistanceThreshold_ = 0.005;  // 5 mm
-  }
-  RCLCPP_INFO_STREAM(getNode()->get_logger(),
-                     "[OdomTracker] record_point_distance_threshold :" << recordPointDistanceThreshold_);
-
-  if (!nh->get_parameter("record_angular_distance_threshold", recordAngularDistanceThreshold_))
-  {
-    recordAngularDistanceThreshold_ = 0.1;  // radians
-  }
-  RCLCPP_INFO_STREAM(getNode()->get_logger(),
-                     "[OdomTracker] record_angular_distance_threshold :" << recordAngularDistanceThreshold_);
-
-  if (!nh->get_parameter("clear_point_distance_threshold", clearPointDistanceThreshold_))
-  {
-    clearPointDistanceThreshold_ = 0.05;  // 5 cm
-  }
-  RCLCPP_INFO_STREAM(getNode()->get_logger(),
-                     "[OdomTracker] clear_point_distance_threshold :" << clearPointDistanceThreshold_);
-
-  if (!nh->get_parameter("clear_angular_distance_threshold", clearAngularDistanceThreshold_))
-  {
-    clearAngularDistanceThreshold_ = 0.1;  // radians
-  }
-  RCLCPP_INFO_STREAM(getNode()->get_logger(),
-                     "[OdomTracker] clear_angular_distance_threshold :" << clearAngularDistanceThreshold_);
+  parameterDeclareAndtryGetOrSet(nh, "odom_frame", this->odomFrame_);
+  parameterDeclareAndtryGetOrSet(nh, "record_point_distance_threshold", recordPointDistanceThreshold_);
+  parameterDeclareAndtryGetOrSet(nh, "record_angular_distance_threshold", recordAngularDistanceThreshold_);
+  parameterDeclareAndtryGetOrSet(nh, "clear_point_distance_threshold", clearPointDistanceThreshold_);
+  parameterDeclareAndtryGetOrSet(nh, "clear_angular_distance_threshold", clearAngularDistanceThreshold_);
 
   if (this->subscribeToOdometryTopic_)
   {
     rclcpp::SensorDataQoS qos;
     odomSub_ = nh->create_subscription<nav_msgs::msg::Odometry>(
-        odomTopicName, qos, std::bind(&OdomTracker::processOdometryMessage, this, std::placeholders::_1));
+        odomTopicName_, qos, std::bind(&OdomTracker::processOdometryMessage, this, std::placeholders::_1));
   }
 
   robotBasePathPub_ = nh->create_publisher<nav_msgs::msg::Path>("odom_tracker_path", 1);
@@ -85,7 +75,29 @@ void OdomTracker::setWorkingMode(WorkingMode workingMode)
 {
   // RCLCPP_INFO(getNode()->get_logger(),"odom_tracker m_mutex acquire");
   std::lock_guard<std::mutex> lock(m_mutex_);
-  RCLCPP_INFO(getNode()->get_logger(), "[OdomTracker] setting working mode to: %d", (uint8_t)workingMode);
+
+  switch (workingMode)
+  {
+    case WorkingMode::RECORD_PATH:
+      RCLCPP_INFO_STREAM(getNode()->get_logger(),
+                         "[OdomTracker] setting working mode to RECORD - record_point_distance_threshold: "
+                             << recordPointDistanceThreshold_
+                             << ", record_angular_distance_threshold: " << recordAngularDistanceThreshold_);
+      break;
+    case WorkingMode::CLEAR_PATH:
+      RCLCPP_INFO_STREAM(getNode()->get_logger(),
+                         "[OdomTracker] setting working mode to CLEAR - clear_point_distance_threshold: "
+                             << clearPointDistanceThreshold_
+                             << ", clear_angular_distance_threshold: " << clearAngularDistanceThreshold_);
+      break;
+    case WorkingMode::IDLE:
+      RCLCPP_INFO_STREAM(getNode()->get_logger(), "[OdomTracker] setting working mode to IDLE");
+      break;
+    default:
+
+      RCLCPP_INFO_STREAM(getNode()->get_logger(), "[OdomTracker] setting working mode to <UNKNOWN>");
+  }
+
   workingMode_ = workingMode;
   // RCLCPP_INFO(getNode()->get_logger(),"odom_tracker m_mutex release");
 }
@@ -373,11 +385,25 @@ bool OdomTracker::updateRecordPath(const nav_msgs::msg::Odometry &odom)
  */
 void OdomTracker::updateConfiguration()
 {
-  if (!getNode()->get_parameter("odom_frame", this->odomFrame_));
-  if (!getNode()->get_parameter("record_point_distance_threshold", recordPointDistanceThreshold_));
-  if (!getNode()->get_parameter("record_angular_distance_threshold", recordAngularDistanceThreshold_));
-  if (!getNode()->get_parameter("clear_point_distance_threshold", clearPointDistanceThreshold_));
-  if (!getNode()->get_parameter("clear_angular_distance_threshold", clearAngularDistanceThreshold_));
+  if (!getNode()->get_parameter("odom_frame", this->odomFrame_))
+  {
+  }
+
+  if (!getNode()->get_parameter("record_point_distance_threshold", recordPointDistanceThreshold_))
+  {
+  }
+
+  if (!getNode()->get_parameter("record_angular_distance_threshold", recordAngularDistanceThreshold_))
+  {
+  }
+
+  if (!getNode()->get_parameter("clear_point_distance_threshold", clearPointDistanceThreshold_))
+  {
+  }
+
+  if (!getNode()->get_parameter("clear_angular_distance_threshold", clearAngularDistanceThreshold_))
+  {
+  }
 }
 
 /**

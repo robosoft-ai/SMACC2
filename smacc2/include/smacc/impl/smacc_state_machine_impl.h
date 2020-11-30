@@ -396,8 +396,8 @@ namespace smacc
 
     for (auto &sr : this->currentState_->getStateReactors())
     {
-      auto srname = smacc::demangleSymbol(typeid(*sr).name()).c_str();
-      RCLCPP_INFO(getNode()->get_logger(),"state reactor onEntry: %s", srname);
+      auto srname = smacc::demangleSymbol(typeid(*sr).name());
+      RCLCPP_INFO_STREAM(getNode()->get_logger(),"state reactor onEntry: " << srname);
       try
       {
         sr->onEntry();
@@ -412,7 +412,7 @@ namespace smacc
     for (auto &eg : this->currentState_->getEventGenerators())
     {
       auto egname = smacc::demangleSymbol(typeid(*eg).name()).c_str();
-      RCLCPP_INFO(getNode()->get_logger(),"state reactor onEntry: %s", egname);
+      RCLCPP_INFO_STREAM(getNode()->get_logger(),"event generator onEntry: " << egname);
       try
       {
         eg->onEntry();
@@ -475,8 +475,8 @@ namespace smacc
 
     for (auto &sr : state->getStateReactors())
     {
-      auto srname = smacc::demangleSymbol(typeid(*sr).name()).c_str();
-      RCLCPP_INFO(getNode()->get_logger(),"state reactor OnExit: %s", srname);
+      auto srname = smacc::demangleSymbol(typeid(*sr).name());
+      RCLCPP_INFO_STREAM(getNode()->get_logger(),"state reactor OnExit: " << srname);
       try
       {
         sr->onExit();
@@ -490,8 +490,8 @@ namespace smacc
 
     for (auto &eg : state->getEventGenerators())
     {
-      auto egname = smacc::demangleSymbol(typeid(*eg).name()).c_str();
-      RCLCPP_INFO(getNode()->get_logger(),"state reactor OnExit: %s", egname);
+      auto egname = smacc::demangleSymbol(typeid(*eg).name());
+      RCLCPP_INFO_STREAM(getNode()->get_logger(),"event generator OnExit: " << egname);
       try
       {
         eg->onExit();

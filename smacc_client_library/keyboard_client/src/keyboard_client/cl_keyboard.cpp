@@ -11,9 +11,9 @@ ClKeyboard::~ClKeyboard()
   
 }
 
-void ClKeyboard::initialize() {
+void ClKeyboard::onInitialize() {
 
-  SmaccSubscriberClient<std_msgs::msg::UInt16>::initialize();
+  SmaccSubscriberClient<std_msgs::msg::UInt16>::onInitialize();
 
   if (!this->initialized_) {
     this->onMessageReceived(&ClKeyboard::onKeyboardMessage, this);

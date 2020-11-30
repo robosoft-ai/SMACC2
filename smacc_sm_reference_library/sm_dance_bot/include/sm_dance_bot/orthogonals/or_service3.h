@@ -12,7 +12,6 @@ public:
     {
         auto serviceClient = this->createClient<ClService3>();
         serviceClient->serviceName_ = "/service_node3";
-        serviceClient->initialize();
     }
 };
 } // namespace sm_dance_bot

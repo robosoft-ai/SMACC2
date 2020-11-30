@@ -7,43 +7,43 @@
 #include <Eigen/Eigen>
 
 //#include <dynamic_reconfigure/server.h>
-#include <geometry_msgs/msg/pose_stamped.hpp>
-#include <visualization_msgs/msg/marker_array.hpp>
-#include <nav2_core/controller.hpp>
-#include <tf2/utils.h>
-#include <tf2/transform_datatypes.h>
 #include <move_base_z_planners_common/common.h>
+#include <tf2/transform_datatypes.h>
+#include <tf2/utils.h>
+
+#include <geometry_msgs/msg/pose_stamped.hpp>
+#include <nav2_core/controller.hpp>
+#include <visualization_msgs/msg/marker_array.hpp>
 
 typedef double meter;
 typedef double rad;
 
 namespace cl_move_base_z
 {
-  namespace forward_local_planner
-  {
-    class ForwardLocalPlanner : public nav2_core::Controller
-    {
-    public:
-      ForwardLocalPlanner();
+namespace forward_local_planner
+{
+class ForwardLocalPlanner : public nav2_core::Controller
+{
+public:
+  ForwardLocalPlanner();
 
-      virtual ~ForwardLocalPlanner();
+  virtual ~ForwardLocalPlanner();
 
-      void configure(
-          const rclcpp_lifecycle::LifecycleNode::SharedPtr &node,
-          std::string name, const std::shared_ptr<tf2_ros::Buffer> &tf,
-          const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> &costmap_ros) override;
+  void configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, std::string name,
+                 const std::shared_ptr<tf2_ros::Buffer> &tf,
+                 const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> &costmap_ros) override;
 
-      void activate() override;
-      void deactivate() override;
-      void cleanup() override;
+  void activate() override;
+  void deactivate() override;
+  void cleanup() override;
 
-      /**
+  /**
    * @brief nav2_core setPlan - Sets the global plan
    * @param path The global plan
    */
-      void setPlan(const nav_msgs::msg::Path &path) override;
+  void setPlan(const nav_msgs::msg::Path &path) override;
 
-      /**
+  /**
    * @brief nav2_core computeVelocityCommands - calculates the best command given the current pose and velocity
    *
    * It is presumed that the global plan is already set.
@@ -55,53 +55,52 @@ namespace cl_move_base_z
    * @param velocity Current robot velocity
    * @return The best command for the robot to drive
    */
-      geometry_msgs::msg::TwistStamped computeVelocityCommands(
-          const geometry_msgs::msg::PoseStamped &pose,
-          const geometry_msgs::msg::Twist &velocity) override;
+  geometry_msgs::msg::TwistStamped computeVelocityCommands(const geometry_msgs::msg::PoseStamped &pose,
+                                                           const geometry_msgs::msg::Twist &velocity) override;
 
-      /*deprecated in navigation2*/
-      bool isGoalReached();
+  /*deprecated in navigation2*/
+  bool isGoalReached();
 
-    private:
+private:
+  void updateParameters();
+  nav2_util::LifecycleNode::SharedPtr nh_;
 
-      void updateParameters();
-      nav2_util::LifecycleNode::SharedPtr nh_;
+  void publishGoalMarker(double x, double y, double phi);
 
-      void publishGoalMarker(double x, double y, double phi);
+  std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmapRos_;
+  std::string name_;
 
-      std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmapRos_;
-      std::string name_;
+  rclcpp_lifecycle::LifecyclePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr goalMarkerPublisher_;
 
-      rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr goalMarkerPublisher_;
+  double k_rho_;
+  double k_alpha_;
+  double k_betta_;
+  bool goalReached_;
 
-      double k_rho_;
-      double k_alpha_;
-      double k_betta_;
-      bool goalReached_;
+  const double alpha_offset_ = 0;
+  const double betta_offset_ = 0;
 
-      const double alpha_offset_ = 0;
-      const double betta_offset_ = 0;
+  meter carrot_distance_;
+  rad carrot_angular_distance_;
 
-      meter carrot_distance_;
-      rad carrot_angular_distance_;
+  double yaw_goal_tolerance_;  // radians
+  double xy_goal_tolerance_;   // meters
 
-      double yaw_goal_tolerance_; // radians
-      double xy_goal_tolerance_;  // meters
+  double max_angular_z_speed_;
+  double max_linear_x_speed_;
 
-      double max_angular_z_speed_;
-      double max_linear_x_speed_;
+  void generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist, float maxangle,
+                          float maxtime, float dt, std::vector<Eigen::Vector3f> &outtraj);
+  Eigen::Vector3f computeNewPositions(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, double dt);
 
-      void generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist, float maxangle, float maxtime, float dt, std::vector<Eigen::Vector3f> &outtraj);
-      Eigen::Vector3f computeNewPositions(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, double dt);
+  // references the current point inside the backwardsPlanPath were the robot is located
+  int currentPoseIndex_;
 
-      // references the current point inside the backwardsPlanPath were the robot is located
-      int currentPoseIndex_;
+  std::vector<geometry_msgs::msg::PoseStamped> plan_;
 
-      std::vector<geometry_msgs::msg::PoseStamped> plan_;
-
-      bool waiting_;
-      rclcpp::Duration waitingTimeout_;
-      rclcpp::Time waitingStamp_;
-    };
-  } // namespace forward_local_planner
-} // namespace cl_move_base_z
+  bool waiting_;
+  rclcpp::Duration waitingTimeout_;
+  rclcpp::Time waitingStamp_;
+};
+}  // namespace forward_local_planner
+}  // namespace cl_move_base_z

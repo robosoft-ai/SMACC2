@@ -63,7 +63,7 @@ public:
     {
       deferedEventPropagation();
       RCLCPP_INFO(getNode()->get_logger(),"[CbDefaultMultiRoleSensorBehavior] onEntry. sensor initialize");
-      sensor_->initialize();
+      //sensor_->initialize();
     }
   }
 

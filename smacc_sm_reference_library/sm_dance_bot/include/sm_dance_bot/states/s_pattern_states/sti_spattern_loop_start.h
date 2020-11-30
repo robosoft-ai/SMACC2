@@ -2,10 +2,19 @@ namespace sm_dance_bot
 {
 namespace s_pattern_states
 {
+
+ template<class TDerived, typename TContext>
+  struct B: smacc::SmaccState<TDerived, TContext>
+  {
+    public:
+        using SmaccState<TDerived, TContext>::SmaccState;
+        //typedef typename TDerived::reactions reactions;
+  };
+
 // STATE DECLARATION
-struct StiSPatternLoopStart : smacc::SmaccState<StiSPatternLoopStart, SS>
+struct StiSPatternLoopStart : public B<StiSPatternLoopStart, SS>
 {
-  using SmaccState::SmaccState;
+  using B::B;
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -35,5 +44,7 @@ struct StiSPatternLoopStart : smacc::SmaccState<StiSPatternLoopStart, SS>
     checkWhileLoopConditionAndThrowEvent(&StiSPatternLoopStart::loopCondition);
   }
 };
+
+
 } // namespace s_pattern_states
 } // namespace sm_dance_bot

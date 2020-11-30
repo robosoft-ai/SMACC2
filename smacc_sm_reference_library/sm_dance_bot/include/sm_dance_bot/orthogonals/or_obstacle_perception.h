@@ -12,11 +12,8 @@ public:
     {
         auto lidarClient = this->createClient<ClLidarSensor>();
 
-        lidarClient->topicName = "/front/scan";
-        //lidarClient->queueSize = "/front/scan";
+        lidarClient->topicName = "/scan";
         lidarClient->timeout_ = rclcpp::Duration(std::chrono::seconds(10));
-
-        lidarClient->initialize();
     }
 };
 }

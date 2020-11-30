@@ -1,5 +1,5 @@
-<library path="libundo_path_global_planner">
-  <class name="undo_path_global_planner/UndoPathGlobalPlanner" type="cl_move_base_z::undo_path_global_planner::UndoPathGlobalPlanner" base_class_type="nav2_core::GlobalPlanner">
+<library path="undo_path_global_planner">
+  <class name="undo_path_global_planner::UndoPathGlobalPlanner" type="cl_move_base_z::undo_path_global_planner::UndoPathGlobalPlanner" base_class_type="nav2_core::GlobalPlanner">
     <description>
     </description>
   </class>

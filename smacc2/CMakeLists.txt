@@ -16,18 +16,20 @@ find_package(rclcpp REQUIRED)
 find_package(smacc_msgs REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
-include_directories(include
-                    ${smacc_msgs_INCLUDE_DIRS})
+set(dependencies rclcpp 
+                 smacc_msgs)
+
+include_directories(include)
 
 file(GLOB_RECURSE SRC_FILES src *.cpp) 
-#file(GLOB_RECURSE SRC_FILES "src/smacc/*.cpp" "src/smacc/client_bases/*.cpp""src/smacc/introspection/*.cpp" "src/smacc/state_reactors/*.cpp") # opcionalmente GLOB
-
 add_library(smacc2 SHARED ${SRC_FILES})
+
+ament_target_dependencies(smacc2 ${dependencies})
 target_link_libraries(smacc2 ${Boost_LIBRARIES})
 
-ament_export_dependencies(rclcpp smacc_msgs Boost)
 ament_export_include_directories(include)
 ament_export_libraries(smacc2)
+ament_export_dependencies(${dependencies})
 
 install(
   DIRECTORY include/

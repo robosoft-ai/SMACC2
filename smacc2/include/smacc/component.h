@@ -22,11 +22,9 @@ public:
     virtual std::string getName() const;
 
 protected:
-
-    virtual void initialize(ISmaccClient *owner);
-
-    // Assigns the owner of this resource to the given state machine parameter object
-    void setStateMachine(ISmaccStateMachine *stateMachine);
+    // this is the basic initializatin method that each specific component should
+    // implement. The owner and the node are already available when it is invoked by the client.
+    virtual void onInitialize();
 
     template <typename EventType>
     void postEvent(const EventType &ev);
@@ -43,8 +41,6 @@ protected:
     template <typename TClient>
     void requiresClient(TClient *& requiredClientStorage);
 
-    virtual void onInitialize();
-
     template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
     SmaccComponentType *createSiblingComponent(TArgs... targs);
 
@@ -57,6 +53,15 @@ protected:
     ISmaccStateMachine *stateMachine_;
 
     ISmaccClient *owner_;
+
+    private:
+    // friend method invoked by the client. 
+    void initialize(ISmaccClient *owner);
+
+    // friend method invoked by the client.
+    // Assigns the owner of this resource to the given state machine parameter object
+    void setStateMachine(ISmaccStateMachine *stateMachine);
+
 
     friend class ISmaccOrthogonal;
     friend class ISmaccClient;

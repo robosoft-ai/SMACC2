@@ -25,7 +25,7 @@ from nav2_common.launch import RewrittenYaml
 
 def generate_launch_description():
     # Get the launch directory
-    bringup_dir = get_package_share_directory('nav2_bringup')
+    sm_dance_bot_dir = get_package_share_directory('sm_dance_bot')
 
     namespace = LaunchConfiguration('namespace')
     use_sim_time = LaunchConfiguration('use_sim_time')
@@ -37,8 +37,7 @@ def generate_launch_description():
     lifecycle_nodes = ['controller_server',
                        'planner_server',
                        'recoveries_server',
-                       'bt_navigator',
-                       'waypoint_follower']
+                       'bt_navigator']
 
     # Map fully qualified names to relative ones so the node's namespace can be prepended.
     # In case of the transforms (tf), currently, there doesn't seem to be a better alternative
@@ -55,6 +54,8 @@ def generate_launch_description():
         'default_bt_xml_filename': default_bt_xml_filename,
         'autostart': autostart,
         'map_subscribe_transient_local': map_subscribe_transient_local}
+
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
 
     configured_params = RewrittenYaml(
             source_file=params_file,
@@ -80,14 +81,13 @@ def generate_launch_description():
 
         DeclareLaunchArgument(
             'params_file',
-            default_value=os.path.join(bringup_dir, 'params', 'move_base_client','nav2_params.yaml'),
+            default_value=os.path.join(sm_dance_bot_dir, 'params', 'move_base_client','nav2_params.yaml'),
             description='Full path to the ROS2 parameters file to use'),
 
         DeclareLaunchArgument(
             'default_bt_xml_filename',
-            default_value=os.path.join(
-                get_package_share_directory('nav2_bt_navigator'),
-                'behavior_trees', 'navigate_w_replanning_and_recovery.xml'),
+            #default_value=os.path.join(get_package_share_directory('nav2_bt_navigator'),'behavior_trees', 'navigate_w_replanning_and_recovery.xml'),
+            default_value=os.path.join(get_package_share_directory('sm_dance_bot'),'params', 'navigation_tree.xml'),
             description='Full path to the behavior tree xml file to use'),
 
         DeclareLaunchArgument(
@@ -98,16 +98,21 @@ def generate_launch_description():
             package='nav2_controller',
             executable='controller_server',
             output='screen',
+            prefix = xtermprefix,
             parameters=[configured_params],
-            remappings=remappings),
+            remappings=remappings,
+            arguments= ['--ros-args', '--log-level', 'INFO']
+            ),
 
-        Node(
-            package='nav2_planner',
-            executable='planner_server',
-            name='planner_server',
-            output='screen',
-            parameters=[configured_params],
-            remappings=remappings),
+         Node(
+             package='nav2_planner',
+             executable='planner_server',
+             name='planner_server',
+             output='screen',
+             prefix = xtermprefix,
+             parameters=[configured_params],
+             remappings=remappings,
+             arguments=["--log-level", "DEBUG"]),
 
         Node(
             package='nav2_recoveries',
@@ -122,6 +127,7 @@ def generate_launch_description():
             executable='bt_navigator',
             name='bt_navigator',
             output='screen',
+            prefix = xtermprefix,
             parameters=[configured_params],
             remappings=remappings),
 
@@ -134,12 +140,14 @@ def generate_launch_description():
             remappings=remappings),
 
         Node(
-            package='nav2_lifecycle_manager',
-            executable='lifecycle_manager',
-            name='lifecycle_manager_navigation',
-            output='screen',
-            parameters=[{'use_sim_time': use_sim_time},
-                        {'autostart': autostart},
-                        {'node_names': lifecycle_nodes}]),
+           package='nav2_lifecycle_manager',
+           executable='lifecycle_manager',
+           name='lifecycle_manager_navigation',
+           output='screen',
+           prefix = xtermprefix,
+           parameters=[{'use_sim_time': use_sim_time},
+                       {'autostart': autostart},
+                       {'node_names': lifecycle_nodes}],
+           arguments=["--log-level", "DEBUG"]),
 
     ])

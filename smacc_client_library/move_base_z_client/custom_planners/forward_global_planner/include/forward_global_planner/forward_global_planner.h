@@ -5,9 +5,9 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <rclcpp/rclcpp.hpp>
 #include <nav2_core/global_planner.hpp>
 #include <nav_msgs/msg/path.hpp>
+#include <rclcpp/rclcpp.hpp>
 
 namespace cl_move_base_z
 {
@@ -31,10 +31,9 @@ public:
    * @param  tf A pointer to a TF buffer
    * @param  costmap_ros A pointer to the costmap
    */
-  virtual void configure(
-    rclcpp_lifecycle::LifecycleNode::SharedPtr parent,
-    std::string name, std::shared_ptr<tf2_ros::Buffer> tf,
-    std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros);
+  void configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, std::string name,
+                 const std::shared_ptr<tf2_ros::Buffer> tf,
+                 const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros) override;
 
   /**
    * @brief Method to cleanup resources used on shutdown.
@@ -44,12 +43,12 @@ public:
   /**
    * @brief Method to active planner and any threads involved in execution.
    */
-  virtual void activate() ;
+  virtual void activate();
 
   /**
    * @brief Method to deactive planner and any threads involved in execution.
    */
-  virtual void deactivate() ;
+  virtual void deactivate();
 
   /**
    * @brief Method create the plan from a starting and ending goal.
@@ -57,24 +56,23 @@ public:
    * @param goal  The goal pose of the robot
    * @return      The sequence of poses to get from start to goal, if any
    */
-  virtual nav_msgs::msg::Path createPlan(
-    const geometry_msgs::msg::PoseStamped & start,
-    const geometry_msgs::msg::PoseStamped & goal);
+  virtual nav_msgs::msg::Path createPlan(const geometry_msgs::msg::PoseStamped &start,
+                                         const geometry_msgs::msg::PoseStamped &goal);
 
 private:
-    //rclcpp::Node::SharedPtr nh_;
-    rclcpp_lifecycle::LifecycleNode::SharedPtr nh_;
+  // rclcpp::Node::SharedPtr nh_;
+  rclcpp_lifecycle::LifecycleNode::SharedPtr nh_;
 
-    rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr planPub_;
+  std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<nav_msgs::msg::Path>> planPub_;
 
-    /// stored but almost not used
-    std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros_;
-    
-    double skip_straight_motion_distance_; //meters
+  /// stored but almost not used
+  std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros_;
 
-    double puresSpinningRadStep_; // rads
+  double skip_straight_motion_distance_;  // meters
 
-    std::string name_;
+  double puresSpinningRadStep_;  // rads
+
+  std::string name_;
 };
-} // namespace forward_global_planner
-} // namespace cl_move_base_z
+}  // namespace forward_global_planner
+}  // namespace cl_move_base_z

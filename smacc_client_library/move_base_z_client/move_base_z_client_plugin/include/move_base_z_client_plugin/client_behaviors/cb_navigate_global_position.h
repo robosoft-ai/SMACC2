@@ -5,36 +5,40 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include "cb_move_base_client_behavior_base.h"
 #include <boost/optional.hpp>
 #include <geometry_msgs/msg/point.hpp>
 
+#include "cb_move_base_client_behavior_base.h"
+
 namespace cl_move_base_z
 {
-  class CbNavigateGlobalPosition : public CbMoveBaseClientBehaviorBase
-  {
-  public:
-    boost::optional<geometry_msgs::msg::Point> goalPosition;
-    boost::optional<float> goalYaw;
-    boost::optional<float> yawTolerance;
-    boost::optional<float> yawToleranceX;
-    boost::optional<float> yawToleranceY;
+class CbNavigateGlobalPosition : public CbMoveBaseClientBehaviorBase
+{
+public:
+  std::optional<geometry_msgs::msg::Point> goalPosition;
+  std::optional<float> goalYaw;
+  std::optional<float> yawTolerance;
+  std::optional<float> yawToleranceX;
+  std::optional<float> yawToleranceY;
 
-    CbNavigateGlobalPosition();
+  std::optional<std::string> goalChecker_;
 
-    CbNavigateGlobalPosition(float x, float y, float yaw /*radians*/);
+  CbNavigateGlobalPosition();
 
-    void setGoal(const geometry_msgs::msg::Pose &pose);
+  CbNavigateGlobalPosition(float x, float y, float yaw /*radians*/);
 
-    virtual void onEntry();
+  void setGoal(const geometry_msgs::msg::Pose &pose);
 
-    // auxiliar function that defines the motion that is requested to the move_base action server
-    void execute();
+  virtual void onEntry();
 
-    void readStartPoseFromParameterServer(ClMoveBaseZ::Goal &goal);
+  // This is the substate destructor. This code will be executed when the
+  // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
+  virtual void onExit() override;
 
-    // This is the substate destructor. This code will be executed when the
-    // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-    virtual void onExit() override;
-  };
-} // namespace cl_move_base_z
+  // auxiliar function that defines the motion that is requested to the move_base action server
+  void execute();
+
+private:
+  void readStartPoseFromParameterServer(ClMoveBaseZ::Goal &goal);
+};
+}  // namespace cl_move_base_z

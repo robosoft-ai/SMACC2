@@ -32,7 +32,7 @@ public:
    * @param  costmap_ros A pointer to the costmap
    */
   virtual void configure(
-    rclcpp_lifecycle::LifecycleNode::SharedPtr parent,
+    const rclcpp_lifecycle::LifecycleNode::WeakPtr& parent,
     std::string name, std::shared_ptr<tf2_ros::Buffer> tf,
     std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros);
 
@@ -65,9 +65,9 @@ private:
     // ros::NodeHandle nh_;
     rclcpp_lifecycle::LifecycleNode::SharedPtr nh_;
 
-    rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr planPub_;
+    std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<nav_msgs::msg::Path>> planPub_;
 
-    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr markersPub_;
+    std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<visualization_msgs::msg::MarkerArray>> markersPub_;
     
     std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros_;
 
@@ -81,7 +81,7 @@ private:
 
     std::string name_;
 
-    bool createDefaultBackwardPath(const geometry_msgs::msg::PoseStamped &start,
+    void createDefaultBackwardPath(const geometry_msgs::msg::PoseStamped &start,
                                    const geometry_msgs::msg::PoseStamped &goal, 
                                    std::vector<geometry_msgs::msg::PoseStamped> &plan);
 };

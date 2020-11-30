@@ -13,7 +13,6 @@ public:
     virtual void onInitialize() override
     {
         auto subscriber_client = this->createClient<ClSubscriber>("/temperature");
-        subscriber_client->initialize();
     }
 };
 } // namespace sm_ferrari

@@ -20,7 +20,12 @@ ISmaccClient::~ISmaccClient()
 
 void ISmaccClient::initialize()
 {
+    this->onInitialize();
+}
 
+void ISmaccClient::onInitialize()
+{
+    
 }
 
 void ISmaccClient::getComponents(std::vector<std::shared_ptr<ISmaccComponent>> &components)

@@ -18,7 +18,7 @@ public:
         //ClTemperatureSensor->queueSize = "/front/scan";
         clTemperatureSensor->timeout_ = rclcpp::Duration(10);
 
-        clTemperatureSensor->initialize();
+        //clTemperatureSensor->initialize();
     }
 };
 } // namespace sm_dance_bot

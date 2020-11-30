@@ -12,8 +12,10 @@
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
+  
   <depend>smacc2</depend>
   <depend>std_msgs</depend>
+  <depend>visualization_msgs</depend>
   <depend>move_base_z_client_plugin</depend>  
   <depend>ros_publisher_client</depend>
   <depend>multirole_sensor_client</depend>

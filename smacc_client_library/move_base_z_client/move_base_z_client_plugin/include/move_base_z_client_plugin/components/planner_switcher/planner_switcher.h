@@ -8,14 +8,12 @@
 #include <smacc/client_bases/smacc_action_client.h>
 #include <smacc/component.h>
 
-// #include <dynamic_reconfigure/Config.h>
-// #include <dynamic_reconfigure/DoubleParameter.h>
-// #include <dynamic_reconfigure/Reconfigure.h>
 #include <rclcpp/rclcpp.hpp>
-#include <functional>
 
 namespace cl_move_base_z
 {
+// this component is used to switch the current planner and controller interacting
+// with the remote navigation2 stack nodes (bt_navigator, planner_server, controller_server)
 class PlannerSwitcher : public smacc::ISmaccComponent
 {
 public:
@@ -34,10 +32,8 @@ public:
 private:
   std::string desired_global_planner_;
   std::string desired_local_planner_;
-  // ros::Subscriber dynrecofSub_;
-  bool set_planners_mode_flag;
+  bool set_planners_mode_flag_;
 
   void updatePlanners(bool subscribecallback = true);
-  // void dynreconfCallback(const dynamic_reconfigure::Config::ConstPtr& configuration_update);
 };
 }  // namespace cl_move_base_z

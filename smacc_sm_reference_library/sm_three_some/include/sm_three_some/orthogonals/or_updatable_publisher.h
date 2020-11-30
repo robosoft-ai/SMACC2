@@ -14,7 +14,6 @@ public:
     virtual void onInitialize() override
     {
         auto ros_publisher_client = this->createClient<ClRosPublisher>();
-        ros_publisher_client->initialize();
     }
 };
 } // namespace sm_three_some

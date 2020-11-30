@@ -150,7 +150,7 @@ class ClKeyboard : public smacc::client_bases::SmaccSubscriberClient<std_msgs::m
 public:
         ClKeyboard();
         virtual ~ClKeyboard();
-        virtual void initialize() override;
+        virtual void onInitialize() override;
 
         smacc::SmaccSignal<void(char keypress)> OnKeyPress_;
 

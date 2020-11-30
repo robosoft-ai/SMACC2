@@ -51,7 +51,7 @@ private:
 
     std::atomic<unsigned long> lastState_;
 
-    void findUpdatableClients();
+    void findUpdatableClientsAndComponents();
     void findUpdatableStateElements(ISmaccState* currentState);
 
     // Loop frequency of the signal detector (to check answers from actionservers)

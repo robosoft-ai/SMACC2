@@ -1,9 +1,10 @@
 #include <move_base_z_client_plugin/common.h>
 #include <rclcpp/rclcpp.hpp>
+#include <tf2/utils.h>
 
 std::ostream& operator<< (std::ostream &out, const geometry_msgs::msg::Quaternion &msg)
 {
-    out << " Orientation [" << msg.x << " , " << msg.y << " , " << msg.z << ", " << msg.w <<"]";
+    out << " Orientation [" << msg.x << " , " << msg.y << " , " << msg.z << ", " << msg.w <<"] , yaw: " << tf2::getYaw(msg);
     return out;
 }
 

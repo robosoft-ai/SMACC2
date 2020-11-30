@@ -399,7 +399,9 @@ namespace smacc
       if (!SmaccStateInfo::staticBehaviorInfo.count(tindex))
         SmaccStateInfo::staticBehaviorInfo[tindex] = std::vector<ClientBehaviorInfoEntry>();
 
+      
       SmaccStateInfo::staticBehaviorInfo[tindex].push_back(bhinfo);
+      RCLCPP_INFO_STREAM(rclcpp::get_logger("static"), "[states walking] State " << smacc::utils::cleanShortTypeName(*tindex) << "client behavior count: " << SmaccStateInfo::staticBehaviorInfo[tindex].size());
     }
 
     void entryStateInternal()
@@ -426,10 +428,10 @@ namespace smacc
 
         for (const auto &stateReactorsVector : SmaccStateInfo::staticBehaviorInfo)
         {
-          RCLCPP_DEBUG(getNode()->get_logger(), "[%s] state info: %s", STATE_NAME, demangleSymbol(stateReactorsVector.first->name()).c_str());
-          for (auto &bhinfo : stateReactorsVector.second)
+          RCLCPP_DEBUG(getNode()->get_logger(), "[%s] state reactor info: %s", STATE_NAME, demangleSymbol(stateReactorsVector.first->name()).c_str());
+          for (auto &srinfo : stateReactorsVector.second)
           {
-            RCLCPP_DEBUG(getNode()->get_logger(), "[%s] client behavior: %s", STATE_NAME, demangleSymbol(bhinfo.behaviorType->name()).c_str());
+            RCLCPP_DEBUG(getNode()->get_logger(), "[%s] state reactor: %s", STATE_NAME, demangleSymbol(srinfo.behaviorType->name()).c_str());
           }
         }
 
@@ -438,6 +440,7 @@ namespace smacc
         auto &staticDefinedStateReactors = SmaccStateInfo::stateReactorsInfo[tindex];
         auto &staticDefinedEventGenerators = SmaccStateInfo::eventGeneratorsInfo[tindex];
 
+        RCLCPP_DEBUG_STREAM(getNode()->get_logger(), "finding static client behaviors. State Database: " << SmaccStateInfo::staticBehaviorInfo.size() << ". Current state "<< cleanShortTypeName(*tindex)<<" cbs: " << SmaccStateInfo::staticBehaviorInfo[tindex].size());
         for (auto &bhinfo : staticDefinedBehaviors)
         {
           RCLCPP_INFO(getNode()->get_logger(), "[%s] Creating static client behavior: %s", STATE_NAME, demangleSymbol(bhinfo.behaviorType->name()).c_str());

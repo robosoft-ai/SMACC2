@@ -49,6 +49,7 @@ add_library(${PROJECT_NAME} SHARED
             #src/${PROJECT_NAME}/components/odom_tracker/odom_tracker_node.cpp
             src/${PROJECT_NAME}/components/odom_tracker/odom_tracker.cpp
             src/${PROJECT_NAME}/components/planner_switcher/planner_switcher.cpp
+            src/${PROJECT_NAME}/components/goal_checker_switcher/goal_checker_switcher.cpp
             src/${PROJECT_NAME}/components/pose/cp_pose.cpp
             src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_event_dispatcher.cpp
             src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_navigator.cpp

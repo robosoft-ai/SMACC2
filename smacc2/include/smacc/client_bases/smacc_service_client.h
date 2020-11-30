@@ -24,7 +24,7 @@ public:
         initialized_ = false;
     }
 
-    virtual void initialize() override
+    virtual void onInitialize() override
     {
         if (!initialized_)
         {
@@ -45,7 +45,7 @@ public:
     std::shared_ptr<typename ServiceType::Response> call(std::shared_ptr<typename ServiceType::Request> &request)
     {
         auto result = client_->async_send_request(request);
-        rclcpp::spin_until_future_complete(getNode(), result);
+        //rclcpp::spin_until_future_complete(getNode(), result);
         return result.get();
     }
 

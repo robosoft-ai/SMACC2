@@ -5,19 +5,19 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <memory>
-#include <mutex>
-#include <nav_msgs/msg/odometry.hpp>
-#include <vector>
-#include <nav_msgs/msg/path.hpp>
 #include <smacc/common.h>
 #include <smacc/component.h>
 #include <tf2/transform_datatypes.h>
 
 #include <geometry_msgs/msg/point.hpp>
+#include <memory>
+#include <mutex>
 #include <nav2_msgs/action/navigate_to_pose.hpp>
+#include <nav_msgs/msg/odometry.hpp>
+#include <nav_msgs/msg/path.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/header.hpp>
+#include <vector>
 
 // #include <realtime_tools/realtime_publisher.h>
 // #include <dynamic_reconfigure/server.h>
@@ -75,10 +75,12 @@ public:
   void logStateString();
 
 protected:
+  virtual void onInitialize() override;
+
   void updateConfiguration();
-//   dynamic_reconfigure::Server<move_base_z_client_plugin::OdomTrackerConfig> paramServer_;
-//   dynamic_reconfigure::Server<move_base_z_client_plugin::OdomTrackerConfig>::CallbackType f;
-//   void reconfigCB(move_base_z_client_plugin::OdomTrackerConfig &config, uint32_t level);
+  //   dynamic_reconfigure::Server<move_base_z_client_plugin::OdomTrackerConfig> paramServer_;
+  //   dynamic_reconfigure::Server<move_base_z_client_plugin::OdomTrackerConfig>::CallbackType f;
+  //   void reconfigCB(move_base_z_client_plugin::OdomTrackerConfig &config, uint32_t level);
 
   virtual void rtPublishPaths(rclcpp::Time timestamp);
 
@@ -113,6 +115,8 @@ protected:
   double clearAngularDistanceThreshold_;
 
   std::string odomFrame_;
+
+  std::string odomTopicName_;
 
   // --------------- STATE ---------------
   // default true

@@ -32,7 +32,8 @@ struct SsSPattern1 : smacc::SmaccState<SsSPattern1, MsDanceBotRunMode, StiSPatte
 public:
     using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+
+    // TRANSITION TABLE
     typedef mpl::list<
     
     Transition<EvLoopEnd<StiSPatternLoopStart>, StRotateDegrees6, ENDLOOP>

@@ -65,7 +65,9 @@ namespace smacc
         if (it == this->components_.end())
         {
             auto tname = demangledTypeName<SmaccComponentType>();
-            RCLCPP_DEBUG(getNode()->get_logger(),"%s smacc component is required. Creating a new instance.", tname.c_str());
+            RCLCPP_INFO(getNode()->get_logger(),
+                        "Creating a new component of type %s smacc component is required. Creating a new instance %s", 
+                        demangledTypeName<SmaccComponentType>().c_str(), tname.c_str());
 
             ret = std::shared_ptr<SmaccComponentType>(new SmaccComponentType(targs...));
             ret->setStateMachine(this->getStateMachine());
@@ -77,7 +79,7 @@ namespace smacc
         }
         else
         {
-            RCLCPP_DEBUG(getNode()->get_logger(),"%s resource is required. Found resource in cache.", demangledTypeName<SmaccComponentType>().c_str());
+            RCLCPP_INFO(getNode()->get_logger(),"%s resource is required. Found resource in cache.", demangledTypeName<SmaccComponentType>().c_str());
             ret = dynamic_pointer_cast<SmaccComponentType>(it->second);
         }
 

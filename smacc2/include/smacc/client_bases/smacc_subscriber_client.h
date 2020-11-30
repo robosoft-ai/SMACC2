@@ -76,7 +76,8 @@ public:
     };
   }
 
-  virtual void initialize()
+  protected:
+  virtual void onInitialize() override
   {
     if (!initialized_)
     {

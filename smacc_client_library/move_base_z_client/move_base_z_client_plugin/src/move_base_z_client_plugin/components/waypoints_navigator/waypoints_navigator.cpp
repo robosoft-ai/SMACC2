@@ -24,7 +24,7 @@ void WaypointNavigator::onInitialize()
   client_ = dynamic_cast<ClMoveBaseZ *>(owner_);
 }
 
-void WaypointNavigator::onGoalReached(ClMoveBaseZ::WrappedResult &res)
+void WaypointNavigator::onGoalReached(ClMoveBaseZ::WrappedResult &/*res*/)
 {
   waypointsEventDispatcher.postWaypointEvent(currentWaypoint_);
   currentWaypoint_++;
@@ -36,12 +36,12 @@ void WaypointNavigator::sendNextGoal()
   if (currentWaypoint_ >= 0 && currentWaypoint_ < waypoints_.size())
   {
     auto &next = waypoints_[currentWaypoint_];
-
-    auto odomTracker = client_->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
+    
+    ClMoveBaseZ::Goal goal;
     auto p = client_->getComponent<cl_move_base_z::Pose>();
     auto pose = p->toPoseMsg();
 
-    ClMoveBaseZ::Goal goal;
+    // configuring goal
     goal.pose.header.frame_id = p->getReferenceFrame();
     goal.pose.header.stamp = getNode()->now();
     goal.pose.pose = next;
@@ -49,9 +49,11 @@ void WaypointNavigator::sendNextGoal()
     auto plannerSwitcher = client_->getComponent<PlannerSwitcher>();
     plannerSwitcher->setDefaultPlanners();
 
+    // waiting planner switcher services
     rclcpp::spin_some(getNode());
     rclcpp::sleep_for(5s);
 
+    auto odomTracker = client_->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
     if (odomTracker != nullptr)
     {
       odomTracker->pushPath();
@@ -59,6 +61,7 @@ void WaypointNavigator::sendNextGoal()
       odomTracker->setWorkingMode(cl_move_base_z::odom_tracker::WorkingMode::RECORD_PATH);
     }
 
+    // SEND GOAL
     this->succeddedConnection_ = client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
     client_->sendGoal(goal);
   }
@@ -91,7 +94,7 @@ void WaypointNavigator::setWaypoints(const std::vector<Pose2D> &waypoints)
     pose.position.y = p.y_;
     pose.position.z = 0.0;
     tf2::Quaternion q;
-    q.setEuler(p.yaw_, 0, 0);
+    q.setRPY( 0, 0, p.yaw_);
     pose.orientation = tf2::toMsg(q);
 
     this->waypoints_.push_back(pose);
@@ -119,6 +122,7 @@ long WaypointNavigator::getCurrentWaypointIndex() const
 #define HAVE_NEW_YAMLCPP
 void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
 {
+  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[WaypointNavigator] Loading file:" << filepath);
   this->waypoints_.clear();
   std::ifstream ifs(filepath.c_str(), std::ifstream::in);
   if (ifs.good() == false)

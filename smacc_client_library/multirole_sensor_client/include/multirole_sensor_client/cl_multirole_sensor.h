@@ -53,11 +53,11 @@ public:
     };
   }
 
-  virtual void initialize() override
+  virtual void onInitialize() override
   {
     if (!initialized_)
     {
-      SmaccSubscriberClient<MessageType>::initialize();
+      SmaccSubscriberClient<MessageType>::onInitialize();
 
       this->onMessageReceived(&ClMultiroleSensor<MessageType>::resetTimer, this);
 
@@ -80,7 +80,7 @@ public:
   std::optional<rclcpp::Duration> timeout_;
 
 protected:
-  void resetTimer(const MessageType &msg)
+  void resetTimer(const MessageType &/*msg*/)
   {
     //reseting the timer
     timeoutTimer_->reset();

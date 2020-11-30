@@ -6,10 +6,11 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/smacc.h>
-#include <geometry_msgs/msg/pose.hpp>
 #include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_event_dispatcher.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <smacc/smacc.h>
+
+#include <geometry_msgs/msg/pose.hpp>
 
 namespace cl_move_base_z
 {
@@ -71,4 +72,4 @@ private:
 
   boost::signals2::connection succeddedConnection_;
 };
-} // namespace cl_move_base_z
+}  // namespace cl_move_base_z

@@ -169,13 +169,13 @@ void ISmaccStateMachine::state_machine_visualization()
 
 void ISmaccStateMachine::lockStateMachine(std::string msg)
 {
-    RCLCPP_DEBUG(nh_->get_logger(),"locking state machine: %s", msg.c_str());
+    RCLCPP_DEBUG(nh_->get_logger(),"-- locking SM: %s", msg.c_str());
     m_mutex_.lock();
 }
 
 void ISmaccStateMachine::unlockStateMachine(std::string msg)
 {
-    RCLCPP_DEBUG(nh_->get_logger(),"unlocking state machine: %s", msg.c_str());
+    RCLCPP_DEBUG(nh_->get_logger(),"-- unlocking SM: %s", msg.c_str());
     m_mutex_.unlock();
 }
 

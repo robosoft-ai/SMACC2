@@ -46,12 +46,12 @@ BackwardGlobalPlanner::~BackwardGlobalPlanner()
 */
 
 void  BackwardGlobalPlanner::configure(
-    rclcpp_lifecycle::LifecycleNode::SharedPtr parent,
+    const rclcpp_lifecycle::LifecycleNode::WeakPtr& parent,
     std::string name, std::shared_ptr<tf2_ros::Buffer> tf,
     std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
     //ROS_INFO_NAMED("Backwards", "BackwardGlobalPlanner initialize");
-    nh_ = parent;
+    nh_ = parent.lock();
     name_ = name;
     costmap_ros_ = costmap_ros;
     //ROS_WARN_NAMED("Backwards", "initializating global planner, costmap address: %ld", (long)costmap_ros);
@@ -67,12 +67,16 @@ void BackwardGlobalPlanner::cleanup()
 
 void BackwardGlobalPlanner::activate()
 {
-
+    RCLCPP_INFO_STREAM(nh_->get_logger(),"activating planner BackwardGlobalPlanner");
+    planPub_->on_activate();
+    markersPub_->on_activate();
 }
 
 void BackwardGlobalPlanner::deactivate() 
 {
-
+    RCLCPP_INFO_STREAM(nh_->get_logger(),"deactivating planner BackwardGlobalPlanner");
+    planPub_->on_deactivate();
+    markersPub_->on_deactivate();
 }
 
 /**
@@ -119,7 +123,7 @@ void BackwardGlobalPlanner::publishGoalMarker(const geometry_msgs::msg::Pose &po
 * defaultBackwardPath()
 ******************************************************************************************************************
 */
-bool BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::msg::PoseStamped &start,
+void BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::msg::PoseStamped &start,
                                                       const geometry_msgs::msg::PoseStamped &goal, std::vector<geometry_msgs::msg::PoseStamped> &plan)
 {
     auto q = start.pose.orientation;
@@ -208,6 +212,7 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(
         }
     }
     
+    RCLCPP_WARN_STREAM(nh_->get_logger(), "backward global plan publishing path. poses count: " << planMsg.poses.size());
     planPub_->publish(planMsg);
 
     return planMsg;
@@ -217,4 +222,4 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(
 } // namespace cl_move_base_z
 
 //register this planner as a BaseGlobalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(cl_move_base_z::backward_global_planner::BackwardGlobalPlanner, nav2_core::GlobalPlanner);
+PLUGINLIB_EXPORT_CLASS(cl_move_base_z::backward_global_planner::BackwardGlobalPlanner, nav2_core::GlobalPlanner)
