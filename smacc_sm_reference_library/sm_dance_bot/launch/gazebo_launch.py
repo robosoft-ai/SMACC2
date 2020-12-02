@@ -44,9 +44,6 @@ def generate_launch_description():
         #default_value=os.path.join(sm_dance_bot_dir, 'worlds', 'sm_dance_bot_world.model'),
         default_value=os.path.join(sm_dance_bot_dir, 'worlds', 'ridgeback_race.world'),
         description='Full path to world model file to load')
-
-
-
     
 
     # Create the launch description and populate

@@ -86,9 +86,7 @@ def generate_launch_description():
 
     declare_bt_xml_cmd = DeclareLaunchArgument(
         'default_bt_xml_filename',
-        default_value=os.path.join(
-            get_package_share_directory('nav2_bt_navigator'),
-            'behavior_trees', 'navigate_w_replanning_and_recovery.xml'),
+        default_value=os.path.join(get_package_share_directory('sm_dance_bot'),'params', 'move_base_client', 'navigation_tree.xml'),
         description='Full path to the behavior tree xml file to use')
 
     declare_autostart_cmd = DeclareLaunchArgument(
