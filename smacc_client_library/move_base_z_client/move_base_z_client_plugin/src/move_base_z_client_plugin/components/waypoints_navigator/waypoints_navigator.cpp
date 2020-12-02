@@ -1,6 +1,7 @@
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
 #include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
 #include <move_base_z_client_plugin/common.h>
@@ -49,9 +50,12 @@ void WaypointNavigator::sendNextGoal()
     auto plannerSwitcher = client_->getComponent<PlannerSwitcher>();
     plannerSwitcher->setDefaultPlanners();
 
+    auto goalCheckerSwitcher = client_->getComponent<GoalCheckerSwitcher>();
+    goalCheckerSwitcher->setGoalCheckerId("goal_checker");
+
     // waiting planner switcher services
-    rclcpp::spin_some(getNode());
-    rclcpp::sleep_for(5s);
+    //rclcpp::spin_some(getNode());
+    //rclcpp::sleep_for(5s);
 
     auto odomTracker = client_->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
     if (odomTracker != nullptr)
