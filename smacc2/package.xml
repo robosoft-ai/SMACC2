@@ -9,12 +9,13 @@
   <author email="pablo@ibrobotics.com">Pablo Inigo Blasco</author>
   <author email="ba@leadtank.org">Brett Aldrich</author>
   <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
-  <license>MIT</license>
+  <license>BSD-3</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>rclcpp</depend>
   <depend>smacc_msgs</depend>
+  
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
