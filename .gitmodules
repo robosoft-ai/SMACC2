@@ -1,0 +1,3 @@
+[submodule "submodules/navigation2"]
+	path = submodules/navigation2
+	url = https://github.com/pabloinigoblasco/navigation2.git
