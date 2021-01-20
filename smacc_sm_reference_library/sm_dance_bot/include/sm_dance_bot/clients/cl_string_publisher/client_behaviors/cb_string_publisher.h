@@ -2,7 +2,7 @@
 
 #include <sm_dance_bot/clients/cl_string_publisher/cl_string_publisher.h>
 #include <smacc/smacc_client_behavior.h>
-#include <std_msgs/String.h>
+#include <std_msgs/msg/string.h>
 
 namespace sm_dance_bot
 {

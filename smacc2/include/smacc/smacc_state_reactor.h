@@ -35,6 +35,7 @@ public:
     std::map<const std::type_info *, std::function<void(void *)>> eventCallbacks_;
 
     StateReactor();
+    virtual ~StateReactor();
 
     virtual void onInitialized();
 

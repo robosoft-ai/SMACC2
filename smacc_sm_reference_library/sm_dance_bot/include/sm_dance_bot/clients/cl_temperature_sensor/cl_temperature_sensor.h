@@ -1,7 +1,7 @@
 #pragma once
 
 #include <multirole_sensor_client/cl_multirole_sensor.h>
-#include <std_msgs/String.h>
+#include <std_msgs/msg/string.hpp>
 #include <sensor_msgs/msg/temperature.hpp>
 
 namespace sm_dance_bot

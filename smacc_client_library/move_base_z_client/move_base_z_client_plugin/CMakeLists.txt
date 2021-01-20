@@ -18,7 +18,7 @@ find_package(std_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
-find_package(yaml-cpp REQUIRED)
+find_package(yaml_cpp_vendor REQUIRED)
 
 set(dependencies
     smacc2
@@ -26,10 +26,10 @@ set(dependencies
     std_msgs
     nav2_msgs
     tf2
-    tf2_ros)
+    tf2_ros
+    yaml_cpp_vendor)
 
-include_directories(include
-                    ${YAML_CPP_INCLUDE_DIRS})
+include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
             src/${PROJECT_NAME}/move_base_z_client_plugin.cpp
@@ -58,8 +58,7 @@ add_library(${PROJECT_NAME} SHARED
 ament_target_dependencies(${PROJECT_NAME}
                           ${dependencies})
 
-target_link_libraries(${PROJECT_NAME} 
-                      ${YAML_CPP_LIBRARIES})
+target_link_libraries(${PROJECT_NAME})
 
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})

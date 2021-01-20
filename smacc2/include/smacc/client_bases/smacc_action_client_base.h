@@ -224,7 +224,7 @@ public:
 
     // if (client_->isServerConnected())
     // {
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": Goal Value: " << std::endl << goal);
+    RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": Goal sent.");
     // client_->sendGoal(goal, done_cb, active_cb, feedback_cb);
     // std::shared_future<typename GoalHandle::SharedPtr>
 

@@ -21,6 +21,8 @@
   <depend>nav2_msgs</depend>
   <depend>tf2</depend>
   <depend>tf2_ros</depend>
+  <depend>yaml_cpp_vendor</depend>
+  
 
   <export>
     <build_type>ament_cmake</build_type>

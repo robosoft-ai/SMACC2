@@ -31,6 +31,7 @@ namespace smacc
         {
         public:
             EgConditionalGenerator(ConditionalGeneratorMode mode, std::function <bool()> updatePredicate = nullptr);
+            virtual ~EgConditionalGenerator();
 
             virtual void onEntry() override;
 

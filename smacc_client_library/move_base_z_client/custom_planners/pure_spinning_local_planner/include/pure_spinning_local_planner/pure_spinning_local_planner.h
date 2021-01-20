@@ -62,6 +62,7 @@ public:
   /*deprecated in navigation2*/
   bool isGoalReached();
 
+  virtual void setSpeedLimit(const double & speed_limit) override;
 private:
   void updateParameters();
   nav2_util::LifecycleNode::SharedPtr nh_;

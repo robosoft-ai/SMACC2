@@ -5,6 +5,7 @@
  ******************************************************************************************************************/
 #pragma once
 
+// boost statechart
 #include <boost/statechart/state.hpp>
 #include <boost/statechart/simple_state.hpp>
 #include <boost/statechart/event.hpp>
@@ -12,19 +13,17 @@
 #include <boost/statechart/custom_reaction.hpp>
 #include <boost/statechart/deep_history.hpp>
 
+// other boost includes
 #include <boost/config.hpp>
 #include <boost/intrusive_ptr.hpp>
 #include <boost/function.hpp>
 #include <boost/signals2.hpp>
 #include <boost/mpl/list.hpp>
-#include <boost/statechart/deep_history.hpp>
 #include <boost/any.hpp>
 #include <boost/algorithm/string.hpp>
 
 #include <mutex>
-#include "rclcpp/rclcpp.hpp"
-
-//#include <actionlib/client/simple_action_client.h>
+#include <rclcpp/rclcpp.hpp>
 
 #include <smacc/smacc_fifo_scheduler.h>
 #include <smacc/smacc_types.h>

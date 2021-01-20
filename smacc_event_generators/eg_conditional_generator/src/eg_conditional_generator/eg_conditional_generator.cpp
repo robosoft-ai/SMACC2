@@ -10,6 +10,11 @@ namespace smacc
         {
 
         }
+        
+        EgConditionalGenerator::~EgConditionalGenerator()
+        {
+
+        }
 
         void EgConditionalGenerator::checkPredicateAndPost()
         {

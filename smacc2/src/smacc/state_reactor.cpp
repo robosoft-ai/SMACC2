@@ -9,6 +9,11 @@ StateReactor::StateReactor()
 {
 }
 
+StateReactor::~StateReactor()
+{
+
+}
+
 void StateReactor::initialize(smacc::ISmaccState *ownerState)
 {
     this->ownerState = ownerState;

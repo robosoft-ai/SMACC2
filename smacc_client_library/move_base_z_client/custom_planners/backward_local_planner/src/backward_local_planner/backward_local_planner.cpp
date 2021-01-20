@@ -5,9 +5,12 @@
 #include <boost/intrusive_ptr.hpp>
 #include <pluginlib/class_list_macros.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
+#include <chrono>
 
 // register this planner as a BaseLocalPlanner plugin
 PLUGINLIB_EXPORT_CLASS(cl_move_base_z::backward_local_planner::BackwardLocalPlanner, nav2_core::Controller)
+
+using namespace std::literals::chrono_literals;
 
 namespace cl_move_base_z
 {
@@ -18,7 +21,8 @@ namespace backward_local_planner
  * BackwardLocalPlanner()
  ******************************************************************************************************************
  */
-BackwardLocalPlanner::BackwardLocalPlanner() : waitingTimeout_(0)
+BackwardLocalPlanner::BackwardLocalPlanner() 
+  : waitingTimeout_(0s)
 //: paramServer_(ros::NodeHandle("~BackwardLocalPlanner"))
 {
 }
@@ -145,7 +149,7 @@ void BackwardLocalPlanner::configure(
   }
 
   goalMarkerPublisher_ = nh_->create_publisher<visualization_msgs::msg::MarkerArray>("backward_local_planner/goal_marker", 1);
-  waitingTimeout_ = rclcpp::Duration(10);
+  waitingTimeout_ = rclcpp::Duration(10s);
 }
 
 void BackwardLocalPlanner::updateParameters()
@@ -840,7 +844,7 @@ bool BackwardLocalPlanner::resamplePrecisePlan()
   double maxallowedAngularError = 0.45 * this->carrot_angular_distance_;  // nyquist
   double maxallowedLinearError = 0.45 * this->carrot_distance_;           // nyquist
 
-  for (int i = 0; i < backwardsPlanPath_.size() - 1; i++)
+  for (int i = 0; i < (int)backwardsPlanPath_.size() - 1; i++)
   {
     RCLCPP_DEBUG_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] resample precise, check: " << i);
     geometry_msgs::msg::PoseStamped &currpose = backwardsPlanPath_[i];
