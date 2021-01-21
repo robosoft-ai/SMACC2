@@ -1,3 +1,6 @@
 [submodule "submodules/navigation2"]
 	path = submodules/navigation2
 	url = https://github.com/pabloinigoblasco/navigation2.git
+[submodule "submodules/slam_toolbox"]
+	path = submodules/slam_toolbox
+	url = https://github.com/SteveMacenski/slam_toolbox.git
