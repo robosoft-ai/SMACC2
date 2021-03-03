@@ -77,7 +77,7 @@ private:
 
   bool resamplePrecisePlan();
 
-  void pureSpinningCmd(const geometry_msgs::msg::PoseStamped &pose, double vetta, double gamma, double alpha_error,
+  void straightBackwardsAndPureSpinCmd(const geometry_msgs::msg::PoseStamped &pose, double vetta, double gamma, double alpha_error,
                        double betta_error, double rho_error, geometry_msgs::msg::Twist &cmd_vel);
   void defaultBackwardCmd(const geometry_msgs::msg::PoseStamped &pose, double vetta, double gamma, double alpha_error,
                           double betta_error, geometry_msgs::msg::Twist &cmd_vel);
@@ -88,7 +88,9 @@ private:
   bool checkGoalReached(const geometry_msgs::msg::PoseStamped &pose, double vetta, double gamma, double alpha_error,
                         geometry_msgs::msg::Twist &cmd_vel);
 
-  void resetDivergenceDetection();
+  bool checkCurrentPoseInGoalRange(const geometry_msgs::msg::PoseStamped &tfpose,  double angle_error, bool& linearGoalReached);
+
+  bool resetDivergenceDetection();
   bool divergenceDetectionUpdate(const geometry_msgs::msg::PoseStamped &pose);
   bool checkCarrotHalfPlainConstraint(const geometry_msgs::msg::PoseStamped &pose);
 
@@ -112,8 +114,9 @@ private:
 
   bool goalReached_;
   bool initialPureSpinningStage_;
-  bool pureSpinningMode_ = false;
+  bool straightBackwardsAndPureSpinningMode_ = false;
   bool enable_obstacle_checking_ = true;
+  bool inGoalPureSpinningState_ = false;
 
   const double alpha_offset_ = M_PI;
   const double betta_offset_ = 0;
