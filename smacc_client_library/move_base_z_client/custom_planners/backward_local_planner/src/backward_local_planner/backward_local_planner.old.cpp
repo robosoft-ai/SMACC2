@@ -681,6 +681,12 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
             }
 }
 
+void BackwardLocalPlanner::setSpeedLimit(const double & speed_limit)
+{
+    RCLCPP_WARN_STREAM(nh_->get_logger(), "BackwardLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not implemented.");
+}
+
+
 /**
  ******************************************************************************************************************
  * reconfigCB()

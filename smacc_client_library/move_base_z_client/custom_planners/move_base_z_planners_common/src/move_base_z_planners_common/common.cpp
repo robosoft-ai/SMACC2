@@ -18,7 +18,7 @@ namespace cl_move_base_z
 {
 geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(const geometry_msgs::msg::PoseStamped& start, double dstRads,
                                                         std::vector<geometry_msgs::msg::PoseStamped>& plan,
-                                                        double puresSpinningRadStep)
+                                                        double radstep)
 {
   double startYaw = tf2::getYaw(start.pose.orientation);
   // RCLCPP_INFO(getNode()->get_logger(),"pure spining start yaw: %lf", startYaw);
@@ -28,7 +28,6 @@ geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(const geometry_msgs::msg
   double goalAngleOffset = angles::shortest_angular_distance(startYaw, dstRads);
   // RCLCPP_INFO(getNode()->get_logger(),"shortest angle: %lf", goalAngleOffset);
 
-  double radstep = 0.005;
 
   if (goalAngleOffset >= 0)
   {

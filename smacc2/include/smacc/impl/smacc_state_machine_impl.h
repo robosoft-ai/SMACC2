@@ -484,7 +484,7 @@ namespace smacc
       catch (const std::exception &e)
       {
         RCLCPP_ERROR(getNode()->get_logger(),"[State Reactor %s] Exception on OnExit - continuing with next state reactor. Exception info: %s",
-                  srname, e.what());
+                  srname.c_str(), e.what());
       }
     }
 
@@ -499,7 +499,7 @@ namespace smacc
       catch (const std::exception &e)
       {
         RCLCPP_ERROR(getNode()->get_logger(),"[State Reactor %s] Exception on OnExit - continuing with next state reactor. Exception info: %s",
-                  egname, e.what());
+                  egname.c_str(), e.what());
       }
     }
 
