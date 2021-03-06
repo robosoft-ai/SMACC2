@@ -61,7 +61,7 @@ public:
   /*deprecated in navigation2*/
   bool isGoalReached();
 
-  virtual void setSpeedLimit(const double & speed_limit) override;
+  virtual void setSpeedLimit(const double &speed_limit, const bool &percentage) override;
 
 private:
   void updateParameters();

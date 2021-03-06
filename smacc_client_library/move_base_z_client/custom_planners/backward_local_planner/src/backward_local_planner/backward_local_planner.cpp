@@ -203,6 +203,11 @@ void BackwardLocalPlanner::updateParameters()
   RCLCPP_DEBUG_STREAM(nh_->get_logger(), name_ + ".carrot_distance:" << carrot_distance_);
 }
 
+void BackwardLocalPlanner::setSpeedLimit(const double &speed_limit, const bool &percentage)
+{
+  RCLCPP_WARN_STREAM(nh_->get_logger(), "BackwardLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not "
+                                        "implemented.");
+}
 /**
  ******************************************************************************************************************
  * auxiliar functions

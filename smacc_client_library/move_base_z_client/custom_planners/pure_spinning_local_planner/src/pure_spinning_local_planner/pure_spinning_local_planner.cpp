@@ -116,6 +116,12 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
   return cmd_vel;
 }
 
+void PureSpinningLocalPlanner::setSpeedLimit(const double &speed_limit, const bool &percentage)
+{
+  RCLCPP_WARN_STREAM(nh_->get_logger(), "PureSpinningLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not "
+                                        "implemented.");
+}
+
 bool PureSpinningLocalPlanner::isGoalReached()
 {
   return goalReached_;
@@ -132,7 +138,7 @@ void PureSpinningLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
 void publishGoalMarker(double x, double y, double phi)
 {
 }
-}  // namespace cl_move_base_z
+}  // namespace pure_spinning_local_planner
 }  // namespace cl_move_base_z
 
 PLUGINLIB_EXPORT_CLASS(cl_move_base_z::pure_spinning_local_planner::PureSpinningLocalPlanner, nav2_core::Controller)

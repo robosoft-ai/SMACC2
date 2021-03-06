@@ -516,6 +516,11 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
   return cmd_vel;
 }
 
+void ForwardLocalPlanner::setSpeedLimit(const double &speed_limit, const bool &percentage)
+{
+    RCLCPP_WARN_STREAM(nh_->get_logger(), "ForwardLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not implemented.");
+}
+
 /**
 ******************************************************************************************************************
 * isGoalReached()
