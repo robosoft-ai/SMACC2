@@ -343,6 +343,8 @@ nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(const geometry_msgs::msg::
     RCLCPP_INFO(nh_->get_logger(), "[UndoPathGlobalPlanner] not accepted global plan because of possible collision");
   }
 
+  RCLCPP_INFO_STREAM(nh_->get_logger(), " plan publishing. size: " << planMsg.poses.size());
+
   return planMsg;
 }
 

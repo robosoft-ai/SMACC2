@@ -359,7 +359,7 @@ protected:
     else
     {
       RCLCPP_INFO(getNode()->get_logger(), "[%s] request result: NOT HANDLED TYPE: %d", this->getName().c_str(),
-                  resultType);
+                  (int)resultType);
     }
   }
 };

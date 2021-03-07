@@ -10,22 +10,22 @@ struct StiSPatternRotate2 : smacc::SmaccState<StiSPatternRotate2, SS>
 // TRANSITION TABLE
     typedef mpl::list<
     
-    Transition<EvCbSuccess<CbRotate, OrNavigation>, StiSPatternForward2>,
-    Transition<EvCbFailure<CbRotate, OrNavigation>, StiSPatternForward1>
+    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward2>,
+    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternForward1>
     
     >reactions;
 
 // STATE FUNCTIONS
     static void staticConfigure()
     {
-        float offset = 7;
+        float offset = 0;
         float angle = 0;
         if (SS::direction() == TDirection::LEFT)
             angle = 90 + offset ;
         else
             angle = -90 - offset;
 
-        configure_orthogonal<OrNavigation, CbRotate>(angle);
+        configure_orthogonal<OrNavigation, CbAbsoluteRotate>(angle);
         configure_orthogonal<OrLED, CbLEDOff>();
     }
 

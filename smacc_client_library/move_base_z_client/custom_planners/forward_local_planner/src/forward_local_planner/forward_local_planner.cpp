@@ -104,6 +104,17 @@ void ForwardLocalPlanner::updateParameters()
   nh_->get_parameter(name_ + ".xy_goal_tolerance", xy_goal_tolerance_);
   nh_->get_parameter(name_ + ".max_linear_x_speed", max_linear_x_speed_);
   nh_->get_parameter(name_ + ".max_angular_z_speed", max_angular_z_speed_);
+
+  RCLCPP_INFO_STREAM(nh_->get_logger(),"[BackwardLocalPlanner.k_rho: " << k_rho_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(),"[BackwardLocalPlanner.k_alpha: "<< k_alpha_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(),"[BackwardLocalPlanner.k_betta: " << k_betta_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(),"[BackwardLocalPlanner.carrot_distance: " << carrot_distance_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(),"[BackwardLocalPlanner.yaw_goal_tolerance:" << yaw_goal_tolerance_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(),"[BackwardLocalPlanner.xy_goal_tolerance: " << xy_goal_tolerance_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(),"[BackwardLocalPlanner.max_linear_x_speed:" << max_linear_x_speed_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(),"[BackwardLocalPlanner.max_angular_z_speed:" << max_angular_z_speed_);
+
+  
 }
 
 void ForwardLocalPlanner::generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist,

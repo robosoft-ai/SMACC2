@@ -34,8 +34,7 @@ set(dependencies
 include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
-            src/${PROJECT_NAME}/backward_local_planner.cpp
-           )
+            src/${PROJECT_NAME}/backward_local_planner.cpp)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC "PLUGINLIB__DISABLE_BOOST_FUNCTIONS")
 pluginlib_export_plugin_description_file(nav2_core blp_plugin.xml)

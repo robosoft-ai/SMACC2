@@ -29,7 +29,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     # Get the launch directory
     sm_dance_bot_dir = get_package_share_directory('sm_dance_bot')
-    launch_dir = os.path.join(sm_dance_bot_dir, 'launch')
+    sm_dance_bot_launch_dir = os.path.join(sm_dance_bot_dir, 'launch')
 
     # Create the launch configuration variables
     slam = LaunchConfiguration('slam')
@@ -125,14 +125,14 @@ def generate_launch_description():
         arguments=[urdf])
 
     rviz_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(launch_dir, 'rviz_launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, 'rviz_launch.py')),
         condition=IfCondition(use_rviz),
         launch_arguments={'namespace': '',
                           'use_namespace': 'False',
                           'rviz_config': rviz_config_file}.items())
 
     bringup_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(launch_dir, 'bringup_launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, 'bringup_launch.py')),
         launch_arguments={'namespace': namespace,
                           'use_namespace': use_namespace,
                           'slam': slam,
@@ -143,7 +143,7 @@ def generate_launch_description():
                           'autostart': autostart}.items())
 
     gazebo_simulator = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(launch_dir, 'gazebo_launch.py')))
+        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, 'gazebo_launch.py')))
 
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
@@ -220,20 +220,16 @@ def generate_launch_description():
     ld.add_action(declare_rviz_config_file_cmd)
     ld.add_action(declare_use_robot_state_pub_cmd)
     ld.add_action(declare_use_rviz_cmd)
-    #ld.add_action(gazebo_simulator)
+    ld.add_action(gazebo_simulator)
 
     ld.add_action(sm_dance_bot_node)
     ld.add_action(service3_node)
     ld.add_action(temperature_action_server)
     ld.add_action(led_action_server_node)
 
-
-
     # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)    
-
-    #ld.add_action(gazebo_simulator)
 
     return ld

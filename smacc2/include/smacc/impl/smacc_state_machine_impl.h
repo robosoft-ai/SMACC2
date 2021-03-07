@@ -405,13 +405,13 @@ namespace smacc
       catch (const std::exception &e)
       {
         RCLCPP_ERROR(getNode()->get_logger(),"[State Reactor %s] Exception on Entry - continuing with next state reactor. Exception info: %s",
-                  srname, e.what());
+                  srname.c_str(), e.what());
       }
     }
 
     for (auto &eg : this->currentState_->getEventGenerators())
     {
-      auto egname = smacc::demangleSymbol(typeid(*eg).name()).c_str();
+      auto egname = smacc::demangleSymbol(typeid(*eg).name());
       RCLCPP_INFO_STREAM(getNode()->get_logger(),"event generator onEntry: " << egname);
       try
       {
@@ -420,7 +420,7 @@ namespace smacc
       catch (const std::exception &e)
       {
         RCLCPP_ERROR(getNode()->get_logger(),"[Event generator %s] Exception on Entry - continuing with next state reactor. Exception info: %s",
-                  egname, e.what());
+                  egname.c_str(), e.what());
       }
     }
 

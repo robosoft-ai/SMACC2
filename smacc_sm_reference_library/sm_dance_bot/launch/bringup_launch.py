@@ -133,7 +133,7 @@ def generate_launch_description():
     ld.add_action(declare_autostart_cmd)
     ld.add_action(declare_bt_xml_cmd)
 
-    # Add the actions to launch all of the navigation nodes
+    #Add the actions to launch all of the navigation nodes
     ld.add_action(bringup_cmd_group)
 
     return ld

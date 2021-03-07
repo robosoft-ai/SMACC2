@@ -123,12 +123,12 @@ controller_server:
     absolute_rotate_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
       xy_goal_tolerance: 0.15
-      yaw_goal_tolerance: 0.065
+      yaw_goal_tolerance: 0.005
       stateful: True
     undo_path_backwards_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.02
-      yaw_goal_tolerance: 0.2
+      xy_goal_tolerance: 0.03
+      yaw_goal_tolerance: 0.1
       stateful: True
 
     # DWB parameters
@@ -137,11 +137,11 @@ controller_server:
       debug_trajectory_details: True
       min_vel_x: 0.0
       min_vel_y: 0.0
-      max_vel_x: 0.26
+      max_vel_x: 0.3
       max_vel_y: 0.0
       max_vel_theta: 1.0
       min_speed_xy: 0.0
-      max_speed_xy: 0.26
+      max_speed_xy: 0.3
       min_speed_theta: 0.0
       # Add high threshold velocity for turtlebot 3 issue.
       # https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/75
@@ -177,7 +177,7 @@ controller_server:
     BackwardLocalPlanner:
       plugin: "backward_local_planner::BackwardLocalPlanner"
       k_rho: -1.4 # linear distance to the goal gain, default = -1.0 (related with carrot distance)
-      k_alpha: 0.01 #-0.1
+      k_alpha: -0.1 #-0.1
       k_betta: -0.1 # -1.0
       carrot_distance: 0.3 #meters default 0.5 
       carrot_angular_distance: 0.3 # no constraint, max 3.1416
@@ -194,7 +194,7 @@ controller_server:
       carrot_angular_distance: 0.5 # no constraint, max 3.1416
       xy_goal_tolerance: 0.04
       yaw_goal_tolerance: 0.01
-      max_linear_x_speed: 0.2
+      max_linear_x_speed: 0.25
       max_angular_z_speed: 0.15
     PureSpinningLocalPlanner:
       plugin: "pure_spinning_local_planner::PureSpinningLocalPlanner"
@@ -223,7 +223,6 @@ local_costmap:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 3.0
         inflation_radius: 0.55
-
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
