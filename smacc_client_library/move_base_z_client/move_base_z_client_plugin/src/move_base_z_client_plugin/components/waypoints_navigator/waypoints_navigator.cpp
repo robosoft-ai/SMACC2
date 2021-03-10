@@ -34,7 +34,7 @@ void WaypointNavigator::onGoalReached(ClMoveBaseZ::WrappedResult &/*res*/)
 
 void WaypointNavigator::sendNextGoal()
 {
-  if (currentWaypoint_ >= 0 && currentWaypoint_ < waypoints_.size())
+  if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypoints_.size())
   {
     auto &next = waypoints_[currentWaypoint_];
     
@@ -77,7 +77,7 @@ void WaypointNavigator::sendNextGoal()
 
 void WaypointNavigator::insertWaypoint(int index, geometry_msgs::msg::Pose &newpose)
 {
-  if (index >= 0 && index <= waypoints_.size())
+  if (index >= 0 && index <= (int)waypoints_.size())
   {
     waypoints_.insert(waypoints_.begin(), index, newpose);
   }
@@ -107,7 +107,7 @@ void WaypointNavigator::setWaypoints(const std::vector<Pose2D> &waypoints)
 
 void WaypointNavigator::removeWaypoint(int index)
 {
-  if (index >= 0 && index < waypoints_.size())
+  if (index >= 0 && index < (int)waypoints_.size())
   {
     waypoints_.erase(waypoints_.begin() + index);
   }

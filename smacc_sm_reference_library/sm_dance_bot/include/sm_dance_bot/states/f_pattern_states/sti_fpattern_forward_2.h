@@ -20,15 +20,13 @@ struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
 // STATE FUNCTIONS
   static void staticConfigure()
   {
+     TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>(SS::pitch_lenght_meters());
+     TSti::template configure_orthogonal<OrLED, CbLEDOff>();
   }
   
   void runtimeConfigure()
   {
-    auto &superstate = TSti::template context<SS>();
-    RCLCPP_INFO(this->getNode()->get_logger(),"[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d", superstate.iteration_count, superstate.total_iterations());
-
-    TSti::template configure<OrNavigation, CbNavigateForward>(SS::pitch_lenght_meters());
-    TSti::template configure<OrLED, CbLEDOff>();
+   
   }
 };
 }
