@@ -1,0 +1,13 @@
+# backwards configuration, the robot will move backwards
+BackwardLocalPlanner:
+    k_rho: -1.4 # linear distance to the goal gain, default = -1.0 (related with carrot distance)
+    k_alpha: -0.1
+    k_betta: -1.0
+    carrot_distance: 0.3 #meters default 0.5 
+    carrot_angular_distance: 0.5 # no constraint, max 3.1416
+    xy_goal_tolerance: 0.015 # 0.025
+    yaw_goal_tolerance: 0.3
+    pure_spinning_straight_line_mode: true
+
+
+

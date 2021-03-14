@@ -1,0 +1,84 @@
+waypoints:
+  # POINT 0
+  - position:
+      x: 3.0
+      y: -2.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 1
+  - position:
+      x: -5.75
+      y: 3.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 2
+  - position:
+      x: -10.25
+      y: -4.25
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 3
+  - position:
+      x: 1.0
+      y: -8.5 
+      #y: -12.35 
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+
+    #orientation:
+    #  x: 0.0
+    #  y: 0.0
+    #  z: -0.3007058
+    #  w: 0.953717
+    # POINT 4
+  - position:
+      x: -9.5
+      y: 15.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+    # 15degress[ 0, 0, 0.1305262, 0.9914449 ]
+    #orientation:
+    #  x: 0.0
+    #  y: 0.0
+    #  z: 0.1305262
+    #  w: 0.9914449
+  # POINT 5
+  - position:
+      x: -0.0
+      y: 0.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  #POINT 6
+  - position:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
