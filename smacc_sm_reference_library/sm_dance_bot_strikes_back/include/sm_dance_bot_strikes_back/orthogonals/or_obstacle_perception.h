@@ -12,7 +12,7 @@ public:
     virtual void onInitialize() override
     {
         auto lidarClient =
-            this->createClient<ClLidarSensor>("/front/scan", rclcpp::Duration(10s));
+            this->createClient<ClLidarSensor>("/scan", rclcpp::Duration(10s));
 
         lidarClient->createComponent<CpLidarSensorData>();
     }

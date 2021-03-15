@@ -86,7 +86,7 @@ def generate_launch_description():
 
     declare_bt_xml_cmd = DeclareLaunchArgument(
         'default_bt_xml_filename',
-        default_value=os.path.join(get_package_share_directory('sm_dance_bot_strikes_back'),'params', 'move_base_client', 'navigation_tree.xml'),
+        default_value=os.path.join(sm_dance_bot_dir,'params', 'move_base_client', 'navigation_tree.xml'),
         description='Full path to the behavior tree xml file to use')
 
     declare_autostart_cmd = DeclareLaunchArgument(
@@ -168,8 +168,8 @@ def generate_launch_description():
                         name='SmDanceBotStrikesBack',
                         output='screen',
                         prefix=xtermprefix,
-                        parameters= [{"waypoints_plan":  os.path.join(get_package_share_directory("sm_dance_bot_strikes_back") , "params/move_base_client/waypoints_plan.yaml")},
-                                      os.path.join(get_package_share_directory("sm_dance_bot_strikes_back") , "params/sm_dance_bot_config.yaml")  ],
+                        parameters= [{"waypoints_plan":  os.path.join(sm_dance_bot_dir, "params/move_base_client/waypoints_plan.yaml")},
+                                      os.path.join(sm_dance_bot_dir , "params/sm_dance_bot_config.yaml")  ],
                         remappings=[
                                     #("/odom", "/odometry/filtered"),
                                     #("/sm_dance_bot_2/odom_tracker/odom_tracker_path", "/odom_tracker_path"),

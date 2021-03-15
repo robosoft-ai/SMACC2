@@ -66,7 +66,7 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
   geometry_msgs::msg::TwistStamped cmd_vel;
 
   goalReached_ = false;
-  // ROS_DEBUG("LOCAL PLANNER LOOP");
+  // RCLCPP_DEBUG(nh_->get_logger(), "LOCAL PLANNER LOOP");
 
   geometry_msgs::msg::PoseStamped currentPose = pose;
 

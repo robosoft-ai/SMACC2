@@ -50,11 +50,11 @@ void  BackwardGlobalPlanner::configure(
     std::string name, std::shared_ptr<tf2_ros::Buffer> tf,
     std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
-    //ROS_INFO_NAMED("Backwards", "BackwardGlobalPlanner initialize");
+    //RCLCPP_INFO_NAMED(nh_->get_logger(), "Backwards", "BackwardGlobalPlanner initialize");
     nh_ = parent.lock();
     name_ = name;
     costmap_ros_ = costmap_ros;
-    //ROS_WARN_NAMED("Backwards", "initializating global planner, costmap address: %ld", (long)costmap_ros);
+    //RCLCPP_WARN_NAMED(nh_->get_logger(), "Backwards", "initializating global planner, costmap address: %ld", (long)costmap_ros);
 
     planPub_ = nh_->create_publisher<nav_msgs::msg::Path>("backward_planner/global_plan", 1);
     markersPub_ = nh_->create_publisher<visualization_msgs::msg::MarkerArray>("backward_planner/markers", 1);

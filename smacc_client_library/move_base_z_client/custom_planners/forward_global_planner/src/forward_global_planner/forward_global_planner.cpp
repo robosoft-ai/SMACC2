@@ -125,7 +125,7 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(const geometry_msgs::msg::P
   if (acceptedGlobalPlan)
   {
     planPub_->publish(planMsg);
-    // ROS_INFO_STREAM("global forward plan: " << planMsg);
+    // RCLCPP_INFO_STREAM(nh_->get_logger(), "global forward plan: " << planMsg);
     return planMsg;
   }
   else
