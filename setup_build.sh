@@ -1,4 +1,5 @@
 #!/bin/bash
+export ROS_DISTRO=rolling
 sudo apt-get update
 sudo apt-get install xterm python3-rosdistro python3-rosdep
 sudo pip3 install -U vcstool
