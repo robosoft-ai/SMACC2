@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
       - uses: actions/cache@v2
         with:
           path: ${{ env.CCACHE_DIR }}
