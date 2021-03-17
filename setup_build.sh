@@ -9,6 +9,6 @@ then
 mkdir dependencies 
 fi
 cd dependencies
-/usr/bin/vcs import < ../submodules/navigation2/tools/underlay.repos 
+vcs import < ../submodules/navigation2/tools/underlay.repos 
 cd ..
-/usr/bin/rosdep install -q -y --from-paths . --skip-keys "slam_toolbox" > /dev/null
+rosdep install -q -y --from-paths . --skip-keys "slam_toolbox" > /dev/null
