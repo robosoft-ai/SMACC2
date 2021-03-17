@@ -1,4 +1,5 @@
-sudo apt-get install xterm python3-rosdistro
+#!/bin/bash
+apt-get install xterm python3-rosdistro python3-rosdep2
 echo "assumming we are located in the smacc folder"
 if [ ! -d dependencies ] 
 then
