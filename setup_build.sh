@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo apt-get update
-sudo apt-get install xterm python3-rosdistro python3-rosdep2 python3-vcstool
+sudo apt-get install xterm python3-rosdistro python3-rosdep2
 sudo pip install -U vcstool
 
 echo "assumming we are located in the smacc folder"
