@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo apt-get update
-sudo apt-get install xterm python3-rosdistro python3-rosdep2
+sudo apt-get install xterm python3-rosdistro python3-rosdep2 python3-vcstool
 echo "assumming we are located in the smacc folder"
 if [ ! -d dependencies ] 
 then
