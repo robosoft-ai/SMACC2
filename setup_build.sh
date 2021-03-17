@@ -1,6 +1,9 @@
 sudo apt-get install xterm
 echo "assumming we are located in the smacc folder"
-if [ ! -d dependencies ] mkdir dependencies
+if [ ! -d dependencies ] 
+then
+mkdir dependencies 
+fi
 cd dependencies
 vcs import < ../submodules/navigation2/tools/underlay.repos 
 cd ..
