@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo apt-get update
 sudo apt-get install xterm python3-rosdistro python3-rosdep2
 echo "assumming we are located in the smacc folder"
 if [ ! -d dependencies ] 
@@ -6,6 +7,6 @@ then
 mkdir dependencies 
 fi
 cd dependencies
-vcs import < ../submodules/navigation2/tools/underlay.repos 
+/usr/bin/vcs import < ../submodules/navigation2/tools/underlay.repos 
 cd ..
-rosdep install -q -y --from-paths . --skip-keys "slam_toolbox"
+/usr/bin/rosdep install -q -y --from-paths . --skip-keys "slam_toolbox"
