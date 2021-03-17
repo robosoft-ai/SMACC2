@@ -37,11 +37,4 @@
   <export>
     <build_type>ament_cmake</build_type>
   </export>
-
-  <!-- <buildtool_depend>catkin</buildtool_depend>  
-  <depend>xterm</depend>
-  <depend>tf</depend>
-
-  <export>
-  </export> -->
 </package>
