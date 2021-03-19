@@ -9,10 +9,11 @@ using namespace std::chrono_literals;
 class OrTimer : public smacc::Orthogonal<OrTimer>
 {
 public:
-    virtual void onInitialize() override
-    {
-        auto actionclient = this->createClient<cl_ros_timer::ClRosTimer>(std::chrono::duration_cast<std::chrono::seconds>(500ms));
-        actionclient->initialize();
-    }
+  virtual void onInitialize() override
+  {
+    auto actionclient =
+        this->createClient<cl_ros_timer::ClRosTimer>(std::chrono::duration_cast<std::chrono::seconds>(500ms));
+    actionclient->initialize();
+  }
 };
-} // namespace sm_three_some
+}  // namespace sm_three_some

@@ -8,14 +8,15 @@ struct StiState1 : smacc::SmaccState<StiState1, SS>
 public:
   using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP> 
-  
-  >reactions;
 
-// STATE FUNCTIONS
+      Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP>
+
+      >
+      reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
   }
@@ -28,21 +29,21 @@ public:
   {
     auto &superstate = this->context<SS>();
 
-    RCLCPP_INFO(getNode()->get_logger(),"Loop start, current iterations: %d, total iterations: %d", superstate.iteration_count, superstate.total_iterations());
+    RCLCPP_INFO(getNode()->get_logger(), "Loop start, current iterations: %d, total iterations: %d",
+                superstate.iteration_count, superstate.total_iterations());
     return superstate.iteration_count++ < superstate.total_iterations();
   }
 
   void onEntry()
   {
-    RCLCPP_INFO(getNode()->get_logger(),"LOOP START ON ENTRY");
+    RCLCPP_INFO(getNode()->get_logger(), "LOOP START ON ENTRY");
     checkWhileLoopConditionAndThrowEvent(&StiState1::loopWhileCondition);
   }
-  
+
   void onExit()
   {
-    RCLCPP_INFO(getNode()->get_logger(),"On Exit!");
+    RCLCPP_INFO(getNode()->get_logger(), "On Exit!");
   }
-  
 };
-}
-}
+}  // namespace inner_states
+}  // namespace sm_three_some

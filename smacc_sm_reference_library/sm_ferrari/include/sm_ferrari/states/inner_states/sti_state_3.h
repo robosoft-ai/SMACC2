@@ -7,28 +7,35 @@ struct StiState3 : smacc::SmaccState<StiState3, SS>
 {
   using SmaccState::SmaccState;
 
-// DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : SUCCESS{};
-  struct NEXT : SUCCESS{};
-  struct PREVIOUS : ABORT{};  
+  // DECLARE CUSTOM OBJECT TAGS
+  struct TIMEOUT : SUCCESS
+  {
+  };
+  struct NEXT : SUCCESS
+  {
+  };
+  struct PREVIOUS : ABORT
+  {
+  };
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
-    
-  //Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiState1, TIMEOUT>,  
-  Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState2, PREVIOUS>,
-  Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1, NEXT>,
-  Transition<EvMyBehavior<CbMySubscriberBehavior, OrSubscriber>, StiState1, NEXT>
-      
-  >reactions;
 
- // STATE FUNCTIONS
+      // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiState1, TIMEOUT>,
+      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState2, PREVIOUS>,
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1, NEXT>,
+      Transition<EvMyBehavior<CbMySubscriberBehavior, OrSubscriber>, StiState1, NEXT>
+
+      >
+      reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
-    //configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
-    //configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
+    // configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+    // configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
     configure_orthogonal<OrSubscriber, CbMySubscriberBehavior>();
-    //configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+    // configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
@@ -45,7 +52,6 @@ struct StiState3 : smacc::SmaccState<StiState3, SS>
   {
     RCLCPP_INFO(getNode()->get_logger(), "On Exit!");
   }
-
 };
-}
-}
+}  // namespace inner_states
+}  // namespace sm_ferrari

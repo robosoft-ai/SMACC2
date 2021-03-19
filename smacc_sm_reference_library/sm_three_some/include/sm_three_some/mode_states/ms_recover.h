@@ -5,13 +5,14 @@ namespace sm_three_some
 class MsRecover : public smacc::SmaccState<MsRecover, SmThreeSome>
 {
 public:
-   using SmaccState::SmaccState;
+  using SmaccState::SmaccState;
 
-// TRANSITION TABLE
-   typedef mpl::list<
-    
-   Transition<EvToDeep, sc::deep_history<MsRun::LastDeepState>, SUCCESS>
-   
-   >reactions;
+  // TRANSITION TABLE
+  typedef mpl::list<
+
+      Transition<EvToDeep, sc::deep_history<MsRun::LastDeepState>, SUCCESS>
+
+      >
+      reactions;
 };
-} // namespace sm_three_some
+}  // namespace sm_three_some

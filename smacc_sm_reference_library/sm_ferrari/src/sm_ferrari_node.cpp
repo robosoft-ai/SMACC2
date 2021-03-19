@@ -2,6 +2,6 @@
 
 int main(int argc, char **argv)
 {
-    rclcpp::init(argc, argv);
-    smacc::run<sm_ferrari::SmFerrari>();
+  rclcpp::init(argc, argv);
+  smacc::run<sm_ferrari::SmFerrari>();
 }

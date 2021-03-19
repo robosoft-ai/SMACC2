@@ -5,6 +5,6 @@ namespace sm_ferrari
 class MsRun : public smacc::SmaccState<MsRun, SmFerrari, StState1>
 {
 public:
-   using SmaccState::SmaccState;
+  using SmaccState::SmaccState;
 };
-} // namespace sm_ferrari
+}  // namespace sm_ferrari

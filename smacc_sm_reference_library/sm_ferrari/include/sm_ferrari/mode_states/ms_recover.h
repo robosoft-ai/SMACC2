@@ -5,13 +5,14 @@ namespace sm_ferrari
 class MsRecover : public smacc::SmaccState<MsRecover, SmFerrari>
 {
 public:
-   using SmaccState::SmaccState;
+  using SmaccState::SmaccState;
 
-// TRANSITION TABLE
-   typedef mpl::list<
-    
-   Transition<EvToDeep, sc::deep_history<MsRun::LastDeepState>, SUCCESS>
-   
-   >reactions;
+  // TRANSITION TABLE
+  typedef mpl::list<
+
+      Transition<EvToDeep, sc::deep_history<MsRun::LastDeepState>, SUCCESS>
+
+      >
+      reactions;
 };
-} // namespace sm_ferrari
+}  // namespace sm_ferrari

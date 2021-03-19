@@ -9,11 +9,11 @@ namespace cl_subscriber
 class CbWatchdogSubscriberBehavior : public smacc::SmaccClientBehavior
 {
 public:
-    typedef std_msgs::msg::UInt16 TMessageType;
+  typedef std_msgs::msg::UInt16 TMessageType;
 
-    void onEntry()
-    {
-    }
+  void onEntry()
+  {
+  }
 };
-} // namespace cl_subscriber
-} // namespace sm_three_some
+}  // namespace cl_subscriber
+}  // namespace sm_three_some

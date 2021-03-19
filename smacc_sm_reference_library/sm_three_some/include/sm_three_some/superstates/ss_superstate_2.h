@@ -6,12 +6,12 @@ namespace sm_three_some
 {
 namespace inner_states
 {
-//FORWARD DECLARATIONS OF ALL INNER STATES
+// FORWARD DECLARATIONS OF ALL INNER STATES
 class StiState1;
 class StiState2;
 class StiState3;
-} // namespace ss1_states
-} // namespace sm_three_some
+}  // namespace inner_states
+}  // namespace sm_three_some
 
 using namespace sm_three_some::inner_states;
 
@@ -19,35 +19,39 @@ using namespace sm_three_some::inner_states;
 struct Ss2 : smacc::SmaccState<Ss2, MsRun, StiState1>
 {
 public:
-    using SmaccState::SmaccState;
+  using SmaccState::SmaccState;
 
-// TRANSITION TABLE
-    typedef mpl::list<
+  // TRANSITION TABLE
+  typedef mpl::list<
 
-    Transition<EvLoopEnd<StiState1>, StState4>
-    
-    >reactions;
+      Transition<EvLoopEnd<StiState1>, StState4>
 
-// STATE VARIABLES
-    static constexpr int total_iterations() { return 5; }
-    int iteration_count = 0;
+      >
+      reactions;
 
-// STATE FUNCTIONS
-    static void staticConfigure()
-    {
-    }
+  // STATE VARIABLES
+  static constexpr int total_iterations()
+  {
+    return 5;
+  }
+  int iteration_count = 0;
 
-    void runtimeConfigure()
-    {
-    }
-}; // namespace SS4
+  // STATE FUNCTIONS
+  static void staticConfigure()
+  {
+  }
 
-//forward declaration for the superstate
+  void runtimeConfigure()
+  {
+  }
+};  // namespace SS4
+
+// forward declaration for the superstate
 using SS = SS2::Ss2;
 
 #include <sm_three_some/states/inner_states/sti_state_1.h>
 #include <sm_three_some/states/inner_states/sti_state_2.h>
 #include <sm_three_some/states/inner_states/sti_state_3.h>
 
-} // namespace SS1
-} // namespace sm_three_some
+}  // namespace SS2
+}  // namespace sm_three_some

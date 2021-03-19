@@ -7,19 +7,26 @@ struct StiState2 : smacc::SmaccState<StiState2, SS>
 {
   using SmaccState::SmaccState;
 
-// DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : SUCCESS{};
-  struct NEXT : SUCCESS{};
-  struct PREVIOUS : ABORT{};
+  // DECLARE CUSTOM OBJECT TAGS
+  struct TIMEOUT : SUCCESS
+  {
+  };
+  struct NEXT : SUCCESS
+  {
+  };
+  struct PREVIOUS : ABORT
+  {
+  };
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiState3, TIMEOUT>,
-  Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState3, NEXT>,
-  Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1, PREVIOUS>
-  
-  >reactions;
+
+      Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiState3, TIMEOUT>,
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState3, NEXT>,
+      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1, PREVIOUS>
+
+      >
+      reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
@@ -33,17 +40,16 @@ struct StiState2 : smacc::SmaccState<StiState2, SS>
   void runtimeConfigure()
   {
   }
-  
+
   void onEntry()
   {
-    RCLCPP_INFO(getNode()->get_logger(),"On Entry!");
+    RCLCPP_INFO(getNode()->get_logger(), "On Entry!");
   }
 
   void onExit()
   {
-    RCLCPP_INFO(getNode()->get_logger(),"On Exit!");
+    RCLCPP_INFO(getNode()->get_logger(), "On Exit!");
   }
-
 };
-}
-}
+}  // namespace inner_states
+}  // namespace sm_three_some

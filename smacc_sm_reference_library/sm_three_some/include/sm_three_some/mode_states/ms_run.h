@@ -5,6 +5,6 @@ namespace sm_three_some
 class MsRun : public smacc::SmaccState<MsRun, SmThreeSome, StState1>
 {
 public:
-   using SmaccState::SmaccState;
+  using SmaccState::SmaccState;
 };
-} // namespace sm_three_some
+}  // namespace sm_three_some
