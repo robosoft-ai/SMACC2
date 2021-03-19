@@ -12,5 +12,5 @@ fi
 cd dependencies
 vcs import < ../submodules/navigation2/tools/underlay.repos 
 cd ..
-rosdep update > /dev/null
-rosdep install -q -y --from-paths submodules/navigation2/ --skip-keys "slam_toolbox"
+#rosdep update > /dev/null
+#rosdep install -q -y --from-paths submodules/navigation2/ --skip-keys "slam_toolbox"
