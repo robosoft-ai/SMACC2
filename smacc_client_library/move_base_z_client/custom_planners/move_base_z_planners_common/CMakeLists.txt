@@ -21,6 +21,7 @@ set(dependencies
     rclcpp
     nav_msgs
     geometry_msgs
+    angles
   )
 
 include_directories(include)
