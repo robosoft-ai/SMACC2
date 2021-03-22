@@ -1,6 +1,7 @@
 #pragma once
 
 #include <smacc/client_bases/smacc_action_client_base.h>
+
 #include <sm_dance_bot_msgs/action/led_control.hpp>
 
 namespace sm_dance_bot_strikes_back
@@ -20,4 +21,4 @@ public:
 std::ostream &operator<<(std::ostream &out, const sm_dance_bot_msgs::action::LEDControl::Goal &msg);
 
 }  // namespace cl_led
-}  // namespace sm_dance_bot
+}  // namespace sm_dance_bot_strikes_back
