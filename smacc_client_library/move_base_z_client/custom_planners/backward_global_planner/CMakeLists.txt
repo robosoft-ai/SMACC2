@@ -20,6 +20,7 @@ find_package(geometry_msgs)
 find_package(tf2)
 find_package(pluginlib)
 find_package(forward_global_planner)
+find_package(angles)
 
 set(dependencies
     nav2_core
@@ -29,7 +30,8 @@ set(dependencies
     visualization_msgs
     tf2
     pluginlib
-    forward_global_planner)
+    forward_global_planner
+    angles)
 
 include_directories(include)
 
