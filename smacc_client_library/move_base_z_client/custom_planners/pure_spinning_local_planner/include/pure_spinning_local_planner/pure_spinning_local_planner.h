@@ -55,9 +55,11 @@ public:
    * @param pose Current robot pose
    * @param velocity Current robot velocity
    * @return The best command for the robot to drive
-   */
-  geometry_msgs::msg::TwistStamped computeVelocityCommands(const geometry_msgs::msg::PoseStamped &pose,
-                                                           const geometry_msgs::msg::Twist &velocity) override;
+   */  
+   virtual geometry_msgs::msg::TwistStamped computeVelocityCommands(const geometry_msgs::msg::PoseStamped & pose, 
+        const geometry_msgs::msg::Twist & velocity,
+        nav2_core::GoalChecker * goal_checker) override;
+
 
   /*deprecated in navigation2*/
   bool isGoalReached();

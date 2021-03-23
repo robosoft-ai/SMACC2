@@ -16,12 +16,15 @@ find_package(ament_cmake REQUIRED)
 find_package(nav_msgs)
 find_package(geometry_msgs)
 find_package(rclcpp)
+find_package(angles)
+find_package(tf2)
 
 set(dependencies
     rclcpp
     nav_msgs
     geometry_msgs
     angles
+    tf2
   )
 
 include_directories(include)

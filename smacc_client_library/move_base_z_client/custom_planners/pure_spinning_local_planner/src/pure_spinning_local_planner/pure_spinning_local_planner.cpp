@@ -59,8 +59,9 @@ void PureSpinningLocalPlanner::updateParameters()
   nh_->get_parameter("max_angular_z_speed", max_angular_z_speed_);
 }
 
-geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityCommands(
-    const geometry_msgs::msg::PoseStamped &pose, const geometry_msgs::msg::Twist & /*velocity*/)
+geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityCommands(const geometry_msgs::msg::PoseStamped & pose, 
+                                                                   const geometry_msgs::msg::Twist & velocity,
+                                                                   nav2_core::GoalChecker * goal_checker)
 {
   this->updateParameters();
   geometry_msgs::msg::TwistStamped cmd_vel;

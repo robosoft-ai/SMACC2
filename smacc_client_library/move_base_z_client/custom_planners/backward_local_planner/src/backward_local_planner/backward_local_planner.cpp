@@ -445,8 +445,10 @@ void BackwardLocalPlanner::straightBackwardsAndPureSpinCmd(const geometry_msgs::
  * computeVelocityCommands()
  ******************************************************************************************************************
  */
-geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
-    const geometry_msgs::msg::PoseStamped &pose, const geometry_msgs::msg::Twist &velocity)
+
+geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(const geometry_msgs::msg::PoseStamped & pose, 
+                                                                   const geometry_msgs::msg::Twist & velocity,
+                                                                   nav2_core::GoalChecker * goal_checker)
 {
   this->updateParameters();
 

@@ -271,8 +271,10 @@ void clamp(rclcpp::Node::SharedPtr nh_, geometry_msgs::msg::Twist &cmd_vel, doub
 * computeVelocityCommands()
 ******************************************************************************************************************
 */
-geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
-    const geometry_msgs::msg::PoseStamped &currentPose, const geometry_msgs::msg::Twist & /*velocity*/)
+
+geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(const geometry_msgs::msg::PoseStamped & currentPose, 
+                                                                   const geometry_msgs::msg::Twist & velocity,
+                                                                   nav2_core::GoalChecker * goal_checker) 
 {
   this->updateParameters();
   geometry_msgs::msg::TwistStamped cmd_vel;
