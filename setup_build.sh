@@ -18,5 +18,5 @@ vcs pull ros2_repos
 
 echo "assumming we are located in the smacc folder"
 
-vcs import ros2_repos < ../submodules/navigation2/tools/underlay.repos 
+vcs import ros2_repos < submodules/navigation2/tools/underlay.repos 
 
