@@ -93,7 +93,7 @@ void Pose::update()
       this->isInitialized = true;
     }
   }
-  catch (tf2::TransformException ex)
+  catch (tf2::TransformException& ex)
   {
     //RCLCPP_DEBUG(getNode()->get_logger(), "[pose] EXCEPTION");
     RCLCPP_ERROR_STREAM_THROTTLE(getNode()->get_logger(), *(getNode()->get_clock()), 1000,

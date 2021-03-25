@@ -18,6 +18,7 @@ find_package(std_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
+find_package(angles REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
 
 set(dependencies
@@ -27,6 +28,7 @@ set(dependencies
     nav2_msgs
     tf2
     tf2_ros
+    angles
     yaml_cpp_vendor)
 
 include_directories(include)

@@ -13,11 +13,13 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(smacc_msgs REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
 set(dependencies rclcpp 
-                 smacc_msgs)
+                 smacc_msgs
+                 rclcpp_action)
 
 include_directories(include)
 

@@ -20,6 +20,8 @@ void PlannerSwitcher::onInitialize()
   // auto nh(client_->name_);
   // dynrecofSub_ = this->getNode()..subscribe<dynamic_reconfigure::Config>("/move_base/parameter_updates", 1,
   // boost::bind(&PlannerSwitcher::dynreconfCallback, this, _1));
+
+  
 }
 
 void PlannerSwitcher::setUndoPathBackwardPlanner()
@@ -79,6 +81,7 @@ void PlannerSwitcher::setDefaultPlanners()
 
 void PlannerSwitcher::updatePlanners(bool subscribecallback)
 {
+    //----------- original ros implementation ------------------------------------------
   // // dynamic_reconfigure::ReconfigureRequest srv_req;
   // // dynamic_reconfigure::ReconfigureResponse srv_resp;
   // // dynamic_reconfigure::StrParameter local_planner, global_planner;
@@ -91,6 +94,8 @@ void PlannerSwitcher::updatePlanners(bool subscribecallback)
   // local_planner.value = desired_local_planner_;
   // conf.push_back(local_planner);
 
+  //--------------- ros2 experimental implementation----------------------------------------------------
+
   std::string remoteNavigationServer = "/bt_navigator";
   RCLCPP_INFO_STREAM(getNode()->get_logger(), "[PlannerSwitcher] Setting global planner: " << desired_global_planner_);
   RCLCPP_INFO_STREAM(getNode()->get_logger(), "[PlannerSwitcher] Setting local planner: " << desired_local_planner_);
@@ -102,6 +107,11 @@ void PlannerSwitcher::updatePlanners(bool subscribecallback)
 
   parameters_client->wait_for_service();
 
+  // -------------- ros2 final implementation ---------------------------------
+
+
+
+  //-------------------------------------------------------------------
   // bool found = false;
   // do
   // {

@@ -15,6 +15,7 @@
 
   <depend>rcl</depend>
   <depend>rclcpp</depend>
+  <depend>rclcpp_action</depend>
   <depend>smacc_msgs</depend>
   
   <test_depend>ament_lint_auto</test_depend>
