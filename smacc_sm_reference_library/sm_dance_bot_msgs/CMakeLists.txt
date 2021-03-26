@@ -22,7 +22,7 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
                            "servers/led_action_server/action/LEDControl.action"
-                           DEPENDENCIES builtin_interfaces std_msgs action_msgs)
+                           DEPENDENCIES builtin_interfaces std_msgs action_msgs sensor_msgs)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

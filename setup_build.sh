@@ -1,7 +1,6 @@
 #!/bin/bash
-export ROS_DISTRO=rolling
 sudo apt-get update
-sudo apt-get install xterm python3-rosdistro python3-rosdep
+sudo apt-get install -y python3-pip xterm python3-rosdistro python3-rosdep python3-vcstools
 sudo pip3 install -U vcstool
 
 echo "installing ros2 repos"
