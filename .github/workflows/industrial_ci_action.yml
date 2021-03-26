@@ -9,8 +9,8 @@ jobs:
         env:
           #- {ROS_DISTRO: rolling, ROS_REPO: testing}
           #- {ROS_DISTRO: rolling, ROS_REPO: main}
-          #- {ROS_DISTRO: rolling, ROS_REPO: main}
-          - {ROS_DISTRO: ros2, ROS_REPO: nightly}
+          - {ROS_DISTRO: rolling, ROS_REPO: main}
+          #- {ROS_DISTRO: ros2, ROS_REPO: nightly}
           
     env:
       CCACHE_DIR: /github/home/.ccache # Directory for ccache (and how we enable ccache in industrial_ci)
