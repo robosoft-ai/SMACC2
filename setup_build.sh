@@ -10,7 +10,7 @@ then
 mkdir ros2_repos 
 fi
 
-wget https://raw.githubusercontent.com/ros2/ros2/foxy/ros2.repos
+wget https://raw.githubusercontent.com/ros2/ros2/master/ros2.repos
 
 vcs import ros2_repos < ros2.repos
 vcs pull ros2_repos
