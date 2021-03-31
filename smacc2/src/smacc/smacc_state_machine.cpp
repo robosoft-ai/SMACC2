@@ -7,7 +7,7 @@
 #include <smacc/smacc_signal_detector.h>
 #include <smacc/smacc_orthogonal.h>
 #include <smacc/client_bases/smacc_action_client.h>
-#include <smacc_msgs/msg/smacc_status.h>
+#include <smacc_msgs/msg/smacc_status.hpp>
 #include <smacc_msgs/msg/smacc_transition_log_entry.hpp>
 #include <chrono>
 #include <functional>

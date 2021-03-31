@@ -15,7 +15,7 @@
 #include <smacc/introspection/introspection.h>
 #include <smacc/smacc_signal_detector.h>
 #include <smacc/smacc_state_reactor.h>
-#include <smacc_msgs/msg/smacc_status.h>
+#include <smacc_msgs/msg/smacc_status.hpp>
 #include <sstream>
 
 #include <boost/function_types/function_arity.hpp>

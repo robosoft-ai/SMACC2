@@ -2,7 +2,7 @@
 
 #include <ros_publisher_client/cl_ros_publisher.h>
 #include <smacc/smacc_orthogonal.h>
-#include <std_msgs/msg/string.h>
+#include <std_msgs/msg/string.hpp>
 
 namespace sm_ferrari
 {

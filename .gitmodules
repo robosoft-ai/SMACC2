@@ -4,3 +4,6 @@
 [submodule "submodules/slam_toolbox"]
 	path = submodules/slam_toolbox
 	url = https://github.com/SteveMacenski/slam_toolbox.git
+[submodule "submodules/moveit2"]
+	path = submodules/moveit2
+	url = https://github.com/ros-planning/moveit2.git
