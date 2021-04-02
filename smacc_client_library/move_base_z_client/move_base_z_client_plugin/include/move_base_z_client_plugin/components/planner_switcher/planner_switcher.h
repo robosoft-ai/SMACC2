@@ -45,5 +45,6 @@ private:
 
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr controller_selector_pub_;
 
+  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr goal_checker_selector_pub_;
 };
 }  // namespace cl_move_base_z

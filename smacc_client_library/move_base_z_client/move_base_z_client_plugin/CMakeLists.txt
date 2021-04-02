@@ -20,6 +20,7 @@ find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(angles REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 
 set(dependencies
     smacc2
@@ -29,7 +30,9 @@ set(dependencies
     tf2
     tf2_ros
     angles
-    yaml_cpp_vendor)
+    yaml_cpp_vendor
+    tf2_geometry_msgs
+    )
 
 include_directories(include)
 

@@ -6,8 +6,8 @@
 #pragma once
 
 #include <smacc/component.h>
-
 #include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/string.hpp>
 
 namespace cl_move_base_z
 {
@@ -15,7 +15,7 @@ namespace cl_move_base_z
 class GoalCheckerSwitcher : public smacc::ISmaccComponent
 {
 public:
-  GoalCheckerSwitcher(std::string controller_node_name = "/controller_server",
+  GoalCheckerSwitcher(std::string goal_checker_selector_topic = "selected_goal_checker",
                       std::string default_goal_checker_name = "goal_checker");
   void onInitialize() override;
   virtual ~GoalCheckerSwitcher();
@@ -23,8 +23,8 @@ public:
   void setGoalCheckerId(std::string goal_checker_id);
 
 private:
-  std::string controller_node_name_;
+  std::string goal_checker_selector_topic_;
   std::string default_goal_checker_name_;
-  rclcpp::AsyncParametersClient::SharedPtr controller_server_node_;
+  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr goal_checker_selector_pub_;
 };
 }  // namespace cl_move_base_z

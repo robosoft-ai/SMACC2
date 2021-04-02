@@ -18,6 +18,7 @@ find_package(geometry_msgs)
 find_package(rclcpp)
 find_package(angles)
 find_package(tf2)
+find_package(tf2_geometry_msgs)
 
 set(dependencies
     rclcpp
@@ -25,6 +26,7 @@ set(dependencies
     geometry_msgs
     angles
     tf2
+    tf2_geometry_msgs
   )
 
 include_directories(include)

@@ -16,12 +16,16 @@ PlannerSwitcher::PlannerSwitcher()
 
 void PlannerSwitcher::onInitialize()
 {
-  auto client_ = dynamic_cast<ClMoveBaseZ *>(owner_);
+  //auto client_ = dynamic_cast<ClMoveBaseZ *>(owner_);
   // auto nh(client_->name_);
   // dynrecofSub_ = this->getNode()..subscribe<dynamic_reconfigure::Config>("/move_base/parameter_updates", 1,
   // boost::bind(&PlannerSwitcher::dynreconfCallback, this, _1));
 
-  
+  rclcpp::QoS qos(rclcpp::KeepLast(1));
+  qos.transient_local().reliable();
+
+  this->planner_selector_pub_ = getNode()->create_publisher<std_msgs::msg::String>("selected_planner", qos );
+  this->controller_selector_pub_ = getNode()->create_publisher<std_msgs::msg::String>("selected_controller", qos);
 }
 
 void PlannerSwitcher::setUndoPathBackwardPlanner()
@@ -81,7 +85,7 @@ void PlannerSwitcher::setDefaultPlanners()
 
 void PlannerSwitcher::updatePlanners(bool subscribecallback)
 {
-    //----------- original ros implementation ------------------------------------------
+  //----------- original ros implementation ------------------------------------------
   // // dynamic_reconfigure::ReconfigureRequest srv_req;
   // // dynamic_reconfigure::ReconfigureResponse srv_resp;
   // // dynamic_reconfigure::StrParameter local_planner, global_planner;
@@ -96,20 +100,18 @@ void PlannerSwitcher::updatePlanners(bool subscribecallback)
 
   //--------------- ros2 experimental implementation----------------------------------------------------
 
-  std::string remoteNavigationServer = "/bt_navigator";
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[PlannerSwitcher] Setting global planner: " << desired_global_planner_);
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[PlannerSwitcher] Setting local planner: " << desired_local_planner_);
+  //std::string remoteNavigationServer = "/bt_navigator";
+  // RCLCPP_INFO_STREAM(getNode()->get_logger(), "[PlannerSwitcher] Setting global planner: " << desired_global_planner_);
+  // RCLCPP_INFO_STREAM(getNode()->get_logger(), "[PlannerSwitcher] Setting local planner: " << desired_local_planner_);
 
-  auto parameters_client = std::make_shared<rclcpp::AsyncParametersClient>(this->getNode(), remoteNavigationServer);
+  // auto parameters_client = std::make_shared<rclcpp::AsyncParametersClient>(this->getNode(), remoteNavigationServer);
 
-  RCLCPP_INFO_STREAM(getNode()->get_logger(),
-                     "[PlannerSwitcher] waiting remote navigation server: " << remoteNavigationServer);
+  // RCLCPP_INFO_STREAM(getNode()->get_logger(),
+  //                    "[PlannerSwitcher] waiting remote navigation server: " << remoteNavigationServer);
 
-  parameters_client->wait_for_service();
+  // parameters_client->wait_for_service();
 
   // -------------- ros2 final implementation ---------------------------------
-
-
 
   //-------------------------------------------------------------------
   // bool found = false;
@@ -130,25 +132,38 @@ void PlannerSwitcher::updatePlanners(bool subscribecallback)
 
   // } while (!found);
 
-  bool success = false;
-  do
-  {
-    std::vector<rclcpp::Parameter> params{ rclcpp::Parameter("PlannerSelector.planner_id", desired_global_planner_),
-                                           rclcpp::Parameter("PlannerSelector.controller_id", desired_local_planner_) };
+  // bool success = false;
+  // do
+  // {
+  //   std::vector<rclcpp::Parameter> params{ rclcpp::Parameter("PlannerSelector.planner_id", desired_global_planner_),
+  //                                          rclcpp::Parameter("PlannerSelector.controller_id", desired_local_planner_) };
 
-    auto futureResults = parameters_client->set_parameters(params);
-    auto results = futureResults.get();
+  //   auto futureResults = parameters_client->set_parameters(params);
+  //   auto results = futureResults.get();
 
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), "planner switch result: " << results[0].reason);
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), "planner switch result: " << results[1].reason);
+  //   RCLCPP_INFO_STREAM(getNode()->get_logger(), "planner switch result: " << results[0].reason);
+  //   RCLCPP_INFO_STREAM(getNode()->get_logger(), "planner switch result: " << results[1].reason);
 
-    success = results[0].successful && results[1].successful;
-    if (!success)
-    {
-      rclcpp::sleep_for(1s);
-      RCLCPP_INFO_STREAM(getNode()->get_logger(), "planner switcher did not success, repeating. May not The bt_navigator tree contain the planner selector node?");
-    }
-  } while (!success);
+  //   success = results[0].successful && results[1].successful;
+  //   if (!success)
+  //   {
+  //     rclcpp::sleep_for(1s);
+  //     RCLCPP_INFO_STREAM(getNode()->get_logger(), "planner switcher did not success, repeating. May not The "
+  //                                                 "bt_navigator tree contain the planner selector node?");
+  //   }
+  // } while (!success);
+
+  //---------------------------------------------------
+
+  std_msgs::msg::String planner_msg;
+  planner_msg.data = desired_global_planner_;
+  this->planner_selector_pub_->publish(planner_msg);
+
+  std_msgs::msg::String controller_msg;
+  controller_msg.data = desired_local_planner_;
+  this->controller_selector_pub_->publish(controller_msg);
+
+  //---------------------------------------------------
 
   // global_planner.name = "base_global_planner";
   // global_planner.value = desired_global_planner_;
