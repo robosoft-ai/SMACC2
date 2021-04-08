@@ -25,7 +25,7 @@ struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
 
   void runtimeConfigure()
   {
-    auto &superstate = TSti::template context<SS>();
+    // auto &superstate = TSti::template context<SS>();
 
     TSti::template configure<OrNavigation, CbNavigateForward>(SS::pitch_lenght_meters());
     TSti::template configure<OrLED, CbLEDOff>();

@@ -136,7 +136,7 @@ void PureSpinningLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
   currentPoseIndex_ = 0;
 }
 
-void publishGoalMarker(double x, double y, double phi)
+void publishGoalMarker(double /*x*/, double /*y*/, double /*phi*/)
 {
 }
 }  // namespace pure_spinning_local_planner

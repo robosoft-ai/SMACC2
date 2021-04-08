@@ -26,6 +26,7 @@
   <depend>sm_dance_bot_msgs</depend>
   <depend>navigation2</depend>
   <depend>slam_toolbox</depend>
+  <depend>robot_state_publisher</depend>
 
   <buildtool_depend>rosidl_default_generators</buildtool_depend>
   <depend>action_msgs</depend>

@@ -60,7 +60,7 @@ void UndoPathGlobalPlanner::deactivate()
  * initialize()
  ******************************************************************************************************************
  */
-void UndoPathGlobalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, std::string name,
+void UndoPathGlobalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, /*std::string name*/,
                                       std::shared_ptr<tf2_ros::Buffer> /*tf*/,
                                       std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
@@ -133,7 +133,7 @@ void UndoPathGlobalPlanner::publishGoalMarker(const geometry_msgs::msg::Pose &po
  ******************************************************************************************************************
  */
 void UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::msg::PoseStamped &start,
-                                                      const geometry_msgs::msg::PoseStamped &goal,
+                                                      const geometry_msgs::msg::PoseStamped & /*goal*/,
                                                       std::vector<geometry_msgs::msg::PoseStamped> &plan)
 {
   // RCLCPP_WARN_NAMED(nh_->get_logger(), "Backwards", "Iterating in last forward cord path");
@@ -204,7 +204,7 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::msg::
       RCLCPP_DEBUG_STREAM(nh_->get_logger(),
                           "[UndoPathGlobalPlanner] " << i << "/" << lastForwardPathMsg_.poses.size());
       auto index = (int)lastForwardPathMsg_.poses.size() - i - 1;
-      if (index < 0 || (int)index >= lastForwardPathMsg_.poses.size())
+      if (index < 0 || (size_t)index >= lastForwardPathMsg_.poses.size())
       {
         RCLCPP_WARN_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] this should not happen. Check implementation.");
         break;
@@ -280,7 +280,7 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::msg::
  ******************************************************************************************************************
  */
 nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(const geometry_msgs::msg::PoseStamped &start,
-                                                      const geometry_msgs::msg::PoseStamped &goal)
+                                                      const geometry_msgs::msg::PoseStamped &/*goal*/)
 {
   // RCLCPP_WARN_NAMED(nh_->get_logger(), "Backwards", "Backwards global planner: Generating global plan ");
   // RCLCPP_WARN_NAMED(nh_->get_logger(), "Backwards", "Clearing...");
