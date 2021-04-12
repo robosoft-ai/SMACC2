@@ -60,7 +60,7 @@ void UndoPathGlobalPlanner::deactivate()
  * initialize()
  ******************************************************************************************************************
  */
-void UndoPathGlobalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, /*std::string name*/,
+void UndoPathGlobalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, std::string /*name*/,
                                       std::shared_ptr<tf2_ros::Buffer> /*tf*/,
                                       std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {

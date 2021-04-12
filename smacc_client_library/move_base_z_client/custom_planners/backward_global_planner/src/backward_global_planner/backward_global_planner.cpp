@@ -215,6 +215,12 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(const geometry_msgs::msg::
     }
   }
 
+  if(acceptedGlobalPlan)
+  {
+    RCLCPP_WARN_STREAM(nh_->get_logger(), "backward plan request is not accepted, returning empty path");
+    planMsg.poses.clear();
+  }
+
   RCLCPP_WARN_STREAM(nh_->get_logger(), "backward global plan publishing path. poses count: " << planMsg.poses.size());
   planPub_->publish(planMsg);
 

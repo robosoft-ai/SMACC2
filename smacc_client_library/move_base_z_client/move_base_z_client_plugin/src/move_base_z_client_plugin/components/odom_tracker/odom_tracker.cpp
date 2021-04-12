@@ -28,9 +28,9 @@ void parameterDeclareAndtryGetOrSet(rclcpp::Node::SharedPtr &node, std::string p
 {
   if (!node->get_parameter(param_name, value))
   {
+    RCLCPP_INFO_STREAM(node->get_logger(), "[OdomTracker] autoset " << param_name << ": " << value);
     node->declare_parameter(param_name);
     node->set_parameter(rclcpp::Parameter(param_name, value));
-    RCLCPP_INFO_STREAM(node->get_logger(), "[OdomTracker] autoset " << param_name << ": " << value);
   }
   else
   {

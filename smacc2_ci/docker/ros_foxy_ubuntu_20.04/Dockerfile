@@ -1,4 +1,4 @@
-FROM ros:foxy-ros-base-focal
+FROM osrf/ros2:nightly
 
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
@@ -6,12 +6,14 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get upgrade && apt-get update
 RUN apt-cache search  libboost
 RUN apt-get -y install libboost-dev libboost-thread-dev
+
 RUN mkdir -p /root/smacc2_ws/src
 ADD SMACC2 /root/smacc2_ws/src/
 WORKDIR /root/smacc2_ws
 RUN find .
-ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
-RUN bash -c "source /opt/ros/foxy/setup.bash && colcon build"
+#ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
+#RUN bash -c "source /opt/ros/foxy/setup.bash && colcon build"
+RUN bash -c "colcon build"
 
 #ENTRYPOINT "/usr/bin/find /root/"
 # SYSTEM DEPENDENCIES

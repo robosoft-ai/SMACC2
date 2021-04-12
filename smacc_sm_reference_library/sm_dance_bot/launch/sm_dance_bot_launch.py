@@ -38,7 +38,7 @@ def generate_launch_description():
     map_yaml_file = LaunchConfiguration('map')
     use_sim_time = LaunchConfiguration('use_sim_time')
     params_file = LaunchConfiguration('params_file')
-    default_bt_xml_filename = LaunchConfiguration('default_bt_xml_filename')
+    default_nav_to_pose_bt_xml = LaunchConfiguration('default_nav_to_pose_bt_xml')
     autostart = LaunchConfiguration('autostart')
 
     # Launch configuration variables specific to simulation
@@ -85,8 +85,8 @@ def generate_launch_description():
         description='Full path to the ROS2 parameters file to use for all launched nodes')
 
     declare_bt_xml_cmd = DeclareLaunchArgument(
-        'default_bt_xml_filename',
-        default_value=os.path.join(get_package_share_directory('sm_dance_bot'),'params', 'move_base_client', 'navigation_tree.xml'),
+        'default_nav_to_pose_bt_xml',
+        default_value=os.path.join(sm_dance_bot_dir,'params', 'move_base_client', 'navigation_tree.xml'),
         description='Full path to the behavior tree xml file to use')
 
     declare_autostart_cmd = DeclareLaunchArgument(
@@ -135,12 +135,13 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, 'bringup_launch.py')),
         launch_arguments={'namespace': namespace,
                           'use_namespace': use_namespace,
+                          'autostart': autostart,
+                          'params_file': params_file,
                           'slam': slam,
                           'map': map_yaml_file,
                           'use_sim_time': use_sim_time,
-                          'params_file': params_file,
-                          'default_bt_xml_filename': default_bt_xml_filename,
-                          'autostart': autostart}.items())
+                          'default_nav_to_pose_bt_xml': default_nav_to_pose_bt_xml,
+                          }.items())
 
     gazebo_simulator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, 'gazebo_launch.py')))
@@ -202,7 +203,6 @@ def generate_launch_description():
                         ])
                         
 
-
     # Create the launch description and populate
     ld = LaunchDescription()
 
@@ -227,7 +227,7 @@ def generate_launch_description():
     ld.add_action(temperature_action_server)
     ld.add_action(led_action_server_node)
 
-    # Add the actions to launch all of the navigation nodes
+    # # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)    

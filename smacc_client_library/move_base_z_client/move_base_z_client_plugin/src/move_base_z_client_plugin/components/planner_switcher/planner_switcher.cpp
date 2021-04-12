@@ -24,8 +24,8 @@ void PlannerSwitcher::onInitialize()
   rclcpp::QoS qos(rclcpp::KeepLast(1));
   qos.transient_local().reliable();
 
-  this->planner_selector_pub_ = getNode()->create_publisher<std_msgs::msg::String>("selected_planner", qos );
-  this->controller_selector_pub_ = getNode()->create_publisher<std_msgs::msg::String>("selected_controller", qos);
+  this->planner_selector_pub_ = getNode()->create_publisher<std_msgs::msg::String>("planner_selector", qos );
+  this->controller_selector_pub_ = getNode()->create_publisher<std_msgs::msg::String>("controller_selector", qos);
 }
 
 void PlannerSwitcher::setUndoPathBackwardPlanner()
@@ -162,6 +162,8 @@ void PlannerSwitcher::updatePlanners(bool subscribecallback)
   std_msgs::msg::String controller_msg;
   controller_msg.data = desired_local_planner_;
   this->controller_selector_pub_->publish(controller_msg);
+
+  rclcpp::spin_some(getNode());
 
   //---------------------------------------------------
 

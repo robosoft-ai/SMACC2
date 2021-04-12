@@ -37,7 +37,7 @@ def generate_launch_description():
     map_yaml_file = LaunchConfiguration('map')
     use_sim_time = LaunchConfiguration('use_sim_time')
     params_file = LaunchConfiguration('params_file')
-    default_bt_xml_filename = LaunchConfiguration('default_bt_xml_filename')
+    default_nav_to_pose_bt_xml = LaunchConfiguration('default_nav_to_pose_bt_xml')
     autostart = LaunchConfiguration('autostart')
 
     stdout_linebuf_envvar = SetEnvironmentVariable(
@@ -73,7 +73,7 @@ def generate_launch_description():
         description='Full path to the ROS2 parameters file to use for all launched nodes')
 
     declare_bt_xml_cmd = DeclareLaunchArgument(
-        'default_bt_xml_filename',
+        'default_nav_to_pose_bt_xml',
         default_value=os.path.join(sm_dance_bot_dir,'params', 'move_base_client', 'navigation_tree.xml'),
         description='Full path to the behavior tree xml file to use')
 
@@ -112,7 +112,7 @@ def generate_launch_description():
                               'use_sim_time': use_sim_time,
                               'autostart': autostart,
                               'params_file': params_file,
-                              'default_bt_xml_filename': default_bt_xml_filename,
+                              'default_nav_to_pose_bt_xml': default_nav_to_pose_bt_xml,
                               'use_lifecycle_mgr': 'false',
                               'map_subscribe_transient_local': 'true'}.items()),
     ])

@@ -47,14 +47,16 @@ void WaypointNavigator::sendNextGoal()
     goal.pose.header.stamp = getNode()->now();
     goal.pose.pose = next;
 
+    RCLCPP_WARN(getNode()->get_logger(),"[WaypointsNavigator] Configuring default planners");
     auto plannerSwitcher = client_->getComponent<PlannerSwitcher>();
     plannerSwitcher->setDefaultPlanners();
 
+    RCLCPP_WARN(getNode()->get_logger(),"[WaypointsNavigator] Configuring default goal planner");
     auto goalCheckerSwitcher = client_->getComponent<GoalCheckerSwitcher>();
     goalCheckerSwitcher->setGoalCheckerId("goal_checker");
 
-    // waiting planner switcher services
-    //rclcpp::spin_some(getNode());
+    // publish stuff
+    rclcpp::spin_some(getNode());
     //rclcpp::sleep_for(5s);
 
     auto odomTracker = client_->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();

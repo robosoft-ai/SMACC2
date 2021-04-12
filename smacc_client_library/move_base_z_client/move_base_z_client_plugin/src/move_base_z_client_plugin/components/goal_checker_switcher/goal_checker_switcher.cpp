@@ -18,8 +18,11 @@ GoalCheckerSwitcher::~GoalCheckerSwitcher()
 
 void GoalCheckerSwitcher::onInitialize()
 {
+  rclcpp::QoS qos(rclcpp::KeepLast(1));
+  qos.transient_local().reliable();
+
   this->goal_checker_selector_pub_ =
-      getNode()->create_publisher<std_msgs::msg::String>(goal_checker_selector_topic_, 10);
+      getNode()->create_publisher<std_msgs::msg::String>(goal_checker_selector_topic_, qos);
 }
 
 void GoalCheckerSwitcher::setDefaultGoalChecker()

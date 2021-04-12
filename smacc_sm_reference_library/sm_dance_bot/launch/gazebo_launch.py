@@ -49,10 +49,13 @@ def generate_launch_description():
     # Create the launch description and populate
     ld = LaunchDescription()
 
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
+
         # Specify the actions
     start_gazebo_server_cmd = ExecuteProcess(
         condition=IfCondition(use_simulator),
-        cmd=['gzserver', '-s', 'libgazebo_ros_init.so', world],
+        cmd=['gzserver', '-s', 'libgazebo_ros_init.so', world, "--verbose"],
+        #env={"GAZEBO_MODEL_PATH": os.getcwd(),"HOME": os.environ["HOME"]},
         cwd=[launch_dir], output='screen')
 
     start_gazebo_client_cmd = ExecuteProcess(
