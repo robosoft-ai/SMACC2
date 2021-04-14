@@ -24,6 +24,7 @@
   <depend>yaml_cpp_vendor</depend>
   <depend>angles</depend>
   <depend>tf2_geometry_msgs</depend>
+  <depend>pluginlib</depend>
   
   <export>
     <build_type>ament_cmake</build_type>

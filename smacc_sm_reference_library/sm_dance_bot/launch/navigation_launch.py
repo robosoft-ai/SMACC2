@@ -138,7 +138,8 @@ def generate_launch_description():
             output='screen',
             prefix = xtermprefix,
             parameters=[configured_params],
-            remappings=remappings),
+            remappings=remappings,
+            arguments=["--log-level", "INFO"]),
 
         Node(
             package='nav2_waypoint_follower',

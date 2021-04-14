@@ -21,6 +21,7 @@ find_package(tf2_ros REQUIRED)
 find_package(angles REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(pluginlib REQUIRED)
 
 set(dependencies
     smacc2
@@ -32,6 +33,7 @@ set(dependencies
     angles
     yaml_cpp_vendor
     tf2_geometry_msgs
+    pluginlib
     )
 
 include_directories(include)

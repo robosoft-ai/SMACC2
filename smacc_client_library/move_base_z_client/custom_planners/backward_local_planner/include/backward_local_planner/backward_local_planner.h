@@ -81,9 +81,7 @@ private:
 
   void straightBackwardsAndPureSpinCmd(const geometry_msgs::msg::PoseStamped &pose, double vetta, double gamma, double alpha_error,
                        double betta_error, double rho_error, geometry_msgs::msg::Twist &cmd_vel);
-  void defaultBackwardCmd(const geometry_msgs::msg::PoseStamped &pose, double vetta, double gamma, double alpha_error,
-                          double betta_error, geometry_msgs::msg::Twist &cmd_vel);
-
+  
   void publishGoalMarker(double x, double y, double phi);
   void computeCurrentEuclideanAndAngularErrorsToCarrotGoal(const geometry_msgs::msg::PoseStamped &pose, double &dist,
                                                            double &angular_error);

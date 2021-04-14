@@ -203,7 +203,7 @@ void BackwardLocalPlanner::updateParameters()
   RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".carrot_distance:" << carrot_distance_);
 }
 
-void BackwardLocalPlanner::setSpeedLimit(const double &speed_limit, const bool &percentage)
+void BackwardLocalPlanner::setSpeedLimit(const double &/*speed_limit*/, const bool &/*percentage*/)
 {
   RCLCPP_WARN_STREAM(nh_->get_logger(), "BackwardLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not "
                                         "implemented.");
@@ -391,18 +391,7 @@ bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(const geometry_msgs::msg:
 
   return false;
 }
-/**
- ******************************************************************************************************************
- * defaultBackwardCmd()
- ******************************************************************************************************************
- */
-void BackwardLocalPlanner::defaultBackwardCmd(const geometry_msgs::msg::PoseStamped &tfpose, double vetta, double gamma,
-                                              double alpha_error, double betta_error,
-                                              geometry_msgs::msg::Twist &cmd_vel)
-{
-  cmd_vel.linear.x = vetta;
-  cmd_vel.angular.z = gamma;
-}
+
 /**
  ******************************************************************************************************************
  * pureSpinningCmd()
@@ -566,7 +555,8 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(c
     }
 
     // clasical control to reach a goal backwards
-    this->defaultBackwardCmd(tfpose, vetta, gamma, alpha_error, betta_error, cmd_vel.twist);
+    cmd_vel.linear.x = vetta;
+    cmd_vel.angular.z = gamma;
   }
 
   if (cmd_vel.twist.linear.x > max_linear_x_speed_)
