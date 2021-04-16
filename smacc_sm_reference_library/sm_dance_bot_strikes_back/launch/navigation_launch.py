@@ -25,7 +25,7 @@ from nav2_common.launch import RewrittenYaml
 
 def generate_launch_description():
     # Get the launch directory
-    sm_dance_bot_dir = get_package_share_directory('sm_dance_bot_strikes_back')
+    sm_dance_bot_strikes_back_dir = get_package_share_directory('sm_dance_bot_strikes_back')
 
     namespace = LaunchConfiguration('namespace')
     use_sim_time = LaunchConfiguration('use_sim_time')
@@ -51,17 +51,23 @@ def generate_launch_description():
     # Create our own temporary YAML files that include substitutions
     param_substitutions = {
         'use_sim_time': use_sim_time,
-        'default_nav_to_pose_bt_xml': default_nav_to_pose_bt_xml,
+        #'default_nav_to_pose_bt_xml': default_nav_to_pose_bt_xml,
+        'default_nav_to_pose_bt_xml': os.path.join(sm_dance_bot_strikes_back_dir,'params', 'move_base_client', 'navigation_tree.xml'),
         'autostart': autostart,
         'map_subscribe_transient_local': map_subscribe_transient_local}
-
-    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
 
     configured_params = RewrittenYaml(
             source_file=params_file,
             root_key=namespace,
             param_rewrites=param_substitutions,
             convert_types=True)
+
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
+
+    print("+********************************")
+    print(str(param_substitutions))
+    print(str(default_nav_to_pose_bt_xml))
+
 
     return LaunchDescription([
         # Set env var to print messages to stdout immediately
@@ -81,18 +87,19 @@ def generate_launch_description():
 
         DeclareLaunchArgument(
             'params_file',
-            default_value=os.path.join(sm_dance_bot_dir, 'params', 'move_base_client','nav2_params.yaml'),
+            default_value=os.path.join(sm_dance_bot_strikes_back_dir, 'params', 'move_base_client','nav2_params.yaml'),
             description='Full path to the ROS2 parameters file to use'),
 
         DeclareLaunchArgument(
             'default_nav_to_pose_bt_xml',
             #default_value=os.path.join(get_package_share_directory('nav2_bt_navigator'),'behavior_trees', 'navigate_w_replanning_and_recovery.xml'),
-            default_value=os.path.join(get_package_share_directory('sm_dance_bot_strikes_back'),'params', 'move_base_client', 'navigation_tree.xml'),
+            default_value=os.path.join(sm_dance_bot_strikes_back_dir,'params', 'move_base_client', 'navigation_tree.xml'),
             description='Full path to the behavior tree xml file to use'),
 
         DeclareLaunchArgument(
             'map_subscribe_transient_local', default_value='false',
             description='Whether to set the map subscriber QoS to transient local'),
+
 
         Node(
             package='nav2_controller',
@@ -112,7 +119,7 @@ def generate_launch_description():
              prefix = xtermprefix,
              parameters=[configured_params],
              remappings=remappings,
-             arguments=["--log-level", "DEBUG"]),
+             arguments=["--ros-args", "--log-level", "INFO"]),
 
         Node(
             package='nav2_recoveries',
@@ -120,7 +127,9 @@ def generate_launch_description():
             name='recoveries_server',
             output='screen',
             parameters=[configured_params],
-            remappings=remappings),
+            remappings=remappings,
+            arguments= ['--ros-args', '--log-level', 'INFO']
+            ),
 
         Node(
             package='nav2_bt_navigator',
@@ -129,7 +138,8 @@ def generate_launch_description():
             output='screen',
             prefix = xtermprefix,
             parameters=[configured_params],
-            remappings=remappings),
+            remappings=remappings,
+            arguments=["--ros-args","--log-level", "INFO"]),
 
         Node(
             package='nav2_waypoint_follower',
@@ -148,6 +158,6 @@ def generate_launch_description():
            parameters=[{'use_sim_time': use_sim_time},
                        {'autostart': autostart},
                        {'node_names': lifecycle_nodes}],
-           arguments=["--log-level", "DEBUG"]),
+           arguments=["--ros-args","--log-level", "INFO"]),
 
     ])

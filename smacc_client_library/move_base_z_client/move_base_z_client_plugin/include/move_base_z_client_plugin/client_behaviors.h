@@ -6,3 +6,4 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_next_waypoint.h>
 #include <move_base_z_client_plugin/client_behaviors/cb_rotate.h>
 #include <move_base_z_client_plugin/client_behaviors/cb_undo_path_backwards.h>
+#include <move_base_z_client_plugin/client_behaviors/cb_wait_pose.h>

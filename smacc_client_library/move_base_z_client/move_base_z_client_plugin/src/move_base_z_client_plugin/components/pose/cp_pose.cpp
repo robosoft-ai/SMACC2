@@ -43,12 +43,14 @@ void Pose::onInitialize()
 void Pose::waitTransformUpdate(rclcpp::Rate r)
 {
   bool found = false;
+  RCLCPP_INFO(getLogger(), "[Pose Component] waitTransformUpdate");
   while (rclcpp::ok() && !found)
   {
     tf2::Stamped<tf2::Transform> transform;
     try
     {
       {
+        RCLCPP_INFO_THROTTLE(getLogger(), *(getNode()->get_clock()), 1000, "[Pose Component] waiting transform %s -> %s", referenceFrame_.c_str(), poseFrameName_.c_str());
         std::lock_guard<std::mutex> lock(listenerMutex_);
         auto transformstamped = tfBuffer_->lookupTransform(referenceFrame_, poseFrameName_, getNode()->now());
         tf2::fromMsg(transformstamped, transform);
@@ -68,10 +70,10 @@ void Pose::waitTransformUpdate(rclcpp::Rate r)
                                    "[Component pose] (" << poseFrameName_ << "/[" << referenceFrame_
                                                         << "] ) is failing on pose update : " << ex.what());
     }
-
+    
     r.sleep();
-    rclcpp::spin_some(getNode());
   }
+  RCLCPP_INFO(getLogger(), "[Pose Component] waitTransformUpdate -> pose found!");
 }
 
 void Pose::update()

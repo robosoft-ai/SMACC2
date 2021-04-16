@@ -1,4 +1,3 @@
-
 /*****************************************************************************************************************
  * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
@@ -7,9 +6,9 @@
 
 #include <move_base_z_client_plugin/client_behaviors/cb_absolute_rotate.h>
 #include <move_base_z_client_plugin/common.h>
+#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
-#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
 #include <rclcpp/parameter_client.hpp>
@@ -69,7 +68,6 @@ void CbAbsoluteRotate::onEntry()
   goal.pose.header.frame_id = referenceFrame;
   goal.pose.header.stamp = getNode()->now();
 
-  auto currentAngle = tf2::getYaw(currentPoseMsg.orientation);
   auto targetAngle = goal_angle * M_PI / 180.0;
   goal.pose.pose.position = currentPoseMsg.position;
   tf2::Quaternion q;
@@ -87,21 +85,17 @@ void CbAbsoluteRotate::onEntry()
   auto goalCheckerSwitcher = moveBaseClient_->getComponent<GoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("absolute_rotate_goal_checker");
 
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[CbAbsoluteRotate] current pose yaw: " << tf2::getYaw(currentPoseMsg.orientation));
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[CbAbsoluteRotate] goal pose yaw: " << tf2::getYaw(goal.pose.pose.orientation));
+  RCLCPP_INFO_STREAM(getNode()->get_logger(),
+                     "[CbAbsoluteRotate] current pose yaw: " << tf2::getYaw(currentPoseMsg.orientation));
+  RCLCPP_INFO_STREAM(getNode()->get_logger(),
+                     "[CbAbsoluteRotate] goal pose yaw: " << tf2::getYaw(goal.pose.pose.orientation));
   moveBaseClient_->sendGoal(goal);
 }
 
 void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 {
   auto log = this->getNode()->get_logger();
-  // dynamic_reconfigure::ReconfigureRequest srv_req;
-  // dynamic_reconfigure::ReconfigureResponse srv_resp;
-  // dynamic_reconfigure::Config conf;
 
-  // ros::NodeHandle nh;
-
-  // std::string nodename = "/move_base";
   std::string nodename = "/controller_server";
 
   auto parameters_client = std::make_shared<rclcpp::AsyncParametersClient>(this->getNode(), nodename);
@@ -117,8 +111,7 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 
   // dynamic_reconfigure::DoubleParameter yaw_goal_tolerance;
   rclcpp::Parameter yaw_goal_tolerance("goal_checker.yaw_goal_tolerance");
-  // dynamic_reconfigure::DoubleParameter max_vel_theta;
-  // dynamic_reconfigure::DoubleParameter min_vel_theta;
+
   rclcpp::Parameter max_vel_theta, min_vel_theta;
 
   bool isRosBasePlanner = !spinningPlanner || *spinningPlanner == SpiningPlanner::Default;
@@ -214,11 +207,6 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
     }
   }
 
-  // srv_req.config = conf;
-  // bool res;
-  // do
-  // {
-
   if (parameters.size() > 0)
   {
     RCLCPP_INFO(log, "[CbAbsoluteRotate] parameters to update:  ");
@@ -239,23 +227,7 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
     i++;
   }
 
-  // res = ros::service::call( servername, srv_req, srv_resp);
-  // auto res = getNode()->set_parameters(parameters);
-
-  // RCLCPP_INFO_STREAM(getNode()->get_logger(), "[CbAbsoluteRotate] dynamic configure call [" << servername << "]: ");
   RCLCPP_INFO(log, "[CbAbsoluteRotate] parameters updated");
-  // rclcpp::spin_some(getNode());
-
-  // if(!res)
-  //   for (auto& r : res)
-  //   {
-  //     if (!r.successful)
-  //     {
-  //       // rclcpp::sleep_for(std::chrono::milliseconds(100));
-  //       RCLCPP_WARN_STREAM(getNode()->get_logger(), "[CbAbsoluteRotate] Failed, retrtying call: " << r.reason);
-  //     }
-  //   }
-  // }while(!res);
 }
 
 void CbAbsoluteRotate::onExit()

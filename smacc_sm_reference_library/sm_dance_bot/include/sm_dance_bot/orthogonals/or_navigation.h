@@ -22,7 +22,7 @@ public:
         auto movebaseClient = this->createClient<ClMoveBaseZ>();
         
         // create pose component
-        movebaseClient->createComponent<cl_move_base_z::Pose>();
+        auto p = movebaseClient->createComponent<cl_move_base_z::Pose>();
 
         // create planner switcher
         movebaseClient->createComponent<PlannerSwitcher>();

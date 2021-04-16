@@ -250,15 +250,19 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::msg::
     }
   }
 
+  // REVERSE FORWARD PASS
   if (mindistindex != -1)
   {
     // plan.push_back(start);
 
     RCLCPP_WARN_STREAM(nh_->get_logger(),
                        "[UndoPathGlobalPlanner] Creating the backwards plan from odom tracker path (nh_->get_logger(), "
-                           << lastForwardPathMsg_.poses.size() << ") poses");
-    RCLCPP_WARN_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] closer point to goal i="
-                                              << mindistindex << " (linear min dist " << linear_mindist << ")");
+                        << lastForwardPathMsg_.poses.size() << ") poses");
+
+    RCLCPP_WARN_STREAM(nh_->get_logger(), 
+                      "[UndoPathGlobalPlanner] closer point to goal i=" << mindistindex 
+                      << " (linear min dist " << linear_mindist << ")");
+
     // copy the path at the inverse direction
     for (int i = lastForwardPathMsg_.poses.size() - 1; i >= mindistindex; i--)
     {

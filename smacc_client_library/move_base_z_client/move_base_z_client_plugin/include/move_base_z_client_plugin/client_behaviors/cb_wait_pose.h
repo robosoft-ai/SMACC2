@@ -5,31 +5,28 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <smacc/smacc_asynchronous_client_behavior.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
 namespace cl_move_base_z
 {
-class CbMoveBaseClientBehaviorBase : public smacc::SmaccAsyncClientBehavior
+// waits a robot pose message. Usually used for the startup synchronization.
+class CbWaitPose : public smacc::SmaccAsyncClientBehavior
 {
 public:
-  virtual ~CbMoveBaseClientBehaviorBase();
+  CbWaitPose();
+  virtual ~CbWaitPose();
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
     this->requiresClient(moveBaseClient_);
     smacc::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
-    moveBaseClient_->onSucceeded(&CbMoveBaseClientBehaviorBase::propagateSuccessEvent, this);
-    moveBaseClient_->onAborted(&CbMoveBaseClientBehaviorBase::propagateFailureEvent, this);
   }
+
+  void onEntry() override;
 
 protected:
   cl_move_base_z::ClMoveBaseZ *moveBaseClient_;
-
-private:
-  void propagateSuccessEvent(ClMoveBaseZ::WrappedResult &);
-  void propagateFailureEvent(ClMoveBaseZ::WrappedResult &);
 };
 }  // namespace cl_move_base_z

@@ -1,21 +1,28 @@
-
-<!--
-  This Behavior Tree replans the global path periodically at 1 Hz and it also has
-  recovery actions.
--->
 <root main_tree_to_execute="MainTree">
   <BehaviorTree ID="MainTree">
     <RecoveryNode number_of_retries="6" name="NavigateRecovery">
-      <PlannerSelector default_controller_id="FollowPath" default_planner_id="GridBased">
-          <PipelineSequence name="NavigateWithReplanning">
-              <RateController hz="0.1">
-              <ComputePathToPose goal="{goal}" path="{path}"/>
-              </RateController>
-            <FollowPath path="{path}"/>
-        </PipelineSequence>
-      </PlannerSelector>
+      <PipelineSequence name="NavigateWithReplanning">
+        <RateController hz="0.01">
+          <RecoveryNode number_of_retries="1" name="ComputePathToPose">
+            <PipelineSequence name="ComputePathToPoseSequence">
+              <PlannerSelector selected_planner="{selected_planner}" />
+              <ComputePathToPose goal="{goal}" path="{path}" planner_id="{selected_planner}" />
+            </PipelineSequence>
+            <ReactiveFallback name="ComputePathToPoseRecoveryFallback">
+              <GoalUpdated />
+              <ClearEntireCostmap name="ClearGlobalCostmap-Context" service_name="global_costmap/clear_entirely_global_costmap" />
+            </ReactiveFallback>
+          </RecoveryNode>
+        </RateController>
+
+        <ControllerSelector selected_controller="{selected_controller}" default_controller="FollowPath" />
+        <GoalCheckerSelector selected_goal_checker="{selected_goal_checker}"/>
+        <FollowPath path="{path}" controller_id="{selected_controller}" goal_checker_id="{selected_goal_checker}" />
+
+      </PipelineSequence>
+
       <ReactiveFallback name="RecoveryFallback">
-        <GoalUpdated/>
+        <GoalUpdated />
       </ReactiveFallback>
     </RecoveryNode>
   </BehaviorTree>

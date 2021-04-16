@@ -119,7 +119,7 @@ def generate_launch_description():
              prefix = xtermprefix,
              parameters=[configured_params],
              remappings=remappings,
-             arguments=["--log-level", "DEBUG"]),
+             arguments=["--ros-args", "--log-level", "INFO"]),
 
         Node(
             package='nav2_recoveries',
@@ -139,7 +139,7 @@ def generate_launch_description():
             prefix = xtermprefix,
             parameters=[configured_params],
             remappings=remappings,
-            arguments=["--log-level", "INFO"]),
+            arguments=["--ros-args","--log-level", "INFO"]),
 
         Node(
             package='nav2_waypoint_follower',
@@ -158,6 +158,6 @@ def generate_launch_description():
            parameters=[{'use_sim_time': use_sim_time},
                        {'autostart': autostart},
                        {'node_names': lifecycle_nodes}],
-           arguments=["--log-level", "INFO"]),
+           arguments=["--ros-args","--log-level", "INFO"]),
 
     ])

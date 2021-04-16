@@ -21,8 +21,8 @@ def generate_launch_description():
     world = LaunchConfiguration('world')
     headless = LaunchConfiguration('headless')
 
-    sm_dance_bot_dir = get_package_share_directory('sm_dance_bot_strikes_back')
-    launch_dir = os.path.join(sm_dance_bot_dir, 'launch')
+    sm_dance_bot_strikes_back_dir = get_package_share_directory('sm_dance_bot_strikes_back')
+    launch_dir = os.path.join(sm_dance_bot_strikes_back_dir, 'launch')
 
     declare_use_simulator_cmd = DeclareLaunchArgument(
         'use_simulator',
@@ -40,19 +40,22 @@ def generate_launch_description():
         #              https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/91
         # default_value=os.path.join(get_package_share_directory('turtlebot3_gazebo'),
         #                            'worlds/turtlebot3_worlds/waffle.model'),
-        #default_value=os.path.join(sm_dance_bot_dir, 'worlds', 'waffle.model'),
-        #default_value=os.path.join(sm_dance_bot_dir, 'worlds', 'sm_dance_bot_world.model'),
-        default_value=os.path.join(sm_dance_bot_dir, 'worlds', 'ridgeback_race.world'),
+        #default_value=os.path.join(sm_dance_bot_strikes_back_dir, 'worlds', 'waffle.model'),
+        #default_value=os.path.join(sm_dance_bot_strikes_back_dir, 'worlds', 'sm_dance_bot_strikes_back_world.model'),
+        default_value=os.path.join(sm_dance_bot_strikes_back_dir, 'worlds', 'ridgeback_race.world'),
         description='Full path to world model file to load')
     
 
     # Create the launch description and populate
     ld = LaunchDescription()
 
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
+
         # Specify the actions
     start_gazebo_server_cmd = ExecuteProcess(
         condition=IfCondition(use_simulator),
-        cmd=['gzserver', '-s', 'libgazebo_ros_init.so', world],
+        cmd=['gzserver', '-s', 'libgazebo_ros_init.so', world, "--verbose"],
+        #env={"GAZEBO_MODEL_PATH": os.getcwd(),"HOME": os.environ["HOME"]},
         cwd=[launch_dir], output='screen')
 
     start_gazebo_client_cmd = ExecuteProcess(

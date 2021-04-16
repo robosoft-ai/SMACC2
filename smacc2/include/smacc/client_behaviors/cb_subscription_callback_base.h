@@ -8,6 +8,8 @@
 
 namespace smacc
 {
+namespace client_behaviors
+{
 template <typename TMsg>
 class CbSubscriptionCallbackBase : public smacc::SmaccClientBehavior
 {
@@ -23,4 +25,5 @@ public:
 protected:
   smacc::client_bases::SmaccSubscriberClient<TMsg>* attachedClient_ = nullptr;
 };
+}  // namespace client_behaviors
 }  // namespace smacc

@@ -28,8 +28,8 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get the launch directory
-    sm_dance_bot_dir = get_package_share_directory('sm_dance_bot_strikes_back')
-    sm_dance_bot_launch_dir = os.path.join(sm_dance_bot_dir, 'launch')
+    sm_dance_bot_strikes_back_dir = get_package_share_directory('sm_dance_bot_strikes_back')
+    sm_dance_bot_strikes_back_launch_dir = os.path.join(sm_dance_bot_strikes_back_dir, 'launch')
 
     # Create the launch configuration variables
     slam = LaunchConfiguration('slam')
@@ -47,7 +47,7 @@ def generate_launch_description():
     use_robot_state_pub = LaunchConfiguration('use_robot_state_pub')
     use_rviz = LaunchConfiguration('use_rviz')
     
-    urdf = os.path.join(sm_dance_bot_dir, 'urdf', 'turtlebot3_waffle.urdf')
+    urdf = os.path.join(sm_dance_bot_strikes_back_dir, 'urdf', 'turtlebot3_waffle.urdf')
 
     # Map fully qualified names to relative ones so the node's namespace can be prepended.
     # In case of the transforms (tf), currently, there doesn't seem to be a better alternative
@@ -81,12 +81,12 @@ def generate_launch_description():
 
     declare_params_file_cmd = DeclareLaunchArgument(
         'params_file',
-        default_value=os.path.join(sm_dance_bot_dir, 'params', "move_base_client", 'nav2_params.yaml'),
+        default_value=os.path.join(sm_dance_bot_strikes_back_dir, 'params', "move_base_client", 'nav2_params.yaml'),
         description='Full path to the ROS2 parameters file to use for all launched nodes')
 
     declare_bt_xml_cmd = DeclareLaunchArgument(
         'default_nav_to_pose_bt_xml',
-        default_value=os.path.join(sm_dance_bot_dir,'params', 'move_base_client', 'navigation_tree.xml'),
+        default_value=os.path.join(sm_dance_bot_strikes_back_dir,'params', 'move_base_client', 'navigation_tree.xml'),
         description='Full path to the behavior tree xml file to use')
 
     declare_autostart_cmd = DeclareLaunchArgument(
@@ -95,7 +95,7 @@ def generate_launch_description():
 
     declare_rviz_config_file_cmd = DeclareLaunchArgument(
         'rviz_config_file',
-        default_value=os.path.join(sm_dance_bot_dir, 'rviz', 'nav2_default_view.rviz'),
+        default_value=os.path.join(sm_dance_bot_strikes_back_dir, 'rviz', 'nav2_default_view.rviz'),
         description='Full path to the RVIZ config file to use')
 
     declare_use_robot_state_pub_cmd = DeclareLaunchArgument(
@@ -110,7 +110,7 @@ def generate_launch_description():
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
-        default_value=os.path.join(sm_dance_bot_dir, 'maps', 'turtlebot3_world.yaml'),
+        default_value=os.path.join(sm_dance_bot_strikes_back_dir, 'maps', 'turtlebot3_world.yaml'),
         description='Full path to map file to load')
 
     start_robot_state_publisher_cmd = Node(
@@ -125,55 +125,56 @@ def generate_launch_description():
         arguments=[urdf])
 
     rviz_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, 'rviz_launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_strikes_back_launch_dir, 'rviz_launch.py')),
         condition=IfCondition(use_rviz),
         launch_arguments={'namespace': '',
                           'use_namespace': 'False',
                           'rviz_config': rviz_config_file}.items())
 
     bringup_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, 'bringup_launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_strikes_back_launch_dir, 'bringup_launch.py')),
         launch_arguments={'namespace': namespace,
                           'use_namespace': use_namespace,
+                          'autostart': autostart,
+                          'params_file': params_file,
                           'slam': slam,
                           'map': map_yaml_file,
                           'use_sim_time': use_sim_time,
-                          'params_file': params_file,
                           'default_nav_to_pose_bt_xml': default_nav_to_pose_bt_xml,
-                          'autostart': autostart}.items())
+                          }.items())
 
     gazebo_simulator = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, 'gazebo_launch.py')))
+        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_strikes_back_launch_dir, 'gazebo_launch.py')))
 
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
 
-    # <group ns="sm_dance_bot_2">
+    # <group ns="sm_dance_bot_strikes_back_2">
     #     <!-- set run mode -->
     #     <param name="run_mode" value="debug" />
     #     <!-- load flight plan -->
-    #     <param name="waypoints_plan" value="$(find sm_dance_bot_2)/config/move_base_client/waypoints_plan.yaml" />        
+    #     <param name="waypoints_plan" value="$(find sm_dance_bot_strikes_back_2)/config/move_base_client/waypoints_plan.yaml" />        
     # </group>
 
     # <!-- state machine node -->
-    # <node pkg="sm_dance_bot_2" type="sm_dance_bot_2" name="sm_dance_bot_2" launch-prefix="$(arg sm_xterm)" unless="$(arg debug)">
+    # <node pkg="sm_dance_bot_strikes_back_2" type="sm_dance_bot_strikes_back_2" name="sm_dance_bot_strikes_back_2" launch-prefix="$(arg sm_xterm)" unless="$(arg debug)">
     #     <remap from="/odom" to="/odometry/filtered" />
-    #     <remap from="/sm_dance_bot_2/odom_tracker/odom_tracker_path" to="/odom_tracker_path"/>
-    #     <remap from="/sm_dance_bot_2/odom_tracker/odom_tracker_stacked_path" to="/odom_tracker_path_stacked"/>
+    #     <remap from="/sm_dance_bot_strikes_back_2/odom_tracker/odom_tracker_path" to="/odom_tracker_path"/>
+    #     <remap from="/sm_dance_bot_strikes_back_2/odom_tracker/odom_tracker_stacked_path" to="/odom_tracker_path_stacked"/>
     # </node>
 
-    sm_dance_bot_node = Node(
+    sm_dance_bot_strikes_back_node = Node(
                         package='sm_dance_bot_strikes_back',
                         executable='sm_dance_bot_strikes_back_node',
                         name='SmDanceBotStrikesBack',
                         output='screen',
                         prefix=xtermprefix,
-                        parameters= [{"waypoints_plan":  os.path.join(sm_dance_bot_dir, "params/move_base_client/waypoints_plan.yaml")},
-                                      os.path.join(sm_dance_bot_dir , "params/sm_dance_bot_config.yaml")  ],
+                        parameters= [{"waypoints_plan":  os.path.join(get_package_share_directory("sm_dance_bot_strikes_back") , "params/move_base_client/waypoints_plan.yaml")},
+                                      os.path.join(get_package_share_directory("sm_dance_bot_strikes_back") , "params/sm_dance_bot_strikes_back_config.yaml")  ],
                         remappings=[
                                     #("/odom", "/odometry/filtered"),
-                                    #("/sm_dance_bot_2/odom_tracker/odom_tracker_path", "/odom_tracker_path"),
-                                    #("/sm_dance_bot_2/odom_tracker/odom_tracker_stacked_path", "/odom_tracker_path_stacked")                                    
+                                    #("/sm_dance_bot_strikes_back_2/odom_tracker/odom_tracker_path", "/odom_tracker_path"),
+                                    #("/sm_dance_bot_strikes_back_2/odom_tracker/odom_tracker_stacked_path", "/odom_tracker_path_stacked")                                    
                                     ],
                         arguments= ['--ros-args', '--log-level', 'INFO']
                         )
@@ -202,7 +203,6 @@ def generate_launch_description():
                         ])
                         
 
-
     # Create the launch description and populate
     ld = LaunchDescription()
 
@@ -222,12 +222,12 @@ def generate_launch_description():
     ld.add_action(declare_use_rviz_cmd)
     ld.add_action(gazebo_simulator)
 
-    ld.add_action(sm_dance_bot_node)
+    ld.add_action(sm_dance_bot_strikes_back_node)
     ld.add_action(service3_node)
     ld.add_action(temperature_action_server)
     ld.add_action(led_action_server_node)
 
-    # Add the actions to launch all of the navigation nodes
+    # # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)    

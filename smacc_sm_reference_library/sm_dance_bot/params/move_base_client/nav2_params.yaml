@@ -192,7 +192,7 @@ controller_server:
       xy_goal_tolerance: 0.003 # 3 mm
       yaw_goal_tolerance: 0.3
       pure_spinning_straight_line_mode: true
-      max_linear_x_speed: 0.2
+      max_linear_x_speed: 0.18
     ForwardLocalPlanner:
       plugin: "cl_move_base_z::forward_local_planner::ForwardLocalPlanner"
       k_rho: 2.0
@@ -206,7 +206,9 @@ controller_server:
       max_angular_z_speed: 0.15
     PureSpinningLocalPlanner:
       plugin: "pure_spinning_local_planner::PureSpinningLocalPlanner"
-    
+      k_betta: 0.8
+      yaw_goal_tolerance: 0.3
+      max_angular_z_speed: 0.15   
   
 
 controller_server_rclcpp_node:
@@ -266,7 +268,7 @@ global_costmap:
     ros__parameters:
       update_frequency: 1.0
       publish_frequency: 1.0
-      transform_tolerance: 10.0
+      transform_tolerance: 5.0
       global_frame: map
       robot_base_frame: base_link
       use_sim_time: True

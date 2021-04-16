@@ -56,12 +56,13 @@ void WaypointNavigator::sendNextGoal()
     goalCheckerSwitcher->setGoalCheckerId("goal_checker");
 
     // publish stuff
-    rclcpp::spin_some(getNode());
     //rclcpp::sleep_for(5s);
 
+    RCLCPP_INFO(getNode()->get_logger(),"[WaypointsNavigator] Getting odom tracker");
     auto odomTracker = client_->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
     if (odomTracker != nullptr)
     {
+      RCLCPP_INFO(getNode()->get_logger(),"[WaypointsNavigator] Storing path in odom tracker");
       odomTracker->pushPath();
       odomTracker->setStartPoint(pose);
       odomTracker->setWorkingMode(cl_move_base_z::odom_tracker::WorkingMode::RECORD_PATH);

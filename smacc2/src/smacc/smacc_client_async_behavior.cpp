@@ -1,5 +1,7 @@
 #include <smacc/smacc_asynchronous_client_behavior.h>
 
+using namespace std::chrono_literals;
+
 namespace smacc
 {
     void SmaccAsyncClientBehavior::executeOnEntry()
@@ -13,35 +15,40 @@ namespace smacc
                                           });
     }
 
-    void SmaccAsyncClientBehavior::executeOnExit()
+    void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::future<int>& threadfut)
     {
-        RCLCPP_INFO_STREAM(getNode()->get_logger(),"[" << getName() << "] onExit - join async onEntry thread");
-
         try
         {
-            rclcpp::Rate r(200);
+            rclcpp::Rate r(100);
             while (rclcpp::ok())
             {
-                bool valid = this->onEntryThread_.valid();
+                bool valid = threadfut.valid();
                 if (valid)
                 {
-                    auto status = this->onEntryThread_.wait_for(std::chrono::milliseconds(20));
+                    auto status = threadfut.wait_for(std::chrono::milliseconds(20));
                     if (status == std::future_status::ready)
                     {
-                        this->onEntryThread_.get();
+                        threadfut.get();
                         break;
                     }
                 }
 
                 r.sleep();
-                rclcpp::spin_some(getNode());
-                RCLCPP_DEBUG(getNode()->get_logger(),"waiting for finishing client behavior");
+                // rclcpp::spin_some(getNode());
+                RCLCPP_WARN_THROTTLE(getLogger(), *(getNode()->get_clock()), 1000, "[%s] waiting for finishing client behavior, before leaving the state. Is the client behavior stucked?", demangleType(typeid(*this)).c_str());
             }
         }
         catch (const std::exception &e)
         {
-            RCLCPP_DEBUG(getNode()->get_logger(),"[SmaccAsyncClientBehavior] trying to Join onEntry function, but it was alredy finished.");
+            RCLCPP_DEBUG(getNode()->get_logger(),"[SmaccAsyncClientBehavior] trying to join function, but it was alredy finished.");
         }
+    }
+
+    void SmaccAsyncClientBehavior::executeOnExit()
+    {
+        RCLCPP_INFO_STREAM(getNode()->get_logger(),"[" << getName() << "] onExit - join async onEntry thread");
+
+        waitFutureIfNotFinished(this->onEntryThread_);
 
         RCLCPP_INFO_STREAM(getNode()->get_logger(),"[" << getName() << "] onExit - Creating asynchronous onExit thread");
         this->onExitThread_ = std::async(std::launch::async,

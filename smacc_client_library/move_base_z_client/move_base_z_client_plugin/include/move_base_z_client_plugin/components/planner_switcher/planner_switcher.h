@@ -39,7 +39,7 @@ private:
 
   bool set_planners_mode_flag_;
 
-  void updatePlanners(bool subscribecallback = true);
+  void updatePlanners();
 
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr planner_selector_pub_;
 

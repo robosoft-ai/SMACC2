@@ -8,10 +8,6 @@ class TemperatureClass
 int main(int argc, char** argv)
 {
   rclcpp::init(argc, argv);
-  // rclcpp::init(argc,argv, "temperature_sensor_node");
-  // ros::NodeHandle nh;
-  // auto pub = nh.advertise<std_msgs::Float32>("/temperature",1);
-
   rclcpp::Node::SharedPtr node = rclcpp::Node::make_shared("temperature_sensor_node");
 
   auto pub = node->create_publisher<std_msgs::msg::Float32>("/temperature", 1);
@@ -31,7 +27,6 @@ int main(int argc, char** argv)
     pub->publish(msg);
 
     r.sleep();
-    // rclcpp::spinOnce();
     rclcpp::spin_some(node);
     i++;
   }

@@ -26,6 +26,7 @@ public:
 
   virtual void update() override;
 
+  // synchronously waits a transform in the current thread
   void waitTransformUpdate(rclcpp::Rate r = rclcpp::Rate(20));
 
   inline geometry_msgs::msg::Pose toPoseMsg()

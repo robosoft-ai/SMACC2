@@ -29,9 +29,9 @@ namespace smacc
     {
     };
 
+    // INTRODUCTION: All of them conceptually start in parallel when the state starts. No behavior should block the creation of other behaviors,
     // Asnchronous client behaviors are used when the onEntry or onExit function execution is slow
     // CONCEPT: this funcionality is related with the orthogonality of SmaccState machines.
-    // No behavior should block the creation of other behaviors, all of them conceptually start in parallel.
     // Alternative for long duration behaviors: using default-synchromous SmaccClientBehaviors with the update method
     // ASYNCHRONOUS STATE MACHINES DESIGN NOTES: Asynchromous behaviors can safely post events and use its local methods,
     //  but the interaction with other components or elements of
@@ -57,7 +57,10 @@ namespace smacc
         boost::signals2::connection onFailure(TCallback callback, T *object);
 
     protected:
+        // executes onExit in a new thread
         virtual void executeOnEntry() override;
+
+        // executes onExit in a new thread, waits first onEntry thread if it is still running
         virtual void executeOnExit() override;
 
         void postSuccessEvent();
@@ -66,6 +69,7 @@ namespace smacc
         virtual void dispose() override;
 
     private:
+        void waitFutureIfNotFinished(std::future<int>& threadfut);
         std::future<int> onEntryThread_;
         std::future<int> onExitThread_;
 

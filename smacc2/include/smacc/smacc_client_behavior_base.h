@@ -49,6 +49,8 @@ namespace smacc
 
         virtual rclcpp::Node::SharedPtr getNode();
 
+        virtual rclcpp::Logger getLogger();
+
     private:
         
         template <typename TOrthogonal, typename TSourceObject>

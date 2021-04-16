@@ -49,6 +49,8 @@ protected:
 
     rclcpp::Node::SharedPtr getNode();
 
+    rclcpp::Logger getLogger();
+
     // A reference to the state machine object that owns this resource
     ISmaccStateMachine *stateMachine_;
 

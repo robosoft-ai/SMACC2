@@ -23,6 +23,19 @@ namespace smacc
         return this->stateMachine_->getNode();
     }
 
+    rclcpp::Logger ISmaccClientBehavior::getLogger()
+    {
+        auto nh = this->getNode();
+        if(nh != nullptr)
+        {
+            return nh->get_logger();
+        }
+        else
+        {
+            return rclcpp::get_logger("SMACC");
+        }
+    }
+
     void ISmaccClientBehavior::runtimeConfigure()
     {
         RCLCPP_DEBUG(getNode()->get_logger(),"[%s] Default empty SmaccClientBehavior runtimeConfigure", this->getName().c_str());

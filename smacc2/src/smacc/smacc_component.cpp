@@ -38,6 +38,11 @@ rclcpp::Node::SharedPtr ISmaccComponent::getNode()
     return this->owner_->getNode();
 }
 
+rclcpp::Logger ISmaccComponent::getLogger()
+{
+    return getNode()->get_logger();
+}
+
 std::string ISmaccComponent::getName() const
 {
     std::string keyname = demangleSymbol(typeid(*this).name());

@@ -50,6 +50,7 @@ add_library(${PROJECT_NAME} SHARED
             src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint.cpp
             src/${PROJECT_NAME}/client_behaviors/cb_rotate.cpp
             src/${PROJECT_NAME}/client_behaviors/cb_undo_path_backwards.cpp
+            src/${PROJECT_NAME}/client_behaviors/cb_wait_pose.cpp
 
             # COMPONENTS
             src/${PROJECT_NAME}/components/costmap_switch/cp_costmap_switch.cpp

@@ -56,6 +56,8 @@ void CbNavigateForward::onEntry()
   tf2::Transform currentPose;
   tf2::fromMsg(currentPoseMsg, currentPose);
 
+  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[CbNavigateForward] current pose: " << currentPoseMsg);
+
   // force global orientation if it is requested
   if (this->forceInitialOrientation)
   {
