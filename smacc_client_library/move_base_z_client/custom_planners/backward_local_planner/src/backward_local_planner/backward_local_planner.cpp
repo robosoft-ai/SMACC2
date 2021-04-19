@@ -93,10 +93,10 @@ void BackwardLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::Weak
   carrot_angular_distance_ = 0.4;
   linear_mode_rho_error_threshold_ = 0.02;
   straightBackwardsAndPureSpinningMode_ = true;
-  yaw_goal_tolerance_ = 0.05;
-  xy_goal_tolerance_ = 0.10;
   max_linear_x_speed_ = 1.0;
   max_angular_z_speed_ = 2.0;
+  yaw_goal_tolerance_ = -1;
+  xy_goal_tolerance_ = -1;
 
   // constructor(): paramServer_(ros::NodeHandle("~BackwardLocalPlanner"))
   // f = boost::bind(&BackwardLocalPlanner::reconfigCB, this, _1, _2);
@@ -105,9 +105,6 @@ void BackwardLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::Weak
   this->currentCarrotPoseIndex_ = 0;
 
   declareOrSet(nh_, name_ + ".pure_spinning_straight_line_mode", straightBackwardsAndPureSpinningMode_);
-
-  declareOrSet(nh_, name_ + ".yaw_goal_tolerance", yaw_goal_tolerance_);
-  declareOrSet(nh_, name_ + ".xy_goal_tolerance", xy_goal_tolerance_);
 
   declareOrSet(nh_, name_ + ".k_rho", k_rho_);
   declareOrSet(nh_, name_ + ".k_alpha", k_alpha_);
@@ -126,7 +123,8 @@ void BackwardLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::Weak
   // some automatic pure-spinning mode where we only update the orientation
   // This means that if we reach the carrot with precission we go into pure spinning mode but we cannot
   // leave that point (maybe this could be improved)
-  if (carrot_angular_distance_ < yaw_goal_tolerance_)
+
+  if (yaw_goal_tolerance_ != -1 && carrot_angular_distance_ < yaw_goal_tolerance_)
   {
     RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] carrot_angular_distance ("
                                               << carrot_angular_distance_
@@ -135,7 +133,7 @@ void BackwardLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::Weak
     carrot_angular_distance_ = yaw_goal_tolerance_;
   }
 
-  if (carrot_distance_ < xy_goal_tolerance_)
+  if (xy_goal_tolerance_ != -1 && carrot_distance_ < xy_goal_tolerance_)
   {
     RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] carrot_linear_distance ("
                                               << carrot_distance_ << ") cannot be lower than xy_goal_tolerance_ ("
@@ -166,10 +164,6 @@ void BackwardLocalPlanner::updateParameters()
   RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".carrot_distance:" << carrot_distance_);
   tryGetOrSet(nh_, name_ + ".carrot_angular_distance", carrot_angular_distance_);
   RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".carrot_angular_distance: " << carrot_angular_distance_);
-  tryGetOrSet(nh_, name_ + ".xy_goal_tolerance", xy_goal_tolerance_);
-  RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".xy_goal_tolerance: " << xy_goal_tolerance_);
-  tryGetOrSet(nh_, name_ + ".yaw_goal_tolerance", yaw_goal_tolerance_);
-  RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".yaw_goal_tolerance: " << yaw_goal_tolerance_);
 
   tryGetOrSet(nh_, name_ + ".pure_spinning_straight_line_mode", straightBackwardsAndPureSpinningMode_);
   RCLCPP_INFO_STREAM(nh_->get_logger(),
@@ -183,7 +177,7 @@ void BackwardLocalPlanner::updateParameters()
   tryGetOrSet(nh_, name_ + ".max_angular_z_speed", max_angular_z_speed_);
   RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".max_angular_z_speed: " << max_angular_z_speed_);
 
-  if (carrot_angular_distance_ < yaw_goal_tolerance_)
+  if (yaw_goal_tolerance_ != -1 && carrot_angular_distance_ < yaw_goal_tolerance_)
   {
     RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] carrot_angular_distance ("
                                               << carrot_angular_distance_
@@ -194,7 +188,7 @@ void BackwardLocalPlanner::updateParameters()
   }
   RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".carrot_angular_distance: " << carrot_angular_distance_);
 
-  if (carrot_distance_ < xy_goal_tolerance_)
+  if (xy_goal_tolerance_ != -1 && carrot_distance_ < xy_goal_tolerance_)
   {
     RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] carrot_linear_distance ("
                                               << carrot_distance_ << ") cannot be lower than xy_goal_tolerance_ ("
@@ -376,7 +370,9 @@ bool BackwardLocalPlanner::checkCarrotHalfPlainConstraint(const geometry_msgs::m
 }
 
 bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(const geometry_msgs::msg::PoseStamped &tfpose,
-                                                       double angle_error, bool &linearGoalReached)
+                                                       const geometry_msgs::msg::Twist &currentTwist,
+                                                       double angle_error, bool &linearGoalReached,
+                                                       nav2_core::GoalChecker *goal_checker)
 {
   auto &finalgoal = backwardsPlanPath_.back();
   double gdx = finalgoal.pose.position.x - tfpose.pose.position.x;
@@ -393,6 +389,7 @@ bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(const geometry_msgs::msg:
   linearGoalReached = goaldist < this->xy_goal_tolerance_;
 
   return linearGoalReached && abs_angle_error < this->yaw_goal_tolerance_;
+  //return goal_checker->isGoalReached(tfpose.pose, finalgoal.pose, currentTwist);
 }
 
 /**
@@ -426,9 +423,31 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
     const geometry_msgs::msg::PoseStamped &pose, const geometry_msgs::msg::Twist &velocity,
     nav2_core::GoalChecker *goal_checker)
 {
+  RCLCPP_INFO(nh_->get_logger(), "[BackwardLocalPlanner] ------------------- LOCAL PLANNER LOOP -----------------");
   this->updateParameters();
 
+  // xy_goal_tolerance and yaw_goal_tolerance are just used for logging proposes and clamping the carrot
+  // goal distance (parameter safety)
+  if (xy_goal_tolerance_ == -1 || yaw_goal_tolerance_ == -1)
+  {
+    geometry_msgs::msg::Pose posetol;
+    geometry_msgs::msg::Twist twistol;
+    if (goal_checker->getTolerances(posetol, twistol))
+    {
+      xy_goal_tolerance_ = posetol.position.x;
+      yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation);
+      RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] xy_goal_tolerance_: " << xy_goal_tolerance_
+                                                                                          << ", yaw_goal_tolerance_: "
+                                                                                          << yaw_goal_tolerance_);
+    }
+    else
+    {
+      RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] could not get tolerances from goal checker");
+    }
+  }
+
   RCLCPP_INFO(nh_->get_logger(), "[BackwardLocalPlanner] ------------------- LOCAL PLANNER LOOP -----------------");
+
   geometry_msgs::msg::TwistStamped cmd_vel;
   RCLCPP_INFO(nh_->get_logger(), "[BackwardLocalPlanner] LOCAL PLANNER LOOP");
   geometry_msgs::msg::PoseStamped paux;
@@ -498,7 +517,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   //------------- END CONTEXT EVAL ----------
 
   bool linearGoalReached;
-  bool currentPoseInGoal = checkCurrentPoseInGoalRange(tfpose, betta_error, linearGoalReached);
+  bool currentPoseInGoal = checkCurrentPoseInGoalRange(tfpose, velocity, betta_error, linearGoalReached, goal_checker);
 
   // Make sure the robot is very close to the goal and it is really in the the last goal point.
   bool carrotInFinalGoalIndex = currentCarrotPoseIndex_ == (int)backwardsPlanPath_.size() - 1;
@@ -638,8 +657,20 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
 
       int i = 0;
       // RCLCPP_INFO_STREAM(nh_->get_logger(), "lplanner goal: " << finalgoalpose.pose.position);
+      geometry_msgs::msg::Twist mockzerospeed;
+
       for (auto &p : trajectory)
       {
+        /*geometry_msgs::msg::Pose pg;
+        pg.position.x = p[0];
+        pg.position.y = p[1];
+        tf2::Quaternion q;
+        q.setRPY(0, 0, p[2]);
+        pg.orientation = tf2::toMsg(q);
+
+        // WARNING I CANT USE isGoalReached because I can change the state of a stateful goal checker
+        if (goal_checker->isGoalReached(pg, finalgoalpose.pose, mockzerospeed))*/
+
         float dx = p[0] - finalgoalpose.pose.position.x;
         float dy = p[1] - finalgoalpose.pose.position.y;
 

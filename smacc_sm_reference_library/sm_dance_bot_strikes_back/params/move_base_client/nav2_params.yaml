@@ -189,8 +189,6 @@ controller_server:
       k_betta: -0.1 # -1.0
       carrot_distance: 0.3 #meters default 0.5 
       carrot_angular_distance: 0.3 # no constraint, max 3.1416
-      xy_goal_tolerance: 0.02 # 1 cm
-      yaw_goal_tolerance: 0.3
       pure_spinning_straight_line_mode: true
       max_linear_x_speed: 0.15
     ForwardLocalPlanner:

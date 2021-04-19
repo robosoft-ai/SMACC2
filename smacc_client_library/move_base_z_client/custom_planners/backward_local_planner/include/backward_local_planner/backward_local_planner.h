@@ -29,8 +29,7 @@ public:
 
   virtual ~BackwardLocalPlanner();
 
-  void configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, 
-                 std::string name,
+  void configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, std::string name,
                  const std::shared_ptr<tf2_ros::Buffer> &tf,
                  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> &costmap_ros) override;
 
@@ -57,16 +56,15 @@ public:
    * @param pose Current robot pose
    * @param velocity Current robot velocity
    * @return The best command for the robot to drive
-   */                                                     
-  virtual geometry_msgs::msg::TwistStamped computeVelocityCommands(const geometry_msgs::msg::PoseStamped & pose, 
-                                                                   const geometry_msgs::msg::Twist & velocity,
-                                                                   nav2_core::GoalChecker * goal_checker) override;
-
+   */
+  virtual geometry_msgs::msg::TwistStamped computeVelocityCommands(const geometry_msgs::msg::PoseStamped &pose,
+                                                                   const geometry_msgs::msg::Twist &velocity,
+                                                                   nav2_core::GoalChecker *goal_checker) override;
 
   /*deprecated in navigation2*/
   bool isGoalReached();
 
-  virtual void setSpeedLimit(const double & speed_limit, const bool & percentage) override;
+  virtual void setSpeedLimit(const double &speed_limit, const bool &percentage) override;
 
 private:
   void updateParameters();
@@ -79,19 +77,24 @@ private:
 
   bool resamplePrecisePlan();
 
-  void straightBackwardsAndPureSpinCmd(const geometry_msgs::msg::PoseStamped &pose, double& vetta, double& gamma, double alpha_error,
-                       double betta_error, double rho_error);
-  
+  void straightBackwardsAndPureSpinCmd(const geometry_msgs::msg::PoseStamped &pose, double &vetta, double &gamma,
+                                       double alpha_error, double betta_error, double rho_error);
+
   void publishGoalMarker(double x, double y, double phi);
+  
   void computeCurrentEuclideanAndAngularErrorsToCarrotGoal(const geometry_msgs::msg::PoseStamped &pose, double &dist,
                                                            double &angular_error);
+
   bool checkGoalReached(const geometry_msgs::msg::PoseStamped &pose, double vetta, double gamma, double alpha_error,
                         geometry_msgs::msg::Twist &cmd_vel);
 
-  bool checkCurrentPoseInGoalRange(const geometry_msgs::msg::PoseStamped &tfpose,  double angle_error, bool& linearGoalReached);
+  bool checkCurrentPoseInGoalRange(const geometry_msgs::msg::PoseStamped &tfpose, const geometry_msgs::msg::Twist & currentTwist, 
+                                   double angle_error, bool &linearGoalReached, nav2_core::GoalChecker *goalChecker);
 
   bool resetDivergenceDetection();
+
   bool divergenceDetectionUpdate(const geometry_msgs::msg::PoseStamped &pose);
+
   bool checkCarrotHalfPlainConstraint(const geometry_msgs::msg::PoseStamped &pose);
 
   // void reconfigCB(::backward_local_planner::BackwardLocalPlannerConfig &config, uint32_t level);
@@ -106,17 +109,12 @@ private:
 
   std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<visualization_msgs::msg::MarkerArray>> goalMarkerPublisher_;
 
+  // --- control parameters ---
   double k_rho_;
   double k_alpha_;
   double k_betta_;
   double pure_spinning_allowed_betta_error_;
   double linear_mode_rho_error_threshold_;
-
-  bool goalReached_;
-  bool initialPureSpinningStage_;
-  bool straightBackwardsAndPureSpinningMode_ = false;
-  bool enable_obstacle_checking_ = true;
-  bool inGoalPureSpinningState_ = false;
 
   const double alpha_offset_ = M_PI;
   const double betta_offset_ = 0;
@@ -131,6 +129,17 @@ private:
   double max_linear_x_speed_;   // meters/sec
   double max_angular_z_speed_;  // rads/sec
 
+  rclcpp::Duration waitingTimeout_;
+  rclcpp::Time waitingStamp_;
+
+  // --- planner state ---
+  bool goalReached_;
+  bool initialPureSpinningStage_;
+  bool straightBackwardsAndPureSpinningMode_ = false;
+  bool enable_obstacle_checking_ = true;
+  bool inGoalPureSpinningState_ = false;
+  bool waiting_;
+
   // references the current point inside the backwardsPlanPath were the robot is located
   int currentCarrotPoseIndex_;
 
@@ -138,10 +147,6 @@ private:
                           float maxtime, float dt, std::vector<Eigen::Vector3f> &outtraj);
 
   Eigen::Vector3f computeNewPositions(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, double dt);
-
-  bool waiting_;
-  rclcpp::Duration waitingTimeout_;
-  rclcpp::Time waitingStamp_;
 };
 }  // namespace backward_local_planner
 }  // namespace cl_move_base_z
