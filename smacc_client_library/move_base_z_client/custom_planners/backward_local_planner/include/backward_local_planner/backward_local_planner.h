@@ -79,8 +79,8 @@ private:
 
   bool resamplePrecisePlan();
 
-  void straightBackwardsAndPureSpinCmd(const geometry_msgs::msg::PoseStamped &pose, double vetta, double gamma, double alpha_error,
-                       double betta_error, double rho_error, geometry_msgs::msg::Twist &cmd_vel);
+  void straightBackwardsAndPureSpinCmd(const geometry_msgs::msg::PoseStamped &pose, double& vetta, double& gamma, double alpha_error,
+                       double betta_error, double rho_error);
   
   void publishGoalMarker(double x, double y, double phi);
   void computeCurrentEuclideanAndAngularErrorsToCarrotGoal(const geometry_msgs::msg::PoseStamped &pose, double &dist,

@@ -7,21 +7,13 @@ namespace cl_lidar
 {
 using namespace std::chrono_literals;
 
-class CpLidarSensorData : public smacc::ISmaccComponent
-{
-public:
-  sensor_msgs::msg::LaserScan lastMessage_;
-  float forwardObstacleDistance;
-
-  const float SECURITY_DISTANCE = 1;  // meters
-
-  virtual void onInitialize() override
+  void CpLidarSensorData::onInitialize()
   {
     auto client_ = dynamic_cast<smacc::client_bases::SmaccSubscriberClient<sensor_msgs::msg::LaserScan> *>(owner_);
     client_->onMessageReceived(&CpLidarSensorData::MessageCallbackStoreDistanceToWall, this);
   }
 
-  void MessageCallbackStoreDistanceToWall(const sensor_msgs::msg::LaserScan &scanmsg)
+  void CpLidarSensorData::MessageCallbackStoreDistanceToWall(const sensor_msgs::msg::LaserScan &scanmsg)
   {
     this->lastMessage_ = scanmsg;
     //auto fwdist = scanmsg.ranges[scanmsg.ranges.size() / 2] /*meter*/;
@@ -41,6 +33,6 @@ public:
       this->forwardObstacleDistance = std::max(fwdist - SECURITY_DISTANCE, 0.0F);
     }
   }
-};
+
 }  // namespace cl_lidar
 }  // namespace sm_dance_bot_strikes_back
