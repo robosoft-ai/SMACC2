@@ -193,19 +193,16 @@ controller_server:
       max_linear_x_speed: 0.15
     ForwardLocalPlanner:
       plugin: "cl_move_base_z::forward_local_planner::ForwardLocalPlanner"
-      k_rho: 2.0
+      k_rho: 2.5
       k_alpha: -0.4
       k_betta: -1.0
       carrot_distance: 0.2 #meters
       carrot_angular_distance: 0.5 # no constraint, max 3.1416
-      xy_goal_tolerance: 0.04
-      yaw_goal_tolerance: 0.01
       max_linear_x_speed: 0.25
       max_angular_z_speed: 0.15
     PureSpinningLocalPlanner:
       plugin: "pure_spinning_local_planner::PureSpinningLocalPlanner"
-      k_betta: 0.8
-      yaw_goal_tolerance: 0.3
+      k_betta: 8.0
       max_angular_z_speed: 0.15   
   
 

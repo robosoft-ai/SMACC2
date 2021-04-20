@@ -8,6 +8,25 @@ namespace cl_move_base_z
 {
 namespace pure_spinning_local_planner
 {
+template <typename T>
+void tryGetOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr &node, std::string param, T &value)
+{
+  if (!node->get_parameter(param, value))
+  {
+    node->set_parameter(rclcpp::Parameter(param, value));
+  }
+}
+
+template <typename T>
+void declareOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr &node, std::string param, T &value)
+{
+  if (!node->has_parameter(param))
+  {
+    node->declare_parameter(param, value);
+    // node->set_parameter(rclcpp::Parameter(param, value));
+  }
+}
+
 PureSpinningLocalPlanner::PureSpinningLocalPlanner()
 {
 }
@@ -30,6 +49,7 @@ void PureSpinningLocalPlanner::cleanup()
 {
   this->plan_.clear();
   this->currentPoseIndex_ = 0;
+  yaw_goal_tolerance_ = -1.0;
 }
 
 void PureSpinningLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &node, std::string name,
@@ -39,31 +59,45 @@ void PureSpinningLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::
   costmapRos_ = costmap_ros;
   name_ = name;
   nh_ = node.lock();
-  k_betta_ = 10.0;
-  yaw_goal_tolerance_ = 0.08;
+  k_betta_ = 1.0;
   intermediate_goal_yaw_tolerance_ = 0.12;
   max_angular_z_speed_ = 1.0;
+  yaw_goal_tolerance_ = -1.0;
 
-  nh_->declare_parameter("k_betta", k_betta_);
-  nh_->declare_parameter("yaw_goal_tolerance", yaw_goal_tolerance_);
-  nh_->declare_parameter("intermediate_goals_yaw_tolerance", intermediate_goal_yaw_tolerance_);
-  nh_->declare_parameter("max_angular_z_speed", max_angular_z_speed_);
+  declareOrSet(nh_, name_ + ".k_betta", k_betta_);
+  declareOrSet(nh_, name_ + ".intermediate_goals_yaw_tolerance", intermediate_goal_yaw_tolerance_);
+  declareOrSet(nh_, name_ + ".max_angular_z_speed", max_angular_z_speed_);
+  
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] pure spinning planner already created");
 }
 
 void PureSpinningLocalPlanner::updateParameters()
 {
-  nh_->get_parameter("k_betta", k_betta_);
-  nh_->get_parameter("yaw_goal_tolerance", yaw_goal_tolerance_);
-  nh_->get_parameter("intermediate_goals_yaw_tolerance", intermediate_goal_yaw_tolerance_);
-  nh_->get_parameter("max_angular_z_speed", max_angular_z_speed_);
+  tryGetOrSet(nh_, name_ + ".k_betta", k_betta_);
+  tryGetOrSet(nh_, name_ + ".intermediate_goals_yaw_tolerance", intermediate_goal_yaw_tolerance_);
+  tryGetOrSet(nh_, name_ + ".max_angular_z_speed", max_angular_z_speed_);
 }
 
-geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityCommands(const geometry_msgs::msg::PoseStamped & pose, 
-                                                                   const geometry_msgs::msg::Twist & velocity,
-                                                                   nav2_core::GoalChecker * goal_checker)
+geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityCommands(
+    const geometry_msgs::msg::PoseStamped &pose, const geometry_msgs::msg::Twist &velocity,
+    nav2_core::GoalChecker *goal_checker)
 {
   this->updateParameters();
+  if (yaw_goal_tolerance_ == -1)
+  {
+    geometry_msgs::msg::Pose posetol;
+    geometry_msgs::msg::Twist twistol;
+    if (goal_checker->getTolerances(posetol, twistol))
+    {
+      yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation);
+      RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] yaw_goal_tolerance_: " << yaw_goal_tolerance_);
+    }
+    else
+    {
+      RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] could not get tolerances from goal checker");
+    }
+  }
+
   geometry_msgs::msg::TwistStamped cmd_vel;
 
   goalReached_ = false;
@@ -74,21 +108,20 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
   tf2::Quaternion q;
   tf2::fromMsg(currentPose.pose.orientation, q);
   auto currentYaw = tf2::getYaw(currentPose.pose.orientation);
-  double angular_error;
+  double angular_error=0;
   double targetYaw;
 
-  while (currentPoseIndex_ < (int)plan_.size())
+  do
   {
     auto &goal = plan_[currentPoseIndex_];
     targetYaw = tf2::getYaw(goal.pose.orientation);
 
-    // double angular_error = angles::shortest_angular_distance( currentYaw , targetYaw) ;
+    //angular_error = angles::shortest_angular_distance(currentYaw, targetYaw);
     angular_error = targetYaw - currentYaw;
 
     // all the points must be reached using the control rule, but the last one
     // have an special condition
-    if ((currentPoseIndex_ < (int)plan_.size() - 1 && fabs(angular_error) < this->intermediate_goal_yaw_tolerance_) ||
-        (currentPoseIndex_ == (int)plan_.size() - 1 && fabs(angular_error) < this->intermediate_goal_yaw_tolerance_))
+    if ((currentPoseIndex_ < (int)plan_.size() - 1 && fabs(angular_error) < this->intermediate_goal_yaw_tolerance_))
     {
       currentPoseIndex_++;
     }
@@ -96,22 +129,27 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
     {
       break;
     }
-  }
+  }while (currentPoseIndex_ < (int)plan_.size());
 
   auto omega = angular_error * k_betta_;
   cmd_vel.twist.angular.z = std::min(std::max(omega, -fabs(max_angular_z_speed_)), fabs(max_angular_z_speed_));
 
-  RCLCPP_DEBUG_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] angular error: " << angular_error << "("
-                                                                                      << yaw_goal_tolerance_ << ")");
-  RCLCPP_DEBUG_STREAM(nh_->get_logger(),
-                      "[PureSpinningLocalPlanner] command angular speed: " << cmd_vel.twist.angular.z);
-  RCLCPP_DEBUG_STREAM(nh_->get_logger(),
-                      "[PureSpinningLocalPlanner] completion " << currentPoseIndex_ << "/" << plan_.size());
+  RCLCPP_INFO_STREAM(nh_->get_logger(),
+                     "[PureSpinningLocalPlanner] pose index: " << currentPoseIndex_ << "/" << plan_.size());
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] k_betta_: " << k_betta_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] angular error: " << angular_error << "("
+                                                                                     << yaw_goal_tolerance_ << ")");
+  RCLCPP_INFO_STREAM(nh_->get_logger(),
+                     "[PureSpinningLocalPlanner] command angular speed: " << cmd_vel.twist.angular.z);
+  RCLCPP_INFO_STREAM(nh_->get_logger(),
+                     "[PureSpinningLocalPlanner] completion " << currentPoseIndex_ << "/" << plan_.size());
 
   if (currentPoseIndex_ >= (int)plan_.size() - 1 && fabs(angular_error) < yaw_goal_tolerance_)
   {
-    RCLCPP_DEBUG_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] GOAL REACHED ");
+    RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] GOAL REACHED. Sending stop command.");
     goalReached_ = true;
+    cmd_vel.twist.linear.x = 0;
+    cmd_vel.twist.angular.z = 0;
   }
 
   return cmd_vel;
