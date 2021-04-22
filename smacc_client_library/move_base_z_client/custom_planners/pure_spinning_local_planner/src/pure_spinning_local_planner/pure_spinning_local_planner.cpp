@@ -89,7 +89,7 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
     geometry_msgs::msg::Twist twistol;
     if (goal_checker->getTolerances(posetol, twistol))
     {
-      yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation);
+      yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation) * 0.35; // WORKAROUND GOAL CHECKER DIFFERENCE NAV CONTROLLER
       RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] yaw_goal_tolerance_: " << yaw_goal_tolerance_);
     }
     else
@@ -116,8 +116,10 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
     auto &goal = plan_[currentPoseIndex_];
     targetYaw = tf2::getYaw(goal.pose.orientation);
 
-    //angular_error = angles::shortest_angular_distance(currentYaw, targetYaw);
-    angular_error = targetYaw - currentYaw;
+    angular_error = angles::shortest_angular_distance(currentYaw, targetYaw);
+
+    // if it is in the following way, sometimes the direction is incorrect
+    //angular_error = targetYaw - currentYaw;
 
     // all the points must be reached using the control rule, but the last one
     // have an special condition

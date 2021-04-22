@@ -116,7 +116,7 @@ controller_server:
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
       xy_goal_tolerance: 0.257
-      yaw_goal_tolerance: 0.165
+      yaw_goal_tolerance: 0.05
       stateful: True
     backward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
@@ -125,7 +125,7 @@ controller_server:
       stateful: True
     forward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.04
+      xy_goal_tolerance: 0.09
       yaw_goal_tolerance: 0.05
       stateful: True
     absolute_rotate_goal_checker:
@@ -135,7 +135,7 @@ controller_server:
       stateful: True
     undo_path_backwards_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.02 # 2 cm
+      xy_goal_tolerance: 0.04 # 2 cm
       yaw_goal_tolerance: 0.1
       stateful: True
 
@@ -190,7 +190,7 @@ controller_server:
       carrot_distance: 0.3 #meters default 0.5 
       carrot_angular_distance: 0.3 # no constraint, max 3.1416
       pure_spinning_straight_line_mode: true
-      max_linear_x_speed: 0.15
+      max_linear_x_speed: 0.25
     ForwardLocalPlanner:
       plugin: "cl_move_base_z::forward_local_planner::ForwardLocalPlanner"
       k_rho: 2.5
@@ -198,12 +198,12 @@ controller_server:
       k_betta: -1.0
       carrot_distance: 0.2 #meters
       carrot_angular_distance: 0.5 # no constraint, max 3.1416
-      max_linear_x_speed: 0.25
-      max_angular_z_speed: 0.15
+      max_linear_x_speed: 0.3
+      max_angular_z_speed: 0.2
     PureSpinningLocalPlanner:
       plugin: "pure_spinning_local_planner::PureSpinningLocalPlanner"
-      k_betta: 8.0
-      max_angular_z_speed: 0.15   
+      k_betta: 10.0
+      max_angular_z_speed: 0.2
   
 
 controller_server_rclcpp_node:

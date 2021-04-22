@@ -389,7 +389,7 @@ bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(const geometry_msgs::msg:
   linearGoalReached = goaldist < this->xy_goal_tolerance_;
 
   return linearGoalReached && abs_angle_error < this->yaw_goal_tolerance_;
-  //return goal_checker->isGoalReached(tfpose.pose, finalgoal.pose, currentTwist);
+  // return goal_checker->isGoalReached(tfpose.pose, finalgoal.pose, currentTwist);
 }
 
 /**
@@ -426,6 +426,19 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   RCLCPP_INFO(nh_->get_logger(), "[BackwardLocalPlanner] ------------------- LOCAL PLANNER LOOP -----------------");
   this->updateParameters();
 
+  // consistency check
+  if (this->backwardsPlanPath_.size() > 0)
+  {
+    RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner] Current pose frame id: "
+                                              << backwardsPlanPath_.front().header.frame_id
+                                              << ", path pose frame id: " << pose.header.frame_id);
+
+    if (backwardsPlanPath_.front().header.frame_id != pose.header.frame_id)
+    {
+      RCLCPP_ERROR_STREAM(nh_->get_logger(), "[ForwardLocalPlanner] Inconsistent frames");
+    }
+  }
+
   // xy_goal_tolerance and yaw_goal_tolerance are just used for logging proposes and clamping the carrot
   // goal distance (parameter safety)
   if (xy_goal_tolerance_ == -1 || yaw_goal_tolerance_ == -1)
@@ -434,8 +447,8 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
     geometry_msgs::msg::Twist twistol;
     if (goal_checker->getTolerances(posetol, twistol))
     {
-      xy_goal_tolerance_ = posetol.position.x;
-      yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation);
+      xy_goal_tolerance_ = posetol.position.x * 0.35;  // WORKAROUND ISSUE GOAL CHECKER NAV_CONTROLLER DIFF
+      yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation) * 0.35;
       RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] xy_goal_tolerance_: " << xy_goal_tolerance_
                                                                                           << ", yaw_goal_tolerance_: "
                                                                                           << yaw_goal_tolerance_);

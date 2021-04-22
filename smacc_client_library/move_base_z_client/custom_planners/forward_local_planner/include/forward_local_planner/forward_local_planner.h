@@ -91,6 +91,7 @@ private:
 
   double max_angular_z_speed_;
   double max_linear_x_speed_;
+  double transform_tolerance_;
 
   void generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist, float maxangle,
                           float maxtime, float dt, std::vector<Eigen::Vector3f> &outtraj);
@@ -104,6 +105,7 @@ private:
   bool waiting_;
   rclcpp::Duration waitingTimeout_;
   rclcpp::Time waitingStamp_;
+  std::shared_ptr<tf2_ros::Buffer> tf_;
 };
 }  // namespace forward_local_planner
 }  // namespace cl_move_base_z
