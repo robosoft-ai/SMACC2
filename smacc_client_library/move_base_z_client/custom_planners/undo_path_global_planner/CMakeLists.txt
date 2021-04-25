@@ -19,6 +19,8 @@ find_package(nav2_costmap_2d)
 find_package(geometry_msgs)
 find_package(tf2)
 find_package(pluginlib)
+find_package(nav_2d_utils)
+
 
 set(dependencies
     nav2_core
@@ -28,6 +30,7 @@ set(dependencies
     visualization_msgs
     tf2
     pluginlib
+    nav_2d_utils
 )
 
 include_directories(include)

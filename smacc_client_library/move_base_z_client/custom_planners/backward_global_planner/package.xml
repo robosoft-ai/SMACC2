@@ -23,7 +23,8 @@
   <depend>nav2_costmap_2d</depend>
   <depend>forward_global_planner</depend>
   <depend>visualization_msgs</depend>
-
+  <depend>nav_2d_utils</depend>
+  
   <export>
     <build_type>ament_cmake</build_type>
   </export>

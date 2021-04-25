@@ -19,8 +19,9 @@
   <depend>geometry_msgs</depend>
   <depend>tf2</depend>
   <depend>move_base_z_planners_common</depend>
+  <depend>nav_2d_utils</depend>
   <build_depend>pluginlib</build_depend>
-  
+    
   <export>
     <build_type>ament_cmake</build_type>
   </export>

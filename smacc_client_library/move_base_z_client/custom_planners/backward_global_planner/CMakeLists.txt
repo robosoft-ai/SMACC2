@@ -21,6 +21,7 @@ find_package(tf2)
 find_package(pluginlib)
 find_package(forward_global_planner)
 find_package(angles)
+find_package(nav_2d_utils)
 
 set(dependencies
     nav2_core
@@ -31,7 +32,8 @@ set(dependencies
     tf2
     pluginlib
     forward_global_planner
-    angles)
+    angles
+    nav_2d_utils)
 
 include_directories(include)
 
