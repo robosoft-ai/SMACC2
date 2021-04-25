@@ -106,7 +106,8 @@ private:
 
   std::vector<geometry_msgs::msg::PoseStamped> backwardsPlanPath_;
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmapRos_;
-
+  std::shared_ptr<tf2_ros::Buffer> tf_;
+  
   std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<visualization_msgs::msg::MarkerArray>> goalMarkerPublisher_;
 
   // --- control parameters ---
@@ -119,6 +120,9 @@ private:
   const double alpha_offset_ = M_PI;
   const double betta_offset_ = 0;
 
+  double max_linear_x_speed_;   // meters/sec
+  double max_angular_z_speed_;  // rads/sec
+
   double yaw_goal_tolerance_;  // radians
   double xy_goal_tolerance_;   // meters
 
@@ -126,8 +130,7 @@ private:
   rad carrot_angular_distance_;
   meter divergenceDetectionLastCarrotLinearDistance_;
 
-  double max_linear_x_speed_;   // meters/sec
-  double max_angular_z_speed_;  // rads/sec
+  double transform_tolerance_;
 
   rclcpp::Duration waitingTimeout_;
   rclcpp::Time waitingStamp_;

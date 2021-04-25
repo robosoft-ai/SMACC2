@@ -87,6 +87,12 @@ private:
 
     double puresSpinningRadStep_; // rads
 
+    double transform_tolerance_;
+
+    std::string name_;
+
+    std::shared_ptr<tf2_ros::Buffer> tf_;
+
 };
 } // namespace backward_global_planner
 } // namespace cl_move_base_z

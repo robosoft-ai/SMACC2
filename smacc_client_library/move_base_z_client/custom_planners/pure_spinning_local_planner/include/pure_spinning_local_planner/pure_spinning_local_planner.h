@@ -55,11 +55,10 @@ public:
    * @param pose Current robot pose
    * @param velocity Current robot velocity
    * @return The best command for the robot to drive
-   */  
-   virtual geometry_msgs::msg::TwistStamped computeVelocityCommands(const geometry_msgs::msg::PoseStamped & pose, 
-        const geometry_msgs::msg::Twist & velocity,
-        nav2_core::GoalChecker * goal_checker) override;
-
+   */
+  virtual geometry_msgs::msg::TwistStamped computeVelocityCommands(const geometry_msgs::msg::PoseStamped &pose,
+                                                                   const geometry_msgs::msg::Twist &velocity,
+                                                                   nav2_core::GoalChecker *goal_checker) override;
 
   /*deprecated in navigation2*/
   bool isGoalReached();
@@ -78,6 +77,8 @@ private:
 
   std::vector<geometry_msgs::msg::PoseStamped> plan_;
 
+  std::shared_ptr<tf2_ros::Buffer> tf_;
+
   // void reconfigCB(::pure_spinning_local_planner::PureSpinningLocalPlannerConfig &config, uint32_t level);
 
   // dynamic_reconfigure::Server<::pure_spinning_local_planner::PureSpinningLocalPlannerConfig> paramServer_;
@@ -88,6 +89,7 @@ private:
   rad yaw_goal_tolerance_;
   rad intermediate_goal_yaw_tolerance_;
   rad_s max_angular_z_speed_;
+  double transform_tolerance_;
 };
 }  // namespace pure_spinning_local_planner
 }  // namespace cl_move_base_z

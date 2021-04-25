@@ -81,6 +81,10 @@ private:
 
     std::string name_;
 
+    std::shared_ptr<tf2_ros::Buffer> tf_;
+
+    double transform_tolerance_;
+
     void createDefaultBackwardPath(const geometry_msgs::msg::PoseStamped &start,
                                    const geometry_msgs::msg::PoseStamped &goal, 
                                    std::vector<geometry_msgs::msg::PoseStamped> &plan);
