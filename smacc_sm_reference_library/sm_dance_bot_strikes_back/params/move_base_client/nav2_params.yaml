@@ -116,7 +116,7 @@ controller_server:
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
       xy_goal_tolerance: 0.257
-      yaw_goal_tolerance: 0.05
+      yaw_goal_tolerance: 0.165 # almost free orientation
       stateful: True
     backward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
@@ -184,6 +184,7 @@ controller_server:
       RotateToGoal.lookahead_time: -1.0
     BackwardLocalPlanner:
       plugin: "backward_local_planner::BackwardLocalPlanner"
+      transform_tolerance: 0.1
       k_rho: -1.4 # linear distance to the goal gain, default = -1.0 (related with carrot distance)
       k_alpha: -0.1 #-0.1
       k_betta: -0.1 # -1.0
@@ -193,6 +194,7 @@ controller_server:
       max_linear_x_speed: 0.25
     ForwardLocalPlanner:
       plugin: "cl_move_base_z::forward_local_planner::ForwardLocalPlanner"
+      transform_tolerance: 0.1
       k_rho: 2.5
       k_alpha: -0.4
       k_betta: -1.0
@@ -202,6 +204,7 @@ controller_server:
       max_angular_z_speed: 0.2
     PureSpinningLocalPlanner:
       plugin: "pure_spinning_local_planner::PureSpinningLocalPlanner"
+      transform_tolerance: 0.1
       k_betta: 10.0
       max_angular_z_speed: 0.2
   
@@ -319,15 +322,18 @@ planner_server:
     planner_plugins: ["GridBased", "ForwardGlobalPlanner", "BackwardGlobalPlanner", "UndoPathGlobalPlanner"]
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
-      tolerance: 0.5
+      tolerance: 10.0 #meters
       use_astar: false
       allow_unknown: true
     ForwardGlobalPlanner:
       plugin: "forward_global_planner::ForwardGlobalPlanner"
+      transform_tolerance: 0.5
     BackwardGlobalPlanner:
       plugin: "backward_global_planner::BackwardGlobalPlanner"
+      transform_tolerance: 0.5
     UndoPathGlobalPlanner:
       plugin: "undo_path_global_planner::UndoPathGlobalPlanner"
+      transform_tolerance: 0.5
 
 planner_server_rclcpp_node:
   ros__parameters:

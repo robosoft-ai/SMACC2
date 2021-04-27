@@ -33,6 +33,7 @@ void CbWaitPose::onEntry()
   {
     RCLCPP_INFO(getLogger(), "[CbWaitPose] error getting the robot pose");
     this->postFailureEvent();
+    return;
   }
 
   RCLCPP_INFO(getLogger(), "[CbWaitPose] pose received");

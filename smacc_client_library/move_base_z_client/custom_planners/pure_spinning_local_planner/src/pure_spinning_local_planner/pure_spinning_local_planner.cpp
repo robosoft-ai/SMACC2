@@ -3,6 +3,7 @@
 #include <pure_spinning_local_planner/pure_spinning_local_planner.h>
 
 #include <pluginlib/class_list_macros.hpp>
+#include <nav_2d_utils/tf_help.hpp>
 
 namespace cl_move_base_z
 {
@@ -53,7 +54,7 @@ void PureSpinningLocalPlanner::cleanup()
 }
 
 void PureSpinningLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &node, std::string name,
-                                         const std::shared_ptr<tf2_ros::Buffer> & /*tf*/,
+                                         const std::shared_ptr<tf2_ros::Buffer> & tf,
                                          const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> &costmap_ros)
 {
   costmapRos_ = costmap_ros;
@@ -63,10 +64,13 @@ void PureSpinningLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::
   intermediate_goal_yaw_tolerance_ = 0.12;
   max_angular_z_speed_ = 1.0;
   yaw_goal_tolerance_ = -1.0;
+  transform_tolerance_ = 0.1;
+  tf_ = tf;
 
   declareOrSet(nh_, name_ + ".k_betta", k_betta_);
   declareOrSet(nh_, name_ + ".intermediate_goals_yaw_tolerance", intermediate_goal_yaw_tolerance_);
   declareOrSet(nh_, name_ + ".max_angular_z_speed", max_angular_z_speed_);
+  declareOrSet(nh_, name_ + ".transform_tolerance", transform_tolerance_);
   
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] pure spinning planner already created");
 }
@@ -76,6 +80,7 @@ void PureSpinningLocalPlanner::updateParameters()
   tryGetOrSet(nh_, name_ + ".k_betta", k_betta_);
   tryGetOrSet(nh_, name_ + ".intermediate_goals_yaw_tolerance", intermediate_goal_yaw_tolerance_);
   tryGetOrSet(nh_, name_ + ".max_angular_z_speed", max_angular_z_speed_);
+  tryGetOrSet(nh_, name_ + ".transform_tolerance", transform_tolerance_);
 }
 
 geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityCommands(
@@ -89,7 +94,8 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
     geometry_msgs::msg::Twist twistol;
     if (goal_checker->getTolerances(posetol, twistol))
     {
-      yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation) * 0.35; // WORKAROUND GOAL CHECKER DIFFERENCE NAV CONTROLLER
+      yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation);
+      //yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation) * 0.35; // WORKAROUND GOAL CHECKER DIFFERENCE NAV CONTROLLER
       RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] yaw_goal_tolerance_: " << yaw_goal_tolerance_);
     }
     else
@@ -171,7 +177,21 @@ bool PureSpinningLocalPlanner::isGoalReached()
 void PureSpinningLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
 {
   RCLCPP_INFO_STREAM(nh_->get_logger(), "activating controller PureSpinningLocalPlanner");
-  plan_ = path.poses;
+
+  nav_msgs::msg::Path transformedPlan;
+
+  rclcpp::Duration ttol(transform_tolerance_);
+  // transform global plan
+  for (auto &p : path.poses)
+  {
+    geometry_msgs::msg::PoseStamped transformedPose;  
+    nav_2d_utils::transformPose(tf_, costmapRos_->getGlobalFrameID(), p, transformedPose, ttol);
+    transformedPose.header.frame_id = costmapRos_->getGlobalFrameID();
+    transformedPlan.poses.push_back(transformedPose);
+  }
+
+  plan_ = transformedPlan.poses;
+
   goalReached_ = false;
   currentPoseIndex_ = 0;
 }

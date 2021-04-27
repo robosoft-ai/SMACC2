@@ -81,15 +81,16 @@ private:
                                        double alpha_error, double betta_error, double rho_error);
 
   void publishGoalMarker(double x, double y, double phi);
-  
+
   void computeCurrentEuclideanAndAngularErrorsToCarrotGoal(const geometry_msgs::msg::PoseStamped &pose, double &dist,
                                                            double &angular_error);
 
   bool checkGoalReached(const geometry_msgs::msg::PoseStamped &pose, double vetta, double gamma, double alpha_error,
                         geometry_msgs::msg::Twist &cmd_vel);
 
-  bool checkCurrentPoseInGoalRange(const geometry_msgs::msg::PoseStamped &tfpose, const geometry_msgs::msg::Twist & currentTwist, 
-                                   double angle_error, bool &linearGoalReached, nav2_core::GoalChecker *goalChecker);
+  bool checkCurrentPoseInGoalRange(const geometry_msgs::msg::PoseStamped &tfpose,
+                                   const geometry_msgs::msg::Twist &currentTwist, double angle_error,
+                                   bool &linearGoalReached, nav2_core::GoalChecker *goalChecker);
 
   bool resetDivergenceDetection();
 
@@ -107,8 +108,9 @@ private:
   std::vector<geometry_msgs::msg::PoseStamped> backwardsPlanPath_;
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmapRos_;
   std::shared_ptr<tf2_ros::Buffer> tf_;
-  
+
   std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<visualization_msgs::msg::MarkerArray>> goalMarkerPublisher_;
+  std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<nav_msgs::msg::Path>> planPub_;
 
   // --- control parameters ---
   double k_rho_;
@@ -135,7 +137,7 @@ private:
   rclcpp::Duration waitingTimeout_;
   rclcpp::Time waitingStamp_;
 
-  // --- planner state ---
+  // --- controller state ---
   bool goalReached_;
   bool initialPureSpinningStage_;
   bool straightBackwardsAndPureSpinningMode_ = false;

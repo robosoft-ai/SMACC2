@@ -6,6 +6,7 @@
 #include <chrono>
 #include <pluginlib/class_list_macros.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
+#include <nav_2d_utils/tf_help.hpp>
 
 // register this planner as a BaseLocalPlanner plugin
 PLUGINLIB_EXPORT_CLASS(cl_move_base_z::backward_local_planner::BackwardLocalPlanner, nav2_core::Controller)
@@ -22,7 +23,6 @@ namespace backward_local_planner
  ******************************************************************************************************************
  */
 BackwardLocalPlanner::BackwardLocalPlanner() : waitingTimeout_(0s)
-//: paramServer_(ros::NodeHandle("~BackwardLocalPlanner"))
 {
 }
 
@@ -38,13 +38,17 @@ BackwardLocalPlanner::~BackwardLocalPlanner()
 void BackwardLocalPlanner::activate()
 {
   RCLCPP_INFO_STREAM(nh_->get_logger(), "activating controller BackwardLocalPlanner");
-  this->updateParameters();
-  this->goalMarkerPublisher_->on_activate();
+  updateParameters();
+  
+  goalMarkerPublisher_->on_activate();
+  planPub_->on_activate();
   backwardsPlanPath_.clear();
 }
 
 void BackwardLocalPlanner::deactivate()
 {
+  planPub_->on_deactivate();
+  goalMarkerPublisher_->on_deactivate();
 }
 
 void BackwardLocalPlanner::cleanup()
@@ -79,13 +83,14 @@ void declareOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr &node, std::string 
 }
 
 void BackwardLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, std::string name,
-                                     const std::shared_ptr<tf2_ros::Buffer> & /* tf*/,
+                                     const std::shared_ptr<tf2_ros::Buffer> &  tf,
                                      const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> &costmap_ros)
 {
   this->costmapRos_ = costmap_ros;
   // ros::NodeHandle nh("~/BackwardLocalPlanner");
   this->nh_ = parent.lock();
   this->name_ = name;
+  this->tf_ = tf;
 
   k_rho_ = -1.0;
   k_alpha_ = 0.5;
@@ -97,10 +102,8 @@ void BackwardLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::Weak
   max_angular_z_speed_ = 2.0;
   yaw_goal_tolerance_ = -1;
   xy_goal_tolerance_ = -1;
+  waitingTimeout_ = rclcpp::Duration(10s);
 
-  // constructor(): paramServer_(ros::NodeHandle("~BackwardLocalPlanner"))
-  // f = boost::bind(&BackwardLocalPlanner::reconfigCB, this, _1, _2);
-  // paramServer_.setCallback(f);
 
   this->currentCarrotPoseIndex_ = 0;
 
@@ -144,7 +147,9 @@ void BackwardLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::Weak
 
   goalMarkerPublisher_ =
       nh_->create_publisher<visualization_msgs::msg::MarkerArray>("backward_local_planner/goal_marker", 1);
-  waitingTimeout_ = rclcpp::Duration(10s);
+
+  planPub_ = nh_->create_publisher<nav_msgs::msg::Path>("backward_local_planner/path", 1);
+
 }
 
 void BackwardLocalPlanner::updateParameters()
@@ -418,7 +423,6 @@ void BackwardLocalPlanner::straightBackwardsAndPureSpinCmd(const geometry_msgs::
  * computeVelocityCommands()
  ******************************************************************************************************************
  */
-
 geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
     const geometry_msgs::msg::PoseStamped &pose, const geometry_msgs::msg::Twist &velocity,
     nav2_core::GoalChecker *goal_checker)
@@ -429,13 +433,13 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   // consistency check
   if (this->backwardsPlanPath_.size() > 0)
   {
-    RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner] Current pose frame id: "
+    RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] Current pose frame id: "
                                               << backwardsPlanPath_.front().header.frame_id
                                               << ", path pose frame id: " << pose.header.frame_id);
 
     if (backwardsPlanPath_.front().header.frame_id != pose.header.frame_id)
     {
-      RCLCPP_ERROR_STREAM(nh_->get_logger(), "[ForwardLocalPlanner] Inconsistent frames");
+      RCLCPP_ERROR_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] Inconsistent frames");
     }
   }
 
@@ -447,8 +451,10 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
     geometry_msgs::msg::Twist twistol;
     if (goal_checker->getTolerances(posetol, twistol))
     {
-      xy_goal_tolerance_ = posetol.position.x * 0.35;  // WORKAROUND ISSUE GOAL CHECKER NAV_CONTROLLER DIFF
-      yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation) * 0.35;
+      xy_goal_tolerance_ = posetol.position.x ;
+      yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation);
+      //xy_goal_tolerance_ = posetol.position.x * 0.35;  // WORKAROUND ISSUE GOAL CHECKER NAV_CONTROLLER DIFF
+      //yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation) * 0.35;
       RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] xy_goal_tolerance_: " << xy_goal_tolerance_
                                                                                           << ", yaw_goal_tolerance_: "
                                                                                           << yaw_goal_tolerance_);
@@ -923,16 +929,24 @@ bool BackwardLocalPlanner::resamplePrecisePlan()
  */
 void BackwardLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
 {
-  initialPureSpinningStage_ = true;
-  goalReached_ = false;
-  backwardsPlanPath_ = path.poses;
-
   RCLCPP_INFO_STREAM(nh_->get_logger(),
-                     "[BackwardLocalPlanner] setPlan: new global plan received ( " << backwardsPlanPath_.size() << ")");
-  initialPureSpinningStage_ = true;
-  goalReached_ = false;
-  inGoalPureSpinningState_ = false;
+                     "[BackwardLocalPlanner] setPlan: new global plan received ( " << path.poses.size() << ")");
+  
+  //------------- TRANSFORM TO LOCAL FRAME PATH ---------------------------
+  nav_msgs::msg::Path transformedPlan;
+  rclcpp::Duration ttol(transform_tolerance_);
+  // transform global plan to the navigation reference frame
+  for (auto &p : path.poses)
+  {
+    geometry_msgs::msg::PoseStamped transformedPose;  
+    nav_2d_utils::transformPose(tf_, costmapRos_->getGlobalFrameID(), p, transformedPose, ttol);
+    transformedPose.header.frame_id = costmapRos_->getGlobalFrameID();
+    transformedPlan.poses.push_back(transformedPose);
+  }
 
+  backwardsPlanPath_ = transformedPlan.poses;  
+  
+  // --------- resampling path feature -----------
   geometry_msgs::msg::PoseStamped tfpose;
   if (!costmapRos_->getRobotPose(tfpose))
   {
@@ -941,11 +955,18 @@ void BackwardLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
   }
 
   geometry_msgs::msg::PoseStamped posestamped = tfpose;
-
   backwardsPlanPath_.insert(backwardsPlanPath_.begin(), posestamped);
-
   this->resamplePrecisePlan();
 
+  nav_msgs::msg::Path planMsg;
+  planMsg.poses = backwardsPlanPath_;
+  planMsg.header.frame_id = costmapRos_->getGlobalFrameID();
+  planMsg.header.stamp = nh_->now();
+  planPub_->publish(planMsg);
+
+  // ------ reset controller state ----------------------
+  goalReached_ = false;
+  inGoalPureSpinningState_ = false;
   currentCarrotPoseIndex_ = 0;
   this->resetDivergenceDetection();
 
@@ -956,6 +977,7 @@ void BackwardLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
     return;
   }
 
+  // -------- initialize carrot ----------------
   bool foundInitialCarrotGoal = this->findInitialCarrotGoal(tfpose);
   if (!foundInitialCarrotGoal)
   {
@@ -1071,6 +1093,7 @@ void BackwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
   marker.scale.z = 0.05;
   marker.color.a = 1.0;
 
+  // red marker
   marker.color.r = 1;
   marker.color.g = 0;
   marker.color.b = 0;

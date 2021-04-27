@@ -5,10 +5,12 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /TF1
         - /TF1/Frames1
         - /TF1/Tree1
+        - /BackwardLocalPlan1
       Splitter Ratio: 0.5833333134651184
-    Tree Height: 865
+    Tree Height: 1914
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -104,7 +106,7 @@ Visualization Manager:
           Value: true
       Marker Scale: 1
       Name: TF
-      Show Arrows: true
+      Show Arrows: false
       Show Axes: true
       Show Names: false
       Tree:
@@ -160,6 +162,7 @@ Visualization Manager:
       Topic:
         Depth: 5
         Durability Policy: Volatile
+        Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Best Effort
         Value: /scan
@@ -193,6 +196,7 @@ Visualization Manager:
       Topic:
         Depth: 5
         Durability Policy: Volatile
+        Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Best Effort
         Value: /mobile_base/sensors/bumper_pointcloud
@@ -208,6 +212,7 @@ Visualization Manager:
       Topic:
         Depth: 1
         Durability Policy: Transient Local
+        Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /map
@@ -235,6 +240,7 @@ Visualization Manager:
       Topic:
         Depth: 5
         Durability Policy: Volatile
+        Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Best Effort
         Value: /particlecloud
@@ -250,6 +256,7 @@ Visualization Manager:
           Topic:
             Depth: 1
             Durability Policy: Transient Local
+            Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /global_costmap/costmap
@@ -284,6 +291,7 @@ Visualization Manager:
           Topic:
             Depth: 5
             Durability Policy: Volatile
+            Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /plan
@@ -315,6 +323,7 @@ Visualization Manager:
           Topic:
             Depth: 5
             Durability Policy: Volatile
+            Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /global_costmap/voxel_marked_cloud
@@ -329,6 +338,7 @@ Visualization Manager:
           Topic:
             Depth: 5
             Durability Policy: Volatile
+            Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /global_costmap/published_footprint
@@ -346,6 +356,7 @@ Visualization Manager:
           Topic:
             Depth: 1
             Durability Policy: Transient Local
+            Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /local_costmap/costmap
@@ -380,6 +391,7 @@ Visualization Manager:
           Topic:
             Depth: 5
             Durability Policy: Volatile
+            Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /local_plan
@@ -404,6 +416,7 @@ Visualization Manager:
           Topic:
             Depth: 5
             Durability Policy: Volatile
+            Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /local_costmap/published_footprint
@@ -435,6 +448,7 @@ Visualization Manager:
           Topic:
             Depth: 5
             Durability Policy: Volatile
+            Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /local_costmap/voxel_marked_cloud
@@ -455,6 +469,7 @@ Visualization Manager:
           Topic:
             Depth: 5
             Durability Policy: Volatile
+            Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /intel_realsense_r200_depth/image_raw
@@ -486,6 +501,7 @@ Visualization Manager:
           Topic:
             Depth: 5
             Durability Policy: Volatile
+            Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /intel_realsense_r200_depth/points
@@ -517,6 +533,7 @@ Visualization Manager:
       Topic:
         Depth: 5
         Durability Policy: Volatile
+        Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /odom_tracker_path
@@ -544,6 +561,7 @@ Visualization Manager:
       Topic:
         Depth: 5
         Durability Policy: Volatile
+        Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /backward_planner/global_plan
@@ -582,6 +600,7 @@ Visualization Manager:
       Topic:
         Depth: 5
         Durability Policy: Volatile
+        Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /odom
@@ -614,7 +633,7 @@ Visualization Manager:
       Enabled: true
       Name: BackwardsGlobalPlanMarkers
       Namespaces:
-        {}
+        my_namespace2: true
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -681,9 +700,38 @@ Visualization Manager:
       Topic:
         Depth: 5
         Durability Policy: Volatile
+        Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /undo_path_planner/global_plan
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz_default_plugins/Path
+      Color: 255; 255; 0
+      Enabled: true
+      Head Diameter: 0.05999999865889549
+      Head Length: 0.03999999910593033
+      Length: 0.30000001192092896
+      Line Style: Billboards
+      Line Width: 0.0010000000474974513
+      Name: BackwardLocalPlan
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 0
+      Pose Style: Arrows
+      Radius: 0.029999999329447746
+      Shaft Diameter: 0.019999999552965164
+      Shaft Length: 0.009999999776482582
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /backward_local_planner/path
       Value: true
   Enabled: true
   Global Options:
@@ -698,6 +746,9 @@ Visualization Manager:
     - Class: rviz_default_plugins/Measure
       Line color: 128; 128; 0
     - Class: rviz_default_plugins/SetInitialPose
+      Covariance x: 0.25
+      Covariance y: 0.25
+      Covariance yaw: 0.06853891909122467
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -719,7 +770,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: -1.5900002717971802
+      Angle: -4.785000801086426
       Class: rviz_default_plugins/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
@@ -729,21 +780,21 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 171.14744567871094
+      Scale: -123.52355194091797
       Target Frame: base_link
       Value: TopDownOrtho (rviz_default_plugins)
-      X: -0.1581185907125473
-      Y: 0.3883991837501526
+      X: -0.6155462265014648
+      Y: -0.8152815103530884
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: true
-  Height: 1016
+  Height: 2089
   Hide Left Dock: true
   Hide Right Dock: false
   Navigation 2:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000002000000039efc020000000afb0000001200530065006c0065006300740069006f006e000000003d000000830000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003d0000039e000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb00000018004e0061007600690067006100740069006f006e0020003200000002da00000101000000b700fffffffb0000001e005200650061006c00730065006e0073006500430061006d00650072006100000002c6000000c10000002800ffffff000000010000010f0000039efc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003d0000039e000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004420000003efc0100000002fb0000000800540069006d00650100000000000004420000000000000000fb0000000800540069006d006501000000000000045000000000000000000000062b0000039e00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd000000040000000000000286000007c1fc020000000afb0000001200530065006c0065006300740069006f006e000000003d000000830000006e00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c0061007900730000000047000007c1000000f100fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb00000018004e0061007600690067006100740069006f006e0020003200000002da00000101000000d500fffffffb0000001e005200650061006c00730065006e0073006500430061006d00650072006100000002c6000000c10000002f00ffffff000000010000010f000007c1fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730100000047000007c1000000c200fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004420000003efc0100000002fb0000000800540069006d00650100000000000004420000000000000000fb0000000800540069006d0065010000000000000450000000000000000000000daa000007c100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   RealsenseCamera:
     collapsed: false
   Selection:
@@ -752,6 +803,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1856
+  Width: 3776
   X: 64
-  Y: 27
+  Y: 34

@@ -16,12 +16,13 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 // TRANSITION TABLE
   typedef mpl::list<
 
-  Transition<EvWaypoint0<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_1>,
-  Transition<EvWaypoint1<ClMoveBaseZ, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_2>,
-  Transition<EvWaypoint2<ClMoveBaseZ, OrNavigation>, SS3::SsRadialPattern3, TRANSITION_3>,
-  Transition<EvWaypoint3<ClMoveBaseZ, OrNavigation>, StFpatternPrealignment, TRANSITION_4>,
-  Transition<EvWaypoint4<ClMoveBaseZ, OrNavigation>, StSpatternPrealignment, TRANSITION_5>,
-  Transition<EvCbFailure<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
+    Transition<EvWaypoint0<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_1>,
+    Transition<EvWaypoint1<ClMoveBaseZ, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_2>,
+    Transition<EvWaypoint2<ClMoveBaseZ, OrNavigation>, SS3::SsRadialPattern3, TRANSITION_3>,
+    Transition<EvWaypoint3<ClMoveBaseZ, OrNavigation>, StFpatternPrealignment, TRANSITION_4>,
+    Transition<EvWaypoint4<ClMoveBaseZ, OrNavigation>, StSpatternPrealignment, TRANSITION_5>,
+    Transition<EvCbFailure<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>,
+    Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
   
   >reactions;
 

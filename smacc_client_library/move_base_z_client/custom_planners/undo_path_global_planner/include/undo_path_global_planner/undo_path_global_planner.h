@@ -80,6 +80,8 @@ private:
 
     void publishGoalMarker(const geometry_msgs::msg::Pose &pose, double r, double g, double b);
 
+    void clearGoalMarker();
+
     virtual void createDefaultUndoPathPlan(const geometry_msgs::msg::PoseStamped &start,
                                            const geometry_msgs::msg::PoseStamped &goal, std::vector<geometry_msgs::msg::PoseStamped> &plan);
 

@@ -17,6 +17,8 @@
 #include <pluginlib/class_list_macros.hpp>
 #include <streambuf>
 #include <visualization_msgs/msg/marker_array.hpp>
+#include <nav_2d_utils/tf_help.hpp>
+#include <move_base_z_planners_common/common.h>
 
 namespace cl_move_base_z
 {
@@ -41,13 +43,14 @@ BackwardGlobalPlanner::~BackwardGlobalPlanner()
 * initialize()
 ******************************************************************************************************************
 */
-
 void BackwardGlobalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, std::string name,
-                                      std::shared_ptr<tf2_ros::Buffer> /*tf*/,
+                                      std::shared_ptr<tf2_ros::Buffer> tf,
                                       std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
   this->nh_ = parent.lock();
   name_ = name;
+  tf_ = tf;
+  transform_tolerance_ = 0.1;
 
   // RCLCPP_INFO_NAMED(nh_->get_logger(), "Backwards", "BackwardGlobalPlanner initialize");
   costmap_ros_ = costmap_ros;
@@ -56,22 +59,39 @@ void BackwardGlobalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::Wea
 
   planPub_ = nh_->create_publisher<nav_msgs::msg::Path>("backward_planner/global_plan", 1);
   markersPub_ = nh_->create_publisher<visualization_msgs::msg::MarkerArray>("backward_planner/markers", 1);
+
+  nh_->declare_parameter(name_ + ".transform_tolerance", transform_tolerance_);
 }
 
+/**
+******************************************************************************************************************
+* cleanup()
+******************************************************************************************************************
+*/
 void BackwardGlobalPlanner::cleanup()
 {
 }
 
+/**
+******************************************************************************************************************
+* activate()
+******************************************************************************************************************
+*/
 void BackwardGlobalPlanner::activate()
 {
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "activating planner BackwardGlobalPlanner");
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardGlobalPlanner] activating planner");
   planPub_->on_activate();
   markersPub_->on_activate();
 }
 
+/**
+******************************************************************************************************************
+* deactivate()
+******************************************************************************************************************
+*/
 void BackwardGlobalPlanner::deactivate()
 {
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "deactivating planner BackwardGlobalPlanner");
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardGlobalPlanner] deactivating planner");
 
   // clear
   nav_msgs::msg::Path planMsg;
@@ -160,7 +180,7 @@ void BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::msg::
     prevState = start;
   }
 
-  RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardGlobalPlanner ] backward global plan size:  " << plan.size());
+  RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardGlobalPlanner] backward global plan size:  " << plan.size());
 }
 
 /**
@@ -171,35 +191,33 @@ void BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::msg::
 nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(const geometry_msgs::msg::PoseStamped &start,
                                                       const geometry_msgs::msg::PoseStamped &goal)
 {
-  // RCLCPP_WARN_NAMED(nh_->get_logger(), "Backwards", "Backwards global planner: Generating global plan ");
-  // RCLCPP_WARN_NAMED(nh_->get_logger(), "Backwards", "Clearing...");
+  RCLCPP_INFO_STREAM(nh_->get_logger(),
+                     "[BackwardGlobalPlanner] goal frame id: " << goal.header.frame_id << " pose: " << goal.pose.position);
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardGlobalPlanner] goal pose frame id: " << goal.header.frame_id);
 
+  rclcpp::Duration ttol(transform_tolerance_);
+  //---------------------------------------------------------------------
+  geometry_msgs::msg::PoseStamped transformedStart;
+  nav_2d_utils::transformPose(tf_, costmap_ros_->getGlobalFrameID(), start, transformedStart, ttol);
+  transformedStart.header.frame_id = costmap_ros_->getGlobalFrameID();
+  //---------------------------------------------------------------------
+  geometry_msgs::msg::PoseStamped transformedGoal;
+  nav_2d_utils::transformPose(tf_, costmap_ros_->getGlobalFrameID(), goal, transformedGoal, ttol);
+  transformedGoal.header.frame_id = costmap_ros_->getGlobalFrameID();
+
+  //---------------------------------------------------------------------
   std::vector<geometry_msgs::msg::PoseStamped> plan;
+  this->createDefaultBackwardPath(transformedStart, transformedGoal, plan);
 
-  this->createDefaultBackwardPath(start, goal, plan);
-  // this->createPureSpiningAndStragihtLineBackwardPath(start, goal, plan);
-
-  // RCLCPP_INFO_STREAM(nh_->get_logger(), " start - " << start);
-  // RCLCPP_INFO_STREAM(nh_->get_logger(), " end - " << goal.pose.position);
-
-  // RCLCPP_INFO(nh_->get_logger(), "3 - heading to goal orientation");
-  // double goalOrientation = angles::normalize_angle(tf::getYaw(goal.pose.orientation));
-  // cl_move_base_z::makePureSpinningSubPlan(prevState,goalOrientation,plan);
-
-  // ROS_WARN_STREAM( "MAKE PLAN INVOKED, plan size:"<< plan.size());
-  publishGoalMarker(goal.pose, 1.0, 0, 1.0);
+  publishGoalMarker(transformedGoal.pose, 1.0, 0, 1.0);
 
   nav_msgs::msg::Path planMsg;
   planMsg.poses = plan;
   planMsg.header.frame_id = this->costmap_ros_->getGlobalFrameID();
 
-  // check plan rejection
+  //---------------------------------------------------------------------
+  // check plan rejection if obstacle is found
   bool acceptedGlobalPlan = true;
-
-  // static const unsigned char NO_INFORMATION = 255;
-  // static const unsigned char LETHAL_OBSTACLE = 254;
-  // static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
-  // static const unsigned char FREE_SPACE = 0;
 
   auto costmap2d = this->costmap_ros_->getCostmap();
   for (auto &p : plan)
@@ -208,6 +226,10 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(const geometry_msgs::msg::
     costmap2d->worldToMap(p.pose.position.x, p.pose.position.y, mx, my);
     auto cost = costmap2d->getCost(mx, my);
 
+    // static const unsigned char NO_INFORMATION = 255;
+    // static const unsigned char LETHAL_OBSTACLE = 254;
+    // static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
+    // static const unsigned char FREE_SPACE = 0;
     if (cost >= nav2_costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
     {
       acceptedGlobalPlan = false;
@@ -215,13 +237,15 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(const geometry_msgs::msg::
     }
   }
 
-  if(acceptedGlobalPlan)
+  if (acceptedGlobalPlan)
   {
-    RCLCPP_WARN_STREAM(nh_->get_logger(), "backward plan request is not accepted, returning empty path");
+    RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardGlobalPlanner] backward plan request is not accepted, returning "
+                                          "empty path");
     planMsg.poses.clear();
   }
 
-  RCLCPP_WARN_STREAM(nh_->get_logger(), "backward global plan publishing path. poses count: " << planMsg.poses.size());
+  RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardGlobalPlanner] backward global plan publishing path. poses count: "
+                                            << planMsg.poses.size());
   planPub_->publish(planMsg);
 
   return planMsg;

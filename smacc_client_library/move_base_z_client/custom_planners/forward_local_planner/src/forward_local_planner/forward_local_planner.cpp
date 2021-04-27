@@ -42,6 +42,7 @@ void ForwardLocalPlanner::activate()
 
 void ForwardLocalPlanner::deactivate()
 {
+  this->goalMarkerPublisher_->on_deactivate();
 }
 
 void ForwardLocalPlanner::cleanup()
@@ -303,8 +304,10 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
     geometry_msgs::msg::Twist twistol;
     if (goal_checker->getTolerances(posetol, twistol))
     {
-      xy_goal_tolerance_ = posetol.position.x * 0.35;  // WORKAROUND DIFFERENCE WITH NAV CONTROLLER GOAL CHECKER
-      yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation) * 0.35;
+      xy_goal_tolerance_ = posetol.position.x;
+      yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation);
+      //xy_goal_tolerance_ = posetol.position.x * 0.35;  // WORKAROUND DIFFERENCE WITH NAV CONTROLLER GOAL CHECKER
+      //yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation) * 0.35;
       RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner] xy_goal_tolerance_: " << xy_goal_tolerance_
                                                                                          << ", yaw_goal_tolerance_: "
                                                                                          << yaw_goal_tolerance_);
