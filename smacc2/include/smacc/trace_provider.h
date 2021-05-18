@@ -22,6 +22,63 @@ TRACEPOINT_EVENT(
     )
 )
 
+TRACEPOINT_EVENT(
+    smacc_trace,
+    update,
+    TP_ARGS(),
+    TP_FIELDS()
+)
+
+TRACEPOINT_EVENT(
+    smacc_trace,
+    state_start,
+    TP_ARGS(char*, state_name),
+    TP_FIELDS()
+)
+
+TRACEPOINT_EVENT(
+    smacc_trace,
+    state_end,
+    TP_ARGS(),
+    TP_FIELDS()
+)
+
+TRACEPOINT_EVENT(
+    smacc_trace,
+    client_behavior_on_entry_start,
+    TP_ARGS(
+        char*, state_name,
+        char*, client_behavior_name),
+    TP_FIELDS()
+)
+
+TRACEPOINT_EVENT(
+    smacc_trace,
+    client_behavior_on_entry_end,
+    TP_ARGS(
+        char*, state_name,
+        char*, client_behavior_name),
+    TP_FIELDS()
+)
+
+TRACEPOINT_EVENT(
+    smacc_trace,
+    client_behavior_on_exit_start,
+    TP_ARGS(
+        char*, state_name,
+        char*, client_behavior_name),
+    TP_FIELDS()
+)
+
+TRACEPOINT_EVENT(
+    smacc_trace,
+    client_behavior_on_exit_end,
+    TP_ARGS(
+        char*, state_name,
+        char*, client_behavior_name),
+    TP_FIELDS()
+)
+
 #endif /* _SMACC_TRACE_PROVIDER_H */
 
 #include <lttng/tracepoint-event.h>
