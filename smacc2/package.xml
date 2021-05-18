@@ -17,6 +17,7 @@
   <depend>rclcpp</depend>
   <depend>rclcpp_action</depend>
   <depend>smacc_msgs</depend>
+  <depend>tracetools</depend>
   
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
