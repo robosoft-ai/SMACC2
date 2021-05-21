@@ -30,7 +30,10 @@ file(GLOB_RECURSE SRC_FILES src *.cpp)
 add_library(smacc2 SHARED ${SRC_FILES})
 
 ament_target_dependencies(smacc2 ${dependencies})
-target_link_libraries(smacc2 ${Boost_LIBRARIES} ${LTTNGUST_LIBRARIES})
+target_link_libraries(smacc2 
+      ${Boost_LIBRARIES} 
+      ${LTTNGUST_LIBRARIES}
+      )
 
 ament_export_include_directories(include)
 ament_export_libraries(smacc2)

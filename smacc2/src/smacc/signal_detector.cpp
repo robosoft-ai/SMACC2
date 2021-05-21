@@ -10,6 +10,7 @@
 
 #include <thread>
 #include <smacc/trace_provider.h>
+//#include "tracetools/tracetools.h"
 
 namespace smacc
 {
@@ -195,7 +196,7 @@ void SignalDetector::pollOnce()
 {
   // precondition: smaccStateMachine_ != nullptr
 
-  tracepoint(smacc_trace, spinOnce, 23, "hi there!");
+  tracepoint(smacc_trace, spinOnce, 0, "");
 
   try
   {

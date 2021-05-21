@@ -1,6 +1,7 @@
 #include <smacc/impl/smacc_state_machine_impl.h>
 #include <smacc/smacc_client_behavior.h>
 #include <smacc/smacc_orthogonal.h>
+#include <smacc/trace_provider.h>
 
 namespace smacc
 {
@@ -63,15 +64,20 @@ void ISmaccOrthogonal::runtimeConfigure()
 
 void ISmaccOrthogonal::onEntry()
 {
+  auto orthogonalName = getName().c_str();
+
   if (clientBehaviors_.size() > 0)
   {
+    auto statename = this->stateMachine_->getCurrentState()->getClassName().c_str();
+
     for (auto &clBehavior : clientBehaviors_)
     {
-      RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnEntry, current Behavior: %s", this->getName().c_str(),
-                  clBehavior->getName().c_str());
+      auto cbName = clBehavior->getName().c_str();
+      RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnEntry, current Behavior: %s", orthogonalName, cbName);
 
       try
       {
+        tracepoint(smacc_trace, client_behavior_on_entry_start, statename, orthogonalName, cbName);
         clBehavior->executeOnEntry();
       }
       catch (const std::exception &e)
@@ -79,34 +85,43 @@ void ISmaccOrthogonal::onEntry()
         RCLCPP_ERROR(getNode()->get_logger(),
                      "[ClientBehavior %s] Exception on Entry - continuing with next client behavior. Exception info: "
                      "%s",
-                     clBehavior->getName().c_str(), e.what());
+                     cbName, e.what());
       }
+      tracepoint(smacc_trace, client_behavior_on_entry_end, statename, orthogonalName, cbName);
     }
   }
   else
   {
-    RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnEntry -> empty orthogonal (no client behavior) ", this->getName().c_str());
+    RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnEntry -> empty orthogonal (no client behavior) ",
+                orthogonalName);
   }
 }
 
 void ISmaccOrthogonal::onExit()
 {
+  auto orthogonalName = getName().c_str();
+
   if (clientBehaviors_.size() > 0)
   {
+    auto statename = this->stateMachine_->getCurrentState()->getClassName().c_str();
+
     for (auto &clBehavior : clientBehaviors_)
     {
-      RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnExit, current Behavior: %s", this->getName().c_str(),
-                  clBehavior->getName().c_str());
+      auto cbName = clBehavior->getName().c_str();
+
+      RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnExit, current Behavior: %s", orthogonalName, cbName);
       try
       {
+        tracepoint(smacc_trace, client_behavior_on_exit_start, statename, orthogonalName, cbName);
         clBehavior->executeOnExit();
       }
       catch (const std::exception &e)
       {
         RCLCPP_ERROR(getNode()->get_logger(),
                      "[ClientBehavior %s] Exception onExit - continuing with next client behavior. Exception info: %s",
-                     clBehavior->getName().c_str(), e.what());
+                     cbName, e.what());
       }
+      tracepoint(smacc_trace, client_behavior_on_exit_end, statename, orthogonalName, cbName);
     }
 
     int i = 0;
@@ -120,7 +135,7 @@ void ISmaccOrthogonal::onExit()
   }
   else
   {
-    RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnExit", this->getName().c_str());
+    RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnExit", orthogonalName);
   }
 }
 }  // namespace smacc
