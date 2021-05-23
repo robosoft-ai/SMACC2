@@ -1,9 +1,9 @@
 #pragma once
 
-#include <boost/statechart/state.hpp>
-#include <boost/statechart/event.hpp>
-
 #include <smacc/smacc_types.h>
+
+#include <boost/statechart/event.hpp>
+#include <boost/statechart/state.hpp>
 
 namespace smacc
 {
@@ -12,12 +12,13 @@ namespace default_events
 using namespace smacc::introspection;
 using namespace smacc::default_transition_tags;
 
+//-------------- ACTION EVENTS --------------------------------------------------------
 template <typename ActionFeedback, typename TOrthogonal>
 struct EvActionFeedback : sc::event<EvActionFeedback<ActionFeedback, TOrthogonal>>
 {
   smacc::client_bases::ISmaccActionClient *client;
   ActionFeedback feedbackMessage;
-  //boost::any feedbackMessage;
+  // boost::any feedbackMessage;
 };
 
 template <typename TSource, typename TOrthogonal>
@@ -26,7 +27,6 @@ struct EvActionResult : sc::event<EvActionResult<TSource, TOrthogonal>>
   typename TSource::WrappedResult resultMessage;
 };
 
-//--------------------------------
 template <typename TSource, typename TOrthogonal>
 struct EvActionSucceeded : sc::event<EvActionSucceeded<TSource, TOrthogonal>>
 {
@@ -99,62 +99,17 @@ struct EvActionCancelled : sc::event<EvActionCancelled<TSource, TOrthogonal>>
   }
 };
 
+//---------- CONTROL FLOW EVENTS ----------------------------------------------------------
 
-/*
-template <typename TSource, typename TOrthogonal>
-struct EvActionPreempted : sc::event<EvActionPreempted<TSource, TOrthogonal>>
+
+template <typename StateType>
+struct EvStateRequestFinish : sc::event<EvStateRequestFinish<StateType>>
 {
-  typename TSource::WrappedResult resultMessage;
-
-  static std::string getEventLabel()
-  {
-    // show ros message type
-    std::string label;
-    EventLabel<TSource>(label);
-    return label;
-  }
-
-  static std::string getDefaultTransitionTag()
-  {
-    return demangledTypeName<PREEMPT>();
-  }
-
-  static std::string getDefaultTransitionType()
-  {
-    return demangledTypeName<PREEMPT>();
-  }
 };
-
-
-template <typename TSource, typename TOrthogonal>
-struct EvActionRejected : sc::event<EvActionRejected<TSource, TOrthogonal>>
-{
-  typename TSource::WrappedResult resultMessage;
-
-  static std::string getEventLabel()
-  {
-    // show ros message type
-    std::string label;
-    EventLabel<TSource>(label);
-    return label;
-  }
-
-  static std::string getDefaultTransitionTag()
-  {
-    return demangledTypeName<REJECT>();
-  }
-
-  static std::string getDefaultTransitionType()
-  {
-    return demangledTypeName<REJECT>();
-  }
-};
-*/
 
 template <typename StateType>
 struct EvSequenceFinished : sc::event<EvSequenceFinished<StateType>>
 {
-  
 };
 
 template <typename TSource>
@@ -185,10 +140,11 @@ struct EvLoopEnd : sc::event<EvLoopEnd<TSource>>
   }
 };
 
+//---------- CONTROL FLOW EVENTS ----------------------------------------------------------
 template <typename TSource, typename TOrthogonal>
 struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource, TOrthogonal>>
 {
-  //typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
+  // typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
   static std::string getEventLabel()
   {
     auto typeinfo = TypeInfo::getTypeInfoFromType<typename TSource::TMessageType>();
@@ -213,5 +169,5 @@ struct EvTopicMessage : sc::event<EvTopicMessage<TSource, TOrthogonal>>
 
   typename TSource::TMessageType msgData;
 };
-} // namespace default_events
-} // namespace smacc
+}  // namespace default_events
+}  // namespace smacc
