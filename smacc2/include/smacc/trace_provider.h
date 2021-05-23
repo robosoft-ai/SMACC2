@@ -14,27 +14,35 @@
 TRACEPOINT_EVENT(
     smacc_trace,
     spinOnce,
-    TP_ARGS(
-        int, my_integer_arg,
-        const char*, my_string_arg
-    ),
+    TP_ARGS(),
+    TP_FIELDS()
+    )
+
+TRACEPOINT_EVENT(
+    smacc_trace,
+    smacc_event,
+    TP_ARGS(const char*, event_type),
     TP_FIELDS(
-        ctf_string(my_string_field, my_string_arg)
-        ctf_integer(int, my_integer_field, my_integer_arg)
-    ))
+        ctf_string(event_type, event_type)
+    )
+    )
 
 TRACEPOINT_EVENT(
     smacc_trace,
     update_start,
-    TP_ARGS(),
-    TP_FIELDS()
+    TP_ARGS(const char*, updatable_element_name),
+    TP_FIELDS(
+        ctf_string(updatable_element_name, updatable_element_name)
+    )
 )
 
 TRACEPOINT_EVENT(
     smacc_trace,
     update_end,
-    TP_ARGS(),
-    TP_FIELDS()
+    TP_ARGS(const char*, updatable_element_name),
+    TP_FIELDS(
+        ctf_string(updatable_element_name, updatable_element_name)
+    )
 )
 
 TRACEPOINT_EVENT(

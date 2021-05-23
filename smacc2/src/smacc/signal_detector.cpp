@@ -7,9 +7,9 @@
 #include <smacc/client_bases/smacc_action_client_base.h>
 #include <smacc/smacc_signal_detector.h>
 #include <smacc/smacc_state_machine.h>
+#include <smacc/trace_provider.h>
 
 #include <thread>
-#include <smacc/trace_provider.h>
 //#include "tracetools/tracetools.h"
 
 namespace smacc
@@ -196,7 +196,7 @@ void SignalDetector::pollOnce()
 {
   // precondition: smaccStateMachine_ != nullptr
 
-  tracepoint(smacc_trace, spinOnce, 0, "");
+  tracepoint(smacc_trace, spinOnce);
 
   try
   {
@@ -220,9 +220,21 @@ void SignalDetector::pollOnce()
       auto node = getNode();
       for (auto *updatableClient : this->updatableClients_)
       {
-        RCLCPP_DEBUG_STREAM(node->get_logger(),
-                            "[PollOnce] update client call:  " << demangleType(typeid(*updatableClient)));
-        updatableClient->executeUpdate(node);
+        auto updatableElementName = demangleType(typeid(*updatableClient)).c_str();
+        try
+        {
+          RCLCPP_DEBUG_STREAM(node->get_logger(),
+                              "[PollOnce] update client call:  " << demangleType(typeid(*updatableClient)));
+
+          tracepoint(smacc_trace, update_start, updatableElementName);
+          updatableClient->executeUpdate(node);
+          tracepoint(smacc_trace, update_start, updatableElementName);
+        }
+        catch (const std::exception &e)
+        {
+          RCLCPP_ERROR_STREAM(node->get_logger(),
+                              "Error in updatable elemnent " << updatableElementName << ": " << e.what() << '\n');
+        }
       }
     }
 
@@ -255,9 +267,21 @@ void SignalDetector::pollOnce()
           auto node = getNode();
           for (auto *udpatableStateElement : this->updatableStateElements_)
           {
-            RCLCPP_DEBUG_STREAM(getNode()->get_logger(), "[SignalDetector] update client behavior call: "
-                                                             << demangleType(typeid(*udpatableStateElement)));
-            udpatableStateElement->executeUpdate(node);
+            auto updatableElementName = demangleType(typeid(*udpatableStateElement)).c_str();
+            try
+            {
+              RCLCPP_DEBUG_STREAM(getNode()->get_logger(),
+                                  "[SignalDetector] update client behavior call: " << updatableElementName);
+
+              tracepoint(smacc_trace, update_start, updatableElementName);
+              udpatableStateElement->executeUpdate(node);
+              tracepoint(smacc_trace, update_start, updatableElementName);
+            }
+            catch (const std::exception &e)
+            {
+              RCLCPP_ERROR_STREAM(node->get_logger(),
+                                  "Error in updatable elemnent " << updatableElementName << ": " << e.what() << '\n');
+            }
           }
         }
       }
@@ -280,7 +304,6 @@ void SignalDetector::pollOnce()
  */
 void SignalDetector::pollingLoop()
 {
-
   // rclcpp::Node::SharedPtr nh("~"); // use node name as root of the parameter server
   rclcpp::Node::SharedPtr _;
   rclcpp::Rate r0(20);

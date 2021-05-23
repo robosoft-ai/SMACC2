@@ -85,7 +85,7 @@ void ISmaccStateMachine::updateStatusMessage()
         RCLCPP_WARN_STREAM(nh_->get_logger(),"[StateMachine] setting state active "
                         << ": " << currentStateInfo_->getFullPath());
 
-        if (this->runMode_ == SMRunMode::DEBUG)
+        if (runMode_ == SMRunMode::DEBUG)
         {
             status_msg_.current_states.clear();
             std::list<const SmaccStateInfo *> ancestorList;
@@ -106,7 +106,7 @@ void ISmaccStateMachine::updateStatusMessage()
             }
 
             status_msg_.header.stamp = this->nh_->now();
-            this->stateMachineStatusPub_->publish(status_msg_);
+            stateMachineStatusPub_->publish(status_msg_);
         }
     }
 }
@@ -161,10 +161,10 @@ void ISmaccStateMachine::state_machine_visualization()
 
     smacc_msgs::msg::SmaccStateMachine state_machine_msg;
     state_machine_msg.states = stateMachineInfo_->stateMsgs;
-    this->stateMachinePub_->publish(state_machine_msg);
+    stateMachinePub_->publish(state_machine_msg);
 
     status_msg_.header.stamp = this->nh_->now();
-    this->stateMachineStatusPub_->publish(status_msg_);
+    stateMachineStatusPub_->publish(status_msg_);
 }
 
 void ISmaccStateMachine::lockStateMachine(std::string msg)

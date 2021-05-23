@@ -48,7 +48,7 @@ public:
   // Constructor that initializes the state ros node handle
   SmaccState(my_context ctx)
   {
-    char *STATE_NAME = (char *)(demangleSymbol(typeid(MostDerived).name()).c_str());
+    auto STATE_NAME = (demangleSymbol(typeid(MostDerived).name()).c_str());
 
     static_assert(std::is_base_of<ISmaccState, Context>::value || std::is_base_of<ISmaccStateMachine, Context>::value,
                   "The context class must be a SmaccState or a SmaccStateMachine");
@@ -131,7 +131,7 @@ public:
   // this function is called by boot statechart before the destructor call
   void exit()
   {
-    char *STATE_NAME = (char *)(demangleSymbol(typeid(MostDerived).name()).c_str());
+    auto STATE_NAME = (demangleSymbol(typeid(MostDerived).name()).c_str());
 
     auto *derivedThis = static_cast<MostDerived *>(this);
     this->getStateMachine().notifyOnStateExitting(derivedThis);
@@ -328,7 +328,7 @@ void ISmaccState::state_reactor_initialize_inputEventList(smacc::introspection::
 
   void checkWhileLoopConditionAndThrowEvent(bool (MostDerived::*conditionFn)())
   {
-    char *STATE_NAME = (char *)(demangleSymbol(typeid(MostDerived).name()).c_str());
+    auto STATE_NAME = (demangleSymbol(typeid(MostDerived).name()).c_str());
     auto *thisobject = static_cast<MostDerived *>(this);
     auto condition = boost::bind(conditionFn, thisobject);
     bool conditionResult = condition();
@@ -375,7 +375,7 @@ void ISmaccState::state_reactor_initialize_inputEventList(smacc::introspection::
   static inner_context_ptr_type shallow_construct(const context_ptr_type &pContext,
                                                   outermost_context_base_type &outermostContextBase)
   {
-    char *STATE_NAME = (char *)(demangleSymbol(typeid(MostDerived).name()).c_str());
+    auto STATE_NAME = (demangleSymbol(typeid(MostDerived).name()).c_str());
     // allocating in memory
     auto state = new MostDerived(SmaccState<MostDerived, Context, InnerInitial, historyMode>::my_context(pContext));
     const inner_context_ptr_type pInnerContext(state);
@@ -411,7 +411,7 @@ private:
 
   void entryStateInternal()
   {
-    char *STATE_NAME = (char *)(demangleSymbol(typeid(MostDerived).name()).c_str());
+    auto STATE_NAME = (demangleSymbol(typeid(MostDerived).name()).c_str());
     // finally we go to the derived state onEntry Function
 
     RCLCPP_INFO(getNode()->get_logger(), "[%s] State object created. Initializating...", STATE_NAME);
