@@ -64,15 +64,15 @@ void ISmaccOrthogonal::runtimeConfigure()
 
 void ISmaccOrthogonal::onEntry()
 {
-  auto orthogonalName = getName().c_str();
+  #define orthogonalName getName().c_str()
 
   if (clientBehaviors_.size() > 0)
   {
-    auto statename = this->stateMachine_->getCurrentState()->getClassName().c_str();
+    #define statename stateMachine_->getCurrentState()->getClassName().c_str()
 
     for (auto &clBehavior : clientBehaviors_)
     {
-      auto cbName = clBehavior->getName().c_str();
+      #define cbName clBehavior->getName().c_str()
       RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnEntry, current Behavior: %s", orthogonalName, cbName);
 
       try
@@ -99,15 +99,15 @@ void ISmaccOrthogonal::onEntry()
 
 void ISmaccOrthogonal::onExit()
 {
-  auto orthogonalName = getName().c_str();
+  #define orthogonalName getName().c_str()
 
   if (clientBehaviors_.size() > 0)
   {
-    auto statename = this->stateMachine_->getCurrentState()->getClassName().c_str();
+    #define statename this->stateMachine_->getCurrentState()->getClassName().c_str()
 
     for (auto &clBehavior : clientBehaviors_)
     {
-      auto cbName = clBehavior->getName().c_str();
+      #define cbName clBehavior->getName().c_str()
 
       RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnExit, current Behavior: %s", orthogonalName, cbName);
       try
