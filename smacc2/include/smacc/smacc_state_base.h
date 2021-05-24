@@ -140,7 +140,7 @@ public:
       tracepoint(smacc_trace, state_onExit_start, STATE_NAME);
       // static_cast<MostDerived *>(this)->onExit();
       standardOnExit(*derivedThis);
-      tracepoint(smacc_trace, state_onExit_start, STATE_NAME);
+      tracepoint(smacc_trace, state_onExit_end, STATE_NAME);
     }
     catch (...)
     {

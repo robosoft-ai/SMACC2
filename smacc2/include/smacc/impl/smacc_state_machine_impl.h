@@ -143,7 +143,8 @@ void ISmaccStateMachine::postEvent(EventType *ev, EventLifeTime evlifetime)
 {
   std::lock_guard<std::recursive_mutex> guard(eventQueueMutex_);
 
-  auto eventtypename = demangleSymbol<EventType>().c_str();
+  #define eventtypename demangleSymbol<EventType>().c_str()
+  
   tracepoint(smacc_trace, smacc_event, eventtypename);
 
   if (evlifetime == EventLifeTime::CURRENT_STATE &&
@@ -163,7 +164,7 @@ void ISmaccStateMachine::postEvent(EventType *ev, EventLifeTime evlifetime)
   // we reach this place. Now, we propagate the events to all the state state reactors to generate
   // some more events
 
-  RCLCPP_DEBUG_STREAM(getNode()->get_logger(), "[PostEvent entry point] " << eventtypename);
+  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[PostEvent entry point] " << eventtypename);
   auto currentstate = currentState_;
   if (currentstate != nullptr)
   {
