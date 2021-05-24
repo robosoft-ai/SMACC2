@@ -59,4 +59,9 @@ install(TARGETS
   smacc2
   DESTINATION lib/)
 
+install(FILES
+  scripts/smacc_trace.sh
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 ament_package()
