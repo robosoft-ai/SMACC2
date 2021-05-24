@@ -3,6 +3,10 @@
 #include <smacc/smacc_orthogonal.h>
 #include <smacc/trace_provider.h>
 
+#define statename stateMachine_->getCurrentState()->getClassName().c_str()
+#define orthogonalName getName().c_str()
+#define cbName clBehavior->getName().c_str()
+
 namespace smacc
 {
 void ISmaccOrthogonal::setStateMachine(ISmaccStateMachine *value)
@@ -64,15 +68,10 @@ void ISmaccOrthogonal::runtimeConfigure()
 
 void ISmaccOrthogonal::onEntry()
 {
-  #define orthogonalName getName().c_str()
-
   if (clientBehaviors_.size() > 0)
   {
-    #define statename stateMachine_->getCurrentState()->getClassName().c_str()
-
     for (auto &clBehavior : clientBehaviors_)
     {
-      #define cbName clBehavior->getName().c_str()
       RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnEntry, current Behavior: %s", orthogonalName, cbName);
 
       try
@@ -99,16 +98,10 @@ void ISmaccOrthogonal::onEntry()
 
 void ISmaccOrthogonal::onExit()
 {
-  #define orthogonalName getName().c_str()
-
   if (clientBehaviors_.size() > 0)
   {
-    #define statename this->stateMachine_->getCurrentState()->getClassName().c_str()
-
     for (auto &clBehavior : clientBehaviors_)
     {
-      #define cbName clBehavior->getName().c_str()
-
       RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnExit, current Behavior: %s", orthogonalName, cbName);
       try
       {
