@@ -10,7 +10,7 @@
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_state_machine.h>
 #include <smacc/smacc_state_reactor.h>
-#include <smacc/trace_provider.h>
+#include <smacc/smacc_tracing/trace_provider.h>
 
 namespace smacc
 {
@@ -137,10 +137,10 @@ public:
     this->getStateMachine().notifyOnStateExitting(derivedThis);
     try
     {
-      tracepoint(smacc_trace, state_onExit_start, STATE_NAME);
+      TRACEPOINT( state_onExit_start, STATE_NAME);
       // static_cast<MostDerived *>(this)->onExit();
       standardOnExit(*derivedThis);
-      tracepoint(smacc_trace, state_onExit_end, STATE_NAME);
+      TRACEPOINT( state_onExit_end, STATE_NAME);
     }
     catch (...)
     {
@@ -380,9 +380,9 @@ void ISmaccState::state_reactor_initialize_inputEventList(smacc::introspection::
     auto state = new MostDerived(SmaccState<MostDerived, Context, InnerInitial, historyMode>::my_context(pContext));
     const inner_context_ptr_type pInnerContext(state);
 
-    tracepoint(smacc_trace, state_onEntry_start, STATE_NAME);
+    TRACEPOINT( state_onEntry_start, STATE_NAME);
     state->entryStateInternal();
-    tracepoint(smacc_trace, state_onEntry_end, STATE_NAME);
+    TRACEPOINT( state_onEntry_end, STATE_NAME);
 
     outermostContextBase.add(pInnerContext);
     return pInnerContext;
@@ -488,10 +488,10 @@ private:
     // second the orthogonals are internally configured
     this->getStateMachine().notifyOnRuntimeConfigured(derivedthis);
 
-    tracepoint(smacc_trace, state_onRuntimeConfigure_start, STATE_NAME);
+    TRACEPOINT( state_onRuntimeConfigure_start, STATE_NAME);
     // first we runtime configure the state, where we create client behaviors
     static_cast<MostDerived *>(this)->runtimeConfigure();
-    tracepoint(smacc_trace, state_onRuntimeConfigure_end, STATE_NAME);
+    TRACEPOINT( state_onRuntimeConfigure_end, STATE_NAME);
 
 
     this->getStateMachine().notifyOnRuntimeConfigurationFinished(derivedthis);

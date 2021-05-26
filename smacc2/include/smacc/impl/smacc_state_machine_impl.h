@@ -19,7 +19,7 @@
 #include <boost/function_types/parameter_types.hpp>
 #include <smacc_msgs/msg/smacc_status.hpp>
 #include <sstream>
-#include <smacc/trace_provider.h>
+#include <smacc/smacc_tracing/smacc_tracing.h>
 namespace smacc
 {
 using namespace smacc::introspection;
@@ -145,7 +145,7 @@ void ISmaccStateMachine::postEvent(EventType *ev, EventLifeTime evlifetime)
 
   #define eventtypename demangleSymbol<EventType>().c_str()
   
-  tracepoint(smacc_trace, smacc_event, eventtypename);
+  TRACEPOINT( smacc_event, eventtypename);
 
   if (evlifetime == EventLifeTime::CURRENT_STATE &&
       (stateMachineCurrentAction == StateMachineInternalAction::STATE_EXITING ||

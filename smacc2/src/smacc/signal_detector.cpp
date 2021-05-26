@@ -7,7 +7,8 @@
 #include <smacc/client_bases/smacc_action_client_base.h>
 #include <smacc/smacc_signal_detector.h>
 #include <smacc/smacc_state_machine.h>
-#include <smacc/trace_provider.h>
+// #include <smacc/smacc_tracing/trace_provider.h>
+#include <smacc/smacc_tracing/smacc_tracing.h>
 
 #include <thread>
 //#include "tracetools/tracetools.h"
@@ -196,7 +197,8 @@ void SignalDetector::pollOnce()
 {
   // precondition: smaccStateMachine_ != nullptr
 
-  tracepoint(smacc_trace, spinOnce);
+  //TRACEPOINT( spinOnce);
+  TRACEPOINT(spinOnce);
 
   try
   {
@@ -226,9 +228,9 @@ void SignalDetector::pollOnce()
           RCLCPP_DEBUG_STREAM(node->get_logger(),
                               "[PollOnce] update client call:  " << demangleType(typeid(*updatableClient)));
 
-          tracepoint(smacc_trace, update_start, updatableElementName);
+          TRACEPOINT( update_start, updatableElementName);
           updatableClient->executeUpdate(node);
-          tracepoint(smacc_trace, update_start, updatableElementName);
+          TRACEPOINT( update_start, updatableElementName);
         }
         catch (const std::exception &e)
         {
@@ -273,9 +275,9 @@ void SignalDetector::pollOnce()
               RCLCPP_DEBUG_STREAM(getNode()->get_logger(),
                                   "[SignalDetector] update client behavior call: " << updatableElementName);
 
-              tracepoint(smacc_trace, update_start, updatableElementName);
+              TRACEPOINT( update_start, updatableElementName);
               udpatableStateElement->executeUpdate(node);
-              tracepoint(smacc_trace, update_start, updatableElementName);
+              TRACEPOINT( update_start, updatableElementName);
             }
             catch (const std::exception &e)
             {

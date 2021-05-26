@@ -1,7 +1,7 @@
 #include <smacc/impl/smacc_state_machine_impl.h>
 #include <smacc/smacc_client_behavior.h>
 #include <smacc/smacc_orthogonal.h>
-#include <smacc/trace_provider.h>
+#include <smacc/smacc_tracing/smacc_tracing.h>
 
 #define statename stateMachine_->getCurrentState()->getClassName().c_str()
 #define orthogonalName getName().c_str()
@@ -76,7 +76,7 @@ void ISmaccOrthogonal::onEntry()
 
       try
       {
-        tracepoint(smacc_trace, client_behavior_on_entry_start, statename, orthogonalName, cbName);
+        TRACEPOINT( client_behavior_on_entry_start, statename, orthogonalName, cbName);
         clBehavior->executeOnEntry();
       }
       catch (const std::exception &e)
@@ -86,7 +86,7 @@ void ISmaccOrthogonal::onEntry()
                      "%s",
                      cbName, e.what());
       }
-      tracepoint(smacc_trace, client_behavior_on_entry_end, statename, orthogonalName, cbName);
+      TRACEPOINT( client_behavior_on_entry_end, statename, orthogonalName, cbName);
     }
   }
   else
@@ -105,7 +105,7 @@ void ISmaccOrthogonal::onExit()
       RCLCPP_INFO(getNode()->get_logger(), "[Orthogonal %s] OnExit, current Behavior: %s", orthogonalName, cbName);
       try
       {
-        tracepoint(smacc_trace, client_behavior_on_exit_start, statename, orthogonalName, cbName);
+        TRACEPOINT( client_behavior_on_exit_start, statename, orthogonalName, cbName);
         clBehavior->executeOnExit();
       }
       catch (const std::exception &e)
@@ -114,7 +114,7 @@ void ISmaccOrthogonal::onExit()
                      "[ClientBehavior %s] Exception onExit - continuing with next client behavior. Exception info: %s",
                      cbName, e.what());
       }
-      tracepoint(smacc_trace, client_behavior_on_exit_end, statename, orthogonalName, cbName);
+      TRACEPOINT( client_behavior_on_exit_end, statename, orthogonalName, cbName);
     }
 
     int i = 0;
