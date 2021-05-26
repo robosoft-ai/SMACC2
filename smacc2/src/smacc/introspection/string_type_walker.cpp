@@ -25,11 +25,11 @@ bool replace(std::string &str, const std::string &from, const std::string &to)
     return true;
 }
 
-std::string replace_back(std::string roottype, std::map<std::string, std::string> &typesdict)
+std::string replace_back(std::string roottype, std::vector<std::pair<std::string, std::string>> &orderedtypesdict)
 {
     while (roottype.find("$") != std::string::npos)
     {
-        for (auto &t : typesdict)
+        for (auto &t : orderedtypesdict)
         {
             auto &tkey = t.first;
             auto &tval = t.second;
@@ -79,6 +79,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
         const char *simpletypeRE = "[^\\<\\>,\\s]+\\<[^\\<\\>]+\\>";
         //std::cout << inputtext << std::endl;
 
+        // locate moste outter template
         std::smatch matches;
         std::regex regex(simpletypeRE); // matches words beginning by "sub"
 
@@ -108,13 +109,14 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
         //     print("updating input text: " + inputtext)
         //     typecount += 1
         //     typesdict[tkey] = tstr
-
+    
+        // find and replace internal templates with tokens
         int i = 0;
         for (auto &m : matches)
         {
             std::string tstr = m;
             auto tkey = "$T" + std::to_string(typecount);
-            replace(inputtext, tstr, tkey);
+-            replace(inputtext, tstr, tkey);
 
             //std::cout << "updating input text:" << inputtext << std::endl;
 
@@ -136,8 +138,20 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     //         if not "$" in b:
     //             allbasetypes.add(b)
 
+    // SORT by token key to replace back in a single pass
+    std::vector<std::pair<std::string, std::string> > orderedTypedict;
+    for (const auto &item : typesdict) {
+        orderedTypedict.emplace_back(item);
+    }
+
+     std::sort(orderedTypedict.begin(),orderedTypedict.end(),
+                                [](auto& a, auto& b)	
+                                {
+                                    return std::stoi(a.first.substr(2)) > std::stoi(b.first.substr(2));
+                                });
+
     std::set<std::string> allbasetypes;
-    for (auto &typeentry : typesdict)
+    for (auto &typeentry : orderedTypedict /*typesdict*/)
     {
         auto flat = typeentry.second;
         //std::cout << flat << std::endl;
@@ -192,12 +206,12 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     std::vector<TypeInfo::Ptr> types;
     std::vector<std::string> tokens;
 
-    for (auto t : typesdict)
+    for (auto t : orderedTypedict) // must be ordered. to avoid issue, ie: $11 to be replaced in $T14
     {
         //auto t = *it;
         auto &tkey = t.first;
         auto &tval = t.second;
-        auto finaltype = replace_back(tval, typesdict);
+        auto finaltype = replace_back(tval, orderedTypedict);
         auto tinfo = std::make_shared<TypeInfo>(tkey, tval, finaltype);
         types.push_back(tinfo);
         tokens.push_back(tkey);
@@ -208,6 +222,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     TypeInfo::Ptr roottype = nullptr;
     for (auto &t : types)
     {
+        // std::cout << t->finaltype << " vs " <<originalinputtext;
         if (t->finaltype == originalinputtext)
         {
             roottype = t;
