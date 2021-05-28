@@ -69,6 +69,5 @@ stopping & destroying tracing session
 We can check the tracing database using the babeltrace tool or the tracecompass tool.
 In our case we use trace compass. Importing the data from the tracing output directory.
 
-
-
+![image](https://user-images.githubusercontent.com/13334595/120043632-9b258500-c00c-11eb-9e64-cb5507c46f49.png)
 
