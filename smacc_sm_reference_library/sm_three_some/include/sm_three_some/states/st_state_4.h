@@ -12,6 +12,9 @@ struct StState4 : smacc::SmaccState<StState4, MsRun>
   struct NEXT : SUCCESS
   {
   };
+
+  typedef mpl::list<Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SS1::Ss1, TIMEOUT>> transitions;
+
   struct PREVIOUS : ABORT
   {
   };
@@ -19,6 +22,8 @@ struct StState4 : smacc::SmaccState<StState4, MsRun>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+
   }
 
   void runtimeConfigure()
