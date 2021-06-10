@@ -18,6 +18,7 @@
   <depend>ros_timer_client</depend>
   <depend>keyboard_client</depend>
   <depend>ros_publisher_client</depend>
+  <exec_depend>xterm</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
