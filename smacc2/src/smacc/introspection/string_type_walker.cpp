@@ -116,7 +116,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
         {
             std::string tstr = m;
             auto tkey = "$T" + std::to_string(typecount);
--            replace(inputtext, tstr, tkey);
+            replace(inputtext, tstr, tkey);
 
             //std::cout << "updating input text:" << inputtext << std::endl;
 
@@ -147,7 +147,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
      std::sort(orderedTypedict.begin(),orderedTypedict.end(),
                                 [](auto& a, auto& b)	
                                 {
-                                    return std::stoi(a.first.substr(2)) > std::stoi(b.first.substr(2));
+                                    return std::stoi(a.first.substr(2)) < std::stoi(b.first.substr(2));
                                 });
 
     std::set<std::string> allbasetypes;
@@ -160,7 +160,8 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
         size_t endindex = flat.find(">");
         if (startindex != std::string::npos)
         {
-            flat = flat.substr(startindex + 1, endindex - startindex - 1);
+            flat = flat.substr(startindex + 1, endindex - startindex - 1); // gets the list of template parameters in csv format
+
             //std::cout << typeentry.first <<":" << flat << std::endl;
             typesdict_content[typeentry.first] = flat;
             std::vector<std::string> localbasetypes;
@@ -181,6 +182,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
                 if (found == std::string::npos)
                 {
                     allbasetypes.insert(b);
+                    
                 }
             }
         }
@@ -201,6 +203,12 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     //     types.append(t)
 
     //     print t
+    
+    // append leaf types
+    for(auto &b: allbasetypes)
+    {
+        orderedTypedict.push_back({b,b});
+    }    
 
     //std::cout << "---------- TYPES -------" << std::endl;
     std::vector<TypeInfo::Ptr> types;
