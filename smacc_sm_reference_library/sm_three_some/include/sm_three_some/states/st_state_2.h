@@ -18,13 +18,11 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
 
   // TRANSITION TABLE
   typedef mpl::list<
-
       Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState3, TIMEOUT>,
       Transition<EvAllGo<SrAllEventsGo>, StState3>,
       // Keyboard events
       Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1, PREVIOUS>,
       Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3, NEXT>
-
       >
       reactions;
 
@@ -44,10 +42,13 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
                                   mpl::list<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>,
                                             EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>,
                                             EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>>>();
-    /*sbAll->addInputEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
+
+    /*
+    sbAll->addInputEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
     sbAll->addInputEvent<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>>();
     sbAll->addInputEvent<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>>();
-    sbAll->setOutputEvent<EvAllGo<SrAllEventsGo>>();*/
+    sbAll->setOutputEvent<EvAllGo<SrAllEventsGo>>();
+    */
   }
 
   void runtimeConfigure()

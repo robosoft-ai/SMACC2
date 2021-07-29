@@ -12,8 +12,7 @@ public:
   virtual void onInitialize() override
   {
     auto actionclient =
-        this->createClient<cl_ros_timer::ClRosTimer>(std::chrono::duration_cast<std::chrono::seconds>(500ms));
-    actionclient->initialize();
+        this->createClient<cl_ros_timer::ClRosTimer>(500ms);
   }
 };
 }  // namespace sm_three_some

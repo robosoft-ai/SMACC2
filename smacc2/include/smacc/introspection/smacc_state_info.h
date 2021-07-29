@@ -23,6 +23,7 @@ struct ClientBehaviorInfoEntry
 };
 
 //---------------------------------------------
+// contains information about an specific event in the statechart
 struct SmaccEventInfo
 {
     SmaccEventInfo(std::shared_ptr<TypeInfo> eventType);
@@ -41,6 +42,7 @@ struct SmaccEventInfo
 private:
 };
 
+// contains metainformation about some specific transition in the statechart
 struct SmaccTransitionInfo
 {
     SmaccTransitionInfo()
@@ -94,12 +96,15 @@ private:
 };
 
 //-------------------------------------------------------------
+// contains metainformation about some specific state reactor in the statechart
 struct SmaccStateReactorInfo
 {
     std::shared_ptr<SmaccStateInfo> ownerState;
     std::function<void(smacc::ISmaccState *)> factoryFunction;
 
-    const std::type_info *stateReactorType;
+    //const std::type_info *stateReactorType;
+    std::shared_ptr<TypeInfo> stateReactorType;
+    std::shared_ptr<TypeInfo> outputEventType;
     std::shared_ptr<TypeInfo> objectTagType;
     std::vector<std::shared_ptr<SmaccEventInfo>> sourceEventTypes;
     std::shared_ptr<StateReactorHandler> srh;
@@ -125,12 +130,15 @@ public:
     std::shared_ptr<smacc::introspection::SmaccEventGeneratorInfo> egInfo_;
 };
 
+// contains metainformation about some specific event generator in the statechart
 struct SmaccEventGeneratorInfo
 {
     std::shared_ptr<SmaccStateInfo> ownerState;
     std::function<void(smacc::ISmaccState *)> factoryFunction;
 
-    const std::type_info *eventGeneratorType;
+    // const std::type_info *eventGeneratorType;
+    std::shared_ptr<TypeInfo> eventGeneratorType;
+    std::shared_ptr<TypeInfo> outputEventType;
     std::shared_ptr<TypeInfo> objectTagType;
     std::vector<std::shared_ptr<SmaccEventInfo>> sourceEventTypes;
     std::shared_ptr<EventGeneratorHandler> egh;

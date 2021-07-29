@@ -129,7 +129,7 @@ namespace smacc
                 {
                     smacc_msgs::msg::SmaccEventGenerator eventGeneratorMsg;
                     eventGeneratorMsg.index = k++;
-                    eventGeneratorMsg.type_name = demangleSymbol(eginfo->eventGeneratorType->name());
+                    eventGeneratorMsg.type_name = eginfo->eventGeneratorType->getFullName();
 
                     ss << " - event generator: " << eventGeneratorMsg.type_name << std::endl;
                     if (eginfo->objectTagType != nullptr)
@@ -149,7 +149,7 @@ namespace smacc
                 {
                     smacc_msgs::msg::SmaccStateReactor stateReactorMsg;
                     stateReactorMsg.index = k++;
-                    stateReactorMsg.type_name = demangleSymbol(srinfo->stateReactorType->name());
+                    stateReactorMsg.type_name = srinfo->stateReactorType->getFullName();
 
                     ss << " - state reactor: " << stateReactorMsg.type_name << std::endl;
                     if (srinfo->objectTagType != nullptr)

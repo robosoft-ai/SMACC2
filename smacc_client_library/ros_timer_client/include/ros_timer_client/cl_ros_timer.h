@@ -29,7 +29,7 @@ public:
 
     virtual ~ClRosTimer();
 
-    virtual void initialize();
+    virtual void onInitialize() override;
 
     template <typename T>
     boost::signals2::connection onTimerTick(void (T::*callback)(), T *object)

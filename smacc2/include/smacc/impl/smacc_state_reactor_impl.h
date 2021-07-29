@@ -67,7 +67,7 @@ void StateReactorHandler::addInputEvent()
 {
     StateReactorCallbackFunctor functor;
     functor.fn = [=](std::shared_ptr<smacc::StateReactor> sr) {
-        RCLCPP_INFO(nh_->get_logger(),"[%s] State Reactor adding input event: %s", demangleType(srInfo_->stateReactorType).c_str(), demangledTypeName<TEv>().c_str());
+        RCLCPP_INFO(nh_->get_logger(),"[%s] State Reactor adding input event: %s", srInfo_->stateReactorType->getFullName().c_str(), demangledTypeName<TEv>().c_str());
         sr->addInputEvent<TEv>();
     };
 
@@ -85,7 +85,7 @@ void StateReactorHandler::setOutputEvent()
 {
     StateReactorCallbackFunctor functor;
     functor.fn = [=](std::shared_ptr<smacc::StateReactor> sr) {
-        RCLCPP_INFO(nh_->get_logger(),"[%s] State Reactor setting output event: %s", demangleType(srInfo_->stateReactorType).c_str(), demangledTypeName<TEv>().c_str());
+        RCLCPP_INFO(nh_->get_logger(),"[%s] State Reactor setting output event: %s", srInfo_->stateReactorType->getFullName().c_str(), demangledTypeName<TEv>().c_str());
         sr->setOutputEvent<TEv>();
     };
 

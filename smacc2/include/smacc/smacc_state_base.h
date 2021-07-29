@@ -220,39 +220,34 @@ public:
     });
   }
 
-  /*
-
-template<typename TInputEventList>
-void ISmaccState::state_reactor_initialize_inputEventList(smacc::introspection::StateReactorHandler* sr, TInputEventList
-*)
-{
-    using boost::mpl::_1;
-    using wrappedList = typename boost::mpl::transform<TInputEventList, _1>::type;
-    AddTEventType<TInputEventList> op(sr);
-    boost::mpl::for_each<wrappedList>(op);
-}
-
-  template <typename TStateReactor, typename TOutputEvent, typename TInputEventList, typename... TArgs... args>
-  std::shared_ptr<TStateReactor> ISmaccState::static_createStateReactor(TArgs... args)
-  {
-    auto srHandler = static_createStateReactor_aux(args...);
-
-    srHandler->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
-    srHandler->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
-
-    TInputEventList* mock;
-    state_reactor_initialize_inputEventList(mock,)
-
-    srHandler->setOutputEvent<TOutputEvent>();
-  }
-*/
   template <typename TStateReactor, typename TOutputEvent, typename TInputEventList, typename... TArgs>
   static std::shared_ptr<smacc::introspection::StateReactorHandler> static_createStateReactor(TArgs... args)
   {
     auto srh = std::make_shared<smacc::introspection::StateReactorHandler>(globalNh_);
     auto srinfo = std::make_shared<SmaccStateReactorInfo>();
 
-    srinfo->stateReactorType = &typeid(TStateReactor);
+    srinfo->stateReactorType = TypeInfo::getTypeInfoFromType<TStateReactor>();
+    srinfo->outputEventType = TypeInfo::getTypeInfoFromType<TOutputEvent>();
+
+    if(srinfo->outputEventType->templateParameters.size() == 2)
+    {
+      srinfo->objectTagType = srinfo->outputEventType->templateParameters[1];
+    }
+    else if (srinfo->outputEventType->templateParameters.size() == 1)
+    {
+      srinfo->objectTagType = TypeInfo::getTypeInfoFromType<state_reactors::EmptyObjectTag>();
+    }
+    else
+    {
+      assert(false && "state reactor output events should have one or two parameters (SourceType, ObjectTag)");
+    }
+
+    // iterate statically on all event sources
+    using boost::mpl::_1;
+    using wrappedList = typename boost::mpl::transform<TInputEventList, _1>::type;
+    AddTEventTypeStateReactorInfo<TInputEventList> op(srinfo.get());
+    boost::mpl::for_each<wrappedList>(op);
+
     srinfo->srh = srh;
     srh->srInfo_ = srinfo;
 
@@ -278,7 +273,8 @@ void ISmaccState::state_reactor_initialize_inputEventList(smacc::introspection::
   {
     auto egh = std::make_shared<smacc::introspection::EventGeneratorHandler>();
     auto eginfo = std::make_shared<SmaccEventGeneratorInfo>();
-    eginfo->eventGeneratorType = &typeid(TEventGenerator);
+    eginfo->eventGeneratorType = TypeInfo::getTypeInfoFromType<TEventGenerator>();
+
     eginfo->egh = egh;
     egh->egInfo_ = eginfo;
 
@@ -305,7 +301,7 @@ void ISmaccState::state_reactor_initialize_inputEventList(smacc::introspection::
     auto srh = std::make_shared<smacc::introspection::StateReactorHandler>(globalNh_);
     auto srinfo = std::make_shared<SmaccStateReactorInfo>();
 
-    srinfo->stateReactorType = &typeid(TStateReactor);
+    srinfo->stateReactorType = TypeInfo::getTypeInfoFromType<TStateReactor>();
     srinfo->srh = srh;
     srh->srInfo_ = srinfo;
 
@@ -467,14 +463,14 @@ private:
       for (auto &sr : staticDefinedStateReactors)
       {
         RCLCPP_INFO(getNode()->get_logger(), "[%s] Creating static state reactor: %s", STATE_NAME,
-                    demangleSymbol(sr->stateReactorType->name()).c_str());
+                    sr->stateReactorType->getFullName().c_str());
         sr->factoryFunction(this);
       }
 
       for (auto &eg : staticDefinedEventGenerators)
       {
         RCLCPP_INFO(getNode()->get_logger(), "[%s] Creating static event generator: %s", STATE_NAME,
-                    demangleSymbol(eg->eventGeneratorType->name()).c_str());
+                    eg->eventGeneratorType->getFullName().c_str());
         eg->factoryFunction(this);
       }
 

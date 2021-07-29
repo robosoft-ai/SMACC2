@@ -122,11 +122,31 @@ namespace smacc
         return eg;
     }
 
+    // used to iterate on the source events list and fill the information of the stateReactorInfo structure
     template <typename TEventList>
-    struct AddTEventType
+    struct AddTEventTypeStateReactorInfo
+    {
+        smacc::SmaccStateReactorInfo *srInfo_;
+        AddTEventTypeStateReactorInfo(smacc::SmaccStateReactorInfo *srInfo) : srInfo_(srInfo)
+        {
+        }
+
+        template <typename T>
+        void operator()(T)
+        {
+            auto evinfo = std::make_shared<SmaccEventInfo>(TypeInfo::getTypeInfoFromType<T>());
+            srInfo_->sourceEventTypes.push_back(evinfo);
+            EventLabel<T>(evinfo->label);
+        }
+    };
+
+    // used to iterate on the source events list and fill the information of the stateReactorInfo structure 
+    // (is it required alreadyy having the AddTEventTypeStateReactorInfo?)
+    template <typename TEventList>
+    struct AddTEventTypeStateReactor
     {
         smacc::StateReactor *sr_;
-        AddTEventType(smacc::StateReactor *sr) : sr_(sr)
+        AddTEventTypeStateReactor(smacc::StateReactor *sr) : sr_(sr)
         {
         }
 
@@ -146,7 +166,7 @@ namespace smacc
 
         using boost::mpl::_1;
         using wrappedList = typename boost::mpl::transform<TEventList, _1>::type;
-        AddTEventType<TEventList> op(sr.get());
+        AddTEventTypeStateReactor<TEventList> op(sr.get());
         boost::mpl::for_each<wrappedList>(op);
 
         stateReactors_.push_back(sr);

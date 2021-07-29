@@ -14,7 +14,7 @@ ClRosTimer::~ClRosTimer()
     timer_->cancel();
 }
 
-void ClRosTimer::initialize()
+void ClRosTimer::onInitialize()
 {
     auto clock = this->getNode()->get_clock();
     
