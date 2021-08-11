@@ -15,8 +15,8 @@ jobs:
     strategy:
       matrix:
         env:
-          - {ROS_DISTRO: galactic, ROS_REPO: main}
-          - {ROS_DISTRO: galactic, ROS_REPO: testing}
+          - {ROS_DISTRO: rolling, ROS_REPO: main}
+          - {ROS_DISTRO: rolling, ROS_REPO: testing}
     env:
       UPSTREAM_WORKSPACE: smacc2.repos
     steps:

@@ -17,7 +17,7 @@ jobs:
       - uses: ros-tooling/setup-ros@v0.2
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
-          target-ros2-distro: galactic
+          target-ros2-distro: rolling
           # build all packages listed in the meta package
           package-name:
             smacc2
@@ -28,7 +28,7 @@ jobs:
             smacc_sm_reference_library
             smacc_state_reactor_library
           vcs-repo-file-url: |
-            https://raw.githubusercontent.com/ros2/ros2/galactic/ros2.repos
+            https://raw.githubusercontent.com/ros2/ros2/rolling/ros2.repos
             https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/smacc2.repos
           colcon-mixin-repository: https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
       - uses: actions/upload-artifact@v1

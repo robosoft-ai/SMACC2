@@ -1,12 +1,16 @@
 repositories:
+  navigation2:
+    type: git
+    url: https://github.com/ros-planning/navigation2.git
+    version: main
   moveit2:
     type: git
     url: https://github.com/ros-planning/moveit2.git
     version: main
-  navigation2:
+  ros2_control:
     type: git
-    url: https://github.com/pabloinigoblasco/navigation2.git
-    version: galactic  # commit failure on non default avaialable
+    url: https://github.com/ros-controls/ros2_control.git
+    version: master
   slam_toolbox:
     type: git
     url: https://github.com/SteveMacenski/slam_toolbox.git
