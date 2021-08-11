@@ -1,0 +1,25 @@
+name: Binary Build
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  schedule:
+    # Run every day to detect flakiness and broken dependencies
+    - cron: '23 3 * * *'
+
+jobs:
+  binary:
+    name: binary build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env:
+          - {ROS_DISTRO: galactic, ROS_REPO: main}
+          - {ROS_DISTRO: galactic, ROS_REPO: testing}
+    env:
+      UPSTREAM_WORKSPACE: smacc2.repos
+    steps:
+      - uses: actions/checkout@v1
+      - uses: 'ros-industrial/industrial_ci@master'
+        env: ${{matrix.env}}
