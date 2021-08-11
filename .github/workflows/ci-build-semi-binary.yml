@@ -1,4 +1,4 @@
-name: Binary Build
+name: Semi-Binary Build
 on:
   pull_request:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   binary:
-    name: binary build
+    name: semi-binary build
     runs-on: ubuntu-latest
     strategy:
       matrix:
