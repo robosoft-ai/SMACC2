@@ -6,16 +6,8 @@ repositories:
   navigation2:
     type: git
     url: https://github.com/pabloinigoblasco/navigation2.git
-    version: 48ec59a8b34e515cec17ad6fa251544186b0dedf  # commit failure on non default avaialable
+    version: galactic  # commit failure on non default avaialable
   slam_toolbox:
     type: git
     url: https://github.com/SteveMacenski/slam_toolbox.git
-    version: 875568697689774af3f9c65dae91c0028b98d798  # fix mutually exclusive mapping start pose
-  turtlebot3_msgs:
-    type: git
-    url: https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git
-    version: b51a8d3037e02e31d6b5a9c10a72ac514ddf9f63  # fix ci
-  turtlebot3_simulations:
-    type: git
-    url: https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
-    version: 7c00cdf385e4c94360a517ea064c3c26f4baa096  # revise readme
+    version: ros2
