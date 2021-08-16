@@ -11,7 +11,7 @@
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_state_reactor.h>
 //#include <smacc/smacc_event_generator.h>
-#include <smacc/introspection/string_type_walker.h>
+#include <smacc/introspection/smacc_type_info.h>
 #include <smacc/smacc_client_behavior.h>
 #include <smacc/smacc_state_machine.h>
 

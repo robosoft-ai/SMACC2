@@ -11,7 +11,7 @@ public:
   CbTimerCountdownLoop(unsigned long triggerTickCount);
 
   void onEntry() override;
-  void onEntry() override;
+  void onExit() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()

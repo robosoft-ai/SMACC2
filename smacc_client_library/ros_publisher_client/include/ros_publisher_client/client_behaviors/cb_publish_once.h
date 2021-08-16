@@ -34,6 +34,6 @@ public:
     if (deferedPublishFn != nullptr) deferedPublishFn();
   }
 
-  void onEntry() override {}
+  void onExit() override {}
 };
 }  // namespace cl_ros_publisher

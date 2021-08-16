@@ -9,7 +9,7 @@ class CbTimer : public smacc::SmaccClientBehavior
 {
 public:
   void onEntry() override;
-  void onEntry() override;
+  void onExit() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()

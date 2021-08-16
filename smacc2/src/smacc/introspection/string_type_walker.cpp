@@ -1,4 +1,4 @@
-#include <smacc/introspection/string_type_walker.h>
+#include <smacc/introspection/smacc_type_info.h>
 
 #include <algorithm>
 #include <boost/algorithm/string.hpp>

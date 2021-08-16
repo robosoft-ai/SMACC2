@@ -35,6 +35,7 @@ class SmaccStateInfo;
 class StateReactorHandler;
 class SmaccStateReactorInfo;
 class SmaccEventGeneratorInfo;
+class TypeInfo;
 }  // namespace introspection
 
 // ----TAGS FOR TRANSITIONS -----

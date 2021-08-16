@@ -17,7 +17,7 @@
 #include <typeinfo>
 
 #include <smacc/introspection/smacc_state_info.h>
-#include <smacc/introspection/string_type_walker.h>
+#include <smacc/introspection/smacc_type_info.h>
 #include <smacc/smacc_types.h>
 
 #include <cxxabi.h>

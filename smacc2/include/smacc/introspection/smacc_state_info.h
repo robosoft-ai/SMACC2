@@ -9,7 +9,7 @@
 #include <functional>
 #include <memory>
 #include <vector>
-
+#include <smacc/introspection/smacc_type_info.h>
 namespace smacc
 {
 namespace introspection

@@ -13,7 +13,7 @@ class SmaccClientBehavior : public ISmaccClientBehavior
 {
 public:
   void onEntry() override;
-  void onEntry() override;
+  void onExit() override;
 };
 }  // namespace smacc
 
