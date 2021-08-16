@@ -15,6 +15,7 @@ struct StState1 : smacc::SmaccState<StState1, MsRun>
     typedef mpl::list<
         
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState2, TIMEOUT>,
+    Transition<EvTopicMessage<ClSubscriber, OrSubscriber>, StState2, TIMEOUT>,
     // Keyboard events
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1, PREVIOUS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState2, NEXT>,
@@ -44,6 +45,5 @@ struct StState1 : smacc::SmaccState<StState1, MsRun>
     {
         RCLCPP_INFO(getNode()->get_logger(),"On Exit!");
     }
-
 };
 } // namespace sm_three_some
