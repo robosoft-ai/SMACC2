@@ -17,7 +17,10 @@
   <depend>rclcpp</depend>
   <depend>rclcpp_action</depend>
   <depend>smacc_msgs</depend>
-  
+
+  <build_depend>libboost-thread-dev</build_depend>
+  <exec_depend>libboost-thread</exec_depend>
+
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
