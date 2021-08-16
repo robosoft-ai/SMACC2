@@ -12,8 +12,8 @@ namespace smacc
 class SmaccClientBehavior : public ISmaccClientBehavior
 {
 public:
-  virtual void onEntry() override;
-  virtual void onExit() override;
+  void onEntry() override;
+  void onEntry() override;
 };
 }  // namespace smacc
 

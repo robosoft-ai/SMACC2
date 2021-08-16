@@ -11,7 +11,7 @@ using namespace cl_ros_publisher;
 class OrUpdatablePublisher : public smacc::Orthogonal<OrUpdatablePublisher>
 {
 public:
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     auto ros_publisher_client = this->createClient<ClRosPublisher>();
     ros_publisher_client->initialize();

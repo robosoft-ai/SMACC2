@@ -58,10 +58,10 @@ public:
 
 protected:
   // executes onExit in a new thread
-  virtual void executeOnEntry() override;
+  void executeOnEntry() override;
 
   // executes onExit in a new thread, waits first onEntry thread if it is still running
-  virtual void executeOnExit() override;
+  void executeOnExit() override;
 
   void postSuccessEvent();
   void postFailureEvent();

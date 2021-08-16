@@ -34,7 +34,7 @@ public:
     ConditionalGeneratorMode mode, std::function<bool()> updatePredicate = nullptr);
   virtual ~EgConditionalGenerator();
 
-  virtual void onEntry() override;
+  void onEntry() override;
 
   template <typename TState, typename TSource>
   void onStateAllocation()

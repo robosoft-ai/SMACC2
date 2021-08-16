@@ -72,7 +72,7 @@ public:
   }
 
 protected:
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     if (!initialized_)
     {

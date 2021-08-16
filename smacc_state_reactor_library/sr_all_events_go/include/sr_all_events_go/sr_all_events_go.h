@@ -21,9 +21,9 @@ class SrAllEventsGo : public StateReactor
 public:
   SrAllEventsGo() {}
 
-  virtual void onInitialized() override;
-  virtual void onEventNotified(const std::type_info * eventType) override;
-  virtual bool triggers() override;
+  void onInitialized() override;
+  void onEventNotified(const std::type_info * eventType) override;
+  bool triggers() override;
 };
 }  // namespace state_reactors
 }  // namespace smacc

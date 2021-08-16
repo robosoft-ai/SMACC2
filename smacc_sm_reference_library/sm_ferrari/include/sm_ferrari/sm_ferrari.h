@@ -70,7 +70,7 @@ struct SmFerrari : public smacc::SmaccStateMachineBase<SmFerrari, MsRun>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     // this->createOrthogonal<OrTimer>();
     // this->createOrthogonal<OrUpdatablePublisher>();

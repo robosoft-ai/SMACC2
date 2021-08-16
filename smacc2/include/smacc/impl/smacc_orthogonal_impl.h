@@ -139,7 +139,7 @@ public:
       name, targs...);
   }
 
-  virtual smacc::introspection::TypeInfo::Ptr getType() override
+  smacc::introspection::TypeInfo::Ptr getType() override
   {
     return smacc::introspection::TypeInfo::getTypeInfoFromType<TClient>();
   }

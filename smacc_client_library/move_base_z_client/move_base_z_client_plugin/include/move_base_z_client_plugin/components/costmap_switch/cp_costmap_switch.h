@@ -35,7 +35,7 @@ public:
 
   CostmapSwitch();
 
-  virtual void onInitialize() override;
+  void onInitialize() override;
 
   static std::string getStandardCostmapName(StandardLayers layertype);
 

@@ -39,7 +39,7 @@ public:
 
   WaypointNavigator();
 
-  virtual void onInitialize() override;
+  void onInitialize() override;
 
   void insertWaypoint(int index, geometry_msgs::msg::Pose & newpose);
 

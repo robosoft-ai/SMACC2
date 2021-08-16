@@ -14,7 +14,7 @@ struct CbLidarSensor : cl_multirole_sensor::CbDefaultMultiRoleSensorBehavior<ClL
 public:
   CbLidarSensor() {}
 
-  virtual void onEntry() override
+  void onEntry() override
   {
     RCLCPP_INFO(getNode()->get_logger(), "[CbLidarSensor] onEntry");
     cl_multirole_sensor::CbDefaultMultiRoleSensorBehavior<ClLidarSensor>::onEntry();

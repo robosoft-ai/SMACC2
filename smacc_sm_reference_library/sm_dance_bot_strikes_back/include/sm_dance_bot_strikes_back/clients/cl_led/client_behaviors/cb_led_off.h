@@ -12,7 +12,7 @@ class CbLEDOff : public smacc::SmaccClientBehavior
 public:
   cl_led::ClLED * ledActionClient_;
 
-  virtual void onEntry() override
+  void onEntry() override
   {
     this->requiresClient(ledActionClient_);
 
@@ -21,7 +21,7 @@ public:
     ledActionClient_->sendGoal(goal);
   }
 
-  virtual void onExit() override
+  void onEntry() override
   {
     // RCLCPP_INFO(nh_->get_logger(), "Entering ToolClientBehavior");
   }

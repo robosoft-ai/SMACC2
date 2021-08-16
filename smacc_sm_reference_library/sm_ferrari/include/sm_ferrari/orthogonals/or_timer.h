@@ -9,7 +9,7 @@ using std::chrono_literals;
 class OrTimer : public smacc::Orthogonal<OrTimer>
 {
 public:
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     auto actionclient = this->createClient<cl_ros_timer::ClRosTimer>(500ms);
     actionclient->initialize();

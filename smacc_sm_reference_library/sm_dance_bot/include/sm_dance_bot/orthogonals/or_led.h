@@ -7,7 +7,7 @@ namespace sm_dance_bot
 class OrLED : public smacc::Orthogonal<OrLED>
 {
 public:
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     auto actionclient = this->createClient<cl_led::ClLED>("led_action_server");
   }

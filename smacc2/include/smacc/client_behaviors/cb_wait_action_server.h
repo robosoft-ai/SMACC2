@@ -22,7 +22,7 @@ public:
     this->requiresClient(client_);
   }
 
-  virtual void executeOnEntry() override;
+  void executeOnEntry() override;
 
 private:
   ISmaccActionClient * client_;

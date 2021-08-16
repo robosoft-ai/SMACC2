@@ -7,9 +7,6 @@ namespace sm_dance_bot
 class OrStringPublisher : public smacc::Orthogonal<OrStringPublisher>
 {
 public:
-  virtual void onInitialize() override
-  {
-    this->createClient<ClStringPublisher>("/string_publisher_out");
-  }
+  void onInitialize() override { this->createClient<ClStringPublisher>("/string_publisher_out"); }
 };
 }  // namespace sm_dance_bot

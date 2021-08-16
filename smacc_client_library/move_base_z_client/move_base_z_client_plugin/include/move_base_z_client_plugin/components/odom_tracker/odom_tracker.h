@@ -75,7 +75,7 @@ public:
   void logStateString();
 
 protected:
-  virtual void onInitialize() override;
+  void onInitialize() override;
 
   void updateConfiguration();
   //   dynamic_reconfigure::Server<move_base_z_client_plugin::OdomTrackerConfig> paramServer_;

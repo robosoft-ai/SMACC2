@@ -17,7 +17,7 @@ struct SmAtomicSubscribersPerformanceTest
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  virtual void onInitialize() override { this->createOrthogonal<OrSubscriber>(); }
+  void onInitialize() override { this->createOrthogonal<OrSubscriber>(); }
 };
 
 }  // namespace sm_atomic_subscribers_performance_test

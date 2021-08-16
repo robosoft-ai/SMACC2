@@ -14,7 +14,7 @@ template <typename TMsg>
 class CbSubscriptionCallbackBase : public smacc::SmaccClientBehavior
 {
 public:
-  virtual void onEntry() override
+  void onEntry() override
   {
     this->requiresClient(attachedClient_);
     attachedClient_->onMessageReceived(&CbSubscriptionCallbackBase::onMessageReceived, this);

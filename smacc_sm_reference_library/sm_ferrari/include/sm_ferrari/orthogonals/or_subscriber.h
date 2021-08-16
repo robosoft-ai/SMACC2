@@ -10,7 +10,7 @@ using namespace sm_ferrari::cl_subscriber;
 class OrSubscriber : public smacc::Orthogonal<OrSubscriber>
 {
 public:
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     auto subscriber_client = this->createClient<ClSubscriber>("/temperature");
   }

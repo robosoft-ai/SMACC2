@@ -27,7 +27,7 @@ public:
 
   void setPureSpinningPlanner();
 
-  virtual void onInitialize() override;
+  void onInitialize() override;
 
   // sets ROS defaults local and global planners
   void setDefaultPlanners();

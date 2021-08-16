@@ -31,26 +31,26 @@ public:
     //updateCurrentState<InitialStateType>(false);
   }
 
-  virtual void reset() override
+  void reset() override
   {
     ISmaccStateMachine::reset();
     this->terminate();
     smacc::run<DerivedStateMachine>();
   }
 
-  virtual void stop() override
+  void stop() override
   {
     ISmaccStateMachine::stop();
     this->terminate();
   }
 
-  virtual void eStop() override
+  void eStop() override
   {
     ISmaccStateMachine::eStop();
     this->terminate();
   }
 
-  virtual void initiate_impl() override
+  void initiate_impl() override
   {
     globalNh_ = this->getNode();
 

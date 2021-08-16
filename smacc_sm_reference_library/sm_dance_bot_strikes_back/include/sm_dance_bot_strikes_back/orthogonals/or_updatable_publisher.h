@@ -8,7 +8,7 @@ namespace sm_dance_bot_strikes_back
 class OrUpdatablePublisher : public smacc::Orthogonal<OrUpdatablePublisher>
 {
 public:
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     auto publisherClient_ = this->createClient<cl_ros_publisher::ClRosPublisher>();
     publisherClient_->configure<std_msgs::msg::String>("/updatable_string_publisher_out");

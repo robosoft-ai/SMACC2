@@ -9,7 +9,7 @@ template <typename RosMsgType>
 class CbMutedBehavior : public smacc::SmaccClientBehavior
 {
 public:
-  virtual void onEntry() override {}
-  virtual void onExit() override {}
+  void onEntry() override {}
+  void onExit() override {}
 };
 }  // namespace cl_ros_publisher

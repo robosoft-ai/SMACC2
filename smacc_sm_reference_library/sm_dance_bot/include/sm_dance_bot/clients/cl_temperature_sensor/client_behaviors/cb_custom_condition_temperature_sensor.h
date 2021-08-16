@@ -18,7 +18,7 @@ class CbConditionTemperatureSensor
 {
 public:
   CbConditionTemperatureSensor() {}
-  virtual void onMessageCallback(const sensor_msgs::msg::Temperature & msg) override
+  void onMessageCallback(const sensor_msgs::msg::Temperature & msg) override
   {
     if (msg.temperature > 40)
     {

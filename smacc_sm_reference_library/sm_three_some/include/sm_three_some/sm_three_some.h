@@ -71,7 +71,7 @@ struct SmThreeSome : public smacc::SmaccStateMachineBase<SmThreeSome, MsRun>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     this->createOrthogonal<OrTimer>();
     this->createOrthogonal<OrUpdatablePublisher>();

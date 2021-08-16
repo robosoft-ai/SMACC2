@@ -10,9 +10,6 @@ using namespace sm_three_some::cl_subscriber;
 class OrSubscriber : public smacc::Orthogonal<OrSubscriber>
 {
 public:
-  virtual void onInitialize() override
-  {
-    auto subscriber_client = this->createClient<ClSubscriber>();
-  }
+  void onInitialize() override { auto subscriber_client = this->createClient<ClSubscriber>(); }
 };
 }  // namespace sm_three_some

@@ -41,8 +41,8 @@ public:
 
   virtual ~CbNavigateForward();
 
-  virtual void onEntry() override;
+  void onEntry() override;
 
-  virtual void onExit() override;
+  void onEntry() override;
 };
 }  // namespace cl_move_base_z

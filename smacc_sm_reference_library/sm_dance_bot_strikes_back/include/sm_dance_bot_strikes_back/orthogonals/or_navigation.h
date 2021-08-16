@@ -16,7 +16,7 @@ using namespace std::chrono_literals;
 class OrNavigation : public smacc::Orthogonal<OrNavigation>
 {
 public:
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     auto movebaseClient = this->createClient<ClMoveBaseZ>();
 

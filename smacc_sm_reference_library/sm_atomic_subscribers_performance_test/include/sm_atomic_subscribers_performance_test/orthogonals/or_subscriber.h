@@ -10,7 +10,7 @@ using namespace smacc::client_bases;
 class OrSubscriber : public smacc::Orthogonal<OrSubscriber>
 {
 public:
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     this->createClient<SmaccSubscriberClient<std_msgs::msg::Int16>>("temperature");
   }

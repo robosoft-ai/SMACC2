@@ -26,13 +26,13 @@ public:
     deferedPublishFn = [=]() { client_->publish(data); };
   }
 
-  virtual void onEntry() override { this->requiresClient(client_); }
+  void onEntry() override { this->requiresClient(client_); }
 
   virtual void update()
   {
     if (deferedPublishFn != nullptr) deferedPublishFn();
   }
 
-  virtual void onExit() override {}
+  void onEntry() override {}
 };
 }  // namespace cl_ros_publisher

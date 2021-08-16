@@ -24,7 +24,7 @@ public:
 
   virtual void onEntry() { this->requiresClient(publisherClient_); }
 
-  virtual void onExit() override
+  void onEntry() override
   {
     std_msgs::msg::String rosmsg;
     rosmsg.data = msg_;

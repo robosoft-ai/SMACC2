@@ -129,7 +129,7 @@ struct SmDanceBot : public smacc::SmaccStateMachineBase<SmDanceBot, MsDanceBotRu
 
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     this->setGlobalSMData("counter_1", counter_1);
     this->setGlobalSMData("rt_ready_flag", rt_ready_flag);

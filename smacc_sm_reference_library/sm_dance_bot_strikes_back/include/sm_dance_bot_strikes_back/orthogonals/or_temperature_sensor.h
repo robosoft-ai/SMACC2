@@ -12,7 +12,7 @@ namespace sm_dance_bot_strikes_back
 class OrTemperatureSensor : public smacc::Orthogonal<OrTemperatureSensor>
 {
 public:
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     auto clTemperatureSensor = this->createClient<ClTemperatureSensor>();
 

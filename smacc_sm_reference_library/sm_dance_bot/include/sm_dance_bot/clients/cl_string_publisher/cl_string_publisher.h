@@ -12,7 +12,7 @@ class ClStringPublisher : public smacc::client_bases::SmaccPublisherClient
 public:
   ClStringPublisher(std::string topicName) : topicName_(topicName) {}
 
-  virtual void onInitialize() override { this->configure<std_msgs::msg::String>(topicName_); }
+  void onInitialize() override { this->configure<std_msgs::msg::String>(topicName_); }
 
   std::string topicName_;
 };

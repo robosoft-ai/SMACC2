@@ -15,7 +15,7 @@ public:
 
   const float SECURITY_DISTANCE = 1;  // meters
 
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     auto client_ =
       dynamic_cast<smacc::client_bases::SmaccSubscriberClient<sensor_msgs::msg::LaserScan> *>(

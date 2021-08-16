@@ -57,7 +57,7 @@ public:
 
   virtual std::shared_ptr<rclcpp_action::ClientBase> getClientBase() override { return client_; }
 
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     this->client_ = rclcpp_action::create_client<ActionType>(getNode(), name_);
     RCLCPP_INFO_STREAM(

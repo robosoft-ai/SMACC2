@@ -40,7 +40,7 @@ public:
     RandomGenerateReactorMode mode, double evAMin = 1, double evAMax = 4, double evBMin = 5,
     double evBMax = 8, double evCMin = 9, double evCMax = 12);
 
-  virtual void onEntry() override;
+  void onEntry() override;
 
   template <typename TState, typename TSource>
   void onStateAllocation()
@@ -52,7 +52,7 @@ public:
 
   void postRandomEvents();
 
-  virtual void update() override;
+  void update() override;
 
   RandomGenerateReactorMode mode_;
 

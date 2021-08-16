@@ -7,7 +7,7 @@ namespace sm_dance_bot_strikes_back
 class OrTimer : public smacc::Orthogonal<OrTimer>
 {
 public:
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     auto actionclient = this->createClient<cl_ros_timer::ClRosTimer>(rclcpp::Duration(0.5s));
     actionclient->initialize();

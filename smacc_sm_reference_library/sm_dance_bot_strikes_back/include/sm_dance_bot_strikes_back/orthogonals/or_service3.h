@@ -8,7 +8,7 @@ namespace sm_dance_bot_strikes_back
 class OrService3 : public smacc::Orthogonal<OrService3>
 {
 public:
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     auto serviceClient = this->createClient<ClService3>();
     serviceClient->serviceName_ = "/service_node3";

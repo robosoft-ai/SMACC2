@@ -70,7 +70,7 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>, smacc::ISmaccUpdatable
     return res;
   }
 
-  virtual void update() override
+  void update() override
   {
     k++;
     RCLCPP_INFO(getNode()->get_logger(), "[State2] internally updating k: %d", k);

@@ -10,8 +10,8 @@ class CbTimerCountdownOnce : public smacc::SmaccClientBehavior
 public:
   CbTimerCountdownOnce(unsigned long triggerTickCount);
 
-  virtual void onEntry() override;
-  virtual void onExit() override;
+  void onEntry() override;
+  void onExit() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()

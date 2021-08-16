@@ -55,7 +55,7 @@ public:
     this->postEvent<EvType>();
   }
 
-  virtual void onEntry() override
+  void onEntry() override
   {
     RCLCPP_INFO(
       getNode()->get_logger(),

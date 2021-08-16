@@ -22,9 +22,9 @@ class Pose : public smacc::ISmaccComponent, public smacc::ISmaccUpdatable
 public:
   Pose(std::string poseFrameName = "base_link", std::string referenceFrame = "odom");
 
-  virtual void onInitialize() override;
+  void onInitialize() override;
 
-  virtual void update() override;
+  void update() override;
 
   // synchronously waits a transform in the current thread
   void waitTransformUpdate(rclcpp::Rate r = rclcpp::Rate(20));

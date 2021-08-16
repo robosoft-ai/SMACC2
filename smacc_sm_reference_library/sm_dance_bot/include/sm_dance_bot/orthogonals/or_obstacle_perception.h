@@ -8,7 +8,7 @@ namespace sm_dance_bot
 class OrObstaclePerception : public smacc::Orthogonal<OrObstaclePerception>
 {
 public:
-  virtual void onInitialize() override
+  void onInitialize() override
   {
     auto lidarClient = this->createClient<ClLidarSensor>();
 

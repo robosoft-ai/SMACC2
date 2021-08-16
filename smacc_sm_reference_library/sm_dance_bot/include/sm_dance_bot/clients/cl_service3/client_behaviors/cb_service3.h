@@ -20,7 +20,7 @@ private:
 public:
   CbService3(Service3Command value) { value_ = value; }
 
-  virtual void onEntry() override
+  void onEntry() override
   {
     this->requiresClient(serviceClient_);
 

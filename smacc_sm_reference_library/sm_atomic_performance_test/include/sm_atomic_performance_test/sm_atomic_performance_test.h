@@ -16,7 +16,7 @@ struct SmAtomicPerformanceTest
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  virtual void onInitialize() override {}
+  void onInitialize() override {}
 };
 
 }  // namespace sm_atomic_performance_test

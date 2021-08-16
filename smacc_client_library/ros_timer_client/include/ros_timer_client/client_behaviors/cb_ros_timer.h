@@ -8,8 +8,8 @@ namespace cl_ros_timer
 class CbTimer : public smacc::SmaccClientBehavior
 {
 public:
-  virtual void onEntry() override;
-  virtual void onExit() override;
+  void onEntry() override;
+  void onEntry() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
