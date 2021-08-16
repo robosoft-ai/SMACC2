@@ -27,7 +27,7 @@ public:
 
   CbNavigateGlobalPosition(float x, float y, float yaw /*radians*/);
 
-  void setGoal(const geometry_msgs::msg::Pose &pose);
+  void setGoal(const geometry_msgs::msg::Pose & pose);
 
   virtual void onEntry();
 
@@ -39,6 +39,6 @@ public:
   void execute();
 
 private:
-  void readStartPoseFromParameterServer(ClMoveBaseZ::Goal &goal);
+  void readStartPoseFromParameterServer(ClMoveBaseZ::Goal & goal);
 };
 }  // namespace cl_move_base_z

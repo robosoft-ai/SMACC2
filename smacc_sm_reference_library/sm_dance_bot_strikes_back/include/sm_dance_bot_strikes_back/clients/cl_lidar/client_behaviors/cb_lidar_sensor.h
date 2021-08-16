@@ -12,9 +12,7 @@ namespace cl_lidar
 struct CbLidarSensor : cl_multirole_sensor::CbDefaultMultiRoleSensorBehavior<ClLidarSensor>
 {
 public:
-  CbLidarSensor()
-  {
-  }
+  CbLidarSensor() {}
 
   virtual void onEntry() override
   {
@@ -22,9 +20,7 @@ public:
     cl_multirole_sensor::CbDefaultMultiRoleSensorBehavior<ClLidarSensor>::onEntry();
   }
 
-  virtual void onMessageCallback(const sensor_msgs::msg::LaserScan & /*msg*/) override
-  {
-  }
+  virtual void onMessageCallback(const sensor_msgs::msg::LaserScan & /*msg*/) override {}
 };
 }  // namespace cl_lidar
 }  // namespace sm_dance_bot_strikes_back

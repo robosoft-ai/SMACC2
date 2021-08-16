@@ -30,16 +30,18 @@ public:
     {
       if (!this->topicName)
       {
-        RCLCPP_ERROR(getNode()->get_logger(), "topic publisher with no topic name set. Skipping advertising.");
+        RCLCPP_ERROR(
+          getNode()->get_logger(), "topic publisher with no topic name set. Skipping advertising.");
         return;
       }
-      
-      if (!queueSize)
-        queueSize = 1;
+
+      if (!queueSize) queueSize = 1;
       rclcpp::SensorDataQoS qos;
       qos.keep_last(*queueSize);
 
-      RCLCPP_INFO_STREAM(getNode()->get_logger(), "[" << this->getName() << "] Client Publisher to topic: " << topicName);
+      RCLCPP_INFO_STREAM(
+        getNode()->get_logger(),
+        "[" << this->getName() << "] Client Publisher to topic: " << topicName);
       pub_ = getNode()->create_publisher<MessageType>(*(this->topicName), qos);
 
       this->initialized_ = true;
@@ -47,7 +49,7 @@ public:
   }
 
   template <typename MessageType>
-  void publish(const MessageType &msg)
+  void publish(const MessageType & msg)
   {
     //pub_->publish(msg);
     std::dynamic_pointer_cast<rclcpp::Publisher<MessageType>>(pub_)->publish(msg);
@@ -58,5 +60,5 @@ public:
 private:
   bool initialized_;
 };
-} // namespace client_bases
-} // namespace smacc
+}  // namespace client_bases
+}  // namespace smacc

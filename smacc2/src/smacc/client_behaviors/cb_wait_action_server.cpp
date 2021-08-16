@@ -4,13 +4,9 @@ namespace smacc
 {
 namespace client_behaviors
 {
-CbWaitActionServer::CbWaitActionServer(std::chrono::milliseconds timeout) : timeout_(timeout)
-{
-}
+CbWaitActionServer::CbWaitActionServer(std::chrono::milliseconds timeout) : timeout_(timeout) {}
 
-CbWaitActionServer::~CbWaitActionServer()
-{
-}
+CbWaitActionServer::~CbWaitActionServer() {}
 
 void CbWaitActionServer::executeOnEntry()
 {

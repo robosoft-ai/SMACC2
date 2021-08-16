@@ -7,21 +7,19 @@ template <typename SS>
 struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
 {
   typedef SmaccState<StiFPatternForward2<SS>, SS> TSti;
-  using TSti::SmaccState;
   using TSti::context_type;
+  using TSti::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-      Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternRotate2<SS>>
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternRotate2<SS>>
 
-      >
-      reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure()
-  {
-  }
+  static void staticConfigure() {}
 
   void runtimeConfigure()
   {
@@ -31,5 +29,5 @@ struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
     TSti::template configure<OrLED, CbLEDOff>();
   }
 };
-}
-}
+}  // namespace f_pattern_states
+}  // namespace sm_dance_bot_strikes_back

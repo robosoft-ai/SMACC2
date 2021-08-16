@@ -41,15 +41,9 @@ public:
     return this->pose_;
   }
 
-  inline const std::string &getReferenceFrame() const
-  {
-    return referenceFrame_;
-  }
+  inline const std::string & getReferenceFrame() const { return referenceFrame_; }
 
-  inline const std::string &getFrameId() const
-  {
-    return poseFrameName_;
-  }
+  inline const std::string & getFrameId() const { return poseFrameName_; }
 
   bool isInitialized;
 

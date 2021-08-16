@@ -9,13 +9,14 @@ struct StiRadialRotate : smacc::SmaccState<StiRadialRotate, SS>
 
   // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiRadialEndPoint, SUCCESS>,
-  Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiRadialLoopStart, ABORT>
-  
-  >reactions;
 
-// STATE FUNCTIONS
+    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiRadialEndPoint, SUCCESS>,
+    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiRadialLoopStart, ABORT>
+
+    >
+    reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbAbsoluteRotate>();
@@ -24,13 +25,13 @@ struct StiRadialRotate : smacc::SmaccState<StiRadialRotate, SS>
 
   void runtimeConfigure()
   {
-    auto cbAbsRotate = this->getOrthogonal<OrNavigation>()
-                           ->getClientBehavior<CbAbsoluteRotate>();
+    auto cbAbsRotate = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbAbsoluteRotate>();
 
     cbAbsRotate->spinningPlanner = SpiningPlanner::PureSpinning;
-    auto &superstate = this->context<SS>();
-    cbAbsRotate->absoluteGoalAngleDegree = superstate.iteration_count * SS::ray_angle_increment_degree();
+    auto & superstate = this->context<SS>();
+    cbAbsRotate->absoluteGoalAngleDegree =
+      superstate.iteration_count * SS::ray_angle_increment_degree();
   }
 };
-} // namespace radial_motion_states
-} // namespace sm_dance_bot_strikes_back
+}  // namespace radial_motion_states
+}  // namespace sm_dance_bot_strikes_back

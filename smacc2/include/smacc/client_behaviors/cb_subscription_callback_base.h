@@ -20,10 +20,10 @@ public:
     attachedClient_->onMessageReceived(&CbSubscriptionCallbackBase::onMessageReceived, this);
   }
 
-  virtual void onMessageReceived(const TMsg& msg) = 0;
+  virtual void onMessageReceived(const TMsg & msg) = 0;
 
 protected:
-  smacc::client_bases::SmaccSubscriberClient<TMsg>* attachedClient_ = nullptr;
+  smacc::client_bases::SmaccSubscriberClient<TMsg> * attachedClient_ = nullptr;
 };
 }  // namespace client_behaviors
 }  // namespace smacc

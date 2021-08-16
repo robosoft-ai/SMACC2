@@ -9,22 +9,21 @@ struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
 
   // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiRadialLoopStart, SUCCESS>,
-  Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StiRadialLoopStart, ABORT>
-  
-  >reactions;
 
-// STATE FUNCTIONS
+    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiRadialLoopStart, SUCCESS>,
+    Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StiRadialLoopStart, ABORT>
+
+    >
+    reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
     configure_orthogonal<OrLED, CbLEDOff>();
   }
 
-  void runtimeConfigure()
-  {
-  }
+  void runtimeConfigure() {}
 };
-}
-}
+}  // namespace radial_motion_states
+}  // namespace sm_dance_bot_strikes_back

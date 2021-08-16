@@ -9,11 +9,12 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
 
   // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiRadialReturn, SUCCESS>,
-  Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiRadialLoopStart, ABORT>
-  
-  >reactions;
+
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiRadialReturn, SUCCESS>,
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiRadialLoopStart, ABORT>
+
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
@@ -24,16 +25,16 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
 
   void runtimeConfigure()
   {
-    cl_lidar::ClLidarSensor *lidarClient;
+    cl_lidar::ClLidarSensor * lidarClient;
     this->requiresClient(lidarClient);
 
     auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
 
-    auto forwardBehavior = this->getOrthogonal<OrNavigation>()
-                               ->getClientBehavior<CbNavigateForward>();
+    auto forwardBehavior =
+      this->getOrthogonal<OrNavigation>()->getClientBehavior<CbNavigateForward>();
 
     forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
   }
 };
-} // namespace radial_motion_states
-} // namespace sm_dance_bot_strikes_back
+}  // namespace radial_motion_states
+}  // namespace sm_dance_bot_strikes_back

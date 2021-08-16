@@ -26,7 +26,7 @@ namespace client_bases
 {
 class ISmaccActionClient;
 class ISmaccSubscriber;
-} // namespace client_bases
+}  // namespace client_bases
 
 namespace introspection
 {
@@ -35,13 +35,12 @@ class SmaccStateInfo;
 class StateReactorHandler;
 class SmaccStateReactorInfo;
 class SmaccEventGeneratorInfo;
-} // namespace introspection
+}  // namespace introspection
 
 // ----TAGS FOR TRANSITIONS -----
 
 namespace default_transition_tags
 {
-
 // you can also use these other labels in order to have
 // a better code readability and also to improve the visual representation
 // in the viewer
@@ -81,14 +80,13 @@ struct ENDLOOP
 struct default_transition_name : SUCCESS
 {
 };
-} // namespace default_transition_tags
+}  // namespace default_transition_tags
 
-template <class Event,
-          class Destination,
-          typename Tag = default_transition_tags::default_transition_name,
-          class TransitionContext = boost::statechart::detail::no_context<Event>,
-          void (TransitionContext::*pTransitionAction)(const Event &) =
-              &boost::statechart::detail::no_context<Event>::no_function>
+template <
+  class Event, class Destination, typename Tag = default_transition_tags::default_transition_name,
+  class TransitionContext = boost::statechart::detail::no_context<Event>,
+  void (TransitionContext::*pTransitionAction)(const Event &) =
+    &boost::statechart::detail::no_context<Event>::no_function>
 class Transition;
 
-} // namespace smacc
+}  // namespace smacc

@@ -10,17 +10,16 @@ namespace smacc
 {
 namespace utils
 {
-
-std::string cleanShortTypeName(const std::type_info &tinfo)
+std::string cleanShortTypeName(const std::type_info & tinfo)
 {
-    auto typeinfo= TypeInfo::getFromStdTypeInfo(tinfo);
-    auto nontemplatedfullclasname = typeinfo->getNonTemplatedTypeName();
+  auto typeinfo = TypeInfo::getFromStdTypeInfo(tinfo);
+  auto nontemplatedfullclasname = typeinfo->getNonTemplatedTypeName();
 
-    std::vector<std::string> strs;
-    boost::split(strs, nontemplatedfullclasname, boost::is_any_of("::"));
-    std::string classname = strs.back();
-    
-    return classname;
+  std::vector<std::string> strs;
+  boost::split(strs, nontemplatedfullclasname, boost::is_any_of("::"));
+  std::string classname = strs.back();
+
+  return classname;
 }
-} // namespace utils
-} // namespace smacc
+}  // namespace utils
+}  // namespace smacc

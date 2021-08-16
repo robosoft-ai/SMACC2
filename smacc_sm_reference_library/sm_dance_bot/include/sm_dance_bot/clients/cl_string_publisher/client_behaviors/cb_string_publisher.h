@@ -11,30 +11,25 @@ namespace cl_string_publisher
 class CbStringPublisher : public smacc::SmaccClientBehavior
 {
 public:
-    ClStringPublisher *publisherClient_;
-    std::string msg_;
+  ClStringPublisher * publisherClient_;
+  std::string msg_;
 
-    CbStringPublisher(std::string msg)
-    {
-        msg_ = msg;
-    }
+  CbStringPublisher(std::string msg) { msg_ = msg; }
 
-    virtual void runtimeConfigure() override
-    {
-        RCLCPP_INFO_STREAM(getNode()->get_logger(),"Creating CbStringPublisher behavior with stored message: " << msg_);
-    }
+  virtual void runtimeConfigure() override
+  {
+    RCLCPP_INFO_STREAM(
+      getNode()->get_logger(), "Creating CbStringPublisher behavior with stored message: " << msg_);
+  }
 
-    virtual void onEntry()
-    {
-        this->requiresClient(publisherClient_);
-    }
+  virtual void onEntry() { this->requiresClient(publisherClient_); }
 
-    virtual void onExit() override
-    {
-        std_msgs::msg::String rosmsg;
-        rosmsg.data = msg_;
-        publisherClient_->publish(rosmsg);
-    }
+  virtual void onExit() override
+  {
+    std_msgs::msg::String rosmsg;
+    rosmsg.data = msg_;
+    publisherClient_->publish(rosmsg);
+  }
 };
-} // namespace cl_string_publisher
-} // namespace sm_dance_bot
+}  // namespace cl_string_publisher
+}  // namespace sm_dance_bot

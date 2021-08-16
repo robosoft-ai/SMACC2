@@ -11,26 +11,23 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-      Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP>
+    Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP>
 
-      >
-      reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure()
-  {
-  }
+  static void staticConfigure() {}
 
-  void runtimeConfigure()
-  {
-  }
+  void runtimeConfigure() {}
 
   bool loopWhileCondition()
   {
-    auto &superstate = this->context<SS>();
+    auto & superstate = this->context<SS>();
 
-    RCLCPP_INFO(getNode()->get_logger(), "Loop start, current iterations: %d, total iterations: %d",
-                superstate.iteration_count, superstate.total_iterations());
+    RCLCPP_INFO(
+      getNode()->get_logger(), "Loop start, current iterations: %d, total iterations: %d",
+      superstate.iteration_count, superstate.total_iterations());
     return superstate.iteration_count++ < superstate.total_iterations();
   }
 
@@ -40,10 +37,7 @@ public:
     checkWhileLoopConditionAndThrowEvent(&StiState1::loopWhileCondition);
   }
 
-  void onExit()
-  {
-    RCLCPP_INFO(getNode()->get_logger(), "On Exit!");
-  }
+  void onExit() { RCLCPP_INFO(getNode()->get_logger(), "On Exit!"); }
 };
 }  // namespace inner_states
 }  // namespace sm_three_some

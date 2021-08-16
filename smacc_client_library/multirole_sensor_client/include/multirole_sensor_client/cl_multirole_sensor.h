@@ -1,9 +1,9 @@
 #pragma once
 
 #include <smacc/client_bases/smacc_subscriber_client.h>
-#include <rclcpp/rclcpp.hpp>
-#include <optional>
 #include <smacc/smacc_signal.h>
+#include <optional>
+#include <rclcpp/rclcpp.hpp>
 
 namespace cl_multirole_sensor
 {
@@ -12,7 +12,6 @@ using namespace smacc;
 template <typename TSource, typename TOrthogonal>
 struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource, TOrthogonal>>
 {
-  
 };
 
 using namespace smacc::client_bases;
@@ -25,15 +24,14 @@ public:
   typedef MessageType TMessageType;
   SmaccSignal<void()> onMessageTimeout_;
 
-  ClMultiroleSensor()
-      : smacc::client_bases::SmaccSubscriberClient<MessageType>()
+  ClMultiroleSensor() : smacc::client_bases::SmaccSubscriberClient<MessageType>()
   {
     //RCLCPP_INFO( getNode()->get_logger(),"[ClMultiroleSensor] constructor");
     initialized_ = false;
   }
 
   template <typename T>
-  boost::signals2::connection onMessageTimeout(void (T::*callback)(), T *object)
+  boost::signals2::connection onMessageTimeout(void (T::*callback)(), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onMessageTimeout_, callback, object);
   }
@@ -43,7 +41,8 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    SmaccSubscriberClient<MessageType>::template onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    SmaccSubscriberClient<MessageType>::template onOrthogonalAllocation<
+      TOrthogonal, TSourceObject>();
 
     this->postTimeoutMessageEvent = [=]() {
       onMessageTimeout_();
@@ -64,13 +63,17 @@ public:
       if (timeout_)
       {
         auto ros_clock = rclcpp::Clock::make_shared();
-        timeoutTimer_ = rclcpp::create_timer(this->getNode(), this->getNode()->get_clock(),*timeout_, std::bind(&ClMultiroleSensor<MessageType>::timeoutCallback, this));
+        timeoutTimer_ = rclcpp::create_timer(
+          this->getNode(), this->getNode()->get_clock(), *timeout_,
+          std::bind(&ClMultiroleSensor<MessageType>::timeoutCallback, this));
         //timeoutTimer_->start();
         timeoutTimer_->reset();
       }
       else
       {
-        RCLCPP_WARN(this->getNode()->get_logger(),"Timeout sensor client not set, skipping timeout watchdog funcionality");
+        RCLCPP_WARN(
+          this->getNode()->get_logger(),
+          "Timeout sensor client not set, skipping timeout watchdog funcionality");
       }
 
       initialized_ = true;
@@ -80,7 +83,7 @@ public:
   std::optional<rclcpp::Duration> timeout_;
 
 protected:
-  void resetTimer(const MessageType &/*msg*/)
+  void resetTimer(const MessageType & /*msg*/)
   {
     //reseting the timer
     timeoutTimer_->reset();
@@ -92,9 +95,6 @@ private:
   rclcpp::TimerBase::SharedPtr timeoutTimer_;
   bool initialized_;
 
-  void timeoutCallback()
-  {
-    postTimeoutMessageEvent();
-  }
+  void timeoutCallback() { postTimeoutMessageEvent(); }
 };
-} // namespace cl_multirole_sensor
+}  // namespace cl_multirole_sensor

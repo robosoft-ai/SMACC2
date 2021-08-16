@@ -12,24 +12,22 @@ struct StiFPatternStartLoop : smacc::SmaccState<StiFPatternStartLoop<SS>, SS>
 
   // TRANSITION TABLE
   typedef mpl::list<
-      Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternForward2<SS>, CONTINUELOOP>>
-      reactions;
+    Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternForward2<SS>, CONTINUELOOP>>
+    reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure()
-  {
-  }
+  static void staticConfigure() {}
 
   bool loopCondition()
   {
-    cl_lidar::ClLidarSensor *lidarClient;
+    cl_lidar::ClLidarSensor * lidarClient;
     this->requiresClient(lidarClient);
 
     auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
 
     auto horizontalDistance = lidarData->forwardObstacleDistance;
 
-    return horizontalDistance > 0.5 /*meters*/; // go ahead until 1.5m before the wall
+    return horizontalDistance > 0.5 /*meters*/;  // go ahead until 1.5m before the wall
   }
 
   void onEntry()
@@ -37,5 +35,5 @@ struct StiFPatternStartLoop : smacc::SmaccState<StiFPatternStartLoop<SS>, SS>
     TSti::checkWhileLoopConditionAndThrowEvent(&StiFPatternStartLoop<SS>::loopCondition);
   }
 };
-} // namespace f_pattern_states
-} // namespace sm_dance_bot_strikes_back
+}  // namespace f_pattern_states
+}  // namespace sm_dance_bot_strikes_back

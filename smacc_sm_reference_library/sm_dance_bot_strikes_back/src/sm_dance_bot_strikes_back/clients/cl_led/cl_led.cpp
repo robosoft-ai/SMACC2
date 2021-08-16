@@ -11,19 +11,14 @@ namespace sm_dance_bot_strikes_back
 namespace cl_led
 {
 ClLED::ClLED(std::string actionServerName)
-  : SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>(actionServerName)
+: SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>(actionServerName)
 
 {
 }
 
-std::string ClLED::getName() const
-{
-  return "TOOL ACTION CLIENT";
-}
+std::string ClLED::getName() const { return "TOOL ACTION CLIENT"; }
 
-ClLED::~ClLED()
-{
-}
+ClLED::~ClLED() {}
 }  // namespace cl_led
 
 // PLUGINLIB_EXPORT_CLASS(cl_led::ClLED, smacc::ISmaccComponent)

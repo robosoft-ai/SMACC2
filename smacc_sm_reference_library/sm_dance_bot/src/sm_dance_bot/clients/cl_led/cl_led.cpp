@@ -10,29 +10,23 @@ namespace sm_dance_bot
 {
 namespace cl_led
 {
-
-ClLED::ClLED(std::string actionServerName) : 
-    SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>(actionServerName)
+ClLED::ClLED(std::string actionServerName)
+: SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>(actionServerName)
 {
 }
 
-std::string ClLED::getName() const
+std::string ClLED::getName() const { return "TOOL ACTION CLIENT"; }
+
+ClLED::~ClLED() {}
+
+std::ostream & operator<<(
+  std::ostream & out, const sm_dance_bot_msgs::action::LEDControl::Goal & msg)
 {
-    return "TOOL ACTION CLIENT";
+  out << "LED CONTROL: " << msg.command;
+  return out;
 }
 
-ClLED::~ClLED()
-{
-}
-
-
-std::ostream& operator<< (std::ostream &out, const sm_dance_bot_msgs::action::LEDControl::Goal &msg)
-{
-    out << "LED CONTROL: " << msg.command;
-    return out ;
-}
-
-} // namespace cl_led
+}  // namespace cl_led
 
 //PLUGINLIB_EXPORT_CLASS(cl_led::ClLED, smacc::ISmaccComponent)
-}
+}  // namespace sm_dance_bot

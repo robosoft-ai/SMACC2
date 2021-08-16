@@ -5,14 +5,15 @@ namespace sm_dance_bot
 class MsDanceBotRecoveryMode : public smacc::SmaccState<MsDanceBotRecoveryMode, SmDanceBot>
 {
 public:
-   using SmaccState::SmaccState;
+  using SmaccState::SmaccState;
 
-// TRANSITION TABLE
-   typedef mpl::list< 
-   
-   Transition<EvGlobalError, sc::deep_history<typename MsDanceBotRunMode::LastDeepState>> 
-   
-   >reactions;
-   // typedef Transition<EvGlobalError, MsDanceBotRunMode> reactions;
+  // TRANSITION TABLE
+  typedef mpl::list<
+
+    Transition<EvGlobalError, sc::deep_history<typename MsDanceBotRunMode::LastDeepState>>
+
+    >
+    reactions;
+  // typedef Transition<EvGlobalError, MsDanceBotRunMode> reactions;
 };
-}
+}  // namespace sm_dance_bot

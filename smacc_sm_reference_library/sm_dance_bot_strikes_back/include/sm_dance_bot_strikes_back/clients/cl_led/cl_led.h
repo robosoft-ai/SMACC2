@@ -8,7 +8,8 @@ namespace sm_dance_bot_strikes_back
 {
 namespace cl_led
 {
-class ClLED : public smacc::client_bases::SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>
+class ClLED
+: public smacc::client_bases::SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>
 {
 public:
   // SMACC_ACTION_CLIENT_DEFINITION(sm_dance_bot_msgs::action::LEDControlAction);
@@ -18,7 +19,8 @@ public:
   virtual ~ClLED();
 };
 
-std::ostream &operator<<(std::ostream &out, const sm_dance_bot_msgs::action::LEDControl::Goal &msg);
+std::ostream & operator<<(
+  std::ostream & out, const sm_dance_bot_msgs::action::LEDControl::Goal & msg);
 
 }  // namespace cl_led
 }  // namespace sm_dance_bot_strikes_back

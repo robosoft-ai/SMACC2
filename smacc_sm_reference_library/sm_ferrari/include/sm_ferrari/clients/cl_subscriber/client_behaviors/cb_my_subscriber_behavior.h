@@ -16,7 +16,7 @@ class CbMySubscriberBehavior : public smacc::SmaccClientBehavior
 public:
   void onEntry()
   {
-    ClSubscriber* client;
+    ClSubscriber * client;
     this->requiresClient(client);
 
     client->onMessageReceived(&CbMySubscriberBehavior::onMessageReceived, this);
@@ -28,12 +28,14 @@ public:
     postMyEvent_ = [=] { this->postEvent<EvMyBehavior<TSourceObject, TOrthogonal>>(); };
   }
 
-  void onMessageReceived(const std_msgs::msg::Float32& msg)
+  void onMessageReceived(const std_msgs::msg::Float32 & msg)
   {
     if (msg.data > 30)
     {
-      RCLCPP_INFO(getNode()->get_logger(), "[CbMySubscriberBehavior] received message from topic with value > 30. "
-                                           "Posting event!");
+      RCLCPP_INFO(
+        getNode()->get_logger(),
+        "[CbMySubscriberBehavior] received message from topic with value > 30. "
+        "Posting event!");
       this->postMyEvent_();
     }
   }

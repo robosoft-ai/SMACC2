@@ -8,36 +8,28 @@ using namespace smacc::default_transition_tags;
 // STATE DECLARATION
 struct State1 : smacc::SmaccState<State1, SmAtomic>
 {
-    using SmaccState::SmaccState;
+  using SmaccState::SmaccState;
 
-// TRANSITION TABLE
-    typedef mpl::list<
-    
+  // TRANSITION TABLE
+  typedef mpl::list<
+
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>
-    
-    >reactions;
 
-    
-// STATE FUNCTIONS
-    static void staticConfigure()
-    {
-        configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3);  // EvTimer triggers each 3 client ticks
-        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5); // EvTimer triggers once at 10 client ticks
-    }
+    >
+    reactions;
 
-    void runtimeConfigure()
-    {
-    }
+  // STATE FUNCTIONS
+  static void staticConfigure()
+  {
+    configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3);  // EvTimer triggers each 3 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(
+      5);  // EvTimer triggers once at 10 client ticks
+  }
 
-    void onEntry()
-    {
-        RCLCPP_INFO(getNode()->get_logger(), "On Entry!");
-    }
+  void runtimeConfigure() {}
 
-    void onExit()
-    {
-        RCLCPP_INFO(getNode()->get_logger(), "On Exit!");
-    }
-  
+  void onEntry() { RCLCPP_INFO(getNode()->get_logger(), "On Entry!"); }
+
+  void onExit() { RCLCPP_INFO(getNode()->get_logger(), "On Exit!"); }
 };
-} // namespace sm_atomic
+}  // namespace sm_atomic

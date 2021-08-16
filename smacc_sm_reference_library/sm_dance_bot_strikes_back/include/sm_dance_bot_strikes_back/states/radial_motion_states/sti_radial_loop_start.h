@@ -6,28 +6,27 @@ namespace radial_motion_states
 struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS>
 {
   using SmaccState::SmaccState;
-  
+
   // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate, CONTINUELOOP> 
-  
-  >reactions;
 
-// STATE FUNCTIONS
-  static void staticConfigure()
-  {
-  }
+    Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate, CONTINUELOOP>
 
-  void runtimeConfigure()
-  {
-  }
+    >
+    reactions;
+
+  // STATE FUNCTIONS
+  static void staticConfigure() {}
+
+  void runtimeConfigure() {}
 
   bool loopWhileCondition()
   {
-    auto &superstate = this->context<SS>();
+    auto & superstate = this->context<SS>();
 
-    RCLCPP_INFO(getNode()->get_logger(), "Loop start, current iterations: %d, total iterations: %d", superstate.iteration_count, superstate.total_iterations());
+    RCLCPP_INFO(
+      getNode()->get_logger(), "Loop start, current iterations: %d, total iterations: %d",
+      superstate.iteration_count, superstate.total_iterations());
     return superstate.iteration_count++ < superstate.total_iterations();
   }
 
@@ -37,5 +36,5 @@ struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS>
     checkWhileLoopConditionAndThrowEvent(&StiRadialLoopStart::loopWhileCondition);
   }
 };
-} // namespace radial_motion_states
-} // namespace sm_dance_bot_strikes_back
+}  // namespace radial_motion_states
+}  // namespace sm_dance_bot_strikes_back

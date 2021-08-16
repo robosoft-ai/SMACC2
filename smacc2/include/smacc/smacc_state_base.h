@@ -17,9 +17,11 @@ namespace smacc
 using namespace smacc::introspection;
 using namespace smacc::default_events;
 
-template <class MostDerived, class Context, class InnerInitial = mpl::list<>,
-          sc::history_mode historyMode = sc::has_deep_history>
-class SmaccState : public sc::simple_state<MostDerived, Context, InnerInitial, historyMode>, public ISmaccState
+template <
+  class MostDerived, class Context, class InnerInitial = mpl::list<>,
+  sc::history_mode historyMode = sc::has_deep_history>
+class SmaccState : public sc::simple_state<MostDerived, Context, InnerInitial, historyMode>,
+                   public ISmaccState
 {
   typedef sc::simple_state<MostDerived, Context, InnerInitial, historyMode> base_type;
 
@@ -31,14 +33,12 @@ public:
   typedef InnerInitial LastDeepState;
 
   bool finishStateThrown;
-  InnerInitial *smacc_inner_type;
+  InnerInitial * smacc_inner_type;
 
   //////////////////////////////////////////////////////////////////////////
   struct my_context
   {
-    my_context(typename base_type::context_ptr_type pContext) : pContext_(pContext)
-    {
-    }
+    my_context(typename base_type::context_ptr_type pContext) : pContext_(pContext) {}
 
     typename base_type::context_ptr_type pContext_;
   };
@@ -48,12 +48,16 @@ public:
   // Constructor that initializes the state ros node handle
   SmaccState(my_context ctx)
   {
-    #define STATE_NAME  (demangleSymbol(typeid(MostDerived).name()).c_str())
+#define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
 
-    static_assert(std::is_base_of<ISmaccState, Context>::value || std::is_base_of<ISmaccStateMachine, Context>::value,
-                  "The context class must be a SmaccState or a SmaccStateMachine");
-    static_assert(!std::is_same<MostDerived, Context>::value, "The context must be a different state or state machine "
-                                                              "than the current state");
+    static_assert(
+      std::is_base_of<ISmaccState, Context>::value ||
+        std::is_base_of<ISmaccStateMachine, Context>::value,
+      "The context class must be a SmaccState or a SmaccStateMachine");
+    static_assert(
+      !std::is_same<MostDerived, Context>::value,
+      "The context must be a different state or state machine "
+      "than the current state");
 
     // auto sm = dynamic_cast<ISmaccStateMachine*>(ctx.pContext_);
     // if(sm!=nullptr)
@@ -66,11 +70,12 @@ public:
     //   this->contextNh = st->getNode();
     // }
     this->contextNh = static_cast<Context *>(optionalNodeHandle(ctx.pContext_))
-                          ->getNode();  // static_cast<Context*>(ctx.pContext_.get())->getNode();
+                        ->getNode();  // static_cast<Context*>(ctx.pContext_.get())->getNode();
 
     // stateNode_ = contextNh->create_sub_node(smacc::utils::cleanShortTypeName(typeid(MostDerived)));
-    stateNode_ = rclcpp::Node::make_shared(smacc::utils::cleanShortTypeName(typeid(MostDerived)),
-                                           std::string(this->contextNh->get_fully_qualified_name()));
+    stateNode_ = rclcpp::Node::make_shared(
+      smacc::utils::cleanShortTypeName(typeid(MostDerived)),
+      std::string(this->contextNh->get_fully_qualified_name()));
 
     RCLCPP_WARN(getNode()->get_logger(), "[%s] creating ", STATE_NAME);
     this->set_context(ctx.pContext_);
@@ -78,7 +83,7 @@ public:
     this->stateInfo_ = getStateInfo();
 
     // storing a reference to the parent state
-    auto &ps = this->template context<Context>();
+    auto & ps = this->template context<Context>();
     parentState_ = dynamic_cast<ISmaccState *>(&ps);
     finishStateThrown = false;
 
@@ -92,11 +97,9 @@ public:
     // }
   }
 
-  virtual ~SmaccState()
-  {
-  }
+  virtual ~SmaccState() {}
 
-  const smacc::introspection::SmaccStateInfo *getStateInfo()
+  const smacc::introspection::SmaccStateInfo * getStateInfo()
   {
     auto smInfo = this->getStateMachine().getStateMachineInfo();
 
@@ -111,17 +114,11 @@ public:
     }
   }
 
-  std::string getFullName()
-  {
-    return demangleSymbol(typeid(MostDerived).name());
-  }
+  std::string getFullName() { return demangleSymbol(typeid(MostDerived).name()); }
 
-  std::string getShortName()
-  {
-    return smacc::utils::cleanShortTypeName(typeid(MostDerived));
-  }
+  std::string getShortName() { return smacc::utils::cleanShortTypeName(typeid(MostDerived)); }
 
-  virtual ISmaccState *getParentState()
+  virtual ISmaccState * getParentState()
   {
     // auto* ctx = dynamic_cast<ISmaccState*>(this->template context<Context *>());
 
@@ -131,16 +128,16 @@ public:
   // this function is called by boot statechart before the destructor call
   void exit()
   {
-    #define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
+#define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
 
-    auto *derivedThis = static_cast<MostDerived *>(this);
+    auto * derivedThis = static_cast<MostDerived *>(this);
     this->getStateMachine().notifyOnStateExitting(derivedThis);
     try
     {
-      TRACEPOINT( state_onExit_start, STATE_NAME);
+      TRACEPOINT(state_onExit_start, STATE_NAME);
       // static_cast<MostDerived *>(this)->onExit();
       standardOnExit(*derivedThis);
-      TRACEPOINT( state_onExit_end, STATE_NAME);
+      TRACEPOINT(state_onExit_end, STATE_NAME);
     }
     catch (...)
     {
@@ -151,24 +148,18 @@ public:
 public:
   // This method is static-polymorphic because of the curiously recurring template pattern. It
   // calls to the most derived class onEntry method if declared on smacc state construction
-  void runtimeConfigure()
-  {
-  }
+  void runtimeConfigure() {}
 
   // This method is static-polymorphic because of the curiously recurring template pattern. It
   // calls to the most derived class onEntry method if declared on smacc state construction
-  void onEntry()
-  {
-  }
+  void onEntry() {}
 
   // this method is static-polimorphic because of the curiously recurreing pattern. It
   // calls to the most derived class onExit method if declared on smacc state destruction
-  void onExit()
-  {
-  }
+  void onExit() {}
 
   template <typename T>
-  bool getGlobalSMData(std::string name, T &ret)
+  bool getGlobalSMData(std::string name, T & ret)
   {
     return base_type::outermost_context().getGlobalSMData(name, ret);
   }
@@ -181,20 +172,18 @@ public:
   }
 
   template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *&storage)
+  void requiresComponent(SmaccComponentType *& storage)
   {
     base_type::outermost_context().requiresComponent(storage);
   }
 
-  virtual ISmaccStateMachine &getStateMachine()
-  {
-    return base_type::outermost_context();
-  }
+  virtual ISmaccStateMachine & getStateMachine() { return base_type::outermost_context(); }
 
   template <typename TOrthogonal, typename TBehavior>
-  static void configure_orthogonal_runtime(std::function<void(TBehavior &bh, MostDerived &)> initializationFunction)
+  static void configure_orthogonal_runtime(
+    std::function<void(TBehavior & bh, MostDerived &)> initializationFunction)
   {
-    configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState *state) {
+    configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState * state) {
       // auto bh = std::make_shared<TBehavior>(args...);
       auto bh = state->configure<TOrthogonal, TBehavior>();
       initializationFunction(*bh, *(static_cast<MostDerived *>(state)));
@@ -202,9 +191,10 @@ public:
   }
 
   template <typename TOrthogonal, typename TBehavior>
-  static void configure_orthogonal_runtime(std::function<void(TBehavior &bh)> initializationFunction)
+  static void configure_orthogonal_runtime(
+    std::function<void(TBehavior & bh)> initializationFunction)
   {
-    configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState *state) {
+    configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState * state) {
       // auto bh = std::make_shared<TBehavior>(args...);
       auto bh = state->configure<TOrthogonal, TBehavior>();
       initializationFunction(*bh);
@@ -214,14 +204,16 @@ public:
   template <typename TOrthogonal, typename TBehavior, typename... Args>
   static void configure_orthogonal(Args &&... args)
   {
-    configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState *state) {
+    configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState * state) {
       // auto bh = std::make_shared<TBehavior>(args...);
       state->configure<TOrthogonal, TBehavior>(args...);
     });
   }
 
-  template <typename TStateReactor, typename TOutputEvent, typename TInputEventList, typename... TArgs>
-  static std::shared_ptr<smacc::introspection::StateReactorHandler> static_createStateReactor(TArgs... args)
+  template <
+    typename TStateReactor, typename TOutputEvent, typename TInputEventList, typename... TArgs>
+  static std::shared_ptr<smacc::introspection::StateReactorHandler> static_createStateReactor(
+    TArgs... args)
   {
     auto srh = std::make_shared<smacc::introspection::StateReactorHandler>(globalNh_);
     auto srinfo = std::make_shared<SmaccStateReactorInfo>();
@@ -229,7 +221,7 @@ public:
     srinfo->stateReactorType = TypeInfo::getTypeInfoFromType<TStateReactor>();
     srinfo->outputEventType = TypeInfo::getTypeInfoFromType<TOutputEvent>();
 
-    if(srinfo->outputEventType->templateParameters.size() == 2)
+    if (srinfo->outputEventType->templateParameters.size() == 2)
     {
       srinfo->objectTagType = srinfo->outputEventType->templateParameters[1];
     }
@@ -239,7 +231,9 @@ public:
     }
     else
     {
-      assert(false && "state reactor output events should have one or two parameters (SourceType, ObjectTag)");
+      assert(
+        false &&
+        "state reactor output events should have one or two parameters (SourceType, ObjectTag)");
     }
 
     // iterate statically on all event sources
@@ -251,13 +245,15 @@ public:
     srinfo->srh = srh;
     srh->srInfo_ = srinfo;
 
-    const std::type_info *tindex = &(typeid(MostDerived));  // get identifier of the current state
+    const std::type_info * tindex = &(typeid(MostDerived));  // get identifier of the current state
 
     if (!SmaccStateInfo::stateReactorsInfo.count(tindex))
-      SmaccStateInfo::stateReactorsInfo[tindex] = std::vector<std::shared_ptr<SmaccStateReactorInfo>>();
+      SmaccStateInfo::stateReactorsInfo[tindex] =
+        std::vector<std::shared_ptr<SmaccStateReactorInfo>>();
 
-    srinfo->factoryFunction = [&, srh, args...](ISmaccState *state) {
-      auto sr = state->createStateReactor<TStateReactor, TOutputEvent, TInputEventList, TArgs...>(args...);
+    srinfo->factoryFunction = [&, srh, args...](ISmaccState * state) {
+      auto sr =
+        state->createStateReactor<TStateReactor, TOutputEvent, TInputEventList, TArgs...>(args...);
       srh->configureStateReactor(sr);
       sr->initialize(state);
       return sr;
@@ -269,7 +265,8 @@ public:
   }
 
   template <typename TEventGenerator, typename... TUArgs>
-  static std::shared_ptr<smacc::introspection::EventGeneratorHandler> static_createEventGenerator(TUArgs... args)
+  static std::shared_ptr<smacc::introspection::EventGeneratorHandler> static_createEventGenerator(
+    TUArgs... args)
   {
     auto egh = std::make_shared<smacc::introspection::EventGeneratorHandler>();
     auto eginfo = std::make_shared<SmaccEventGeneratorInfo>();
@@ -278,12 +275,13 @@ public:
     eginfo->egh = egh;
     egh->egInfo_ = eginfo;
 
-    const std::type_info *tindex = &(typeid(MostDerived));  // get identifier of the current state
+    const std::type_info * tindex = &(typeid(MostDerived));  // get identifier of the current state
 
     if (!SmaccStateInfo::eventGeneratorsInfo.count(tindex))
-      SmaccStateInfo::eventGeneratorsInfo[tindex] = std::vector<std::shared_ptr<SmaccEventGeneratorInfo>>();
+      SmaccStateInfo::eventGeneratorsInfo[tindex] =
+        std::vector<std::shared_ptr<SmaccEventGeneratorInfo>>();
 
-    eginfo->factoryFunction = [&, egh, args...](ISmaccState *state) {
+    eginfo->factoryFunction = [&, egh, args...](ISmaccState * state) {
       auto eg = state->createEventGenerator<TEventGenerator>(args...);
       egh->configureEventGenerator(eg);
       eg->initialize(state);
@@ -296,7 +294,8 @@ public:
   }
 
   template <typename TStateReactor, typename... TUArgs>
-  static std::shared_ptr<smacc::introspection::StateReactorHandler> static_createStateReactor_aux(TUArgs... args)
+  static std::shared_ptr<smacc::introspection::StateReactorHandler> static_createStateReactor_aux(
+    TUArgs... args)
   {
     auto srh = std::make_shared<smacc::introspection::StateReactorHandler>(globalNh_);
     auto srinfo = std::make_shared<SmaccStateReactorInfo>();
@@ -305,12 +304,13 @@ public:
     srinfo->srh = srh;
     srh->srInfo_ = srinfo;
 
-    const std::type_info *tindex = &(typeid(MostDerived));  // get identifier of the current state
+    const std::type_info * tindex = &(typeid(MostDerived));  // get identifier of the current state
 
     if (!SmaccStateInfo::stateReactorsInfo.count(tindex))
-      SmaccStateInfo::stateReactorsInfo[tindex] = std::vector<std::shared_ptr<SmaccStateReactorInfo>>();
+      SmaccStateInfo::stateReactorsInfo[tindex] =
+        std::vector<std::shared_ptr<SmaccStateReactorInfo>>();
 
-    srinfo->factoryFunction = [&, srh, args...](ISmaccState *state) {
+    srinfo->factoryFunction = [&, srh, args...](ISmaccState * state) {
       auto sr = state->createStateReactor<TStateReactor>(args...);
       srh->configureStateReactor(sr);
       sr->initialize(state);
@@ -324,8 +324,8 @@ public:
 
   void checkWhileLoopConditionAndThrowEvent(bool (MostDerived::*conditionFn)())
   {
-    #define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
-    auto *thisobject = static_cast<MostDerived *>(this);
+#define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
+    auto * thisobject = static_cast<MostDerived *>(this);
     auto condition = boost::bind(conditionFn, thisobject);
     bool conditionResult = condition();
 
@@ -341,10 +341,7 @@ public:
     RCLCPP_INFO(getNode()->get_logger(), "[%s] POST THROW CONDITION", STATE_NAME);
   }
 
-  void throwSequenceFinishedEvent()
-  {
-    this->postEvent<EvSequenceFinished<MostDerived>>();
-  }
+  void throwSequenceFinishedEvent() { this->postEvent<EvSequenceFinished<MostDerived>>(); }
 
   //////////////////////////////////////////////////////////////////////////
   // The following declarations should be private.
@@ -356,29 +353,32 @@ public:
   typedef typename base_type::context_ptr_type context_ptr_type;
   typedef typename base_type::inner_initial_list inner_initial_list;
 
-  static void initial_deep_construct(outermost_context_base_type &outermostContextBase)
+  static void initial_deep_construct(outermost_context_base_type & outermostContextBase)
   {
     deep_construct(&outermostContextBase, outermostContextBase);
   }
 
   // See base class for documentation
-  static void deep_construct(const context_ptr_type &pContext, outermost_context_base_type &outermostContextBase)
+  static void deep_construct(
+    const context_ptr_type & pContext, outermost_context_base_type & outermostContextBase)
   {
     const inner_context_ptr_type pInnerContext(shallow_construct(pContext, outermostContextBase));
-    base_type::template deep_construct_inner<inner_initial_list>(pInnerContext, outermostContextBase);
+    base_type::template deep_construct_inner<inner_initial_list>(
+      pInnerContext, outermostContextBase);
   }
 
-  static inner_context_ptr_type shallow_construct(const context_ptr_type &pContext,
-                                                  outermost_context_base_type &outermostContextBase)
+  static inner_context_ptr_type shallow_construct(
+    const context_ptr_type & pContext, outermost_context_base_type & outermostContextBase)
   {
-    #define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
+#define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
     // allocating in memory
-    auto state = new MostDerived(SmaccState<MostDerived, Context, InnerInitial, historyMode>::my_context(pContext));
+    auto state = new MostDerived(
+      SmaccState<MostDerived, Context, InnerInitial, historyMode>::my_context(pContext));
     const inner_context_ptr_type pInnerContext(state);
 
-    TRACEPOINT( state_onEntry_start, STATE_NAME);
+    TRACEPOINT(state_onEntry_start, STATE_NAME);
     state->entryStateInternal();
-    TRACEPOINT( state_onEntry_end, STATE_NAME);
+    TRACEPOINT(state_onEntry_end, STATE_NAME);
 
     outermostContextBase.add(pInnerContext);
     return pInnerContext;
@@ -386,7 +386,8 @@ public:
 
 private:
   template <typename TOrthogonal, typename TBehavior>
-  static void configure_orthogonal_internal(std::function<void(ISmaccState *state)> initializationFunction)
+  static void configure_orthogonal_internal(
+    std::function<void(ISmaccState * state)> initializationFunction)
   {
     ClientBehaviorInfoEntry bhinfo;
     bhinfo.factoryFunction = initializationFunction;
@@ -394,33 +395,38 @@ private:
     bhinfo.behaviorType = &(typeid(TBehavior));
     bhinfo.orthogonalType = &(typeid(TOrthogonal));
 
-    const std::type_info *tindex = &(typeid(MostDerived));
+    const std::type_info * tindex = &(typeid(MostDerived));
     if (!SmaccStateInfo::staticBehaviorInfo.count(tindex))
       SmaccStateInfo::staticBehaviorInfo[tindex] = std::vector<ClientBehaviorInfoEntry>();
 
     SmaccStateInfo::staticBehaviorInfo[tindex].push_back(bhinfo);
-    RCLCPP_INFO_STREAM(rclcpp::get_logger("static"),
-                       "[states walking] State "
-                           << smacc::utils::cleanShortTypeName(*tindex)
-                           << "client behavior count: " << SmaccStateInfo::staticBehaviorInfo[tindex].size());
+    RCLCPP_INFO_STREAM(
+      rclcpp::get_logger("static"), "[states walking] State "
+                                      << smacc::utils::cleanShortTypeName(*tindex)
+                                      << "client behavior count: "
+                                      << SmaccStateInfo::staticBehaviorInfo[tindex].size());
   }
 
   void entryStateInternal()
   {
-    #define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
+#define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
     // finally we go to the derived state onEntry Function
 
-    RCLCPP_INFO(getNode()->get_logger(), "[%s] State object created. Initializating...", STATE_NAME);
+    RCLCPP_INFO(
+      getNode()->get_logger(), "[%s] State object created. Initializating...", STATE_NAME);
     this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
 
     // TODO: make this static to build the parameter tree at startup
     // this->getNode() = rclcpp::Node::make_shared(std::string(contextNh->get_namespace()) + std::string("/") +
     // smacc::utils::cleanShortTypeName(typeid(MostDerived)).c_str());
-    RCLCPP_INFO_STREAM(this->getNode()->get_logger(),
-                       "[" << smacc::utils::cleanShortTypeName(typeid(MostDerived)).c_str()
-                           << "] creating ros subnode");
+    RCLCPP_INFO_STREAM(
+      this->getNode()->get_logger(),
+      "[" << smacc::utils::cleanShortTypeName(typeid(MostDerived)).c_str()
+          << "] creating ros subnode");
 
-    RCLCPP_DEBUG(getNode()->get_logger(), "[%s] nodehandle namespace: %s", STATE_NAME, getNode()->get_namespace());
+    RCLCPP_DEBUG(
+      getNode()->get_logger(), "[%s] nodehandle namespace: %s", STATE_NAME,
+      getNode()->get_namespace());
 
     bool created;
     if (!this->getParam("visited", created))
@@ -433,44 +439,50 @@ private:
     {
       RCLCPP_INFO(getNode()->get_logger(), "[%s] -- STATIC STATE DESCRIPTION --", STATE_NAME);
 
-      for (const auto &stateReactorsVector : SmaccStateInfo::staticBehaviorInfo)
+      for (const auto & stateReactorsVector : SmaccStateInfo::staticBehaviorInfo)
       {
-        RCLCPP_DEBUG(getNode()->get_logger(), "[%s] state reactor info: %s", STATE_NAME,
-                     demangleSymbol(stateReactorsVector.first->name()).c_str());
-        for (auto &srinfo : stateReactorsVector.second)
+        RCLCPP_DEBUG(
+          getNode()->get_logger(), "[%s] state reactor info: %s", STATE_NAME,
+          demangleSymbol(stateReactorsVector.first->name()).c_str());
+        for (auto & srinfo : stateReactorsVector.second)
         {
-          RCLCPP_DEBUG(getNode()->get_logger(), "[%s] state reactor: %s", STATE_NAME,
-                       demangleSymbol(srinfo.behaviorType->name()).c_str());
+          RCLCPP_DEBUG(
+            getNode()->get_logger(), "[%s] state reactor: %s", STATE_NAME,
+            demangleSymbol(srinfo.behaviorType->name()).c_str());
         }
       }
 
-      const std::type_info *tindex = &(typeid(MostDerived));
-      auto &staticDefinedBehaviors = SmaccStateInfo::staticBehaviorInfo[tindex];
-      auto &staticDefinedStateReactors = SmaccStateInfo::stateReactorsInfo[tindex];
-      auto &staticDefinedEventGenerators = SmaccStateInfo::eventGeneratorsInfo[tindex];
+      const std::type_info * tindex = &(typeid(MostDerived));
+      auto & staticDefinedBehaviors = SmaccStateInfo::staticBehaviorInfo[tindex];
+      auto & staticDefinedStateReactors = SmaccStateInfo::stateReactorsInfo[tindex];
+      auto & staticDefinedEventGenerators = SmaccStateInfo::eventGeneratorsInfo[tindex];
 
-      RCLCPP_DEBUG_STREAM(getNode()->get_logger(), "finding static client behaviors. State Database: "
-                                                       << SmaccStateInfo::staticBehaviorInfo.size()
-                                                       << ". Current state " << cleanShortTypeName(*tindex) << " cbs: "
-                                                       << SmaccStateInfo::staticBehaviorInfo[tindex].size());
-      for (auto &bhinfo : staticDefinedBehaviors)
+      RCLCPP_DEBUG_STREAM(
+        getNode()->get_logger(), "finding static client behaviors. State Database: "
+                                   << SmaccStateInfo::staticBehaviorInfo.size()
+                                   << ". Current state " << cleanShortTypeName(*tindex) << " cbs: "
+                                   << SmaccStateInfo::staticBehaviorInfo[tindex].size());
+      for (auto & bhinfo : staticDefinedBehaviors)
       {
-        RCLCPP_INFO(getNode()->get_logger(), "[%s] Creating static client behavior: %s", STATE_NAME,
-                    demangleSymbol(bhinfo.behaviorType->name()).c_str());
+        RCLCPP_INFO(
+          getNode()->get_logger(), "[%s] Creating static client behavior: %s", STATE_NAME,
+          demangleSymbol(bhinfo.behaviorType->name()).c_str());
         bhinfo.factoryFunction(this);
       }
 
-      for (auto &sr : staticDefinedStateReactors)
+      for (auto & sr : staticDefinedStateReactors)
       {
-        RCLCPP_INFO(getNode()->get_logger(), "[%s] Creating static state reactor: %s", STATE_NAME,
-                    sr->stateReactorType->getFullName().c_str());
+        RCLCPP_INFO(
+          getNode()->get_logger(), "[%s] Creating static state reactor: %s", STATE_NAME,
+          sr->stateReactorType->getFullName().c_str());
         sr->factoryFunction(this);
       }
 
-      for (auto &eg : staticDefinedEventGenerators)
+      for (auto & eg : staticDefinedEventGenerators)
       {
-        RCLCPP_INFO(getNode()->get_logger(), "[%s] Creating static event generator: %s", STATE_NAME,
-                    eg->eventGeneratorType->getFullName().c_str());
+        RCLCPP_INFO(
+          getNode()->get_logger(), "[%s] Creating static event generator: %s", STATE_NAME,
+          eg->eventGeneratorType->getFullName().c_str());
         eg->factoryFunction(this);
       }
 
@@ -479,16 +491,15 @@ private:
 
     RCLCPP_INFO(getNode()->get_logger(), "[%s] State runtime configuration", STATE_NAME);
 
-    auto *derivedthis = static_cast<MostDerived *>(this);
+    auto * derivedthis = static_cast<MostDerived *>(this);
 
     // second the orthogonals are internally configured
     this->getStateMachine().notifyOnRuntimeConfigured(derivedthis);
 
-    TRACEPOINT( state_onRuntimeConfigure_start, STATE_NAME);
+    TRACEPOINT(state_onRuntimeConfigure_start, STATE_NAME);
     // first we runtime configure the state, where we create client behaviors
     static_cast<MostDerived *>(this)->runtimeConfigure();
-    TRACEPOINT( state_onRuntimeConfigure_end, STATE_NAME);
-
+    TRACEPOINT(state_onRuntimeConfigure_end, STATE_NAME);
 
     this->getStateMachine().notifyOnRuntimeConfigurationFinished(derivedthis);
 

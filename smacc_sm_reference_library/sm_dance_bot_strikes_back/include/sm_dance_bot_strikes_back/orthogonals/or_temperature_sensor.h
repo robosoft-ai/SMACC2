@@ -23,4 +23,4 @@ public:
     // clTemperatureSensor->initialize();
   }
 };
-}  // namespace sm_dance_bot
+}  // namespace sm_dance_bot_strikes_back

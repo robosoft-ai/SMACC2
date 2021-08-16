@@ -17,11 +17,13 @@ public:
 
   virtual void onInitialize() override
   {
-    auto client_ = dynamic_cast<smacc::client_bases::SmaccSubscriberClient<sensor_msgs::msg::LaserScan> *>(owner_);
+    auto client_ =
+      dynamic_cast<smacc::client_bases::SmaccSubscriberClient<sensor_msgs::msg::LaserScan> *>(
+        owner_);
     client_->onMessageReceived(&CpLidarSensorData::MessageCallbackStoreDistanceToWall, this);
   }
 
-  void MessageCallbackStoreDistanceToWall(const sensor_msgs::msg::LaserScan &scanmsg)
+  void MessageCallbackStoreDistanceToWall(const sensor_msgs::msg::LaserScan & scanmsg)
   {
     this->lastMessage_ = scanmsg;
     //auto fwdist = scanmsg.ranges[scanmsg.ranges.size() / 2] /*meter*/;
@@ -31,10 +33,11 @@ public:
     if (fwdist == std::numeric_limits<float>::infinity() || fwdist != fwdist)
     {
       this->forwardObstacleDistance = scanmsg.range_max - SECURITY_DISTANCE /*meters*/;
-      RCLCPP_INFO_THROTTLE(getNode()->get_logger(), *(getNode()->get_clock()), 1000,
-                           "[CpLidarSensorData] Distance to forward obstacle is not a number, setting default value "
-                           "to: %lf",
-                           scanmsg.range_max);
+      RCLCPP_INFO_THROTTLE(
+        getNode()->get_logger(), *(getNode()->get_clock()), 1000,
+        "[CpLidarSensorData] Distance to forward obstacle is not a number, setting default value "
+        "to: %lf",
+        scanmsg.range_max);
     }
     else
     {

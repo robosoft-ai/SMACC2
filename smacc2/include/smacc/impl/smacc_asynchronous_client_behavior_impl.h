@@ -10,41 +10,40 @@
 
 namespace smacc
 {
+template <typename TOrthogonal, typename TSourceObject>
+void SmaccAsyncClientBehavior::onOrthogonalAllocation()
+{
+  postFinishEventFn_ = [=] {
+    this->onFinished_();
+    this->postEvent<EvCbFinished<TSourceObject, TOrthogonal>>();
+  };
 
-    template <typename TOrthogonal, typename TSourceObject>
-    void SmaccAsyncClientBehavior::onOrthogonalAllocation()
-    {
-        postFinishEventFn_ = [=] {
-            this->onFinished_();
-            this->postEvent<EvCbFinished<TSourceObject, TOrthogonal>>();
-        };
+  postSuccessEventFn_ = [=] {
+    this->onSuccess_();
+    this->postEvent<EvCbSuccess<TSourceObject, TOrthogonal>>();
+  };
 
-        postSuccessEventFn_ = [=] {
-            this->onSuccess_();
-            this->postEvent<EvCbSuccess<TSourceObject, TOrthogonal>>();
-        };
-
-        postFailureEventFn_ = [=] {
-            this->onFailure_();
-            this->postEvent<EvCbFailure<TSourceObject, TOrthogonal>>();
-        };
-    }
-
-    template <typename TCallback, typename T>
-    boost::signals2::connection SmaccAsyncClientBehavior::onSuccess(TCallback callback, T *object)
-    {
-        return this->getStateMachine()->createSignalConnection(onSuccess_, callback, object);
-    }
-
-    template <typename TCallback, typename T>
-    boost::signals2::connection SmaccAsyncClientBehavior::onFinished(TCallback callback, T *object)
-    {
-        return this->getStateMachine()->createSignalConnection(onFinished_, callback, object);
-    }
-
-    template <typename TCallback, typename T>
-    boost::signals2::connection SmaccAsyncClientBehavior::onFailure(TCallback callback, T *object)
-    {
-        return this->getStateMachine()->createSignalConnection(onFailure_, callback, object);
-    }
+  postFailureEventFn_ = [=] {
+    this->onFailure_();
+    this->postEvent<EvCbFailure<TSourceObject, TOrthogonal>>();
+  };
 }
+
+template <typename TCallback, typename T>
+boost::signals2::connection SmaccAsyncClientBehavior::onSuccess(TCallback callback, T * object)
+{
+  return this->getStateMachine()->createSignalConnection(onSuccess_, callback, object);
+}
+
+template <typename TCallback, typename T>
+boost::signals2::connection SmaccAsyncClientBehavior::onFinished(TCallback callback, T * object)
+{
+  return this->getStateMachine()->createSignalConnection(onFinished_, callback, object);
+}
+
+template <typename TCallback, typename T>
+boost::signals2::connection SmaccAsyncClientBehavior::onFailure(TCallback callback, T * object)
+{
+  return this->getStateMachine()->createSignalConnection(onFailure_, callback, object);
+}
+}  // namespace smacc

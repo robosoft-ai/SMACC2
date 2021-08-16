@@ -25,7 +25,7 @@ public:
   virtual void executeOnEntry() override;
 
 private:
-  ISmaccActionClient* client_;
+  ISmaccActionClient * client_;
   std::chrono::milliseconds timeout_;
 };
 }  // namespace client_behaviors

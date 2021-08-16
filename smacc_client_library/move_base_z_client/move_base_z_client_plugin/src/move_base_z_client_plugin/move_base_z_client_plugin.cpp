@@ -8,24 +8,17 @@
 
 namespace cl_move_base_z
 {
-
 typedef smacc::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose> Base;
 typedef Base::WrappedResult WrappedResult;
 
-ClMoveBaseZ::ClMoveBaseZ(std::string moveBaseName)
- : Base(moveBaseName)
+ClMoveBaseZ::ClMoveBaseZ(std::string moveBaseName) : Base(moveBaseName)
 {
-    //RCLCPP_INFO(getNode()->get_logger(),"Smacc Move Base Action Client");
+  //RCLCPP_INFO(getNode()->get_logger(),"Smacc Move Base Action Client");
 }
 
-std::string ClMoveBaseZ::getName() const
-{
-    return "MOVE BASE ACTION CLIENT";
-}
+std::string ClMoveBaseZ::getName() const { return "MOVE BASE ACTION CLIENT"; }
 
-ClMoveBaseZ::~ClMoveBaseZ()
-{
-}
-} // namespace smacc
+ClMoveBaseZ::~ClMoveBaseZ() {}
+}  // namespace cl_move_base_z
 
 PLUGINLIB_EXPORT_CLASS(cl_move_base_z::ClMoveBaseZ, smacc::ISmaccClient)

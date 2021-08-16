@@ -1,5 +1,5 @@
-#include <smacc/smacc_client_behavior.h>
 #include <sm_dance_bot/clients/cl_service3/cl_service3.h>
+#include <smacc/smacc_client_behavior.h>
 
 namespace sm_dance_bot
 {
@@ -14,14 +14,11 @@ enum class Service3Command
 class CbService3 : public smacc::SmaccClientBehavior
 {
 private:
-  ClService3 *serviceClient_;
+  ClService3 * serviceClient_;
   Service3Command value_;
 
 public:
-  CbService3(Service3Command value)
-  {
-    value_ = value;
-  }
+  CbService3(Service3Command value) { value_ = value; }
 
   virtual void onEntry() override
   {
@@ -36,5 +33,5 @@ public:
     serviceClient_->call(req);
   }
 };
-} // namespace cl_service3
-} // namespace sm_dance_bot
+}  // namespace cl_service3
+}  // namespace sm_dance_bot

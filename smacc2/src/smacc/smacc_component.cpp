@@ -7,45 +7,30 @@
 #include <smacc/impl/smacc_component_impl.h>
 namespace smacc
 {
+ISmaccComponent::~ISmaccComponent() {}
 
-ISmaccComponent::~ISmaccComponent()
+ISmaccComponent::ISmaccComponent() : owner_(nullptr) {}
+
+void ISmaccComponent::initialize(ISmaccClient * owner)
 {
+  owner_ = owner;
+  this->onInitialize();
 }
 
-ISmaccComponent::ISmaccComponent()
-    : owner_(nullptr)
+void ISmaccComponent::onInitialize() {}
+
+void ISmaccComponent::setStateMachine(ISmaccStateMachine * stateMachine)
 {
+  stateMachine_ = stateMachine;
 }
 
-void ISmaccComponent::initialize(ISmaccClient *owner)
-{
-    owner_ = owner;
-    this->onInitialize();
-}
+rclcpp::Node::SharedPtr ISmaccComponent::getNode() { return this->owner_->getNode(); }
 
-void ISmaccComponent::onInitialize()
-{
-
-}
-
-void ISmaccComponent::setStateMachine(ISmaccStateMachine *stateMachine)
-{
-    stateMachine_ = stateMachine;
-}
-
-rclcpp::Node::SharedPtr ISmaccComponent::getNode()
-{
-    return this->owner_->getNode();
-}
-
-rclcpp::Logger ISmaccComponent::getLogger()
-{
-    return getNode()->get_logger();
-}
+rclcpp::Logger ISmaccComponent::getLogger() { return getNode()->get_logger(); }
 
 std::string ISmaccComponent::getName() const
 {
-    std::string keyname = demangleSymbol(typeid(*this).name());
-    return keyname;
+  std::string keyname = demangleSymbol(typeid(*this).name());
+  return keyname;
 }
-} // namespace smacc
+}  // namespace smacc

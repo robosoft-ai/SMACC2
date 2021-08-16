@@ -10,7 +10,7 @@ namespace cl_led
 class CbLEDOff : public smacc::SmaccClientBehavior
 {
 public:
-  cl_led::ClLED *ledActionClient_;
+  cl_led::ClLED * ledActionClient_;
 
   virtual void onEntry() override
   {

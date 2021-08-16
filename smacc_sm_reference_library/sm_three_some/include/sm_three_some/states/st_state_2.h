@@ -18,13 +18,12 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
 
   // TRANSITION TABLE
   typedef mpl::list<
-      Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState3, TIMEOUT>,
-      Transition<EvAllGo<SrAllEventsGo>, StState3>,
-      // Keyboard events
-      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1, PREVIOUS>,
-      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3, NEXT>
-      >
-      reactions;
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState3, TIMEOUT>,
+    Transition<EvAllGo<SrAllEventsGo>, StState3>,
+    // Keyboard events
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1, PREVIOUS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3, NEXT>>
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
@@ -37,11 +36,12 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
     // Create State Reactor
     // auto sbAll = static_createStateReactor<SrAllEventsGo>();
 
-    auto sbAll =
-        static_createStateReactor<smacc::state_reactors::SrAllEventsGo, smacc::state_reactors::EvAllGo<SrAllEventsGo>,
-                                  mpl::list<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>,
-                                            EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>,
-                                            EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>>>();
+    auto sbAll = static_createStateReactor<
+      smacc::state_reactors::SrAllEventsGo, smacc::state_reactors::EvAllGo<SrAllEventsGo>,
+      mpl::list<
+        EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>,
+        EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>,
+        EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>>>();
 
     /*
     sbAll->addInputEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
@@ -51,18 +51,10 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
     */
   }
 
-  void runtimeConfigure()
-  {
-  }
+  void runtimeConfigure() {}
 
-  void onEntry()
-  {
-    RCLCPP_INFO(getNode()->get_logger(), "On Entry!");
-  }
+  void onEntry() { RCLCPP_INFO(getNode()->get_logger(), "On Entry!"); }
 
-  void onExit()
-  {
-    RCLCPP_INFO(getNode()->get_logger(), "On Exit!");
-  }
+  void onExit() { RCLCPP_INFO(getNode()->get_logger(), "On Exit!"); }
 };
 }  // namespace sm_three_some

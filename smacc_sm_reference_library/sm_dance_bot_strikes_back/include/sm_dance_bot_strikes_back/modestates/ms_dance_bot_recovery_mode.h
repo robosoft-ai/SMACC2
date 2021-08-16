@@ -2,17 +2,19 @@
 namespace sm_dance_bot_strikes_back
 {
 // STATE DECLARATION
-class MsDanceBotRecoveryMode : public smacc::SmaccState<MsDanceBotRecoveryMode, SmDanceBotStrikesBack>
+class MsDanceBotRecoveryMode
+: public smacc::SmaccState<MsDanceBotRecoveryMode, SmDanceBotStrikesBack>
 {
 public:
-   using SmaccState::SmaccState;
+  using SmaccState::SmaccState;
 
-// TRANSITION TABLE
-   typedef mpl::list<
-   
-   Transition<EvGlobalError, sc::deep_history<typename MsDanceBotRunMode::LastDeepState>> 
-   
-   >reactions;
-   // typedef Transition<EvGlobalError, MsDanceBotRunMode> reactions;
+  // TRANSITION TABLE
+  typedef mpl::list<
+
+    Transition<EvGlobalError, sc::deep_history<typename MsDanceBotRunMode::LastDeepState>>
+
+    >
+    reactions;
+  // typedef Transition<EvGlobalError, MsDanceBotRunMode> reactions;
 };
-}
+}  // namespace sm_dance_bot_strikes_back

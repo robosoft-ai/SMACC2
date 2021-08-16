@@ -4,12 +4,13 @@
 
 #include <boost/intrusive_ptr.hpp>
 #include <chrono>
+#include <nav_2d_utils/tf_help.hpp>
 #include <pluginlib/class_list_macros.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
-#include <nav_2d_utils/tf_help.hpp>
 
 // register this planner as a BaseLocalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(cl_move_base_z::backward_local_planner::BackwardLocalPlanner, nav2_core::Controller)
+PLUGINLIB_EXPORT_CLASS(
+  cl_move_base_z::backward_local_planner::BackwardLocalPlanner, nav2_core::Controller)
 
 using namespace std::literals::chrono_literals;
 
@@ -22,24 +23,20 @@ namespace backward_local_planner
  * BackwardLocalPlanner()
  ******************************************************************************************************************
  */
-BackwardLocalPlanner::BackwardLocalPlanner() : waitingTimeout_(0s)
-{
-}
+BackwardLocalPlanner::BackwardLocalPlanner() : waitingTimeout_(0s) {}
 
 /**
  ******************************************************************************************************************
  * ~BackwardLocalPlanner()
  ******************************************************************************************************************
  */
-BackwardLocalPlanner::~BackwardLocalPlanner()
-{
-}
+BackwardLocalPlanner::~BackwardLocalPlanner() {}
 
 void BackwardLocalPlanner::activate()
 {
   RCLCPP_INFO_STREAM(nh_->get_logger(), "activating controller BackwardLocalPlanner");
   updateParameters();
-  
+
   goalMarkerPublisher_->on_activate();
   planPub_->on_activate();
   backwardsPlanPath_.clear();
@@ -64,7 +61,7 @@ void BackwardLocalPlanner::cleanup()
  */
 
 template <typename T>
-void tryGetOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr &node, std::string param, T &value)
+void tryGetOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::string param, T & value)
 {
   if (!node->get_parameter(param, value))
   {
@@ -73,7 +70,7 @@ void tryGetOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr &node, std::string p
 }
 
 template <typename T>
-void declareOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr &node, std::string param, T &value)
+void declareOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::string param, T & value)
 {
   if (!node->has_parameter(param))
   {
@@ -82,9 +79,10 @@ void declareOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr &node, std::string 
   }
 }
 
-void BackwardLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, std::string name,
-                                     const std::shared_ptr<tf2_ros::Buffer> &  tf,
-                                     const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> &costmap_ros)
+void BackwardLocalPlanner::configure(
+  const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent, std::string name,
+  const std::shared_ptr<tf2_ros::Buffer> & tf,
+  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> & costmap_ros)
 {
   this->costmapRos_ = costmap_ros;
   // ros::NodeHandle nh("~/BackwardLocalPlanner");
@@ -104,10 +102,10 @@ void BackwardLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::Weak
   xy_goal_tolerance_ = -1;
   waitingTimeout_ = rclcpp::Duration(10s);
 
-
   this->currentCarrotPoseIndex_ = 0;
 
-  declareOrSet(nh_, name_ + ".pure_spinning_straight_line_mode", straightBackwardsAndPureSpinningMode_);
+  declareOrSet(
+    nh_, name_ + ".pure_spinning_straight_line_mode", straightBackwardsAndPureSpinningMode_);
 
   declareOrSet(nh_, name_ + ".k_rho", k_rho_);
   declareOrSet(nh_, name_ + ".k_alpha", k_alpha_);
@@ -129,27 +127,28 @@ void BackwardLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::Weak
 
   if (yaw_goal_tolerance_ != -1 && carrot_angular_distance_ < yaw_goal_tolerance_)
   {
-    RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] carrot_angular_distance ("
-                                              << carrot_angular_distance_
-                                              << ") cannot be lower than yaw_goal_tolerance (" << yaw_goal_tolerance_
-                                              << ") setting carrot_angular_distance = " << yaw_goal_tolerance_);
+    RCLCPP_WARN_STREAM(
+      nh_->get_logger(), "[BackwardLocalPlanner] carrot_angular_distance ("
+                           << carrot_angular_distance_
+                           << ") cannot be lower than yaw_goal_tolerance (" << yaw_goal_tolerance_
+                           << ") setting carrot_angular_distance = " << yaw_goal_tolerance_);
     carrot_angular_distance_ = yaw_goal_tolerance_;
   }
 
   if (xy_goal_tolerance_ != -1 && carrot_distance_ < xy_goal_tolerance_)
   {
-    RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] carrot_linear_distance ("
-                                              << carrot_distance_ << ") cannot be lower than xy_goal_tolerance_ ("
-                                              << yaw_goal_tolerance_
-                                              << ") setting carrot_angular_distance = " << xy_goal_tolerance_);
+    RCLCPP_WARN_STREAM(
+      nh_->get_logger(), "[BackwardLocalPlanner] carrot_linear_distance ("
+                           << carrot_distance_ << ") cannot be lower than xy_goal_tolerance_ ("
+                           << yaw_goal_tolerance_
+                           << ") setting carrot_angular_distance = " << xy_goal_tolerance_);
     carrot_distance_ = xy_goal_tolerance_;
   }
 
-  goalMarkerPublisher_ =
-      nh_->create_publisher<visualization_msgs::msg::MarkerArray>("backward_local_planner/goal_marker", 1);
+  goalMarkerPublisher_ = nh_->create_publisher<visualization_msgs::msg::MarkerArray>(
+    "backward_local_planner/goal_marker", 1);
 
   planPub_ = nh_->create_publisher<nav_msgs::msg::Path>("backward_local_planner/path", 1);
-
 }
 
 void BackwardLocalPlanner::updateParameters()
@@ -163,20 +162,25 @@ void BackwardLocalPlanner::updateParameters()
   RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".k_betta:" << k_betta_);
 
   tryGetOrSet(nh_, name_ + ".enable_obstacle_checking", enable_obstacle_checking_);
-  RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".enable_obstacle_checking: " << enable_obstacle_checking_);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), name_ + ".enable_obstacle_checking: " << enable_obstacle_checking_);
 
   tryGetOrSet(nh_, name_ + ".carrot_distance", carrot_distance_);
   RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".carrot_distance:" << carrot_distance_);
   tryGetOrSet(nh_, name_ + ".carrot_angular_distance", carrot_angular_distance_);
-  RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".carrot_angular_distance: " << carrot_angular_distance_);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), name_ + ".carrot_angular_distance: " << carrot_angular_distance_);
 
-  tryGetOrSet(nh_, name_ + ".pure_spinning_straight_line_mode", straightBackwardsAndPureSpinningMode_);
-  RCLCPP_INFO_STREAM(nh_->get_logger(),
-                     name_ + ".pure_spinning_straight_line_mode: " << straightBackwardsAndPureSpinningMode_);
+  tryGetOrSet(
+    nh_, name_ + ".pure_spinning_straight_line_mode", straightBackwardsAndPureSpinningMode_);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(),
+    name_ + ".pure_spinning_straight_line_mode: " << straightBackwardsAndPureSpinningMode_);
 
   tryGetOrSet(nh_, name_ + ".linear_mode_rho_error_threshold", linear_mode_rho_error_threshold_);
-  RCLCPP_INFO_STREAM(nh_->get_logger(),
-                     name_ + ".linear_mode_rho_error_threshold: " << linear_mode_rho_error_threshold_);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(),
+    name_ + ".linear_mode_rho_error_threshold: " << linear_mode_rho_error_threshold_);
   tryGetOrSet(nh_, name_ + ".max_linear_x_speed", max_linear_x_speed_);
   RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".max_linear_x_speed: " << max_linear_x_speed_);
   tryGetOrSet(nh_, name_ + ".max_angular_z_speed", max_angular_z_speed_);
@@ -184,21 +188,25 @@ void BackwardLocalPlanner::updateParameters()
 
   if (yaw_goal_tolerance_ != -1 && carrot_angular_distance_ < yaw_goal_tolerance_)
   {
-    RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] carrot_angular_distance ("
-                                              << carrot_angular_distance_
-                                              << ") cannot be lower than yaw_goal_tolerance (" << yaw_goal_tolerance_
-                                              << ") setting carrot_angular_distance = " << yaw_goal_tolerance_);
+    RCLCPP_WARN_STREAM(
+      nh_->get_logger(), "[BackwardLocalPlanner] carrot_angular_distance ("
+                           << carrot_angular_distance_
+                           << ") cannot be lower than yaw_goal_tolerance (" << yaw_goal_tolerance_
+                           << ") setting carrot_angular_distance = " << yaw_goal_tolerance_);
     carrot_angular_distance_ = yaw_goal_tolerance_;
-    nh_->set_parameter(rclcpp::Parameter(name_ + ".carrot_angular_distance", carrot_angular_distance_));
+    nh_->set_parameter(
+      rclcpp::Parameter(name_ + ".carrot_angular_distance", carrot_angular_distance_));
   }
-  RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".carrot_angular_distance: " << carrot_angular_distance_);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), name_ + ".carrot_angular_distance: " << carrot_angular_distance_);
 
   if (xy_goal_tolerance_ != -1 && carrot_distance_ < xy_goal_tolerance_)
   {
-    RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] carrot_linear_distance ("
-                                              << carrot_distance_ << ") cannot be lower than xy_goal_tolerance_ ("
-                                              << yaw_goal_tolerance_
-                                              << ") setting carrot_angular_distance = " << xy_goal_tolerance_);
+    RCLCPP_WARN_STREAM(
+      nh_->get_logger(), "[BackwardLocalPlanner] carrot_linear_distance ("
+                           << carrot_distance_ << ") cannot be lower than xy_goal_tolerance_ ("
+                           << yaw_goal_tolerance_
+                           << ") setting carrot_angular_distance = " << xy_goal_tolerance_);
     carrot_distance_ = xy_goal_tolerance_;
     nh_->set_parameter(rclcpp::Parameter(name_ + ".carrot_distance", carrot_distance_));
   }
@@ -206,10 +214,13 @@ void BackwardLocalPlanner::updateParameters()
   RCLCPP_INFO_STREAM(nh_->get_logger(), "--- end params ---");
 }
 
-void BackwardLocalPlanner::setSpeedLimit(const double & /*speed_limit*/, const bool & /*percentage*/)
+void BackwardLocalPlanner::setSpeedLimit(
+  const double & /*speed_limit*/, const bool & /*percentage*/)
 {
-  RCLCPP_WARN_STREAM(nh_->get_logger(), "BackwardLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not "
-                                        "implemented.");
+  RCLCPP_WARN_STREAM(
+    nh_->get_logger(),
+    "BackwardLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not "
+    "implemented.");
 }
 /**
  ******************************************************************************************************************
@@ -217,11 +228,11 @@ void BackwardLocalPlanner::setSpeedLimit(const double & /*speed_limit*/, const b
  ******************************************************************************************************************
  */
 void BackwardLocalPlanner::computeCurrentEuclideanAndAngularErrorsToCarrotGoal(
-    const geometry_msgs::msg::PoseStamped &tfpose, double &dist, double &angular_error)
+  const geometry_msgs::msg::PoseStamped & tfpose, double & dist, double & angular_error)
 {
   double angle = tf2::getYaw(tfpose.pose.orientation);
-  auto &carrot_pose = backwardsPlanPath_[currentCarrotPoseIndex_];
-  const geometry_msgs::msg::Point &carrot_point = carrot_pose.pose.position;
+  auto & carrot_pose = backwardsPlanPath_[currentCarrotPoseIndex_];
+  const geometry_msgs::msg::Point & carrot_point = carrot_pose.pose.position;
 
   tf2::Quaternion carrot_orientation;
   tf2::fromMsg(carrot_pose.pose.orientation, carrot_orientation);
@@ -236,12 +247,13 @@ void BackwardLocalPlanner::computeCurrentEuclideanAndAngularErrorsToCarrotGoal(
   double pangle = tf2::getYaw(carrot_orientation);
   angular_error = fabs(angles::shortest_angular_distance(pangle, angle));
 
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] Compute carrot errors from current pose. (linear "
-                                            << dist << ")(angular " << angular_error << ")" << std::endl
-                                            << "Current carrot pose: " << std::endl
-                                            << carrot_pose << std::endl
-                                            << "Current actual pose:" << std::endl
-                                            << currentPoseDebugMsg);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[BackwardLocalPlanner] Compute carrot errors from current pose. (linear "
+                         << dist << ")(angular " << angular_error << ")" << std::endl
+                         << "Current carrot pose: " << std::endl
+                         << carrot_pose << std::endl
+                         << "Current actual pose:" << std::endl
+                         << currentPoseDebugMsg);
 }
 
 /**
@@ -249,7 +261,7 @@ void BackwardLocalPlanner::computeCurrentEuclideanAndAngularErrorsToCarrotGoal(
  * updateCarrotGoal()
  ******************************************************************************************************************
  */
-bool BackwardLocalPlanner::updateCarrotGoal(const geometry_msgs::msg::PoseStamped &tfpose)
+bool BackwardLocalPlanner::updateCarrotGoal(const geometry_msgs::msg::PoseStamped & tfpose)
 {
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardsLocalPlanner] --- Carrot update ---");
   double disterr = 0, angleerr = 0;
@@ -260,18 +272,22 @@ bool BackwardLocalPlanner::updateCarrotGoal(const geometry_msgs::msg::PoseStampe
   {
     computeCurrentEuclideanAndAngularErrorsToCarrotGoal(tfpose, disterr, angleerr);
 
-    RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardsLocalPlanner] update carrot goal: Current index: "
-                                              << currentCarrotPoseIndex_ << "/" << backwardsPlanPath_.size());
-    RCLCPP_INFO(nh_->get_logger(), "[BackwardsLocalPlanner] update carrot goal: linear error %lf, angular error: %lf",
-                disterr, angleerr);
+    RCLCPP_INFO_STREAM(
+      nh_->get_logger(), "[BackwardsLocalPlanner] update carrot goal: Current index: "
+                           << currentCarrotPoseIndex_ << "/" << backwardsPlanPath_.size());
+    RCLCPP_INFO(
+      nh_->get_logger(),
+      "[BackwardsLocalPlanner] update carrot goal: linear error %lf, angular error: %lf", disterr,
+      angleerr);
 
     // target pose found, goal carrot tries to escape!
     if (disterr < carrot_distance_ && angleerr < carrot_angular_distance_)
     {
       currentCarrotPoseIndex_++;
       resetDivergenceDetection();
-      RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardsLocalPlanner] move carrot fw " << currentCarrotPoseIndex_ << "/"
-                                                                                      << backwardsPlanPath_.size());
+      RCLCPP_INFO_STREAM(
+        nh_->get_logger(), "[BackwardsLocalPlanner] move carrot fw "
+                             << currentCarrotPoseIndex_ << "/" << backwardsPlanPath_.size());
     }
     else
     {
@@ -280,20 +296,27 @@ bool BackwardLocalPlanner::updateCarrotGoal(const geometry_msgs::msg::PoseStampe
     }
   }
   // RCLCPP_INFO(nh_->get_logger(),"[BackwardsLocalPlanner] computing angular error");
-  if (currentCarrotPoseIndex_ >= (long)backwardsPlanPath_.size() - 1 && backwardsPlanPath_.size() > 0)
+  if (
+    currentCarrotPoseIndex_ >= (long)backwardsPlanPath_.size() - 1 && backwardsPlanPath_.size() > 0)
   {
     currentCarrotPoseIndex_ = backwardsPlanPath_.size() - 1;
     // reupdated errors
     computeCurrentEuclideanAndAngularErrorsToCarrotGoal(tfpose, disterr, angleerr);
   }
 
-  RCLCPP_INFO(nh_->get_logger(), "[BackwardsLocalPlanner] Current index carrot goal: %d", currentCarrotPoseIndex_);
-  RCLCPP_INFO(nh_->get_logger(),
-              "[BackwardsLocalPlanner] Update carrot goal: linear error  %lf (xytol: %lf), angular error: %lf", disterr,
-              xy_goal_tolerance_, angleerr);
+  RCLCPP_INFO(
+    nh_->get_logger(), "[BackwardsLocalPlanner] Current index carrot goal: %d",
+    currentCarrotPoseIndex_);
+  RCLCPP_INFO(
+    nh_->get_logger(),
+    "[BackwardsLocalPlanner] Update carrot goal: linear error  %lf (xytol: %lf), angular error: "
+    "%lf",
+    disterr, xy_goal_tolerance_, angleerr);
 
   bool carrotInGoalLinearRange = disterr < xy_goal_tolerance_;
-  RCLCPP_INFO(nh_->get_logger(), "[BackwardsLocalPlanner] carrot in goal radius: %d", carrotInGoalLinearRange);
+  RCLCPP_INFO(
+    nh_->get_logger(), "[BackwardsLocalPlanner] carrot in goal radius: %d",
+    carrotInGoalLinearRange);
 
   RCLCPP_INFO(nh_->get_logger(), "[BackwardsLocalPlanner] ---End carrot update---");
 
@@ -307,14 +330,15 @@ bool BackwardLocalPlanner::resetDivergenceDetection()
   return true;
 }
 
-bool BackwardLocalPlanner::divergenceDetectionUpdate(const geometry_msgs::msg::PoseStamped &tfpose)
+bool BackwardLocalPlanner::divergenceDetectionUpdate(const geometry_msgs::msg::PoseStamped & tfpose)
 {
   double disterr = 0, angleerr = 0;
   computeCurrentEuclideanAndAngularErrorsToCarrotGoal(tfpose, disterr, angleerr);
 
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] Divergence check. carrot goal distance. was: "
-                                            << divergenceDetectionLastCarrotLinearDistance_
-                                            << ", now it is: " << disterr);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[BackwardLocalPlanner] Divergence check. carrot goal distance. was: "
+                         << divergenceDetectionLastCarrotLinearDistance_
+                         << ", now it is: " << disterr);
   if (disterr > divergenceDetectionLastCarrotLinearDistance_)
   {
     // candidate of divergence, we do not throw the divergence alarm yet
@@ -323,9 +347,10 @@ bool BackwardLocalPlanner::divergenceDetectionUpdate(const geometry_msgs::msg::P
     const double MARGIN_FACTOR = 1.2;
     if (disterr > MARGIN_FACTOR * divergenceDetectionLastCarrotLinearDistance_)
     {
-      RCLCPP_ERROR_STREAM(nh_->get_logger(),
-                          "[BackwardLocalPlanner] Divergence detected. The same carrot goal distance was previously: "
-                              << divergenceDetectionLastCarrotLinearDistance_ << "but now it is: " << disterr);
+      RCLCPP_ERROR_STREAM(
+        nh_->get_logger(),
+        "[BackwardLocalPlanner] Divergence detected. The same carrot goal distance was previously: "
+          << divergenceDetectionLastCarrotLinearDistance_ << "but now it is: " << disterr);
       return true;
     }
     else
@@ -342,7 +367,8 @@ bool BackwardLocalPlanner::divergenceDetectionUpdate(const geometry_msgs::msg::P
   }
 }
 
-bool BackwardLocalPlanner::checkCarrotHalfPlainConstraint(const geometry_msgs::msg::PoseStamped &tfpose)
+bool BackwardLocalPlanner::checkCarrotHalfPlainConstraint(
+  const geometry_msgs::msg::PoseStamped & tfpose)
 {
   // this function is specially useful when we want to reach the goal with a lot
   // of precission. We may pass the goal and then the controller enters in some
@@ -350,8 +376,8 @@ bool BackwardLocalPlanner::checkCarrotHalfPlainConstraint(const geometry_msgs::m
 
   // only apply if the carrot is in goal position and also if we are not in a pure spinning behavior v!=0
 
-  auto &carrot_pose = backwardsPlanPath_[currentCarrotPoseIndex_];
-  const geometry_msgs::msg::Point &carrot_point = carrot_pose.pose.position;
+  auto & carrot_pose = backwardsPlanPath_[currentCarrotPoseIndex_];
+  const geometry_msgs::msg::Point & carrot_point = carrot_pose.pose.position;
   double yaw = tf2::getYaw(carrot_pose.pose.orientation);
 
   // direction vector
@@ -364,32 +390,34 @@ bool BackwardLocalPlanner::checkCarrotHalfPlainConstraint(const geometry_msgs::m
   const double C_OFFSET_METERS = 0.05;  // 5 cm
   double check = vx * tfpose.pose.position.x + vy * tfpose.pose.position.y + c + C_OFFSET_METERS;
 
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] half plane contraint:" << vx << "*" << carrot_point.x
-                                                                                       << " + " << vy << "*"
-                                                                                       << carrot_point.y << " + " << c);
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] constraint evaluation: "
-                                            << vx << "*" << tfpose.pose.position.x << " + " << vy << "*"
-                                            << tfpose.pose.position.y << " + " << c << " = " << check);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(),
+    "[BackwardLocalPlanner] half plane contraint:" << vx << "*" << carrot_point.x << " + " << vy
+                                                   << "*" << carrot_point.y << " + " << c);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[BackwardLocalPlanner] constraint evaluation: "
+                         << vx << "*" << tfpose.pose.position.x << " + " << vy << "*"
+                         << tfpose.pose.position.y << " + " << c << " = " << check);
 
   return check < 0;
 }
 
-bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(const geometry_msgs::msg::PoseStamped &tfpose,
-                                                       const geometry_msgs::msg::Twist &currentTwist,
-                                                       double angle_error, bool &linearGoalReached,
-                                                       nav2_core::GoalChecker *goal_checker)
+bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(
+  const geometry_msgs::msg::PoseStamped & tfpose, const geometry_msgs::msg::Twist & currentTwist,
+  double angle_error, bool & linearGoalReached, nav2_core::GoalChecker * goal_checker)
 {
-  auto &finalgoal = backwardsPlanPath_.back();
+  auto & finalgoal = backwardsPlanPath_.back();
   double gdx = finalgoal.pose.position.x - tfpose.pose.position.x;
   double gdy = finalgoal.pose.position.y - tfpose.pose.position.y;
   double goaldist = sqrt(gdx * gdx + gdy * gdy);
 
   auto abs_angle_error = fabs(angle_error);
   // final_alpha_error =
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] goal check. linear dist: "
-                                            << goaldist << "(" << this->xy_goal_tolerance_ << ")"
-                                            << ", angular dist: " << abs_angle_error << "(" << this->yaw_goal_tolerance_
-                                            << ")");
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[BackwardLocalPlanner] goal check. linear dist: "
+                         << goaldist << "(" << this->xy_goal_tolerance_ << ")"
+                         << ", angular dist: " << abs_angle_error << "("
+                         << this->yaw_goal_tolerance_ << ")");
 
   linearGoalReached = goaldist < this->xy_goal_tolerance_;
 
@@ -402,9 +430,9 @@ bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(const geometry_msgs::msg:
  * pureSpinningCmd()
  ******************************************************************************************************************
  */
-void BackwardLocalPlanner::straightBackwardsAndPureSpinCmd(const geometry_msgs::msg::PoseStamped &tfpose, double &vetta,
-                                                           double &gamma, double alpha_error, double betta_error,
-                                                           double rho_error)
+void BackwardLocalPlanner::straightBackwardsAndPureSpinCmd(
+  const geometry_msgs::msg::PoseStamped & tfpose, double & vetta, double & gamma,
+  double alpha_error, double betta_error, double rho_error)
 {
   if (rho_error > linear_mode_rho_error_threshold_)  // works in straight motion mode
   {
@@ -424,18 +452,21 @@ void BackwardLocalPlanner::straightBackwardsAndPureSpinCmd(const geometry_msgs::
  ******************************************************************************************************************
  */
 geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
-    const geometry_msgs::msg::PoseStamped &pose, const geometry_msgs::msg::Twist &velocity,
-    nav2_core::GoalChecker *goal_checker)
+  const geometry_msgs::msg::PoseStamped & pose, const geometry_msgs::msg::Twist & velocity,
+  nav2_core::GoalChecker * goal_checker)
 {
-  RCLCPP_INFO(nh_->get_logger(), "[BackwardLocalPlanner] ------------------- LOCAL PLANNER LOOP -----------------");
+  RCLCPP_INFO(
+    nh_->get_logger(),
+    "[BackwardLocalPlanner] ------------------- LOCAL PLANNER LOOP -----------------");
   this->updateParameters();
 
   // consistency check
   if (this->backwardsPlanPath_.size() > 0)
   {
-    RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] Current pose frame id: "
-                                              << backwardsPlanPath_.front().header.frame_id
-                                              << ", path pose frame id: " << pose.header.frame_id);
+    RCLCPP_INFO_STREAM(
+      nh_->get_logger(), "[BackwardLocalPlanner] Current pose frame id: "
+                           << backwardsPlanPath_.front().header.frame_id
+                           << ", path pose frame id: " << pose.header.frame_id);
 
     if (backwardsPlanPath_.front().header.frame_id != pose.header.frame_id)
     {
@@ -451,21 +482,25 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
     geometry_msgs::msg::Twist twistol;
     if (goal_checker->getTolerances(posetol, twistol))
     {
-      xy_goal_tolerance_ = posetol.position.x ;
+      xy_goal_tolerance_ = posetol.position.x;
       yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation);
       //xy_goal_tolerance_ = posetol.position.x * 0.35;  // WORKAROUND ISSUE GOAL CHECKER NAV_CONTROLLER DIFF
       //yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation) * 0.35;
-      RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] xy_goal_tolerance_: " << xy_goal_tolerance_
-                                                                                          << ", yaw_goal_tolerance_: "
-                                                                                          << yaw_goal_tolerance_);
+      RCLCPP_INFO_STREAM(
+        nh_->get_logger(), "[BackwardLocalPlanner] xy_goal_tolerance_: "
+                             << xy_goal_tolerance_
+                             << ", yaw_goal_tolerance_: " << yaw_goal_tolerance_);
     }
     else
     {
-      RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] could not get tolerances from goal checker");
+      RCLCPP_INFO_STREAM(
+        nh_->get_logger(), "[BackwardLocalPlanner] could not get tolerances from goal checker");
     }
   }
 
-  RCLCPP_INFO(nh_->get_logger(), "[BackwardLocalPlanner] ------------------- LOCAL PLANNER LOOP -----------------");
+  RCLCPP_INFO(
+    nh_->get_logger(),
+    "[BackwardLocalPlanner] ------------------- LOCAL PLANNER LOOP -----------------");
 
   geometry_msgs::msg::TwistStamped cmd_vel;
   RCLCPP_INFO(nh_->get_logger(), "[BackwardLocalPlanner] LOCAL PLANNER LOOP");
@@ -474,14 +509,17 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
 
   if (!costmapRos_->getRobotPose(tfpose))
   {
-    RCLCPP_ERROR(nh_->get_logger(), "[BackwardLocalPlanner] missing robot pose, canceling compute Velocity Command");
+    RCLCPP_ERROR(
+      nh_->get_logger(),
+      "[BackwardLocalPlanner] missing robot pose, canceling compute Velocity Command");
   }  // it is not working in the pure spinning reel example, maybe the hyperplane check is enough
   bool divergenceDetected = false;
 
   bool emergency_stop = false;
   if (divergenceDetected)
   {
-    RCLCPP_ERROR(nh_->get_logger(), "[BackwardLocalPlanner] Divergence detected. Sending emergency stop.");
+    RCLCPP_ERROR(
+      nh_->get_logger(), "[BackwardLocalPlanner] Divergence detected. Sending emergency stop.");
     emergency_stop = true;
   }
 
@@ -492,7 +530,8 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   {
     cmd_vel.twist.linear.x = 0;
     cmd_vel.twist.angular.z = 0;
-    RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] emergency stop, exit compute commands");
+    RCLCPP_INFO_STREAM(
+      nh_->get_logger(), "[BackwardLocalPlanner] emergency stop, exit compute commands");
     // return false;
     return cmd_vel;
   }
@@ -504,13 +543,16 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   tf2::Quaternion q;
   tf2::fromMsg(tfpose.pose.orientation, q);
 
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] carrot goal: " << currentCarrotPoseIndex_ << "/"
-                                                                               << backwardsPlanPath_.size());
-  const geometry_msgs::msg::PoseStamped &carrotgoalpose = backwardsPlanPath_[currentCarrotPoseIndex_];
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] carrot goal pose current index: "
-                                            << currentCarrotPoseIndex_ << "/" << backwardsPlanPath_.size() << ": "
-                                            << carrotgoalpose);
-  const geometry_msgs::msg::Point &carrotGoalPosition = carrotgoalpose.pose.position;
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[BackwardLocalPlanner] carrot goal: " << currentCarrotPoseIndex_ << "/"
+                                                              << backwardsPlanPath_.size());
+  const geometry_msgs::msg::PoseStamped & carrotgoalpose =
+    backwardsPlanPath_[currentCarrotPoseIndex_];
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[BackwardLocalPlanner] carrot goal pose current index: "
+                         << currentCarrotPoseIndex_ << "/" << backwardsPlanPath_.size() << ": "
+                         << carrotgoalpose);
+  const geometry_msgs::msg::Point & carrotGoalPosition = carrotgoalpose.pose.position;
 
   tf2::Quaternion goalQ;
   tf2::fromMsg(carrotgoalpose.pose.orientation, goalQ);
@@ -536,7 +578,8 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   //------------- END CONTEXT EVAL ----------
 
   bool linearGoalReached;
-  bool currentPoseInGoal = checkCurrentPoseInGoalRange(tfpose, velocity, betta_error, linearGoalReached, goal_checker);
+  bool currentPoseInGoal =
+    checkCurrentPoseInGoalRange(tfpose, velocity, betta_error, linearGoalReached, goal_checker);
 
   // Make sure the robot is very close to the goal and it is really in the the last goal point.
   bool carrotInFinalGoalIndex = currentCarrotPoseIndex_ == (int)backwardsPlanPath_.size() - 1;
@@ -547,14 +590,17 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
     goalReached_ = true;
     // backwardsPlanPath_.clear();
     RCLCPP_INFO_STREAM(
-        nh_->get_logger(),
-        "[BackwardLocalPlanner] GOAL REACHED. Send stop command and skipping trajectory collision: " << cmd_vel.twist);
+      nh_->get_logger(),
+      "[BackwardLocalPlanner] GOAL REACHED. Send stop command and skipping trajectory collision: "
+        << cmd_vel.twist);
     cmd_vel.twist.linear.x = 0;
     cmd_vel.twist.angular.z = 0;
     return cmd_vel;
   }
-  else if (carrotInLinearGoalRange && linearGoalReached)  // checking if we are in the end goal point but with incorrect
-                                                          // orientation
+  else if (
+    carrotInLinearGoalRange &&
+    linearGoalReached)  // checking if we are in the end goal point but with incorrect
+                        // orientation
   {
     // this means that we are not in the final angular distance, and we may even not be in the last carrot index
     // (several intermediate angular poses until the last goal pose)
@@ -566,7 +612,8 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   if (straightBackwardsAndPureSpinningMode_)
   {
     // decorated control rule for this mode
-    this->straightBackwardsAndPureSpinCmd(tfpose, vetta, gamma, alpha_error, betta_error, rho_error);
+    this->straightBackwardsAndPureSpinCmd(
+      tfpose, vetta, gamma, alpha_error, betta_error, rho_error);
   }
   else  // default free navigation backward motion mode
   {
@@ -578,10 +625,12 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
     // then, the linear motion is deactivated.
     if (inGoalPureSpinningState_)
     {
-      RCLCPP_INFO(nh_->get_logger(),
-                  "[BackwardLocalPlanner] we entered in a pure spinning state even in not pure-spining configuration, "
-                  "carrotDistanceGoalReached: %d",
-                  carrotInLinearGoalRange);
+      RCLCPP_INFO(
+        nh_->get_logger(),
+        "[BackwardLocalPlanner] we entered in a pure spinning state even in not pure-spining "
+        "configuration, "
+        "carrotDistanceGoalReached: %d",
+        carrotInLinearGoalRange);
       gamma = k_betta_ * betta_error;
       vetta = 0;
     }
@@ -613,25 +662,26 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
 
   publishGoalMarker(carrotGoalPosition.x, carrotGoalPosition.y, betta);
 
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] local planner,"
-                                            << std::endl
-                                            << " current pose in goal: " << currentPoseInGoal << std::endl
-                                            << " carrot in final goal index: " << carrotInFinalGoalIndex << std::endl
-                                            << " carrot in linear goal range: " << carrotInLinearGoalRange << std::endl
-                                            << " straightAnPureSpiningMode: " << straightBackwardsAndPureSpinningMode_
-                                            << std::endl
-                                            << " inGoalPureSpinningState: " << inGoalPureSpinningState_ << std::endl
-                                            << " theta: " << theta << std::endl
-                                            << " betta: " << theta << std::endl
-                                            << " err_x: " << dx << std::endl
-                                            << " err_y:" << dy << std::endl
-                                            << " rho_error:" << rho_error << std::endl
-                                            << " alpha_error:" << alpha_error << std::endl
-                                            << " betta_error:" << betta_error << std::endl
-                                            << " vetta:" << vetta << std::endl
-                                            << " gamma:" << gamma << std::endl
-                                            << " cmd_vel.lin.x:" << cmd_vel.twist.linear.x << std::endl
-                                            << " cmd_vel.ang.z:" << cmd_vel.twist.angular.z);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[BackwardLocalPlanner] local planner,"
+                         << std::endl
+                         << " current pose in goal: " << currentPoseInGoal << std::endl
+                         << " carrot in final goal index: " << carrotInFinalGoalIndex << std::endl
+                         << " carrot in linear goal range: " << carrotInLinearGoalRange << std::endl
+                         << " straightAnPureSpiningMode: " << straightBackwardsAndPureSpinningMode_
+                         << std::endl
+                         << " inGoalPureSpinningState: " << inGoalPureSpinningState_ << std::endl
+                         << " theta: " << theta << std::endl
+                         << " betta: " << theta << std::endl
+                         << " err_x: " << dx << std::endl
+                         << " err_y:" << dy << std::endl
+                         << " rho_error:" << rho_error << std::endl
+                         << " alpha_error:" << alpha_error << std::endl
+                         << " betta_error:" << betta_error << std::endl
+                         << " vetta:" << vetta << std::endl
+                         << " gamma:" << gamma << std::endl
+                         << " cmd_vel.lin.x:" << cmd_vel.twist.linear.x << std::endl
+                         << " cmd_vel.ang.z:" << cmd_vel.twist.angular.z);
 
   if (inGoalPureSpinningState_)
   {
@@ -639,8 +689,10 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
 
     if (carrotHalfPlaneConstraintFailure)
     {
-      RCLCPP_ERROR(nh_->get_logger(), "[BackwardLocalPlanner] CarrotHalfPlaneConstraintFailure detected. Sending "
-                                      "emergency stop and success to the planner.");
+      RCLCPP_ERROR(
+        nh_->get_logger(),
+        "[BackwardLocalPlanner] CarrotHalfPlaneConstraintFailure detected. Sending "
+        "emergency stop and success to the planner.");
       cmd_vel.twist.linear.x = 0;
     }
   }
@@ -652,16 +704,18 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   geometry_msgs::msg::PoseStamped global_pose;
   costmapRos_->getRobotPose(global_pose);
 
-  auto *costmap2d = costmapRos_->getCostmap();
+  auto * costmap2d = costmapRos_->getCostmap();
   auto yaw = tf2::getYaw(global_pose.pose.orientation);
 
-  auto &pos = global_pose.pose.position;
+  auto & pos = global_pose.pose.position;
 
   Eigen::Vector3f currentpose(pos.x, pos.y, yaw);
-  Eigen::Vector3f currentvel(cmd_vel.twist.linear.x, cmd_vel.twist.linear.y, cmd_vel.twist.angular.z);
+  Eigen::Vector3f currentvel(
+    cmd_vel.twist.linear.x, cmd_vel.twist.linear.y, cmd_vel.twist.angular.z);
   std::vector<Eigen::Vector3f> trajectory;
-  this->generateTrajectory(currentpose, currentvel, 0.8 /*meters*/, M_PI / 8 /*rads*/, 3.0 /*seconds*/,
-                           0.05 /*seconds*/, trajectory);
+  this->generateTrajectory(
+    currentpose, currentvel, 0.8 /*meters*/, M_PI / 8 /*rads*/, 3.0 /*seconds*/, 0.05 /*seconds*/,
+    trajectory);
 
   // check plan rejection
   bool acceptedLocalTrajectoryFreeOfObstacles = true;
@@ -672,13 +726,13 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   {
     if (backwardsPlanPath_.size() > 0)
     {
-      auto &finalgoalpose = backwardsPlanPath_.back();
+      auto & finalgoalpose = backwardsPlanPath_.back();
 
       int i = 0;
       // RCLCPP_INFO_STREAM(nh_->get_logger(), "lplanner goal: " << finalgoalpose.pose.position);
       geometry_msgs::msg::Twist mockzerospeed;
 
-      for (auto &p : trajectory)
+      for (auto & p : trajectory)
       {
         /*geometry_msgs::msg::Pose pg;
         pg.position.x = p[0];
@@ -696,8 +750,10 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
         float dst = sqrt(dx * dx + dy * dy);
         if (dst < xy_goal_tolerance_)
         {
-          RCLCPP_INFO(nh_->get_logger(), "[BackwardLocalPlanner] trajectory simulation for collision checking: goal "
-                                         "reached with no collision");
+          RCLCPP_INFO(
+            nh_->get_logger(),
+            "[BackwardLocalPlanner] trajectory simulation for collision checking: goal "
+            "reached with no collision");
           break;
         }
 
@@ -715,10 +771,11 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
         if (costmap2d->getCost(mx, my) >= nav2_costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
         {
           acceptedLocalTrajectoryFreeOfObstacles = false;
-          RCLCPP_WARN_STREAM(nh_->get_logger(),
-                             "[BackwardLocalPlanner] ABORTED LOCAL PLAN BECAUSE OBSTACLE DETEDTED at point "
-                                 << i << "/" << trajectory.size() << std::endl
-                                 << p[0] << ", " << p[1]);
+          RCLCPP_WARN_STREAM(
+            nh_->get_logger(),
+            "[BackwardLocalPlanner] ABORTED LOCAL PLAN BECAUSE OBSTACLE DETEDTED at point "
+              << i << "/" << trajectory.size() << std::endl
+              << p[0] << ", " << p[1]);
           break;
         }
         i++;
@@ -726,8 +783,9 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
     }
     else
     {
-      RCLCPP_WARN(nh_->get_logger(), "[BackwardLocalPlanner] Abort local - Backwards global plan size: %ld",
-                  backwardsPlanPath_.size());
+      RCLCPP_WARN(
+        nh_->get_logger(), "[BackwardLocalPlanner] Abort local - Backwards global plan size: %ld",
+        backwardsPlanPath_.size());
       cmd_vel.twist.angular.z = 0;
       cmd_vel.twist.linear.x = 0;
       // return false;
@@ -737,8 +795,10 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   if (acceptedLocalTrajectoryFreeOfObstacles)
   {
     waiting_ = false;
-    RCLCPP_INFO(nh_->get_logger(), "[BackwardLocalPlanner] accepted local trajectory free of obstacle. Local planner "
-                                   "continues.");
+    RCLCPP_INFO(
+      nh_->get_logger(),
+      "[BackwardLocalPlanner] accepted local trajectory free of obstacle. Local planner "
+      "continues.");
     return cmd_vel;
     // return true;
   }
@@ -752,7 +812,8 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
     {
       waiting_ = true;
       waitingStamp_ = nh_->now();
-      RCLCPP_WARN(nh_->get_logger(), "[BackwardLocalPlanner][Not accepted local plan] starting countdown");
+      RCLCPP_WARN(
+        nh_->get_logger(), "[BackwardLocalPlanner][Not accepted local plan] starting countdown");
     }
     else
     {
@@ -760,8 +821,9 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
 
       if (waitingduration > this->waitingTimeout_)
       {
-        RCLCPP_WARN(nh_->get_logger(), "[BackwardLocalPlanner][Abort local] timeout! duration %lf/%f",
-                    waitingduration.seconds(), waitingTimeout_.seconds());
+        RCLCPP_WARN(
+          nh_->get_logger(), "[BackwardLocalPlanner][Abort local] timeout! duration %lf/%f",
+          waitingduration.seconds(), waitingTimeout_.seconds());
         // return false;
         cmd_vel.twist.linear.x = 0;
         cmd_vel.twist.angular.z = 0;
@@ -784,7 +846,7 @@ bool BackwardLocalPlanner::isGoalReached()
   return goalReached_;
 }
 
-bool BackwardLocalPlanner::findInitialCarrotGoal(geometry_msgs::msg::PoseStamped &tfpose)
+bool BackwardLocalPlanner::findInitialCarrotGoal(geometry_msgs::msg::PoseStamped & tfpose)
 {
   double lineardisterr, angleerr;
   bool inCarrotRange = false;
@@ -799,20 +861,25 @@ bool BackwardLocalPlanner::findInitialCarrotGoal(geometry_msgs::msg::PoseStamped
   {
     computeCurrentEuclideanAndAngularErrorsToCarrotGoal(tfpose, lineardisterr, angleerr);
 
-    RCLCPP_INFO(nh_->get_logger(),
-                "[BackwardLocalPlanner] Finding initial carrot goal i=%d - error to carrot, linear = %lf (%lf), "
-                "angular : %lf (%lf)",
-                currentCarrotPoseIndex_, lineardisterr, carrot_distance_, angleerr, carrot_angular_distance_);
+    RCLCPP_INFO(
+      nh_->get_logger(),
+      "[BackwardLocalPlanner] Finding initial carrot goal i=%d - error to carrot, linear = %lf "
+      "(%lf), "
+      "angular : %lf (%lf)",
+      currentCarrotPoseIndex_, lineardisterr, carrot_distance_, angleerr, carrot_angular_distance_);
 
     // current path point is inside the carrot distance range, goal carrot tries to escape!
     if (lineardisterr < carrot_distance_ && angleerr < carrot_angular_distance_)
     {
-      RCLCPP_INFO(nh_->get_logger(), "[BackwardLocalPlanner] Finding initial carrot goal i=%d - in carrot Range",
-                  currentCarrotPoseIndex_);
+      RCLCPP_INFO(
+        nh_->get_logger(),
+        "[BackwardLocalPlanner] Finding initial carrot goal i=%d - in carrot Range",
+        currentCarrotPoseIndex_);
       inCarrotRange = true;
       // we are inside the goal range
     }
-    else if (inCarrotRange && (lineardisterr > carrot_distance_ || angleerr > carrot_angular_distance_))
+    else if (
+      inCarrotRange && (lineardisterr > carrot_distance_ || angleerr > carrot_angular_distance_))
     {
       // we were inside the carrot range but not anymore, now we are just leaving. we want to continue forward
       // (currentCarrotPoseIndex_++) unless we go out of the carrot range
@@ -824,19 +891,22 @@ bool BackwardLocalPlanner::findInitialCarrotGoal(geometry_msgs::msg::PoseStamped
     }
     else
     {
-      RCLCPP_INFO(nh_->get_logger(),
-                  "[BackwardLocalPlanner] Finding initial carrot goal i=%d - carrot out of range, searching "
-                  "coincidence...",
-                  currentCarrotPoseIndex_);
+      RCLCPP_INFO(
+        nh_->get_logger(),
+        "[BackwardLocalPlanner] Finding initial carrot goal i=%d - carrot out of range, searching "
+        "coincidence...",
+        currentCarrotPoseIndex_);
     }
 
     currentCarrotPoseIndex_++;
-    RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] setPlan: fw" << currentCarrotPoseIndex_);
+    RCLCPP_INFO_STREAM(
+      nh_->get_logger(), "[BackwardLocalPlanner] setPlan: fw" << currentCarrotPoseIndex_);
   }
 
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] setPlan: (found first carrot:"
-                                            << inCarrotRange << ") initial carrot point index: "
-                                            << currentCarrotPoseIndex_ << "/" << backwardsPlanPath_.size());
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[BackwardLocalPlanner] setPlan: (found first carrot:"
+                         << inCarrotRange << ") initial carrot point index: "
+                         << currentCarrotPoseIndex_ << "/" << backwardsPlanPath_.size());
 
   return inCarrotRange;
 }
@@ -849,8 +919,9 @@ bool BackwardLocalPlanner::resamplePrecisePlan()
   RCLCPP_INFO(nh_->get_logger(), "[BackwardLocalPlanner] resample precise");
   if (backwardsPlanPath_.size() <= 1)
   {
-    RCLCPP_INFO_STREAM(nh_->get_logger(),
-                       "[BackwardLocalPlanner] resample precise skipping, size: " << backwardsPlanPath_.size());
+    RCLCPP_INFO_STREAM(
+      nh_->get_logger(),
+      "[BackwardLocalPlanner] resample precise skipping, size: " << backwardsPlanPath_.size());
     return false;
   }
 
@@ -861,8 +932,8 @@ bool BackwardLocalPlanner::resamplePrecisePlan()
   for (int i = 0; i < (int)backwardsPlanPath_.size() - 1; i++)
   {
     RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] resample precise, check: " << i);
-    auto &currpose = backwardsPlanPath_[i];
-    auto &nextpose = backwardsPlanPath_[i + 1];
+    auto & currpose = backwardsPlanPath_[i];
+    auto & nextpose = backwardsPlanPath_[i + 1];
 
     tf2::Quaternion qCurrent, qNext;
     tf2::fromMsg(currpose.pose.orientation, qCurrent);
@@ -875,8 +946,9 @@ bool BackwardLocalPlanner::resamplePrecisePlan()
     bool resample = false;
     if (dist > maxallowedLinearError)
     {
-      RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] resampling point, linear distance:"
-                                                << dist << "(" << maxallowedLinearError << ")" << i);
+      RCLCPP_INFO_STREAM(
+        nh_->get_logger(), "[BackwardLocalPlanner] resampling point, linear distance:"
+                             << dist << "(" << maxallowedLinearError << ")" << i);
       resample = true;
     }
     else
@@ -888,8 +960,9 @@ bool BackwardLocalPlanner::resamplePrecisePlan()
       if (angularError > maxallowedAngularError)
       {
         resample = true;
-        RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] resampling point, angular distance:"
-                                                  << angularError << "(" << maxallowedAngularError << ")" << i);
+        RCLCPP_INFO_STREAM(
+          nh_->get_logger(), "[BackwardLocalPlanner] resampling point, angular distance:"
+                               << angularError << "(" << maxallowedAngularError << ")" << i);
       }
     }
 
@@ -915,10 +988,11 @@ bool BackwardLocalPlanner::resamplePrecisePlan()
     }
   }
 
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] End resampling. resampled:" << counter
-                                                                                            << " new inserted poses "
-                                                                                               "during precise "
-                                                                                               "resmapling.");
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[BackwardLocalPlanner] End resampling. resampled:" << counter
+                                                                           << " new inserted poses "
+                                                                              "during precise "
+                                                                              "resmapling.");
   return true;
 }
 
@@ -927,25 +1001,26 @@ bool BackwardLocalPlanner::resamplePrecisePlan()
  * setPlan()
  ******************************************************************************************************************
  */
-void BackwardLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
+void BackwardLocalPlanner::setPlan(const nav_msgs::msg::Path & path)
 {
-  RCLCPP_INFO_STREAM(nh_->get_logger(),
-                     "[BackwardLocalPlanner] setPlan: new global plan received ( " << path.poses.size() << ")");
-  
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(),
+    "[BackwardLocalPlanner] setPlan: new global plan received ( " << path.poses.size() << ")");
+
   //------------- TRANSFORM TO LOCAL FRAME PATH ---------------------------
   nav_msgs::msg::Path transformedPlan;
   rclcpp::Duration ttol(transform_tolerance_);
   // transform global plan to the navigation reference frame
-  for (auto &p : path.poses)
+  for (auto & p : path.poses)
   {
-    geometry_msgs::msg::PoseStamped transformedPose;  
+    geometry_msgs::msg::PoseStamped transformedPose;
     nav_2d_utils::transformPose(tf_, costmapRos_->getGlobalFrameID(), p, transformedPose, ttol);
     transformedPose.header.frame_id = costmapRos_->getGlobalFrameID();
     transformedPlan.poses.push_back(transformedPose);
   }
 
-  backwardsPlanPath_ = transformedPlan.poses;  
-  
+  backwardsPlanPath_ = transformedPlan.poses;
+
   // --------- resampling path feature -----------
   geometry_msgs::msg::PoseStamped tfpose;
   if (!costmapRos_->getRobotPose(tfpose))
@@ -981,9 +1056,11 @@ void BackwardLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
   bool foundInitialCarrotGoal = this->findInitialCarrotGoal(tfpose);
   if (!foundInitialCarrotGoal)
   {
-    RCLCPP_ERROR(nh_->get_logger(), "[BackwardLocalPlanner] new plan rejected. The initial point in the global path is "
-                                    "too much far away from the current state (according to carrot_distance "
-                                    "parameter)");
+    RCLCPP_ERROR(
+      nh_->get_logger(),
+      "[BackwardLocalPlanner] new plan rejected. The initial point in the global path is "
+      "too much far away from the current state (according to carrot_distance "
+      "parameter)");
     // return false; // in this case, the new plan broke the current execution
     return;
   }
@@ -996,9 +1073,9 @@ void BackwardLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
   }
 }
 
-void BackwardLocalPlanner::generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist,
-                                              float maxanglediff, float maxtime, float dt,
-                                              std::vector<Eigen::Vector3f> &outtraj)
+void BackwardLocalPlanner::generateTrajectory(
+  const Eigen::Vector3f & pos, const Eigen::Vector3f & vel, float maxdist, float maxanglediff,
+  float maxtime, float dt, std::vector<Eigen::Vector3f> & outtraj)
 {
   // simulate the trajectory and check for collisions, updating costs along the way
   bool end = false;
@@ -1061,8 +1138,8 @@ void BackwardLocalPlanner::generateTrajectory(const Eigen::Vector3f &pos, const 
   }  // end for simulation steps
 }
 
-Eigen::Vector3f BackwardLocalPlanner::computeNewPositions(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel,
-                                                          double dt)
+Eigen::Vector3f BackwardLocalPlanner::computeNewPositions(
+  const Eigen::Vector3f & pos, const Eigen::Vector3f & vel, double dt)
 {
   Eigen::Vector3f new_pos = Eigen::Vector3f::Zero();
   new_pos[0] = pos[0] + (vel[0] * cos(pos[2]) + vel[1] * cos(M_PI_2 + pos[2])) * dt;

@@ -12,9 +12,7 @@ namespace cl_lidar
 class ClLidarSensor : public cl_multirole_sensor::ClMultiroleSensor<sensor_msgs::msg::LaserScan>
 {
 public:
-  ClLidarSensor()
-  {
-  }
+  ClLidarSensor() {}
 };
 }  // namespace cl_lidar
 }  // namespace sm_dance_bot

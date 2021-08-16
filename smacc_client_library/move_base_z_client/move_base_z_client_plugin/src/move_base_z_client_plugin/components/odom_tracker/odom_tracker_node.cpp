@@ -3,9 +3,9 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+#include <actionlib/server/simple_action_server.h>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
 #include <odom_tracker/OdomTrackerAction.h>
-#include <actionlib/server/simple_action_server.h>
 #include <memory>
 
 typedef actionlib::SimpleActionServer<odom_tracker::OdomTrackerAction> Server;
@@ -19,62 +19,64 @@ public:
   std::shared_ptr<Server> as_;
   OdomTracker odomTracker;
 
-  OdomTrackerActionServer()
-      : odomTracker("move_base")
-  {
-  }
+  OdomTrackerActionServer() : odomTracker("move_base") {}
 
   /**
 ******************************************************************************************************************
 * execute()
 ******************************************************************************************************************
 */
-  void execute(const OdomTrackerGoalConstPtr &goal) // Note: "Action" is not appended to DoDishes here
+  void execute(
+    const OdomTrackerGoalConstPtr & goal)  // Note: "Action" is not appended to DoDishes here
   {
     try
     {
       switch (goal->command)
       {
-      case OdomTrackerGoal::RECORD_PATH:
-        odomTracker.setWorkingMode(WorkingMode::RECORD_PATH);
-        break;
+        case OdomTrackerGoal::RECORD_PATH:
+          odomTracker.setWorkingMode(WorkingMode::RECORD_PATH);
+          break;
 
-      case OdomTrackerGoal::CLEAR_PATH:
-        odomTracker.setWorkingMode(WorkingMode::CLEAR_PATH);
-        break;
+        case OdomTrackerGoal::CLEAR_PATH:
+          odomTracker.setWorkingMode(WorkingMode::CLEAR_PATH);
+          break;
 
-      case OdomTrackerGoal::IDLE:
-        odomTracker.setWorkingMode(WorkingMode::IDLE);
-        break;
+        case OdomTrackerGoal::IDLE:
+          odomTracker.setWorkingMode(WorkingMode::IDLE);
+          break;
 
-      case OdomTrackerGoal::START_BROADCAST_PATH:
-        odomTracker.setPublishMessages(true);
-        break;
+        case OdomTrackerGoal::START_BROADCAST_PATH:
+          odomTracker.setPublishMessages(true);
+          break;
 
-      case OdomTrackerGoal::STOP_BROADCAST_PATH:
-        odomTracker.setPublishMessages(false);
-        break;
+        case OdomTrackerGoal::STOP_BROADCAST_PATH:
+          odomTracker.setPublishMessages(false);
+          break;
 
-      case OdomTrackerGoal::PUSH_PATH:
-        odomTracker.pushPath();
-        break;
+        case OdomTrackerGoal::PUSH_PATH:
+          odomTracker.pushPath();
+          break;
 
-      case OdomTrackerGoal::POP_PATH:
-        odomTracker.popPath();
-        break;
+        case OdomTrackerGoal::POP_PATH:
+          odomTracker.popPath();
+          break;
 
-      default:
+        default:
 
-        RCLCPP_ERROR(getNode()->get_logger(),"Odom Tracker Node - Action Server execute error: incorrect command - %d", goal->command);
-        as_->setAborted();
+          RCLCPP_ERROR(
+            getNode()->get_logger(),
+            "Odom Tracker Node - Action Server execute error: incorrect command - %d",
+            goal->command);
+          as_->setAborted();
       }
 
       // never reach succeded because were are interested in keeping the feedback alive
       as_->setSucceeded();
     }
-    catch (std::exception &ex)
+    catch (std::exception & ex)
     {
-      RCLCPP_ERROR(getNode()->get_logger(),"Odom Tracker Node - Action Server execute error: %s", ex.what());
+      RCLCPP_ERROR(
+        getNode()->get_logger(), "Odom Tracker Node - Action Server execute error: %s", ex.what());
       as_->setAborted();
     }
   }
@@ -87,10 +89,11 @@ public:
   void run()
   {
     ros::NodeHandle n;
-    RCLCPP_INFO(getNode()->get_logger(),"Creating odom tracker action server");
+    RCLCPP_INFO(getNode()->get_logger(), "Creating odom tracker action server");
 
-    as_ = std::make_shared<Server>(n, "odom_tracker", boost::bind(&OdomTrackerActionServer::execute, this, _1), false);
-    RCLCPP_INFO(getNode()->get_logger(),"Starting OdomTracker Action Server");
+    as_ = std::make_shared<Server>(
+      n, "odom_tracker", boost::bind(&OdomTrackerActionServer::execute, this, _1), false);
+    RCLCPP_INFO(getNode()->get_logger(), "Starting OdomTracker Action Server");
 
     as_->start();
 
@@ -98,7 +101,7 @@ public:
   }
 };
 
-int main(int argc, char **argv)
+int main(int argc, char ** argv)
 {
   ros::init(argc, argv, "odom_tracker_node");
   OdomTrackerActionServer as;

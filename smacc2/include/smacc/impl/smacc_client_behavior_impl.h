@@ -10,66 +10,69 @@
 
 namespace smacc
 {
-
 template <typename EventType>
-void ISmaccClientBehavior::postEvent(const EventType &ev)
+void ISmaccClientBehavior::postEvent(const EventType & ev)
 {
-    if (stateMachine_ == nullptr)
-    {
-        RCLCPP_ERROR(getNode()->get_logger(),"The client behavior cannot post events before being assigned to an orthogonal. Ignoring post event call.");
-    }
-    else
-    {
-        stateMachine_->postEvent(ev, EventLifeTime::CURRENT_STATE);
-    }
+  if (stateMachine_ == nullptr)
+  {
+    RCLCPP_ERROR(
+      getNode()->get_logger(),
+      "The client behavior cannot post events before being assigned to an orthogonal. Ignoring "
+      "post event call.");
+  }
+  else
+  {
+    stateMachine_->postEvent(ev, EventLifeTime::CURRENT_STATE);
+  }
 }
 
 template <typename EventType>
 void ISmaccClientBehavior::postEvent()
 {
-    if (stateMachine_ == nullptr)
-    {
-        RCLCPP_ERROR(getNode()->get_logger(),"The client behavior cannot post events before being assigned to an orthogonal. Ignoring post event call.");
-    }
-    else
-    {
-         
-        stateMachine_->template postEvent<EventType>(EventLifeTime::CURRENT_STATE);
-    }
+  if (stateMachine_ == nullptr)
+  {
+    RCLCPP_ERROR(
+      getNode()->get_logger(),
+      "The client behavior cannot post events before being assigned to an orthogonal. Ignoring "
+      "post event call.");
+  }
+  else
+  {
+    stateMachine_->template postEvent<EventType>(EventLifeTime::CURRENT_STATE);
+  }
 }
 
 //inline
-ISmaccStateMachine *ISmaccClientBehavior::getStateMachine()
-{
-    return this->stateMachine_;
-}
+ISmaccStateMachine * ISmaccClientBehavior::getStateMachine() { return this->stateMachine_; }
 
 //inline
-ISmaccState *ISmaccClientBehavior::getCurrentState()
-{
-    return this->currentState;
-}
+ISmaccState * ISmaccClientBehavior::getCurrentState() { return this->currentState; }
 
 template <typename SmaccClientType>
-void ISmaccClientBehavior::requiresClient(SmaccClientType *&storage)
+void ISmaccClientBehavior::requiresClient(SmaccClientType *& storage)
 {
-    currentOrthogonal->requiresClient(storage);
+  currentOrthogonal->requiresClient(storage);
 }
 
 template <typename SmaccComponentType>
-void ISmaccClientBehavior::requiresComponent(SmaccComponentType *&storage)
+void ISmaccClientBehavior::requiresComponent(SmaccComponentType *& storage)
 {
-    if (stateMachine_ == nullptr)
-    {
-        RCLCPP_ERROR(getNode()->get_logger(),"Cannot use the requiresComponent funcionality before asigning the client behavior to an orthogonal. Try using the OnEntry method to capture required components.");
-    }
-    else
-    {
-        stateMachine_->requiresComponent(storage);
-    }
+  if (stateMachine_ == nullptr)
+  {
+    RCLCPP_ERROR(
+      getNode()->get_logger(),
+      "Cannot use the requiresComponent funcionality before asigning the client behavior to an "
+      "orthogonal. Try using the OnEntry method to capture required components.");
+  }
+  else
+  {
+    stateMachine_->requiresComponent(storage);
+  }
 }
 
 template <typename TOrthogonal, typename TSourceObject>
-void ISmaccClientBehavior::onOrthogonalAllocation() {}
+void ISmaccClientBehavior::onOrthogonalAllocation()
+{
+}
 
-} // namespace smacc
+}  // namespace smacc

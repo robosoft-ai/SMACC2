@@ -17,22 +17,12 @@ struct StState4 : smacc::SmaccState<StState4, MsRun>
   };
 
   // STATE FUNCTIONS
-  static void staticConfigure()
-  {
-  }
+  static void staticConfigure() {}
 
-  void runtimeConfigure()
-  {
-  }
+  void runtimeConfigure() {}
 
-  void onEntry()
-  {
-    RCLCPP_INFO(getNode()->get_logger(), "On Entry!");
-  }
+  void onEntry() { RCLCPP_INFO(getNode()->get_logger(), "On Entry!"); }
 
-  void onExit()
-  {
-    RCLCPP_INFO(getNode()->get_logger(), "On Exit!");
-  }
+  void onExit() { RCLCPP_INFO(getNode()->get_logger(), "On Exit!"); }
 };
 }  // namespace sm_ferrari

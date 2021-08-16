@@ -10,14 +10,8 @@ namespace smacc
 {
 namespace client_bases
 {
-  SmaccPublisherClient::SmaccPublisherClient()
-  {
-    initialized_ = false;
-  }
+SmaccPublisherClient::SmaccPublisherClient() { initialized_ = false; }
 
-  SmaccPublisherClient::~SmaccPublisherClient()
-  {
-  
-  }
-} // namespace client_bases
-} // namespace smacc
+SmaccPublisherClient::~SmaccPublisherClient() {}
+}  // namespace client_bases
+}  // namespace smacc

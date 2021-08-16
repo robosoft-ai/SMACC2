@@ -10,21 +10,20 @@ struct StiFPatternStartLoop : smacc::SmaccState<StiFPatternStartLoop<SS>, SS>
   using TSti::context_type;
   using TSti::SmaccState;
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternRotate1<SS>, CONTINUELOOP> 
-  
-  >reactions;
 
-// STATE FUNCTIONS
-  static void staticConfigure()
-  {
-  }
+    Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternRotate1<SS>, CONTINUELOOP>
+
+    >
+    reactions;
+
+  // STATE FUNCTIONS
+  static void staticConfigure() {}
 
   bool loopCondition()
   {
-    auto &superstate = TSti::template context<SS>();
+    auto & superstate = TSti::template context<SS>();
     return superstate.iteration_count++ < superstate.total_iterations();
   }
 
@@ -33,5 +32,5 @@ struct StiFPatternStartLoop : smacc::SmaccState<StiFPatternStartLoop<SS>, SS>
     TSti::checkWhileLoopConditionAndThrowEvent(&StiFPatternStartLoop<SS>::loopCondition);
   }
 };
-} // namespace f_pattern_states
-} // namespace sm_dance_bot
+}  // namespace f_pattern_states
+}  // namespace sm_dance_bot

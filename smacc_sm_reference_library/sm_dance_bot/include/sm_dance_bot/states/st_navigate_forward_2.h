@@ -6,15 +6,16 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
 {
   using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
 
-  Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateDegrees5>,
-  Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateToWaypointsX>
-  
-  >reactions;
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateDegrees5>,
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateToWaypointsX>
 
-// STATE FUNCTIONS
+    >
+    reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbNavigateForward>(1);
@@ -22,4 +23,4 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 };
-} // namespace sm_dance_bot
+}  // namespace sm_dance_bot

@@ -17,14 +17,15 @@ struct StState3 : smacc::SmaccState<StState3, MsRun>
   };
 
   // TRANSITION TABLE
-  typedef mpl::list<Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SS1::Ss1, TIMEOUT>,
-                    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SS1::Ss1>,
-                    // Keyboard events
-                    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState2, PREVIOUS>,
-                    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1, NEXT>
+  typedef mpl::list<
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SS1::Ss1, TIMEOUT>,
+    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SS1::Ss1>,
+    // Keyboard events
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState2, PREVIOUS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1, NEXT>
 
-                    >
-      reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
@@ -35,18 +36,10 @@ struct StState3 : smacc::SmaccState<StState3, MsRun>
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
-  void runtimeConfigure()
-  {
-  }
+  void runtimeConfigure() {}
 
-  void onEntry()
-  {
-    RCLCPP_INFO(getNode()->get_logger(), "On Entry!");
-  }
+  void onEntry() { RCLCPP_INFO(getNode()->get_logger(), "On Entry!"); }
 
-  void onExit()
-  {
-    RCLCPP_INFO(getNode()->get_logger(), "On Exit!");
-  }
+  void onExit() { RCLCPP_INFO(getNode()->get_logger(), "On Exit!"); }
 };
 }  // namespace sm_three_some

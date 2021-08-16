@@ -1,31 +1,24 @@
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
-#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/common.h>
 #include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
-#include <move_base_z_client_plugin/common.h>
+#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
+#include <tf2/transform_datatypes.h>
+#include <yaml-cpp/yaml.h>
 #include <fstream>
 #include <rclcpp/rclcpp.hpp>
-#include <yaml-cpp/yaml.h>
-#include <tf2/transform_datatypes.h>
 
 namespace cl_move_base_z
 {
-  using namespace std::chrono_literals;
-WaypointNavigator::WaypointNavigator()
-    : currentWaypoint_(0),
-      waypoints_(0)
-{
-}
+using namespace std::chrono_literals;
+WaypointNavigator::WaypointNavigator() : currentWaypoint_(0), waypoints_(0) {}
 
-void WaypointNavigator::onInitialize()
-{
-  client_ = dynamic_cast<ClMoveBaseZ *>(owner_);
-}
+void WaypointNavigator::onInitialize() { client_ = dynamic_cast<ClMoveBaseZ *>(owner_); }
 
-void WaypointNavigator::onGoalReached(ClMoveBaseZ::WrappedResult &/*res*/)
+void WaypointNavigator::onGoalReached(ClMoveBaseZ::WrappedResult & /*res*/)
 {
   waypointsEventDispatcher.postWaypointEvent(currentWaypoint_);
   currentWaypoint_++;
@@ -36,8 +29,8 @@ void WaypointNavigator::sendNextGoal()
 {
   if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypoints_.size())
   {
-    auto &next = waypoints_[currentWaypoint_];
-    
+    auto & next = waypoints_[currentWaypoint_];
+
     ClMoveBaseZ::Goal goal;
     auto p = client_->getComponent<cl_move_base_z::Pose>();
     auto pose = p->toPoseMsg();
@@ -47,22 +40,22 @@ void WaypointNavigator::sendNextGoal()
     goal.pose.header.stamp = getNode()->now();
     goal.pose.pose = next;
 
-    RCLCPP_WARN(getNode()->get_logger(),"[WaypointsNavigator] Configuring default planners");
+    RCLCPP_WARN(getNode()->get_logger(), "[WaypointsNavigator] Configuring default planners");
     auto plannerSwitcher = client_->getComponent<PlannerSwitcher>();
     plannerSwitcher->setDefaultPlanners();
 
-    RCLCPP_WARN(getNode()->get_logger(),"[WaypointsNavigator] Configuring default goal planner");
+    RCLCPP_WARN(getNode()->get_logger(), "[WaypointsNavigator] Configuring default goal planner");
     auto goalCheckerSwitcher = client_->getComponent<GoalCheckerSwitcher>();
     goalCheckerSwitcher->setGoalCheckerId("goal_checker");
 
     // publish stuff
     //rclcpp::sleep_for(5s);
 
-    RCLCPP_INFO(getNode()->get_logger(),"[WaypointsNavigator] Getting odom tracker");
+    RCLCPP_INFO(getNode()->get_logger(), "[WaypointsNavigator] Getting odom tracker");
     auto odomTracker = client_->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
     if (odomTracker != nullptr)
     {
-      RCLCPP_INFO(getNode()->get_logger(),"[WaypointsNavigator] Storing path in odom tracker");
+      RCLCPP_INFO(getNode()->get_logger(), "[WaypointsNavigator] Storing path in odom tracker");
       odomTracker->pushPath();
       odomTracker->setStartPoint(pose);
       odomTracker->setWorkingMode(cl_move_base_z::odom_tracker::WorkingMode::RECORD_PATH);
@@ -74,11 +67,13 @@ void WaypointNavigator::sendNextGoal()
   }
   else
   {
-    RCLCPP_WARN(getNode()->get_logger(),"[WaypointsNavigator] All waypoints were consumed. There is no more waypoints available.");
+    RCLCPP_WARN(
+      getNode()->get_logger(),
+      "[WaypointsNavigator] All waypoints were consumed. There is no more waypoints available.");
   }
 }
 
-void WaypointNavigator::insertWaypoint(int index, geometry_msgs::msg::Pose &newpose)
+void WaypointNavigator::insertWaypoint(int index, geometry_msgs::msg::Pose & newpose)
 {
   if (index >= 0 && index <= (int)waypoints_.size())
   {
@@ -86,22 +81,22 @@ void WaypointNavigator::insertWaypoint(int index, geometry_msgs::msg::Pose &newp
   }
 }
 
-void WaypointNavigator::setWaypoints(const std::vector<geometry_msgs::msg::Pose> &waypoints)
+void WaypointNavigator::setWaypoints(const std::vector<geometry_msgs::msg::Pose> & waypoints)
 {
   this->waypoints_ = waypoints;
 }
 
-void WaypointNavigator::setWaypoints(const std::vector<Pose2D> &waypoints)
+void WaypointNavigator::setWaypoints(const std::vector<Pose2D> & waypoints)
 {
   this->waypoints_.clear();
-  for (auto &p : waypoints)
+  for (auto & p : waypoints)
   {
     geometry_msgs::msg::Pose pose;
     pose.position.x = p.x_;
     pose.position.y = p.y_;
     pose.position.z = 0.0;
     tf2::Quaternion q;
-    q.setRPY( 0, 0, p.yaw_);
+    q.setRPY(0, 0, p.yaw_);
     pose.orientation = tf2::toMsg(q);
 
     this->waypoints_.push_back(pose);
@@ -116,15 +111,12 @@ void WaypointNavigator::removeWaypoint(int index)
   }
 }
 
-const std::vector<geometry_msgs::msg::Pose> &WaypointNavigator::getWaypoints() const
+const std::vector<geometry_msgs::msg::Pose> & WaypointNavigator::getWaypoints() const
 {
   return waypoints_;
 }
 
-long WaypointNavigator::getCurrentWaypointIndex() const
-{
-  return currentWaypoint_;
-}
+long WaypointNavigator::getCurrentWaypointIndex() const { return currentWaypoint_; }
 
 #define HAVE_NEW_YAMLCPP
 void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
@@ -139,7 +131,6 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
 
   try
   {
-
 #ifdef HAVE_NEW_YAMLCPP
     YAML::Node node = YAML::Load(ifs);
 #else
@@ -148,10 +139,10 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
 #endif
 
 #ifdef HAVE_NEW_YAMLCPP
-    const YAML::Node &wp_node_tmp = node["waypoints"];
-    const YAML::Node *wp_node = wp_node_tmp ? &wp_node_tmp : NULL;
+    const YAML::Node & wp_node_tmp = node["waypoints"];
+    const YAML::Node * wp_node = wp_node_tmp ? &wp_node_tmp : NULL;
 #else
-    const YAML::Node *wp_node = node.FindValue("waypoints");
+    const YAML::Node * wp_node = node.FindValue("waypoints");
 #endif
 
     if (wp_node != NULL)
@@ -177,19 +168,24 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
         }
         catch (...)
         {
-          RCLCPP_ERROR(getNode()->get_logger(),"parsing waypoint file, syntax error in point %d", i);
+          RCLCPP_ERROR(
+            getNode()->get_logger(), "parsing waypoint file, syntax error in point %d", i);
         }
       }
-      RCLCPP_INFO_STREAM(getNode()->get_logger(), "Parsed " << this->waypoints_.size() << " waypoints.");
+      RCLCPP_INFO_STREAM(
+        getNode()->get_logger(), "Parsed " << this->waypoints_.size() << " waypoints.");
     }
     else
     {
-      RCLCPP_WARN_STREAM(getNode()->get_logger(),"Couldn't find any waypoints in the provided yaml file.");
+      RCLCPP_WARN_STREAM(
+        getNode()->get_logger(), "Couldn't find any waypoints in the provided yaml file.");
     }
   }
-  catch (const YAML::ParserException &ex)
+  catch (const YAML::ParserException & ex)
   {
-    RCLCPP_ERROR_STREAM(getNode()->get_logger(),"Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
+    RCLCPP_ERROR_STREAM(
+      getNode()->get_logger(),
+      "Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
   }
 }
-} // namespace cl_move_base_z
+}  // namespace cl_move_base_z

@@ -11,26 +11,16 @@ struct State1 : smacc::SmaccState<State1, SmAtomicSubscribersPerformanceTest>
 
   // TRANSITION TABLE
   typedef mpl::list<
-      Transition<EvTopicMessage<SmaccSubscriberClient<std_msgs::msg::Int16>,
-                                        OrSubscriber>, State2>
-      >
-      reactions;
+    Transition<EvTopicMessage<SmaccSubscriberClient<std_msgs::msg::Int16>, OrSubscriber>, State2> >
+    reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure()
-  {
-  }
+  static void staticConfigure() {}
 
-  void runtimeConfigure()
-  {
-  }
+  void runtimeConfigure() {}
 
-  void onEntry()
-  {
-  }
+  void onEntry() {}
 
-  void onExit()
-  {
-  }
+  void onExit() {}
 };
 }  // namespace sm_atomic_subscribers_performance_test

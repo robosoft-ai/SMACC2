@@ -2,12 +2,7 @@
 
 namespace cl_ros_publisher
 {
+ClRosPublisher::ClRosPublisher() {}
 
-ClRosPublisher::ClRosPublisher()
-{
-}
-
-ClRosPublisher::~ClRosPublisher()
-{
-}
-}
+ClRosPublisher::~ClRosPublisher() {}
+}  // namespace cl_ros_publisher

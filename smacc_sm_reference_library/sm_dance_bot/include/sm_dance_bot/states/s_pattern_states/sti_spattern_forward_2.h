@@ -10,11 +10,11 @@ struct StiSPatternForward2 : public smacc::SmaccState<StiSPatternForward2, SS>
   // TRANSITION TABLE
   typedef mpl::list<
 
-      Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiSPatternRotate3>,
-      Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiSPatternRotate2>
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiSPatternRotate3>,
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiSPatternRotate2>
 
-      >
-      reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
@@ -23,9 +23,7 @@ struct StiSPatternForward2 : public smacc::SmaccState<StiSPatternForward2, SS>
     configure_orthogonal<OrLED, CbLEDOn>();
   }
 
-  void runtimeConfigure()
-  {
-  }
+  void runtimeConfigure() {}
 };
 }  // namespace s_pattern_states
 }  // namespace sm_dance_bot

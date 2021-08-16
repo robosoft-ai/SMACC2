@@ -5,7 +5,7 @@ class TemperatureClass
 {
 };
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
   rclcpp::Node::SharedPtr node = rclcpp::Node::make_shared("temperature_sensor_node");

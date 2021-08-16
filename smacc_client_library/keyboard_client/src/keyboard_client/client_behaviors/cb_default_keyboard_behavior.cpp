@@ -2,14 +2,11 @@
 
 namespace cl_keyboard
 {
-    void CbDefaultKeyboardBehavior::onEntry()
-    {
-        this->requiresClient(ClKeyboard_);
-        this->ClKeyboard_->OnKeyPress(&CbDefaultKeyboardBehavior::OnKeyPress, this);
-    }
+void CbDefaultKeyboardBehavior::onEntry()
+{
+  this->requiresClient(ClKeyboard_);
+  this->ClKeyboard_->OnKeyPress(&CbDefaultKeyboardBehavior::OnKeyPress, this);
+}
 
-    void CbDefaultKeyboardBehavior::OnKeyPress(char character)
-    {
-        postEventKeyPress(character);
-    }
-} // namespace cl_keyboard
+void CbDefaultKeyboardBehavior::OnKeyPress(char character) { postEventKeyPress(character); }
+}  // namespace cl_keyboard

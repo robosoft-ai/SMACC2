@@ -6,15 +6,16 @@ struct StRotateDegrees4 : smacc::SmaccState<StRotateDegrees4, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
 
-  Transition<EvCbSuccess<CbRotate, OrNavigation>, StNavigateReverse2>,
-  Transition<EvCbFailure<CbRotate, OrNavigation>, StNavigateToWaypointsX>
-  
-  >reactions;
+    Transition<EvCbSuccess<CbRotate, OrNavigation>, StNavigateReverse2>,
+    Transition<EvCbFailure<CbRotate, OrNavigation>, StNavigateToWaypointsX>
 
-// STATE FUNCTIONS
+    >
+    reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbRotate>(/*30*/ -180);
@@ -22,4 +23,4 @@ struct StRotateDegrees4 : smacc::SmaccState<StRotateDegrees4, MsDanceBotRunMode>
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 };
-}
+}  // namespace sm_dance_bot

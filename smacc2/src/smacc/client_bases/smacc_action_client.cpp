@@ -9,14 +9,9 @@ namespace smacc
 {
 namespace client_bases
 {
+ISmaccActionClient::ISmaccActionClient() {}
 
-ISmaccActionClient::ISmaccActionClient()
-{
-}
+ISmaccActionClient::~ISmaccActionClient() {}
 
-ISmaccActionClient::~ISmaccActionClient()
-{
-}
-
-} // namespace client_bases
-} // namespace smacc
+}  // namespace client_bases
+}  // namespace smacc

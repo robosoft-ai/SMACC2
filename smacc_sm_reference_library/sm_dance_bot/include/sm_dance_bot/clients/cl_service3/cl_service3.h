@@ -9,9 +9,7 @@ namespace cl_service3
 class ClService3 : public smacc::client_bases::SmaccServiceClient<std_srvs::srv::SetBool>
 {
 public:
-  ClService3()
-  {
-  }
+  ClService3() {}
 };
-} // namespace cl_service3
-} // namespace sm_dance_bot
+}  // namespace cl_service3
+}  // namespace sm_dance_bot

@@ -21,16 +21,16 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>, smacc::ISmaccUpdatable
   // TRANSITION TABLE
   typedef mpl::list<
 
-      // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState3, TIMEOUT>,
-      // Transition<EvAllGo<SrAllEventsGo>, StState3>,
-      // Keyboard events
-      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1, PREVIOUS>,
-      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3, NEXT>,
-      Transition<EvMyBehavior<CbMySubscriberBehavior, OrSubscriber>, StState3, NEXT>,
-      Transition<EvTrue<EgConditionalGenerator, StState2>, StState3, NEXT>
+    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState3, TIMEOUT>,
+    // Transition<EvAllGo<SrAllEventsGo>, StState3>,
+    // Keyboard events
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1, PREVIOUS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3, NEXT>,
+    Transition<EvMyBehavior<CbMySubscriberBehavior, OrSubscriber>, StState3, NEXT>,
+    Transition<EvTrue<EgConditionalGenerator, StState2>, StState3, NEXT>
 
-      >
-      reactions;
+    >
+    reactions;
 
   static int k;
 
@@ -61,7 +61,7 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>, smacc::ISmaccUpdatable
     eg->setPredicateFunction([=] { return this->eventGeneratorPredicate(this); });
   }
 
-  bool eventGeneratorPredicate(ISmaccState* st)
+  bool eventGeneratorPredicate(ISmaccState * st)
   {
     auto res = k > 300;
     RCLCPP_INFO(st->getNode()->get_logger(), "[State2] checking k: %d  > 300 == %d", k, res);
@@ -76,15 +76,9 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>, smacc::ISmaccUpdatable
     RCLCPP_INFO(getNode()->get_logger(), "[State2] internally updating k: %d", k);
   }
 
-  void onEntry()
-  {
-    RCLCPP_INFO(getNode()->get_logger(), "On Entry!");
-  }
+  void onEntry() { RCLCPP_INFO(getNode()->get_logger(), "On Entry!"); }
 
-  void onExit()
-  {
-    RCLCPP_INFO(getNode()->get_logger(), "On Exit!");
-  }
+  void onExit() { RCLCPP_INFO(getNode()->get_logger(), "On Exit!"); }
 };
 
 int StState2::k = 0;

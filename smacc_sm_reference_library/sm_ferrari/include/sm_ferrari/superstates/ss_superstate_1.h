@@ -24,26 +24,19 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-      Transition<EvLoopEnd<StiState1>, SS2::Ss2>
+    Transition<EvLoopEnd<StiState1>, SS2::Ss2>
 
-      >
-      reactions;
+    >
+    reactions;
 
   // STATE VARIABLES
-  static constexpr int total_iterations()
-  {
-    return 5;
-  }
+  static constexpr int total_iterations() { return 5; }
   int iteration_count = 0;
 
   // STATE FUNCTIONS
-  static void staticConfigure()
-  {
-  }
+  static void staticConfigure() {}
 
-  void runtimeConfigure()
-  {
-  }
+  void runtimeConfigure() {}
 };  // namespace SS4
 
 // forward declaration for the superstate

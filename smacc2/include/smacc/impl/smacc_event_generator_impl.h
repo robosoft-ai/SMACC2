@@ -5,25 +5,25 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <smacc/smacc_event_generator.h>
 #include <smacc/introspection/introspection.h>
+#include <smacc/smacc_event_generator.h>
 
 namespace smacc
 {
-    template <typename EventType>
-    void SmaccEventGenerator::postEvent(const EventType &ev)
-    {
-        ownerState_->postEvent(ev);
-    }
+template <typename EventType>
+void SmaccEventGenerator::postEvent(const EventType & ev)
+{
+  ownerState_->postEvent(ev);
+}
 
-    template <typename EventType>
-    void SmaccEventGenerator::postEvent()
-    {
-        ownerState_->postEvent<EventType>();
-    }
+template <typename EventType>
+void SmaccEventGenerator::postEvent()
+{
+  ownerState_->postEvent<EventType>();
+}
 
-    template <typename TState, typename TSource>
-    void SmaccEventGenerator::onStateAllocation()
-    {
-    }
-} // namespace smacc
+template <typename TState, typename TSource>
+void SmaccEventGenerator::onStateAllocation()
+{
+}
+}  // namespace smacc

@@ -7,16 +7,16 @@ template <typename SS>
 struct StiFPatternReturn1 : smacc::SmaccState<StiFPatternReturn1<SS>, SS>
 {
   typedef SmaccState<StiFPatternReturn1<SS>, SS> TSti;
-  using TSti::SmaccState;
   using TSti::context_type;
+  using TSti::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-      Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiFPatternRotate1<SS>>
+    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiFPatternRotate1<SS>>
 
-      >
-      reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
@@ -25,9 +25,7 @@ struct StiFPatternReturn1 : smacc::SmaccState<StiFPatternReturn1<SS>, SS>
     TSti::template configure_orthogonal<OrLED, CbLEDOn>();
   }
 
-  void runtimeConfigure()
-  {
-  }
+  void runtimeConfigure() {}
 };
-}
-}
+}  // namespace f_pattern_states
+}  // namespace sm_dance_bot_strikes_back

@@ -13,22 +13,22 @@ namespace cl_led
 //         ClLED(std::string actionServerName);
 //         virtual std::string getName() const override;
 //         virtual ~ClLED();
-//         virtual void cancelGoal() override; 
+//         virtual void cancelGoal() override;
 // };
 
-
-class ClLED : public smacc::client_bases::SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>
+class ClLED
+: public smacc::client_bases::SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>
 {
-
 public:
-    // SMACC_ACTION_CLIENT_DEFINITION(sm_dance_bot_msgs::action::LEDControlAction);
+  // SMACC_ACTION_CLIENT_DEFINITION(sm_dance_bot_msgs::action::LEDControlAction);
 
-    ClLED(std::string actionServerName);
-    virtual std::string getName() const override;
-    virtual ~ClLED();
+  ClLED(std::string actionServerName);
+  virtual std::string getName() const override;
+  virtual ~ClLED();
 };
 
-std::ostream& operator<< (std::ostream &out, const sm_dance_bot_msgs::action::LEDControl::Goal &msg);
+std::ostream & operator<<(
+  std::ostream & out, const sm_dance_bot_msgs::action::LEDControl::Goal & msg);
 
-} // namespace cl_led
-}
+}  // namespace cl_led
+}  // namespace sm_dance_bot

@@ -9,62 +9,60 @@
 
 namespace smacc
 {
-    class ISmaccClientBehavior
-    {
-    public:
-        ISmaccClientBehavior();
+class ISmaccClientBehavior
+{
+public:
+  ISmaccClientBehavior();
 
-        virtual ~ISmaccClientBehavior();
+  virtual ~ISmaccClientBehavior();
 
-        inline ISmaccStateMachine *getStateMachine();
+  inline ISmaccStateMachine * getStateMachine();
 
-        std::string getName() const;
-        
-        template <typename SmaccClientType>
-        void requiresClient(SmaccClientType *&storage);
+  std::string getName() const;
 
-        template <typename SmaccComponentType>
-        void requiresComponent(SmaccComponentType *&storage);
+  template <typename SmaccClientType>
+  void requiresClient(SmaccClientType *& storage);
 
-    protected:
-        virtual void runtimeConfigure();
+  template <typename SmaccComponentType>
+  void requiresComponent(SmaccComponentType *& storage);
 
-        virtual void onEntry() {};
+protected:
+  virtual void runtimeConfigure();
 
-        virtual void onExit() {};
+  virtual void onEntry(){};
 
-        template <typename EventType>
-        void postEvent(const EventType &ev);
+  virtual void onExit(){};
 
-        template <typename EventType>
-        void postEvent();
+  template <typename EventType>
+  void postEvent(const EventType & ev);
 
-        inline ISmaccState *getCurrentState();
+  template <typename EventType>
+  void postEvent();
 
-        virtual void executeOnEntry();
+  inline ISmaccState * getCurrentState();
 
-        virtual void executeOnExit();
+  virtual void executeOnEntry();
 
-        virtual void dispose();
+  virtual void executeOnExit();
 
-        virtual rclcpp::Node::SharedPtr getNode();
+  virtual void dispose();
 
-        virtual rclcpp::Logger getLogger();
+  virtual rclcpp::Node::SharedPtr getNode();
 
-    private:
-        
-        template <typename TOrthogonal, typename TSourceObject>
-        void onOrthogonalAllocation();
+  virtual rclcpp::Logger getLogger();
 
-        // a reference to the owner state machine
-        ISmaccStateMachine *stateMachine_;
+private:
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation();
 
-        // a reference to the state where the client behavior is being executed
-        ISmaccState *currentState;
-        smacc::ISmaccOrthogonal *currentOrthogonal;
+  // a reference to the owner state machine
+  ISmaccStateMachine * stateMachine_;
 
-        friend class ISmaccState;
-        friend class ISmaccOrthogonal;
-        
-    };
-} // namespace smacc
+  // a reference to the state where the client behavior is being executed
+  ISmaccState * currentState;
+  smacc::ISmaccOrthogonal * currentOrthogonal;
+
+  friend class ISmaccState;
+  friend class ISmaccOrthogonal;
+};
+}  // namespace smacc

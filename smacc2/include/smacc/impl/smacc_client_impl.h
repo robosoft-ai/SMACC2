@@ -6,104 +6,105 @@
 
 #pragma once
 
-#include <smacc/smacc_client.h>
 #include <smacc/impl/smacc_state_machine_impl.h>
+#include <smacc/smacc_client.h>
 
 namespace smacc
 {
-    template <typename EventType>
-    void ISmaccClient::postEvent(const EventType &ev)
+template <typename EventType>
+void ISmaccClient::postEvent(const EventType & ev)
+{
+  stateMachine_->postEvent(ev);
+}
+
+template <typename EventType>
+void ISmaccClient::postEvent()
+{
+  stateMachine_->postEvent<EventType>();
+}
+
+template <typename TComponent>
+TComponent * ISmaccClient::getComponent()
+{
+  return this->getComponent<TComponent>(std::string());
+}
+
+template <typename TComponent>
+TComponent * ISmaccClient::getComponent(std::string name)
+{
+  for (auto & component : components_)
+  {
+    if (component.first.name != name) continue;
+
+    auto * tcomponent = dynamic_cast<TComponent *>(component.second.get());
+    if (tcomponent != nullptr)
     {
-        stateMachine_->postEvent(ev);
+      return tcomponent;
     }
+  }
 
-    template <typename EventType>
-    void ISmaccClient::postEvent()
-    {
-        stateMachine_->postEvent<EventType>();
-    }
+  return nullptr;
+}
 
-    template <typename TComponent>
-    TComponent *ISmaccClient::getComponent()
-    {
-        return this->getComponent<TComponent>(std::string());
-    }
+//inline
+ISmaccStateMachine * ISmaccClient::getStateMachine() { return this->stateMachine_; }
 
-    template <typename TComponent>
-    TComponent *ISmaccClient::getComponent(std::string name)
-    {
-        for (auto &component : components_)
-        {
-            if (component.first.name != name)
-                continue;
+template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+SmaccComponentType * ISmaccClient::createNamedComponent(std::string name, TArgs... targs)
+{
+  ComponentKey componentkey(&typeid(SmaccComponentType), name);
 
-            auto *tcomponent = dynamic_cast<TComponent *>(component.second.get());
-            if (tcomponent != nullptr)
-            {
-                return tcomponent;
-            }
-        }
+  std::shared_ptr<SmaccComponentType> ret;
 
-        return nullptr;
-    }
+  auto it = this->components_.find(componentkey);
 
-    //inline
-    ISmaccStateMachine *ISmaccClient::getStateMachine()
-    {
-        return this->stateMachine_;
-    }
+  if (it == this->components_.end())
+  {
+    auto tname = demangledTypeName<SmaccComponentType>();
+    RCLCPP_INFO(
+      getNode()->get_logger(),
+      "Creating a new component of type %s smacc component is required. Creating a new instance %s",
+      demangledTypeName<SmaccComponentType>().c_str(), tname.c_str());
 
-    template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-    SmaccComponentType *ISmaccClient::createNamedComponent(std::string name, TArgs... targs)
-    {
-        ComponentKey componentkey(&typeid(SmaccComponentType), name);
+    ret = std::shared_ptr<SmaccComponentType>(new SmaccComponentType(targs...));
+    ret->setStateMachine(this->getStateMachine());
+    ret->owner_ = this;
+    ret->initialize(this);
 
-        std::shared_ptr<SmaccComponentType> ret;
+    this->components_[componentkey] =
+      ret;  //std::dynamic_pointer_cast<smacc::ISmaccComponent>(ret);
+    RCLCPP_DEBUG(getNode()->get_logger(), "%s resource is required. Done.", tname.c_str());
+  }
+  else
+  {
+    RCLCPP_INFO(
+      getNode()->get_logger(), "%s resource is required. Found resource in cache.",
+      demangledTypeName<SmaccComponentType>().c_str());
+    ret = dynamic_pointer_cast<SmaccComponentType>(it->second);
+  }
 
-        auto it = this->components_.find(componentkey);
+  ret->template onOrthogonalAllocation<TOrthogonal, TClient>();
 
-        if (it == this->components_.end())
-        {
-            auto tname = demangledTypeName<SmaccComponentType>();
-            RCLCPP_INFO(getNode()->get_logger(),
-                        "Creating a new component of type %s smacc component is required. Creating a new instance %s", 
-                        demangledTypeName<SmaccComponentType>().c_str(), tname.c_str());
+  return ret.get();
+}
 
-            ret = std::shared_ptr<SmaccComponentType>(new SmaccComponentType(targs...));
-            ret->setStateMachine(this->getStateMachine());
-            ret->owner_ = this;
-            ret->initialize(this);
+template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+SmaccComponentType * ISmaccClient::createComponent(TArgs... targs)
+{
+  return this->createNamedComponent<SmaccComponentType, TOrthogonal, TClient>(
+    std::string(), targs...);
+}
 
-            this->components_[componentkey] = ret; //std::dynamic_pointer_cast<smacc::ISmaccComponent>(ret);
-            RCLCPP_DEBUG(getNode()->get_logger(),"%s resource is required. Done.", tname.c_str());
-        }
-        else
-        {
-            RCLCPP_INFO(getNode()->get_logger(),"%s resource is required. Found resource in cache.", demangledTypeName<SmaccComponentType>().c_str());
-            ret = dynamic_pointer_cast<SmaccComponentType>(it->second);
-        }
+template <typename TSmaccSignal, typename T>
+void ISmaccClient::connectSignal(TSmaccSignal & signal, void (T::*callback)(), T * object)
+{
+  return this->getStateMachine()->createSignalConnection(signal, callback, object);
+}
 
-        ret->template onOrthogonalAllocation<TOrthogonal, TClient>();
+template <typename SmaccClientType>
+void ISmaccClient::requiresClient(SmaccClientType *& storage)
+{
+  this->orthogonal_->requiresClient(storage);
+}
 
-        return ret.get();
-    }
-
-    template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-    SmaccComponentType *ISmaccClient::createComponent(TArgs... targs)
-    {
-        return this->createNamedComponent<SmaccComponentType, TOrthogonal, TClient>(std::string(), targs...);
-    }
-
-    template <typename TSmaccSignal, typename T>
-    void ISmaccClient::connectSignal(TSmaccSignal &signal, void (T::*callback)(), T *object)
-    {
-        return this->getStateMachine()->createSignalConnection(signal, callback, object);
-    }
-
-    template <typename SmaccClientType>
-    void ISmaccClient::requiresClient(SmaccClientType *&storage)
-    {
-        this->orthogonal_->requiresClient(storage);
-    }
-
-} // namespace smacc
+}  // namespace smacc

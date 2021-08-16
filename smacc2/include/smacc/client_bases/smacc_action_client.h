@@ -27,10 +27,7 @@ public:
   virtual ~ISmaccActionClient();
 
   // Gets the ros path of the action...
-  inline std::string getNamespace() const
-  {
-    return name_;
-  }
+  inline std::string getNamespace() const { return name_; }
 
   virtual void cancelGoal() = 0;
 

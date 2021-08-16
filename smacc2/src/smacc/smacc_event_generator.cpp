@@ -8,30 +8,20 @@
 
 namespace smacc
 {
-SmaccEventGenerator::SmaccEventGenerator()
-{
-}
+SmaccEventGenerator::SmaccEventGenerator() {}
 
-SmaccEventGenerator::~SmaccEventGenerator()
-{
-}
+SmaccEventGenerator::~SmaccEventGenerator() {}
 
-void SmaccEventGenerator::onEntry()
-{
-}
+void SmaccEventGenerator::onEntry() {}
 
-void SmaccEventGenerator::onExit()
-{
-}
+void SmaccEventGenerator::onExit() {}
 
-void SmaccEventGenerator::initialize(smacc::ISmaccState *ownerState)
+void SmaccEventGenerator::initialize(smacc::ISmaccState * ownerState)
 {
   this->ownerState_ = ownerState;
   this->onInitialized();
 }
 
-void SmaccEventGenerator::onInitialized()
-{
-}
+void SmaccEventGenerator::onInitialized() {}
 
 }  // namespace smacc

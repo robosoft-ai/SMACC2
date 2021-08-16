@@ -2,15 +2,15 @@
 #include <angles/angles.h>
 #include <pure_spinning_local_planner/pure_spinning_local_planner.h>
 
-#include <pluginlib/class_list_macros.hpp>
 #include <nav_2d_utils/tf_help.hpp>
+#include <pluginlib/class_list_macros.hpp>
 
 namespace cl_move_base_z
 {
 namespace pure_spinning_local_planner
 {
 template <typename T>
-void tryGetOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr &node, std::string param, T &value)
+void tryGetOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::string param, T & value)
 {
   if (!node->get_parameter(param, value))
   {
@@ -19,7 +19,7 @@ void tryGetOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr &node, std::string p
 }
 
 template <typename T>
-void declareOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr &node, std::string param, T &value)
+void declareOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::string param, T & value)
 {
   if (!node->has_parameter(param))
   {
@@ -28,13 +28,9 @@ void declareOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr &node, std::string 
   }
 }
 
-PureSpinningLocalPlanner::PureSpinningLocalPlanner()
-{
-}
+PureSpinningLocalPlanner::PureSpinningLocalPlanner() {}
 
-PureSpinningLocalPlanner::~PureSpinningLocalPlanner()
-{
-}
+PureSpinningLocalPlanner::~PureSpinningLocalPlanner() {}
 
 void PureSpinningLocalPlanner::activate()
 {
@@ -42,9 +38,7 @@ void PureSpinningLocalPlanner::activate()
   this->updateParameters();
 }
 
-void PureSpinningLocalPlanner::deactivate()
-{
-}
+void PureSpinningLocalPlanner::deactivate() {}
 
 void PureSpinningLocalPlanner::cleanup()
 {
@@ -53,9 +47,10 @@ void PureSpinningLocalPlanner::cleanup()
   yaw_goal_tolerance_ = -1.0;
 }
 
-void PureSpinningLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &node, std::string name,
-                                         const std::shared_ptr<tf2_ros::Buffer> & tf,
-                                         const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> &costmap_ros)
+void PureSpinningLocalPlanner::configure(
+  const rclcpp_lifecycle::LifecycleNode::WeakPtr & node, std::string name,
+  const std::shared_ptr<tf2_ros::Buffer> & tf,
+  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> & costmap_ros)
 {
   costmapRos_ = costmap_ros;
   name_ = name;
@@ -71,8 +66,9 @@ void PureSpinningLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::
   declareOrSet(nh_, name_ + ".intermediate_goals_yaw_tolerance", intermediate_goal_yaw_tolerance_);
   declareOrSet(nh_, name_ + ".max_angular_z_speed", max_angular_z_speed_);
   declareOrSet(nh_, name_ + ".transform_tolerance", transform_tolerance_);
-  
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] pure spinning planner already created");
+
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[PureSpinningLocalPlanner] pure spinning planner already created");
 }
 
 void PureSpinningLocalPlanner::updateParameters()
@@ -84,8 +80,8 @@ void PureSpinningLocalPlanner::updateParameters()
 }
 
 geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityCommands(
-    const geometry_msgs::msg::PoseStamped &pose, const geometry_msgs::msg::Twist &velocity,
-    nav2_core::GoalChecker *goal_checker)
+  const geometry_msgs::msg::PoseStamped & pose, const geometry_msgs::msg::Twist & velocity,
+  nav2_core::GoalChecker * goal_checker)
 {
   this->updateParameters();
   if (yaw_goal_tolerance_ == -1)
@@ -96,11 +92,14 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
     {
       yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation);
       //yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation) * 0.35; // WORKAROUND GOAL CHECKER DIFFERENCE NAV CONTROLLER
-      RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] yaw_goal_tolerance_: " << yaw_goal_tolerance_);
+      RCLCPP_INFO_STREAM(
+        nh_->get_logger(),
+        "[PureSpinningLocalPlanner] yaw_goal_tolerance_: " << yaw_goal_tolerance_);
     }
     else
     {
-      RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] could not get tolerances from goal checker");
+      RCLCPP_INFO_STREAM(
+        nh_->get_logger(), "[PureSpinningLocalPlanner] could not get tolerances from goal checker");
     }
   }
 
@@ -114,12 +113,12 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
   tf2::Quaternion q;
   tf2::fromMsg(currentPose.pose.orientation, q);
   auto currentYaw = tf2::getYaw(currentPose.pose.orientation);
-  double angular_error=0;
+  double angular_error = 0;
   double targetYaw;
 
   do
   {
-    auto &goal = plan_[currentPoseIndex_];
+    auto & goal = plan_[currentPoseIndex_];
     targetYaw = tf2::getYaw(goal.pose.orientation);
 
     angular_error = angles::shortest_angular_distance(currentYaw, targetYaw);
@@ -129,7 +128,8 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
 
     // all the points must be reached using the control rule, but the last one
     // have an special condition
-    if ((currentPoseIndex_ < (int)plan_.size() - 1 && fabs(angular_error) < this->intermediate_goal_yaw_tolerance_))
+    if ((currentPoseIndex_ < (int)plan_.size() - 1 &&
+         fabs(angular_error) < this->intermediate_goal_yaw_tolerance_))
     {
       currentPoseIndex_++;
     }
@@ -137,24 +137,30 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
     {
       break;
     }
-  }while (currentPoseIndex_ < (int)plan_.size());
+  } while (currentPoseIndex_ < (int)plan_.size());
 
   auto omega = angular_error * k_betta_;
-  cmd_vel.twist.angular.z = std::min(std::max(omega, -fabs(max_angular_z_speed_)), fabs(max_angular_z_speed_));
+  cmd_vel.twist.angular.z =
+    std::min(std::max(omega, -fabs(max_angular_z_speed_)), fabs(max_angular_z_speed_));
 
-  RCLCPP_INFO_STREAM(nh_->get_logger(),
-                     "[PureSpinningLocalPlanner] pose index: " << currentPoseIndex_ << "/" << plan_.size());
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(),
+    "[PureSpinningLocalPlanner] pose index: " << currentPoseIndex_ << "/" << plan_.size());
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] k_betta_: " << k_betta_);
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] angular error: " << angular_error << "("
-                                                                                     << yaw_goal_tolerance_ << ")");
-  RCLCPP_INFO_STREAM(nh_->get_logger(),
-                     "[PureSpinningLocalPlanner] command angular speed: " << cmd_vel.twist.angular.z);
-  RCLCPP_INFO_STREAM(nh_->get_logger(),
-                     "[PureSpinningLocalPlanner] completion " << currentPoseIndex_ << "/" << plan_.size());
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[PureSpinningLocalPlanner] angular error: " << angular_error << "("
+                                                                    << yaw_goal_tolerance_ << ")");
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(),
+    "[PureSpinningLocalPlanner] command angular speed: " << cmd_vel.twist.angular.z);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(),
+    "[PureSpinningLocalPlanner] completion " << currentPoseIndex_ << "/" << plan_.size());
 
   if (currentPoseIndex_ >= (int)plan_.size() - 1 && fabs(angular_error) < yaw_goal_tolerance_)
   {
-    RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] GOAL REACHED. Sending stop command.");
+    RCLCPP_INFO_STREAM(
+      nh_->get_logger(), "[PureSpinningLocalPlanner] GOAL REACHED. Sending stop command.");
     goalReached_ = true;
     cmd_vel.twist.linear.x = 0;
     cmd_vel.twist.angular.z = 0;
@@ -163,18 +169,17 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
   return cmd_vel;
 }
 
-void PureSpinningLocalPlanner::setSpeedLimit(const double &speed_limit, const bool &percentage)
+void PureSpinningLocalPlanner::setSpeedLimit(const double & speed_limit, const bool & percentage)
 {
-  RCLCPP_WARN_STREAM(nh_->get_logger(), "PureSpinningLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not "
-                                        "implemented.");
+  RCLCPP_WARN_STREAM(
+    nh_->get_logger(),
+    "PureSpinningLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not "
+    "implemented.");
 }
 
-bool PureSpinningLocalPlanner::isGoalReached()
-{
-  return goalReached_;
-}
+bool PureSpinningLocalPlanner::isGoalReached() { return goalReached_; }
 
-void PureSpinningLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
+void PureSpinningLocalPlanner::setPlan(const nav_msgs::msg::Path & path)
 {
   RCLCPP_INFO_STREAM(nh_->get_logger(), "activating controller PureSpinningLocalPlanner");
 
@@ -182,9 +187,9 @@ void PureSpinningLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
 
   rclcpp::Duration ttol(transform_tolerance_);
   // transform global plan
-  for (auto &p : path.poses)
+  for (auto & p : path.poses)
   {
-    geometry_msgs::msg::PoseStamped transformedPose;  
+    geometry_msgs::msg::PoseStamped transformedPose;
     nav_2d_utils::transformPose(tf_, costmapRos_->getGlobalFrameID(), p, transformedPose, ttol);
     transformedPose.header.frame_id = costmapRos_->getGlobalFrameID();
     transformedPlan.poses.push_back(transformedPose);
@@ -196,10 +201,9 @@ void PureSpinningLocalPlanner::setPlan(const nav_msgs::msg::Path &path)
   currentPoseIndex_ = 0;
 }
 
-void publishGoalMarker(double /*x*/, double /*y*/, double /*phi*/)
-{
-}
+void publishGoalMarker(double /*x*/, double /*y*/, double /*phi*/) {}
 }  // namespace pure_spinning_local_planner
 }  // namespace cl_move_base_z
 
-PLUGINLIB_EXPORT_CLASS(cl_move_base_z::pure_spinning_local_planner::PureSpinningLocalPlanner, nav2_core::Controller)
+PLUGINLIB_EXPORT_CLASS(
+  cl_move_base_z::pure_spinning_local_planner::PureSpinningLocalPlanner, nav2_core::Controller)

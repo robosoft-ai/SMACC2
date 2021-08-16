@@ -2,31 +2,27 @@
 
 namespace cl_ros_timer
 {
-
 CbTimerCountdownOnce::CbTimerCountdownOnce(unsigned long triggerTickCount)
-    : tickCounter_(0)
-      , tickTriggerCount_(triggerTickCount)
+: tickCounter_(0), tickTriggerCount_(triggerTickCount)
 {
 }
 
 void CbTimerCountdownOnce::onClientTimerTickCallback()
 {
-    tickCounter_++;
+  tickCounter_++;
 
-    if (tickCounter_ % tickTriggerCount_ == 0)
-    {
-        onTimerTick_();
-        postCountDownEvent_();
-    }
+  if (tickCounter_ % tickTriggerCount_ == 0)
+  {
+    onTimerTick_();
+    postCountDownEvent_();
+  }
 }
 
 void CbTimerCountdownOnce::onEntry()
 {
-    this->requiresClient(timerClient_);
-    timerClient_->onTimerTick(&CbTimerCountdownOnce::onClientTimerTickCallback, this);
+  this->requiresClient(timerClient_);
+  timerClient_->onTimerTick(&CbTimerCountdownOnce::onClientTimerTickCallback, this);
 }
 
-void CbTimerCountdownOnce::onExit()
-{
-}
-} // namespace cl_ros_timer
+void CbTimerCountdownOnce::onExit() {}
+}  // namespace cl_ros_timer

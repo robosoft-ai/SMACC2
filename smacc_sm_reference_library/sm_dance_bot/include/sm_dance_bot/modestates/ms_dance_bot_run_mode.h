@@ -5,13 +5,14 @@ namespace sm_dance_bot
 class MsDanceBotRunMode : public smacc::SmaccState<MsDanceBotRunMode, SmDanceBot, StAcquireSensors>
 {
 public:
-   using SmaccState::SmaccState;
+  using SmaccState::SmaccState;
 
-// TRANSITION TABLE
-   typedef mpl::list<
-   
-   Transition<EvGlobalError, MsDanceBotRecoveryMode> 
-   
-   >reactions;
+  // TRANSITION TABLE
+  typedef mpl::list<
+
+    Transition<EvGlobalError, MsDanceBotRecoveryMode>
+
+    >
+    reactions;
 };
-}
+}  // namespace sm_dance_bot

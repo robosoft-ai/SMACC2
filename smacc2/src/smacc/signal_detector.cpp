@@ -21,7 +21,7 @@ using namespace std::chrono_literals;
 * SignalDetector()
 ******************************************************************************************************************
 */
-SignalDetector::SignalDetector(SmaccFifoScheduler *scheduler)
+SignalDetector::SignalDetector(SmaccFifoScheduler * scheduler)
 {
   scheduler_ = scheduler;
   loop_rate_hz = 20.0;
@@ -29,17 +29,14 @@ SignalDetector::SignalDetector(SmaccFifoScheduler *scheduler)
   initialized_ = false;
 }
 
-rclcpp::Node::SharedPtr SignalDetector::getNode()
-{
-  return this->smaccStateMachine_->getNode();
-}
+rclcpp::Node::SharedPtr SignalDetector::getNode() { return this->smaccStateMachine_->getNode(); }
 
 /**
 ******************************************************************************************************************
 * initialize()
 ******************************************************************************************************************
 */
-void SignalDetector::initialize(ISmaccStateMachine *stateMachine)
+void SignalDetector::initialize(ISmaccStateMachine * stateMachine)
 {
   smaccStateMachine_ = stateMachine;
   lastState_ = std::numeric_limits<unsigned long>::quiet_NaN();
@@ -59,31 +56,33 @@ void SignalDetector::findUpdatableClientsAndComponents()
   this->updatableClients_.clear();
   for (auto pair : this->smaccStateMachine_->getOrthogonals())
   {
-    auto &orthogonal = pair.second;
-    auto &clients = orthogonal->getClients();
+    auto & orthogonal = pair.second;
+    auto & clients = orthogonal->getClients();
 
-    for (auto &client : clients)
+    for (auto & client : clients)
     {
       // updatable client components
       auto updatableClient = dynamic_cast<ISmaccUpdatable *>(client.get());
 
       if (updatableClient != nullptr)
       {
-        RCLCPP_DEBUG_STREAM(getNode()->get_logger(),
-                            "Adding updatable client: " << demangleType(typeid(updatableClient)));
+        RCLCPP_DEBUG_STREAM(
+          getNode()->get_logger(),
+          "Adding updatable client: " << demangleType(typeid(updatableClient)));
         this->updatableClients_.push_back(updatableClient);
       }
 
       // updatable client components
       std::vector<std::shared_ptr<ISmaccComponent>> components;
       client->getComponents(components);
-      for (auto &componententry : components)
+      for (auto & componententry : components)
       {
         auto updatableComponent = dynamic_cast<ISmaccUpdatable *>(componententry.get());
         if (updatableComponent != nullptr)
         {
-          RCLCPP_DEBUG_STREAM(getNode()->get_logger(),
-                              "Adding updatable component: " << demangleType(typeid(*updatableComponent)));
+          RCLCPP_DEBUG_STREAM(
+            getNode()->get_logger(),
+            "Adding updatable component: " << demangleType(typeid(*updatableComponent)));
           this->updatableClients_.push_back(updatableComponent);
         }
       }
@@ -96,22 +95,24 @@ void SignalDetector::findUpdatableClientsAndComponents()
  * findUpdatableClientBehaviors()
  ******************************************************************************************************************
  */
-void SignalDetector::findUpdatableStateElements(ISmaccState *currentState)
+void SignalDetector::findUpdatableStateElements(ISmaccState * currentState)
 {
   this->updatableStateElements_.clear();
   for (auto pair : this->smaccStateMachine_->getOrthogonals())
   {
-    auto &orthogonal = pair.second;
-    auto &behaviors = orthogonal->getClientBehaviors();
+    auto & orthogonal = pair.second;
+    auto & behaviors = orthogonal->getClientBehaviors();
 
-    for (auto &currentBehavior : behaviors)
+    for (auto & currentBehavior : behaviors)
     {
-      ISmaccUpdatable *updatableClientBehavior = dynamic_cast<ISmaccUpdatable *>(currentBehavior.get());
+      ISmaccUpdatable * updatableClientBehavior =
+        dynamic_cast<ISmaccUpdatable *>(currentBehavior.get());
 
       if (updatableClientBehavior != nullptr)
       {
-        RCLCPP_DEBUG_STREAM(getNode()->get_logger(),
-                            "Adding updatable behavior: " << demangleType(typeid(updatableClientBehavior)));
+        RCLCPP_DEBUG_STREAM(
+          getNode()->get_logger(),
+          "Adding updatable behavior: " << demangleType(typeid(updatableClientBehavior)));
         this->updatableStateElements_.push_back(updatableClientBehavior);
       }
     }
@@ -124,25 +125,27 @@ void SignalDetector::findUpdatableStateElements(ISmaccState *currentState)
   }
 
   auto statereactors = currentState->getStateReactors();
-  for (auto &sr : statereactors)
+  for (auto & sr : statereactors)
   {
-    ISmaccUpdatable *updatableStateReactor = dynamic_cast<ISmaccUpdatable *>(sr.get());
+    ISmaccUpdatable * updatableStateReactor = dynamic_cast<ISmaccUpdatable *>(sr.get());
     if (updatableStateReactor != nullptr)
     {
-      RCLCPP_DEBUG_STREAM(getNode()->get_logger(),
-                          "Adding updatable stateReactorr: " << demangleType(typeid(updatableStateReactor)));
+      RCLCPP_DEBUG_STREAM(
+        getNode()->get_logger(),
+        "Adding updatable stateReactorr: " << demangleType(typeid(updatableStateReactor)));
       this->updatableStateElements_.push_back(updatableStateReactor);
     }
   }
 
   auto eventgenerators = currentState->getEventGenerators();
-  for (auto &eg : eventgenerators)
+  for (auto & eg : eventgenerators)
   {
-    ISmaccUpdatable *updatableEventGenerator = dynamic_cast<ISmaccUpdatable *>(eg.get());
+    ISmaccUpdatable * updatableEventGenerator = dynamic_cast<ISmaccUpdatable *>(eg.get());
     if (updatableEventGenerator != nullptr)
     {
-      RCLCPP_DEBUG_STREAM(getNode()->get_logger(),
-                          "Adding updatable eventGenerator: " << demangleType(typeid(updatableEventGenerator)));
+      RCLCPP_DEBUG_STREAM(
+        getNode()->get_logger(),
+        "Adding updatable eventGenerator: " << demangleType(typeid(updatableEventGenerator)));
       this->updatableStateElements_.push_back(updatableEventGenerator);
     }
   }
@@ -173,20 +176,14 @@ void SignalDetector::runThread()
  * join()
  ******************************************************************************************************************
  */
-void SignalDetector::join()
-{
-  signalDetectorThread_.join();
-}
+void SignalDetector::join() { signalDetectorThread_.join(); }
 
 /**
  ******************************************************************************************************************
  * stop()
  ******************************************************************************************************************
  */
-void SignalDetector::stop()
-{
-  end_ = true;
-}
+void SignalDetector::stop() { end_ = true; }
 
 /**
  ******************************************************************************************************************
@@ -209,89 +206,106 @@ void SignalDetector::pollOnce()
 
     if (currentState != nullptr)
     {
-      RCLCPP_INFO_THROTTLE(getNode()->get_logger(), *(getNode()->get_clock()), 10000,
-                           "[SignalDetector] heartbeat. Current State: %s",
-                           demangleType(typeid(*currentState)).c_str());
+      RCLCPP_INFO_THROTTLE(
+        getNode()->get_logger(), *(getNode()->get_clock()), 10000,
+        "[SignalDetector] heartbeat. Current State: %s",
+        demangleType(typeid(*currentState)).c_str());
     }
 
     this->findUpdatableClientsAndComponents();
-    RCLCPP_DEBUG_STREAM(getNode()->get_logger(), "updatable clients: " << this->updatableClients_.size());
+    RCLCPP_DEBUG_STREAM(
+      getNode()->get_logger(), "updatable clients: " << this->updatableClients_.size());
 
     if (this->updatableClients_.size())
     {
       auto node = getNode();
-      for (auto *updatableClient : this->updatableClients_)
+      for (auto * updatableClient : this->updatableClients_)
       {
         auto updatableElementName = demangleType(typeid(*updatableClient)).c_str();
         try
         {
-          RCLCPP_DEBUG_STREAM(node->get_logger(),
-                              "[PollOnce] update client call:  " << demangleType(typeid(*updatableClient)));
+          RCLCPP_DEBUG_STREAM(
+            node->get_logger(),
+            "[PollOnce] update client call:  " << demangleType(typeid(*updatableClient)));
 
-          TRACEPOINT( update_start, updatableElementName);
+          TRACEPOINT(update_start, updatableElementName);
           updatableClient->executeUpdate(node);
-          TRACEPOINT( update_start, updatableElementName);
+          TRACEPOINT(update_start, updatableElementName);
         }
-        catch (const std::exception &e)
+        catch (const std::exception & e)
         {
-          RCLCPP_ERROR_STREAM(node->get_logger(),
-                              "Error in updatable elemnent " << updatableElementName << ": " << e.what() << '\n');
+          RCLCPP_ERROR_STREAM(
+            node->get_logger(),
+            "Error in updatable elemnent " << updatableElementName << ": " << e.what() << '\n');
         }
       }
     }
 
     // STATE UPDATABLE ELEMENTS
-    if (this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::TRANSITIONING &&
-        this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_CONFIGURING &&
-        this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_EXITING)
+    if (
+      this->smaccStateMachine_->stateMachineCurrentAction !=
+        StateMachineInternalAction::TRANSITIONING &&
+      this->smaccStateMachine_->stateMachineCurrentAction !=
+        StateMachineInternalAction::STATE_CONFIGURING &&
+      this->smaccStateMachine_->stateMachineCurrentAction !=
+        StateMachineInternalAction::STATE_EXITING)
     {
       // we do not update updatable elements during trasitioning or configuration of states
-      RCLCPP_DEBUG_STREAM(getNode()->get_logger(), "[SignalDetector] update behaviors. checking current state");
+      RCLCPP_DEBUG_STREAM(
+        getNode()->get_logger(), "[SignalDetector] update behaviors. checking current state");
 
       if (currentState != nullptr)
       {
-        RCLCPP_DEBUG_STREAM(getNode()->get_logger(), "[SignalDetector] current state: " << currentStateIndex);
-        RCLCPP_DEBUG_STREAM(getNode()->get_logger(), "[SignalDetector] last state: " << this->lastState_);
+        RCLCPP_DEBUG_STREAM(
+          getNode()->get_logger(), "[SignalDetector] current state: " << currentStateIndex);
+        RCLCPP_DEBUG_STREAM(
+          getNode()->get_logger(), "[SignalDetector] last state: " << this->lastState_);
 
         if (currentStateIndex != 0)
         {
           if (currentStateIndex != (long)this->lastState_)
           {
-            RCLCPP_DEBUG_STREAM(getNode()->get_logger(), "[PollOnce] detected new state, refreshing updatable client "
-                                                         "behavior table");
+            RCLCPP_DEBUG_STREAM(
+              getNode()->get_logger(),
+              "[PollOnce] detected new state, refreshing updatable client "
+              "behavior table");
             // we are in a new state, refresh the updatable client behaviors table
             this->lastState_ = currentStateIndex;
             this->findUpdatableStateElements(currentState);
           }
 
-          RCLCPP_DEBUG_STREAM(getNode()->get_logger(),
-                              "[SignalDetector] updatable state elements: " << this->updatableStateElements_.size());
+          RCLCPP_DEBUG_STREAM(
+            getNode()->get_logger(),
+            "[SignalDetector] updatable state elements: " << this->updatableStateElements_.size());
           auto node = getNode();
-          for (auto *udpatableStateElement : this->updatableStateElements_)
+          for (auto * udpatableStateElement : this->updatableStateElements_)
           {
             auto updatableElementName = demangleType(typeid(*udpatableStateElement)).c_str();
             try
             {
-              RCLCPP_DEBUG_STREAM(getNode()->get_logger(),
-                                  "[SignalDetector] update client behavior call: " << updatableElementName);
+              RCLCPP_DEBUG_STREAM(
+                getNode()->get_logger(),
+                "[SignalDetector] update client behavior call: " << updatableElementName);
 
-              TRACEPOINT( update_start, updatableElementName);
+              TRACEPOINT(update_start, updatableElementName);
               udpatableStateElement->executeUpdate(node);
-              TRACEPOINT( update_start, updatableElementName);
+              TRACEPOINT(update_start, updatableElementName);
             }
-            catch (const std::exception &e)
+            catch (const std::exception & e)
             {
-              RCLCPP_ERROR_STREAM(node->get_logger(),
-                                  "Error in updatable elemnent " << updatableElementName << ": " << e.what() << '\n');
+              RCLCPP_ERROR_STREAM(
+                node->get_logger(),
+                "Error in updatable elemnent " << updatableElementName << ": " << e.what() << '\n');
             }
           }
         }
       }
     }
   }
-  catch (std::exception &ex)
+  catch (std::exception & ex)
   {
-    RCLCPP_ERROR(getNode()->get_logger(), "Exception during Signal Detector update loop. %s", ex.what());
+    RCLCPP_ERROR(
+      getNode()->get_logger(), "Exception during Signal Detector update loop. %s", ex.what());
   }
 
   auto nh = this->getNode();
@@ -317,15 +331,18 @@ void SignalDetector::pollingLoop()
 
   if (!getNode()->get_parameter("signal_detector_loop_freq", this->loop_rate_hz))
   {
-    RCLCPP_WARN(getNode()->get_logger(),
-                "Signal detector frequency (ros param signal_detector_loop_freq) was not set, using default frequency: "
-                "%lf",
-                this->loop_rate_hz);
+    RCLCPP_WARN(
+      getNode()->get_logger(),
+      "Signal detector frequency (ros param signal_detector_loop_freq) was not set, using default "
+      "frequency: "
+      "%lf",
+      this->loop_rate_hz);
   }
   else
   {
-    RCLCPP_WARN(getNode()->get_logger(), "Signal detector frequency (ros param signal_detector_loop_freq): %lf",
-                this->loop_rate_hz);
+    RCLCPP_WARN(
+      getNode()->get_logger(),
+      "Signal detector frequency (ros param signal_detector_loop_freq): %lf", this->loop_rate_hz);
   }
 
   getNode()->set_parameter(rclcpp::Parameter("signal_detector_loop_freq", this->loop_rate_hz));

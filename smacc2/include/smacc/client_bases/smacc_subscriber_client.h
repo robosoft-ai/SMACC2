@@ -12,10 +12,8 @@
 
 namespace smacc
 {
-
 namespace client_bases
 {
-
 using namespace smacc::default_events;
 
 template <typename MessageType>
@@ -27,15 +25,9 @@ public:
 
   typedef MessageType TMessageType;
 
-  SmaccSubscriberClient()
-  {
-    initialized_ = false;
-  }
+  SmaccSubscriberClient() { initialized_ = false; }
 
-  SmaccSubscriberClient(std::string topicname)
-  {
-    topicName = topicname;
-  }
+  SmaccSubscriberClient(std::string topicname) { topicName = topicname; }
 
   virtual ~SmaccSubscriberClient()
   {
@@ -49,15 +41,18 @@ public:
   std::function<void(const MessageType &)> postInitialMessageEvent;
 
   template <typename T>
-  boost::signals2::connection onMessageReceived(void (T::*callback)(const MessageType &), T *object)
+  boost::signals2::connection onMessageReceived(
+    void (T::*callback)(const MessageType &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onMessageReceived_, callback, object);
   }
 
   template <typename T>
-  boost::signals2::connection onFirstMessageReceived(void (T::*callback)(const MessageType &), T *object)
+  boost::signals2::connection onFirstMessageReceived(
+    void (T::*callback)(const MessageType &), T * object)
   {
-    return this->getStateMachine()->createSignalConnection(onFirstMessageReceived_, callback, object);
+    return this->getStateMachine()->createSignalConnection(
+      onFirstMessageReceived_, callback, object);
   }
 
   template <typename TOrthogonal, typename TSourceObject>
@@ -76,29 +71,32 @@ public:
     };
   }
 
-  protected:
+protected:
   virtual void onInitialize() override
   {
     if (!initialized_)
     {
       firstMessage_ = true;
 
-      if (!queueSize)
-        queueSize = 1;
+      if (!queueSize) queueSize = 1;
 
       if (!topicName)
       {
-        RCLCPP_ERROR(getNode()->get_logger(), "topic client with no topic name set. Skipping subscribing");
+        RCLCPP_ERROR(
+          getNode()->get_logger(), "topic client with no topic name set. Skipping subscribing");
       }
       else
       {
-        RCLCPP_INFO_STREAM(getNode()->get_logger(), "[" << this->getName() << "] Subscribing to topic: " << *topicName);
+        RCLCPP_INFO_STREAM(
+          getNode()->get_logger(),
+          "[" << this->getName() << "] Subscribing to topic: " << *topicName);
 
         rclcpp::SensorDataQoS qos;
-        if(queueSize)
-          qos.keep_last(*queueSize);
+        if (queueSize) qos.keep_last(*queueSize);
 
-        std::function<void(typename MessageType::SharedPtr)> fn =  [=] (auto msg){ this->messageCallback(*msg);};
+        std::function<void(typename MessageType::SharedPtr)> fn = [=](auto msg) {
+          this->messageCallback(*msg);
+        };
         sub_ = getNode()->create_subscription<MessageType>(*topicName, qos, fn);
         this->initialized_ = true;
       }
@@ -110,7 +108,7 @@ private:
   bool firstMessage_;
   bool initialized_;
 
-  void messageCallback(const MessageType &msg)
+  void messageCallback(const MessageType & msg)
   {
     if (firstMessage_)
     {
@@ -123,5 +121,5 @@ private:
     onMessageReceived_(msg);
   }
 };
-} // namespace client_bases
-} // namespace smacc
+}  // namespace client_bases
+}  // namespace smacc

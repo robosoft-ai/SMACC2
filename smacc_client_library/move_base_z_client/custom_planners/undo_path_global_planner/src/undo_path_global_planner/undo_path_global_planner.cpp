@@ -39,10 +39,7 @@ UndoPathGlobalPlanner::~UndoPathGlobalPlanner()
   planPub_->publish(planMsg);
 }
 
-void UndoPathGlobalPlanner::cleanup()
-{
-  this->clearGoalMarker();
-}
+void UndoPathGlobalPlanner::cleanup() { this->clearGoalMarker(); }
 
 void UndoPathGlobalPlanner::activate()
 {
@@ -64,9 +61,9 @@ void UndoPathGlobalPlanner::deactivate()
  * initialize()
  ******************************************************************************************************************
  */
-void UndoPathGlobalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, std::string name,
-                                      std::shared_ptr<tf2_ros::Buffer> tf,
-                                      std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
+void UndoPathGlobalPlanner::configure(
+  const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent, std::string name,
+  std::shared_ptr<tf2_ros::Buffer> tf, std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
   nh_ = parent.lock();
   costmap_ros_ = costmap_ros;
@@ -78,10 +75,12 @@ void UndoPathGlobalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::Wea
   rclcpp::SensorDataQoS qos;
   qos.keep_last(2);
   forwardPathSub_ = nh_->create_subscription<nav_msgs::msg::Path>(
-      "odom_tracker_path", qos, std::bind(&UndoPathGlobalPlanner::onForwardTrailMsg, this, std::placeholders::_1));
+    "odom_tracker_path", qos,
+    std::bind(&UndoPathGlobalPlanner::onForwardTrailMsg, this, std::placeholders::_1));
 
   planPub_ = nh_->create_publisher<nav_msgs::msg::Path>("undo_path_planner/global_plan", 1);
-  markersPub_ = nh_->create_publisher<visualization_msgs::msg::MarkerArray>("undo_path_planner/markers", 1);
+  markersPub_ =
+    nh_->create_publisher<visualization_msgs::msg::MarkerArray>("undo_path_planner/markers", 1);
 
   nh_->declare_parameter(name_ + ".transform_tolerance", transform_tolerance_);
 }
@@ -93,7 +92,9 @@ void UndoPathGlobalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::Wea
 void UndoPathGlobalPlanner::onForwardTrailMsg(const nav_msgs::msg::Path::SharedPtr forwardPath)
 {
   lastForwardPathMsg_ = *forwardPath;
-  RCLCPP_DEBUG_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] received backward path msg poses [" << lastForwardPathMsg_.poses.size() << "]");
+  RCLCPP_DEBUG_STREAM(
+    nh_->get_logger(), "[UndoPathGlobalPlanner] received backward path msg poses ["
+                         << lastForwardPathMsg_.poses.size() << "]");
 }
 
 /**
@@ -121,7 +122,8 @@ void UndoPathGlobalPlanner::clearGoalMarker()
  * publishGoalMarker()
  ******************************************************************************************************************
  */
-void UndoPathGlobalPlanner::publishGoalMarker(const geometry_msgs::msg::Pose &pose, double r, double g, double b)
+void UndoPathGlobalPlanner::publishGoalMarker(
+  const geometry_msgs::msg::Pose & pose, double r, double g, double b)
 {
   double phi = tf2::getYaw(pose.orientation);
 
@@ -161,9 +163,9 @@ void UndoPathGlobalPlanner::publishGoalMarker(const geometry_msgs::msg::Pose &po
  * defaultBackwardPath()
  ******************************************************************************************************************
  */
-void UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::msg::PoseStamped &start,
-                                                      const geometry_msgs::msg::PoseStamped & /*goal*/,
-                                                      std::vector<geometry_msgs::msg::PoseStamped> &plan)
+void UndoPathGlobalPlanner::createDefaultUndoPathPlan(
+  const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & /*goal*/,
+  std::vector<geometry_msgs::msg::PoseStamped> & plan)
 {
   //------------- TRANSFORM TO GLOBAL FRAME PATH ---------------------------
   // the forward plan might be recoreded in a different frame of the global (costmap) frame. Transform it.
@@ -196,7 +198,7 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::msg::
   // first, find closest linear point to the current robot position
   // we start from the final goal, that is, the begining of the trajectory
   // (since this was the forward motion from the odom tracker)
-  for (auto &p : transformedPlan.poses /*| boost::adaptors::reversed*/)
+  for (auto & p : transformedPlan.poses /*| boost::adaptors::reversed*/)
   {
     geometry_msgs::msg::PoseStamped pose = p;
     pose.header.frame_id = costmap_ros_->getGlobalFrameID();
@@ -213,15 +215,17 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::msg::
       linear_mindist = dist;
       startPositionProjected = pose.pose;
 
-      RCLCPP_DEBUG_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] initial start point search, NEWBEST_LINEAR= "
-                                                 << i << ". error, linear: " << linear_mindist
-                                                 << ", angular: " << angleError);
+      RCLCPP_DEBUG_STREAM(
+        nh_->get_logger(), "[UndoPathGlobalPlanner] initial start point search, NEWBEST_LINEAR= "
+                             << i << ". error, linear: " << linear_mindist
+                             << ", angular: " << angleError);
     }
     else
     {
-      RCLCPP_DEBUG_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] initial start point search, skipped= "
-                                                 << i << ". best linear error: " << linear_mindist
-                                                 << ". current error, linear: " << dist << " angular: " << angleError);
+      RCLCPP_DEBUG_STREAM(
+        nh_->get_logger(), "[UndoPathGlobalPlanner] initial start point search, skipped= "
+                             << i << ". best linear error: " << linear_mindist
+                             << ". current error, linear: " << dist << " angular: " << angleError);
     }
 
     i--;
@@ -236,8 +240,9 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::msg::
   double angularMinDist = std::numeric_limits<double>::max();
 
   if (mindistindex >= (int)transformedPlan.poses.size())
-    mindistindex = transformedPlan.poses.size() -
-                   1;  // workaround, something is making a out of bound exception in poses array access
+    mindistindex =
+      transformedPlan.poses.size() -
+      1;  // workaround, something is making a out of bound exception in poses array access
   {
     if (transformedPlan.poses.size() == 0)
     {
@@ -250,14 +255,18 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::msg::
     {
       // warning this index, i refers to some inverse interpretation from the previous loop,
       // (last indexes in this path corresponds to the poses closer to our current position)
-      RCLCPP_DEBUG_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] " << i << "/" << transformedPlan.poses.size());
+      RCLCPP_DEBUG_STREAM(
+        nh_->get_logger(), "[UndoPathGlobalPlanner] " << i << "/" << transformedPlan.poses.size());
       auto index = (int)transformedPlan.poses.size() - i - 1;
       if (index < 0 || (size_t)index >= transformedPlan.poses.size())
       {
-        RCLCPP_WARN_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] this should not happen. Check implementation.");
+        RCLCPP_WARN_STREAM(
+          nh_->get_logger(),
+          "[UndoPathGlobalPlanner] this should not happen. Check implementation.");
         break;
       }
-      geometry_msgs::msg::PoseStamped pose = transformedPlan.poses[transformedPlan.poses.size() - i - 1];
+      geometry_msgs::msg::PoseStamped pose =
+        transformedPlan.poses[transformedPlan.poses.size() - i - 1];
 
       RCLCPP_DEBUG_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] global frame");
       pose.header.frame_id = costmap_ros_->getGlobalFrameID();
@@ -269,30 +278,34 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::msg::
       if (dist <= linear_mindist * ERROR_DISTANCE_PURE_SPINNING_FACTOR)
       {
         double angleOrientation = tf2::getYaw(pose.pose.orientation);
-        double angleError = fabs(angles::shortest_angular_distance(angleOrientation, startPoseAngle));
+        double angleError =
+          fabs(angles::shortest_angular_distance(angleOrientation, startPoseAngle));
         if (angleError < angularMinDist)
         {
           angularMinDist = angleError;
           mindistindex = i;
-          RCLCPP_DEBUG_STREAM(nh_->get_logger(),
-                              "[UndoPathGlobalPlanner] initial start point search (angular update), NEWBEST_ANGULAR= "
-                                  << i << ". error, linear: " << dist << "(" << linear_mindist << ")"
-                                  << ", angular: " << angleError << "(" << angularMinDist << ")");
+          RCLCPP_DEBUG_STREAM(
+            nh_->get_logger(),
+            "[UndoPathGlobalPlanner] initial start point search (angular update), NEWBEST_ANGULAR= "
+              << i << ". error, linear: " << dist << "(" << linear_mindist << ")"
+              << ", angular: " << angleError << "(" << angularMinDist << ")");
         }
         else
         {
-          RCLCPP_DEBUG_STREAM(nh_->get_logger(),
-                              "[UndoPathGlobalPlanner] initial start point search (angular update), skipped= "
-                                  << i << ". error, linear: " << dist << "(" << linear_mindist << ")"
-                                  << ", angular: " << angleError << "(" << angularMinDist << ")");
+          RCLCPP_DEBUG_STREAM(
+            nh_->get_logger(),
+            "[UndoPathGlobalPlanner] initial start point search (angular update), skipped= "
+              << i << ". error, linear: " << dist << "(" << linear_mindist << ")"
+              << ", angular: " << angleError << "(" << angularMinDist << ")");
         }
       }
       else
       {
         RCLCPP_DEBUG_STREAM(
-            nh_->get_logger(),
-            "[UndoPathGlobalPlanner] initial start point search (angular update) not in linear range, skipped= "
-                << i << " linear error: " << dist << "(" << linear_mindist << ")");
+          nh_->get_logger(),
+          "[UndoPathGlobalPlanner] initial start point search (angular update) not in linear "
+          "range, skipped= "
+            << i << " linear error: " << dist << "(" << linear_mindist << ")");
       }
     }
   }
@@ -302,28 +315,34 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::msg::
   {
     // plan.push_back(start);
 
-    RCLCPP_WARN_STREAM(nh_->get_logger(),
-                       "[UndoPathGlobalPlanner] Creating the backwards plan from odom tracker path (, "
-                           << transformedPlan.poses.size() << ") poses");
+    RCLCPP_WARN_STREAM(
+      nh_->get_logger(),
+      "[UndoPathGlobalPlanner] Creating the backwards plan from odom tracker path (, "
+        << transformedPlan.poses.size() << ") poses");
 
-    RCLCPP_WARN_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] closer point to goal i="
-                                              << mindistindex << " (linear min dist " << linear_mindist << ")");
+    RCLCPP_WARN_STREAM(
+      nh_->get_logger(), "[UndoPathGlobalPlanner] closer point to goal i="
+                           << mindistindex << " (linear min dist " << linear_mindist << ")");
 
     // copy the path at the inverse direction, but only up to the closest point to the goal in the path  (for partial undoing)
     for (int i = transformedPlan.poses.size() - 1; i >= mindistindex; i--)
     {
-      auto &pose = transformedPlan.poses[i];
-      
+      auto & pose = transformedPlan.poses[i];
+
       rclcpp::Time t(pose.header.stamp);
 
-      RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] adding to plan i = " << i << " stamp:" << t.seconds());
+      RCLCPP_INFO_STREAM(
+        nh_->get_logger(),
+        "[UndoPathGlobalPlanner] adding to plan i = " << i << " stamp:" << t.seconds());
       plan.push_back(pose);
     }
-    RCLCPP_WARN_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] refined plan has " << plan.size() << "  points");
+    RCLCPP_WARN_STREAM(
+      nh_->get_logger(), "[UndoPathGlobalPlanner] refined plan has " << plan.size() << "  points");
   }
   else
   {
-    RCLCPP_ERROR_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner ] undo global plan size:  " << plan.size());
+    RCLCPP_ERROR_STREAM(
+      nh_->get_logger(), "[UndoPathGlobalPlanner ] undo global plan size:  " << plan.size());
   }
 }
 
@@ -332,21 +351,25 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::msg::
  * makePlan()
  ******************************************************************************************************************
  */
-nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(const geometry_msgs::msg::PoseStamped &start,
-                                                      const geometry_msgs::msg::PoseStamped &goal)
+nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(
+  const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal)
 {
   // -------------- BASIC CHECKS ---------------------
 
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] Undo global plan start ");
   nav_msgs::msg::Path planMsg;
-  std::vector<geometry_msgs::msg::PoseStamped> &plan = planMsg.poses;
+  std::vector<geometry_msgs::msg::PoseStamped> & plan = planMsg.poses;
 
-  RCLCPP_INFO_STREAM(nh_->get_logger(),
-                     "[UndoPathGlobalPlanner] last forward path msg size: " << lastForwardPathMsg_.poses.size());
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] last forward path frame id: "
-                                            << lastForwardPathMsg_.poses.front().header.frame_id);
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] start pose frame id: " << start.header.frame_id);
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] goal pose frame id: " << goal.header.frame_id);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(),
+    "[UndoPathGlobalPlanner] last forward path msg size: " << lastForwardPathMsg_.poses.size());
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[UndoPathGlobalPlanner] last forward path frame id: "
+                         << lastForwardPathMsg_.poses.front().header.frame_id);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[UndoPathGlobalPlanner] start pose frame id: " << start.header.frame_id);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[UndoPathGlobalPlanner] goal pose frame id: " << goal.header.frame_id);
 
   if (lastForwardPathMsg_.poses.size() == 0)
   {
@@ -361,7 +384,8 @@ nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(const geometry_msgs::msg::
 
     geometry_msgs::msg::PoseStamped pstart = start;
     pstart.header.stamp = nh_->now();
-    nav_2d_utils::transformPose(tf_, costmap_ros_->getGlobalFrameID(), pstart, transformedStart, ttol);
+    nav_2d_utils::transformPose(
+      tf_, costmap_ros_->getGlobalFrameID(), pstart, transformedStart, ttol);
     transformedStart.header.frame_id = costmap_ros_->getGlobalFrameID();
 
     // geometry_msgs::msg::PoseStamped pgoal = goal;
@@ -371,9 +395,11 @@ nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(const geometry_msgs::msg::
 
     //--------------- FORCE GOAL POSE----------------------------
     RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] Forced goal");
-    auto forcedGoal = lastForwardPathMsg_.poses[lastForwardPathMsg_.poses.size() - 1];  // FORCE LAST POSE
+    auto forcedGoal =
+      lastForwardPathMsg_.poses[lastForwardPathMsg_.poses.size() - 1];  // FORCE LAST POSE
     forcedGoal.header.stamp = nh_->now();
-    nav_2d_utils::transformPose(tf_, costmap_ros_->getGlobalFrameID(), forcedGoal, transformedGoal, ttol);
+    nav_2d_utils::transformPose(
+      tf_, costmap_ros_->getGlobalFrameID(), forcedGoal, transformedGoal, ttol);
     transformedGoal.header.frame_id = costmap_ros_->getGlobalFrameID();
   }
 
@@ -390,7 +416,7 @@ nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(const geometry_msgs::msg::
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] valid plan checking");
 
   auto costmap2d = this->costmap_ros_->getCostmap();
-  for (auto &p : plan)
+  for (auto & p : plan)
   {
     unsigned int mx, my;
     costmap2d->worldToMap(p.pose.position.x, p.pose.position.y, mx, my);
@@ -404,18 +430,23 @@ nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(const geometry_msgs::msg::
   }
 
   //--------  PUBLISHING RESULTS ---------------------------------------
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] plan publishing. size: " << plan.size());
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[UndoPathGlobalPlanner] plan publishing. size: " << plan.size());
   planPub_->publish(planMsg);
   if (!acceptedGlobalPlan)
   {
-    RCLCPP_INFO(nh_->get_logger(), "[UndoPathGlobalPlanner] not accepted global plan because of possible collision");
+    RCLCPP_INFO(
+      nh_->get_logger(),
+      "[UndoPathGlobalPlanner] not accepted global plan because of possible collision");
   }
 
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] plan publishing. size: " << planMsg.poses.size());
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[UndoPathGlobalPlanner] plan publishing. size: " << planMsg.poses.size());
 
   return planMsg;
 }
 
 }  // namespace undo_path_global_planner
 }  // namespace cl_move_base_z
-PLUGINLIB_EXPORT_CLASS(cl_move_base_z::undo_path_global_planner::UndoPathGlobalPlanner, nav2_core::GlobalPlanner)
+PLUGINLIB_EXPORT_CLASS(
+  cl_move_base_z::undo_path_global_planner::UndoPathGlobalPlanner, nav2_core::GlobalPlanner)

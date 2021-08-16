@@ -1,11 +1,11 @@
 #pragma once
 
-#include <smacc/smacc.h>
 #include <smacc/client_bases/smacc_subscriber_client.h>
 #include <smacc/introspection/introspection.h>
+#include <smacc/smacc.h>
 
-#include <boost/asio/posix/stream_descriptor.hpp>
 #include <boost/asio.hpp>
+#include <boost/asio/posix/stream_descriptor.hpp>
 #include <iostream>
 
 #include <std_msgs/msg/u_int16.hpp>
@@ -148,97 +148,100 @@ struct EvKeyPressZ : sc::event<EvKeyPressZ<TSource, TOrthogonal>>
 class ClKeyboard : public smacc::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>
 {
 public:
-        ClKeyboard();
-        virtual ~ClKeyboard();
-        virtual void onInitialize() override;
+  ClKeyboard();
+  virtual ~ClKeyboard();
+  virtual void onInitialize() override;
 
-        smacc::SmaccSignal<void(char keypress)> OnKeyPress_;
+  smacc::SmaccSignal<void(char keypress)> OnKeyPress_;
 
-        template <typename T>
-        void OnKeyPress(void (T::*callback)(char keypress), T *object)
-        {
-                //this->connectSignal(OnKeyPress_, callback, object);
-                this->getStateMachine()->createSignalConnection(OnKeyPress_, callback, object);
-        }
+  template <typename T>
+  void OnKeyPress(void (T::*callback)(char keypress), T * object)
+  {
+    //this->connectSignal(OnKeyPress_, callback, object);
+    this->getStateMachine()->createSignalConnection(OnKeyPress_, callback, object);
+  }
 
-        std::function<void(std_msgs::msg::UInt16)> postEventKeyPress;
+  std::function<void(std_msgs::msg::UInt16)> postEventKeyPress;
 
-        template <typename TOrthogonal, typename TSourceObject>
-        void onOrthogonalAllocation()
-        {
-                // call tothe base configuration to properly handling the message and initial message smacc events
-                smacc::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
+  {
+    // call tothe base configuration to properly handling the message and initial message smacc events
+    smacc::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>::onOrthogonalAllocation<
+      TOrthogonal, TSourceObject>();
 
-                postEventKeyPress = [=](auto unicode_keychar) {
-                        char character = (char)unicode_keychar.data;
-                        RCLCPP_WARN(getNode()->get_logger(), "detected keyboard: %c", character);
+    postEventKeyPress = [=](auto unicode_keychar) {
+      char character = (char)unicode_keychar.data;
+      RCLCPP_WARN(getNode()->get_logger(), "detected keyboard: %c", character);
 
-                        if (character == 'a')
-                                this->postKeyEvent<EvKeyPressA<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'b')
-                                this->postKeyEvent<EvKeyPressB<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'c')
-                                this->postKeyEvent<EvKeyPressC<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'd')
-                                this->postKeyEvent<EvKeyPressD<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'e')
-                                this->postKeyEvent<EvKeyPressE<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'f')
-                                this->postKeyEvent<EvKeyPressF<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'g')
-                                this->postKeyEvent<EvKeyPressG<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'h')
-                                this->postKeyEvent<EvKeyPressH<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'y')
-                                this->postKeyEvent<EvKeyPressI<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'j')
-                                this->postKeyEvent<EvKeyPressJ<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'k')
-                                this->postKeyEvent<EvKeyPressK<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'l')
-                                this->postKeyEvent<EvKeyPressL<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'm')
-                                this->postKeyEvent<EvKeyPressM<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'n')
-                                this->postKeyEvent<EvKeyPressN<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'o')
-                                this->postKeyEvent<EvKeyPressO<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'p')
-                                this->postKeyEvent<EvKeyPressP<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'q')
-                                this->postKeyEvent<EvKeyPressQ<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'r')
-                                this->postKeyEvent<EvKeyPressR<ClKeyboard, TOrthogonal>>();
-                        else if (character == 's')
-                                this->postKeyEvent<EvKeyPressS<ClKeyboard, TOrthogonal>>();
-                        else if (character == 't')
-                                this->postKeyEvent<EvKeyPressT<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'u')
-                                this->postKeyEvent<EvKeyPressU<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'v')
-                                this->postKeyEvent<EvKeyPressV<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'w')
-                                this->postKeyEvent<EvKeyPressW<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'x')
-                                this->postKeyEvent<EvKeyPressX<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'y')
-                                this->postKeyEvent<EvKeyPressY<ClKeyboard, TOrthogonal>>();
-                        else if (character == 'z')
-                                this->postKeyEvent<EvKeyPressZ<ClKeyboard, TOrthogonal>>();
-                        OnKeyPress_(character); /*  */
-                };
-        }
+      if (character == 'a')
+        this->postKeyEvent<EvKeyPressA<ClKeyboard, TOrthogonal>>();
+      else if (character == 'b')
+        this->postKeyEvent<EvKeyPressB<ClKeyboard, TOrthogonal>>();
+      else if (character == 'c')
+        this->postKeyEvent<EvKeyPressC<ClKeyboard, TOrthogonal>>();
+      else if (character == 'd')
+        this->postKeyEvent<EvKeyPressD<ClKeyboard, TOrthogonal>>();
+      else if (character == 'e')
+        this->postKeyEvent<EvKeyPressE<ClKeyboard, TOrthogonal>>();
+      else if (character == 'f')
+        this->postKeyEvent<EvKeyPressF<ClKeyboard, TOrthogonal>>();
+      else if (character == 'g')
+        this->postKeyEvent<EvKeyPressG<ClKeyboard, TOrthogonal>>();
+      else if (character == 'h')
+        this->postKeyEvent<EvKeyPressH<ClKeyboard, TOrthogonal>>();
+      else if (character == 'y')
+        this->postKeyEvent<EvKeyPressI<ClKeyboard, TOrthogonal>>();
+      else if (character == 'j')
+        this->postKeyEvent<EvKeyPressJ<ClKeyboard, TOrthogonal>>();
+      else if (character == 'k')
+        this->postKeyEvent<EvKeyPressK<ClKeyboard, TOrthogonal>>();
+      else if (character == 'l')
+        this->postKeyEvent<EvKeyPressL<ClKeyboard, TOrthogonal>>();
+      else if (character == 'm')
+        this->postKeyEvent<EvKeyPressM<ClKeyboard, TOrthogonal>>();
+      else if (character == 'n')
+        this->postKeyEvent<EvKeyPressN<ClKeyboard, TOrthogonal>>();
+      else if (character == 'o')
+        this->postKeyEvent<EvKeyPressO<ClKeyboard, TOrthogonal>>();
+      else if (character == 'p')
+        this->postKeyEvent<EvKeyPressP<ClKeyboard, TOrthogonal>>();
+      else if (character == 'q')
+        this->postKeyEvent<EvKeyPressQ<ClKeyboard, TOrthogonal>>();
+      else if (character == 'r')
+        this->postKeyEvent<EvKeyPressR<ClKeyboard, TOrthogonal>>();
+      else if (character == 's')
+        this->postKeyEvent<EvKeyPressS<ClKeyboard, TOrthogonal>>();
+      else if (character == 't')
+        this->postKeyEvent<EvKeyPressT<ClKeyboard, TOrthogonal>>();
+      else if (character == 'u')
+        this->postKeyEvent<EvKeyPressU<ClKeyboard, TOrthogonal>>();
+      else if (character == 'v')
+        this->postKeyEvent<EvKeyPressV<ClKeyboard, TOrthogonal>>();
+      else if (character == 'w')
+        this->postKeyEvent<EvKeyPressW<ClKeyboard, TOrthogonal>>();
+      else if (character == 'x')
+        this->postKeyEvent<EvKeyPressX<ClKeyboard, TOrthogonal>>();
+      else if (character == 'y')
+        this->postKeyEvent<EvKeyPressY<ClKeyboard, TOrthogonal>>();
+      else if (character == 'z')
+        this->postKeyEvent<EvKeyPressZ<ClKeyboard, TOrthogonal>>();
+      OnKeyPress_(character); /*  */
+    };
+  }
 
-        void onKeyboardMessage(const std_msgs::msg::UInt16 &unicode_keychar);
+  void onKeyboardMessage(const std_msgs::msg::UInt16 & unicode_keychar);
 
-        template <typename TEv>
-        void postKeyEvent()
-        {
-                RCLCPP_WARN(getNode()->get_logger(), "ClKeyboard ev: %s", smacc::demangleSymbol(typeid(TEv).name()).c_str());
-                this->postEvent<TEv>();
-        }
+  template <typename TEv>
+  void postKeyEvent()
+  {
+    RCLCPP_WARN(
+      getNode()->get_logger(), "ClKeyboard ev: %s",
+      smacc::demangleSymbol(typeid(TEv).name()).c_str());
+    this->postEvent<TEv>();
+  }
 
 private:
-        bool initialized_;
+  bool initialized_;
 };
-} // namespace cl_keyboard
+}  // namespace cl_keyboard

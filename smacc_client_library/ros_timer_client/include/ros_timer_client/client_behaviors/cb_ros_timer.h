@@ -1,7 +1,7 @@
 #pragma once
 
-#include <smacc/smacc.h>
 #include <ros_timer_client/cl_ros_timer.h>
+#include <smacc/smacc.h>
 
 namespace cl_ros_timer
 {
@@ -22,8 +22,8 @@ public:
   void onClientTimerTickCallback();
 
 private:
-  ClRosTimer *timerClient_;
+  ClRosTimer * timerClient_;
   std::function<void()> postTimerEvent_;
   boost::signals2::scoped_connection c_;
 };
-} // namespace cl_ros_timer
+}  // namespace cl_ros_timer

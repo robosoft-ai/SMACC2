@@ -6,23 +6,22 @@ struct StFpatternPrealignment : smacc::SmaccState<StFpatternPrealignment, MsDanc
 {
   using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
-    
-  Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, SS4::SsFPattern1>,
-  Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StNavigateToWaypointsX>
-  
-  >reactions;
 
-// STATE FUNCTIONS
+    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, SS4::SsFPattern1>,
+    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StNavigateToWaypointsX>
+
+    >
+    reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbAbsoluteRotate>(0);
     configure_orthogonal<OrLED, CbLEDOff>();
   }
-  
-  void runtimeConfigure()
-  { 
-  }
+
+  void runtimeConfigure() {}
 };
-}
+}  // namespace sm_dance_bot_strikes_back

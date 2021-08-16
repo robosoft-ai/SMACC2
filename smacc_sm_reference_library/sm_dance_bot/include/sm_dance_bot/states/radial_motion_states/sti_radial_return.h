@@ -6,16 +6,17 @@ namespace radial_motion_states
 struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
 {
   using SmaccState::SmaccState;
-  
-// TRANSITION TABLE
-  typedef mpl::list<
-  
-  Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiRadialLoopStart, SUCCESS>,
-  Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StiRadialEndPoint, ABORT>
-  
-  >reactions;
 
-// STATE FUNCTIONS
+  // TRANSITION TABLE
+  typedef mpl::list<
+
+    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiRadialLoopStart, SUCCESS>,
+    Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StiRadialEndPoint, ABORT>
+
+    >
+    reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
@@ -24,12 +25,12 @@ struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
 
   void onExit()
   {
-      ClMoveBaseZ* moveBase;
-      this->requiresClient(moveBase);
+    ClMoveBaseZ * moveBase;
+    this->requiresClient(moveBase);
 
-      auto odomTracker = moveBase->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
-      odomTracker->clearPath();
+    auto odomTracker = moveBase->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
+    odomTracker->clearPath();
   }
 };
-}
-}
+}  // namespace radial_motion_states
+}  // namespace sm_dance_bot

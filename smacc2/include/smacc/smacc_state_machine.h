@@ -12,12 +12,12 @@
 #include <smacc/common.h>
 #include <smacc/introspection/introspection.h>
 #include <smacc/introspection/smacc_state_machine_info.h>
-#include <smacc/smacc_updatable.h>
 #include <smacc/smacc_signal.h>
+#include <smacc/smacc_updatable.h>
 
 #include <smacc_msgs/msg/smacc_state_machine.hpp>
-#include <smacc_msgs/msg/smacc_transition_log_entry.hpp>
 #include <smacc_msgs/msg/smacc_status.hpp>
+#include <smacc_msgs/msg/smacc_transition_log_entry.hpp>
 #include <smacc_msgs/srv/smacc_get_transition_history.hpp>
 
 #include <smacc/smacc_state.h>
@@ -26,21 +26,21 @@
 
 namespace smacc
 {
-
 using namespace smacc::introspection;
 
-enum class EventLifeTime{
-    ABSOLUTE,
-    CURRENT_STATE /*events are discarded if we are leaving the state it were created. I is used for client behaviors whose liftime is associated to state*/
+enum class EventLifeTime
+{
+  ABSOLUTE,
+  CURRENT_STATE /*events are discarded if we are leaving the state it were created. I is used for client behaviors whose liftime is associated to state*/
 };
 
 enum class StateMachineInternalAction
 {
-    STATE_CONFIGURING,
-    STATE_ENTERING,
-    STATE_STEADY,
-    STATE_EXITING,
-    TRANSITIONING
+  STATE_CONFIGURING,
+  STATE_ENTERING,
+  STATE_STEADY,
+  STATE_EXITING,
+  TRANSITIONING
 };
 
 // This class describes the concept of Smacc State Machine in an abastract way.
@@ -49,168 +49,170 @@ enum class StateMachineInternalAction
 class ISmaccStateMachine
 {
 public:
-    ISmaccStateMachine(std::string stateMachineName, SignalDetector *signalDetector);
+  ISmaccStateMachine(std::string stateMachineName, SignalDetector * signalDetector);
 
-    virtual ~ISmaccStateMachine();
+  virtual ~ISmaccStateMachine();
 
-    virtual void reset();
+  virtual void reset();
 
-    virtual void stop();
+  virtual void stop();
 
-    virtual void eStop();
+  virtual void eStop();
 
-    template <typename TOrthogonal>
-    TOrthogonal *getOrthogonal();
+  template <typename TOrthogonal>
+  TOrthogonal * getOrthogonal();
 
-    const std::map<std::string, std::shared_ptr<smacc::ISmaccOrthogonal>> &getOrthogonals() const;
+  const std::map<std::string, std::shared_ptr<smacc::ISmaccOrthogonal>> & getOrthogonals() const;
 
-    template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType *&storage);
+  template <typename SmaccComponentType>
+  void requiresComponent(SmaccComponentType *& storage);
 
-    template <typename EventType>
-    void postEvent(EventType *ev, EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
+  template <typename EventType>
+  void postEvent(EventType * ev, EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
 
-    template <typename EventType>
-    void postEvent(EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
+  template <typename EventType>
+  void postEvent(EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
 
-    template <typename T>
-    bool getGlobalSMData(std::string name, T &ret);
+  template <typename T>
+  bool getGlobalSMData(std::string name, T & ret);
 
-    template <typename T>
-    void setGlobalSMData(std::string name, T value);
+  template <typename T>
+  void setGlobalSMData(std::string name, T value);
 
-    template <typename StateField, typename BehaviorType>
-    void mapBehavior();
+  template <typename StateField, typename BehaviorType>
+  void mapBehavior();
 
-    std::string getStateMachineName();
+  std::string getStateMachineName();
 
-    void state_machine_visualization();
+  void state_machine_visualization();
 
-    inline std::shared_ptr<SmaccStateInfo> getCurrentStateInfo() { return currentStateInfo_; }
+  inline std::shared_ptr<SmaccStateInfo> getCurrentStateInfo() { return currentStateInfo_; }
 
-    void publishTransition(const SmaccTransitionInfo &transitionInfo);
+  void publishTransition(const SmaccTransitionInfo & transitionInfo);
 
-    /// this function should be implemented by the user to create the orthogonals
-    virtual void onInitialize();
+  /// this function should be implemented by the user to create the orthogonals
+  virtual void onInitialize();
 
-    void getTransitionLogHistory(const std::shared_ptr<rmw_request_id_t> request_header,
-        const std::shared_ptr<smacc_msgs::srv::SmaccGetTransitionHistory::Request> req,
-        std::shared_ptr<smacc_msgs::srv::SmaccGetTransitionHistory::Response> res);
+  void getTransitionLogHistory(
+    const std::shared_ptr<rmw_request_id_t> request_header,
+    const std::shared_ptr<smacc_msgs::srv::SmaccGetTransitionHistory::Request> req,
+    std::shared_ptr<smacc_msgs::srv::SmaccGetTransitionHistory::Response> res);
 
-    template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-    boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object);
+  template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
+  boost::signals2::connection createSignalConnection(
+    TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object);
 
-    // template <typename TSmaccSignal, typename TMemberFunctionPrototype>
-    // boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback);
+  // template <typename TSmaccSignal, typename TMemberFunctionPrototype>
+  // boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback);
 
-    template <typename StateType>
-    void notifyOnStateEntryStart(StateType *state);
+  template <typename StateType>
+  void notifyOnStateEntryStart(StateType * state);
 
-    template <typename StateType>
-    void notifyOnStateEntryEnd(StateType *state);
+  template <typename StateType>
+  void notifyOnStateEntryEnd(StateType * state);
 
-    template <typename StateType>
-    void notifyOnRuntimeConfigured(StateType *state);
+  template <typename StateType>
+  void notifyOnRuntimeConfigured(StateType * state);
 
-    template <typename StateType>
-    void notifyOnStateExitting(StateType *state);
+  template <typename StateType>
+  void notifyOnStateExitting(StateType * state);
 
-    template <typename StateType>
-    void notifyOnStateExited(StateType *state);
+  template <typename StateType>
+  void notifyOnStateExited(StateType * state);
 
-    template <typename StateType>
-    void notifyOnRuntimeConfigurationFinished(StateType *state);
+  template <typename StateType>
+  void notifyOnRuntimeConfigurationFinished(StateType * state);
 
-    inline unsigned long getCurrentStateCounter() const;
+  inline unsigned long getCurrentStateCounter() const;
 
-    inline ISmaccState *getCurrentState() const;
+  inline ISmaccState * getCurrentState() const;
 
-    inline const SmaccStateMachineInfo &getStateMachineInfo();
+  inline const SmaccStateMachineInfo & getStateMachineInfo();
 
-    template <typename InitialStateType>
-    void buildStateMachineInfo();
+  template <typename InitialStateType>
+  void buildStateMachineInfo();
 
-    rclcpp::Node::SharedPtr getNode();
+  rclcpp::Node::SharedPtr getNode();
 
 protected:
-    void checkStateMachineConsistence();
+  void checkStateMachineConsistence();
 
-    void initializeROS(std::string smshortname);
+  void initializeROS(std::string smshortname);
 
-    void onInitialized();
+  void onInitialized();
 
-    template <typename TOrthogonal>
-    void createOrthogonal();
+  template <typename TOrthogonal>
+  void createOrthogonal();
 
-    // Delegates to ROS param access with the current NodeHandle
-    template <typename T>
-    bool getParam(std::string param_name, T &param_storage);
+  // Delegates to ROS param access with the current NodeHandle
+  template <typename T>
+  bool getParam(std::string param_name, T & param_storage);
 
-    // Delegates to ROS param access with the current NodeHandle
-    template <typename T>
-    void setParam(std::string param_name, T param_val);
+  // Delegates to ROS param access with the current NodeHandle
+  template <typename T>
+  void setParam(std::string param_name, T param_val);
 
-    // Delegates to ROS param access with the current NodeHandle
-    template <typename T>
-    bool param(std::string param_name, T &param_val, const T &default_val);
+  // Delegates to ROS param access with the current NodeHandle
+  template <typename T>
+  bool param(std::string param_name, T & param_val, const T & default_val);
 
-    // The node handle for this state
-    rclcpp::Node::SharedPtr nh_;
+  // The node handle for this state
+  rclcpp::Node::SharedPtr nh_;
 
-    rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::Publisher<smacc_msgs::msg::SmaccStateMachine>::SharedPtr stateMachinePub_;
-    rclcpp::Publisher<smacc_msgs::msg::SmaccStatus>::SharedPtr stateMachineStatusPub_;
-    rclcpp::Publisher<smacc_msgs::msg::SmaccTransitionLogEntry>::SharedPtr transitionLogPub_;
-    rclcpp::Service<smacc_msgs::srv::SmaccGetTransitionHistory>::SharedPtr transitionHistoryService_;
+  rclcpp::TimerBase::SharedPtr timer_;
+  rclcpp::Publisher<smacc_msgs::msg::SmaccStateMachine>::SharedPtr stateMachinePub_;
+  rclcpp::Publisher<smacc_msgs::msg::SmaccStatus>::SharedPtr stateMachineStatusPub_;
+  rclcpp::Publisher<smacc_msgs::msg::SmaccTransitionLogEntry>::SharedPtr transitionLogPub_;
+  rclcpp::Service<smacc_msgs::srv::SmaccGetTransitionHistory>::SharedPtr transitionHistoryService_;
 
-    // if it is null, you may be located in a transition. There is a small gap of time where internally
-    // this currentState_ is null. This may change in the future.
-    ISmaccState *currentState_;
+  // if it is null, you may be located in a transition. There is a small gap of time where internally
+  // this currentState_ is null. This may change in the future.
+  ISmaccState * currentState_;
 
-    std::shared_ptr<SmaccStateInfo> currentStateInfo_;
+  std::shared_ptr<SmaccStateInfo> currentStateInfo_;
 
-    smacc_msgs::msg::SmaccStatus status_msg_;
+  smacc_msgs::msg::SmaccStatus status_msg_;
 
-    // orthogonals
-    std::map<std::string, std::shared_ptr<smacc::ISmaccOrthogonal>> orthogonals_;
+  // orthogonals
+  std::map<std::string, std::shared_ptr<smacc::ISmaccOrthogonal>> orthogonals_;
 
 private:
-    std::recursive_mutex m_mutex_;
-    std::recursive_mutex eventQueueMutex_;
+  std::recursive_mutex m_mutex_;
+  std::recursive_mutex eventQueueMutex_;
 
-    StateMachineInternalAction stateMachineCurrentAction;
+  StateMachineInternalAction stateMachineCurrentAction;
 
-    std::list<boost::signals2::connection> stateCallbackConnections;
+  std::list<boost::signals2::connection> stateCallbackConnections;
 
-    // shared variables
-    std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;
+  // shared variables
+  std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;
 
-    std::vector<smacc_msgs::msg::SmaccTransitionLogEntry> transitionLogHistory_;
+  std::vector<smacc_msgs::msg::SmaccTransitionLogEntry> transitionLogHistory_;
 
-    smacc::SMRunMode runMode_;
+  smacc::SMRunMode runMode_;
 
-    // Event to notify to the signaldetection thread that a request has been created...
-    SignalDetector *signalDetector_;
+  // Event to notify to the signaldetection thread that a request has been created...
+  SignalDetector * signalDetector_;
 
-    unsigned long stateSeqCounter_;
+  unsigned long stateSeqCounter_;
 
-    void lockStateMachine(std::string msg);
+  void lockStateMachine(std::string msg);
 
-    void unlockStateMachine(std::string msg);
+  void unlockStateMachine(std::string msg);
 
-    template <typename EventType>
-    void propagateEventToStateReactors(ISmaccState *st, EventType *ev);
+  template <typename EventType>
+  void propagateEventToStateReactors(ISmaccState * st, EventType * ev);
 
-    std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo_;
+  std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo_;
 
-    void updateStatusMessage();
+  void updateStatusMessage();
 
-    friend class ISmaccState;
-    friend class SignalDetector;
+  friend class ISmaccState;
+  friend class SignalDetector;
 };
-} // namespace smacc
+}  // namespace smacc
 
-#include <smacc/impl/smacc_state_impl.h>
 #include <smacc/impl/smacc_client_impl.h>
 #include <smacc/impl/smacc_component_impl.h>
 #include <smacc/impl/smacc_orthogonal_impl.h>
+#include <smacc/impl/smacc_state_impl.h>

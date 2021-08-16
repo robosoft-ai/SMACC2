@@ -16,7 +16,7 @@ using namespace smacc::default_transition_tags;
 template <typename ActionFeedback, typename TOrthogonal>
 struct EvActionFeedback : sc::event<EvActionFeedback<ActionFeedback, TOrthogonal>>
 {
-  smacc::client_bases::ISmaccActionClient *client;
+  smacc::client_bases::ISmaccActionClient * client;
   ActionFeedback feedbackMessage;
   // boost::any feedbackMessage;
 };
@@ -40,15 +40,9 @@ struct EvActionSucceeded : sc::event<EvActionSucceeded<TSource, TOrthogonal>>
     return label;
   }
 
-  static std::string getDefaultTransitionTag()
-  {
-    return demangledTypeName<SUCCESS>();
-  }
+  static std::string getDefaultTransitionTag() { return demangledTypeName<SUCCESS>(); }
 
-  static std::string getDefaultTransitionType()
-  {
-    return demangledTypeName<SUCCESS>();
-  }
+  static std::string getDefaultTransitionType() { return demangledTypeName<SUCCESS>(); }
 };
 
 template <typename TSource, typename TOrthogonal>
@@ -64,15 +58,9 @@ struct EvActionAborted : sc::event<EvActionAborted<TSource, TOrthogonal>>
     return label;
   }
 
-  static std::string getDefaultTransitionTag()
-  {
-    return demangledTypeName<ABORT>();
-  }
+  static std::string getDefaultTransitionTag() { return demangledTypeName<ABORT>(); }
 
-  static std::string getDefaultTransitionType()
-  {
-    return demangledTypeName<ABORT>();
-  }
+  static std::string getDefaultTransitionType() { return demangledTypeName<ABORT>(); }
 };
 
 template <typename TSource, typename TOrthogonal>
@@ -88,19 +76,12 @@ struct EvActionCancelled : sc::event<EvActionCancelled<TSource, TOrthogonal>>
     return label;
   }
 
-  static std::string getDefaultTransitionTag()
-  {
-    return demangledTypeName<CANCEL>();
-  }
+  static std::string getDefaultTransitionTag() { return demangledTypeName<CANCEL>(); }
 
-  static std::string getDefaultTransitionType()
-  {
-    return demangledTypeName<CANCEL>();
-  }
+  static std::string getDefaultTransitionType() { return demangledTypeName<CANCEL>(); }
 };
 
 //---------- CONTROL FLOW EVENTS ----------------------------------------------------------
-
 
 template <typename StateType>
 struct EvStateRequestFinish : sc::event<EvStateRequestFinish<StateType>>
@@ -115,29 +96,17 @@ struct EvSequenceFinished : sc::event<EvSequenceFinished<StateType>>
 template <typename TSource>
 struct EvLoopContinue : sc::event<EvLoopContinue<TSource>>
 {
-  static std::string getDefaultTransitionTag()
-  {
-    return demangledTypeName<CONTINUELOOP>();
-  }
+  static std::string getDefaultTransitionTag() { return demangledTypeName<CONTINUELOOP>(); }
 
-  static std::string getDefaultTransitionType()
-  {
-    return demangledTypeName<CONTINUELOOP>();
-  }
+  static std::string getDefaultTransitionType() { return demangledTypeName<CONTINUELOOP>(); }
 };
 
 template <typename TSource>
 struct EvLoopEnd : sc::event<EvLoopEnd<TSource>>
 {
-  static std::string getDefaultTransitionTag()
-  {
-    return demangledTypeName<ENDLOOP>();
-  }
+  static std::string getDefaultTransitionTag() { return demangledTypeName<ENDLOOP>(); }
 
-  static std::string getDefaultTransitionType()
-  {
-    return demangledTypeName<ENDLOOP>();
-  }
+  static std::string getDefaultTransitionType() { return demangledTypeName<ENDLOOP>(); }
 };
 
 //---------- CONTROL FLOW EVENTS ----------------------------------------------------------

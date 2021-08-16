@@ -2,37 +2,33 @@
 
 namespace cl_ros_timer
 {
-
 ClRosTimer::ClRosTimer(rclcpp::Duration duration, bool oneshot)
-    : duration_(duration),
-    oneshot_ (oneshot)
+: duration_(duration), oneshot_(oneshot)
 {
 }
 
-ClRosTimer::~ClRosTimer()
-{
-    timer_->cancel();
-}
+ClRosTimer::~ClRosTimer() { timer_->cancel(); }
 
 void ClRosTimer::onInitialize()
 {
-    auto clock = this->getNode()->get_clock();
-    
-    timer_ = rclcpp::create_timer(this->getNode(), clock, duration_, std::bind(&ClRosTimer::timerCallback, this));
+  auto clock = this->getNode()->get_clock();
+
+  timer_ = rclcpp::create_timer(
+    this->getNode(), clock, duration_, std::bind(&ClRosTimer::timerCallback, this));
 }
 
 void ClRosTimer::timerCallback()
 {
-    if (!onTimerTick_.empty())
-    {
-        this->onTimerTick_();
-    }
-    postTimerEvent_();
+  if (!onTimerTick_.empty())
+  {
+    this->onTimerTick_();
+  }
+  postTimerEvent_();
 
-    if(oneshot_)
-    {
-        this->timer_->cancel();
-    }
+  if (oneshot_)
+  {
+    this->timer_->cancel();
+  }
 }
 
-} // namespace cl_ros_timer
+}  // namespace cl_ros_timer

@@ -33,7 +33,7 @@ public:
 
   std::shared_ptr<tf2_ros::Buffer> listener;
 
-  odom_tracker::OdomTracker *odomTracker_;
+  odom_tracker::OdomTracker * odomTracker_;
 
   CbNavigateForward(float forwardDistance);
 

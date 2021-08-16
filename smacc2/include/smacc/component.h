@@ -10,62 +10,62 @@
 
 namespace smacc
 {
-    
 class ISmaccComponent
 {
 public:
-    ISmaccComponent();
+  ISmaccComponent();
 
-    virtual ~ISmaccComponent();
+  virtual ~ISmaccComponent();
 
-    // Returns a custom identifier defined by the specific plugin implementation
-    virtual std::string getName() const;
+  // Returns a custom identifier defined by the specific plugin implementation
+  virtual std::string getName() const;
 
 protected:
-    // this is the basic initializatin method that each specific component should
-    // implement. The owner and the node are already available when it is invoked by the client.
-    virtual void onInitialize();
+  // this is the basic initializatin method that each specific component should
+  // implement. The owner and the node are already available when it is invoked by the client.
+  virtual void onInitialize();
 
-    template <typename EventType>
-    void postEvent(const EventType &ev);
+  template <typename EventType>
+  void postEvent(const EventType & ev);
 
-    template <typename EventType>
-    void postEvent();
+  template <typename EventType>
+  void postEvent();
 
-    template <typename TOrthogonal, typename TSourceObject>
-    void onOrthogonalAllocation() {}
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
+  {
+  }
 
-    template <typename TComponent>
-    void requiresComponent(TComponent *& requiredComponentStorage);
+  template <typename TComponent>
+  void requiresComponent(TComponent *& requiredComponentStorage);
 
-    template <typename TClient>
-    void requiresClient(TClient *& requiredClientStorage);
+  template <typename TClient>
+  void requiresClient(TClient *& requiredClientStorage);
 
-    template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-    SmaccComponentType *createSiblingComponent(TArgs... targs);
+  template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+  SmaccComponentType * createSiblingComponent(TArgs... targs);
 
-    template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-    SmaccComponentType *createSiblingNamedComponent(std::string name, TArgs... targs);
+  template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+  SmaccComponentType * createSiblingNamedComponent(std::string name, TArgs... targs);
 
-    rclcpp::Node::SharedPtr getNode();
+  rclcpp::Node::SharedPtr getNode();
 
-    rclcpp::Logger getLogger();
+  rclcpp::Logger getLogger();
 
-    // A reference to the state machine object that owns this resource
-    ISmaccStateMachine *stateMachine_;
+  // A reference to the state machine object that owns this resource
+  ISmaccStateMachine * stateMachine_;
 
-    ISmaccClient *owner_;
+  ISmaccClient * owner_;
 
-    private:
-    // friend method invoked by the client. 
-    void initialize(ISmaccClient *owner);
+private:
+  // friend method invoked by the client.
+  void initialize(ISmaccClient * owner);
 
-    // friend method invoked by the client.
-    // Assigns the owner of this resource to the given state machine parameter object
-    void setStateMachine(ISmaccStateMachine *stateMachine);
+  // friend method invoked by the client.
+  // Assigns the owner of this resource to the given state machine parameter object
+  void setStateMachine(ISmaccStateMachine * stateMachine);
 
-
-    friend class ISmaccOrthogonal;
-    friend class ISmaccClient;
+  friend class ISmaccOrthogonal;
+  friend class ISmaccClient;
 };
-} // namespace smacc
+}  // namespace smacc

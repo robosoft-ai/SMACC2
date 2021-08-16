@@ -8,18 +8,18 @@ template <typename SS>
 struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, SS>
 {
   typedef SmaccState<StiFPatternForward1<SS>, SS> TSti;
-  using TSti::SmaccState;
   using TSti::context_type;
+  using TSti::SmaccState;
 
   using TSti::configure_orthogonal;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-      Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternReturn1<SS>>
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternReturn1<SS>>
 
-      >
-      reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
@@ -30,17 +30,19 @@ struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, S
 
   void runtimeConfigure()
   {
-    cl_lidar::ClLidarSensor *lidarClient;
+    cl_lidar::ClLidarSensor * lidarClient;
     this->requiresClient(lidarClient);
 
     auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
 
-    auto forwardBehavior = TSti::template getOrthogonal<OrNavigation>()
-                               ->template getClientBehavior<CbNavigateForward>();
+    auto forwardBehavior =
+      TSti::template getOrthogonal<OrNavigation>()->template getClientBehavior<CbNavigateForward>();
 
     forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
-    RCLCPP_INFO(this->getNode()->get_logger(), "Going forward in F pattern, distance to wall: %lf", *(forwardBehavior->forwardDistance));
+    RCLCPP_INFO(
+      this->getNode()->get_logger(), "Going forward in F pattern, distance to wall: %lf",
+      *(forwardBehavior->forwardDistance));
   }
 };
-}
-}
+}  // namespace f_pattern_states
+}  // namespace sm_dance_bot_strikes_back

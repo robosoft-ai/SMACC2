@@ -13,31 +13,20 @@ struct StState4 : smacc::SmaccState<StState4, MsRun>
   {
   };
 
-  typedef mpl::list<Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SS1::Ss1, TIMEOUT>> transitions;
+  typedef mpl::list<Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SS1::Ss1, TIMEOUT>>
+    transitions;
 
   struct PREVIOUS : ABORT
   {
   };
 
   // STATE FUNCTIONS
-  static void staticConfigure()
-  {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+  static void staticConfigure() { configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10); }
 
-  }
+  void runtimeConfigure() {}
 
-  void runtimeConfigure()
-  {
-  }
+  void onEntry() { RCLCPP_INFO(getNode()->get_logger(), "On Entry!"); }
 
-  void onEntry()
-  {
-    RCLCPP_INFO(getNode()->get_logger(), "On Entry!");
-  }
-
-  void onExit()
-  {
-    RCLCPP_INFO(getNode()->get_logger(), "On Exit!");
-  }
+  void onExit() { RCLCPP_INFO(getNode()->get_logger(), "On Exit!"); }
 };
 }  // namespace sm_three_some

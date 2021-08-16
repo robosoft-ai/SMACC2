@@ -14,32 +14,34 @@
 #include <smacc/smacc_state_machine.h>
 #include <smacc/smacc_state_reactor.h>
 
+#include <smacc/smacc_tracing/smacc_tracing.h>
 #include <boost/function_types/function_arity.hpp>
 #include <boost/function_types/function_type.hpp>
 #include <boost/function_types/parameter_types.hpp>
 #include <smacc_msgs/msg/smacc_status.hpp>
 #include <sstream>
-#include <smacc/smacc_tracing/smacc_tracing.h>
 namespace smacc
 {
 using namespace smacc::introspection;
 
 template <typename TOrthogonal>
-TOrthogonal *ISmaccStateMachine::getOrthogonal()
+TOrthogonal * ISmaccStateMachine::getOrthogonal()
 {
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
   std::string orthogonalkey = demangledTypeName<TOrthogonal>();
-  TOrthogonal *ret;
+  TOrthogonal * ret;
 
   auto it = orthogonals_.find(orthogonalkey);
 
   if (it != orthogonals_.end())
   {
-    RCLCPP_DEBUG(getNode()->get_logger(),
-                 "Orthogonal %s resource is being required from some state, client or component. Found resource in "
-                 "cache.",
-                 orthogonalkey.c_str());
+    RCLCPP_DEBUG(
+      getNode()->get_logger(),
+      "Orthogonal %s resource is being required from some state, client or component. Found "
+      "resource in "
+      "cache.",
+      orthogonalkey.c_str());
     ret = dynamic_cast<TOrthogonal *>(it->second.get());
     return ret;
   }
@@ -48,7 +50,7 @@ TOrthogonal *ISmaccStateMachine::getOrthogonal()
     std::stringstream ss;
     ss << "Orthogonal not found " << orthogonalkey.c_str() << std::endl;
     ss << "The existing orthogonals are the following: " << std::endl;
-    for (auto &orthogonal : orthogonals_)
+    for (auto & orthogonal : orthogonals_)
     {
       ss << " - " << orthogonal.first << std::endl;
     }
@@ -77,12 +79,13 @@ void ISmaccStateMachine::createOrthogonal()
   }
   else
   {
-    RCLCPP_WARN_STREAM(getNode()->get_logger(), "There were already one existing orthogonal of type "
-                                                    << orthogonalkey.c_str()
-                                                    << ". Skipping creation orthogonal request. ");
+    RCLCPP_WARN_STREAM(
+      getNode()->get_logger(), "There were already one existing orthogonal of type "
+                                 << orthogonalkey.c_str()
+                                 << ". Skipping creation orthogonal request. ");
     std::stringstream ss;
     ss << "The existing orthogonals are the following: " << std::endl;
-    for (auto &orthogonal : orthogonals_)
+    for (auto & orthogonal : orthogonals_)
     {
       ss << " - " << orthogonal.first << std::endl;
     }
@@ -93,15 +96,16 @@ void ISmaccStateMachine::createOrthogonal()
 
 //-------------------------------------------------------------------------------------------------------
 template <typename SmaccComponentType>
-void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage)
+void ISmaccStateMachine::requiresComponent(SmaccComponentType *& storage)
 {
-  RCLCPP_DEBUG(getNode()->get_logger(), "component %s is required",
-               demangleSymbol(typeid(SmaccComponentType).name()).c_str());
+  RCLCPP_DEBUG(
+    getNode()->get_logger(), "component %s is required",
+    demangleSymbol(typeid(SmaccComponentType).name()).c_str());
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
   for (auto ortho : this->orthogonals_)
   {
-    for (auto &client : ortho.second->clients_)
+    for (auto & client : ortho.second->clients_)
     {
       storage = client->getComponent<SmaccComponentType>();
       if (storage != nullptr)
@@ -111,8 +115,9 @@ void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage)
     }
   }
 
-  RCLCPP_WARN(getNode()->get_logger(), "component %s is required but it was not found in any orthogonal",
-              demangleSymbol(typeid(SmaccComponentType).name()).c_str());
+  RCLCPP_WARN(
+    getNode()->get_logger(), "component %s is required but it was not found in any orthogonal",
+    demangleSymbol(typeid(SmaccComponentType).name()).c_str());
 
   // std::string componentkey = demangledTypeName<SmaccComponentType>();
   // SmaccComponentType *ret;
@@ -139,20 +144,22 @@ void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage)
 }
 //-------------------------------------------------------------------------------------------------------
 template <typename EventType>
-void ISmaccStateMachine::postEvent(EventType *ev, EventLifeTime evlifetime)
+void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
 {
   std::lock_guard<std::recursive_mutex> guard(eventQueueMutex_);
 
-  #define eventtypename demangleSymbol<EventType>().c_str()
-  
-  TRACEPOINT( smacc_event, eventtypename);
+#define eventtypename demangleSymbol<EventType>().c_str()
 
-  if (evlifetime == EventLifeTime::CURRENT_STATE &&
-      (stateMachineCurrentAction == StateMachineInternalAction::STATE_EXITING ||
-       stateMachineCurrentAction == StateMachineInternalAction::TRANSITIONING))
+  TRACEPOINT(smacc_event, eventtypename);
+
+  if (
+    evlifetime == EventLifeTime::CURRENT_STATE &&
+    (stateMachineCurrentAction == StateMachineInternalAction::STATE_EXITING ||
+     stateMachineCurrentAction == StateMachineInternalAction::TRANSITIONING))
   {
-    RCLCPP_WARN_STREAM(getNode()->get_logger(), "CURRENT STATE SCOPED EVENT SKIPPED, state is exiting/transitioning "
-                                                    << eventtypename);
+    RCLCPP_WARN_STREAM(
+      getNode()->get_logger(),
+      "CURRENT STATE SCOPED EVENT SKIPPED, state is exiting/transitioning " << eventtypename);
     return;
     // in this case we may lose/skip events, if this is not right for some cases we should create a queue
     // to lock the events during the transitions. This issues appeared when a client asyncbehavior was posting an event
@@ -177,12 +184,12 @@ void ISmaccStateMachine::postEvent(EventType *ev, EventLifeTime evlifetime)
 template <typename EventType>
 void ISmaccStateMachine::postEvent(EventLifeTime evlifetime)
 {
-  auto *ev = new EventType();
+  auto * ev = new EventType();
   this->postEvent(ev, evlifetime);
 }
 
 template <typename T>
-bool ISmaccStateMachine::getGlobalSMData(std::string name, T &ret)
+bool ISmaccStateMachine::getGlobalSMData(std::string name, T & ret)
 {
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
   // RCLCPP_WARN(getNode()->get_logger(),"get SM Data lock acquire");
@@ -198,14 +205,14 @@ bool ISmaccStateMachine::getGlobalSMData(std::string name, T &ret)
     // RCLCPP_WARN(getNode()->get_logger(),"get SM DAta -data exist. accessing");
     try
     {
-      auto &v = globalData_[name];
+      auto & v = globalData_[name];
 
       // RCLCPP_WARN(getNode()->get_logger(),"get SM DAta -data exist. any cast");
       ret = boost::any_cast<T>(v.second);
       success = true;
       // RCLCPP_WARN(getNode()->get_logger(),"get SM DAta -data exist. success");
     }
-    catch (boost::bad_any_cast &ex)
+    catch (boost::bad_any_cast & ex)
     {
       RCLCPP_ERROR(getNode()->get_logger(), "bad any cast: %s", ex.what());
       success = false;
@@ -223,13 +230,14 @@ void ISmaccStateMachine::setGlobalSMData(std::string name, T value)
     std::lock_guard<std::recursive_mutex> lock(m_mutex_);
     // RCLCPP_WARN(getNode()->get_logger(),"set SM Data lock acquire");
 
-    globalData_[name] = { [this, name]() {
-                           std::stringstream ss;
-                           auto val = any_cast<T>(globalData_[name].second);
-                           ss << val;
-                           return ss.str();
-                         },
-                          value };
+    globalData_[name] = {
+      [this, name]() {
+        std::stringstream ss;
+        auto val = any_cast<T>(globalData_[name].second);
+        ss << val;
+        return ss.str();
+      },
+      value};
   }
 
   this->updateStatusMessage();
@@ -240,14 +248,15 @@ void ISmaccStateMachine::mapBehavior()
 {
   std::string stateFieldName = demangleSymbol(typeid(StateField).name());
   std::string behaviorType = demangleSymbol(typeid(BehaviorType).name());
-  RCLCPP_INFO(getNode()->get_logger(), "Mapping state field '%s' to stateReactor '%s'", stateFieldName.c_str(),
-              behaviorType.c_str());
-  SmaccClientBehavior *globalreference;
+  RCLCPP_INFO(
+    getNode()->get_logger(), "Mapping state field '%s' to stateReactor '%s'",
+    stateFieldName.c_str(), behaviorType.c_str());
+  SmaccClientBehavior * globalreference;
   if (!this->getGlobalSMData(stateFieldName, globalreference))
   {
     // Using the requires component approach, we force a unique existence
     // of this component
-    BehaviorType *behavior;
+    BehaviorType * behavior;
     this->requiresComponent(behavior);
     globalreference = dynamic_cast<ISmaccClientBehavior *>(behavior);
 
@@ -261,15 +270,16 @@ template <int arity>
 struct Bind
 {
   template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-  boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback,
-                                      TSmaccObjectType *object);
+  boost::signals2::connection bindaux(
+    TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object);
 };
 
 template <>
 struct Bind<1>
 {
   template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-  boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
+  boost::signals2::connection bindaux(
+    TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object)
   {
     return signal.connect([=]() { return (object->*callback)(); });
   }
@@ -279,7 +289,8 @@ template <>
 struct Bind<2>
 {
   template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-  boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
+  boost::signals2::connection bindaux(
+    TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object)
   {
     return signal.connect([=](auto a1) { return (object->*callback)(a1); });
   }
@@ -289,7 +300,8 @@ template <>
 struct Bind<3>
 {
   template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-  boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
+  boost::signals2::connection bindaux(
+    TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object)
   {
     return signal.connect([=](auto a1, auto a2) { return (object->*callback)(a1, a2); });
   }
@@ -299,51 +311,58 @@ template <>
 struct Bind<4>
 {
   template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-  boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
+  boost::signals2::connection bindaux(
+    TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object)
   {
-    return signal.connect([=](auto a1, auto a2, auto a3) { return (object->*callback)(a1, a2, a3); });
+    return signal.connect(
+      [=](auto a1, auto a2, auto a3) { return (object->*callback)(a1, a2, a3); });
   }
 };
 }  // namespace utils
 using namespace smacc::utils;
 
 template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal,
-                                                                       TMemberFunctionPrototype callback,
-                                                                       TSmaccObjectType *object)
+boost::signals2::connection ISmaccStateMachine::createSignalConnection(
+  TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object)
 {
-  static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
-                    std::is_base_of<ISmaccClient, TSmaccObjectType>::value ||
-                    std::is_base_of<ISmaccClientBehavior, TSmaccObjectType>::value ||
-                    std::is_base_of<StateReactor, TSmaccObjectType>::value ||
-                    std::is_base_of<ISmaccComponent, TSmaccObjectType>::value,
-                "Only are accepted smacc types as subscribers for smacc signals");
+  static_assert(
+    std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
+      std::is_base_of<ISmaccClient, TSmaccObjectType>::value ||
+      std::is_base_of<ISmaccClientBehavior, TSmaccObjectType>::value ||
+      std::is_base_of<StateReactor, TSmaccObjectType>::value ||
+      std::is_base_of<ISmaccComponent, TSmaccObjectType>::value,
+    "Only are accepted smacc types as subscribers for smacc signals");
 
   typedef decltype(callback) ft;
   Bind<boost::function_types::function_arity<ft>::value> binder;
   boost::signals2::connection connection = binder.bindaux(signal, callback, object);
 
   // long life-time objects
-  if (std::is_base_of<ISmaccComponent, TSmaccObjectType>::value ||
-      std::is_base_of<ISmaccClient, TSmaccObjectType>::value ||
-      std::is_base_of<ISmaccOrthogonal, TSmaccObjectType>::value ||
-      std::is_base_of<ISmaccStateMachine, TSmaccObjectType>::value)
+  if (
+    std::is_base_of<ISmaccComponent, TSmaccObjectType>::value ||
+    std::is_base_of<ISmaccClient, TSmaccObjectType>::value ||
+    std::is_base_of<ISmaccOrthogonal, TSmaccObjectType>::value ||
+    std::is_base_of<ISmaccStateMachine, TSmaccObjectType>::value)
   {
   }
-  else if (std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
-           std::is_base_of<StateReactor, TSmaccObjectType>::value ||
-           std::is_base_of<ISmaccClientBehavior, TSmaccObjectType>::value)
+  else if (
+    std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
+    std::is_base_of<StateReactor, TSmaccObjectType>::value ||
+    std::is_base_of<ISmaccClientBehavior, TSmaccObjectType>::value)
   {
-    RCLCPP_INFO(getNode()->get_logger(),
-                "[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s",
-                demangledTypeName<TSmaccObjectType>().c_str());
+    RCLCPP_INFO(
+      getNode()->get_logger(),
+      "[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s",
+      demangledTypeName<TSmaccObjectType>().c_str());
     stateCallbackConnections.push_back(connection);
   }
   else  // state life-time objects
   {
-    RCLCPP_WARN(getNode()->get_logger(), "[StateMachine] connecting signal to an unknown object with life-time unknown "
-                                         "behavior. It might provoke "
-                                         "an exception if the object is destroyed during the execution.");
+    RCLCPP_WARN(
+      getNode()->get_logger(),
+      "[StateMachine] connecting signal to an unknown object with life-time unknown "
+      "behavior. It might provoke "
+      "an exception if the object is destroyed during the execution.");
   }
 
   return connection;
@@ -358,7 +377,7 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSig
 // }
 
 template <typename T>
-bool ISmaccStateMachine::getParam(std::string param_name, T &param_storage)
+bool ISmaccStateMachine::getParam(std::string param_name, T & param_storage)
 {
   return getNode()->get_parameter(param_name, param_storage);
 }
@@ -372,20 +391,21 @@ void ISmaccStateMachine::setParam(std::string param_name, T param_val)
 
 // Delegates to ROS param access with the current NodeHandle
 template <typename T>
-bool ISmaccStateMachine::param(std::string param_name, T &param_val, const T &default_val)
+bool ISmaccStateMachine::param(std::string param_name, T & param_val, const T & default_val)
 {
   return getNode()->declare_parameter(param_name, param_val, default_val);
 }
 
 template <typename StateType>
-void ISmaccStateMachine::notifyOnStateEntryStart(StateType *state)
+void ISmaccStateMachine::notifyOnStateEntryStart(StateType * state)
 {
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
-  RCLCPP_DEBUG(getNode()->get_logger(),
-               "[State Machne] Initializating a new state '%s' and updating current state. Getting state "
-               "meta-information. number of orthogonals: %ld",
-               demangleSymbol(typeid(StateType).name()).c_str(), this->orthogonals_.size());
+  RCLCPP_DEBUG(
+    getNode()->get_logger(),
+    "[State Machne] Initializating a new state '%s' and updating current state. Getting state "
+    "meta-information. number of orthogonals: %ld",
+    demangleSymbol(typeid(StateType).name()).c_str(), this->orthogonals_.size());
 
   stateSeqCounter_++;
   currentState_ = state;
@@ -395,26 +415,28 @@ void ISmaccStateMachine::notifyOnStateEntryStart(StateType *state)
 template <typename StateType>
 void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
 {
-  RCLCPP_INFO(getNode()->get_logger(), "[%s] State OnEntry code finished",
-              demangleSymbol(typeid(StateType).name()).c_str());
+  RCLCPP_INFO(
+    getNode()->get_logger(), "[%s] State OnEntry code finished",
+    demangleSymbol(typeid(StateType).name()).c_str());
 
   for (auto pair : this->orthogonals_)
   {
     // RCLCPP_INFO(getNode()->get_logger(),"ortho onentry: %s", pair.second->getName().c_str());
-    auto &orthogonal = pair.second;
+    auto & orthogonal = pair.second;
     try
     {
       orthogonal->onEntry();
     }
-    catch (const std::exception &e)
+    catch (const std::exception & e)
     {
-      RCLCPP_ERROR(getNode()->get_logger(),
-                   "[Orthogonal %s] Exception on Entry - continuing with next orthogonal. Exception info: %s",
-                   pair.second->getName().c_str(), e.what());
+      RCLCPP_ERROR(
+        getNode()->get_logger(),
+        "[Orthogonal %s] Exception on Entry - continuing with next orthogonal. Exception info: %s",
+        pair.second->getName().c_str(), e.what());
     }
   }
 
-  for (auto &sr : this->currentState_->getStateReactors())
+  for (auto & sr : this->currentState_->getStateReactors())
   {
     auto srname = smacc::demangleSymbol(typeid(*sr).name());
     RCLCPP_INFO_STREAM(getNode()->get_logger(), "state reactor onEntry: " << srname);
@@ -422,15 +444,17 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
     {
       sr->onEntry();
     }
-    catch (const std::exception &e)
+    catch (const std::exception & e)
     {
-      RCLCPP_ERROR(getNode()->get_logger(),
-                   "[State Reactor %s] Exception on Entry - continuing with next state reactor. Exception info: %s",
-                   srname.c_str(), e.what());
+      RCLCPP_ERROR(
+        getNode()->get_logger(),
+        "[State Reactor %s] Exception on Entry - continuing with next state reactor. Exception "
+        "info: %s",
+        srname.c_str(), e.what());
     }
   }
 
-  for (auto &eg : this->currentState_->getEventGenerators())
+  for (auto & eg : this->currentState_->getEventGenerators())
   {
     auto egname = smacc::demangleSymbol(typeid(*eg).name());
     RCLCPP_INFO_STREAM(getNode()->get_logger(), "event generator onEntry: " << egname);
@@ -438,11 +462,13 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
     {
       eg->onEntry();
     }
-    catch (const std::exception &e)
+    catch (const std::exception & e)
     {
-      RCLCPP_ERROR(getNode()->get_logger(),
-                   "[Event generator %s] Exception on Entry - continuing with next state reactor. Exception info: %s",
-                   egname.c_str(), e.what());
+      RCLCPP_ERROR(
+        getNode()->get_logger(),
+        "[Event generator %s] Exception on Entry - continuing with next state reactor. Exception "
+        "info: %s",
+        egname.c_str(), e.what());
     }
   }
 
@@ -456,7 +482,7 @@ void ISmaccStateMachine::notifyOnRuntimeConfigurationFinished(StateType *)
   for (auto pair : this->orthogonals_)
   {
     // RCLCPP_INFO(getNode()->get_logger(),"ortho onruntime configure: %s", pair.second->getName().c_str());
-    auto &orthogonal = pair.second;
+    auto & orthogonal = pair.second;
     orthogonal->runtimeConfigure();
   }
 
@@ -472,7 +498,7 @@ void ISmaccStateMachine::notifyOnRuntimeConfigured(StateType *)
 }
 
 template <typename StateType>
-void ISmaccStateMachine::notifyOnStateExitting(StateType *state)
+void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
 {
   stateMachineCurrentAction = StateMachineInternalAction::STATE_EXITING;
 
@@ -483,20 +509,21 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType *state)
   RCLCPP_INFO_STREAM(getNode()->get_logger(), "Notification State Exit: leaving state" << state);
   for (auto pair : this->orthogonals_)
   {
-    auto &orthogonal = pair.second;
+    auto & orthogonal = pair.second;
     try
     {
       orthogonal->onExit();
     }
-    catch (const std::exception &e)
+    catch (const std::exception & e)
     {
-      RCLCPP_ERROR(getNode()->get_logger(),
-                   "[Orthogonal %s] Exception onExit - continuing with next orthogonal. Exception info: %s",
-                   pair.second->getName().c_str(), e.what());
+      RCLCPP_ERROR(
+        getNode()->get_logger(),
+        "[Orthogonal %s] Exception onExit - continuing with next orthogonal. Exception info: %s",
+        pair.second->getName().c_str(), e.what());
     }
   }
 
-  for (auto &sr : state->getStateReactors())
+  for (auto & sr : state->getStateReactors())
   {
     auto srname = smacc::demangleSymbol(typeid(*sr).name());
     RCLCPP_INFO_STREAM(getNode()->get_logger(), "state reactor OnExit: " << srname);
@@ -504,15 +531,17 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType *state)
     {
       sr->onExit();
     }
-    catch (const std::exception &e)
+    catch (const std::exception & e)
     {
-      RCLCPP_ERROR(getNode()->get_logger(),
-                   "[State Reactor %s] Exception on OnExit - continuing with next state reactor. Exception info: %s",
-                   srname.c_str(), e.what());
+      RCLCPP_ERROR(
+        getNode()->get_logger(),
+        "[State Reactor %s] Exception on OnExit - continuing with next state reactor. Exception "
+        "info: %s",
+        srname.c_str(), e.what());
     }
   }
 
-  for (auto &eg : state->getEventGenerators())
+  for (auto & eg : state->getEventGenerators())
   {
     auto egname = smacc::demangleSymbol(typeid(*eg).name());
     RCLCPP_INFO_STREAM(getNode()->get_logger(), "event generator OnExit: " << egname);
@@ -520,20 +549,24 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType *state)
     {
       eg->onExit();
     }
-    catch (const std::exception &e)
+    catch (const std::exception & e)
     {
-      RCLCPP_ERROR(getNode()->get_logger(),
-                   "[State Reactor %s] Exception on OnExit - continuing with next state reactor. Exception info: %s",
-                   egname.c_str(), e.what());
+      RCLCPP_ERROR(
+        getNode()->get_logger(),
+        "[State Reactor %s] Exception on OnExit - continuing with next state reactor. Exception "
+        "info: %s",
+        egname.c_str(), e.what());
     }
   }
 
   this->lockStateMachine("state exit");
 
-  for (auto &conn : this->stateCallbackConnections)
+  for (auto & conn : this->stateCallbackConnections)
   {
-    RCLCPP_WARN_STREAM(getNode()->get_logger(), "[StateMachine] Disconnecting scoped-lifetime SmaccSignal "
-                                                "subscription");
+    RCLCPP_WARN_STREAM(
+      getNode()->get_logger(),
+      "[StateMachine] Disconnecting scoped-lifetime SmaccSignal "
+      "subscription");
     conn.disconnect();
   }
 
@@ -555,16 +588,18 @@ void ISmaccStateMachine::notifyOnStateExited(StateType *)
 }
 //-------------------------------------------------------------------------------------------------------
 template <typename EventType>
-void ISmaccStateMachine::propagateEventToStateReactors(ISmaccState *st, EventType *ev)
+void ISmaccStateMachine::propagateEventToStateReactors(ISmaccState * st, EventType * ev)
 {
-  RCLCPP_DEBUG(getNode()->get_logger(), "PROPAGATING EVENT [%s] TO LUs [%s]: ", demangleSymbol<EventType>().c_str(),
-               st->getClassName().c_str());
-  for (auto &sb : st->getStateReactors())
+  RCLCPP_DEBUG(
+    getNode()->get_logger(),
+    "PROPAGATING EVENT [%s] TO LUs [%s]: ", demangleSymbol<EventType>().c_str(),
+    st->getClassName().c_str());
+  for (auto & sb : st->getStateReactors())
   {
     sb->notifyEvent(ev);
   }
 
-  auto *pst = st->getParentState();
+  auto * pst = st->getParentState();
   if (pst != nullptr)
   {
     propagateEventToStateReactors(pst, ev);
@@ -580,17 +615,11 @@ void ISmaccStateMachine::buildStateMachineInfo()
   this->checkStateMachineConsistence();
 }
 
-unsigned long ISmaccStateMachine::getCurrentStateCounter() const
-{
-  return this->stateSeqCounter_;
-}
+unsigned long ISmaccStateMachine::getCurrentStateCounter() const { return this->stateSeqCounter_; }
 
-ISmaccState *ISmaccStateMachine::getCurrentState() const
-{
-  return this->currentState_;
-}
+ISmaccState * ISmaccStateMachine::getCurrentState() const { return this->currentState_; }
 
-const smacc::introspection::SmaccStateMachineInfo &ISmaccStateMachine::getStateMachineInfo()
+const smacc::introspection::SmaccStateMachineInfo & ISmaccStateMachine::getStateMachineInfo()
 {
   return *this->stateMachineInfo_;
 }

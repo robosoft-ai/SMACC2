@@ -15,8 +15,9 @@ namespace cl_move_base_z
 class GoalCheckerSwitcher : public smacc::ISmaccComponent
 {
 public:
-  GoalCheckerSwitcher(std::string goal_checker_selector_topic = "goal_checker_selector",
-                      std::string default_goal_checker_name = "goal_checker");
+  GoalCheckerSwitcher(
+    std::string goal_checker_selector_topic = "goal_checker_selector",
+    std::string default_goal_checker_name = "goal_checker");
   void onInitialize() override;
   virtual ~GoalCheckerSwitcher();
   void setDefaultGoalChecker();

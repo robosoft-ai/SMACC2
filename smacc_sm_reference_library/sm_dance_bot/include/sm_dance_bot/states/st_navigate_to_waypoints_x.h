@@ -6,26 +6,37 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 {
   using SmaccState::SmaccState;
 
-// CUSTOM TRANSITION TAGS
-  struct TRANSITION_1 : SUCCESS{};
-  struct TRANSITION_2 : SUCCESS{};
-  struct TRANSITION_3 : SUCCESS{};
-  struct TRANSITION_4 : SUCCESS{};
-  struct TRANSITION_5 : SUCCESS{};
+  // CUSTOM TRANSITION TAGS
+  struct TRANSITION_1 : SUCCESS
+  {
+  };
+  struct TRANSITION_2 : SUCCESS
+  {
+  };
+  struct TRANSITION_3 : SUCCESS
+  {
+  };
+  struct TRANSITION_4 : SUCCESS
+  {
+  };
+  struct TRANSITION_5 : SUCCESS
+  {
+  };
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
 
-  Transition<EvWaypoint0<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_1>,
-  Transition<EvWaypoint1<ClMoveBaseZ, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_2>,
-  Transition<EvWaypoint2<ClMoveBaseZ, OrNavigation>, SS3::SsRadialPattern3, TRANSITION_3>,
-  Transition<EvWaypoint3<ClMoveBaseZ, OrNavigation>, SS4::SsFPattern1, TRANSITION_4>,
-  Transition<EvWaypoint4<ClMoveBaseZ, OrNavigation>, SS5::SsSPattern1, TRANSITION_5>,
-  Transition<EvCbFailure<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
-  
-  >reactions;
+    Transition<EvWaypoint0<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_1>,
+    Transition<EvWaypoint1<ClMoveBaseZ, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_2>,
+    Transition<EvWaypoint2<ClMoveBaseZ, OrNavigation>, SS3::SsRadialPattern3, TRANSITION_3>,
+    Transition<EvWaypoint3<ClMoveBaseZ, OrNavigation>, SS4::SsFPattern1, TRANSITION_4>,
+    Transition<EvWaypoint4<ClMoveBaseZ, OrNavigation>, SS5::SsSPattern1, TRANSITION_5>,
+    Transition<EvCbFailure<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
 
-// STATE FUNCTIONS
+    >
+    reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrLED, CbLEDOn>();
@@ -33,8 +44,6 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
   }
 
-  void runtimeConfigure()
-  {
-  }
+  void runtimeConfigure() {}
 };
-} // namespace sm_dance_bot
+}  // namespace sm_dance_bot
