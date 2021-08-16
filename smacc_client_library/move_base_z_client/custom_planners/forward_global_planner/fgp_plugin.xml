@@ -1,0 +1,6 @@
+<library path="forward_global_planner">
+  <class name="forward_global_planner::ForwardGlobalPlanner" type="cl_move_base_z::forward_global_planner::ForwardGlobalPlanner" base_class_type="nav2_core::GlobalPlanner">
+    <description>
+    </description>
+  </class>
+</library>
