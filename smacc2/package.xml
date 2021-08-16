@@ -18,6 +18,8 @@
   <depend>rclcpp_action</depend>
   <depend>smacc_msgs</depend>
   <depend>tracetools</depend>
+  <depend>liblttng-ust-dev</depend>
+  
   <build_depend>libboost-thread-dev</build_depend>
   <exec_depend>libboost-thread</exec_depend>
 
