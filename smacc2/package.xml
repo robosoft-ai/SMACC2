@@ -21,6 +21,8 @@
   <depend>tracetools_trace</depend>
   <depend>tracetools_launch</depend>
 
+  <depend>liblttng-ust-dev</depend>
+
   <build_depend>libboost-thread-dev</build_depend>
   <exec_depend>libboost-thread</exec_depend>
 
