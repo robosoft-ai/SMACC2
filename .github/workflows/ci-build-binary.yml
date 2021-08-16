@@ -17,6 +17,8 @@ jobs:
         env:
           - {ROS_DISTRO: rolling, ROS_REPO: main}
           - {ROS_DISTRO: rolling, ROS_REPO: testing}
+    env:
+      UPSTREAM_WORKSPACE: smacc2.repos  # Remove this as soon as navigation2 is released in rolling
     steps:
       - uses: actions/checkout@v1
       - uses: 'ros-industrial/industrial_ci@master'
