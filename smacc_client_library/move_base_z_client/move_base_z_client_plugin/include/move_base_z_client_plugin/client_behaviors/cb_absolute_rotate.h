@@ -8,6 +8,7 @@
 #include <tf2_ros/buffer.h>
 
 #include "cb_move_base_client_behavior_base.h"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 
 namespace cl_move_base_z
 {

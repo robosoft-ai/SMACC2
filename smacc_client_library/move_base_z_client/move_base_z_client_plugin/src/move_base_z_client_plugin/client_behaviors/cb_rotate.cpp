@@ -3,6 +3,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+#include <geometry_msgs/msg/quaternion_stamped.hpp>
 
 #include <move_base_z_client_plugin/client_behaviors/cb_rotate.h>
 #include <move_base_z_client_plugin/common.h>

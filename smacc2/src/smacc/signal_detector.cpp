@@ -41,7 +41,7 @@ void SignalDetector::initialize(ISmaccStateMachine * stateMachine)
   smaccStateMachine_ = stateMachine;
   lastState_ = std::numeric_limits<unsigned long>::quiet_NaN();
   findUpdatableClientsAndComponents();
-  this->getNode()->declare_parameter("signal_detector_loop_freq");
+  this->getNode()->declare_parameter("signal_detector_loop_freq", this->loop_rate_hz);
 
   initialized_ = true;
 }

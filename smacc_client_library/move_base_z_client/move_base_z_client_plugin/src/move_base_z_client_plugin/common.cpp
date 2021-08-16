@@ -1,5 +1,6 @@
 #include <move_base_z_client_plugin/common.h>
 #include <rclcpp/rclcpp.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include <tf2/utils.h>
 
 std::ostream& operator<< (std::ostream &out, const geometry_msgs::msg::Quaternion &msg)
