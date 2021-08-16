@@ -75,10 +75,10 @@ geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(
 
 geometry_msgs::msg::PoseStamped makePureStraightSubPlan(
   const geometry_msgs::msg::PoseStamped & startOrientedPose, const geometry_msgs::msg::Point & goal,
-  double lenght, std::vector<geometry_msgs::msg::PoseStamped> & plan)
+  double length, std::vector<geometry_msgs::msg::PoseStamped> & plan)
 {
   double dx = 0.01;  // 1 cm
-  double steps = lenght / dx;
+  double steps = length / dx;
   double dt = 1.0 / steps;
 
   // geometry_msgs::msg::PoseStamped end;

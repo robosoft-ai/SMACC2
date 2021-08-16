@@ -22,7 +22,7 @@ include_directories(
  ${std_msgs_INCLUDE_DIRS}
 )
 
-file(GLOB_RECURSE SRC_FILES src *.cpp) 
+file(GLOB_RECURSE SRC_FILES src *.cpp)
 #file(GLOB_RECURSE SRC_FILES "src/*.cpp" "src/client_behaviors/*.cpp")
 
 add_library(${PROJECT_NAME}

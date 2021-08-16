@@ -18,7 +18,7 @@ set(dependencies smacc2)
 
 include_directories(include)
 
-add_library(${PROJECT_NAME} SHARED 
+add_library(${PROJECT_NAME} SHARED
             src/eg_conditional_generator/eg_conditional_generator.cpp)
 
 ament_target_dependencies(${PROJECT_NAME} ${dependencies})

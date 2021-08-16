@@ -558,7 +558,7 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
 
     if (!waiting_)
     {
-      RCLCPP_DEBUG(nh_->get_logger(), "Start waiting obstacle dissapear");
+      RCLCPP_DEBUG(nh_->get_logger(), "Start waiting obstacle disappear");
       waiting_ = true;
       waitingStamp_ = nh_->now();
     }
@@ -566,13 +566,13 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
     {
       auto waitingduration = nh_->now() - waitingStamp_;
       RCLCPP_DEBUG(
-        nh_->get_logger(), "waiting obstacle dissapear, ellapsed: %lf seconds",
+        nh_->get_logger(), "waiting obstacle disappear, elapsed: %lf seconds",
         waitingduration.seconds());
 
       if (waitingduration > this->waitingTimeout_)
       {
         RCLCPP_WARN(
-          nh_->get_logger(), "TIMEOUT waiting obstacle dissapear, ellapsed: %lf seconds",
+          nh_->get_logger(), "TIMEOUT waiting obstacle disappear, elapsed: %lf seconds",
           waitingduration.seconds());
         success = false;
       }

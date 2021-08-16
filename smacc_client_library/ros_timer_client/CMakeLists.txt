@@ -17,7 +17,7 @@ find_package(Boost COMPONENTS thread REQUIRED)
 
 include_directories(
                     ${PROJECT_NAME}
-                    include 
+                    include
                     ${smacc2_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME}
@@ -28,7 +28,7 @@ add_library(${PROJECT_NAME}
 )
 target_link_libraries(${PROJECT_NAME} SHARED ${Boost_LIBRARIES} smacc2)
 ament_target_dependencies(${PROJECT_NAME} smacc2)
- 
+
 ament_export_include_directories(include)
 ament_export_dependencies(smacc2 Boost)
 ament_export_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})

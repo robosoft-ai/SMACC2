@@ -49,7 +49,7 @@
         <uri>model://turtlebot3_world</uri>
       </include>
     </model>
-     
+
     <include>
       <pose>-2.0 -0.5 0.01 0.0 0.0 0.0</pose>
       <uri>model://turtlebot3_burger</uri>

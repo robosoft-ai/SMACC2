@@ -15,12 +15,12 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(smacc2 REQUIRED)
 
-set(dependencies 
+set(dependencies
     smacc2)
 
 include_directories(include)
 
-add_library(${PROJECT_NAME} 
+add_library(${PROJECT_NAME}
             src/${PROJECT_NAME}/sr_event_countdown.cpp)
 
 ament_target_dependencies(${PROJECT_NAME} ${dependencies})

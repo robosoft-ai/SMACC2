@@ -70,7 +70,7 @@ public:
           as_->setAborted();
       }
 
-      // never reach succeded because were are interested in keeping the feedback alive
+      // never reach succeeded because were are interested in keeping the feedback alive
       as_->setSucceeded();
     }
     catch (std::exception & ex)

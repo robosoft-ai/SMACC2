@@ -35,7 +35,7 @@ include_directories(include
                     )
 add_executable(${PROJECT_NAME}_node src/sm_three_some_node.cpp)
 
-target_link_libraries(${PROJECT_NAME}_node 
+target_link_libraries(${PROJECT_NAME}_node
                     ${smacc2_LIBRARIES}
                     ${smacc_msgs_LIBRARIES}
                     ${multirole_sensor_client_LIBRARIES}
@@ -61,7 +61,7 @@ install(DIRECTORY
 install(TARGETS
         ${PROJECT_NAME}_node
         DESTINATION lib/${PROJECT_NAME})
-        
+
 if(BUILD_TESTING)
   #find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights

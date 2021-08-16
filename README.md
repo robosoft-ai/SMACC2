@@ -14,12 +14,12 @@ And then, the usual way to build the project is the following:
 
 ```
 colcon build --cmake-args -D CMAKE_BUILD_TYPE=Debug
-``` 
+```
 
 
 ## basic example
 To launch sm_dance_bot do the following:
 
 ```
-ros2 launch sm_dance_bot sm_dance_bot_launch.py 
+ros2 launch sm_dance_bot sm_dance_bot_launch.py
 ```

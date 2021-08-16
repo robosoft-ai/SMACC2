@@ -14,7 +14,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(smacc2 REQUIRED)
 
-set(dependencies 
+set(dependencies
     smacc2)
 
 include_directories(include)
@@ -25,7 +25,7 @@ ament_target_dependencies(${PROJECT_NAME} ${dependencies})
 
 ament_export_dependencies(${dependencies})
 ament_export_include_directories(include)
-ament_export_libraries(${PROJECT_NAME})           
+ament_export_libraries(${PROJECT_NAME})
 
 if(BUILD_TESTING)
   #find_package(ament_lint_auto REQUIRED)

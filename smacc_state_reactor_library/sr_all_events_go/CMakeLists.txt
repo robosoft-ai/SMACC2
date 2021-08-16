@@ -24,7 +24,7 @@ add_library(${PROJECT_NAME} src/${PROJECT_NAME}/sr_all_events_go.cpp)
 
 target_link_libraries(${PROJECT_NAME} SHARED
                       ${smacc2_LIBRARIES}
-                      ${smacc_msgs_LIBRARIES} 
+                      ${smacc_msgs_LIBRARIES}
                       )
 ament_target_dependencies(${PROJECT_NAME} smacc2 smacc_msgs)
 

@@ -224,7 +224,7 @@ void BackwardLocalPlanner::setSpeedLimit(
 }
 /**
  ******************************************************************************************************************
- * auxiliar functions
+ * auxiliary functions
  ******************************************************************************************************************
  */
 void BackwardLocalPlanner::computeCurrentEuclideanAndAngularErrorsToCarrotGoal(
@@ -392,8 +392,8 @@ bool BackwardLocalPlanner::checkCarrotHalfPlainConstraint(
 
   RCLCPP_INFO_STREAM(
     nh_->get_logger(),
-    "[BackwardLocalPlanner] half plane contraint:" << vx << "*" << carrot_point.x << " + " << vy
-                                                   << "*" << carrot_point.y << " + " << c);
+    "[BackwardLocalPlanner] half plane constraint:" << vx << "*" << carrot_point.x << " + " << vy
+                                                    << "*" << carrot_point.y << " + " << c);
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "[BackwardLocalPlanner] constraint evaluation: "
                          << vx << "*" << tfpose.pose.position.x << " + " << vy << "*"
@@ -635,7 +635,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
       vetta = 0;
     }
 
-    // clasical control to reach a goal backwards
+    // classical control to reach a goal backwards
   }
 
   // Apply command and Clamp to limits
@@ -741,7 +741,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
         q.setRPY(0, 0, p[2]);
         pg.orientation = tf2::toMsg(q);
 
-        // WARNING I CANT USE isGoalReached because I can change the state of a stateful goal checker
+        // WARNING I CAN'T USE isGoalReached because I can change the state of a stateful goal checker
         if (goal_checker->isGoalReached(pg, finalgoalpose.pose, mockzerospeed))*/
 
         float dx = p[0] - finalgoalpose.pose.position.x;
@@ -856,7 +856,7 @@ bool BackwardLocalPlanner::findInitialCarrotGoal(geometry_msgs::msg::PoseStamped
 
   double minpointdist = std::numeric_limits<double>::max();
 
-  // lets set the carrot-goal in the corret place with this loop
+  // lets set the carrot-goal in the correct place with this loop
   while (currentCarrotPoseIndex_ < (int)backwardsPlanPath_.size() && !inCarrotRange)
   {
     computeCurrentEuclideanAndAngularErrorsToCarrotGoal(tfpose, lineardisterr, angleerr);
@@ -1067,7 +1067,7 @@ void BackwardLocalPlanner::setPlan(const nav_msgs::msg::Path & path)
   else
   {
     this->divergenceDetectionUpdate(tfpose);
-    // SANDARD AND PREFERED CASE ON NEW PLAN
+    // SANDARD AND PREFERRED CASE ON NEW PLAN
     // return true;
     return;
   }

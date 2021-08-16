@@ -16,6 +16,6 @@ geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(
 
 geometry_msgs::msg::PoseStamped makePureStraightSubPlan(
   const geometry_msgs::msg::PoseStamped & startOrientedPose, const geometry_msgs::msg::Point & goal,
-  double lenght, std::vector<geometry_msgs::msg::PoseStamped> & plan);
+  double length, std::vector<geometry_msgs::msg::PoseStamped> & plan);
 
 }  // namespace cl_move_base_z

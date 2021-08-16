@@ -38,7 +38,7 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::future<int> & thread
       RCLCPP_WARN_THROTTLE(
         getLogger(), *(getNode()->get_clock()), 1000,
         "[%s] waiting for finishing client behavior, before leaving the state. Is the client "
-        "behavior stucked?",
+        "behavior stuck?",
         demangleType(typeid(*this)).c_str());
     }
   }
@@ -46,7 +46,7 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::future<int> & thread
   {
     RCLCPP_DEBUG(
       getNode()->get_logger(),
-      "[SmaccAsyncClientBehavior] trying to join function, but it was alredy finished.");
+      "[SmaccAsyncClientBehavior] trying to join function, but it was already finished.");
   }
 }
 
@@ -79,7 +79,7 @@ void SmaccAsyncClientBehavior::dispose()
   {
     RCLCPP_DEBUG(
       getNode()->get_logger(),
-      "[SmaccAsyncClientBehavior] trying to Join onExit function, but it was alredy finished.");
+      "[SmaccAsyncClientBehavior] trying to Join onExit function, but it was already finished.");
   }
 
   RCLCPP_DEBUG_STREAM(

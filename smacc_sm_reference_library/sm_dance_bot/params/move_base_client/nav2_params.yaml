@@ -89,7 +89,7 @@ bt_navigator:
     - nav2_planner_selector_bt_node
     - nav2_controller_selector_bt_node
     - nav2_goal_checker_selector_bt_node
-    
+
 
 bt_navigator_rclcpp_node:
   ros__parameters:
@@ -188,7 +188,7 @@ controller_server:
       k_rho: -1.4 # linear distance to the goal gain, default = -1.0 (related with carrot distance)
       k_alpha: -0.1 #-0.1
       k_betta: -0.1 # -1.0
-      carrot_distance: 0.4 #meters default 0.5 
+      carrot_distance: 0.4 #meters default 0.5
       carrot_angular_distance: 0.4 # no constraint, max 3.1416
       pure_spinning_straight_line_mode: true
       max_linear_x_speed: 0.25
@@ -208,7 +208,7 @@ controller_server:
       transform_tolerance: 2.0
       k_betta: 10.0
       max_angular_z_speed: 0.2
-  
+
 
 controller_server_rclcpp_node:
   ros__parameters:

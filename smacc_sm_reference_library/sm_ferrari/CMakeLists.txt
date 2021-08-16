@@ -26,26 +26,26 @@ include_directories(include
                     ${keyboard_client_INCLUDE_DIRS}
                     )
 
-file(GLOB_RECURSE SRC_FILES src/*.cpp) 
+file(GLOB_RECURSE SRC_FILES src/*.cpp)
 
 add_executable(${PROJECT_NAME}_node ${SRC_FILES})
 
 target_link_libraries(
-  ${PROJECT_NAME}_node 
-  ${smacc2_LIBRARIES} 
+  ${PROJECT_NAME}_node
+  ${smacc2_LIBRARIES}
   ${Boost_LIBRARIES}
   ${keyboard_client_LIBRARIES}
   ${eg_conditional_generator_LIBRARIES}
 )
 
-file(GLOB_RECURSE SRC_FILES2 servers/*.cpp) 
+file(GLOB_RECURSE SRC_FILES2 servers/*.cpp)
 
-add_executable(temperature_sensor_node 
+add_executable(temperature_sensor_node
                ${SRC_FILES2})
 
 target_link_libraries(
   temperature_sensor_node
-  ${smacc2_LIBRARIES} 
+  ${smacc2_LIBRARIES}
   ${Boost_LIBRARIES}
   ${keyboard_client_LIBRARIES}
   ${eg_conditional_generator_LIBRARIES})

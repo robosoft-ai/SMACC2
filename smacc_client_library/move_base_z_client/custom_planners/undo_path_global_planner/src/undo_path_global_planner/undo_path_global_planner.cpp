@@ -196,7 +196,7 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(
 
   // The goal of this code is finding the most convenient initial path pose.
   // first, find closest linear point to the current robot position
-  // we start from the final goal, that is, the begining of the trajectory
+  // we start from the final goal, that is, the beginning of the trajectory
   // (since this was the forward motion from the odom tracker)
   for (auto & p : transformedPlan.poses /*| boost::adaptors::reversed*/)
   {
@@ -376,8 +376,8 @@ nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(
     return planMsg;
   }
 
-  // ---------- INPUTS ACCOMODATION -------------------
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] Inputs accomodation");
+  // ---------- INPUTS ACCOMMODATION -------------------
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] Inputs accommodation");
   geometry_msgs::msg::PoseStamped transformedStart, transformedGoal;
   {
     rclcpp::Duration ttol(transform_tolerance_);

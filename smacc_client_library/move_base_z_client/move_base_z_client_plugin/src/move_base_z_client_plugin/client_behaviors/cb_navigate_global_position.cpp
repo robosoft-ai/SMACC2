@@ -52,7 +52,7 @@ void CbNavigateGlobalPosition::onEntry()
   execute();
 }
 
-// auxiliar function that defines the motion that is requested to the move_base action server
+// auxiliary function that defines the motion that is requested to the move_base action server
 void CbNavigateGlobalPosition::execute()
 {
   auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();

@@ -18,7 +18,7 @@ void CbWaitActionServer::executeOnEntry()
 
     if (found)
     {
-      RCLCPP_INFO(getLogger(), "[CbWaitActionServer] action server already avaliable");
+      RCLCPP_INFO(getLogger(), "[CbWaitActionServer] action server already available");
       this->postSuccessEvent();
     }
     else

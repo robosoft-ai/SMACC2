@@ -21,7 +21,7 @@ public:
   virtual std::string getName() const;
 
 protected:
-  // this is the basic initializatin method that each specific component should
+  // this is the basic initialization method that each specific component should
   // implement. The owner and the node are already available when it is invoked by the client.
   virtual void onInitialize();
 

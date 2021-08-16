@@ -35,7 +35,7 @@ public:
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
   virtual void onExit() override;
 
-  // auxiliar function that defines the motion that is requested to the move_base action server
+  // auxiliary function that defines the motion that is requested to the move_base action server
   void execute();
 
 private:

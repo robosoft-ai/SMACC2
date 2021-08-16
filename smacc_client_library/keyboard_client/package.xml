@@ -4,7 +4,7 @@
  <name>keyboard_client</name>
   <version>2.9.1</version>
   <description>The keyboard_client package</description>
-  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>  
+  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
   <license>BSD-3</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
@@ -14,7 +14,7 @@
 
   <depend>smacc2</depend>
   <depend>std_msgs</depend>
-  
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>

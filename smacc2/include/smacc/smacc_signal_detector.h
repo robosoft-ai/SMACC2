@@ -73,7 +73,7 @@ private:
 };
 
 // Main entry point for any SMACC state machine
-// It instanciates and starts the specified state machine type
+// It instantiates and starts the specified state machine type
 // it uses two threads: a new thread and the current one.
 // The created thread is for the state machine process
 // it locks the current thread to handle events of the state machine

@@ -9,7 +9,7 @@ To see a video of this state machine in action click <a href="https://www.youtub
 <br></br>
 
 <p align="center">
- <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot_strikes_back/docs/sm_dance_bot_strikes_back.JPG" width="800"/> 
+ <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot_strikes_back/docs/sm_dance_bot_strikes_back.JPG" width="800"/>
  </p>
  <br></br>
 
@@ -17,7 +17,7 @@ To see a video of this state machine in action click <a href="https://www.youtub
 Before you build, make sure you've installed all the dependencies...
 
 ```
-rosdep install --from-paths src --ignore-src -r -y 
+rosdep install --from-paths src --ignore-src -r -y
 ```
 
 Then you build with either catkin build or catkin make...
@@ -51,8 +51,6 @@ If you have the SMACC Viewer installed then type...
 
 ```
 rosrun smacc_viewer smacc_viewer_node.py
-``` 
+```
 
 If you don't have the SMACC Viewer installed, click <a href="http://smacc.ninja/smacc-viewer/">here</a> for instructions.
-
-

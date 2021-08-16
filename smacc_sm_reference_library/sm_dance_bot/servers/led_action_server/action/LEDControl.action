@@ -4,7 +4,7 @@ uint8 command
 uint8 CMD_ON = 0
 uint8 CMD_OFF = 1
 ---
-uint8 state 
+uint8 state
 
 # Possible feeedback values (tool states)
 uint8 STATE_UNKNOWN = 0
@@ -16,4 +16,3 @@ uint8 result
 # Possible result values
 uint8 RESULT_SUCCESS = 0
 uint8 RESULT_ERROR = 1
-

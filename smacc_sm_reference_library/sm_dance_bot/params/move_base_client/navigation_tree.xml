@@ -3,13 +3,13 @@
     <RecoveryNode number_of_retries="6" name="NavigateRecovery">
       <PipelineSequence name="NavigateWithReplanning">
         <RateController hz="1.0">
-          
+
           <RecoveryNode number_of_retries="1" name="ComputePathToPose">
             <PipelineSequence name="ComputePathToPoseSequence">
               <PlannerSelector selected_planner="{selected_planner}" />
               <ComputePathToPose goal="{goal}" path="{path}" planner_id="{selected_planner}" />
             </PipelineSequence>
-            <ReactiveFallback name="ComputePathToPoseRecoveryFallback">              
+            <ReactiveFallback name="ComputePathToPoseRecoveryFallback">
             </ReactiveFallback>
           </RecoveryNode>
 

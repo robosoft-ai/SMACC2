@@ -18,10 +18,10 @@ find_package(Boost COMPONENTS thread REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(move_base_z_client_plugin REQUIRED)
-    
+
 find_package(ros_publisher_client REQUIRED)
 find_package(multirole_sensor_client REQUIRED)
-  
+
 find_package(sr_all_events_go REQUIRED)
 find_package(sr_event_countdown REQUIRED)
 find_package(sr_conditional REQUIRED)
@@ -59,7 +59,7 @@ add_executable(led_action_server_node_${PROJECT_NAME} servers/led_action_server/
 ament_target_dependencies(${PROJECT_NAME}_node
                           ${dependencies})
 
-target_link_libraries ( ${PROJECT_NAME}_node 
+target_link_libraries ( ${PROJECT_NAME}_node
                         ${Boost_LIBS}
                         )
 
@@ -88,8 +88,8 @@ if(BUILD_TESTING)
   #ament_lint_auto_find_test_dependencies()
 endif()
 
-install(TARGETS 
-  ${PROJECT_NAME}_node 
+install(TARGETS
+  ${PROJECT_NAME}_node
   temperature_sensor_node_${PROJECT_NAME}
   led_action_server_node_${PROJECT_NAME}
 

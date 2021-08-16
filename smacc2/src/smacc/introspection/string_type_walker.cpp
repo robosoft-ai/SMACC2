@@ -78,7 +78,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     const char * simpletypeRE = "[^\\<\\>,\\s]+\\<[^\\<\\>]+\\>";
     //std::cout << inputtext << std::endl;
 
-    // locate moste outter template
+    // locate moste outer template
     std::smatch matches;
     std::regex regex(simpletypeRE);  // matches words beginning by "sub"
 
@@ -313,7 +313,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 
     for (auto & item : unorderedTemplateParameters)
     {
-      //RCLCPP_DEBUG_STREAM(nh_->get_logger()," - template paramter: " << item.second->getFullName());
+      //RCLCPP_DEBUG_STREAM(nh_->get_logger()," - template parameter: " << item.second->getFullName());
       t->templateParameters.push_back(item.second);
     }
     //RCLCPP_DEBUG_STREAM(nh_->get_logger(),"------------------");
@@ -331,7 +331,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 }
 
 /*
-  
+
     print (typesdict)
     roottype = [t for t in types if t.finaltype == originalinputtext][0]
 

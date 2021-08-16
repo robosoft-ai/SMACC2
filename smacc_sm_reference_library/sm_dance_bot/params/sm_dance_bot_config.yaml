@@ -6,4 +6,3 @@ SmDanceBot:
         clear_point_distance_threshold:  0.4 #0.1
         record_angular_distance_threshold: 0.005
         record_point_distance_threshold: 0.1
-

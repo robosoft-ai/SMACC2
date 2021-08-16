@@ -21,7 +21,7 @@
 #include <visualization_msgs/msg/marker_array.hpp>
 
 // This class describes a preemptable-on/off tool action server to be used from smacc
-// shows in rviz a sphere whoose color describe the current state (unknown, running, idle)
+// shows in rviz a sphere whose color describe the current state (unknown, running, idle)
 class LEDActionServer : public rclcpp::Node
 {
 public:
@@ -87,7 +87,7 @@ public:
     auto result = std::make_shared<sm_dance_bot_msgs::action::LEDControl::Result>();
     result->state = this->currentState_;
 
-    // never reach succeded because were are interested in keeping the feedback alive
+    // never reach succeeded because were are interested in keeping the feedback alive
     //as_->setSucceeded();
     gh->succeed(result);
   }

@@ -57,7 +57,7 @@ ros2 run smacc2 trace.sh
 We press a key, record some seconds and then stop the recording pressing again some key:
 
 ```
-ros2 run smacc2 trace.sh 
+ros2 run smacc2 trace.sh
 UST tracing enabled (33 events)
 kernel tracing enabled (4 events)
 context (3 names)
@@ -70,4 +70,3 @@ We can check the tracing database using the babeltrace tool or the tracecompass 
 In our case we use trace compass. Importing the data from the tracing output directory.
 
 ![image](https://user-images.githubusercontent.com/13334595/120043632-9b258500-c00c-11eb-9e64-cb5507c46f49.png)
-

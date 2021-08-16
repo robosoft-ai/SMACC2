@@ -31,7 +31,7 @@ using namespace smacc::introspection;
 enum class EventLifeTime
 {
   ABSOLUTE,
-  CURRENT_STATE /*events are discarded if we are leaving the state it were created. I is used for client behaviors whose liftime is associated to state*/
+  CURRENT_STATE /*events are discarded if we are leaving the state it were created. I is used for client behaviors whose lifetime is associated to state*/
 };
 
 enum class StateMachineInternalAction

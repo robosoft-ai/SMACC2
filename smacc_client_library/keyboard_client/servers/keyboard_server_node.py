@@ -5,7 +5,9 @@ from rclpy.node import Node
 from std_msgs.msg import UInt16
 
 import sys, select, termios, tty
+
 settings = termios.tcgetattr(sys.stdin)
+
 
 def getKey():
     global settings
@@ -18,8 +20,8 @@ def getKey():
 
 class KeyboardPublisher(Node):
     def __init__(self):
-        super().__init__('keyboard_node')
-        self.pub = self.create_publisher(UInt16, 'keyboard_unicode', 1)
+        super().__init__("keyboard_node")
+        self.pub = self.create_publisher(UInt16, "keyboard_unicode", 1)
         timer_period = 0.20  # seconds
         self.timer = self.create_timer(timer_period, self.timer_update)
         self.i = 0
@@ -27,10 +29,10 @@ class KeyboardPublisher(Node):
     def timer_update(self):
         try:
             key = getKey()
-            #rospy.loginfo(type(key))
+            # rospy.loginfo(type(key))
             msg = UInt16()
             msg.data = ord(key)
-            
+
             self.pub.publish(msg)
 
         except Exception as e:
@@ -54,16 +56,14 @@ def main(args=None):
     rclpy.shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
 
 
-#---------------------------------
+# ---------------------------------
 
 # import std_msgs
-# 
-
-
+#
 
 
 # class KeyboardPublisher(Node):
@@ -80,7 +80,7 @@ if __name__ == '__main__':
 #             #rospy.loginfo(type(key))
 #             msg = UInt16()
 #             msg.data = ord(key)
-            
+
 #             self.pub.publish(msg)
 
 #         except Exception as e:
