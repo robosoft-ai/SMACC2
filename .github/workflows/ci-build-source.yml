@@ -1,5 +1,6 @@
 name: Source Build
 on:
+  pull_request:  # just for testing
   push:
     branches:
       - master
@@ -28,7 +29,7 @@ jobs:
             smacc_sm_reference_library
             smacc_state_reactor_library
           vcs-repo-file-url: |
-            https://raw.githubusercontent.com/ros2/ros2/rolling/ros2.repos
+            https://raw.githubusercontent.com/ros2/ros2/master/ros2.repos
             https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/smacc2.repos
           colcon-mixin-repository: https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
       - uses: actions/upload-artifact@v1
