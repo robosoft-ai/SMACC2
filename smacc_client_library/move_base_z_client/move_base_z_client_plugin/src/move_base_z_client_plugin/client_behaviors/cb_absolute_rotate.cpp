@@ -15,9 +15,7 @@
 
 namespace cl_move_base_z
 {
-CbAbsoluteRotate::CbAbsoluteRotate()
-{
-}
+CbAbsoluteRotate::CbAbsoluteRotate() {}
 
 CbAbsoluteRotate::CbAbsoluteRotate(float absoluteGoalAngleDegree, float yaw_goal_tolerance)
 {
@@ -43,7 +41,8 @@ void CbAbsoluteRotate::onEntry()
   {
     goal_angle = *this->absoluteGoalAngleDegree;
   }
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[CbAbsoluteRotate] Absolute yaw Angle:" << goal_angle);
+  RCLCPP_INFO_STREAM(
+    getNode()->get_logger(), "[CbAbsoluteRotate] Absolute yaw Angle:" << goal_angle);
 
   auto plannerSwitcher = this->moveBaseClient_->getComponent<PlannerSwitcher>();
   // this should work better with a coroutine and await
@@ -85,10 +84,12 @@ void CbAbsoluteRotate::onEntry()
   auto goalCheckerSwitcher = moveBaseClient_->getComponent<GoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("absolute_rotate_goal_checker");
 
-  RCLCPP_INFO_STREAM(getNode()->get_logger(),
-                     "[CbAbsoluteRotate] current pose yaw: " << tf2::getYaw(currentPoseMsg.orientation));
-  RCLCPP_INFO_STREAM(getNode()->get_logger(),
-                     "[CbAbsoluteRotate] goal pose yaw: " << tf2::getYaw(goal.pose.pose.orientation));
+  RCLCPP_INFO_STREAM(
+    getNode()->get_logger(),
+    "[CbAbsoluteRotate] current pose yaw: " << tf2::getYaw(currentPoseMsg.orientation));
+  RCLCPP_INFO_STREAM(
+    getNode()->get_logger(),
+    "[CbAbsoluteRotate] goal pose yaw: " << tf2::getYaw(goal.pose.pose.orientation));
   moveBaseClient_->sendGoal(goal);
 }
 
@@ -98,10 +99,12 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 
   std::string nodename = "/controller_server";
 
-  auto parameters_client = std::make_shared<rclcpp::AsyncParametersClient>(this->getNode(), nodename);
+  auto parameters_client =
+    std::make_shared<rclcpp::AsyncParametersClient>(this->getNode(), nodename);
 
-  RCLCPP_INFO_STREAM(log, "[CbAbsoluteRotate] using a parameter client to update some controller parameters: "
-                              << nodename << ". Waiting service.");
+  RCLCPP_INFO_STREAM(
+    log, "[CbAbsoluteRotate] using a parameter client to update some controller parameters: "
+           << nodename << ". Waiting service.");
   parameters_client->wait_for_service();
 
   RCLCPP_INFO_STREAM(log, "[CbAbsoluteRotate] Service found: " << nodename << ".");
@@ -136,20 +139,22 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
     if (yawGoalTolerance)
     {
       // save old yaw tolerance
-      auto fut =
-          parameters_client->get_parameters({ localPlannerName + ".yaw_goal_tolerance" }, [&](auto futureParameters) {
-            auto params = futureParameters.get();
-            oldYawTolerance = params[0].as_double();
-          });
+      auto fut = parameters_client->get_parameters(
+        {localPlannerName + ".yaw_goal_tolerance"}, [&](auto futureParameters) {
+          auto params = futureParameters.get();
+          oldYawTolerance = params[0].as_double();
+        });
 
       // make synchronous
       fut.get();
 
       yaw_goal_tolerance = rclcpp::Parameter("goal_checker.yaw_goal_tolerance", *yawGoalTolerance);
       parameters.push_back(yaw_goal_tolerance);
-      RCLCPP_INFO(getNode()->get_logger(),
-                  "[CbAbsoluteRotate] updating yaw tolerance local planner to: %lf, from previous value: %lf ",
-                  *yawGoalTolerance, this->oldYawTolerance);
+      RCLCPP_INFO(
+        getNode()->get_logger(),
+        "[CbAbsoluteRotate] updating yaw tolerance local planner to: %lf, from previous value: "
+        "%lf ",
+        *yawGoalTolerance, this->oldYawTolerance);
     }
 
     if (maxVelTheta)
@@ -160,11 +165,11 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
         // getCurrentState()->getParam(nodename + "/" + localPlannerName + "/max_vel_theta", oldMaxVelTheta);
 
         // save old yaw tolerance
-        auto fut =
-            parameters_client->get_parameters({ localPlannerName + ".max_vel_theta" }, [&](auto futureParameters) {
-              auto params = futureParameters.get();
-              oldMaxVelTheta = params[0].as_double();
-            });
+        auto fut = parameters_client->get_parameters(
+          {localPlannerName + ".max_vel_theta"}, [&](auto futureParameters) {
+            auto params = futureParameters.get();
+            oldMaxVelTheta = params[0].as_double();
+          });
 
         // make synchronous
         fut.get();
@@ -175,10 +180,16 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
       parameters.push_back(max_vel_theta);
       parameters.push_back(min_vel_theta);
 
-      RCLCPP_INFO(log, "[CbAbsoluteRotate] updating max vel theta local planner to: %lf, from previous value: %lf ",
-                  *maxVelTheta, this->oldMaxVelTheta);
-      RCLCPP_INFO(log, "[CbAbsoluteRotate] updating min vel theta local planner to: %lf, from previous value: %lf ",
-                  -*maxVelTheta, this->oldMinVelTheta);
+      RCLCPP_INFO(
+        log,
+        "[CbAbsoluteRotate] updating max vel theta local planner to: %lf, from previous value: "
+        "%lf ",
+        *maxVelTheta, this->oldMaxVelTheta);
+      RCLCPP_INFO(
+        log,
+        "[CbAbsoluteRotate] updating min vel theta local planner to: %lf, from previous value: "
+        "%lf ",
+        -*maxVelTheta, this->oldMinVelTheta);
     }
   }
   else
@@ -186,8 +197,11 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
     if (yawGoalTolerance)
     {
       yaw_goal_tolerance = rclcpp::Parameter("goal_checker.yaw_goal_tolerance", oldYawTolerance);
-      RCLCPP_INFO(log, "[CbAbsoluteRotate] restoring yaw tolerance local planner from: %lf, to previous value: %lf ",
-                  *yawGoalTolerance, this->oldYawTolerance);
+      RCLCPP_INFO(
+        log,
+        "[CbAbsoluteRotate] restoring yaw tolerance local planner from: %lf, to previous value: "
+        "%lf ",
+        *yawGoalTolerance, this->oldYawTolerance);
     }
 
     if (maxVelTheta)
@@ -200,17 +214,23 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 
       parameters.push_back(max_vel_theta);
       parameters.push_back(min_vel_theta);
-      RCLCPP_INFO(log, "[CbAbsoluteRotate] restoring max vel theta local planner from: %lf, to previous value: %lf ",
-                  *maxVelTheta, this->oldMaxVelTheta);
-      RCLCPP_INFO(log, "[CbAbsoluteRotate] restoring min vel theta local planner from: %lf, to previous value: %lf ",
-                  -(*maxVelTheta), this->oldMinVelTheta);
+      RCLCPP_INFO(
+        log,
+        "[CbAbsoluteRotate] restoring max vel theta local planner from: %lf, to previous value: "
+        "%lf ",
+        *maxVelTheta, this->oldMaxVelTheta);
+      RCLCPP_INFO(
+        log,
+        "[CbAbsoluteRotate] restoring min vel theta local planner from: %lf, to previous value: "
+        "%lf ",
+        -(*maxVelTheta), this->oldMinVelTheta);
     }
   }
 
   if (parameters.size() > 0)
   {
     RCLCPP_INFO(log, "[CbAbsoluteRotate] parameters to update:  ");
-    for (auto& p : parameters)
+    for (auto & p : parameters)
     {
       RCLCPP_INFO_STREAM(log, "[CbAbsoluteRotate] - " << p.get_name());
     }
@@ -219,11 +239,12 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
   auto futureResults = parameters_client->set_parameters(parameters);
 
   int i = 0;
-  for (auto& res : futureResults.get())
+  for (auto & res : futureResults.get())
   {
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), "[CbAbsoluteRotate] parameter result: "
-                                                    << parameters[i].get_name() << "=" << parameters[i].as_string()
-                                                    << ". Result: " << res.successful);
+    RCLCPP_INFO_STREAM(
+      getNode()->get_logger(), "[CbAbsoluteRotate] parameter result: "
+                                 << parameters[i].get_name() << "=" << parameters[i].as_string()
+                                 << ". Result: " << res.successful);
     i++;
   }
 

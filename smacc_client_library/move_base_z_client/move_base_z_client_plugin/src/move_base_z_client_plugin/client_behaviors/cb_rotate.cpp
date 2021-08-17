@@ -12,14 +12,9 @@
 
 namespace cl_move_base_z
 {
-CbRotate::CbRotate()
-{
-}
+CbRotate::CbRotate() {}
 
-CbRotate::CbRotate(float rotate_degree)
-{
-  rotateDegree = rotate_degree;
-}
+CbRotate::CbRotate(float rotate_degree) { rotateDegree = rotate_degree; }
 
 void CbRotate::onEntry()
 {

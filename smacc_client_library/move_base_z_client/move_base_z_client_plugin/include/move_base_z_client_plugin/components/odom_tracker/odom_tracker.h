@@ -64,10 +64,10 @@ public:
   void clearPath();
 
   // threadsafe
-  void setStartPoint(const geometry_msgs::msg::PoseStamped &pose);
+  void setStartPoint(const geometry_msgs::msg::PoseStamped & pose);
 
   // threadsafe
-  void setStartPoint(const geometry_msgs::msg::Pose &pose);
+  void setStartPoint(const geometry_msgs::msg::Pose & pose);
 
   // threadsafe
   nav_msgs::msg::Path getPath();
@@ -75,7 +75,7 @@ public:
   void logStateString();
 
 protected:
-  virtual void onInitialize() override;
+  void onInitialize() override;
 
   void updateConfiguration();
   //   dynamic_reconfigure::Server<move_base_z_client_plugin::OdomTrackerConfig> paramServer_;
@@ -85,10 +85,10 @@ protected:
   virtual void rtPublishPaths(rclcpp::Time timestamp);
 
   // this is called when a new odom message is received in record path mode
-  virtual bool updateRecordPath(const nav_msgs::msg::Odometry &odom);
+  virtual bool updateRecordPath(const nav_msgs::msg::Odometry & odom);
 
   // this is called when a new odom message is received in clear path mode
-  virtual bool updateClearPath(const nav_msgs::msg::Odometry &odom);
+  virtual bool updateClearPath(const nav_msgs::msg::Odometry & odom);
 
   void updateAggregatedStackPath();
 
@@ -142,7 +142,8 @@ protected:
  * p2pDistance()
  ******************************************************************************************************************
  */
-inline double p2pDistance(const geometry_msgs::msg::Point &p1, const geometry_msgs::msg::Point &p2)
+inline double p2pDistance(
+  const geometry_msgs::msg::Point & p1, const geometry_msgs::msg::Point & p2)
 {
   double dx = (p1.x - p2.x);
   double dy = (p1.y - p2.y);

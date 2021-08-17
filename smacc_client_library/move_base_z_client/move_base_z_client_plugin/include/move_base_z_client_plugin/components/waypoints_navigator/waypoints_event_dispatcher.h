@@ -1562,19 +1562,19 @@ class WaypointEventDispatcher
 
 public:
   template <typename TDerived, typename TOrthogonal>
-  void initialize(ClMoveBaseZ *client);
+  void initialize(ClMoveBaseZ * client);
 
   void postWaypointEvent(int index);
 };
 
 template <typename TEv>
-void configurePostEvWaypoint(std::function<void()> *fntarget, ClMoveBaseZ *client, int index)
+void configurePostEvWaypoint(std::function<void()> * fntarget, ClMoveBaseZ * client, int index)
 {
   fntarget[index] = [=]() { client->template postEvent<TEv>(); };
 }
 
 template <typename TDerived, typename TOrthogonal>
-void WaypointEventDispatcher::initialize(ClMoveBaseZ *client)
+void WaypointEventDispatcher::initialize(ClMoveBaseZ * client)
 {
   configurePostEvWaypoint<EvWaypoint0<TDerived, TOrthogonal>>(postWaypointFn, client, 0);
   configurePostEvWaypoint<EvWaypoint1<TDerived, TOrthogonal>>(postWaypointFn, client, 1);

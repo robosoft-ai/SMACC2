@@ -23,9 +23,9 @@ class Pose : public smacc::ISmaccComponent, public smacc::ISmaccUpdatable
 public:
   Pose(std::string poseFrameName = "base_link", std::string referenceFrame = "odom");
 
-  virtual void onInitialize() override;
+  void onInitialize() override;
 
-  virtual void update() override;
+  void update() override;
 
   // synchronously waits a transform in the current thread
   void waitTransformUpdate(rclcpp::Rate r = rclcpp::Rate(20));
@@ -42,15 +42,9 @@ public:
     return this->pose_;
   }
 
-  inline const std::string &getReferenceFrame() const
-  {
-    return referenceFrame_;
-  }
+  inline const std::string & getReferenceFrame() const { return referenceFrame_; }
 
-  inline const std::string &getFrameId() const
-  {
-    return poseFrameName_;
-  }
+  inline const std::string & getFrameId() const { return poseFrameName_; }
 
   bool isInitialized;
 
