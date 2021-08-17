@@ -44,9 +44,6 @@ install(
   DESTINATION include
 )
 
-if(BUILD_TESTING)
-endif()
-
 install(TARGETS
   smacc2
   DESTINATION lib/)

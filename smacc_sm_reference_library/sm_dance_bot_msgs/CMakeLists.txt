@@ -24,9 +24,6 @@ rosidl_generate_interfaces(${PROJECT_NAME}
                            "servers/led_action_server/action/LEDControl.action"
                            DEPENDENCIES builtin_interfaces std_msgs action_msgs sensor_msgs)
 
-if(BUILD_TESTING)
-endif()
-
 ament_export_dependencies(rosidl_default_runtime)
 
 ament_package()

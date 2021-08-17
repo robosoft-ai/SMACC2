@@ -9,11 +9,9 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <test_depend>ament_lint_auto</test_depend>
-  <test_depend>ament_lint_common</test_depend>
-
-  <depend>smacc2</depend>
   <depend>ros_timer_client</depend>
+  <depend>smacc2</depend>
+
   <exec_depend>xterm</exec_depend>
 
   <export>

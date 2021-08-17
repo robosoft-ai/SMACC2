@@ -34,9 +34,6 @@ ament_target_dependencies(${PROJECT_NAME} smacc2 std_msgs)
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 
-if(BUILD_TESTING)
-endif()
-
 install(
   DIRECTORY include/
   DESTINATION include)

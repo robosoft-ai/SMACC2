@@ -54,9 +54,6 @@ ament_target_dependencies(temperature_sensor_node smacc2)
 
 ament_target_dependencies(${PROJECT_NAME}_node smacc2)
 
-if(BUILD_TESTING)
-endif()
-
 ament_package()
 
 install(DIRECTORY

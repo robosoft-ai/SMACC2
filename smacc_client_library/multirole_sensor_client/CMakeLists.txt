@@ -30,9 +30,6 @@ ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(${dependencies})
 
-if(BUILD_TESTING)
-endif()
-
 install(
   DIRECTORY include/
   DESTINATION include

@@ -10,17 +10,15 @@
   <license>BSD-3</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <test_depend>ament_lint_auto</test_depend>
-  <test_depend>ament_lint_common</test_depend>
+  <build_depend>pluginlib</build_depend>
 
-  <depend>nav2_core</depend>
-  <depend>nav2_costmap_2d</depend>
-  <depend>nav_msgs</depend>
   <depend>geometry_msgs</depend>
-  <depend>tf2</depend>
   <depend>move_base_z_planners_common</depend>
   <depend>nav_2d_utils</depend>
-  <build_depend>pluginlib</build_depend>
+  <depend>nav_msgs</depend>
+  <depend>nav2_core</depend>
+  <depend>nav2_costmap_2d</depend>
+  <depend>tf2</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

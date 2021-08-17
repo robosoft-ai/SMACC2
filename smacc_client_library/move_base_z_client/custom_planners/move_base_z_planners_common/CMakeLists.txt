@@ -13,10 +13,10 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 
-find_package(nav_msgs)
-find_package(geometry_msgs)
-find_package(rclcpp)
 find_package(angles)
+find_package(geometry_msgs)
+find_package(nav_msgs)
+find_package(rclcpp)
 find_package(tf2)
 find_package(tf2_geometry_msgs)
 
@@ -39,9 +39,6 @@ ament_target_dependencies(${PROJECT_NAME} ${dependencies})
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(${dependencies})
-
-if(BUILD_TESTING)
-endif()
 
 install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION lib

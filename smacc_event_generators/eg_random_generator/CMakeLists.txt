@@ -16,9 +16,6 @@ find_package(smacc2 REQUIRED)
 
 ament_export_include_directories(include)
 
-if(BUILD_TESTING)
-endif()
-
 install(
   DIRECTORY include/
   DESTINATION include)

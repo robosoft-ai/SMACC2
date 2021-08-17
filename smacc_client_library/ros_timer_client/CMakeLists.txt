@@ -33,9 +33,6 @@ ament_export_include_directories(include)
 ament_export_dependencies(smacc2 Boost)
 ament_export_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 
-if(BUILD_TESTING)
-endif()
-
 install(
   DIRECTORY include/
   DESTINATION include
