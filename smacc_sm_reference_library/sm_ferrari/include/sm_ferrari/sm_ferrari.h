@@ -82,6 +82,7 @@ struct SmFerrari : public smacc::SmaccStateMachineBase<SmFerrari, MsRun>
 
 // MODE STATES
 #include <sm_ferrari/mode_states/ms_run.h>
+
 #include <sm_ferrari/mode_states/ms_recover.h>
 
 // STATES

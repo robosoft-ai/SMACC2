@@ -83,6 +83,7 @@ struct SmThreeSome : public smacc::SmaccStateMachineBase<SmThreeSome, MsRun>
 
 // MODE STATES
 #include <sm_three_some/mode_states/ms_run.h>
+
 #include <sm_three_some/mode_states/ms_recover.h>
 
 // STATES
