@@ -31,13 +31,12 @@ ForwardGlobalPlanner::ForwardGlobalPlanner()
   puresSpinningRadStep_ = 1000;          // rads
 }
 
-ForwardGlobalPlanner::~ForwardGlobalPlanner()
-{
-}
+ForwardGlobalPlanner::~ForwardGlobalPlanner() {}
 
-void ForwardGlobalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr& parent, std::string name,
-                                     const std::shared_ptr<tf2_ros::Buffer> tf,
-                                     const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
+void ForwardGlobalPlanner::configure(
+  const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent, std::string name,
+  const std::shared_ptr<tf2_ros::Buffer> tf,
+  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
   nh_ = parent.lock();
   tf_ = tf;
@@ -51,14 +50,9 @@ void ForwardGlobalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::Weak
   transform_tolerance_ = 0.1;
 }
 
-void ForwardGlobalPlanner::cleanup()
-{
-}
+void ForwardGlobalPlanner::cleanup() {}
 
-void ForwardGlobalPlanner::activate()
-{
-  planPub_->on_activate();
-}
+void ForwardGlobalPlanner::activate() { planPub_->on_activate(); }
 
 void ForwardGlobalPlanner::deactivate()
 {
@@ -67,8 +61,8 @@ void ForwardGlobalPlanner::deactivate()
   planPub_->on_deactivate();
 }
 
-nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(const geometry_msgs::msg::PoseStamped& start,
-                                                     const geometry_msgs::msg::PoseStamped& goal)
+nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(
+  const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal)
 {
   RCLCPP_INFO(nh_->get_logger(), "[Forward Global Planner] planning");
 
@@ -102,11 +96,12 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(const geometry_msgs::msg::P
     // skip initial pure spinning and initial straight motion
     // RCLCPP_INFO(nh_->get_logger(),"1 - heading to goal position pure spinning");
     double heading_direction = atan2(dy, dx);
-    prevState =
-        cl_move_base_z::makePureSpinningSubPlan(transformedStart, heading_direction, plan, puresSpinningRadStep_);
+    prevState = cl_move_base_z::makePureSpinningSubPlan(
+      transformedStart, heading_direction, plan, puresSpinningRadStep_);
 
     // RCLCPP_INFO(nh_->get_logger(), "2 - going forward keep orientation pure straight");
-    prevState = cl_move_base_z::makePureStraightSubPlan(prevState, transformedGoal.pose.position, length, plan);
+    prevState = cl_move_base_z::makePureStraightSubPlan(
+      prevState, transformedGoal.pose.position, length, plan);
   }
   else
   {
@@ -120,14 +115,16 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(const geometry_msgs::msg::P
   planMsg.header.stamp = this->nh_->now();
   planMsg.header.frame_id = this->costmap_ros_->getGlobalFrameID();
 
-  RCLCPP_INFO_STREAM(nh_->get_logger(), "[Forward Global Planner] generated plan size: " << plan.size());
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[Forward Global Planner] generated plan size: " << plan.size());
 
   // check plan rejection
   bool acceptedGlobalPlan = true;
 
-  RCLCPP_INFO(nh_->get_logger(), "[Forward Global Planner] checking obstacles in the generated plan");
-  nav2_costmap_2d::Costmap2D* costmap2d = this->costmap_ros_->getCostmap();
-  for (auto& p : plan)
+  RCLCPP_INFO(
+    nh_->get_logger(), "[Forward Global Planner] checking obstacles in the generated plan");
+  nav2_costmap_2d::Costmap2D * costmap2d = this->costmap_ros_->getCostmap();
+  for (auto & p : plan)
   {
     unsigned int mx, my;
     costmap2d->worldToMap(p.pose.position.x, p.pose.position.y, mx, my);
@@ -140,9 +137,10 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(const geometry_msgs::msg::P
 
     if (cost >= nav2_costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
     {
-      RCLCPP_INFO_STREAM(nh_->get_logger(), "[Forward Global Planner] pose " << p.pose.position.x << ", "
-                                                                             << p.pose.position.y
-                                                                             << " rejected, cost: " << cost);
+      RCLCPP_INFO_STREAM(
+        nh_->get_logger(), "[Forward Global Planner] pose " << p.pose.position.x << ", "
+                                                            << p.pose.position.y
+                                                            << " rejected, cost: " << cost);
       acceptedGlobalPlan = false;
       break;
     }
@@ -150,7 +148,8 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(const geometry_msgs::msg::P
 
   if (acceptedGlobalPlan)
   {
-    RCLCPP_INFO_STREAM(nh_->get_logger(), "[Forward Global Planner] accepted plan: " << plan.size());
+    RCLCPP_INFO_STREAM(
+      nh_->get_logger(), "[Forward Global Planner] accepted plan: " << plan.size());
     planPub_->publish(planMsg);
     return planMsg;
   }
@@ -167,4 +166,5 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(const geometry_msgs::msg::P
 }  // namespace cl_move_base_z
 
 // register this planner as a BaseGlobalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(cl_move_base_z::forward_global_planner::ForwardGlobalPlanner, nav2_core::GlobalPlanner)
+PLUGINLIB_EXPORT_CLASS(
+  cl_move_base_z::forward_global_planner::ForwardGlobalPlanner, nav2_core::GlobalPlanner)

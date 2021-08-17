@@ -13,7 +13,8 @@
 
 namespace cl_move_base_z
 {
-class ClMoveBaseZ : public smacc::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>
+class ClMoveBaseZ
+: public smacc::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>
 {
 public:
   ClMoveBaseZ(std::string navigateToPoseAction = "/navigate_to_pose");

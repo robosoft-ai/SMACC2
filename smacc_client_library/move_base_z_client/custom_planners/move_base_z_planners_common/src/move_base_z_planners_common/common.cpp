@@ -10,15 +10,16 @@
 #include <move_base_z_planners_common/move_base_z_client_tools.h>
 #include <tf2/transform_datatypes.h>
 #include <tf2/utils.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 
 namespace cl_move_base_z
 {
-geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(const geometry_msgs::msg::PoseStamped& start, double dstRads,
-                                                        std::vector<geometry_msgs::msg::PoseStamped>& plan,
-                                                        double radstep)
+geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(
+  const geometry_msgs::msg::PoseStamped & start, double dstRads,
+  std::vector<geometry_msgs::msg::PoseStamped> & plan, double radstep)
 {
   double startYaw = tf2::getYaw(start.pose.orientation);
   // RCLCPP_INFO(getNode()->get_logger(),"pure spining start yaw: %lf", startYaw);
@@ -27,7 +28,6 @@ geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(const geometry_msgs::msg
 
   double goalAngleOffset = angles::shortest_angular_distance(startYaw, dstRads);
   // RCLCPP_INFO(getNode()->get_logger(),"shortest angle: %lf", goalAngleOffset);
-
 
   if (goalAngleOffset >= 0)
   {
@@ -66,19 +66,19 @@ geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(const geometry_msgs::msg
   // RCLCPP_INFO(getNode()->get_logger(),"pure spining end yaw: %lf", dstRads);
   geometry_msgs::msg::PoseStamped end = start;
   tf2::Quaternion q;
-  q.setRPY( 0, 0, dstRads);
+  q.setRPY(0, 0, dstRads);
   end.pose.orientation = tf2::toMsg(q);
   plan.push_back(end);
 
   return end;
 }
 
-geometry_msgs::msg::PoseStamped makePureStraightSubPlan(const geometry_msgs::msg::PoseStamped& startOrientedPose,
-                                                        const geometry_msgs::msg::Point& goal, double lenght,
-                                                        std::vector<geometry_msgs::msg::PoseStamped>& plan)
+geometry_msgs::msg::PoseStamped makePureStraightSubPlan(
+  const geometry_msgs::msg::PoseStamped & startOrientedPose, const geometry_msgs::msg::Point & goal,
+  double length, std::vector<geometry_msgs::msg::PoseStamped> & plan)
 {
   double dx = 0.01;  // 1 cm
-  double steps = lenght / dx;
+  double steps = length / dx;
   double dt = 1.0 / steps;
 
   // geometry_msgs::msg::PoseStamped end;
@@ -104,33 +104,34 @@ geometry_msgs::msg::PoseStamped makePureStraightSubPlan(const geometry_msgs::msg
 
 }  // namespace cl_move_base_z
 
-std::ostream& operator<<(std::ostream& out, const geometry_msgs::msg::Twist& msg)
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Twist & msg)
 {
   out << "Twist [" << msg.linear.x << "m , " << msg.linear.y << "m , " << msg.angular.z << "rad ]";
   return out;
 }
 
-std::ostream& operator<<(std::ostream& out, const geometry_msgs::msg::Pose& msg)
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & msg)
 {
-  out << "Position [" << msg.position.x << "m , " << msg.position.y << "m , " << msg.position.z << "m ]";
-  out << " Orientation [" << msg.orientation.x << " , " << msg.orientation.y << " , " << msg.orientation.z << ", "
-      << msg.orientation.w << "]";
+  out << "Position [" << msg.position.x << "m , " << msg.position.y << "m , " << msg.position.z
+      << "m ]";
+  out << " Orientation [" << msg.orientation.x << " , " << msg.orientation.y << " , "
+      << msg.orientation.z << ", " << msg.orientation.w << "]";
   return out;
 }
 
-std::ostream& operator<<(std::ostream& out, const geometry_msgs::msg::Point& msg)
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Point & msg)
 {
   out << "Position [" << msg.x << "m , " << msg.y << "m , " << msg.z << "m ]";
   return out;
 }
 
-std::ostream& operator<< (std::ostream &out, const geometry_msgs::msg::Quaternion &msg)
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg)
 {
   out << "Quaternion [" << msg.x << " , " << msg.y << " , " << msg.z << ", " << msg.w << "]";
   return out;
 }
 
-std::ostream& operator<<(std::ostream& out, const geometry_msgs::msg::PoseStamped& msg)
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg)
 {
   out << msg.pose;
   return out;

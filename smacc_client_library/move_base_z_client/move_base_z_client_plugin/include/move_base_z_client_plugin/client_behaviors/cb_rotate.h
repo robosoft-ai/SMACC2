@@ -22,7 +22,7 @@ public:
 
   CbRotate(float rotate_degree);
 
-  virtual void onEntry() override;
+  void onEntry() override;
 
 private:
   std::shared_ptr<tf2_ros::Buffer> listener;

@@ -16,18 +16,18 @@ std::shared_ptr<tf2_ros::Buffer> Pose::tfBuffer_;
 std::mutex Pose::listenerMutex_;
 
 Pose::Pose(std::string targetFrame, std::string referenceFrame)
-  : isInitialized(false),
-    poseFrameName_(targetFrame), 
-    referenceFrame_(referenceFrame)
-    
+: isInitialized(false), poseFrameName_(targetFrame), referenceFrame_(referenceFrame)
+
 {
   this->pose_.header.frame_id = referenceFrame_;
 }
 
 void Pose::onInitialize()
 {
-  RCLCPP_INFO(getNode()->get_logger(), "[Pose] Creating Pose tracker component to track %s in the reference frame %s",
-              poseFrameName_.c_str(), referenceFrame_.c_str());
+  RCLCPP_INFO(
+    getNode()->get_logger(),
+    "[Pose] Creating Pose tracker component to track %s in the reference frame %s",
+    poseFrameName_.c_str(), referenceFrame_.c_str());
 
   {
     // singleton
@@ -50,9 +50,13 @@ void Pose::waitTransformUpdate(rclcpp::Rate r)
     try
     {
       {
-        RCLCPP_INFO_THROTTLE(getLogger(), *(getNode()->get_clock()), 1000, "[Pose Component] waiting transform %s -> %s", referenceFrame_.c_str(), poseFrameName_.c_str());
+        RCLCPP_INFO_THROTTLE(
+          getLogger(), *(getNode()->get_clock()), 1000,
+          "[Pose Component] waiting transform %s -> %s", referenceFrame_.c_str(),
+          poseFrameName_.c_str());
         std::lock_guard<std::mutex> lock(listenerMutex_);
-        auto transformstamped = tfBuffer_->lookupTransform(referenceFrame_, poseFrameName_, getNode()->now());
+        auto transformstamped =
+          tfBuffer_->lookupTransform(referenceFrame_, poseFrameName_, getNode()->now());
         tf2::fromMsg(transformstamped, transform);
       }
 
@@ -64,13 +68,14 @@ void Pose::waitTransformUpdate(rclcpp::Rate r)
         this->isInitialized = true;
       }
     }
-    catch (tf2::TransformException& ex)
+    catch (tf2::TransformException & ex)
     {
-      RCLCPP_ERROR_STREAM_THROTTLE(getNode()->get_logger(), *(getNode()->get_clock()), 1000,
-                                   "[Component pose] (" << poseFrameName_ << "/[" << referenceFrame_
-                                                        << "] ) is failing on pose update : " << ex.what());
+      RCLCPP_ERROR_STREAM_THROTTLE(
+        getNode()->get_logger(), *(getNode()->get_clock()), 1000,
+        "[Component pose] (" << poseFrameName_ << "/[" << referenceFrame_
+                             << "] ) is failing on pose update : " << ex.what());
     }
-    
+
     r.sleep();
   }
   RCLCPP_INFO(getLogger(), "[Pose Component] waitTransformUpdate -> pose found!");
@@ -84,7 +89,8 @@ void Pose::update()
     {
       std::lock_guard<std::mutex> lock(listenerMutex_);
       RCLCPP_DEBUG(getNode()->get_logger(), "[pose] looking up transform");
-      auto transformstamped = tfBuffer_->lookupTransform(referenceFrame_, poseFrameName_, rclcpp::Time(0));
+      auto transformstamped =
+        tfBuffer_->lookupTransform(referenceFrame_, poseFrameName_, rclcpp::Time(0));
       tf2::fromMsg(transformstamped, transform);
     }
 
@@ -95,12 +101,13 @@ void Pose::update()
       this->isInitialized = true;
     }
   }
-  catch (tf2::TransformException& ex)
+  catch (tf2::TransformException & ex)
   {
     //RCLCPP_DEBUG(getNode()->get_logger(), "[pose] EXCEPTION");
-    RCLCPP_ERROR_STREAM_THROTTLE(getNode()->get_logger(), *(getNode()->get_clock()), 1000,
-                                 "[Component pose] (" << poseFrameName_ << "/[" << referenceFrame_
-                                                      << "] ) is failing on pose update : " << ex.what());
+    RCLCPP_ERROR_STREAM_THROTTLE(
+      getNode()->get_logger(), *(getNode()->get_clock()), 1000,
+      "[Component pose] (" << poseFrameName_ << "/[" << referenceFrame_
+                           << "] ) is failing on pose update : " << ex.what());
   }
 }
 }  // namespace cl_move_base_z

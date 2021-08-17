@@ -3,8 +3,8 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <move_base_z_client_plugin/common.h>
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.h>
+#include <move_base_z_client_plugin/common.h>
 #include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
 #include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
@@ -14,9 +14,7 @@ namespace cl_move_base_z
 {
 using namespace ::cl_move_base_z::odom_tracker;
 
-CbNavigateGlobalPosition::CbNavigateGlobalPosition()
-{
-}
+CbNavigateGlobalPosition::CbNavigateGlobalPosition() {}
 
 CbNavigateGlobalPosition::CbNavigateGlobalPosition(float x, float y, float yaw)
 {
@@ -27,7 +25,7 @@ CbNavigateGlobalPosition::CbNavigateGlobalPosition(float x, float y, float yaw)
   goalYaw = yaw;
 }
 
-void CbNavigateGlobalPosition::setGoal(const geometry_msgs::msg::Pose &pose)
+void CbNavigateGlobalPosition::setGoal(const geometry_msgs::msg::Pose & pose)
 {
   goalPosition = pose.position;
   goalYaw = tf2::getYaw(pose.orientation);
@@ -39,7 +37,7 @@ void CbNavigateGlobalPosition::onEntry()
   RCLCPP_INFO(getNode()->get_logger(), "Component requirements completed");
 
   auto pose = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->toPoseMsg();
-  auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+  auto * odomTracker = moveBaseClient_->getComponent<OdomTracker>();
 
   auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
   plannerSwitcher->setDefaultPlanners();
@@ -54,7 +52,7 @@ void CbNavigateGlobalPosition::onEntry()
   execute();
 }
 
-// auxiliar function that defines the motion that is requested to the move_base action server
+// auxiliary function that defines the motion that is requested to the move_base action server
 void CbNavigateGlobalPosition::execute()
 {
   auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
@@ -74,7 +72,7 @@ void CbNavigateGlobalPosition::execute()
   moveBaseClient_->sendGoal(goal);
 }
 
-void CbNavigateGlobalPosition::readStartPoseFromParameterServer(ClMoveBaseZ::Goal &goal)
+void CbNavigateGlobalPosition::readStartPoseFromParameterServer(ClMoveBaseZ::Goal & goal)
 {
   if (!goalPosition)
   {
@@ -94,7 +92,9 @@ void CbNavigateGlobalPosition::readStartPoseFromParameterServer(ClMoveBaseZ::Goa
     goal.pose.pose.orientation = tf2::toMsg(q);
   }
 
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "start position read from parameter server: " << goal.pose.pose.position);
+  RCLCPP_INFO_STREAM(
+    getNode()->get_logger(),
+    "start position read from parameter server: " << goal.pose.pose.position);
 }
 
 // This is the substate destructor. This code will be executed when the

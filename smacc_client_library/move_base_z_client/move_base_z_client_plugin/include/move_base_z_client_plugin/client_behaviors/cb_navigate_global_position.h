@@ -27,18 +27,18 @@ public:
 
   CbNavigateGlobalPosition(float x, float y, float yaw /*radians*/);
 
-  void setGoal(const geometry_msgs::msg::Pose &pose);
+  void setGoal(const geometry_msgs::msg::Pose & pose);
 
   virtual void onEntry();
 
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-  virtual void onExit() override;
+  void onEntry() override;
 
-  // auxiliar function that defines the motion that is requested to the move_base action server
+  // auxiliary function that defines the motion that is requested to the move_base action server
   void execute();
 
 private:
-  void readStartPoseFromParameterServer(ClMoveBaseZ::Goal &goal);
+  void readStartPoseFromParameterServer(ClMoveBaseZ::Goal & goal);
 };
 }  // namespace cl_move_base_z

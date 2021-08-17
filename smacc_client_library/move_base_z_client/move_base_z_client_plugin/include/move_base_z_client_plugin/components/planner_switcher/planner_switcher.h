@@ -7,8 +7,8 @@
 
 #include <smacc/client_bases/smacc_action_client.h>
 #include <smacc/component.h>
-#include <std_msgs/msg/string.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/string.hpp>
 
 namespace cl_move_base_z
 {
@@ -18,23 +18,23 @@ class PlannerSwitcher : public smacc::ISmaccComponent
 {
 public:
   PlannerSwitcher();
-  
+
   void setBackwardPlanner();
-  
+
   void setUndoPathBackwardPlanner();
 
   void setForwardPlanner();
-  
+
   void setPureSpinningPlanner();
 
-  virtual void onInitialize() override;
+  void onInitialize() override;
 
   // sets ROS defaults local and global planners
   void setDefaultPlanners();
 
 private:
   std::string desired_global_planner_;
-  
+
   std::string desired_local_planner_;
 
   bool set_planners_mode_flag_;
