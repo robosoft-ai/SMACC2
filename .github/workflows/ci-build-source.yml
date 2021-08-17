@@ -22,18 +22,27 @@ jobs:
           # build all packages listed in the meta package
           package-name:
             smacc2
-            # smacc_client_library
+
             keyboard_client
-            move_base_z_client
+
+            backward_global_planner
+            backward_local_planner
+            forward_global_planner
+            forward_local_planner
+            move_base_z_planners_common
+            pure_spinning_local_planner
+            undo_path_global_planner
+            move_base_z_client_plugin
+
             multirole_sensor_client
             ros_publisher_client
             ros_timer_client
-            # smacc_event_generators
+
             eg_conditional_generator
             eg_random_generator
-            #
+
             smacc_msgs
-            # smacc_sm_reference_library
+
             sm_atomic
             sm_atomic_performance_test
             sm_atomic_subscribers_performance_test
@@ -42,10 +51,11 @@ jobs:
             sm_dance_bot_strikes_back
             sm_ferrari
             sm_three_some
-            # smacc_state_reactor_library
+
             sr_all_events_go
             sr_conditional
             sr_event_countdown
+
           vcs-repo-file-url: |
             https://raw.githubusercontent.com/ros2/ros2/master/ros2.repos
             https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/smacc2.repos
