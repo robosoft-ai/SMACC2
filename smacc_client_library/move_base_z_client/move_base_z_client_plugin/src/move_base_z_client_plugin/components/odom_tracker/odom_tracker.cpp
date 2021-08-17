@@ -24,8 +24,7 @@ OdomTracker::OdomTracker(std::string odomTopicName, std::string odomFrame)
 }
 
 template <typename T>
-void parameterDeclareAndtryGetOrSet(
-  rclcpp::Node::SharedPtr & node, std::string param_name, T & value)
+void parameterDeclareAndtryGetOrSet(rclcpp::Node::SharedPtr &node, std::string param_name, T &value)
 {
   if (!node->get_parameter(param_name, value))
   {
@@ -51,26 +50,20 @@ void OdomTracker::onInitialize()
   RCLCPP_WARN(getNode()->get_logger(), "Initializing Odometry Tracker");
 
   parameterDeclareAndtryGetOrSet(nh, "odom_frame", this->odomFrame_);
-  parameterDeclareAndtryGetOrSet(
-    nh, "record_point_distance_threshold", recordPointDistanceThreshold_);
-  parameterDeclareAndtryGetOrSet(
-    nh, "record_angular_distance_threshold", recordAngularDistanceThreshold_);
-  parameterDeclareAndtryGetOrSet(
-    nh, "clear_point_distance_threshold", clearPointDistanceThreshold_);
-  parameterDeclareAndtryGetOrSet(
-    nh, "clear_angular_distance_threshold", clearAngularDistanceThreshold_);
+  parameterDeclareAndtryGetOrSet(nh, "record_point_distance_threshold", recordPointDistanceThreshold_);
+  parameterDeclareAndtryGetOrSet(nh, "record_angular_distance_threshold", recordAngularDistanceThreshold_);
+  parameterDeclareAndtryGetOrSet(nh, "clear_point_distance_threshold", clearPointDistanceThreshold_);
+  parameterDeclareAndtryGetOrSet(nh, "clear_angular_distance_threshold", clearAngularDistanceThreshold_);
 
   if (this->subscribeToOdometryTopic_)
   {
     rclcpp::SensorDataQoS qos;
     odomSub_ = nh->create_subscription<nav_msgs::msg::Odometry>(
-      odomTopicName_, qos,
-      std::bind(&OdomTracker::processOdometryMessage, this, std::placeholders::_1));
+        odomTopicName_, qos, std::bind(&OdomTracker::processOdometryMessage, this, std::placeholders::_1));
   }
 
   robotBasePathPub_ = nh->create_publisher<nav_msgs::msg::Path>("odom_tracker_path", 1);
-  robotBasePathStackedPub_ =
-    nh->create_publisher<nav_msgs::msg::Path>("odom_tracker_stacked_path", 1);
+  robotBasePathStackedPub_ = nh->create_publisher<nav_msgs::msg::Path>("odom_tracker_stacked_path", 1);
 }
 
 /**
@@ -86,26 +79,23 @@ void OdomTracker::setWorkingMode(WorkingMode workingMode)
   switch (workingMode)
   {
     case WorkingMode::RECORD_PATH:
-      RCLCPP_INFO_STREAM(
-        getNode()->get_logger(),
-        "[OdomTracker] setting working mode to RECORD - record_point_distance_threshold: "
-          << recordPointDistanceThreshold_
-          << ", record_angular_distance_threshold: " << recordAngularDistanceThreshold_);
+      RCLCPP_INFO_STREAM(getNode()->get_logger(),
+                         "[OdomTracker] setting working mode to RECORD - record_point_distance_threshold: "
+                             << recordPointDistanceThreshold_
+                             << ", record_angular_distance_threshold: " << recordAngularDistanceThreshold_);
       break;
     case WorkingMode::CLEAR_PATH:
-      RCLCPP_INFO_STREAM(
-        getNode()->get_logger(),
-        "[OdomTracker] setting working mode to CLEAR - clear_point_distance_threshold: "
-          << clearPointDistanceThreshold_
-          << ", clear_angular_distance_threshold: " << clearAngularDistanceThreshold_);
+      RCLCPP_INFO_STREAM(getNode()->get_logger(),
+                         "[OdomTracker] setting working mode to CLEAR - clear_point_distance_threshold: "
+                             << clearPointDistanceThreshold_
+                             << ", clear_angular_distance_threshold: " << clearAngularDistanceThreshold_);
       break;
     case WorkingMode::IDLE:
       RCLCPP_INFO_STREAM(getNode()->get_logger(), "[OdomTracker] setting working mode to IDLE");
       break;
     default:
 
-      RCLCPP_INFO_STREAM(
-        getNode()->get_logger(), "[OdomTracker] setting working mode to <UNKNOWN>");
+      RCLCPP_INFO_STREAM(getNode()->get_logger(), "[OdomTracker] setting working mode to <UNKNOWN>");
   }
 
   workingMode_ = workingMode;
@@ -157,7 +147,7 @@ void OdomTracker::popPath(int popCount, bool keepPreviousPath)
 
   while (popCount > 0 && !pathStack_.empty())
   {
-    auto & stacked = pathStack_.back().poses;
+    auto &stacked = pathStack_.back().poses;
     baseTrajectory_.poses.insert(baseTrajectory_.poses.begin(), stacked.begin(), stacked.end());
     pathStack_.pop_back();
     popCount--;
@@ -176,14 +166,11 @@ void OdomTracker::logStateString()
 {
   RCLCPP_INFO(getNode()->get_logger(), "--- odom tracker state ---");
   RCLCPP_INFO(getNode()->get_logger(), " - path stack size: %ld", pathStack_.size());
-  RCLCPP_INFO(
-    getNode()->get_logger(), " - [STACK-HEAD active path size: %ld]", baseTrajectory_.poses.size());
+  RCLCPP_INFO(getNode()->get_logger(), " - [STACK-HEAD active path size: %ld]", baseTrajectory_.poses.size());
   int i = 0;
-  for (auto & p : pathStack_ | boost::adaptors::reversed)
+  for (auto &p : pathStack_ | boost::adaptors::reversed)
   {
-    RCLCPP_INFO_STREAM(
-      getNode()->get_logger(),
-      " - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size());
+    RCLCPP_INFO_STREAM(getNode()->get_logger(), " - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size());
     i++;
   }
   RCLCPP_INFO(getNode()->get_logger(), "---");
@@ -199,11 +186,10 @@ void OdomTracker::clearPath()
   this->updateAggregatedStackPath();
 }
 
-void OdomTracker::setStartPoint(const geometry_msgs::msg::PoseStamped & pose)
+void OdomTracker::setStartPoint(const geometry_msgs::msg::PoseStamped &pose)
 {
   std::lock_guard<std::mutex> lock(m_mutex_);
-  RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "[OdomTracker] set current path starting point: " << pose);
+  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[OdomTracker] set current path starting point: " << pose);
   if (baseTrajectory_.poses.size() > 0)
   {
     baseTrajectory_.poses[0] = pose;
@@ -215,11 +201,10 @@ void OdomTracker::setStartPoint(const geometry_msgs::msg::PoseStamped & pose)
   this->updateAggregatedStackPath();
 }
 
-void OdomTracker::setStartPoint(const geometry_msgs::msg::Pose & pose)
+void OdomTracker::setStartPoint(const geometry_msgs::msg::Pose &pose)
 {
   std::lock_guard<std::mutex> lock(m_mutex_);
-  RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "[OdomTracker] set current path starting point: " << pose);
+  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[OdomTracker] set current path starting point: " << pose);
   geometry_msgs::msg::PoseStamped posestamped;
   posestamped.header.frame_id = this->odomFrame_;
   posestamped.header.stamp = getNode()->now();
@@ -259,10 +244,9 @@ void OdomTracker::rtPublishPaths(rclcpp::Time timestamp)
 void OdomTracker::updateAggregatedStackPath()
 {
   aggregatedStackPathMsg_.poses.clear();
-  for (auto & p : pathStack_)
+  for (auto &p : pathStack_)
   {
-    aggregatedStackPathMsg_.poses.insert(
-      aggregatedStackPathMsg_.poses.end(), p.poses.begin(), p.poses.end());
+    aggregatedStackPathMsg_.poses.insert(aggregatedStackPathMsg_.poses.end(), p.poses.begin(), p.poses.end());
   }
 
   aggregatedStackPathMsg_.header.frame_id = this->odomFrame_;
@@ -273,7 +257,7 @@ void OdomTracker::updateAggregatedStackPath()
  * updateBackward()
  ******************************************************************************************************************
  */
-bool OdomTracker::updateClearPath(const nav_msgs::msg::Odometry & odom)
+bool OdomTracker::updateClearPath(const nav_msgs::msg::Odometry &odom)
 {
   // we initially accept any message if the queue is empty
   /// Track robot base pose
@@ -289,44 +273,38 @@ bool OdomTracker::updateClearPath(const nav_msgs::msg::Odometry & odom)
 
   while (!finished)
   {
-    if (
-      baseTrajectory_.poses.size() <=
-      1)  // we at least keep always the first point of the forward path when clearing
-          // (this is important for backwards planner replanning and not losing the
-          // last goal)
+    if (baseTrajectory_.poses.size() <= 1)  // we at least keep always the first point of the forward path when clearing
+                                            // (this is important for backwards planner replanning and not losing the
+                                            // last goal)
     {
       acceptBackward = false;
       finished = true;
     }
     else
     {
-      auto & carrotPose = baseTrajectory_.poses.back().pose;
-      auto & carrotPoint = carrotPose.position;
+      auto &carrotPose = baseTrajectory_.poses.back().pose;
+      auto &carrotPoint = carrotPose.position;
       double carrotAngle = tf2::getYaw(carrotPose.orientation);
 
-      auto & currePose = base_pose.pose;
-      auto & currePoint = currePose.position;
+      auto &currePose = base_pose.pose;
+      auto &currePoint = currePose.position;
       double currentAngle = tf2::getYaw(currePose.orientation);
 
       double lastpointdist = p2pDistance(carrotPoint, currePoint);
       double goalAngleOffset = fabs(angles::shortest_angular_distance(carrotAngle, currentAngle));
 
-      acceptBackward = !baseTrajectory_.poses.empty() &&
-                       lastpointdist < clearPointDistanceThreshold_ &&
+      acceptBackward = !baseTrajectory_.poses.empty() && lastpointdist < clearPointDistanceThreshold_ &&
                        goalAngleOffset < clearAngularDistanceThreshold_;
 
       clearingError = lastpointdist > 2 * clearPointDistanceThreshold_;
-      RCLCPP_DEBUG_STREAM(
-        getNode()->get_logger(),
-        "[OdomTracker] clearing (accepted: " << acceptBackward << ") linerr: " << lastpointdist
-                                             << ", anglerr: " << goalAngleOffset);
+      RCLCPP_DEBUG_STREAM(getNode()->get_logger(),
+                          "[OdomTracker] clearing (accepted: " << acceptBackward << ") linerr: " << lastpointdist
+                                                               << ", anglerr: " << goalAngleOffset);
     }
 
     // RCLCPP_INFO(getNode()->get_logger(),"Backwards, last distance: %lf < %lf accept: %d", dist,
     // minPointDistanceBackwardThresh_, acceptBackward);
-    if (
-      acceptBackward &&
-      baseTrajectory_.poses.size() > 1) /*we always leave at least one item, specially interesting
+    if (acceptBackward && baseTrajectory_.poses.size() > 1) /*we always leave at least one item, specially interesting
                                                                for the backward local planner reach the backwards goal
                                                                with precission enough*/
     {
@@ -351,7 +329,7 @@ bool OdomTracker::updateClearPath(const nav_msgs::msg::Odometry & odom)
  * updateRecordPath()
  ******************************************************************************************************************
  */
-bool OdomTracker::updateRecordPath(const nav_msgs::msg::Odometry & odom)
+bool OdomTracker::updateRecordPath(const nav_msgs::msg::Odometry &odom)
 {
   /// Track robot base pose
   geometry_msgs::msg::PoseStamped base_pose;
@@ -369,11 +347,11 @@ bool OdomTracker::updateRecordPath(const nav_msgs::msg::Odometry & odom)
   }
   else
   {
-    const auto & prevPose = baseTrajectory_.poses.back().pose;
-    const geometry_msgs::msg::Point & prevPoint = prevPose.position;
+    const auto &prevPose = baseTrajectory_.poses.back().pose;
+    const geometry_msgs::msg::Point &prevPoint = prevPose.position;
     double prevAngle = tf2::getYaw(prevPose.orientation);
 
-    const geometry_msgs::msg::Point & currePoint = base_pose.pose.position;
+    const geometry_msgs::msg::Point &currePoint = base_pose.pose.position;
     double currentAngle = tf2::getYaw(base_pose.pose.orientation);
 
     dist = p2pDistance(prevPoint, currePoint);
@@ -415,8 +393,7 @@ void OdomTracker::updateConfiguration()
   {
   }
 
-  if (!getNode()->get_parameter(
-        "record_angular_distance_threshold", recordAngularDistanceThreshold_))
+  if (!getNode()->get_parameter("record_angular_distance_threshold", recordAngularDistanceThreshold_))
   {
   }
 

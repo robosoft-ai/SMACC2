@@ -10,10 +10,10 @@
 #include <boost/intrusive_ptr.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/twist.hpp>
-#include <nav_2d_utils/tf_help.hpp>
 #include <pluginlib/class_list_macros.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
+#include <nav_2d_utils/tf_help.hpp>
 
 using namespace std::chrono_literals;
 namespace cl_move_base_z
@@ -25,9 +25,13 @@ namespace forward_local_planner
 * ForwardLocalPlanner()
 ******************************************************************************************************************
 */
-ForwardLocalPlanner::ForwardLocalPlanner() : waitingTimeout_(2s), transform_tolerance_(0.1) {}
+ForwardLocalPlanner::ForwardLocalPlanner() : waitingTimeout_(2s), transform_tolerance_(0.1)
+{
+}
 
-ForwardLocalPlanner::~ForwardLocalPlanner() {}
+ForwardLocalPlanner::~ForwardLocalPlanner()
+{
+}
 
 void ForwardLocalPlanner::activate()
 {
@@ -36,7 +40,10 @@ void ForwardLocalPlanner::activate()
   this->goalMarkerPublisher_->on_activate();
 }
 
-void ForwardLocalPlanner::deactivate() { this->goalMarkerPublisher_->on_deactivate(); }
+void ForwardLocalPlanner::deactivate()
+{
+  this->goalMarkerPublisher_->on_deactivate();
+}
 
 void ForwardLocalPlanner::cleanup()
 {
@@ -46,10 +53,9 @@ void ForwardLocalPlanner::cleanup()
   xy_goal_tolerance_ = -1;
 }
 
-void ForwardLocalPlanner::configure(
-  const rclcpp_lifecycle::LifecycleNode::WeakPtr & node, std::string name,
-  const std::shared_ptr<tf2_ros::Buffer> & tf,
-  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> & costmap_ros)
+void ForwardLocalPlanner::configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &node, std::string name,
+                                    const std::shared_ptr<tf2_ros::Buffer> &tf,
+                                    const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> &costmap_ros)
 {
   // nh_ = rclcpp::Node::make_shared("~/ForwardLocalPlanner");
   nh_ = node.lock();
@@ -83,14 +89,12 @@ void ForwardLocalPlanner::configure(
   nh_->declare_parameter(name_ + ".max_angular_z_speed", max_angular_z_speed_);
   nh_->declare_parameter(name_ + ".transform_tolerance", transform_tolerance_);
 
-  RCLCPP_DEBUG(
-    nh_->get_logger(),
-    "[ForwardLocalPlanner] max linear speed: %lf, max angular speed: %lf, k_rho: %lf, "
-    "carrot_distance: "
-    "%lf, ",
-    max_linear_x_speed_, max_angular_z_speed_, k_rho_, carrot_distance_);
-  goalMarkerPublisher_ = nh_->create_publisher<visualization_msgs::msg::MarkerArray>(
-    "forward_local_planner/carrot_goal_marker", 1);
+  RCLCPP_DEBUG(nh_->get_logger(),
+               "[ForwardLocalPlanner] max linear speed: %lf, max angular speed: %lf, k_rho: %lf, carrot_distance: "
+               "%lf, ",
+               max_linear_x_speed_, max_angular_z_speed_, k_rho_, carrot_distance_);
+  goalMarkerPublisher_ =
+      nh_->create_publisher<visualization_msgs::msg::MarkerArray>("forward_local_planner/carrot_goal_marker", 1);
 
   waiting_ = false;
   waitingTimeout_ = rclcpp::Duration(10s);
@@ -111,23 +115,17 @@ void ForwardLocalPlanner::updateParameters()
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner.k_rho: " << k_rho_);
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner.k_alpha: " << k_alpha_);
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner.k_betta: " << k_betta_);
-  RCLCPP_INFO_STREAM(
-    nh_->get_logger(), "[ForwardLocalPlanner.carrot_distance: " << carrot_distance_);
-  RCLCPP_INFO_STREAM(
-    nh_->get_logger(), "[ForwardLocalPlanner.yaw_goal_tolerance:" << yaw_goal_tolerance_);
-  RCLCPP_INFO_STREAM(
-    nh_->get_logger(), "[ForwardLocalPlanner.xy_goal_tolerance: " << xy_goal_tolerance_);
-  RCLCPP_INFO_STREAM(
-    nh_->get_logger(), "[ForwardLocalPlanner.max_linear_x_speed:" << max_linear_x_speed_);
-  RCLCPP_INFO_STREAM(
-    nh_->get_logger(), "[ForwardLocalPlanner.max_angular_z_speed:" << max_angular_z_speed_);
-  RCLCPP_INFO_STREAM(
-    nh_->get_logger(), "[ForwardLocalPlanner.transform_tolerance:" << transform_tolerance_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner.carrot_distance: " << carrot_distance_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner.yaw_goal_tolerance:" << yaw_goal_tolerance_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner.xy_goal_tolerance: " << xy_goal_tolerance_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner.max_linear_x_speed:" << max_linear_x_speed_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner.max_angular_z_speed:" << max_angular_z_speed_);
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner.transform_tolerance:" << transform_tolerance_);
 }
 
-void ForwardLocalPlanner::generateTrajectory(
-  const Eigen::Vector3f & pos, const Eigen::Vector3f & vel, float maxdist, float maxanglediff,
-  float maxtime, float dt, std::vector<Eigen::Vector3f> & outtraj)
+void ForwardLocalPlanner::generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist,
+                                             float maxanglediff, float maxtime, float dt,
+                                             std::vector<Eigen::Vector3f> &outtraj)
 {
   // simulate the trajectory and check for collisions, updating costs along the way
   bool end = false;
@@ -190,8 +188,8 @@ void ForwardLocalPlanner::generateTrajectory(
   }  // end for simulation steps
 }
 
-Eigen::Vector3f ForwardLocalPlanner::computeNewPositions(
-  const Eigen::Vector3f & pos, const Eigen::Vector3f & vel, double dt)
+Eigen::Vector3f ForwardLocalPlanner::computeNewPositions(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel,
+                                                         double dt)
 {
   Eigen::Vector3f new_pos = Eigen::Vector3f::Zero();
   new_pos[0] = pos[0] + (vel[0] * cos(pos[2]) + vel[1] * cos(M_PI_2 + pos[2])) * dt;
@@ -241,11 +239,11 @@ void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
   goalMarkerPublisher_->publish(ma);
 }
 
-void clamp(
-  rclcpp::Node::SharedPtr nh_, geometry_msgs::msg::Twist & cmd_vel, double max_linear_x_speed_,
-  double max_angular_z_speed_)
+void clamp(rclcpp::Node::SharedPtr nh_, geometry_msgs::msg::Twist &cmd_vel, double max_linear_x_speed_,
+           double max_angular_z_speed_)
 {
-  if (max_angular_z_speed_ == 0 || max_linear_x_speed_ == 0) return;
+  if (max_angular_z_speed_ == 0 || max_linear_x_speed_ == 0)
+    return;
 
   if (cmd_vel.angular.z == 0)
   {
@@ -262,8 +260,7 @@ void clamp(
       // lets go to maximum linear speed
       cmd_vel.linear.x = max_linear_x_speed_;
       cmd_vel.angular.z = kurvature / max_linear_x_speed_;
-      RCLCPP_WARN_STREAM(
-        nh_->get_logger(), "k=" << kurvature << "lets go to maximum linear capacity: " << cmd_vel);
+      RCLCPP_WARN_STREAM(nh_->get_logger(), "k=" << kurvature << "lets go to maximum linear capacity: " << cmd_vel);
     }
     else
     {
@@ -282,17 +279,16 @@ void clamp(
 */
 
 geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
-  const geometry_msgs::msg::PoseStamped & currentPose, const geometry_msgs::msg::Twist & velocity,
-  nav2_core::GoalChecker * goal_checker)
+    const geometry_msgs::msg::PoseStamped &currentPose, const geometry_msgs::msg::Twist &velocity,
+    nav2_core::GoalChecker *goal_checker)
 {
   this->updateParameters();
 
   if (this->plan_.size() > 0)
   {
-    RCLCPP_INFO_STREAM(
-      nh_->get_logger(), "[ForwardLocalPlanner] Current pose frame id: "
-                           << plan_.front().header.frame_id
-                           << ", path pose frame id: " << currentPose.header.frame_id);
+    RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner] Current pose frame id: "
+                                              << plan_.front().header.frame_id
+                                              << ", path pose frame id: " << currentPose.header.frame_id);
 
     if (plan_.front().header.frame_id != currentPose.header.frame_id)
     {
@@ -312,22 +308,19 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
       yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation);
       //xy_goal_tolerance_ = posetol.position.x * 0.35;  // WORKAROUND DIFFERENCE WITH NAV CONTROLLER GOAL CHECKER
       //yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation) * 0.35;
-      RCLCPP_INFO_STREAM(
-        nh_->get_logger(), "[ForwardLocalPlanner] xy_goal_tolerance_: " << xy_goal_tolerance_
-                                                                        << ", yaw_goal_tolerance_: "
-                                                                        << yaw_goal_tolerance_);
+      RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner] xy_goal_tolerance_: " << xy_goal_tolerance_
+                                                                                         << ", yaw_goal_tolerance_: "
+                                                                                         << yaw_goal_tolerance_);
     }
     else
     {
-      RCLCPP_INFO_STREAM(
-        nh_->get_logger(), "[ForwardLocalPlanner] could not get tolerances from goal checker");
+      RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner] could not get tolerances from goal checker");
     }
   }
 
   geometry_msgs::msg::TwistStamped cmd_vel;
   goalReached_ = false;
-  RCLCPP_DEBUG(
-    nh_->get_logger(), "[ForwardLocalPlanner] ----- COMUTE VELOCITY COMMAND LOCAL PLANNER ---");
+  RCLCPP_DEBUG(nh_->get_logger(), "[ForwardLocalPlanner] ----- COMUTE VELOCITY COMMAND LOCAL PLANNER ---");
 
   bool ok = false;
   while (!ok)
@@ -335,8 +328,8 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
     // iterate the point from the current position and ahead until reaching a new goal point in the path
     while (!ok && currentPoseIndex_ < (int)plan_.size())
     {
-      auto & pose = plan_[currentPoseIndex_];
-      const geometry_msgs::msg::Point & p = pose.pose.position;
+      auto &pose = plan_[currentPoseIndex_];
+      const geometry_msgs::msg::Point &p = pose.pose.position;
       tf2::Quaternion q;
       tf2::fromMsg(pose.pose.orientation, q);
 
@@ -353,12 +346,10 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
       {
         // the target pose is enough different to be defined as a target
         ok = true;
-        RCLCPP_DEBUG(
-          nh_->get_logger(),
-          "current index: %d, carrot goal percentaje: %lf, dist: %lf, maxdist: %lf, angle_error: "
-          "%lf",
-          currentPoseIndex_, 100.0 * currentPoseIndex_ / plan_.size(), dist, carrot_distance_,
-          angular_error);
+        RCLCPP_DEBUG(nh_->get_logger(),
+                     "current index: %d, carrot goal percentaje: %lf, dist: %lf, maxdist: %lf, angle_error: %lf",
+                     currentPoseIndex_, 100.0 * currentPoseIndex_ / plan_.size(), dist, carrot_distance_,
+                     angular_error);
       }
       else
       {
@@ -366,9 +357,8 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
       }
     }
 
-    RCLCPP_DEBUG_STREAM(
-      nh_->get_logger(), "[ForwardLocalPlanner] selected carrot pose index "
-                           << currentPoseIndex_ << "/" << plan_.size());
+    RCLCPP_DEBUG_STREAM(nh_->get_logger(), "[ForwardLocalPlanner] selected carrot pose index " << currentPoseIndex_
+                                                                                               << "/" << plan_.size());
 
     if (currentPoseIndex_ >= (int)plan_.size())
     {
@@ -384,9 +374,9 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
 
   // RCLCPP_INFO(nh_->get_logger(), "pose control algorithm");
 
-  const geometry_msgs::msg::PoseStamped & finalgoalpose = plan_.back();
-  const geometry_msgs::msg::PoseStamped & carrot_goalpose = plan_[currentPoseIndex_];
-  const geometry_msgs::msg::Point & goalposition = carrot_goalpose.pose.position;
+  const geometry_msgs::msg::PoseStamped &finalgoalpose = plan_.back();
+  const geometry_msgs::msg::PoseStamped &carrot_goalpose = plan_[currentPoseIndex_];
+  const geometry_msgs::msg::Point &goalposition = carrot_goalpose.pose.position;
 
   tf2::Quaternion carrotGoalQ;
   tf2::fromMsg(carrot_goalpose.pose.orientation, carrotGoalQ);
@@ -414,10 +404,8 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
   double vetta = 0;  // = k_rho_ * rho_error;
   double gamma = 0;  //= k_alpha_ * alpha_error + k_betta_ * betta_error;
 
-  if (
-    rho_error >
-    xy_goal_tolerance_)  // reguular control rule, be careful, rho error is with the carrot not with the
-                         // final goal (this is something to improve like the backwards planner)
+  if (rho_error > xy_goal_tolerance_)  // reguular control rule, be careful, rho error is with the carrot not with the
+                                       // final goal (this is something to improve like the backwards planner)
   {
     vetta = k_rho_ * rho_error;
     gamma = k_alpha_ * alpha_error;
@@ -464,20 +452,19 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
 
   publishGoalMarker(goalposition.x, goalposition.y, betta);
 
-  RCLCPP_DEBUG_STREAM(
-    nh_->get_logger(), "Forward local planner,"
-                         << std::endl
-                         << " theta: " << theta << std::endl
-                         << " betta: " << betta << std::endl
-                         << " err_x: " << dx << std::endl
-                         << " err_y:" << dy << std::endl
-                         << " rho_error:" << rho_error << std::endl
-                         << " alpha_error:" << alpha_error << std::endl
-                         << " betta_error:" << betta_error << std::endl
-                         << " vetta:" << vetta << std::endl
-                         << " gamma:" << gamma << std::endl
-                         << " xy_goal_tolerance:" << xy_goal_tolerance_ << std::endl
-                         << " yaw_goal_tolerance:" << yaw_goal_tolerance_ << std::endl);
+  RCLCPP_DEBUG_STREAM(nh_->get_logger(), "Forward local planner,"
+                                             << std::endl
+                                             << " theta: " << theta << std::endl
+                                             << " betta: " << betta << std::endl
+                                             << " err_x: " << dx << std::endl
+                                             << " err_y:" << dy << std::endl
+                                             << " rho_error:" << rho_error << std::endl
+                                             << " alpha_error:" << alpha_error << std::endl
+                                             << " betta_error:" << betta_error << std::endl
+                                             << " vetta:" << vetta << std::endl
+                                             << " gamma:" << gamma << std::endl
+                                             << " xy_goal_tolerance:" << xy_goal_tolerance_ << std::endl
+                                             << " yaw_goal_tolerance:" << yaw_goal_tolerance_ << std::endl);
 
   // if(cmd_vel.linear.x==0 && cmd_vel.angular.z == 0 )
   //{
@@ -489,19 +476,17 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
   auto global_pose = currentPose;
   //->getRobotPose(global_pose);
 
-  auto * costmap2d = costmapRos_->getCostmap();
+  auto *costmap2d = costmapRos_->getCostmap();
   auto yaw = tf2::getYaw(global_pose.pose.orientation);
 
-  auto & pos = global_pose.pose.position;
+  auto &pos = global_pose.pose.position;
 
   Eigen::Vector3f currentpose(pos.x, pos.y, yaw);
-  Eigen::Vector3f currentvel(
-    cmd_vel.twist.linear.x, cmd_vel.twist.linear.y, cmd_vel.twist.angular.z);
+  Eigen::Vector3f currentvel(cmd_vel.twist.linear.x, cmd_vel.twist.linear.y, cmd_vel.twist.angular.z);
 
   std::vector<Eigen::Vector3f> trajectory;
-  this->generateTrajectory(
-    currentpose, currentvel, 0.8 /*meters*/, M_PI / 8 /*rads*/, 3.0 /*seconds*/, 0.05 /*seconds*/,
-    trajectory);
+  this->generateTrajectory(currentpose, currentvel, 0.8 /*meters*/, M_PI / 8 /*rads*/, 3.0 /*seconds*/,
+                           0.05 /*seconds*/, trajectory);
 
   // check plan rejection
   bool aceptedplan = true;
@@ -510,7 +495,7 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
 
   int i = 0;
   // RCLCPP_INFO_STREAM(nh_->get_logger(), "lplanner goal: " << finalgoalpose.pose.position);
-  for (auto & p : trajectory)
+  for (auto &p : trajectory)
   {
     float dx = p[0] - finalgoalpose.pose.position.x;
     float dy = p[1] - finalgoalpose.pose.position.y;
@@ -558,22 +543,19 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
 
     if (!waiting_)
     {
-      RCLCPP_DEBUG(nh_->get_logger(), "Start waiting obstacle disappear");
+      RCLCPP_DEBUG(nh_->get_logger(), "Start waiting obstacle dissapear");
       waiting_ = true;
       waitingStamp_ = nh_->now();
     }
     else
     {
       auto waitingduration = nh_->now() - waitingStamp_;
-      RCLCPP_DEBUG(
-        nh_->get_logger(), "waiting obstacle disappear, elapsed: %lf seconds",
-        waitingduration.seconds());
+      RCLCPP_DEBUG(nh_->get_logger(), "waiting obstacle dissapear, ellapsed: %lf seconds", waitingduration.seconds());
 
       if (waitingduration > this->waitingTimeout_)
       {
-        RCLCPP_WARN(
-          nh_->get_logger(), "TIMEOUT waiting obstacle disappear, elapsed: %lf seconds",
-          waitingduration.seconds());
+        RCLCPP_WARN(nh_->get_logger(), "TIMEOUT waiting obstacle dissapear, ellapsed: %lf seconds",
+                    waitingduration.seconds());
         success = false;
       }
     }
@@ -581,21 +563,17 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
 
   if (!success)
   {
-    RCLCPP_DEBUG(
-      nh_->get_logger(),
-      "[ForwardLocalPlanner] object detected waiting stopped until it disappears.");
+    RCLCPP_DEBUG(nh_->get_logger(), "[ForwardLocalPlanner] object detected waiting stopped until it disappears.");
   }
 
   cmd_vel.header.stamp = nh_->now();
   return cmd_vel;
 }
 
-void ForwardLocalPlanner::setSpeedLimit(const double & speed_limit, const bool & percentage)
+void ForwardLocalPlanner::setSpeedLimit(const double &speed_limit, const bool &percentage)
 {
-  RCLCPP_WARN_STREAM(
-    nh_->get_logger(),
-    "ForwardLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not "
-    "implemented.");
+  RCLCPP_WARN_STREAM(nh_->get_logger(), "ForwardLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not "
+                                        "implemented.");
 }
 
 /**
@@ -603,22 +581,25 @@ void ForwardLocalPlanner::setSpeedLimit(const double & speed_limit, const bool &
 * isGoalReached()
 ******************************************************************************************************************
 */
-bool ForwardLocalPlanner::isGoalReached() { return goalReached_; }
+bool ForwardLocalPlanner::isGoalReached()
+{
+  return goalReached_;
+}
 
 /**
 ******************************************************************************************************************
 * setPlan()
 ******************************************************************************************************************
 */
-void ForwardLocalPlanner::setPlan(const nav_msgs::msg::Path & plan)
+void ForwardLocalPlanner::setPlan(const nav_msgs::msg::Path &plan)
 {
   nav_msgs::msg::Path transformedPlan;
 
   rclcpp::Duration ttol(transform_tolerance_);
   // transform global plan
-  for (auto & p : plan.poses)
+  for (auto &p : plan.poses)
   {
-    geometry_msgs::msg::PoseStamped transformedPose;
+    geometry_msgs::msg::PoseStamped transformedPose;  
     nav_2d_utils::transformPose(tf_, costmapRos_->getGlobalFrameID(), p, transformedPose, ttol);
     transformedPose.header.frame_id = costmapRos_->getGlobalFrameID();
     transformedPlan.poses.push_back(transformedPose);
@@ -629,5 +610,4 @@ void ForwardLocalPlanner::setPlan(const nav_msgs::msg::Path & plan)
 }
 }  // namespace forward_local_planner
 }  // namespace cl_move_base_z
-PLUGINLIB_EXPORT_CLASS(
-  cl_move_base_z::forward_local_planner::ForwardLocalPlanner, nav2_core::Controller)
+PLUGINLIB_EXPORT_CLASS(cl_move_base_z::forward_local_planner::ForwardLocalPlanner, nav2_core::Controller)

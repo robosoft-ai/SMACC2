@@ -25,7 +25,9 @@ CbNavigateBackwards::CbNavigateBackwards(float backwardDistance)
   this->backwardDistance = backwardDistance;
 }
 
-CbNavigateBackwards::CbNavigateBackwards() {}
+CbNavigateBackwards::CbNavigateBackwards()
+{
+}
 
 void CbNavigateBackwards::onEntry()
 {
@@ -42,8 +44,7 @@ void CbNavigateBackwards::onEntry()
   }
 
   this->listener = std::make_shared<tf2_ros::Buffer>(getNode()->get_clock());
-  RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "[CbNavigateBackwards] Straight backwards motion distance: " << dist);
+  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[CbNavigateBackwards] Straight backwards motion distance: " << dist);
 
   auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
   auto referenceFrame = p->getReferenceFrame();
@@ -59,8 +60,7 @@ void CbNavigateBackwards::onEntry()
   goal.pose.header.frame_id = referenceFrame;
   goal.pose.header.stamp = getNode()->now();
   tf2::toMsg(targetPose, goal.pose.pose);
-  RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "[CbNavigateBackwards] TARGET POSE BACKWARDS: " << goal.pose);
+  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[CbNavigateBackwards] TARGET POSE BACKWARDS: " << goal.pose);
 
   odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
   if (odomTracker_ != nullptr)

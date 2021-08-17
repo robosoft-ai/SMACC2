@@ -4,7 +4,8 @@ namespace cl_move_base_z
 {
 void WaypointEventDispatcher::postWaypointEvent(int index)
 {
-  auto & fn = postWaypointFn[index % WAYPOINTS_EVENTCOUNT];
-  if (fn != nullptr) fn();
+    auto& fn = postWaypointFn[index % WAYPOINTS_EVENTCOUNT];
+    if(fn!=nullptr)
+        fn();
 }
-}  // namespace cl_move_base_z
+} // namespace smacc

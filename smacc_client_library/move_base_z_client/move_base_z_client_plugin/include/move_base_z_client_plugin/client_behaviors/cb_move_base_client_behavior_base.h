@@ -26,7 +26,7 @@ public:
   }
 
 protected:
-  cl_move_base_z::ClMoveBaseZ * moveBaseClient_;
+  cl_move_base_z::ClMoveBaseZ *moveBaseClient_;
 
 private:
   void propagateSuccessEvent(ClMoveBaseZ::WrappedResult &);

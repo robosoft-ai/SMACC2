@@ -31,10 +31,9 @@ public:
    * @param  tf A pointer to a TF buffer
    * @param  costmap_ros A pointer to the costmap
    */
-  void configure(
-    const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent, std::string name,
-    const std::shared_ptr<tf2_ros::Buffer> tf,
-    const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros) override;
+  void configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, std::string name,
+                 const std::shared_ptr<tf2_ros::Buffer> tf,
+                 const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros) override;
 
   /**
    * @brief Method to cleanup resources used on shutdown.
@@ -47,7 +46,7 @@ public:
   virtual void activate();
 
   /**
-   * @brief Method to deactivate planner and any threads involved in execution.
+   * @brief Method to deactive planner and any threads involved in execution.
    */
   virtual void deactivate();
 
@@ -57,8 +56,8 @@ public:
    * @param goal  The goal pose of the robot
    * @return      The sequence of poses to get from start to goal, if any
    */
-  virtual nav_msgs::msg::Path createPlan(
-    const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal);
+  virtual nav_msgs::msg::Path createPlan(const geometry_msgs::msg::PoseStamped &start,
+                                         const geometry_msgs::msg::PoseStamped &goal);
 
 private:
   // rclcpp::Node::SharedPtr nh_;

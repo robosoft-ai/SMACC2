@@ -18,7 +18,7 @@ class Amcl : public smacc::ISmaccClient
 public:
   Amcl();
   virtual ~Amcl();
-  std::string getName() const override;
+  virtual std::string getName() const override;
 };
 
 }  // namespace cl_move_base_z

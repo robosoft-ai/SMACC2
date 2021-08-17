@@ -30,10 +30,9 @@ public:
 
   virtual ~PureSpinningLocalPlanner();
 
-  void configure(
-    const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent, std::string name,
-    const std::shared_ptr<tf2_ros::Buffer> & tf,
-    const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> & costmap_ros) override;
+  void configure(const rclcpp_lifecycle::LifecycleNode::WeakPtr &parent, std::string name,
+                 const std::shared_ptr<tf2_ros::Buffer> &tf,
+                 const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> &costmap_ros) override;
 
   void activate() override;
   void deactivate() override;
@@ -43,7 +42,7 @@ public:
    * @brief nav2_core setPlan - Sets the global plan
    * @param path The global plan
    */
-  void setPlan(const nav_msgs::msg::Path & path) override;
+  void setPlan(const nav_msgs::msg::Path &path) override;
 
   /**
    * @brief nav2_core computeVelocityCommands - calculates the best command given the current pose and velocity
@@ -57,14 +56,14 @@ public:
    * @param velocity Current robot velocity
    * @return The best command for the robot to drive
    */
-  virtual geometry_msgs::msg::TwistStamped computeVelocityCommands(
-    const geometry_msgs::msg::PoseStamped & pose, const geometry_msgs::msg::Twist & velocity,
-    nav2_core::GoalChecker * goal_checker) override;
+  virtual geometry_msgs::msg::TwistStamped computeVelocityCommands(const geometry_msgs::msg::PoseStamped &pose,
+                                                                   const geometry_msgs::msg::Twist &velocity,
+                                                                   nav2_core::GoalChecker *goal_checker) override;
 
   /*deprecated in navigation2*/
   bool isGoalReached();
 
-  virtual void setSpeedLimit(const double & speed_limit, const bool & percentage) override;
+  virtual void setSpeedLimit(const double &speed_limit, const bool &percentage) override;
 
 private:
   void updateParameters();
@@ -74,8 +73,7 @@ private:
 
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmapRos_;
 
-  std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<visualization_msgs::msg::MarkerArray>>
-    goalMarkerPublisher_;
+  std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<visualization_msgs::msg::MarkerArray>> goalMarkerPublisher_;
 
   std::vector<geometry_msgs::msg::PoseStamped> plan_;
 

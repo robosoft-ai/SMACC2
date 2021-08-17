@@ -16,9 +16,9 @@ class CbUndoPathBackwards : public CbMoveBaseClientBehaviorBase
 public:
   std::optional<std::string> goalChecker_;
 
-  void onEntry() override;
+  virtual void onEntry() override;
 
-  void onEntry() override;
+  virtual void onExit() override;
 
 private:
   std::shared_ptr<tf2_ros::Buffer> listener;
