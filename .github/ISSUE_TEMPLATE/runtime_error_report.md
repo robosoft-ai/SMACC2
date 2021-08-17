@@ -4,7 +4,6 @@ about: Create a report to help us catch runtime errors and improve
 title: ''
 labels: bug
 assignees: ''
-
 ---
 
 **Describe the bug**
@@ -30,7 +29,7 @@ If applicable, add screenshots to help explain your problem.
 - Version [e.g. Rolling]
 
 *REPO DETAILS*:
-- Repository: [e.g.  robosoft-ai/SMACC2]
+- Repository: [e.g. robosoft-ai/SMACC2]
 - Branch: [e.g. master]
 - Commit (First 5 Digits): [e.g. 6bade]
 
