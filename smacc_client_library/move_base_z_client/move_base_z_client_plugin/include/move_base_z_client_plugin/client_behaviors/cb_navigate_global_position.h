@@ -7,6 +7,7 @@
 
 #include <boost/optional.hpp>
 #include <geometry_msgs/msg/point.hpp>
+#include <geometry_msgs/msg/pose.hpp>
 
 #include "cb_move_base_client_behavior_base.h"
 

@@ -6,6 +6,7 @@
 #include <angles/angles.h>
 #include <move_base_z_client_plugin/common.h>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include <tf2/utils.h>
 
 #include <boost/range/adaptor/reversed.hpp>
@@ -29,8 +30,7 @@ void parameterDeclareAndtryGetOrSet(rclcpp::Node::SharedPtr &node, std::string p
   if (!node->get_parameter(param_name, value))
   {
     RCLCPP_INFO_STREAM(node->get_logger(), "[OdomTracker] autoset " << param_name << ": " << value);
-    node->declare_parameter(param_name);
-    node->set_parameter(rclcpp::Parameter(param_name, value));
+    node->declare_parameter(param_name, value);
   }
   else
   {
