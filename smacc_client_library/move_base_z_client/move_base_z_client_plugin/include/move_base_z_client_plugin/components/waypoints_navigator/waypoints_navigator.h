@@ -35,25 +35,25 @@ class WaypointNavigator : public smacc::ISmaccComponent
 public:
   WaypointEventDispatcher waypointsEventDispatcher;
 
-  ClMoveBaseZ * client_;
+  ClMoveBaseZ *client_;
 
   WaypointNavigator();
 
-  void onInitialize() override;
+  virtual void onInitialize() override;
 
-  void insertWaypoint(int index, geometry_msgs::msg::Pose & newpose);
+  void insertWaypoint(int index, geometry_msgs::msg::Pose &newpose);
 
   void removeWaypoint(int index);
 
   void loadWayPointsFromFile(std::string filepath);
 
-  void setWaypoints(const std::vector<geometry_msgs::msg::Pose> & waypoints);
+  void setWaypoints(const std::vector<geometry_msgs::msg::Pose> &waypoints);
 
-  void setWaypoints(const std::vector<Pose2D> & waypoints);
+  void setWaypoints(const std::vector<Pose2D> &waypoints);
 
   void sendNextGoal();
 
-  const std::vector<geometry_msgs::msg::Pose> & getWaypoints() const;
+  const std::vector<geometry_msgs::msg::Pose> &getWaypoints() const;
 
   long getCurrentWaypointIndex() const;
 
@@ -66,7 +66,7 @@ public:
   int currentWaypoint_;
 
 private:
-  void onGoalReached(ClMoveBaseZ::WrappedResult & res);
+  void onGoalReached(ClMoveBaseZ::WrappedResult &res);
 
   std::vector<geometry_msgs::msg::Pose> waypoints_;
 

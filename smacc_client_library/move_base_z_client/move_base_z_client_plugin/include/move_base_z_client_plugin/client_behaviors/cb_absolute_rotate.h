@@ -32,8 +32,8 @@ public:
 
   CbAbsoluteRotate(float absoluteGoalAngleDegree, float yawGoalTolerance = -1);
 
-  void onEntry() override;
-  void onEntry() override;
+  virtual void onEntry() override;
+  virtual void onExit() override;
 
 private:
   void updateTemporalBehaviorParameters(bool undo);

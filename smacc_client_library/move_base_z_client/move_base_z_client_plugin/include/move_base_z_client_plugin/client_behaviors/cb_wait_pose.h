@@ -5,8 +5,8 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <smacc/smacc_asynchronous_client_behavior.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
 namespace cl_move_base_z
 {
@@ -27,6 +27,6 @@ public:
   void onEntry() override;
 
 protected:
-  cl_move_base_z::ClMoveBaseZ * moveBaseClient_;
+  cl_move_base_z::ClMoveBaseZ *moveBaseClient_;
 };
 }  // namespace cl_move_base_z

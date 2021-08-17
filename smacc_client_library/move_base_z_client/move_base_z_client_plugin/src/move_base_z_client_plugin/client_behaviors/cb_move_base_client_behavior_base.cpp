@@ -7,13 +7,15 @@
 
 namespace cl_move_base_z
 {
-CbMoveBaseClientBehaviorBase::~CbMoveBaseClientBehaviorBase() {}
+CbMoveBaseClientBehaviorBase::~CbMoveBaseClientBehaviorBase()
+{
+}
 
-void CbMoveBaseClientBehaviorBase::propagateSuccessEvent(ClMoveBaseZ::WrappedResult &)
+void CbMoveBaseClientBehaviorBase::propagateSuccessEvent(ClMoveBaseZ::WrappedResult&)
 {
   this->postSuccessEvent();
 }
-void CbMoveBaseClientBehaviorBase::propagateFailureEvent(ClMoveBaseZ::WrappedResult &)
+void CbMoveBaseClientBehaviorBase::propagateFailureEvent(ClMoveBaseZ::WrappedResult&)
 {
   this->postFailureEvent();
 }

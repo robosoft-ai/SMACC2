@@ -7,14 +7,14 @@
 
 namespace cl_move_base_z
 {
-GoalCheckerSwitcher::GoalCheckerSwitcher(
-  std::string goal_checker_selector_topic, std::string default_goal_checker_name)
-: goal_checker_selector_topic_(goal_checker_selector_topic),
-  default_goal_checker_name_(default_goal_checker_name)
+GoalCheckerSwitcher::GoalCheckerSwitcher(std::string goal_checker_selector_topic, std::string default_goal_checker_name)
+  : goal_checker_selector_topic_(goal_checker_selector_topic), default_goal_checker_name_(default_goal_checker_name)
 {
 }
 
-GoalCheckerSwitcher::~GoalCheckerSwitcher() {}
+GoalCheckerSwitcher::~GoalCheckerSwitcher()
+{
+}
 
 void GoalCheckerSwitcher::onInitialize()
 {
@@ -22,7 +22,7 @@ void GoalCheckerSwitcher::onInitialize()
   qos.transient_local().reliable();
 
   this->goal_checker_selector_pub_ =
-    getNode()->create_publisher<std_msgs::msg::String>(goal_checker_selector_topic_, qos);
+      getNode()->create_publisher<std_msgs::msg::String>(goal_checker_selector_topic_, qos);
 }
 
 void GoalCheckerSwitcher::setDefaultGoalChecker()
@@ -32,8 +32,7 @@ void GoalCheckerSwitcher::setDefaultGoalChecker()
 
 void GoalCheckerSwitcher::setGoalCheckerId(std::string goalcheckerid)
 {
-  RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "[GoalCheckerSwitcher] Setting goal checker: " << goalcheckerid);
+  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[GoalCheckerSwitcher] Setting goal checker: " << goalcheckerid);
 
   // controller_server_node_->wait_for_service();
   // std::vector<rclcpp::Parameter> params{ rclcpp::Parameter("current_goal_checker", goalcheckerid) };

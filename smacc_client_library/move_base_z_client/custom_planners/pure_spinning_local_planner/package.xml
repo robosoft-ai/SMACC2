@@ -4,22 +4,24 @@
   <name>pure_spinning_local_planner</name>
   <version>2.9.1</version>
   <description>The pure_spinning_local_planner package</description>
-
+  
   <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
 
   <license>BSD-3</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <build_depend>pluginlib</build_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
 
-  <depend>geometry_msgs</depend>
-  <depend>move_base_z_planners_common</depend>
-  <depend>nav_2d_utils</depend>
-  <depend>nav_msgs</depend>
   <depend>nav2_core</depend>
   <depend>nav2_costmap_2d</depend>
+  <depend>nav_msgs</depend>
+  <depend>geometry_msgs</depend>
   <depend>tf2</depend>
-
+  <depend>move_base_z_planners_common</depend>
+  <depend>nav_2d_utils</depend>
+  <build_depend>pluginlib</build_depend>
+    
   <export>
     <build_type>ament_cmake</build_type>
   </export>

@@ -7,14 +7,18 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_wait_pose.h>
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
-#include <move_base_z_client_plugin/common.h>
 #include <rclcpp/parameter_client.hpp>
+#include <move_base_z_client_plugin/common.h>
 
 namespace cl_move_base_z
 {
-CbWaitPose::CbWaitPose() {}
+CbWaitPose::CbWaitPose()
+{
+}
 
-CbWaitPose::~CbWaitPose() {}
+CbWaitPose::~CbWaitPose()
+{
+}
 
 void CbWaitPose::onEntry()
 {
@@ -25,7 +29,7 @@ void CbWaitPose::onEntry()
     auto posemsg = pose->toPoseMsg();
     RCLCPP_INFO_STREAM(getLogger(), "[CbWaitPose] pose arrived: " << std::endl << posemsg);
   }
-  catch (std::exception & ex)
+  catch (std::exception& ex)
   {
     RCLCPP_INFO(getLogger(), "[CbWaitPose] error getting the robot pose");
     this->postFailureEvent();

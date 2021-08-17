@@ -18,8 +18,8 @@ public:
 
   virtual ~CbNavigateNextWaypoint();
 
-  void onEntry() override;
+  virtual void onEntry() override;
 
-  void onEntry() override;
+  virtual void onExit() override;
 };
 }  // namespace cl_move_base_z

@@ -17,7 +17,7 @@ using namespace ::cl_move_base_z::odom_tracker;
 void CbUndoPathBackwards::onEntry()
 {
   listener = std::make_shared<tf2_ros::Buffer>(this->getNode()->get_clock());
-  auto * odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+  auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
 
   auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
 
@@ -44,7 +44,7 @@ void CbUndoPathBackwards::onEntry()
 
 void CbUndoPathBackwards::onExit()
 {
-  auto * odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+  auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
   odomTracker->popPath();
 }
 

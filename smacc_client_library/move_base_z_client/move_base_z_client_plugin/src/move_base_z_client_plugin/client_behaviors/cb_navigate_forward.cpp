@@ -21,9 +21,13 @@ CbNavigateForward::CbNavigateForward(float forwardDistance)
   this->forwardDistance = forwardDistance;
 }
 
-CbNavigateForward::CbNavigateForward() {}
+CbNavigateForward::CbNavigateForward()
+{
+}
 
-CbNavigateForward::~CbNavigateForward() {}
+CbNavigateForward::~CbNavigateForward()
+{
+}
 
 void CbNavigateForward::onEntry()
 {
@@ -43,8 +47,7 @@ void CbNavigateForward::onEntry()
     dist = *forwardDistance;
   }
 
-  RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "[CbNavigateForward] Straight motion distance: " << dist);
+  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[CbNavigateForward] Straight motion distance: " << dist);
 
   // get current pose
   auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
@@ -53,16 +56,14 @@ void CbNavigateForward::onEntry()
   tf2::Transform currentPose;
   tf2::fromMsg(currentPoseMsg, currentPose);
 
-  RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "[CbNavigateForward] current pose: " << currentPoseMsg);
+  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[CbNavigateForward] current pose: " << currentPoseMsg);
 
   // force global orientation if it is requested
   if (this->forceInitialOrientation)
   {
     currentPoseMsg.orientation = *forceInitialOrientation;
-    RCLCPP_WARN_STREAM(
-      getNode()->get_logger(), "[CbNavigateForward] Forcing initial straight motion orientation: "
-                                 << currentPoseMsg.orientation);
+    RCLCPP_WARN_STREAM(getNode()->get_logger(), "[CbNavigateForward] Forcing initial straight motion orientation: "
+                                                    << currentPoseMsg.orientation);
   }
 
   // compute forward goal pose
@@ -99,6 +100,9 @@ void CbNavigateForward::onEntry()
   moveBaseClient_->sendGoal(goal);
 }
 
-void CbNavigateForward::onExit() { this->odomTracker_->setWorkingMode(WorkingMode::IDLE); }
+void CbNavigateForward::onExit()
+{
+  this->odomTracker_->setWorkingMode(WorkingMode::IDLE);
+}
 
 }  // namespace cl_move_base_z

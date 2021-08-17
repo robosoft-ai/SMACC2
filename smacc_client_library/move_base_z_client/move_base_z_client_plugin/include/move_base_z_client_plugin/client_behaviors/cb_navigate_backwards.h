@@ -27,14 +27,14 @@ public:
 
   std::shared_ptr<tf2_ros::Buffer> listener;
 
-  cl_move_base_z::odom_tracker::OdomTracker * odomTracker_;
+  cl_move_base_z::odom_tracker::OdomTracker *odomTracker_;
 
   CbNavigateBackwards(float backwardDistance);
 
   CbNavigateBackwards();
 
-  void onEntry() override;
+  virtual void onEntry() override;
 
-  void onExit() override;
+  virtual void onExit() override;
 };
 }  // namespace cl_move_base_z
