@@ -5,7 +5,7 @@
   <version>2.9.1</version>
   <description>The ros_timer_client package</description>
   <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
-  <license>BSD-3</license>
+  <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
