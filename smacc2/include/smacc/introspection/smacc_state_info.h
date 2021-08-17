@@ -5,11 +5,11 @@
  ******************************************************************************************************************/
 
 #pragma once
+#include <smacc/introspection/smacc_type_info.h>
 #include <smacc/smacc_types.h>
 #include <functional>
 #include <memory>
 #include <vector>
-#include <smacc/introspection/smacc_type_info.h>
 namespace smacc
 {
 namespace introspection
