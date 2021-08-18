@@ -9,7 +9,7 @@
   <author email="pablo@ibrobotics.com">Pablo Inigo Blasco</author>
   <author email="ba@leadtank.org">Brett Aldrich</author>
   <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
-  <license>BSD-3</license>
+  <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
