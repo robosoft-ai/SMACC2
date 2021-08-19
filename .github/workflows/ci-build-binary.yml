@@ -6,7 +6,7 @@ on:
       - master
   schedule:
     # Run every day to detect flakiness and broken dependencies
-    - cron: '23 3 * * *'
+    - cron: '23 4 * * *'
 
 jobs:
   binary:
@@ -18,7 +18,7 @@ jobs:
           - {ROS_DISTRO: rolling, ROS_REPO: main}
           - {ROS_DISTRO: rolling, ROS_REPO: testing}
     env:
-      UPSTREAM_WORKSPACE: smacc2-not-released.rolling.repos
+      UPSTREAM_WORKSPACE: SMACC2-not-released.rolling.repos
       CCACHE_DIR: ${{ github.workspace }}/.ccache
       BASEDIR: ${{ github.workspace }}/.work
       CACHE_PREFIX: ${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}

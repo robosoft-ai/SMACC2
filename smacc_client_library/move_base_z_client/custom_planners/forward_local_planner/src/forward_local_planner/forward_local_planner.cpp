@@ -628,7 +628,7 @@ void ForwardLocalPlanner::setPlan(const nav_msgs::msg::Path & plan)
 {
   nav_msgs::msg::Path transformedPlan;
 
-  rclcpp::Duration ttol(transform_tolerance_);
+  rclcpp::Duration ttol = rclcpp::Duration::from_seconds(transform_tolerance_);
   // transform global plan
   for (auto & p : plan.poses)
   {
