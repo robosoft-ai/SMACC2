@@ -21,6 +21,7 @@ find_package(tf2)
 find_package(move_base_z_planners_common)
 find_package(pluginlib)
 find_package(nav_2d_utils)
+find_package(tf2_geometry_msgs)
 
 set(dependencies
     nav2_core
@@ -30,7 +31,8 @@ set(dependencies
     tf2
     move_base_z_planners_common
     pluginlib
-    nav_2d_utils)
+    nav_2d_utils
+    tf2_geometry_msgs)
 
 include_directories(include)
 
