@@ -78,8 +78,7 @@ public:
         default:
 
           RCLCPP_ERROR(
-            getLogger(),
-            "Odom Tracker Node - Action Server execute error: incorrect command - %d",
+            getLogger(), "Odom Tracker Node - Action Server execute error: incorrect command - %d",
             goal->command);
           as_->setAborted();
       }
@@ -89,8 +88,7 @@ public:
     }
     catch (std::exception & ex)
     {
-      RCLCPP_ERROR(
-        getLogger(), "Odom Tracker Node - Action Server execute error: %s", ex.what());
+      RCLCPP_ERROR(getLogger(), "Odom Tracker Node - Action Server execute error: %s", ex.what());
       as_->setAborted();
     }
   }

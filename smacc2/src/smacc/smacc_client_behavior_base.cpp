@@ -54,16 +54,14 @@ void ISmaccClientBehavior::runtimeConfigure()
 void ISmaccClientBehavior::executeOnEntry()
 {
   RCLCPP_DEBUG(
-    getLogger(), "[%s] Default empty SmaccClientBehavior onEntry",
-    this->getName().c_str());
+    getLogger(), "[%s] Default empty SmaccClientBehavior onEntry", this->getName().c_str());
   this->onEntry();
 }
 
 void ISmaccClientBehavior::executeOnExit()
 {
   RCLCPP_DEBUG(
-    getLogger(), "[%s] Default empty SmaccClientBehavior onExit",
-    this->getName().c_str());
+    getLogger(), "[%s] Default empty SmaccClientBehavior onExit", this->getName().c_str());
   this->onExit();
 }
 

@@ -36,9 +36,9 @@ bool ISmaccOrthogonal::requiresClient(SmaccClientType *& storage)
 
   auto requiredClientName = demangledTypeName<SmaccClientType>();
   RCLCPP_WARN_STREAM(
-    getLogger(),
-    "Required client [" << requiredClientName
-                        << "] not found in current orthogonal. Searching in other orthogonals.");
+    getLogger(), "Required client ["
+                   << requiredClientName
+                   << "] not found in current orthogonal. Searching in other orthogonals.");
 
   for (auto & orthoentry : this->getStateMachine()->getOrthogonals())
   {
@@ -56,10 +56,10 @@ bool ISmaccOrthogonal::requiresClient(SmaccClientType *& storage)
   }
 
   RCLCPP_ERROR_STREAM(
-    getLogger(),
-    "Required client [" << requiredClientName
-                        << "] not found even in other orthogonals. Returning null pointer. If the "
-                           "requested client is used may result in a segmentation fault.");
+    getLogger(), "Required client ["
+                   << requiredClientName
+                   << "] not found even in other orthogonals. Returning null pointer. If the "
+                      "requested client is used may result in a segmentation fault.");
   return false;
 }
 

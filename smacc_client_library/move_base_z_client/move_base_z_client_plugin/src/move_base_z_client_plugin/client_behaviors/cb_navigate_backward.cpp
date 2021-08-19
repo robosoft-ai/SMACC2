@@ -75,8 +75,7 @@ void CbNavigateBackwards::onEntry()
   goal.pose.header.frame_id = referenceFrame;
   goal.pose.header.stamp = getNode()->now();
   tf2::toMsg(targetPose, goal.pose.pose);
-  RCLCPP_INFO_STREAM(
-    getLogger(), "[CbNavigateBackwards] TARGET POSE BACKWARDS: " << goal.pose);
+  RCLCPP_INFO_STREAM(getLogger(), "[CbNavigateBackwards] TARGET POSE BACKWARDS: " << goal.pose);
 
   odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
   if (odomTracker_ != nullptr)

@@ -96,7 +96,7 @@ protected:
 
   rclcpp::Node::SharedPtr getNode();
 
-  inline rclcpp::Logger getLogger(){return getNode()->get_logger();}
+  inline rclcpp::Logger getLogger() { return getNode()->get_logger(); }
 
 private:
   // A reference to the state machine object that owns this resource

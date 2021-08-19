@@ -25,8 +25,7 @@ std::array<std::string, 4> CostmapSwitch::layerNames = {
 void CostmapSwitch::registerProxyFromDynamicReconfigureServer(
   std::string costmapName, std::string enablePropertyName)
 {
-  RCLCPP_INFO(
-    getLogger(), "[CostmapSwitch] registering costmap type: %s", costmapName.c_str());
+  RCLCPP_INFO(getLogger(), "[CostmapSwitch] registering costmap type: %s", costmapName.c_str());
   auto proxy = std::make_shared<CostmapProxy>(
     this->moveBaseClient_->name_ + "/" + costmapName, enablePropertyName, getNode());
   costmapProxies[costmapName] = proxy;
@@ -74,15 +73,14 @@ void CostmapSwitch::enable(std::string layerName)
 
   if (!exists(layerName))
   {
-    RCLCPP_ERROR(
-      getLogger(), "[CostmapSwitch] costmap %s does not exist", layerName.c_str());
+    RCLCPP_ERROR(getLogger(), "[CostmapSwitch] costmap %s does not exist", layerName.c_str());
     return;
   }
   else
   {
     RCLCPP_INFO(
-      getLogger(),
-      "[CostmapSwitch] costmap %s found. Calling dynamic reconfigure server.", layerName.c_str());
+      getLogger(), "[CostmapSwitch] costmap %s found. Calling dynamic reconfigure server.",
+      layerName.c_str());
     costmapProxies[layerName]->setCostmapEnabled(true);
   }
 }
@@ -98,15 +96,14 @@ void CostmapSwitch::disable(std::string layerName)
 
   if (!exists(layerName))
   {
-    RCLCPP_ERROR(
-      getLogger(), "[CostmapSwitch] costmap %s does not exist", layerName.c_str());
+    RCLCPP_ERROR(getLogger(), "[CostmapSwitch] costmap %s does not exist", layerName.c_str());
     return;
   }
   else
   {
     RCLCPP_INFO(
-      getLogger(),
-      "[CostmapSwitch] costmap %s found. Calling dynamic reconfigure server.", layerName.c_str());
+      getLogger(), "[CostmapSwitch] costmap %s found. Calling dynamic reconfigure server.",
+      layerName.c_str());
     costmapProxies[layerName]->setCostmapEnabled(false);
   }
 }

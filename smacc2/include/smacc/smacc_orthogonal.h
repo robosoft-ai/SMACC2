@@ -62,7 +62,7 @@ public:
   TClientBehavior * getClientBehavior();
 
   rclcpp::Node::SharedPtr getNode();
-  inline rclcpp::Logger getLogger(){return getNode()->get_logger();}
+  inline rclcpp::Logger getLogger() { return getNode()->get_logger(); }
 
 protected:
   virtual void onInitialize();
@@ -73,7 +73,6 @@ protected:
   void assignClientToOrthogonal(TClient * client);
 
   std::vector<std::shared_ptr<smacc::ISmaccClient>> clients_;
-  
 
 private:
   ISmaccStateMachine * stateMachine_;

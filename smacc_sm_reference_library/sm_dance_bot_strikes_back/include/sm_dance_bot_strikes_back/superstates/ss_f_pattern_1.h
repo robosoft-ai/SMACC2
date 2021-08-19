@@ -85,8 +85,7 @@ public:
       auto pose = robot->getComponent<cl_move_base_z::Pose>()->toPoseMsg();
       this->initialStateAngle =
         angles::to_degrees(angles::normalize_angle(tf2::getYaw(pose.orientation)));
-      RCLCPP_INFO(
-        getLogger(), "Initial angle for F pattern: %lf degrees", initialStateAngle);
+      RCLCPP_INFO(getLogger(), "Initial angle for F pattern: %lf degrees", initialStateAngle);
     }
     else
     {

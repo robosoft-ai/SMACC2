@@ -81,8 +81,7 @@ void SignalDetector::findUpdatableClientsAndComponents()
       if (updatableClient != nullptr)
       {
         RCLCPP_DEBUG_STREAM(
-          getLogger(),
-          "Adding updatable client: " << demangleType(typeid(updatableClient)));
+          getLogger(), "Adding updatable client: " << demangleType(typeid(updatableClient)));
         this->updatableClients_.push_back(updatableClient);
       }
 
@@ -227,8 +226,7 @@ void SignalDetector::pollOnce()
     }
 
     this->findUpdatableClientsAndComponents();
-    RCLCPP_DEBUG_STREAM(
-      getLogger(), "updatable clients: " << this->updatableClients_.size());
+    RCLCPP_DEBUG_STREAM(getLogger(), "updatable clients: " << this->updatableClients_.size());
 
     if (this->updatableClients_.size())
     {
@@ -265,15 +263,12 @@ void SignalDetector::pollOnce()
         StateMachineInternalAction::STATE_EXITING)
     {
       // we do not update updatable elements during trasitioning or configuration of states
-      RCLCPP_DEBUG_STREAM(
-        getLogger(), "[SignalDetector] update behaviors. checking current state");
+      RCLCPP_DEBUG_STREAM(getLogger(), "[SignalDetector] update behaviors. checking current state");
 
       if (currentState != nullptr)
       {
-        RCLCPP_DEBUG_STREAM(
-          getLogger(), "[SignalDetector] current state: " << currentStateIndex);
-        RCLCPP_DEBUG_STREAM(
-          getLogger(), "[SignalDetector] last state: " << this->lastState_);
+        RCLCPP_DEBUG_STREAM(getLogger(), "[SignalDetector] current state: " << currentStateIndex);
+        RCLCPP_DEBUG_STREAM(getLogger(), "[SignalDetector] last state: " << this->lastState_);
 
         if (currentStateIndex != 0)
         {
@@ -318,8 +313,7 @@ void SignalDetector::pollOnce()
   }
   catch (std::exception & ex)
   {
-    RCLCPP_ERROR(
-      getLogger(), "Exception during Signal Detector update loop. %s", ex.what());
+    RCLCPP_ERROR(getLogger(), "Exception during Signal Detector update loop. %s", ex.what());
   }
 
   auto nh = this->getNode();
@@ -355,8 +349,8 @@ void SignalDetector::pollingLoop()
   else
   {
     RCLCPP_WARN(
-      getLogger(),
-      "Signal detector frequency (ros param signal_detector_loop_freq): %lf", this->loop_rate_hz);
+      getLogger(), "Signal detector frequency (ros param signal_detector_loop_freq): %lf",
+      this->loop_rate_hz);
   }
 
   getNode()->set_parameter(rclcpp::Parameter("signal_detector_loop_freq", this->loop_rate_hz));

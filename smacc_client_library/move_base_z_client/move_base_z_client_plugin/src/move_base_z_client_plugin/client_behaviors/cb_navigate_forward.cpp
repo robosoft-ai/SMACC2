@@ -57,8 +57,7 @@ void CbNavigateForward::onEntry()
     dist = *forwardDistance;
   }
 
-  RCLCPP_INFO_STREAM(
-    getLogger(), "[CbNavigateForward] Straight motion distance: " << dist);
+  RCLCPP_INFO_STREAM(getLogger(), "[CbNavigateForward] Straight motion distance: " << dist);
 
   // get current pose
   auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
@@ -67,8 +66,7 @@ void CbNavigateForward::onEntry()
   tf2::Transform currentPose;
   tf2::fromMsg(currentPoseMsg, currentPose);
 
-  RCLCPP_INFO_STREAM(
-    getLogger(), "[CbNavigateForward] current pose: " << currentPoseMsg);
+  RCLCPP_INFO_STREAM(getLogger(), "[CbNavigateForward] current pose: " << currentPoseMsg);
 
   // force global orientation if it is requested
   if (this->forceInitialOrientation)
@@ -76,7 +74,7 @@ void CbNavigateForward::onEntry()
     currentPoseMsg.orientation = *forceInitialOrientation;
     RCLCPP_WARN_STREAM(
       getLogger(), "[CbNavigateForward] Forcing initial straight motion orientation: "
-                                 << currentPoseMsg.orientation);
+                     << currentPoseMsg.orientation);
   }
 
   // compute forward goal pose
