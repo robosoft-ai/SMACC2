@@ -23,8 +23,7 @@ void ISmaccState::param(std::string param_name) { getNode()->declare_parameter(p
 
 void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transitionType)
 {
-  RCLCPP_INFO_STREAM(
-    getLogger(), "NOTIFY TRANSITION: " << transitionType->getFullName());
+  RCLCPP_INFO_STREAM(getLogger(), "NOTIFY TRANSITION: " << transitionType->getFullName());
 
   //auto currstateinfo = this->getStateMachine().getCurrentStateInfo();
   auto currstateinfo = this->stateInfo_;
@@ -58,8 +57,7 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transit
     for (auto & transition : currstateinfo->transitions_)
     {
       std::string transitionCandidateName = transition.transitionTypeInfo->getFullName();
-      RCLCPP_ERROR_STREAM(
-        getLogger(), "- candidate transition: " << transitionCandidateName);
+      RCLCPP_ERROR_STREAM(getLogger(), "- candidate transition: " << transitionCandidateName);
     }
 
     RCLCPP_ERROR(getLogger(), "Ancestors candidates: ");
@@ -69,13 +67,11 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transit
 
     for (auto & ancestor : ancestors)
     {
-      RCLCPP_ERROR_STREAM(
-        getLogger(), " * Ancestor " << ancestor->getDemangledFullName() << ":");
+      RCLCPP_ERROR_STREAM(getLogger(), " * Ancestor " << ancestor->getDemangledFullName() << ":");
       for (auto & transition : ancestor->transitions_)
       {
         std::string transitionCandidateName = transition.transitionTypeInfo->getFullName();
-        RCLCPP_ERROR_STREAM(
-          getLogger(), "- candidate transition: " << transitionCandidateName);
+        RCLCPP_ERROR_STREAM(getLogger(), "- candidate transition: " << transitionCandidateName);
         if (transitionType->getFullName() == transitionCandidateName)
         {
           RCLCPP_ERROR(getLogger(), "GOTCHA");
@@ -86,8 +82,7 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transit
   else
   {
     RCLCPP_ERROR_STREAM(
-      getLogger(),
-      "Transition happened, but current state was not set. Transition candidates:");
+      getLogger(), "Transition happened, but current state was not set. Transition candidates:");
   }
 }
 

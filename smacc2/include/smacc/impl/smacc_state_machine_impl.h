@@ -95,8 +95,7 @@ void ISmaccStateMachine::createOrthogonal()
   {
     RCLCPP_WARN_STREAM(
       getLogger(), "There were already one existing orthogonal of type "
-                                 << orthogonalkey.c_str()
-                                 << ". Skipping creation orthogonal request. ");
+                     << orthogonalkey.c_str() << ". Skipping creation orthogonal request. ");
     std::stringstream ss;
     ss << "The existing orthogonals are the following: " << std::endl;
     for (auto & orthogonal : orthogonals_)
@@ -263,8 +262,8 @@ void ISmaccStateMachine::mapBehavior()
   std::string stateFieldName = demangleSymbol(typeid(StateField).name());
   std::string behaviorType = demangleSymbol(typeid(BehaviorType).name());
   RCLCPP_INFO(
-    getLogger(), "Mapping state field '%s' to stateReactor '%s'",
-    stateFieldName.c_str(), behaviorType.c_str());
+    getLogger(), "Mapping state field '%s' to stateReactor '%s'", stateFieldName.c_str(),
+    behaviorType.c_str());
   SmaccClientBehavior * globalreference;
   if (!this->getGlobalSMData(stateFieldName, globalreference))
   {
@@ -605,8 +604,7 @@ template <typename EventType>
 void ISmaccStateMachine::propagateEventToStateReactors(ISmaccState * st, EventType * ev)
 {
   RCLCPP_DEBUG(
-    getLogger(),
-    "PROPAGATING EVENT [%s] TO LUs [%s]: ", demangleSymbol<EventType>().c_str(),
+    getLogger(), "PROPAGATING EVENT [%s] TO LUs [%s]: ", demangleSymbol<EventType>().c_str(),
     st->getClassName().c_str());
   for (auto & sb : st->getStateReactors())
   {

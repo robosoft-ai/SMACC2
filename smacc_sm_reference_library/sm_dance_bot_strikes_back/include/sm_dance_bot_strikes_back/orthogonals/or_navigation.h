@@ -59,8 +59,7 @@ public:
     // if it is the first time and the waypoints navigator is not configured
     std::string planfilepath;
 
-    RCLCPP_INFO_STREAM(
-      getLogger(), "Reasing parameter file from node: " << getNode()->get_name());
+    RCLCPP_INFO_STREAM(getLogger(), "Reasing parameter file from node: " << getNode()->get_name());
     getNode()->declare_parameter("waypoints_plan");
     if (getNode()->get_parameter("waypoints_plan", planfilepath))
     {

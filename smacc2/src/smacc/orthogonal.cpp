@@ -45,8 +45,8 @@ void ISmaccOrthogonal::addClientBehavior(std::shared_ptr<smacc::ISmaccClientBeha
   if (clBehavior != nullptr)
   {
     RCLCPP_INFO(
-      getLogger(), "[Orthogonal %s] adding client behavior: %s",
-      this->getName().c_str(), clBehavior->getName().c_str());
+      getLogger(), "[Orthogonal %s] adding client behavior: %s", this->getName().c_str(),
+      clBehavior->getName().c_str());
     clBehavior->stateMachine_ = this->getStateMachine();
     clBehavior->currentOrthogonal = this;
 
@@ -55,8 +55,7 @@ void ISmaccOrthogonal::addClientBehavior(std::shared_ptr<smacc::ISmaccClientBeha
   else
   {
     RCLCPP_INFO(
-      getLogger(), "[orthogonal %s] no client behaviors in this state",
-      this->getName().c_str());
+      getLogger(), "[orthogonal %s] no client behaviors in this state", this->getName().c_str());
   }
 }
 
@@ -83,8 +82,7 @@ void ISmaccOrthogonal::onEntry()
     for (auto & clBehavior : clientBehaviors_)
     {
       RCLCPP_INFO(
-        getLogger(), "[Orthogonal %s] OnEntry, current Behavior: %s", orthogonalName,
-        cbName);
+        getLogger(), "[Orthogonal %s] OnEntry, current Behavior: %s", orthogonalName, cbName);
 
       try
       {
@@ -118,8 +116,7 @@ void ISmaccOrthogonal::onExit()
     for (auto & clBehavior : clientBehaviors_)
     {
       RCLCPP_INFO(
-        getLogger(), "[Orthogonal %s] OnExit, current Behavior: %s", orthogonalName,
-        cbName);
+        getLogger(), "[Orthogonal %s] OnExit, current Behavior: %s", orthogonalName, cbName);
       try
       {
         TRACEPOINT(client_behavior_on_exit_start, statename, orthogonalName, cbName);

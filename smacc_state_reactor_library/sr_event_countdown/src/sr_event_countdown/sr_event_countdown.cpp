@@ -36,7 +36,7 @@ void SrEventCountdown::onEventNotified(const std::type_info * eventType)
   eventCount_--;
   RCLCPP_INFO_STREAM(
     getLogger(), "SB COUNTDOWN (" << eventCount_ << ") RECEIVED EVENT OF TYPE:"
-                                              << demangleSymbol(eventType->name()));
+                                  << demangleSymbol(eventType->name()));
 
   // RCLCPP_INFO_STREAM(getLogger(),"SB ALL RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
   // triggeredEvents[eventType] = true;

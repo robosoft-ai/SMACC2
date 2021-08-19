@@ -107,8 +107,7 @@ void CbNavigateGlobalPosition::readStartPoseFromParameterServer(ClMoveBaseZ::Goa
   }
 
   RCLCPP_INFO_STREAM(
-    getLogger(),
-    "start position read from parameter server: " << goal.pose.pose.position);
+    getLogger(), "start position read from parameter server: " << goal.pose.pose.position);
 }
 
 // This is the substate destructor. This code will be executed when the

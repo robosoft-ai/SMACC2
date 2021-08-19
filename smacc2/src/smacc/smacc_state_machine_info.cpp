@@ -19,8 +19,7 @@ namespace smacc
 {
 void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
 {
-  RCLCPP_INFO(
-    getLogger(), "----------- PRINT STATE MACHINE STRUCTURE -------------------");
+  RCLCPP_INFO(getLogger(), "----------- PRINT STATE MACHINE STRUCTURE -------------------");
   stateMsgs.clear();
   for (auto & val : this->states)
   {

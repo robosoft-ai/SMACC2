@@ -39,8 +39,7 @@ Pose::Pose(std::string targetFrame, std::string referenceFrame)
 void Pose::onInitialize()
 {
   RCLCPP_INFO(
-    getLogger(),
-    "[Pose] Creating Pose tracker component to track %s in the reference frame %s",
+    getLogger(), "[Pose] Creating Pose tracker component to track %s in the reference frame %s",
     poseFrameName_.c_str(), referenceFrame_.c_str());
 
   {

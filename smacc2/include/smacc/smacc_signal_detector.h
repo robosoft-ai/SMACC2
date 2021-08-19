@@ -55,7 +55,7 @@ public:
   }
 
   rclcpp::Node::SharedPtr getNode();
-  inline rclcpp::Logger getLogger(){return getNode()->get_logger();}
+  inline rclcpp::Logger getLogger() { return getNode()->get_logger(); }
 
 private:
   ISmaccStateMachine * smaccStateMachine_;

@@ -55,8 +55,7 @@ void CbAbsoluteRotate::onEntry()
   {
     goal_angle = *this->absoluteGoalAngleDegree;
   }
-  RCLCPP_INFO_STREAM(
-    getLogger(), "[CbAbsoluteRotate] Absolute yaw Angle:" << goal_angle);
+  RCLCPP_INFO_STREAM(getLogger(), "[CbAbsoluteRotate] Absolute yaw Angle:" << goal_angle);
 
   auto plannerSwitcher = this->moveBaseClient_->getComponent<PlannerSwitcher>();
   // this should work better with a coroutine and await
@@ -102,8 +101,7 @@ void CbAbsoluteRotate::onEntry()
     getLogger(),
     "[CbAbsoluteRotate] current pose yaw: " << tf2::getYaw(currentPoseMsg.orientation));
   RCLCPP_INFO_STREAM(
-    getLogger(),
-    "[CbAbsoluteRotate] goal pose yaw: " << tf2::getYaw(goal.pose.pose.orientation));
+    getLogger(), "[CbAbsoluteRotate] goal pose yaw: " << tf2::getYaw(goal.pose.pose.orientation));
   moveBaseClient_->sendGoal(goal);
 }
 
@@ -256,9 +254,9 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
   for (auto & res : futureResults.get())
   {
     RCLCPP_INFO_STREAM(
-      getLogger(), "[CbAbsoluteRotate] parameter result: "
-                                 << parameters[i].get_name() << "=" << parameters[i].as_string()
-                                 << ". Result: " << res.successful);
+      getLogger(), "[CbAbsoluteRotate] parameter result: " << parameters[i].get_name() << "="
+                                                           << parameters[i].as_string()
+                                                           << ". Result: " << res.successful);
     i++;
   }
 

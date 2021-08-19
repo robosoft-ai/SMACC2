@@ -31,14 +31,12 @@ void SrAllEventsGo::onInitialized()
 void SrAllEventsGo::onEventNotified(const std::type_info * eventType)
 {
   RCLCPP_DEBUG_STREAM(
-    getLogger(),
-    "[SB ALLEventsGo] RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
+    getLogger(), "[SB ALLEventsGo] RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
   triggeredEvents[eventType] = true;
 
   for (auto & entry : triggeredEvents)
   {
-    RCLCPP_DEBUG_STREAM(
-      getLogger(), demangleSymbol(entry.first->name()) << " = " << entry.second);
+    RCLCPP_DEBUG_STREAM(getLogger(), demangleSymbol(entry.first->name()) << " = " << entry.second);
   }
 }
 

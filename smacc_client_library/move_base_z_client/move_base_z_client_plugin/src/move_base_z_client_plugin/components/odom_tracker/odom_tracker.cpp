@@ -118,8 +118,7 @@ void OdomTracker::setWorkingMode(WorkingMode workingMode)
       break;
     default:
 
-      RCLCPP_INFO_STREAM(
-        getLogger(), "[OdomTracker] setting working mode to <UNKNOWN>");
+      RCLCPP_INFO_STREAM(getLogger(), "[OdomTracker] setting working mode to <UNKNOWN>");
   }
 
   workingMode_ = workingMode;
@@ -190,14 +189,12 @@ void OdomTracker::logStateString()
 {
   RCLCPP_INFO(getLogger(), "--- odom tracker state ---");
   RCLCPP_INFO(getLogger(), " - path stack size: %ld", pathStack_.size());
-  RCLCPP_INFO(
-    getLogger(), " - [STACK-HEAD active path size: %ld]", baseTrajectory_.poses.size());
+  RCLCPP_INFO(getLogger(), " - [STACK-HEAD active path size: %ld]", baseTrajectory_.poses.size());
   int i = 0;
   for (auto & p : pathStack_ | boost::adaptors::reversed)
   {
     RCLCPP_INFO_STREAM(
-      getLogger(),
-      " - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size());
+      getLogger(), " - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size());
     i++;
   }
   RCLCPP_INFO(getLogger(), "---");
@@ -216,8 +213,7 @@ void OdomTracker::clearPath()
 void OdomTracker::setStartPoint(const geometry_msgs::msg::PoseStamped & pose)
 {
   std::lock_guard<std::mutex> lock(m_mutex_);
-  RCLCPP_INFO_STREAM(
-    getLogger(), "[OdomTracker] set current path starting point: " << pose);
+  RCLCPP_INFO_STREAM(getLogger(), "[OdomTracker] set current path starting point: " << pose);
   if (baseTrajectory_.poses.size() > 0)
   {
     baseTrajectory_.poses[0] = pose;
@@ -232,8 +228,7 @@ void OdomTracker::setStartPoint(const geometry_msgs::msg::PoseStamped & pose)
 void OdomTracker::setStartPoint(const geometry_msgs::msg::Pose & pose)
 {
   std::lock_guard<std::mutex> lock(m_mutex_);
-  RCLCPP_INFO_STREAM(
-    getLogger(), "[OdomTracker] set current path starting point: " << pose);
+  RCLCPP_INFO_STREAM(getLogger(), "[OdomTracker] set current path starting point: " << pose);
   geometry_msgs::msg::PoseStamped posestamped;
   posestamped.header.frame_id = this->odomFrame_;
   posestamped.header.stamp = getNode()->now();
@@ -331,9 +326,9 @@ bool OdomTracker::updateClearPath(const nav_msgs::msg::Odometry & odom)
 
       clearingError = lastpointdist > 2 * clearPointDistanceThreshold_;
       RCLCPP_DEBUG_STREAM(
-        getLogger(),
-        "[OdomTracker] clearing (accepted: " << acceptBackward << ") linerr: " << lastpointdist
-                                             << ", anglerr: " << goalAngleOffset);
+        getLogger(), "[OdomTracker] clearing (accepted: " << acceptBackward
+                                                          << ") linerr: " << lastpointdist
+                                                          << ", anglerr: " << goalAngleOffset);
     }
 
     // RCLCPP_INFO(getLogger(),"Backwards, last distance: %lf < %lf accept: %d", dist,

@@ -20,8 +20,7 @@ namespace smacc
 {
 void SmaccAsyncClientBehavior::executeOnEntry()
 {
-  RCLCPP_INFO_STREAM(
-    getLogger(), "[" << getName() << "] Creating asynchronous onEntry thread");
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Creating asynchronous onEntry thread");
   this->onEntryThread_ = std::async(std::launch::async, [=] {
     this->onEntry();
     this->postFinishEventFn_();
@@ -66,8 +65,7 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::future<int> & thread
 
 void SmaccAsyncClientBehavior::executeOnExit()
 {
-  RCLCPP_INFO_STREAM(
-    getLogger(), "[" << getName() << "] onExit - join async onEntry thread");
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] onExit - join async onEntry thread");
 
   waitFutureIfNotFinished(this->onEntryThread_);
 

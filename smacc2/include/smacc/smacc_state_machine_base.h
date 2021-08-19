@@ -71,8 +71,7 @@ public:
     // this is before because this creates orthogonals
     this->onInitialize();
 
-    RCLCPP_INFO(
-      getLogger(), "[SmaccStateMachine] Introspecting state machine via typeWalker");
+    RCLCPP_INFO(getLogger(), "[SmaccStateMachine] Introspecting state machine via typeWalker");
     this->buildStateMachineInfo<InitialStateType>();
 
     RCLCPP_INFO(getLogger(), "[SmaccStateMachine] initiate_impl");
@@ -80,8 +79,7 @@ public:
 
     this->initializeROS(shortname);
 
-    RCLCPP_INFO(
-      getLogger(), "[SmaccStateMachine] Initializing ROS communication mechanisms");
+    RCLCPP_INFO(getLogger(), "[SmaccStateMachine] Initializing ROS communication mechanisms");
     this->onInitialized();
 
     RCLCPP_INFO(getLogger(), "[SmaccStateMachine] Initializing state machine");

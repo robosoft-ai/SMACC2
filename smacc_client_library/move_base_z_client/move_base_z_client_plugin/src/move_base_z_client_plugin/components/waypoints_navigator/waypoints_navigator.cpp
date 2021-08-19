@@ -182,24 +182,20 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
         }
         catch (...)
         {
-          RCLCPP_ERROR(
-            getLogger(), "parsing waypoint file, syntax error in point %d", i);
+          RCLCPP_ERROR(getLogger(), "parsing waypoint file, syntax error in point %d", i);
         }
       }
-      RCLCPP_INFO_STREAM(
-        getLogger(), "Parsed " << this->waypoints_.size() << " waypoints.");
+      RCLCPP_INFO_STREAM(getLogger(), "Parsed " << this->waypoints_.size() << " waypoints.");
     }
     else
     {
-      RCLCPP_WARN_STREAM(
-        getLogger(), "Couldn't find any waypoints in the provided yaml file.");
+      RCLCPP_WARN_STREAM(getLogger(), "Couldn't find any waypoints in the provided yaml file.");
     }
   }
   catch (const YAML::ParserException & ex)
   {
     RCLCPP_ERROR_STREAM(
-      getLogger(),
-      "Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
+      getLogger(), "Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
   }
 }
 }  // namespace cl_move_base_z
