@@ -37,7 +37,7 @@ public:
 
   void onEntry() override
   {
-    //RCLCPP_INFO(getNode()->get_logger(),"Entering ToolClientBehavior");
+    //RCLCPP_INFO(getLogger(),"Entering ToolClientBehavior");
   }
 };
 }  // namespace cl_led

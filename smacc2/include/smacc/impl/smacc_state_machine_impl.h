@@ -51,7 +51,7 @@ TOrthogonal * ISmaccStateMachine::getOrthogonal()
   if (it != orthogonals_.end())
   {
     RCLCPP_DEBUG(
-      getNode()->get_logger(),
+      getLogger(),
       "Orthogonal %s resource is being required from some state, client or component. Found "
       "resource in "
       "cache.",
@@ -69,7 +69,7 @@ TOrthogonal * ISmaccStateMachine::getOrthogonal()
       ss << " - " << orthogonal.first << std::endl;
     }
 
-    RCLCPP_WARN_STREAM(getNode()->get_logger(), ss.str());
+    RCLCPP_WARN_STREAM(getLogger(), ss.str());
 
     return nullptr;
   }
@@ -89,12 +89,12 @@ void ISmaccStateMachine::createOrthogonal()
 
     ret->setStateMachine(this);
 
-    RCLCPP_INFO(getNode()->get_logger(), "%s Orthogonal is created", orthogonalkey.c_str());
+    RCLCPP_INFO(getLogger(), "%s Orthogonal is created", orthogonalkey.c_str());
   }
   else
   {
     RCLCPP_WARN_STREAM(
-      getNode()->get_logger(), "There were already one existing orthogonal of type "
+      getLogger(), "There were already one existing orthogonal of type "
                                  << orthogonalkey.c_str()
                                  << ". Skipping creation orthogonal request. ");
     std::stringstream ss;
@@ -103,7 +103,7 @@ void ISmaccStateMachine::createOrthogonal()
     {
       ss << " - " << orthogonal.first << std::endl;
     }
-    RCLCPP_WARN_STREAM(getNode()->get_logger(), ss.str());
+    RCLCPP_WARN_STREAM(getLogger(), ss.str());
   }
   this->unlockStateMachine("create orthogonal");
 }
@@ -113,7 +113,7 @@ template <typename SmaccComponentType>
 void ISmaccStateMachine::requiresComponent(SmaccComponentType *& storage)
 {
   RCLCPP_DEBUG(
-    getNode()->get_logger(), "component %s is required",
+    getLogger(), "component %s is required",
     demangleSymbol(typeid(SmaccComponentType).name()).c_str());
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
@@ -130,7 +130,7 @@ void ISmaccStateMachine::requiresComponent(SmaccComponentType *& storage)
   }
 
   RCLCPP_WARN(
-    getNode()->get_logger(), "component %s is required but it was not found in any orthogonal",
+    getLogger(), "component %s is required but it was not found in any orthogonal",
     demangleSymbol(typeid(SmaccComponentType).name()).c_str());
 
   // std::string componentkey = demangledTypeName<SmaccComponentType>();
@@ -140,17 +140,17 @@ void ISmaccStateMachine::requiresComponent(SmaccComponentType *& storage)
 
   // if (it == components_.end())
   // {
-  //     RCLCPP_DEBUG(getNode()->get_logger(),"%s smacc component is required. Creating a new instance.",
+  //     RCLCPP_DEBUG(getLogger(),"%s smacc component is required. Creating a new instance.",
   //     componentkey.c_str());
 
   //     ret = new SmaccComponentType();
   //     ret->setStateMachine(this);
   //     components_[componentkey] = static_cast<smacc::ISmaccComponent *>(ret);
-  //     RCLCPP_DEBUG(getNode()->get_logger(),"%s resource is required. Done.", componentkey.c_str());
+  //     RCLCPP_DEBUG(getLogger(),"%s resource is required. Done.", componentkey.c_str());
   // }
   // else
   // {
-  //     RCLCPP_DEBUG(getNode()->get_logger(),"%s resource is required. Found resource in cache.",
+  //     RCLCPP_DEBUG(getLogger(),"%s resource is required. Found resource in cache.",
   //     componentkey.c_str()); ret = dynamic_cast<SmaccComponentType *>(it->second);
   // }
 
@@ -172,7 +172,7 @@ void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
      stateMachineCurrentAction == StateMachineInternalAction::TRANSITIONING))
   {
     RCLCPP_WARN_STREAM(
-      getNode()->get_logger(),
+      getLogger(),
       "CURRENT STATE SCOPED EVENT SKIPPED, state is exiting/transitioning " << eventtypename);
     return;
     // in this case we may lose/skip events, if this is not right for some cases we should create a queue
@@ -185,7 +185,7 @@ void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
   // we reach this place. Now, we propagate the events to all the state state reactors to generate
   // some more events
 
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[PostEvent entry point] " << eventtypename);
+  RCLCPP_INFO_STREAM(getLogger(), "[PostEvent entry point] " << eventtypename);
   auto currentstate = currentState_;
   if (currentstate != nullptr)
   {
@@ -206,34 +206,34 @@ template <typename T>
 bool ISmaccStateMachine::getGlobalSMData(std::string name, T & ret)
 {
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
-  // RCLCPP_WARN(getNode()->get_logger(),"get SM Data lock acquire");
+  // RCLCPP_WARN(getLogger(),"get SM Data lock acquire");
   bool success = false;
 
   if (!globalData_.count(name))
   {
-    // RCLCPP_WARN(getNode()->get_logger(),"get SM Data - data do not exist");
+    // RCLCPP_WARN(getLogger(),"get SM Data - data do not exist");
     success = false;
   }
   else
   {
-    // RCLCPP_WARN(getNode()->get_logger(),"get SM DAta -data exist. accessing");
+    // RCLCPP_WARN(getLogger(),"get SM DAta -data exist. accessing");
     try
     {
       auto & v = globalData_[name];
 
-      // RCLCPP_WARN(getNode()->get_logger(),"get SM DAta -data exist. any cast");
+      // RCLCPP_WARN(getLogger(),"get SM DAta -data exist. any cast");
       ret = boost::any_cast<T>(v.second);
       success = true;
-      // RCLCPP_WARN(getNode()->get_logger(),"get SM DAta -data exist. success");
+      // RCLCPP_WARN(getLogger(),"get SM DAta -data exist. success");
     }
     catch (boost::bad_any_cast & ex)
     {
-      RCLCPP_ERROR(getNode()->get_logger(), "bad any cast: %s", ex.what());
+      RCLCPP_ERROR(getLogger(), "bad any cast: %s", ex.what());
       success = false;
     }
   }
 
-  // RCLCPP_WARN(getNode()->get_logger(),"get SM Data lock release");
+  // RCLCPP_WARN(getLogger(),"get SM Data lock release");
   return success;
 }
 
@@ -242,7 +242,7 @@ void ISmaccStateMachine::setGlobalSMData(std::string name, T value)
 {
   {
     std::lock_guard<std::recursive_mutex> lock(m_mutex_);
-    // RCLCPP_WARN(getNode()->get_logger(),"set SM Data lock acquire");
+    // RCLCPP_WARN(getLogger(),"set SM Data lock acquire");
 
     globalData_[name] = {
       [this, name]() {
@@ -263,7 +263,7 @@ void ISmaccStateMachine::mapBehavior()
   std::string stateFieldName = demangleSymbol(typeid(StateField).name());
   std::string behaviorType = demangleSymbol(typeid(BehaviorType).name());
   RCLCPP_INFO(
-    getNode()->get_logger(), "Mapping state field '%s' to stateReactor '%s'",
+    getLogger(), "Mapping state field '%s' to stateReactor '%s'",
     stateFieldName.c_str(), behaviorType.c_str());
   SmaccClientBehavior * globalreference;
   if (!this->getGlobalSMData(stateFieldName, globalreference))
@@ -365,7 +365,7 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(
     std::is_base_of<ISmaccClientBehavior, TSmaccObjectType>::value)
   {
     RCLCPP_INFO(
-      getNode()->get_logger(),
+      getLogger(),
       "[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s",
       demangledTypeName<TSmaccObjectType>().c_str());
     stateCallbackConnections.push_back(connection);
@@ -373,7 +373,7 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(
   else  // state life-time objects
   {
     RCLCPP_WARN(
-      getNode()->get_logger(),
+      getLogger(),
       "[StateMachine] connecting signal to an unknown object with life-time unknown "
       "behavior. It might provoke "
       "an exception if the object is destroyed during the execution.");
@@ -416,7 +416,7 @@ void ISmaccStateMachine::notifyOnStateEntryStart(StateType * state)
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
   RCLCPP_DEBUG(
-    getNode()->get_logger(),
+    getLogger(),
     "[State Machne] Initializating a new state '%s' and updating current state. Getting state "
     "meta-information. number of orthogonals: %ld",
     demangleSymbol(typeid(StateType).name()).c_str(), this->orthogonals_.size());
@@ -430,12 +430,12 @@ template <typename StateType>
 void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
 {
   RCLCPP_INFO(
-    getNode()->get_logger(), "[%s] State OnEntry code finished",
+    getLogger(), "[%s] State OnEntry code finished",
     demangleSymbol(typeid(StateType).name()).c_str());
 
   for (auto pair : this->orthogonals_)
   {
-    // RCLCPP_INFO(getNode()->get_logger(),"ortho onentry: %s", pair.second->getName().c_str());
+    // RCLCPP_INFO(getLogger(),"ortho onentry: %s", pair.second->getName().c_str());
     auto & orthogonal = pair.second;
     try
     {
@@ -444,7 +444,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
     catch (const std::exception & e)
     {
       RCLCPP_ERROR(
-        getNode()->get_logger(),
+        getLogger(),
         "[Orthogonal %s] Exception on Entry - continuing with next orthogonal. Exception info: %s",
         pair.second->getName().c_str(), e.what());
     }
@@ -453,7 +453,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
   for (auto & sr : this->currentState_->getStateReactors())
   {
     auto srname = smacc::demangleSymbol(typeid(*sr).name());
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), "state reactor onEntry: " << srname);
+    RCLCPP_INFO_STREAM(getLogger(), "state reactor onEntry: " << srname);
     try
     {
       sr->onEntry();
@@ -461,7 +461,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
     catch (const std::exception & e)
     {
       RCLCPP_ERROR(
-        getNode()->get_logger(),
+        getLogger(),
         "[State Reactor %s] Exception on Entry - continuing with next state reactor. Exception "
         "info: %s",
         srname.c_str(), e.what());
@@ -471,7 +471,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
   for (auto & eg : this->currentState_->getEventGenerators())
   {
     auto egname = smacc::demangleSymbol(typeid(*eg).name());
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), "event generator onEntry: " << egname);
+    RCLCPP_INFO_STREAM(getLogger(), "event generator onEntry: " << egname);
     try
     {
       eg->onEntry();
@@ -479,7 +479,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
     catch (const std::exception & e)
     {
       RCLCPP_ERROR(
-        getNode()->get_logger(),
+        getLogger(),
         "[Event generator %s] Exception on Entry - continuing with next state reactor. Exception "
         "info: %s",
         egname.c_str(), e.what());
@@ -495,7 +495,7 @@ void ISmaccStateMachine::notifyOnRuntimeConfigurationFinished(StateType *)
 {
   for (auto pair : this->orthogonals_)
   {
-    // RCLCPP_INFO(getNode()->get_logger(),"ortho onruntime configure: %s", pair.second->getName().c_str());
+    // RCLCPP_INFO(getLogger(),"ortho onruntime configure: %s", pair.second->getName().c_str());
     auto & orthogonal = pair.second;
     orthogonal->runtimeConfigure();
   }
@@ -517,10 +517,10 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
   stateMachineCurrentAction = StateMachineInternalAction::STATE_EXITING;
 
   auto fullname = demangleSymbol(typeid(StateType).name());
-  RCLCPP_WARN_STREAM(getNode()->get_logger(), "exiting state: " << fullname);
+  RCLCPP_WARN_STREAM(getLogger(), "exiting state: " << fullname);
   // this->set_parameter("destroyed", true);
 
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "Notification State Exit: leaving state" << state);
+  RCLCPP_INFO_STREAM(getLogger(), "Notification State Exit: leaving state" << state);
   for (auto pair : this->orthogonals_)
   {
     auto & orthogonal = pair.second;
@@ -531,7 +531,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
     catch (const std::exception & e)
     {
       RCLCPP_ERROR(
-        getNode()->get_logger(),
+        getLogger(),
         "[Orthogonal %s] Exception onExit - continuing with next orthogonal. Exception info: %s",
         pair.second->getName().c_str(), e.what());
     }
@@ -540,7 +540,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
   for (auto & sr : state->getStateReactors())
   {
     auto srname = smacc::demangleSymbol(typeid(*sr).name());
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), "state reactor OnExit: " << srname);
+    RCLCPP_INFO_STREAM(getLogger(), "state reactor OnExit: " << srname);
     try
     {
       sr->onExit();
@@ -548,7 +548,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
     catch (const std::exception & e)
     {
       RCLCPP_ERROR(
-        getNode()->get_logger(),
+        getLogger(),
         "[State Reactor %s] Exception on OnExit - continuing with next state reactor. Exception "
         "info: %s",
         srname.c_str(), e.what());
@@ -558,7 +558,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
   for (auto & eg : state->getEventGenerators())
   {
     auto egname = smacc::demangleSymbol(typeid(*eg).name());
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), "event generator OnExit: " << egname);
+    RCLCPP_INFO_STREAM(getLogger(), "event generator OnExit: " << egname);
     try
     {
       eg->onExit();
@@ -566,7 +566,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
     catch (const std::exception & e)
     {
       RCLCPP_ERROR(
-        getNode()->get_logger(),
+        getLogger(),
         "[State Reactor %s] Exception on OnExit - continuing with next state reactor. Exception "
         "info: %s",
         egname.c_str(), e.what());
@@ -578,7 +578,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
   for (auto & conn : this->stateCallbackConnections)
   {
     RCLCPP_WARN_STREAM(
-      getNode()->get_logger(),
+      getLogger(),
       "[StateMachine] Disconnecting scoped-lifetime SmaccSignal "
       "subscription");
     conn.disconnect();
@@ -595,7 +595,7 @@ void ISmaccStateMachine::notifyOnStateExited(StateType *)
   auto fullname = demangleSymbol(typeid(StateType).name());
 
   // then call exit state
-  RCLCPP_WARN_STREAM(getNode()->get_logger(), "state exit: " << fullname);
+  RCLCPP_WARN_STREAM(getLogger(), "state exit: " << fullname);
 
   stateMachineCurrentAction = StateMachineInternalAction::TRANSITIONING;
   this->unlockStateMachine("state exit");
@@ -605,7 +605,7 @@ template <typename EventType>
 void ISmaccStateMachine::propagateEventToStateReactors(ISmaccState * st, EventType * ev)
 {
   RCLCPP_DEBUG(
-    getNode()->get_logger(),
+    getLogger(),
     "PROPAGATING EVENT [%s] TO LUs [%s]: ", demangleSymbol<EventType>().c_str(),
     st->getClassName().c_str());
   for (auto & sb : st->getStateReactors())

@@ -86,11 +86,11 @@ public:
       this->initialStateAngle =
         angles::to_degrees(angles::normalize_angle(tf2::getYaw(pose.orientation)));
       RCLCPP_INFO(
-        getNode()->get_logger(), "Initial angle for F pattern: %lf degrees", initialStateAngle);
+        getLogger(), "Initial angle for F pattern: %lf degrees", initialStateAngle);
     }
     else
     {
-      RCLCPP_ERROR(getNode()->get_logger(), "robot pose not found to plan the FPattern motion");
+      RCLCPP_ERROR(getLogger(), "robot pose not found to plan the FPattern motion");
     }
   }
 };  // namespace SS4

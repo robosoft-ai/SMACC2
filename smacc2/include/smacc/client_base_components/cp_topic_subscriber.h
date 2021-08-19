@@ -87,12 +87,12 @@ public:
       if (!topicName)
       {
         RCLCPP_ERROR(
-          getNode()->get_logger(), "topic client with no topic name set. Skipping subscribing");
+          getLogger(), "topic client with no topic name set. Skipping subscribing");
       }
       else
       {
         RCLCPP_INFO_STREAM(
-          getNode()->get_logger(),
+          getLogger(),
           "[" << this->getName() << "] Subscribing to topic: " << topicName);
 
         sub_ = getNode()->subscribe(

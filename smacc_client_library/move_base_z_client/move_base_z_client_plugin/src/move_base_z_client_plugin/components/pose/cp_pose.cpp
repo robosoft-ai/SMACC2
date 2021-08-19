@@ -39,7 +39,7 @@ Pose::Pose(std::string targetFrame, std::string referenceFrame)
 void Pose::onInitialize()
 {
   RCLCPP_INFO(
-    getNode()->get_logger(),
+    getLogger(),
     "[Pose] Creating Pose tracker component to track %s in the reference frame %s",
     poseFrameName_.c_str(), referenceFrame_.c_str());
 
@@ -85,7 +85,7 @@ void Pose::waitTransformUpdate(rclcpp::Rate r)
     catch (tf2::TransformException & ex)
     {
       RCLCPP_ERROR_STREAM_THROTTLE(
-        getNode()->get_logger(), *(getNode()->get_clock()), 1000,
+        getLogger(), *(getNode()->get_clock()), 1000,
         "[Component pose] (" << poseFrameName_ << "/[" << referenceFrame_
                              << "] ) is failing on pose update : " << ex.what());
     }
@@ -102,7 +102,7 @@ void Pose::update()
   {
     {
       std::lock_guard<std::mutex> lock(listenerMutex_);
-      RCLCPP_DEBUG(getNode()->get_logger(), "[pose] looking up transform");
+      RCLCPP_DEBUG(getLogger(), "[pose] looking up transform");
       auto transformstamped =
         tfBuffer_->lookupTransform(referenceFrame_, poseFrameName_, rclcpp::Time(0));
       tf2::fromMsg(transformstamped, transform);
@@ -117,9 +117,9 @@ void Pose::update()
   }
   catch (tf2::TransformException & ex)
   {
-    //RCLCPP_DEBUG(getNode()->get_logger(), "[pose] EXCEPTION");
+    //RCLCPP_DEBUG(getLogger(), "[pose] EXCEPTION");
     RCLCPP_ERROR_STREAM_THROTTLE(
-      getNode()->get_logger(), *(getNode()->get_clock()), 1000,
+      getLogger(), *(getNode()->get_clock()), 1000,
       "[Component pose] (" << poseFrameName_ << "/[" << referenceFrame_
                            << "] ) is failing on pose update : " << ex.what());
   }

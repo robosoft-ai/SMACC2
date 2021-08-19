@@ -24,18 +24,18 @@ void ISmaccState::param(std::string param_name) { getNode()->declare_parameter(p
 void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transitionType)
 {
   RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "NOTIFY TRANSITION: " << transitionType->getFullName());
+    getLogger(), "NOTIFY TRANSITION: " << transitionType->getFullName());
 
   //auto currstateinfo = this->getStateMachine().getCurrentStateInfo();
   auto currstateinfo = this->stateInfo_;
 
   if (currstateinfo != nullptr)
   {
-    //RCLCPP_ERROR_STREAM(getNode()->get_logger(),"CURRENT STATE INFO: " << currstateinfo->fullStateName);
+    //RCLCPP_ERROR_STREAM(getLogger(),"CURRENT STATE INFO: " << currstateinfo->fullStateName);
     for (auto & transition : currstateinfo->transitions_)
     {
       std::string transitionCandidateName = transition.transitionTypeInfo->getFullName();
-      //RCLCPP_ERROR_STREAM(getNode()->get_logger(),"candidate transition: " << transitionCandidateName);
+      //RCLCPP_ERROR_STREAM(getLogger(),"candidate transition: " << transitionCandidateName);
 
       if (transitionType->getFullName() == transitionCandidateName)
       {
@@ -46,7 +46,7 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transit
 
     // debug information if not found
     RCLCPP_ERROR_STREAM(
-      getNode()->get_logger(),
+      getLogger(),
       "Transition happened, from current state "
         << currstateinfo->getDemangledFullName()
         << " but there is not any transitioninfo match available to publish transition: "
@@ -59,10 +59,10 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transit
     {
       std::string transitionCandidateName = transition.transitionTypeInfo->getFullName();
       RCLCPP_ERROR_STREAM(
-        getNode()->get_logger(), "- candidate transition: " << transitionCandidateName);
+        getLogger(), "- candidate transition: " << transitionCandidateName);
     }
 
-    RCLCPP_ERROR(getNode()->get_logger(), "Ancestors candidates: ");
+    RCLCPP_ERROR(getLogger(), "Ancestors candidates: ");
 
     std::list<const SmaccStateInfo *> ancestors;
     stateinfo->getAncestors(ancestors);
@@ -70,15 +70,15 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transit
     for (auto & ancestor : ancestors)
     {
       RCLCPP_ERROR_STREAM(
-        getNode()->get_logger(), " * Ancestor " << ancestor->getDemangledFullName() << ":");
+        getLogger(), " * Ancestor " << ancestor->getDemangledFullName() << ":");
       for (auto & transition : ancestor->transitions_)
       {
         std::string transitionCandidateName = transition.transitionTypeInfo->getFullName();
         RCLCPP_ERROR_STREAM(
-          getNode()->get_logger(), "- candidate transition: " << transitionCandidateName);
+          getLogger(), "- candidate transition: " << transitionCandidateName);
         if (transitionType->getFullName() == transitionCandidateName)
         {
-          RCLCPP_ERROR(getNode()->get_logger(), "GOTCHA");
+          RCLCPP_ERROR(getLogger(), "GOTCHA");
         }
       }
     }
@@ -86,7 +86,7 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transit
   else
   {
     RCLCPP_ERROR_STREAM(
-      getNode()->get_logger(),
+      getLogger(),
       "Transition happened, but current state was not set. Transition candidates:");
   }
 }

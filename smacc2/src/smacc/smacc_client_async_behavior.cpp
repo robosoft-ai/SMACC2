@@ -21,7 +21,7 @@ namespace smacc
 void SmaccAsyncClientBehavior::executeOnEntry()
 {
   RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "[" << getName() << "] Creating asynchronous onEntry thread");
+    getLogger(), "[" << getName() << "] Creating asynchronous onEntry thread");
   this->onEntryThread_ = std::async(std::launch::async, [=] {
     this->onEntry();
     this->postFinishEventFn_();
@@ -59,7 +59,7 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::future<int> & thread
   catch (const std::exception & e)
   {
     RCLCPP_DEBUG(
-      getNode()->get_logger(),
+      getLogger(),
       "[SmaccAsyncClientBehavior] trying to join function, but it was already finished.");
   }
 }
@@ -67,12 +67,12 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::future<int> & thread
 void SmaccAsyncClientBehavior::executeOnExit()
 {
   RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "[" << getName() << "] onExit - join async onEntry thread");
+    getLogger(), "[" << getName() << "] onExit - join async onEntry thread");
 
   waitFutureIfNotFinished(this->onEntryThread_);
 
   RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "[" << getName() << "] onExit - Creating asynchronous onExit thread");
+    getLogger(), "[" << getName() << "] onExit - Creating asynchronous onExit thread");
   this->onExitThread_ = std::async(std::launch::async, [=] {
     this->onExit();
     return 0;
@@ -82,7 +82,7 @@ void SmaccAsyncClientBehavior::executeOnExit()
 void SmaccAsyncClientBehavior::dispose()
 {
   RCLCPP_DEBUG_STREAM(
-    getNode()->get_logger(),
+    getLogger(),
     "[" << getName()
         << "] Destroying client behavior- Waiting finishing of asynchronous onExit thread");
   try
@@ -92,12 +92,12 @@ void SmaccAsyncClientBehavior::dispose()
   catch (...)
   {
     RCLCPP_DEBUG(
-      getNode()->get_logger(),
+      getLogger(),
       "[SmaccAsyncClientBehavior] trying to Join onExit function, but it was already finished.");
   }
 
   RCLCPP_DEBUG_STREAM(
-    getNode()->get_logger(),
+    getLogger(),
     "[" << getName()
         << "] Destroying client behavior-  onExit thread finished. Proccedding destruction.");
 }

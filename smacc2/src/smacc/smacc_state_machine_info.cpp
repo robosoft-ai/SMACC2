@@ -20,7 +20,7 @@ namespace smacc
 void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
 {
   RCLCPP_INFO(
-    getNode()->get_logger(), "----------- PRINT STATE MACHINE STRUCTURE -------------------");
+    getLogger(), "----------- PRINT STATE MACHINE STRUCTURE -------------------");
   stateMsgs.clear();
   for (auto & val : this->states)
   {
@@ -205,7 +205,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
       ss << "- NO STATE REACTORS - " << std::endl;
     }
 
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), ss.str());
+    RCLCPP_INFO_STREAM(getLogger(), ss.str());
     stateMsgs.push_back(stateMsg);
   }
 

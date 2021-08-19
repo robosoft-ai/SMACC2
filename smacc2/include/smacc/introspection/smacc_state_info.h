@@ -209,6 +209,7 @@ public:
 
   std::string getDemangledFullName() const;
   rclcpp::Node::SharedPtr getNode();
+  inline rclcpp::Logger getLogger(){return getNode()->get_logger();}
 };
 }  // namespace introspection
 }  // namespace smacc

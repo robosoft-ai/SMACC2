@@ -60,16 +60,16 @@ public:
     std::string planfilepath;
 
     RCLCPP_INFO_STREAM(
-      getNode()->get_logger(), "Reasing parameter file from node: " << getNode()->get_name());
+      getLogger(), "Reasing parameter file from node: " << getNode()->get_name());
     getNode()->declare_parameter("waypoints_plan");
     if (getNode()->get_parameter("waypoints_plan", planfilepath))
     {
       waypointsNavigator->loadWayPointsFromFile(planfilepath);
-      RCLCPP_INFO(getNode()->get_logger(), "waypoints plan: %s", planfilepath.c_str());
+      RCLCPP_INFO(getLogger(), "waypoints plan: %s", planfilepath.c_str());
     }
     else
     {
-      RCLCPP_ERROR(getNode()->get_logger(), "waypoints plan file not found: NONE");
+      RCLCPP_ERROR(getLogger(), "waypoints plan file not found: NONE");
     }
   }
 };

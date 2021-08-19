@@ -78,7 +78,7 @@ public:
         default:
 
           RCLCPP_ERROR(
-            getNode()->get_logger(),
+            getLogger(),
             "Odom Tracker Node - Action Server execute error: incorrect command - %d",
             goal->command);
           as_->setAborted();
@@ -90,7 +90,7 @@ public:
     catch (std::exception & ex)
     {
       RCLCPP_ERROR(
-        getNode()->get_logger(), "Odom Tracker Node - Action Server execute error: %s", ex.what());
+        getLogger(), "Odom Tracker Node - Action Server execute error: %s", ex.what());
       as_->setAborted();
     }
   }
@@ -102,12 +102,12 @@ public:
 */
   void run()
   {
-    ros::NodeHandle n;
-    RCLCPP_INFO(getNode()->get_logger(), "Creating odom tracker action server");
+    rclcpp::Node::SharedPtr n;
+    RCLCPP_INFO(getLogger(), "Creating odom tracker action server");
 
     as_ = std::make_shared<Server>(
       n, "odom_tracker", boost::bind(&OdomTrackerActionServer::execute, this, _1), false);
-    RCLCPP_INFO(getNode()->get_logger(), "Starting OdomTracker Action Server");
+    RCLCPP_INFO(getLogger(), "Starting OdomTracker Action Server");
 
     as_->start();
 

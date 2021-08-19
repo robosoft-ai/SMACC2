@@ -47,7 +47,7 @@ void GoalCheckerSwitcher::setDefaultGoalChecker()
 void GoalCheckerSwitcher::setGoalCheckerId(std::string goalcheckerid)
 {
   RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "[GoalCheckerSwitcher] Setting goal checker: " << goalcheckerid);
+    getLogger(), "[GoalCheckerSwitcher] Setting goal checker: " << goalcheckerid);
 
   // controller_server_node_->wait_for_service();
   // std::vector<rclcpp::Parameter> params{ rclcpp::Parameter("current_goal_checker", goalcheckerid) };
@@ -60,13 +60,13 @@ void GoalCheckerSwitcher::setGoalCheckerId(std::string goalcheckerid)
   // int i = 0;
   // for (auto& res : futureResults.get())
   // {
-  //   RCLCPP_INFO_STREAM(getNode()->get_logger(), "[GoalCheckerSwitcher] parameter result: "
+  //   RCLCPP_INFO_STREAM(getLogger(), "[GoalCheckerSwitcher] parameter result: "
   //                                                   << params[i].get_name() << "=" << params[i].as_string()
   //                                                   << ". Result: " << res.successful);
   //   i++;
 
   //   if (!res.successful)
-  //     RCLCPP_ERROR_STREAM(this->getNode()->get_logger(), "[GoalCheckerSwitcher] goal checker could not properly
+  //     RCLCPP_ERROR_STREAM(this->getLogger(), "[GoalCheckerSwitcher] goal checker could not properly
   //     switch "
   //                                                        "the goal checker of the controller_server");
   // }

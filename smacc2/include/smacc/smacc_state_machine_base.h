@@ -72,19 +72,19 @@ public:
     this->onInitialize();
 
     RCLCPP_INFO(
-      getNode()->get_logger(), "[SmaccStateMachine] Introspecting state machine via typeWalker");
+      getLogger(), "[SmaccStateMachine] Introspecting state machine via typeWalker");
     this->buildStateMachineInfo<InitialStateType>();
 
-    RCLCPP_INFO(getNode()->get_logger(), "[SmaccStateMachine] initiate_impl");
+    RCLCPP_INFO(getLogger(), "[SmaccStateMachine] initiate_impl");
     auto shortname = smacc::utils::cleanShortTypeName(typeid(DerivedStateMachine));
 
     this->initializeROS(shortname);
 
     RCLCPP_INFO(
-      getNode()->get_logger(), "[SmaccStateMachine] Initializing ROS communication mechanisms");
+      getLogger(), "[SmaccStateMachine] Initializing ROS communication mechanisms");
     this->onInitialized();
 
-    RCLCPP_INFO(getNode()->get_logger(), "[SmaccStateMachine] Initializing state machine");
+    RCLCPP_INFO(getLogger(), "[SmaccStateMachine] Initializing state machine");
     sc::state_machine<DerivedStateMachine, InitialStateType, SmaccAllocator>::initiate();
   }
 };

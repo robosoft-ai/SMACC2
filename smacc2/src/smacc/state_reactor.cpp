@@ -40,7 +40,7 @@ void StateReactor::update()
 {
   if (this->triggers())
   {
-    RCLCPP_INFO(getNode()->get_logger(), "State reactor base REALLY TRIGGERS!!");
+    RCLCPP_INFO(getLogger(), "State reactor base REALLY TRIGGERS!!");
     this->postEventFn();
   }
 }

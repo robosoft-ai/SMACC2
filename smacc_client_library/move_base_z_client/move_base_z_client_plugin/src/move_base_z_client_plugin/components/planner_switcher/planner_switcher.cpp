@@ -40,7 +40,7 @@ void PlannerSwitcher::onInitialize()
 void PlannerSwitcher::setUndoPathBackwardPlanner()
 {
   RCLCPP_INFO(
-    getNode()->get_logger(), "[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
+    getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
 
   desired_global_planner_ = "UndoPathGlobalPlanner";
   desired_local_planner_ = "BackwardLocalPlanner";
@@ -51,7 +51,7 @@ void PlannerSwitcher::setUndoPathBackwardPlanner()
 void PlannerSwitcher::setBackwardPlanner()
 {
   RCLCPP_INFO(
-    getNode()->get_logger(), "[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
+    getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
 
   desired_global_planner_ = "BackwardGlobalPlanner";
   desired_local_planner_ = "BackwardLocalPlanner";
@@ -61,7 +61,7 @@ void PlannerSwitcher::setBackwardPlanner()
 void PlannerSwitcher::setForwardPlanner()
 {
   RCLCPP_INFO(
-    getNode()->get_logger(), "[PlannerSwitcher] Planner Switcher: Trying to set ForwardPlanner");
+    getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set ForwardPlanner");
 
   desired_global_planner_ = "ForwardGlobalPlanner";
   desired_local_planner_ = "ForwardLocalPlanner";
@@ -71,7 +71,7 @@ void PlannerSwitcher::setForwardPlanner()
 void PlannerSwitcher::setPureSpinningPlanner()
 {
   RCLCPP_INFO(
-    getNode()->get_logger(),
+    getLogger(),
     "[PlannerSwitcher] Planner Switcher: Trying to set PureSpinningPlanner");
 
   desired_global_planner_ = "ForwardGlobalPlanner";

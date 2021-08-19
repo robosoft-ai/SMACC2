@@ -38,7 +38,7 @@ template <typename T>
 bool ISmaccState::getParam(std::string param_name, T & param_storage)
 {
   RCLCPP_INFO_STREAM(
-    this->getNode()->get_logger(), "getParam from node: " << getNode()->get_namespace());
+    this->getLogger(), "getParam from node: " << getNode()->get_namespace());
   return getNode()->get_parameter(param_name, param_storage);
 }
 //-------------------------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
 {
   std::string orthogonalkey = demangledTypeName<TOrthogonal>();
   RCLCPP_INFO(
-    getNode()->get_logger(), "[%s] Configuring orthogonal: %s", THIS_STATE_NAME,
+    getLogger(), "[%s] Configuring orthogonal: %s", THIS_STATE_NAME,
     orthogonalkey.c_str());
 
   TOrthogonal * orthogonal = this->getOrthogonal<TOrthogonal>();
@@ -77,7 +77,7 @@ std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
   else
   {
     RCLCPP_ERROR(
-      getNode()->get_logger(),
+      getLogger(),
       "[%s] Skipping client behavior creation in orthogonal [%s]. It does not exist.",
       THIS_STATE_NAME, orthogonalkey.c_str());
     return nullptr;
@@ -105,7 +105,7 @@ void ISmaccState::requiresClient(SmaccClientType *& storage)
   }
 
   RCLCPP_ERROR(
-    getNode()->get_logger(),
+    getLogger(),
     "[%s] Client of type '%s' not found in any orthogonal of the current state machine. This may "
     "produce a segmentation fault if the returned reference is used.",
     sname, demangleSymbol<SmaccClientType>().c_str());

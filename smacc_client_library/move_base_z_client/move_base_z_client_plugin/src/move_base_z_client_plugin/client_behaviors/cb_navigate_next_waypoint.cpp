@@ -32,7 +32,7 @@ void CbNavigateNextWaypoint::onEntry()
   auto waypointsNavigator = moveBaseClient_->getComponent<WaypointNavigator>();
   waypointsNavigator->sendNextGoal();
   RCLCPP_INFO(
-    getNode()->get_logger(), "[CbNavigateNextWaypoint] current iteration waypoints x: %ld",
+    getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints x: %ld",
     waypointsNavigator->getCurrentWaypointIndex());
 }
 

@@ -36,7 +36,7 @@ bool ISmaccOrthogonal::requiresClient(SmaccClientType *& storage)
 
   auto requiredClientName = demangledTypeName<SmaccClientType>();
   RCLCPP_WARN_STREAM(
-    getNode()->get_logger(),
+    getLogger(),
     "Required client [" << requiredClientName
                         << "] not found in current orthogonal. Searching in other orthogonals.");
 
@@ -48,7 +48,7 @@ bool ISmaccOrthogonal::requiresClient(SmaccClientType *& storage)
       if (storage != nullptr)
       {
         RCLCPP_WARN_STREAM(
-          getNode()->get_logger(),
+          getLogger(),
           "Required client  [" << requiredClientName << "] found in other orthogonal.");
         return true;
       }
@@ -56,7 +56,7 @@ bool ISmaccOrthogonal::requiresClient(SmaccClientType *& storage)
   }
 
   RCLCPP_ERROR_STREAM(
-    getNode()->get_logger(),
+    getLogger(),
     "Required client [" << requiredClientName
                         << "] not found even in other orthogonals. Returning null pointer. If the "
                            "requested client is used may result in a segmentation fault.");
@@ -69,7 +69,7 @@ void ISmaccOrthogonal::requiresComponent(SmaccComponentType *& storage)
   if (stateMachine_ == nullptr)
   {
     RCLCPP_ERROR(
-      getNode()->get_logger(),
+      getLogger(),
       "Cannot use the requiresComponent funcionality from an orthogonal before onInitialize");
   }
   else
@@ -169,12 +169,12 @@ public:
     //static_assert(std::is_base_of<ISmaccOrthogonal, TOrthogonal>::value, "The object Tag must be the orthogonal type where the client was created");
     // if (typeid(*this) != typeid(TOrthogonal))
     // {
-    //     RCLCPP_ERROR_STREAM(getNode()->get_logger(),"Error creating client. The object Tag must be the type of the orthogonal where the client was created:" << demangleType(typeid(*this)) << ". The object creation was skipped and a nullptr was returned");
+    //     RCLCPP_ERROR_STREAM(getLogger(),"Error creating client. The object Tag must be the type of the orthogonal where the client was created:" << demangleType(typeid(*this)) << ". The object creation was skipped and a nullptr was returned");
     //     return nullptr;
     // }
 
     RCLCPP_INFO(
-      getNode()->get_logger(), "[%s] creates a client of type '%s' and object tag '%s'",
+      getLogger(), "[%s] creates a client of type '%s' and object tag '%s'",
       demangleType(typeid(*this)).c_str(), demangledTypeName<TClient>().c_str(),
       demangledTypeName<TOrthogonal>().c_str());
 

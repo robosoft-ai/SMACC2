@@ -148,6 +148,8 @@ public:
 
   rclcpp::Node::SharedPtr getNode();
 
+  inline rclcpp::Logger getLogger(){return nh_->get_logger();}
+
 protected:
   void checkStateMachineConsistence();
 

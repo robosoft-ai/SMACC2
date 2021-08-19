@@ -46,7 +46,7 @@ public:
     if (msg.data > 30)
     {
       RCLCPP_INFO(
-        getNode()->get_logger(),
+        getLogger(),
         "[CbMySubscriberBehavior] received message from topic with value > 30. "
         "Posting event!");
       this->postMyEvent_();

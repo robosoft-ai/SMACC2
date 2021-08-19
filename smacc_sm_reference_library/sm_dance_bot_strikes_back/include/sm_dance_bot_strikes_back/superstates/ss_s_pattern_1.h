@@ -83,11 +83,11 @@ public:
       auto pose = robot->getComponent<cl_move_base_z::Pose>()->toPoseMsg();
       this->initialStateAngle =
         angles::to_degrees(angles::normalize_angle(tf2::getYaw(pose.orientation)));
-      RCLCPP_INFO(getNode()->get_logger(), "Initial angle for F pattern: %lf", initialStateAngle);
+      RCLCPP_INFO(getLogger(), "Initial angle for F pattern: %lf", initialStateAngle);
     }
     else
     {
-      RCLCPP_ERROR(getNode()->get_logger(), "robot pose not found to plan the FPattern motion");
+      RCLCPP_ERROR(getLogger(), "robot pose not found to plan the FPattern motion");
     }
   }
 };
