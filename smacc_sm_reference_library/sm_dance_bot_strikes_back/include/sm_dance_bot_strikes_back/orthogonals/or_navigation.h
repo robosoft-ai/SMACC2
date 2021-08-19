@@ -61,7 +61,7 @@ public:
 
     RCLCPP_INFO_STREAM(
       getNode()->get_logger(), "Reasing parameter file from node: " << getNode()->get_name());
-    getNode()->declare_parameter("waypoints_plan");
+    getNode()->declare_parameter("waypoints_plan", planfilepath);
     if (getNode()->get_parameter("waypoints_plan", planfilepath))
     {
       waypointsNavigator->loadWayPointsFromFile(planfilepath);

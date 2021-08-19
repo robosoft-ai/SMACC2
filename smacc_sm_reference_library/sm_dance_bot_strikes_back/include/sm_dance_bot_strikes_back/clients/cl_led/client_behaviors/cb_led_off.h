@@ -35,7 +35,7 @@ public:
     ledActionClient_->sendGoal(goal);
   }
 
-  void onEntry() override
+  void onExit() override
   {
     // RCLCPP_INFO(nh_->get_logger(), "Entering ToolClientBehavior");
   }

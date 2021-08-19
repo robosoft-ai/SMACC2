@@ -32,7 +32,7 @@ public:
 
   void onEntry() override;
 
-  void onEntry() override;
+  void onExit() override;
 
 private:
   std::shared_ptr<tf2_ros::Buffer> listener;

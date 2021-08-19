@@ -152,8 +152,9 @@ struct SmDanceBotStrikesBack
 }  // namespace sm_dance_bot_strikes_back
 
 //MODE STATES
-#include <sm_dance_bot_strikes_back/modestates/ms_dance_bot_recovery_mode.h>
 #include <sm_dance_bot_strikes_back/modestates/ms_dance_bot_run_mode.h>
+
+#include <sm_dance_bot_strikes_back/modestates/ms_dance_bot_recovery_mode.h>
 
 //SUPERSTATES
 #include <sm_dance_bot_strikes_back/superstates/ss_f_pattern_1.h>

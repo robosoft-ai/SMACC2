@@ -44,11 +44,11 @@ public:
 
   void setGoal(const geometry_msgs::msg::Pose & pose);
 
-  virtual void onEntry();
+  virtual void onEntry() override;
 
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-  void onEntry() override;
+  void onExit() override;
 
   // auxiliary function that defines the motion that is requested to the move_base action server
   void execute();
