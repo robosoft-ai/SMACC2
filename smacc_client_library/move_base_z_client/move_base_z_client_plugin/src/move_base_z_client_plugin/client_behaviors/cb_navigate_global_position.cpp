@@ -47,8 +47,8 @@ void CbNavigateGlobalPosition::setGoal(const geometry_msgs::msg::Pose & pose)
 
 void CbNavigateGlobalPosition::onEntry()
 {
-  RCLCPP_INFO(getNode()->get_logger(), "Entering Navigate Global position");
-  RCLCPP_INFO(getNode()->get_logger(), "Component requirements completed");
+  RCLCPP_INFO(getLogger(), "Entering Navigate Global position");
+  RCLCPP_INFO(getLogger(), "Component requirements completed");
 
   auto pose = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->toPoseMsg();
   auto * odomTracker = moveBaseClient_->getComponent<OdomTracker>();
@@ -73,7 +73,7 @@ void CbNavigateGlobalPosition::execute()
   auto referenceFrame = p->getReferenceFrame();
   // auto currentPoseMsg = p->toPoseMsg();
 
-  RCLCPP_INFO(getNode()->get_logger(), "Sending Goal to MoveBase");
+  RCLCPP_INFO(getLogger(), "Sending Goal to MoveBase");
   ClMoveBaseZ::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
   goal.pose.header.stamp = getNode()->now();
@@ -107,15 +107,14 @@ void CbNavigateGlobalPosition::readStartPoseFromParameterServer(ClMoveBaseZ::Goa
   }
 
   RCLCPP_INFO_STREAM(
-    getNode()->get_logger(),
-    "start position read from parameter server: " << goal.pose.pose.position);
+    getLogger(), "start position read from parameter server: " << goal.pose.pose.position);
 }
 
 // This is the substate destructor. This code will be executed when the
 // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
 void CbNavigateGlobalPosition::onExit()
 {
-  RCLCPP_INFO(getNode()->get_logger(), "Exiting move goal Action Client");
+  RCLCPP_INFO(getLogger(), "Exiting move goal Action Client");
 }
 
 }  // namespace cl_move_base_z

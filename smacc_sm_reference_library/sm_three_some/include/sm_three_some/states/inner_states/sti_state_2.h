@@ -53,9 +53,9 @@ struct StiState2 : smacc::SmaccState<StiState2, SS>
 
   void runtimeConfigure() {}
 
-  void onEntry() { RCLCPP_INFO(getNode()->get_logger(), "On Entry!"); }
+  void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 
-  void onExit() { RCLCPP_INFO(getNode()->get_logger(), "On Exit!"); }
+  void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
 }  // namespace inner_states
 }  // namespace sm_three_some

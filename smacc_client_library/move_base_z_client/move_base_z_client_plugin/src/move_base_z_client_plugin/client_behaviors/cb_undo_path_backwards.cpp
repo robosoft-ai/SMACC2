@@ -36,7 +36,7 @@ void CbUndoPathBackwards::onEntry()
   auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
 
   nav_msgs::msg::Path forwardpath = odomTracker->getPath();
-  // RCLCPP_INFO_STREAM(getNode()->get_logger(),"[UndoPathBackward] Current path backwards: " << forwardpath);
+  // RCLCPP_INFO_STREAM(getLogger(),"[UndoPathBackward] Current path backwards: " << forwardpath);
 
   odomTracker->setWorkingMode(WorkingMode::CLEAR_PATH);
 

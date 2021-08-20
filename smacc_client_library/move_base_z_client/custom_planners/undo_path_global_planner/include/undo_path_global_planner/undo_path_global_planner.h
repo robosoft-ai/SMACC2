@@ -74,7 +74,7 @@ public:
     const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal);
 
 private:
-  // ros::NodeHandle nh_;
+  // rclcpp::Node::SharedPtr nh_;
   rclcpp_lifecycle::LifecycleNode::SharedPtr nh_;
   rclcpp::Subscription<nav_msgs::msg::Path>::SharedPtr forwardPathSub_;
 

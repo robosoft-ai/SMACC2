@@ -31,25 +31,23 @@ void SrAllEventsGo::onInitialized()
 void SrAllEventsGo::onEventNotified(const std::type_info * eventType)
 {
   RCLCPP_DEBUG_STREAM(
-    getNode()->get_logger(),
-    "[SB ALLEventsGo] RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
+    getLogger(), "[SB ALLEventsGo] RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
   triggeredEvents[eventType] = true;
 
   for (auto & entry : triggeredEvents)
   {
-    RCLCPP_DEBUG_STREAM(
-      getNode()->get_logger(), demangleSymbol(entry.first->name()) << " = " << entry.second);
+    RCLCPP_DEBUG_STREAM(getLogger(), demangleSymbol(entry.first->name()) << " = " << entry.second);
   }
 }
 
 bool SrAllEventsGo::triggers()
 {
-  RCLCPP_DEBUG(getNode()->get_logger(), "SB All TRIGGERS?");
+  RCLCPP_DEBUG(getLogger(), "SB All TRIGGERS?");
   for (auto & entry : triggeredEvents)
   {
     if (!entry.second) return false;
   }
-  RCLCPP_DEBUG(getNode()->get_logger(), "SB ALL TRIGGERED");
+  RCLCPP_DEBUG(getLogger(), "SB ALL TRIGGERED");
   return true;
 }
 }  // namespace state_reactors

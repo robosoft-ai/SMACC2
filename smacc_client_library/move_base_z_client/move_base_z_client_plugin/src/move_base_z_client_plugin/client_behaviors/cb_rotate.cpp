@@ -78,8 +78,8 @@ void CbRotate::onEntry()
   odomTracker->setStartPoint(stampedCurrentPoseMsg);
   odomTracker->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
 
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "current pose: " << currentPoseMsg);
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "goal pose: " << goal.pose.pose);
+  RCLCPP_INFO_STREAM(getLogger(), "current pose: " << currentPoseMsg);
+  RCLCPP_INFO_STREAM(getLogger(), "goal pose: " << goal.pose.pose);
   moveBaseClient_->sendGoal(goal);
 }
 

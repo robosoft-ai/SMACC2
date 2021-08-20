@@ -53,7 +53,7 @@ struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, S
 
     forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
     RCLCPP_INFO(
-      this->getNode()->get_logger(), "Going forward in F pattern, distance to wall: %lf",
+      this->getLogger(), "Going forward in F pattern, distance to wall: %lf",
       *(forwardBehavior->forwardDistance));
   }
 };

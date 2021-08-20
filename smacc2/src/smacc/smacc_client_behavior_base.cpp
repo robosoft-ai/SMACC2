@@ -24,7 +24,7 @@ ISmaccClientBehavior::ISmaccClientBehavior()
 
 ISmaccClientBehavior::~ISmaccClientBehavior()
 {
-  RCLCPP_WARN(getNode()->get_logger(), "Client behavior deallocated.");
+  RCLCPP_WARN(getLogger(), "Client behavior deallocated.");
 }
 
 std::string ISmaccClientBehavior::getName() const { return demangleSymbol(typeid(*this).name()); }
@@ -47,23 +47,21 @@ rclcpp::Logger ISmaccClientBehavior::getLogger()
 void ISmaccClientBehavior::runtimeConfigure()
 {
   RCLCPP_DEBUG(
-    getNode()->get_logger(), "[%s] Default empty SmaccClientBehavior runtimeConfigure",
+    getLogger(), "[%s] Default empty SmaccClientBehavior runtimeConfigure",
     this->getName().c_str());
 }
 
 void ISmaccClientBehavior::executeOnEntry()
 {
   RCLCPP_DEBUG(
-    getNode()->get_logger(), "[%s] Default empty SmaccClientBehavior onEntry",
-    this->getName().c_str());
+    getLogger(), "[%s] Default empty SmaccClientBehavior onEntry", this->getName().c_str());
   this->onEntry();
 }
 
 void ISmaccClientBehavior::executeOnExit()
 {
   RCLCPP_DEBUG(
-    getNode()->get_logger(), "[%s] Default empty SmaccClientBehavior onExit",
-    this->getName().c_str());
+    getLogger(), "[%s] Default empty SmaccClientBehavior onExit", this->getName().c_str());
   this->onExit();
 }
 

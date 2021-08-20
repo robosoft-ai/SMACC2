@@ -62,7 +62,7 @@ struct StiFPatternRotate2 : smacc::SmaccState<StiFPatternRotate2<SS>, SS>
 
     absoluteRotateBehavior->absoluteGoalAngleDegree = targetAngle;
     RCLCPP_INFO(
-      this->getNode()->get_logger(), "Fpattern, rotate to: %lf",
+      this->getLogger(), "Fpattern, rotate to: %lf",
       *(absoluteRotateBehavior->absoluteGoalAngleDegree));
   }
 };

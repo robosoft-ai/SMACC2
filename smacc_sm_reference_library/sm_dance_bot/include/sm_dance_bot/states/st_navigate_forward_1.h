@@ -51,7 +51,7 @@ struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, MsDanceBotRunM
   void onActionClientSucceeded(cl_move_base_z::ClMoveBaseZ::WrappedResult & msg)
   {
     RCLCPP_INFO_STREAM(
-      getNode()->get_logger(),
+      getLogger(),
       " [Callback SmaccSignal] Success Detected from StAquireSensors (connected to client signal), "
       "result data: "
         << msg.result);

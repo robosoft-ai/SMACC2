@@ -42,7 +42,7 @@ struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, S
   void runtimeConfigure()
   {
     // auto &superstate = TSti::template context<SS>();
-    // RCLCPP_INFO(this->getNode()->get_logger(),"[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d",
+    // RCLCPP_INFO(this->getLogger(),"[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d",
     // superstate.iteration_count, SS::total_iterations());
   }
 };

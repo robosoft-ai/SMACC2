@@ -39,14 +39,14 @@ struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS>
     auto & superstate = this->context<SS>();
 
     RCLCPP_INFO(
-      getNode()->get_logger(), "Loop start, current iterations: %d, total iterations: %d",
+      getLogger(), "Loop start, current iterations: %d, total iterations: %d",
       superstate.iteration_count, superstate.total_iterations());
     return superstate.iteration_count++ < superstate.total_iterations();
   }
 
   void onEntry()
   {
-    RCLCPP_INFO(getNode()->get_logger(), "LOOP START ON ENTRY");
+    RCLCPP_INFO(getLogger(), "LOOP START ON ENTRY");
     checkWhileLoopConditionAndThrowEvent(&StiRadialLoopStart::loopWhileCondition);
   }
 };

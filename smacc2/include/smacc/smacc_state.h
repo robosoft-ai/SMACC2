@@ -31,6 +31,8 @@ public:
 
   inline rclcpp::Node::SharedPtr & getNode() { return stateNode_; }
 
+  inline rclcpp::Logger getLogger() { return stateNode_->get_logger(); }
+
   virtual std::string getClassName();
 
   template <typename TOrthogonal, typename TBehavior, typename... Args>

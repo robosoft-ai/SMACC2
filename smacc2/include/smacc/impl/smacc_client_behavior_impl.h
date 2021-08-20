@@ -30,7 +30,7 @@ void ISmaccClientBehavior::postEvent(const EventType & ev)
   if (stateMachine_ == nullptr)
   {
     RCLCPP_ERROR(
-      getNode()->get_logger(),
+      getLogger(),
       "The client behavior cannot post events before being assigned to an orthogonal. Ignoring "
       "post event call.");
   }
@@ -46,7 +46,7 @@ void ISmaccClientBehavior::postEvent()
   if (stateMachine_ == nullptr)
   {
     RCLCPP_ERROR(
-      getNode()->get_logger(),
+      getLogger(),
       "The client behavior cannot post events before being assigned to an orthogonal. Ignoring "
       "post event call.");
   }
@@ -74,7 +74,7 @@ void ISmaccClientBehavior::requiresComponent(SmaccComponentType *& storage)
   if (stateMachine_ == nullptr)
   {
     RCLCPP_ERROR(
-      getNode()->get_logger(),
+      getLogger(),
       "Cannot use the requiresComponent funcionality before asigning the client behavior to an "
       "orthogonal. Try using the OnEntry method to capture required components.");
   }
