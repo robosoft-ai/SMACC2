@@ -14,11 +14,13 @@
 
 #pragma once
 
+#include <iostream>
+
 #include <builtin_interfaces/msg/time.hpp>
+#include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/quaternion.hpp>
-#include <iostream>
 #include <nav2_msgs/action/navigate_to_pose.hpp>
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg);
