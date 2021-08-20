@@ -65,5 +65,5 @@ install(TARGETS ${PROJECT_NAME}_node
 
 install(DIRECTORY
    launch/
-   DESTINATION launch/
+   DESTINATION share/${PROJECT_NAME}
 )
