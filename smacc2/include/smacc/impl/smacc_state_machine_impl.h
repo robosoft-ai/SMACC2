@@ -627,7 +627,7 @@ void ISmaccStateMachine::buildStateMachineInfo()
   this->checkStateMachineConsistence();
 }
 
-unsigned long ISmaccStateMachine::getCurrentStateCounter() const { return this->stateSeqCounter_; }
+uint64_t ISmaccStateMachine::getCurrentStateCounter() const { return this->stateSeqCounter_; }
 
 ISmaccState * ISmaccStateMachine::getCurrentState() const { return this->currentState_; }
 
