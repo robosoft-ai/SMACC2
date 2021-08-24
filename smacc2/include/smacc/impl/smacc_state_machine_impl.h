@@ -22,6 +22,7 @@
 
 #include <smacc/introspection/introspection.h>
 #include <smacc/smacc_client.h>
+#include <smacc/smacc_event_generator.h>
 #include <smacc/smacc_orthogonal.h>
 #include <smacc/smacc_signal_detector.h>
 #include <smacc/smacc_state.h>

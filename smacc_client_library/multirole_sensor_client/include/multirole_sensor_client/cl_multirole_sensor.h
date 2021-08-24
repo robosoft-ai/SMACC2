@@ -15,6 +15,7 @@
 #pragma once
 
 #include <smacc/client_bases/smacc_subscriber_client.h>
+#include <smacc/impl/smacc_state_machine_impl.h>
 #include <smacc/smacc_signal.h>
 #include <optional>
 #include <rclcpp/rclcpp.hpp>
