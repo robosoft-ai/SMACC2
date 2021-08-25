@@ -37,7 +37,7 @@ public:
 
   void onExit() override
   {
-    // RCLCPP_INFO(nh_->get_logger(), "Entering ToolClientBehavior");
+    // RCLCPP_INFO(getLogger(), "Entering ToolClientBehavior");
   }
 };
 }  // namespace cl_led

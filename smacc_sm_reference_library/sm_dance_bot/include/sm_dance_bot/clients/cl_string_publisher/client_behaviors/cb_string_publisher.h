@@ -33,7 +33,7 @@ public:
   virtual void runtimeConfigure() override
   {
     RCLCPP_INFO_STREAM(
-      getNode()->get_logger(), "Creating CbStringPublisher behavior with stored message: " << msg_);
+      getLogger(), "Creating CbStringPublisher behavior with stored message: " << msg_);
   }
 
   virtual void onEntry() { this->requiresClient(publisherClient_); }

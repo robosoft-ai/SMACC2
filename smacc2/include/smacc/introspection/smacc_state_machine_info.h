@@ -71,6 +71,8 @@ public:
 
   inline rclcpp::Node::SharedPtr getNode() { return nh_; }
 
+  inline rclcpp::Logger getLogger() { return nh_->get_logger(); }
+
   template <typename StateType>
   void addState(std::shared_ptr<StateType> & state);
   void assembleSMStructureMessage(ISmaccStateMachine * sm);
@@ -248,7 +250,7 @@ void SmaccStateInfo::declareTransition(
     std::make_shared<SmaccEventInfo>(transitionTypeInfo->templateParameters.front());
 
   EventLabel<EvType>(transitionInfo.eventInfo->label);
-  // RCLCPP_DEBUG_STREAM(getNode()->get_logger(), "LABEL: " << transitionInfo.eventInfo->label);
+  // RCLCPP_DEBUG_STREAM(getLogger(), "LABEL: " << transitionInfo.eventInfo->label);
 
   transitions_.push_back(transitionInfo);
 }
@@ -296,7 +298,7 @@ public:
 //     transitionInfo.eventInfo = std::make_shared<SmaccEventInfo>(TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name())));
 
 //     EventLabel<EvType<TevSource>>(transitionInfo.eventInfo->label);
-//     RCLCPP_ERROR_STREAM(getNode()->get_logger(),"LABEL: " << transitionInfo.eventInfo->label);
+//     RCLCPP_ERROR_STREAM(getLogger(),"LABEL: " << transitionInfo.eventInfo->label);
 
 //     transitions_.push_back(transitionInfo);
 // }
@@ -306,14 +308,14 @@ template <typename Ev, typename Dst>
 void processTransition(
   statechart::transition<Ev, Dst> *, std::shared_ptr<SmaccStateInfo> & sourceState)
 {
-  //RCLCPP_INFO_STREAM(getNode()->get_logger(),"GOTCHA");
+  //RCLCPP_INFO_STREAM(getLogger(),"GOTCHA");
 }
 
 template <typename Ev>
 void processTransition(
   statechart::custom_reaction<Ev> *, std::shared_ptr<SmaccStateInfo> & sourceState)
 {
-  //RCLCPP_INFO_STREAM(getNode()->get_logger(),"GOTCHA");
+  //RCLCPP_INFO_STREAM(getLogger(),"GOTCHA");
 }
 
 //---------------------------------------------
@@ -323,7 +325,7 @@ template <typename T>
 typename disable_if<boost::mpl::is_sequence<T>>::type processTransitions(
   std::shared_ptr<SmaccStateInfo> & sourceState)
 {
-  //RCLCPP_INFO_STREAM(getNode()->get_logger(),"state transition from: " << sourceState->demangledStateName << " of type: " << demangledTypeName<T>());
+  //RCLCPP_INFO_STREAM(getLogger(),"state transition from: " << sourceState->demangledStateName << " of type: " << demangledTypeName<T>());
   T * dummy = nullptr;
   processTransition(dummy, sourceState);
 }
@@ -352,8 +354,8 @@ template <template <typename,typename,typename> typename TTransition, typename T
 typename disable_if<boost::mpl::is_sequence<TTransition<EvType<TevSource>,DestinyState, Tag>>>::type
 processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
 {
-    RCLCPP_INFO(getNode()->get_logger(),"DETECTED COMPLEX TRANSITION **************");
-    //RCLCPP_INFO_STREAM(getNode()->get_logger(),"state transition from: " << sourceState->demangledStateName << " of type: " << demangledTypeName<T>());
+    RCLCPP_INFO(getLogger(),"DETECTED COMPLEX TRANSITION **************");
+    //RCLCPP_INFO_STREAM(getLogger(),"state transition from: " << sourceState->demangledStateName << " of type: " << demangledTypeName<T>());
     TTransition<EvType<TevSource>,DestinyState, Tag> *dummy;
     processTransition(dummy, sourceState);
 }
@@ -362,8 +364,8 @@ template <template <typename,typename> typename TTransition, typename TevSource,
 typename disable_if<boost::mpl::is_sequence<TTransition<EvType<TevSource>,DestinyState>>>::type
 processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
 {
-    RCLCPP_INFO(getNode()->get_logger(),"DETECTED COMPLEX TRANSITION **************");
-    //RCLCPP_INFO_STREAM(getNode()->get_logger(),"state transition from: " << sourceState->demangledStateName << " of type: " << demangledTypeName<T>());
+    RCLCPP_INFO(getLogger(),"DETECTED COMPLEX TRANSITION **************");
+    //RCLCPP_INFO_STREAM(getLogger(),"state transition from: " << sourceState->demangledStateName << " of type: " << demangledTypeName<T>());
     TTransition<EvType<TevSource>,DestinyState> *dummy;
     processTransition(dummy, sourceState);
 }
@@ -435,7 +437,7 @@ void WalkStatesExecutor<InitialStateType>::walkStates(
 
   // -------------------- REACTIONS --------------------
   typedef typename InitialStateType::reactions reactions;
-  //RCLCPP_INFO_STREAM(getNode()->get_logger(),"state machine initial state reactions: "<< demangledTypeName<reactions>());
+  //RCLCPP_INFO_STREAM(getLogger(),"state machine initial state reactions: "<< demangledTypeName<reactions>());
 
   processTransitions<reactions>(targetState);
 }
@@ -457,7 +459,7 @@ std::shared_ptr<SmaccStateInfo> SmaccStateMachineInfo::createState(
   auto * statetid = &(typeid(StateType));
 
   auto demangledName = demangledTypeName<StateType>();
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "Creating State Info: " << demangledName);
+  RCLCPP_INFO_STREAM(getLogger(), "Creating State Info: " << demangledName);
 
   auto state = std::make_shared<SmaccStateInfo>(statetid, parent, thisptr);
   state->demangledStateName = demangledName;
@@ -498,8 +500,8 @@ std::shared_ptr<SmaccStateInfo> SmaccStateInfo::createChildState()
   //this->stateMachine_->addState(childState);
   //stateMachineInfo.addState(stateMachineInfo)
   //stateNames.push_back(currentname);
-  //RCLCPP_INFO(getNode()->get_logger(),"------------");
-  //RCLCPP_INFO_STREAM(getNode()->get_logger(),"** STATE state: "<< this->demangledStateName);
+  //RCLCPP_INFO(getLogger(),"------------");
+  //RCLCPP_INFO_STREAM(getLogger(),"** STATE state: "<< this->demangledStateName);
 
   return childState;
 }

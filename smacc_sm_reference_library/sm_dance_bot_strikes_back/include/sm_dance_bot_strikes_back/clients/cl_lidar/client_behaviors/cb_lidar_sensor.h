@@ -30,7 +30,7 @@ public:
 
   void onEntry() override
   {
-    RCLCPP_INFO(getNode()->get_logger(), "[CbLidarSensor] onEntry");
+    RCLCPP_INFO(getLogger(), "[CbLidarSensor] onEntry");
     cl_multirole_sensor::CbDefaultMultiRoleSensorBehavior<ClLidarSensor>::onEntry();
   }
 

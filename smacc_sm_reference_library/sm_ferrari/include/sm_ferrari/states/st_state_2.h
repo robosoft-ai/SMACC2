@@ -78,7 +78,7 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>, smacc::ISmaccUpdatable
   bool eventGeneratorPredicate(ISmaccState * st)
   {
     auto res = k > 300;
-    RCLCPP_INFO(st->getNode()->get_logger(), "[State2] checking k: %d  > 300 == %d", k, res);
+    RCLCPP_INFO(st->getLogger(), "[State2] checking k: %d  > 300 == %d", k, res);
     rclcpp::sleep_for(10ms);
     // rclcpp::Duration(10ms).sleep();
     return res;
@@ -87,12 +87,12 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>, smacc::ISmaccUpdatable
   void update() override
   {
     k++;
-    RCLCPP_INFO(getNode()->get_logger(), "[State2] internally updating k: %d", k);
+    RCLCPP_INFO(getLogger(), "[State2] internally updating k: %d", k);
   }
 
-  void onEntry() { RCLCPP_INFO(getNode()->get_logger(), "On Entry!"); }
+  void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 
-  void onExit() { RCLCPP_INFO(getNode()->get_logger(), "On Exit!"); }
+  void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
 
 int StState2::k = 0;

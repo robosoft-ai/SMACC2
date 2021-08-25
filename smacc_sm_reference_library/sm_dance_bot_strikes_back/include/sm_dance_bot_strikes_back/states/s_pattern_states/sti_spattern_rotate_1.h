@@ -41,8 +41,7 @@ struct StiSPatternRotate1 : smacc::SmaccState<StiSPatternRotate1, SS>
   {
     auto & superstate = this->context<SS>();
     RCLCPP_INFO(
-      getNode()->get_logger(),
-      "[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
+      getLogger(), "[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
       superstate.iteration_count, SS::total_iterations());
 
     double offset;

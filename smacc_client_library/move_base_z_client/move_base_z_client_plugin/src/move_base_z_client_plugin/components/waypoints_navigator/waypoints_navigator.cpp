@@ -54,22 +54,22 @@ void WaypointNavigator::sendNextGoal()
     goal.pose.header.stamp = getNode()->now();
     goal.pose.pose = next;
 
-    RCLCPP_WARN(getNode()->get_logger(), "[WaypointsNavigator] Configuring default planners");
+    RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default planners");
     auto plannerSwitcher = client_->getComponent<PlannerSwitcher>();
     plannerSwitcher->setDefaultPlanners();
 
-    RCLCPP_WARN(getNode()->get_logger(), "[WaypointsNavigator] Configuring default goal planner");
+    RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default goal planner");
     auto goalCheckerSwitcher = client_->getComponent<GoalCheckerSwitcher>();
     goalCheckerSwitcher->setGoalCheckerId("goal_checker");
 
     // publish stuff
     //rclcpp::sleep_for(5s);
 
-    RCLCPP_INFO(getNode()->get_logger(), "[WaypointsNavigator] Getting odom tracker");
+    RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Getting odom tracker");
     auto odomTracker = client_->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
     if (odomTracker != nullptr)
     {
-      RCLCPP_INFO(getNode()->get_logger(), "[WaypointsNavigator] Storing path in odom tracker");
+      RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Storing path in odom tracker");
       odomTracker->pushPath();
       odomTracker->setStartPoint(pose);
       odomTracker->setWorkingMode(cl_move_base_z::odom_tracker::WorkingMode::RECORD_PATH);
@@ -82,7 +82,7 @@ void WaypointNavigator::sendNextGoal()
   else
   {
     RCLCPP_WARN(
-      getNode()->get_logger(),
+      getLogger(),
       "[WaypointsNavigator] All waypoints were consumed. There is no more waypoints available.");
   }
 }
@@ -135,7 +135,7 @@ long WaypointNavigator::getCurrentWaypointIndex() const { return currentWaypoint
 #define HAVE_NEW_YAMLCPP
 void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
 {
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[WaypointNavigator] Loading file:" << filepath);
+  RCLCPP_INFO_STREAM(getLogger(), "[WaypointNavigator] Loading file:" << filepath);
   this->waypoints_.clear();
   std::ifstream ifs(filepath.c_str(), std::ifstream::in);
   if (ifs.good() == false)
@@ -182,24 +182,20 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
         }
         catch (...)
         {
-          RCLCPP_ERROR(
-            getNode()->get_logger(), "parsing waypoint file, syntax error in point %d", i);
+          RCLCPP_ERROR(getLogger(), "parsing waypoint file, syntax error in point %d", i);
         }
       }
-      RCLCPP_INFO_STREAM(
-        getNode()->get_logger(), "Parsed " << this->waypoints_.size() << " waypoints.");
+      RCLCPP_INFO_STREAM(getLogger(), "Parsed " << this->waypoints_.size() << " waypoints.");
     }
     else
     {
-      RCLCPP_WARN_STREAM(
-        getNode()->get_logger(), "Couldn't find any waypoints in the provided yaml file.");
+      RCLCPP_WARN_STREAM(getLogger(), "Couldn't find any waypoints in the provided yaml file.");
     }
   }
   catch (const YAML::ParserException & ex)
   {
     RCLCPP_ERROR_STREAM(
-      getNode()->get_logger(),
-      "Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
+      getLogger(), "Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
   }
 }
 }  // namespace cl_move_base_z

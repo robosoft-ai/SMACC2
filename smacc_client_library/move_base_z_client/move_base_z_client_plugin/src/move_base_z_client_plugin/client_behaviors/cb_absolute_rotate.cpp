@@ -55,8 +55,7 @@ void CbAbsoluteRotate::onEntry()
   {
     goal_angle = *this->absoluteGoalAngleDegree;
   }
-  RCLCPP_INFO_STREAM(
-    getNode()->get_logger(), "[CbAbsoluteRotate] Absolute yaw Angle:" << goal_angle);
+  RCLCPP_INFO_STREAM(getLogger(), "[CbAbsoluteRotate] Absolute yaw Angle:" << goal_angle);
 
   auto plannerSwitcher = this->moveBaseClient_->getComponent<PlannerSwitcher>();
   // this should work better with a coroutine and await
@@ -99,17 +98,16 @@ void CbAbsoluteRotate::onEntry()
   goalCheckerSwitcher->setGoalCheckerId("absolute_rotate_goal_checker");
 
   RCLCPP_INFO_STREAM(
-    getNode()->get_logger(),
+    getLogger(),
     "[CbAbsoluteRotate] current pose yaw: " << tf2::getYaw(currentPoseMsg.orientation));
   RCLCPP_INFO_STREAM(
-    getNode()->get_logger(),
-    "[CbAbsoluteRotate] goal pose yaw: " << tf2::getYaw(goal.pose.pose.orientation));
+    getLogger(), "[CbAbsoluteRotate] goal pose yaw: " << tf2::getYaw(goal.pose.pose.orientation));
   moveBaseClient_->sendGoal(goal);
 }
 
 void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 {
-  auto log = this->getNode()->get_logger();
+  auto log = this->getLogger();
 
   std::string nodename = "/controller_server";
 
@@ -165,7 +163,7 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
       yaw_goal_tolerance = rclcpp::Parameter("goal_checker.yaw_goal_tolerance", *yawGoalTolerance);
       parameters.push_back(yaw_goal_tolerance);
       RCLCPP_INFO(
-        getNode()->get_logger(),
+        getLogger(),
         "[CbAbsoluteRotate] updating yaw tolerance local planner to: %lf, from previous value: "
         "%lf ",
         *yawGoalTolerance, this->oldYawTolerance);
@@ -256,9 +254,9 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
   for (auto & res : futureResults.get())
   {
     RCLCPP_INFO_STREAM(
-      getNode()->get_logger(), "[CbAbsoluteRotate] parameter result: "
-                                 << parameters[i].get_name() << "=" << parameters[i].as_string()
-                                 << ". Result: " << res.successful);
+      getLogger(), "[CbAbsoluteRotate] parameter result: " << parameters[i].get_name() << "="
+                                                           << parameters[i].as_string()
+                                                           << ". Result: " << res.successful);
     i++;
   }
 

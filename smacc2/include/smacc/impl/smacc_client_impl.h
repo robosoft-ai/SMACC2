@@ -76,7 +76,7 @@ SmaccComponentType * ISmaccClient::createNamedComponent(std::string name, TArgs.
   {
     auto tname = demangledTypeName<SmaccComponentType>();
     RCLCPP_INFO(
-      getNode()->get_logger(),
+      getLogger(),
       "Creating a new component of type %s smacc component is required. Creating a new instance %s",
       demangledTypeName<SmaccComponentType>().c_str(), tname.c_str());
 
@@ -87,12 +87,12 @@ SmaccComponentType * ISmaccClient::createNamedComponent(std::string name, TArgs.
 
     this->components_[componentkey] =
       ret;  //std::dynamic_pointer_cast<smacc::ISmaccComponent>(ret);
-    RCLCPP_DEBUG(getNode()->get_logger(), "%s resource is required. Done.", tname.c_str());
+    RCLCPP_DEBUG(getLogger(), "%s resource is required. Done.", tname.c_str());
   }
   else
   {
     RCLCPP_INFO(
-      getNode()->get_logger(), "%s resource is required. Found resource in cache.",
+      getLogger(), "%s resource is required. Found resource in cache.",
       demangledTypeName<SmaccComponentType>().c_str());
     ret = dynamic_pointer_cast<SmaccComponentType>(it->second);
   }

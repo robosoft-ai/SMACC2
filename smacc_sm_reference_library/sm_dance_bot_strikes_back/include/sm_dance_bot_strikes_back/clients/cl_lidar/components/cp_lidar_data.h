@@ -47,7 +47,7 @@ public:
     {
       this->forwardObstacleDistance = scanmsg.range_max - SECURITY_DISTANCE /*meters*/;
       RCLCPP_INFO_THROTTLE(
-        getNode()->get_logger(), *(getNode()->get_clock()), 1000,
+        getLogger(), *(getNode()->get_clock()), 1000,
         "[CpLidarSensorData] Distance to forward obstacle is not a number, setting default value "
         "to: %lf",
         scanmsg.range_max);

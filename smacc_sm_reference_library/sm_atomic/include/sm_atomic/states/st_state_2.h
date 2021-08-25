@@ -36,10 +36,10 @@ struct State2 : smacc::SmaccState<State2, SmAtomic>
       5);  // EvTimer triggers once at 10 client ticks
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getNode()->get_logger(), "Entering State2"); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State2"); }
 
-  void onEntry() { RCLCPP_INFO(getNode()->get_logger(), "On Entry!"); }
+  void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 
-  void onExit() { RCLCPP_INFO(getNode()->get_logger(), "On Exit!"); }
+  void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
 }  // namespace sm_atomic

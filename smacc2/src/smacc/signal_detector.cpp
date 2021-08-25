@@ -81,8 +81,7 @@ void SignalDetector::findUpdatableClientsAndComponents()
       if (updatableClient != nullptr)
       {
         RCLCPP_DEBUG_STREAM(
-          getNode()->get_logger(),
-          "Adding updatable client: " << demangleType(typeid(updatableClient)));
+          getLogger(), "Adding updatable client: " << demangleType(typeid(updatableClient)));
         this->updatableClients_.push_back(updatableClient);
       }
 
@@ -95,7 +94,7 @@ void SignalDetector::findUpdatableClientsAndComponents()
         if (updatableComponent != nullptr)
         {
           RCLCPP_DEBUG_STREAM(
-            getNode()->get_logger(),
+            getLogger(),
             "Adding updatable component: " << demangleType(typeid(*updatableComponent)));
           this->updatableClients_.push_back(updatableComponent);
         }
@@ -125,7 +124,7 @@ void SignalDetector::findUpdatableStateElements(ISmaccState * currentState)
       if (updatableClientBehavior != nullptr)
       {
         RCLCPP_DEBUG_STREAM(
-          getNode()->get_logger(),
+          getLogger(),
           "Adding updatable behavior: " << demangleType(typeid(updatableClientBehavior)));
         this->updatableStateElements_.push_back(updatableClientBehavior);
       }
@@ -145,7 +144,7 @@ void SignalDetector::findUpdatableStateElements(ISmaccState * currentState)
     if (updatableStateReactor != nullptr)
     {
       RCLCPP_DEBUG_STREAM(
-        getNode()->get_logger(),
+        getLogger(),
         "Adding updatable stateReactorr: " << demangleType(typeid(updatableStateReactor)));
       this->updatableStateElements_.push_back(updatableStateReactor);
     }
@@ -158,7 +157,7 @@ void SignalDetector::findUpdatableStateElements(ISmaccState * currentState)
     if (updatableEventGenerator != nullptr)
     {
       RCLCPP_DEBUG_STREAM(
-        getNode()->get_logger(),
+        getLogger(),
         "Adding updatable eventGenerator: " << demangleType(typeid(updatableEventGenerator)));
       this->updatableStateElements_.push_back(updatableEventGenerator);
     }
@@ -221,14 +220,13 @@ void SignalDetector::pollOnce()
     if (currentState != nullptr)
     {
       RCLCPP_INFO_THROTTLE(
-        getNode()->get_logger(), *(getNode()->get_clock()), 10000,
+        getLogger(), *(getNode()->get_clock()), 10000,
         "[SignalDetector] heartbeat. Current State: %s",
         demangleType(typeid(*currentState)).c_str());
     }
 
     this->findUpdatableClientsAndComponents();
-    RCLCPP_DEBUG_STREAM(
-      getNode()->get_logger(), "updatable clients: " << this->updatableClients_.size());
+    RCLCPP_DEBUG_STREAM(getLogger(), "updatable clients: " << this->updatableClients_.size());
 
     if (this->updatableClients_.size())
     {
@@ -265,22 +263,19 @@ void SignalDetector::pollOnce()
         StateMachineInternalAction::STATE_EXITING)
     {
       // we do not update updatable elements during trasitioning or configuration of states
-      RCLCPP_DEBUG_STREAM(
-        getNode()->get_logger(), "[SignalDetector] update behaviors. checking current state");
+      RCLCPP_DEBUG_STREAM(getLogger(), "[SignalDetector] update behaviors. checking current state");
 
       if (currentState != nullptr)
       {
-        RCLCPP_DEBUG_STREAM(
-          getNode()->get_logger(), "[SignalDetector] current state: " << currentStateIndex);
-        RCLCPP_DEBUG_STREAM(
-          getNode()->get_logger(), "[SignalDetector] last state: " << this->lastState_);
+        RCLCPP_DEBUG_STREAM(getLogger(), "[SignalDetector] current state: " << currentStateIndex);
+        RCLCPP_DEBUG_STREAM(getLogger(), "[SignalDetector] last state: " << this->lastState_);
 
         if (currentStateIndex != 0)
         {
           if (currentStateIndex != (long)this->lastState_)
           {
             RCLCPP_DEBUG_STREAM(
-              getNode()->get_logger(),
+              getLogger(),
               "[PollOnce] detected new state, refreshing updatable client "
               "behavior table");
             // we are in a new state, refresh the updatable client behaviors table
@@ -289,7 +284,7 @@ void SignalDetector::pollOnce()
           }
 
           RCLCPP_DEBUG_STREAM(
-            getNode()->get_logger(),
+            getLogger(),
             "[SignalDetector] updatable state elements: " << this->updatableStateElements_.size());
           auto node = getNode();
           for (auto * udpatableStateElement : this->updatableStateElements_)
@@ -298,7 +293,7 @@ void SignalDetector::pollOnce()
             try
             {
               RCLCPP_DEBUG_STREAM(
-                getNode()->get_logger(),
+                getLogger(),
                 "[SignalDetector] update client behavior call: " << updatableElementName);
 
               TRACEPOINT(update_start, updatableElementName);
@@ -318,8 +313,7 @@ void SignalDetector::pollOnce()
   }
   catch (std::exception & ex)
   {
-    RCLCPP_ERROR(
-      getNode()->get_logger(), "Exception during Signal Detector update loop. %s", ex.what());
+    RCLCPP_ERROR(getLogger(), "Exception during Signal Detector update loop. %s", ex.what());
   }
 
   auto nh = this->getNode();
@@ -346,7 +340,7 @@ void SignalDetector::pollingLoop()
   if (!getNode()->get_parameter("signal_detector_loop_freq", this->loop_rate_hz))
   {
     RCLCPP_WARN(
-      getNode()->get_logger(),
+      getLogger(),
       "Signal detector frequency (ros param signal_detector_loop_freq) was not set, using default "
       "frequency: "
       "%lf",
@@ -355,13 +349,13 @@ void SignalDetector::pollingLoop()
   else
   {
     RCLCPP_WARN(
-      getNode()->get_logger(),
-      "Signal detector frequency (ros param signal_detector_loop_freq): %lf", this->loop_rate_hz);
+      getLogger(), "Signal detector frequency (ros param signal_detector_loop_freq): %lf",
+      this->loop_rate_hz);
   }
 
   getNode()->set_parameter(rclcpp::Parameter("signal_detector_loop_freq", this->loop_rate_hz));
 
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[SignalDetector] loop rate hz:" << loop_rate_hz);
+  RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] loop rate hz:" << loop_rate_hz);
 
   rclcpp::Rate r(loop_rate_hz);
   while (rclcpp::ok() && !end_)

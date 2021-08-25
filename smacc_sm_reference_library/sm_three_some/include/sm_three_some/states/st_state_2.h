@@ -67,8 +67,8 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
 
   void runtimeConfigure() {}
 
-  void onEntry() { RCLCPP_INFO(getNode()->get_logger(), "On Entry!"); }
+  void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 
-  void onExit() { RCLCPP_INFO(getNode()->get_logger(), "On Exit!"); }
+  void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
 }  // namespace sm_three_some

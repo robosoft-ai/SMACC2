@@ -25,8 +25,7 @@ std::array<std::string, 4> CostmapSwitch::layerNames = {
 void CostmapSwitch::registerProxyFromDynamicReconfigureServer(
   std::string costmapName, std::string enablePropertyName)
 {
-  RCLCPP_INFO(
-    getNode()->get_logger(), "[CostmapSwitch] registering costmap type: %s", costmapName.c_str());
+  RCLCPP_INFO(getLogger(), "[CostmapSwitch] registering costmap type: %s", costmapName.c_str());
   auto proxy = std::make_shared<CostmapProxy>(
     this->moveBaseClient_->name_ + "/" + costmapName, enablePropertyName, getNode());
   costmapProxies[costmapName] = proxy;
@@ -40,7 +39,7 @@ void CostmapSwitch::onInitialize()
 
   if (this->moveBaseClient_ == nullptr)
   {
-    RCLCPP_ERROR(getNode()->get_logger(), "the owner of the CostmapSwitch must be a ClMoveBaseZ");
+    RCLCPP_ERROR(getLogger(), "the owner of the CostmapSwitch must be a ClMoveBaseZ");
   }
 
   registerProxyFromDynamicReconfigureServer(
@@ -70,19 +69,18 @@ bool CostmapSwitch::exists(std::string layerName)
 
 void CostmapSwitch::enable(std::string layerName)
 {
-  RCLCPP_INFO(getNode()->get_logger(), "[CostmapSwitch] enabling %s", layerName.c_str());
+  RCLCPP_INFO(getLogger(), "[CostmapSwitch] enabling %s", layerName.c_str());
 
   if (!exists(layerName))
   {
-    RCLCPP_ERROR(
-      getNode()->get_logger(), "[CostmapSwitch] costmap %s does not exist", layerName.c_str());
+    RCLCPP_ERROR(getLogger(), "[CostmapSwitch] costmap %s does not exist", layerName.c_str());
     return;
   }
   else
   {
     RCLCPP_INFO(
-      getNode()->get_logger(),
-      "[CostmapSwitch] costmap %s found. Calling dynamic reconfigure server.", layerName.c_str());
+      getLogger(), "[CostmapSwitch] costmap %s found. Calling dynamic reconfigure server.",
+      layerName.c_str());
     costmapProxies[layerName]->setCostmapEnabled(true);
   }
 }
@@ -94,19 +92,18 @@ void CostmapSwitch::enable(StandardLayers layerType)
 
 void CostmapSwitch::disable(std::string layerName)
 {
-  RCLCPP_INFO(getNode()->get_logger(), "[CostmapSwitch] disabling %s", layerName.c_str());
+  RCLCPP_INFO(getLogger(), "[CostmapSwitch] disabling %s", layerName.c_str());
 
   if (!exists(layerName))
   {
-    RCLCPP_ERROR(
-      getNode()->get_logger(), "[CostmapSwitch] costmap %s does not exist", layerName.c_str());
+    RCLCPP_ERROR(getLogger(), "[CostmapSwitch] costmap %s does not exist", layerName.c_str());
     return;
   }
   else
   {
     RCLCPP_INFO(
-      getNode()->get_logger(),
-      "[CostmapSwitch] costmap %s found. Calling dynamic reconfigure server.", layerName.c_str());
+      getLogger(), "[CostmapSwitch] costmap %s found. Calling dynamic reconfigure server.",
+      layerName.c_str());
     costmapProxies[layerName]->setCostmapEnabled(false);
   }
 }
@@ -131,7 +128,7 @@ CostmapProxy::CostmapProxy(
 
   // enableField.value = false;
   // disableReq.bools.push_back(enableField);
-  RCLCPP_ERROR(getNode()->get_logger(), "costmap switch not implemented %s", costmapName_.c_str());
+  RCLCPP_ERROR(getLogger(), "costmap switch not implemented %s", costmapName_.c_str());
 }
 
 void CostmapProxy::setCostmapEnabled(bool value)
@@ -146,15 +143,15 @@ void CostmapProxy::setCostmapEnabled(bool value)
 
   // if (ros::service::exists(costmapName_, true))
   // {
-  //     RCLCPP_INFO(getNode()->get_logger(),"sending dynamic reconfigure request: %s", costmapName_.c_str());
+  //     RCLCPP_INFO(getLogger(),"sending dynamic reconfigure request: %s", costmapName_.c_str());
   //     ros::service::call(costmapName_, srv_req, srv_resp);
   // }
   // else
   // {
-  //     RCLCPP_WARN(getNode()->get_logger(),"could not call dynamic reconfigure server. It does not exist: %s", costmapName_.c_str());
+  //     RCLCPP_WARN(getLogger(),"could not call dynamic reconfigure server. It does not exist: %s", costmapName_.c_str());
   // }
 
-  RCLCPP_ERROR(getNode()->get_logger(), "costmap switch not implemented %s", costmapName_.c_str());
+  RCLCPP_ERROR(getLogger(), "costmap switch not implemented %s", costmapName_.c_str());
 }
 
 // void CostmapProxy::dynreconfCallback(const dynamic_reconfigure::Config::ConstPtr &configuration_update)

@@ -99,7 +99,7 @@ void BackwardLocalPlanner::configure(
   const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> & costmap_ros)
 {
   this->costmapRos_ = costmap_ros;
-  // ros::NodeHandle nh("~/BackwardLocalPlanner");
+  // rclcpp::Node::SharedPtr nh("~/BackwardLocalPlanner");
   this->nh_ = parent.lock();
   this->name_ = name;
   this->tf_ = tf;
