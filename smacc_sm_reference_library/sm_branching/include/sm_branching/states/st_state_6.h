@@ -24,7 +24,6 @@ struct State6 : smacc::SmaccState<State6, SmBranching>
   // TRANSITION TABLE
   typedef mpl::list<
 
-
     >
     reactions;
 
