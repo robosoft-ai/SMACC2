@@ -42,7 +42,7 @@ SMACC2 is a state-machine framework for ROS2-based applications written in C++.
    ```
    cd $COLCON_WS
    git clone https://github.com/robosoft-ai/SMACC2.git src/SMACC2
-   vcs import src --skip-existing --input src/SMACC2/SMACC2-not-released.rolling.repos 
+   vcs import src --skip-existing --input src/SMACC2/SMACC2-not-released.rolling.repos
    rosdep install --ignore-src --from-paths src -y -r
    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
    source install/setup.bash
