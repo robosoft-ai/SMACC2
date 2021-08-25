@@ -27,6 +27,7 @@
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_state_machine.h>
 #include <smacc/smacc_state_reactor.h>
+#include <smacc/smacc_event_generator.h>
 
 #include <smacc/smacc_tracing/smacc_tracing.h>
 #include <boost/function_types/function_arity.hpp>
