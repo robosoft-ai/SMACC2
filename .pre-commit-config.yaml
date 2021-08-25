@@ -79,16 +79,16 @@ repos:
         #files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
 
   # Maybe use https://github.com/cpplint/cpplint instead
-  - repo: local
-    hooks:
-      - id: ament_cpplint
-        name: ament_cpplint
-        description: Static code analysis of C/C++ files.
-        stages: [commit]
-        entry: ament_cpplint
-        language: system
-        files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
-        args: ["--linelength=100", "--filter=-whitespace/newline,-build/header_guard,-build/include_order"]
+  #- repo: local
+    #hooks:
+      #- id: ament_cpplint
+        #name: ament_cpplint
+        #description: Static code analysis of C/C++ files.
+        #stages: [commit]
+        #entry: ament_cpplint
+        #language: system
+        #files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
+        #args: ["--linelength=100", "--filter=-whitespace/newline,-build/header_guard,-build/include_order,-build/namespaces"]
 
   # Cmake hooks
   - repo: local
