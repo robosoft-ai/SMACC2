@@ -21,7 +21,7 @@ find_package(ros_timer_client)
 find_package(ros_publisher_client)
 find_package(keyboard_client)
 
-set(dependecies
+set(dependencies
     rclcpp
     smacc2
     std_msgs

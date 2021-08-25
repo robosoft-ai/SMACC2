@@ -133,5 +133,10 @@ repos:
     rev: v2.1.0
     hooks:
       - id: codespell
-        args: ['--write-changes']
+        name: codespell
+        description: Checks for common misspellings in text files.
+        entry: codespell
+        language: python
+        types: [text]
+        args: ['--ignore-words=.codespell-ignore-words.txt', '--write-changes']
         exclude: \.(svg|pyc)$

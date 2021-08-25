@@ -50,7 +50,7 @@ SMACC2 is a state-machine framework for ROS2-based applications written in C++.
 
 ## Examples
 
-To demonstrate some functionalities of the SMACC2 you can use follwoing examples:
+To demonstrate some functionalities of the SMACC2 you can use following examples:
 
 ### sm_atomic
 TBD: add some description
