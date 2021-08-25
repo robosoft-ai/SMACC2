@@ -22,6 +22,7 @@
 
 #include <smacc/introspection/introspection.h>
 #include <smacc/smacc_client.h>
+#include <smacc/smacc_event_generator.h>
 #include <smacc/smacc_orthogonal.h>
 #include <smacc/smacc_signal_detector.h>
 #include <smacc/smacc_state.h>
@@ -628,7 +629,7 @@ void ISmaccStateMachine::buildStateMachineInfo()
   this->checkStateMachineConsistence();
 }
 
-unsigned long ISmaccStateMachine::getCurrentStateCounter() const { return this->stateSeqCounter_; }
+uint64_t ISmaccStateMachine::getCurrentStateCounter() const { return this->stateSeqCounter_; }
 
 ISmaccState * ISmaccStateMachine::getCurrentState() const { return this->currentState_; }
 

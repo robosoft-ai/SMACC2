@@ -8,7 +8,7 @@ struct StiPSCycleExpire : smacc::SmaccState<StiPSCycleExpire, SsPSCycle>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : SUCCESS
+  struct TIMEOUT : ABORT
   {
   };
   struct NEXT : SUCCESS
