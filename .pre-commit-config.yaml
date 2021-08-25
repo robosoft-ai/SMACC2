@@ -55,7 +55,7 @@ repos:
     rev: 3.9.2
     hooks:
     - id: flake8
-      args: ["--ignore=E501"]
+      args: ["--ignore=E501,W503"]
 
   # CPP hooks
   - repo: local
