@@ -15,6 +15,7 @@
 #pragma once
 
 #include <ros_timer_client/cl_ros_timer.h>
+
 #include <smacc/smacc.h>
 
 namespace cl_ros_timer
@@ -22,7 +23,7 @@ namespace cl_ros_timer
 class CbTimerCountdownLoop : public smacc::SmaccClientBehavior
 {
 public:
-  CbTimerCountdownLoop(unsigned long triggerTickCount);
+  explicit CbTimerCountdownLoop(unsigned long triggerTickCount);
 
   void onEntry() override;
   void onExit() override;

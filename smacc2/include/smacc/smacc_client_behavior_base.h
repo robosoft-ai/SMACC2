@@ -19,6 +19,9 @@
  ******************************************************************************************************************/
 
 #pragma once
+
+#include <string>
+
 #include <smacc/common.h>
 
 namespace smacc
@@ -43,9 +46,9 @@ public:
 protected:
   virtual void runtimeConfigure();
 
-  virtual void onEntry(){};
+  virtual void onEntry() {}
 
-  virtual void onExit(){};
+  virtual void onExit() {}
 
   template <typename EventType>
   void postEvent(const EventType & ev);
