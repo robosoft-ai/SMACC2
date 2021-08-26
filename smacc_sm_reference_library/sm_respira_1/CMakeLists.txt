@@ -22,24 +22,25 @@ find_package(ros_publisher_client)
 find_package(keyboard_client)
 
 set(dependencies
-    rclcpp
-    smacc2
-    std_msgs
-    multirole_sensor_client
-    sr_all_events_go
-    ros_timer_client
-    keyboard_client
-    ros_publisher_client)
+  rclcpp
+  smacc2
+  std_msgs
+  multirole_sensor_client
+  sr_all_events_go
+  ros_timer_client
+  keyboard_client
+  ros_publisher_client
+)
 
 include_directories(include
-                    ${rclcpp_INCLUDE_DIRS}
-                    ${smacc2_INCLUDE_DIRS}
-                    ${ros_timer_client_INCLUDE_DIRS}
-                    ${keyboard_client_INCLUDE_DIRS}
-                    ${ros_publisher_client_INCLUDE_DIRS}
-                    ${std_msgs_INCLUDE_DIRS}
-                    ${sr_all_events_go_INCLUDE_DIRS}
-                    )
+  ${rclcpp_INCLUDE_DIRS}
+  ${smacc2_INCLUDE_DIRS}
+  ${ros_timer_client_INCLUDE_DIRS}
+  ${keyboard_client_INCLUDE_DIRS}
+  ${ros_publisher_client_INCLUDE_DIRS}
+  ${std_msgs_INCLUDE_DIRS}
+  ${sr_all_events_go_INCLUDE_DIRS}
+)
 
 add_executable(${PROJECT_NAME}_node src/sm_respira_1_node.cpp)
 
@@ -47,13 +48,14 @@ ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
 ament_export_include_directories(include)
 
 target_link_libraries(${PROJECT_NAME}_node
-                        ${rclcpp_LIBRARIES}
-                        ${smacc2_LIBRARIES}
-                        ${ros_timer_client_LIBRARIES}
-                        ${keyboard_client_LIBRARIES}
-                        ${ros_publisher_client_LIBRARIES}
-                        ${std_msgs_LIBRARIES}
-                        ${sr_all_events_go_LIBRARIES})
+  ${rclcpp_LIBRARIES}
+  ${smacc2_LIBRARIES}
+  ${ros_timer_client_LIBRARIES}
+  ${keyboard_client_LIBRARIES}
+  ${ros_publisher_client_LIBRARIES}
+  ${std_msgs_LIBRARIES}
+  ${sr_all_events_go_LIBRARIES}
+)
 
 ament_package()
 
@@ -63,7 +65,6 @@ install(TARGETS ${PROJECT_NAME}_node
   RUNTIME DESTINATION lib/${PROJECT_NAME} # executables
 )
 
-install(DIRECTORY
-   launch/
-   DESTINATION share/${PROJECT_NAME}
+install(DIRECTORY launch/
+  DESTINATION share/${PROJECT_NAME}
 )

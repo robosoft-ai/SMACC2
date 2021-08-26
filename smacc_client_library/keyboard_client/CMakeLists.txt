@@ -16,17 +16,17 @@ find_package(smacc2 REQUIRED)
 find_package(std_msgs REQUIRED)
 
 include_directories(
- ${PROJECT_NAME}
- include
- ${smacc2_INCLUDE_DIRS}
- ${std_msgs_INCLUDE_DIRS}
+  ${PROJECT_NAME}
+  include
+  ${smacc2_INCLUDE_DIRS}
+  ${std_msgs_INCLUDE_DIRS}
 )
 
 file(GLOB_RECURSE SRC_FILES src *.cpp)
 #file(GLOB_RECURSE SRC_FILES "src/*.cpp" "src/client_behaviors/*.cpp")
 
 add_library(${PROJECT_NAME}
-   ${SRC_FILES}
+  ${SRC_FILES}
 )
 
 target_link_libraries(${PROJECT_NAME} ${smacc2_LIBRARIES} ${std_msgs_LIBRARIES})
