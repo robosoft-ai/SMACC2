@@ -24,7 +24,6 @@ public:
   void onInitialize() override
   {
     auto actionclient = this->createClient<cl_ros_timer::ClRosTimer>(rclcpp::Duration(0.5s));
-    actionclient->initialize();
   }
 };
 }  // namespace sm_dance_bot_strikes_back

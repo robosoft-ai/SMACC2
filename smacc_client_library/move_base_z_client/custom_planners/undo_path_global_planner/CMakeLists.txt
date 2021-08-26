@@ -18,6 +18,7 @@ find_package(nav_msgs)
 find_package(nav2_costmap_2d)
 find_package(geometry_msgs)
 find_package(tf2)
+find_package(tf2_geometry_msgs)
 find_package(pluginlib)
 find_package(nav_2d_utils)
 

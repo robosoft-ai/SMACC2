@@ -20,14 +20,15 @@
 
 #include <angles/angles.h>
 #include <tf2/transform_datatypes.h>
-#include <tf2/utils.h>
 #include <undo_path_global_planner/undo_path_global_planner.h>
 
 #include <boost/assign.hpp>
 #include <boost/range/adaptor/reversed.hpp>
 #include <boost/range/algorithm/copy.hpp>
+#include <geometry_msgs/msg/quaternion.hpp>
 #include <nav_2d_utils/tf_help.hpp>
 #include <pluginlib/class_list_macros.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 // register this planner as a BaseGlobalPlanner plugin
 namespace cl_move_base_z
@@ -187,7 +188,7 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(
 
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] Transforming forward path");
   nav_msgs::msg::Path transformedPlan;
-  rclcpp::Duration ttol(transform_tolerance_);
+  rclcpp::Duration ttol = rclcpp::Duration::from_seconds(transform_tolerance_);
   for (auto p : lastForwardPathMsg_.poses)
   {
     geometry_msgs::msg::PoseStamped transformedPose;
@@ -394,7 +395,7 @@ nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] Inputs accommodation");
   geometry_msgs::msg::PoseStamped transformedStart, transformedGoal;
   {
-    rclcpp::Duration ttol(transform_tolerance_);
+    rclcpp::Duration ttol = rclcpp::Duration::from_seconds(transform_tolerance_);
 
     geometry_msgs::msg::PoseStamped pstart = start;
     pstart.header.stamp = nh_->now();

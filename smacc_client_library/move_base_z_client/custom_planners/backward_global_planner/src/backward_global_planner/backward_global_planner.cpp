@@ -209,7 +209,7 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "[BackwardGlobalPlanner] goal pose frame id: " << goal.header.frame_id);
 
-  rclcpp::Duration ttol(transform_tolerance_);
+  rclcpp::Duration ttol = rclcpp::Duration::from_seconds(transform_tolerance_);
   //---------------------------------------------------------------------
   geometry_msgs::msg::PoseStamped transformedStart;
   nav_2d_utils::transformPose(tf_, costmap_ros_->getGlobalFrameID(), start, transformedStart, ttol);

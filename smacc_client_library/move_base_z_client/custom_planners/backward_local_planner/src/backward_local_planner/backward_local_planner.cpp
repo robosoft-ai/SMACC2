@@ -1023,7 +1023,7 @@ void BackwardLocalPlanner::setPlan(const nav_msgs::msg::Path & path)
 
   //------------- TRANSFORM TO LOCAL FRAME PATH ---------------------------
   nav_msgs::msg::Path transformedPlan;
-  rclcpp::Duration ttol(transform_tolerance_);
+  rclcpp::Duration ttol = rclcpp::Duration::from_seconds(transform_tolerance_);
   // transform global plan to the navigation reference frame
   for (auto & p : path.poses)
   {

@@ -18,6 +18,7 @@ find_package(geometry_msgs)
 find_package(nav_msgs)
 find_package(rclcpp)
 find_package(tf2)
+find_package(tf2_ros)
 find_package(tf2_geometry_msgs)
 
 set(dependencies
@@ -35,6 +36,7 @@ add_library(${PROJECT_NAME} SHARED
             src/${PROJECT_NAME}/common.cpp)
 
 ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
