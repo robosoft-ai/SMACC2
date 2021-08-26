@@ -17,8 +17,9 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.h>
 #include <move_base_z_client_plugin/common.h>
+
+#include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.h>
 #include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
 #include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>

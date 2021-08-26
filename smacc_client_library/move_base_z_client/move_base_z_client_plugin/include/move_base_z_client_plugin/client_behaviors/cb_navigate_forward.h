@@ -58,6 +58,6 @@ public:
 
   void onEntry() override;
 
-  void onEntry() override;
+  void onExit() override;
 };
 }  // namespace cl_move_base_z

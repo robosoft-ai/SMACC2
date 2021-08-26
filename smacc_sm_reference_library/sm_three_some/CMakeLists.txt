@@ -23,28 +23,29 @@ find_package(ros_publisher_client REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
 
-include_directories(include
-                    ${smacc2_INCLUDE_DIRS}
-                    ${std_msgs_INCLUDE_DIRS}
-                    ${smacc_msgs_INCLUDE_DIRS}
-                    ${multirole_sensor_client_INCLUDE_DIRS}
-                    ${sr_all_events_go_INCLUDE_DIRS}
-                    ${ros_timer_client_INCLUDE_DIRS}
-                    ${keyboard_client_INCLUDE_DIRS}
-                    ${ros_publisher_client_INCLUDE_DIRS}
-                    )
-add_executable(${PROJECT_NAME}_node src/sm_three_some_node.cpp)
+include_directories(
+  include
+  ${smacc2_INCLUDE_DIRS}
+  ${std_msgs_INCLUDE_DIRS}
+  ${smacc_msgs_INCLUDE_DIRS}
+  ${multirole_sensor_client_INCLUDE_DIRS}
+  ${sr_all_events_go_INCLUDE_DIRS}
+  ${ros_timer_client_INCLUDE_DIRS}
+  ${keyboard_client_INCLUDE_DIRS}
+  ${ros_publisher_client_INCLUDE_DIRS}
+)
 
+add_executable(${PROJECT_NAME}_node src/sm_three_some_node.cpp)
 target_link_libraries(${PROJECT_NAME}_node
-                    ${smacc2_LIBRARIES}
-                    ${smacc_msgs_LIBRARIES}
-                    ${multirole_sensor_client_LIBRARIES}
-                    ${sr_all_events_go_LIBRARIES}
-                    ${ros_timer_client_LIBRARIES}
-                    ${ros_publisher_client_LIBRARIES}
-                    ${keyboard_client_LIBRARIES}
-                    ${Boost_LIBRARIES}
-                    )
+  ${smacc2_LIBRARIES}
+  ${smacc_msgs_LIBRARIES}
+  ${multirole_sensor_client_LIBRARIES}
+  ${sr_all_events_go_LIBRARIES}
+  ${ros_timer_client_LIBRARIES}
+  ${ros_publisher_client_LIBRARIES}
+  ${keyboard_client_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
 
 ament_target_dependencies(${PROJECT_NAME}_node smacc2)
 
@@ -58,8 +59,9 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}
 )
 
-install(TARGETS
-        ${PROJECT_NAME}_node
-        DESTINATION lib/${PROJECT_NAME})
+install(
+  TARGETS ${PROJECT_NAME}_node
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 ament_package()

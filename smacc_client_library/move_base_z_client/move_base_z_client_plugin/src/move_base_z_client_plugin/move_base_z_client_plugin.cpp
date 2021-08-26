@@ -18,6 +18,9 @@
  *
  ******************************************************************************************************************/
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+
+#include <string>
+
 #include <pluginlib/class_list_macros.hpp>
 
 namespace cl_move_base_z
@@ -27,7 +30,7 @@ typedef Base::WrappedResult WrappedResult;
 
 ClMoveBaseZ::ClMoveBaseZ(std::string moveBaseName) : Base(moveBaseName)
 {
-  //RCLCPP_INFO(getLogger(),"Smacc Move Base Action Client");
+  // RCLCPP_INFO(getLogger(),"Smacc Move Base Action Client");
 }
 
 std::string ClMoveBaseZ::getName() const { return "MOVE BASE ACTION CLIENT"; }

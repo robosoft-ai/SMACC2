@@ -21,8 +21,9 @@ find_package(builtin_interfaces REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-                           "servers/led_action_server/action/LEDControl.action"
-                           DEPENDENCIES builtin_interfaces std_msgs action_msgs sensor_msgs)
+  "servers/led_action_server/action/LEDControl.action"
+  DEPENDENCIES builtin_interfaces std_msgs action_msgs sensor_msgs
+)
 
 ament_export_dependencies(rosidl_default_runtime)
 

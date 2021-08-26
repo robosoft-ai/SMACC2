@@ -25,8 +25,6 @@ public:
   {
     auto actionclient = this->createClient<cl_ros_timer::ClRosTimer>(
       rclcpp::Duration(std::chrono::milliseconds(500)));
-
-    actionclient->initialize();
   }
 };
 }  // namespace sm_dance_bot

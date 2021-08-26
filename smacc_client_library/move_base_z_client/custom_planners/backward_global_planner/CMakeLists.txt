@@ -24,22 +24,23 @@ find_package(angles)
 find_package(nav_2d_utils)
 
 set(dependencies
-    nav2_core
-    nav_msgs
-    nav2_costmap_2d
-    geometry_msgs
-    visualization_msgs
-    tf2
-    pluginlib
-    forward_global_planner
-    angles
-    nav_2d_utils)
+  nav2_core
+  nav_msgs
+  nav2_costmap_2d
+  geometry_msgs
+  visualization_msgs
+  tf2
+  pluginlib
+  forward_global_planner
+  angles
+  nav_2d_utils
+)
 
 include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
-            src/${PROJECT_NAME}/backward_global_planner.cpp
-           )
+  src/${PROJECT_NAME}/backward_global_planner.cpp
+)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC "PLUGINLIB__DISABLE_BOOST_FUNCTIONS")
 pluginlib_export_plugin_description_file(nav2_core bgp_plugin.xml)
@@ -62,8 +63,8 @@ install(DIRECTORY include/
 )
 
 install(FILES
-   bgp_plugin.xml
-   DESTINATION share
+  bgp_plugin.xml
+  DESTINATION share
 )
 
 ament_package()
