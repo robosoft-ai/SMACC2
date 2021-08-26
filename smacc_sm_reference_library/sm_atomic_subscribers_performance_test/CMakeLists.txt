@@ -16,18 +16,20 @@ find_package(smacc2 REQUIRED)
 find_package(ros_timer_client REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
-include_directories(include
-                    ${smacc2_INCLUDE_DIRS}
-                    ${ros_timer_client_INCLUDE_DIRS})
+include_directories(
+  include
+  ${smacc2_INCLUDE_DIRS}
+  ${ros_timer_client_INCLUDE_DIRS}
+)
 
 add_executable(${PROJECT_NAME}_node
-                src/sm_atomic_subscribers_performance_test/sm_atomic_subscribers_performance_test_node.cpp)
+  src/sm_atomic_subscribers_performance_test/sm_atomic_subscribers_performance_test_node.cpp)
 
 target_link_libraries(${PROJECT_NAME}_node
-                      ${smacc2_LIBRARIES}
-                      ${ros_timer_client_LIBRARIES}
-                      ${Boost_LIBRARIES}
-                      )
+  ${smacc2_LIBRARIES}
+  ${ros_timer_client_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
 
 ament_target_dependencies(${PROJECT_NAME}_node smacc2)
 
@@ -46,12 +48,14 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}
 )
 
-install(TARGETS
-        ${PROJECT_NAME}_node
-        DESTINATION lib/${PROJECT_NAME})
+install(
+  TARGETS ${PROJECT_NAME}_node
+  DESTINATION lib/${PROJECT_NAME}
+)
 
-install(PROGRAMS
-        servers/basic_publisher.py
-        DESTINATION lib/${PROJECT_NAME})
+install(
+  PROGRAMS servers/basic_publisher.py
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 ament_package()

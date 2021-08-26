@@ -22,7 +22,7 @@ include_directories(
 file(GLOB_RECURSE SRC_FILES "src/*.cpp")
 
 add_library(${PROJECT_NAME} SHARED
-   ${SRC_FILES}
+  ${SRC_FILES}
 )
 
 target_link_libraries(${PROJECT_NAME} ${smacc2_LIBRARIES})

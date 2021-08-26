@@ -19,22 +19,22 @@ find_package(rosidl_default_generators REQUIRED)
 
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-    "msg/SmaccSMCommand.msg"
-    "msg/SmaccStatus.msg"
-    "msg/SmaccContainerInitialStatusCmd.msg"
-    "msg/SmaccContainerStructure.msg"
-    "msg/SmaccContainerStatus.msg"
-    "msg/SmaccState.msg"
-    "msg/SmaccTransition.msg"
-    "msg/SmaccEvent.msg"
-    "msg/SmaccOrthogonal.msg"
-    "msg/SmaccStateReactor.msg"
-    "msg/SmaccEventGenerator.msg"
-    "msg/SmaccStateMachine.msg"
-    "msg/SmaccTransitionLogEntry.msg"
-    "srv/SmaccGetTransitionHistory.srv"
-    DEPENDENCIES builtin_interfaces std_msgs action_msgs
- )
+  "msg/SmaccSMCommand.msg"
+  "msg/SmaccStatus.msg"
+  "msg/SmaccContainerInitialStatusCmd.msg"
+  "msg/SmaccContainerStructure.msg"
+  "msg/SmaccContainerStatus.msg"
+  "msg/SmaccState.msg"
+  "msg/SmaccTransition.msg"
+  "msg/SmaccEvent.msg"
+  "msg/SmaccOrthogonal.msg"
+  "msg/SmaccStateReactor.msg"
+  "msg/SmaccEventGenerator.msg"
+  "msg/SmaccStateMachine.msg"
+  "msg/SmaccTransitionLogEntry.msg"
+  "srv/SmaccGetTransitionHistory.srv"
+  DEPENDENCIES builtin_interfaces std_msgs action_msgs
+)
 
 if(BUILD_TESTING)
 endif()

@@ -21,6 +21,7 @@
 #pragma once
 #include <chrono>
 #include <optional>
+
 #include "rclcpp/clock.hpp"
 #include "rclcpp/duration.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -32,7 +33,7 @@ class ISmaccUpdatable
 {
 public:
   ISmaccUpdatable();
-  ISmaccUpdatable(rclcpp::Duration duration);
+  explicit ISmaccUpdatable(rclcpp::Duration duration);
 
   void executeUpdate(rclcpp::Node::SharedPtr node);
   void setUpdatePeriod(rclcpp::Duration duration);

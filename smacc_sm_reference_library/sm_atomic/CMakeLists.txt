@@ -24,10 +24,10 @@ add_executable(${PROJECT_NAME}_node
                 src/sm_atomic/sm_atomic_node.cpp)
 
 target_link_libraries(${PROJECT_NAME}_node
-                      ${smacc2_LIBRARIES}
-                      ${ros_timer_client_LIBRARIES}
-                      ${Boost_LIBRARIES}
-                      )
+  ${smacc2_LIBRARIES}
+  ${ros_timer_client_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
 
 ament_target_dependencies(${PROJECT_NAME}_node smacc2)
 

@@ -14,12 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
+import select
+import termios
+import tty
+
 import rclpy
 from rclpy.node import Node
 
 from std_msgs.msg import UInt16
-
-import sys, select, termios, tty
 
 settings = termios.tcgetattr(sys.stdin)
 

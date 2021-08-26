@@ -47,7 +47,7 @@ def generate_launch_description():
     # Create our own temporary YAML files that include substitutions
     param_substitutions = {
         "use_sim_time": use_sim_time,
-        #'default_nav_to_pose_bt_xml': default_nav_to_pose_bt_xml,
+        # 'default_nav_to_pose_bt_xml': default_nav_to_pose_bt_xml,
         "default_nav_to_pose_bt_xml": os.path.join(
             sm_dance_bot_dir, "params", "move_base_client", "navigation_tree.xml"
         ),

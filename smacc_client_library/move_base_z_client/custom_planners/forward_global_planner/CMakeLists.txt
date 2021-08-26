@@ -23,19 +23,20 @@ find_package(pluginlib)
 find_package(nav_2d_utils)
 
 set(dependencies
-    nav2_core
-    nav_msgs
-    nav2_costmap_2d
-    geometry_msgs
-    tf2
-    move_base_z_planners_common
-    pluginlib
-    nav_2d_utils)
+  nav2_core
+  nav_msgs
+  nav2_costmap_2d
+  geometry_msgs
+  tf2
+  move_base_z_planners_common
+  pluginlib
+  nav_2d_utils
+)
 
 include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
-            src/${PROJECT_NAME}/forward_global_planner.cpp)
+  src/${PROJECT_NAME}/forward_global_planner.cpp)
 
 # prevent pluginlib from using boost
 target_compile_definitions(${PROJECT_NAME} PUBLIC "PLUGINLIB__DISABLE_BOOST_FUNCTIONS")
@@ -59,8 +60,8 @@ install(DIRECTORY include/
 )
 
 install(FILES
-   fgp_plugin.xml
-   DESTINATION share
+  fgp_plugin.xml
+  DESTINATION share
 )
 
 ament_package()

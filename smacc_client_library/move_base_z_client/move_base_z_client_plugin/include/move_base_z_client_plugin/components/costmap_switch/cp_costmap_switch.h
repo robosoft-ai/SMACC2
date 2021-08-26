@@ -21,6 +21,10 @@
 
 #include <array>
 #include <functional>
+#include <map>
+#include <memory>
+#include <string>
+
 #include <rclcpp/rclcpp.hpp>
 
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>

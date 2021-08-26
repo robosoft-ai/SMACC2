@@ -20,6 +20,11 @@
 
 #pragma once
 
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
 #include <smacc/common.h>
 #include <smacc/smacc_orthogonal.h>
 
@@ -39,7 +44,7 @@ extern rclcpp::Node::SharedPtr globalNh_;
 class SmaccStateMachineInfo : public std::enable_shared_from_this<SmaccStateMachineInfo>
 {
 public:
-  SmaccStateMachineInfo(rclcpp::Node::SharedPtr nh) : nh_(nh) {}
+  explicit SmaccStateMachineInfo(rclcpp::Node::SharedPtr nh) : nh_(nh) {}
 
   std::map<std::string, std::shared_ptr<SmaccStateInfo>> states;
 
@@ -85,7 +90,7 @@ private:
 struct AddSubState
 {
   std::shared_ptr<SmaccStateInfo> & parentState_;
-  AddSubState(std::shared_ptr<SmaccStateInfo> & parentState) : parentState_(parentState) {}
+  explicit AddSubState(std::shared_ptr<SmaccStateInfo> & parentState) : parentState_(parentState) {}
 
   template <typename T>
   void operator()(T);
@@ -96,7 +101,10 @@ struct AddTransition
 {
   std::shared_ptr<SmaccStateInfo> & currentState_;
 
-  AddTransition(std::shared_ptr<SmaccStateInfo> & currentState) : currentState_(currentState) {}
+  explicit AddTransition(std::shared_ptr<SmaccStateInfo> & currentState)
+  : currentState_(currentState)
+  {
+  }
 
   template <
     template <typename, typename, typename> typename TTransition, typename TevSource,
@@ -208,15 +216,15 @@ void processTransitionAux(
     auto realparentState = sourceState->stateMachine_->getState<typename Dst::TContext>();
     auto siblingnode = sourceState->stateMachine_->createState<Dst>(realparentState);
 
-    //auto siblingnode = sourceState->stateMachine_->createState<Dst>(sourceState->parentState_);
+    // auto siblingnode = sourceState->stateMachine_->createState<Dst>(sourceState->parentState_);
     WalkStatesExecutor<Dst>::walkStates(siblingnode, true);
     sourceState->declareTransition<Ev>(
       siblingnode, transitionTag, transitionType, history, transitionTypeInfo);
   }
   else
   {
-    //auto realparentState = sourceState->stateMachine_->getState<typename Dst::TContext>();
-    //auto siblingnode = sourceState->stateMachine_->createState<Dst>(realparentState);
+    // auto realparentState = sourceState->stateMachine_->getState<typename Dst::TContext>();
+    // auto siblingnode = sourceState->stateMachine_->createState<Dst>(realparentState);
 
     auto siblingnode = sourceState->stateMachine_->getState<Dst>();
     sourceState->declareTransition<Ev>(
@@ -308,14 +316,14 @@ template <typename Ev, typename Dst>
 void processTransition(
   statechart::transition<Ev, Dst> *, std::shared_ptr<SmaccStateInfo> & sourceState)
 {
-  //RCLCPP_INFO_STREAM(getLogger(),"GOTCHA");
+  // RCLCPP_INFO_STREAM(getLogger(),"GOTCHA");
 }
 
 template <typename Ev>
 void processTransition(
   statechart::custom_reaction<Ev> *, std::shared_ptr<SmaccStateInfo> & sourceState)
 {
-  //RCLCPP_INFO_STREAM(getLogger(),"GOTCHA");
+  // RCLCPP_INFO_STREAM(getLogger(),"GOTCHA");
 }
 
 //---------------------------------------------
@@ -325,7 +333,8 @@ template <typename T>
 typename disable_if<boost::mpl::is_sequence<T>>::type processTransitions(
   std::shared_ptr<SmaccStateInfo> & sourceState)
 {
-  //RCLCPP_INFO_STREAM(getLogger(),"state transition from: " << sourceState->demangledStateName << " of type: " << demangledTypeName<T>());
+  // RCLCPP_INFO_STREAM(getLogger(),"state transition from: " << sourceState->demangledStateName <<
+  // " of type: " << demangledTypeName<T>());
   T * dummy = nullptr;
   processTransition(dummy, sourceState);
 }
@@ -350,22 +359,26 @@ typename std::enable_if<!HasOnDefinition<T>::value, void>::type CallOnDefinition
 
 /*
 // only reached if it is a leaf transition in the mpl::list
-template <template <typename,typename,typename> typename TTransition, typename TevSource, template <typename> typename EvType, typename Tag, typename DestinyState >
+template <template <typename,typename,typename> typename TTransition, typename TevSource,
+template <typename> typename EvType, typename Tag, typename DestinyState >
 typename disable_if<boost::mpl::is_sequence<TTransition<EvType<TevSource>,DestinyState, Tag>>>::type
 processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
 {
     RCLCPP_INFO(getLogger(),"DETECTED COMPLEX TRANSITION **************");
-    //RCLCPP_INFO_STREAM(getLogger(),"state transition from: " << sourceState->demangledStateName << " of type: " << demangledTypeName<T>());
+    // RCLCPP_INFO_STREAM(getLogger(),"state transition from: " << sourceState->demangledStateName
+    << " of type: " << demangledTypeName<T>());
     TTransition<EvType<TevSource>,DestinyState, Tag> *dummy;
     processTransition(dummy, sourceState);
 }
 
-template <template <typename,typename> typename TTransition, typename TevSource, template <typename> typename EvType, typename DestinyState >
+template <template <typename,typename> typename TTransition, typename TevSource,
+template <typename> typename EvType, typename DestinyState >
 typename disable_if<boost::mpl::is_sequence<TTransition<EvType<TevSource>,DestinyState>>>::type
 processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
 {
     RCLCPP_INFO(getLogger(),"DETECTED COMPLEX TRANSITION **************");
-    //RCLCPP_INFO_STREAM(getLogger(),"state transition from: " << sourceState->demangledStateName << " of type: " << demangledTypeName<T>());
+    // RCLCPP_INFO_STREAM(getLogger(),"state transition from: " << sourceState->demangledStateName
+    << " of type: " << demangledTypeName<T>());
     TTransition<EvType<TevSource>,DestinyState> *dummy;
     processTransition(dummy, sourceState);
 }
@@ -437,7 +450,8 @@ void WalkStatesExecutor<InitialStateType>::walkStates(
 
   // -------------------- REACTIONS --------------------
   typedef typename InitialStateType::reactions reactions;
-  //RCLCPP_INFO_STREAM(getLogger(),"state machine initial state reactions: "<< demangledTypeName<reactions>());
+  // RCLCPP_INFO_STREAM(getLogger(),"state machine initial state reactions: "
+  // << demangledTypeName<reactions>());
 
   processTransitions<reactions>(targetState);
 }
@@ -497,11 +511,11 @@ std::shared_ptr<SmaccStateInfo> SmaccStateInfo::createChildState()
     auto parentState2= getState<InitialStateType::TContext>();
     parentState2->createChildState<InitialStateType>();*/
 
-  //this->stateMachine_->addState(childState);
-  //stateMachineInfo.addState(stateMachineInfo)
-  //stateNames.push_back(currentname);
-  //RCLCPP_INFO(getLogger(),"------------");
-  //RCLCPP_INFO_STREAM(getLogger(),"** STATE state: "<< this->demangledStateName);
+  // this->stateMachine_->addState(childState);
+  // stateMachineInfo.addState(stateMachineInfo)
+  // stateNames.push_back(currentname);
+  // RCLCPP_INFO(getLogger(),"------------");
+  // RCLCPP_INFO_STREAM(getLogger(),"** STATE state: "<< this->demangledStateName);
 
   return childState;
 }

@@ -10,7 +10,7 @@
   <depend>smacc2</depend>
   <depend>rclcpp</depend>
   <depend>multirole_sensor_client</depend>
-  <depend>sr_all_events_go</depend>  
+  <depend>sr_all_events_go</depend>
   <depend>std_msgs</depend>
 
   <depend>ros_timer_client</depend>
