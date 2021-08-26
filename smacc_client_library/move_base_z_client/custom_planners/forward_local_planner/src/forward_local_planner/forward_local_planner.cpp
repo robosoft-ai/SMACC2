@@ -341,7 +341,7 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
   geometry_msgs::msg::TwistStamped cmd_vel;
   goalReached_ = false;
   RCLCPP_DEBUG(
-    nh_->get_logger(), "[ForwardLocalPlanner] ----- COMUTE VELOCITY COMMAND LOCAL PLANNER ---");
+    nh_->get_logger(), "[ForwardLocalPlanner] ----- COMPUTE VELOCITY COMMAND LOCAL PLANNER ---");
 
   bool ok = false;
   while (!ok)

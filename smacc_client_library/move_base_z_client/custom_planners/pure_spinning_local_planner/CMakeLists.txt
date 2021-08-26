@@ -23,26 +23,26 @@ find_package(pluginlib)
 find_package(nav_2d_utils)
 
 set(dependencies
-    nav2_core
-    nav_msgs
-    nav2_costmap_2d
-    geometry_msgs
-    tf2
-    move_base_z_planners_common
-    pluginlib
-    nav_2d_utils)
+  nav2_core
+  nav_msgs
+  nav2_costmap_2d
+  geometry_msgs
+  tf2
+  move_base_z_planners_common
+  pluginlib
+  nav_2d_utils
+)
 
 include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
-            src/${PROJECT_NAME}/pure_spinning_local_planner.cpp)
+  src/${PROJECT_NAME}/pure_spinning_local_planner.cpp
+)
 
 # prevent pluginlib from using boost
 target_compile_definitions(${PROJECT_NAME} PUBLIC "PLUGINLIB__DISABLE_BOOST_FUNCTIONS")
 pluginlib_export_plugin_description_file(nav2_core pslp_plugin.xml)
-
-ament_target_dependencies(${PROJECT_NAME}
-  ${dependencies})
+ament_target_dependencies(${PROJECT_NAME} ${dependencies})
 
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
@@ -59,8 +59,8 @@ install(DIRECTORY include/
 )
 
 install(FILES
-   pslp_plugin.xml
-   DESTINATION share
+  pslp_plugin.xml
+  DESTINATION share
 )
 
 

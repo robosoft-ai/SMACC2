@@ -19,10 +19,7 @@
 import rclpy
 from rclpy.node import Node
 
-import std_msgs
-from std_msgs.msg import UInt16
 import std_srvs
-from std_srvs.srv import SetBool
 
 if __name__ == "__main__":
 

@@ -19,10 +19,12 @@ find_package(Boost COMPONENTS thread REQUIRED)
 find_package(tracetools)
 find_package(LTTngUST REQUIRED)
 
-set(dependencies rclcpp
-                 smacc_msgs
-                 rclcpp_action
-                 tracetools)
+set(dependencies
+  rclcpp
+  smacc_msgs
+  rclcpp_action
+  tracetools
+)
 
 include_directories(include ${LTTNGUST_INCLUDE_DIRS})
 
@@ -31,9 +33,9 @@ add_library(smacc2 SHARED ${SRC_FILES})
 
 ament_target_dependencies(smacc2 ${dependencies})
 target_link_libraries(smacc2
-      ${Boost_LIBRARIES}
-      ${LTTNGUST_LIBRARIES}
-      )
+  ${Boost_LIBRARIES}
+  ${LTTNGUST_LIBRARIES}
+)
 
 ament_export_include_directories(include)
 ament_export_libraries(smacc2)

@@ -47,7 +47,7 @@ def generate_launch_description():
     # Create our own temporary YAML files that include substitutions
     param_substitutions = {
         "use_sim_time": use_sim_time,
-        #'default_nav_to_pose_bt_xml': default_nav_to_pose_bt_xml,
+        # 'default_nav_to_pose_bt_xml': default_nav_to_pose_bt_xml,
         "default_nav_to_pose_bt_xml": os.path.join(
             sm_dance_bot_strikes_back_dir, "params", "move_base_client", "navigation_tree.xml"
         ),
@@ -62,7 +62,10 @@ def generate_launch_description():
         convert_types=True,
     )
 
-    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
+    xtermprefix = (
+        "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' "
+        "-hold -geometry 1000x600 -sl 10000 -e"
+    )
 
     print("+********************************")
     print(str(param_substitutions))
@@ -94,7 +97,8 @@ def generate_launch_description():
             ),
             DeclareLaunchArgument(
                 "default_nav_to_pose_bt_xml",
-                # default_value=os.path.join(get_package_share_directory('nav2_bt_navigator'),'behavior_trees', 'navigate_w_replanning_and_recovery.xml'),
+                # default_value=os.path.join(get_package_share_directory('nav2_bt_navigator'),
+                # 'behavior_trees', 'navigate_w_replanning_and_recovery.xml'),
                 default_value=os.path.join(
                     sm_dance_bot_strikes_back_dir,
                     "params",

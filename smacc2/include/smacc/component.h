@@ -19,6 +19,8 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <string>
+
 #include <smacc/common.h>
 #include <boost/optional.hpp>
 

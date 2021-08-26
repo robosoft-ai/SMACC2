@@ -16,15 +16,16 @@ find_package(smacc2 REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
 include_directories(
-                    ${PROJECT_NAME}
-                    include
-                    ${smacc2_INCLUDE_DIRS})
+  ${PROJECT_NAME}
+  include
+  ${smacc2_INCLUDE_DIRS}
+)
 
 add_library(${PROJECT_NAME}
-   src/${PROJECT_NAME}/timer_client.cpp
-   src/${PROJECT_NAME}/cb_timer.cpp
-   src/${PROJECT_NAME}/cb_timer_countdown_loop.cpp
-   src/${PROJECT_NAME}/cb_timer_countdown_once.cpp
+  src/${PROJECT_NAME}/timer_client.cpp
+  src/${PROJECT_NAME}/cb_timer.cpp
+  src/${PROJECT_NAME}/cb_timer_countdown_loop.cpp
+  src/${PROJECT_NAME}/cb_timer_countdown_once.cpp
 )
 target_link_libraries(${PROJECT_NAME} SHARED ${Boost_LIBRARIES} smacc2)
 ament_target_dependencies(${PROJECT_NAME} smacc2)
