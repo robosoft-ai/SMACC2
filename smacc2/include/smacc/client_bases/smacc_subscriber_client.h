@@ -22,6 +22,7 @@
 
 #include <smacc/smacc_client.h>
 #include <smacc/smacc_signal.h>
+#include <smacc/smacc_state_machine.h>
 #include <optional>
 
 namespace smacc

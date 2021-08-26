@@ -16,31 +16,27 @@
 
 namespace sm_branching
 {
-using namespace cl_ros_timer;
-using namespace smacc::default_transition_tags;
-
 // STATE DECLARATION
-struct State1 : smacc::SmaccState<State1, SmBranching>
+struct State3b : smacc::SmaccState<State3b, SmBranching>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>,
-    Transition<EvTimer<CbTimerCountdownLoop, OrTimer>, State2b, SUCCESS>,
-    Transition<EvTimer<CbTimerCountdownLoop, OrTimer>, State2c, SUCCESS> >
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State4, SUCCESS>
+
+    >
     reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3);  // EvTimer triggers each 3 client ticks
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(
       5);  // EvTimer triggers once at 10 client ticks
   }
 
-  void runtimeConfigure() {}
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State4"); }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 

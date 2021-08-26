@@ -32,9 +32,15 @@ namespace sm_branching
 //STATE
 class State1;
 class State2;
+class State2b;
+class State2c;
 class State3;
+class State3b;
+class State3c;
 class State4;
+class State4c;
 class State5;
+class State5b;
 class State6;
 
 //--------------------------------------------------------------------
@@ -50,7 +56,13 @@ struct SmBranching : public smacc::SmaccStateMachineBase<SmBranching, State1>
 
 #include "states/st_state_1.h"
 #include "states/st_state_2.h"
+#include "states/st_state_2b.h"
+#include "states/st_state_2c.h"
 #include "states/st_state_3.h"
+#include "states/st_state_3b.h"
+#include "states/st_state_3c.h"
 #include "states/st_state_4.h"
+#include "states/st_state_4c.h"
 #include "states/st_state_5.h"
+#include "states/st_state_5b.h"
 #include "states/st_state_6.h"
