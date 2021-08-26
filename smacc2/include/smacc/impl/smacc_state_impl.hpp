@@ -19,15 +19,15 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <smacc/introspection/introspection.h>
-#include <smacc/smacc_client_behavior.h>
-#include <smacc/smacc_orthogonal.h>
-#include <smacc/smacc_state.h>
-#include <smacc/smacc_state_reactor.h>
-//#include <smacc/smacc_event_generator.h>
-#include <smacc/introspection/smacc_type_info.h>
-#include <smacc/smacc_client_behavior.h>
-#include <smacc/smacc_state_machine.h>
+#include <smacc/introspection/introspection.hpp>
+#include <smacc/smacc_client_behavior.hpp>
+#include <smacc/smacc_orthogonal.hpp>
+#include <smacc/smacc_state.hpp>
+#include <smacc/smacc_state_reactor.hpp>
+//#include <smacc/smacc_event_generator.hpp>
+#include <smacc/introspection/smacc_type_info.hpp>
+#include <smacc/smacc_client_behavior.hpp>
+#include <smacc/smacc_state_machine.hpp>
 
 namespace smacc
 {
@@ -256,5 +256,5 @@ void ISmaccState::notifyTransition()
 }  // namespace smacc
 
 // implementation depends on state definition
-#include <smacc/impl/smacc_event_generator_impl.h>
-#include <smacc/impl/smacc_state_reactor_impl.h>
+#include <smacc/impl/smacc_event_generator_impl.hpp>
+#include <smacc/impl/smacc_state_reactor_impl.hpp>

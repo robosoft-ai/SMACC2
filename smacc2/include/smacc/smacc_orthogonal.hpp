@@ -19,7 +19,7 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <smacc/common.h>
+#include <smacc/common.hpp>
 #include <utility>
 
 namespace smacc

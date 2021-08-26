@@ -14,13 +14,13 @@
 
 #pragma once
 
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include <smacc/smacc_orthogonal.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+#include <smacc/smacc_orthogonal.hpp>
 
-#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
-#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
-#include <move_base_z_client_plugin/components/pose/cp_pose.h>
-#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
+#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
+#include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
+#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.hpp>
 
 namespace sm_dance_bot_strikes_back
 {

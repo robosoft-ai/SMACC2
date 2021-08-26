@@ -30,9 +30,9 @@
 #include <rclcpp/rclcpp.hpp>
 #include <typeinfo>
 
-#include <smacc/introspection/smacc_state_info.h>
-#include <smacc/introspection/smacc_type_info.h>
-#include <smacc/smacc_types.h>
+#include <smacc/introspection/smacc_state_info.hpp>
+#include <smacc/introspection/smacc_type_info.hpp>
+#include <smacc/smacc_types.hpp>
 
 #include <cxxabi.h>
 #include "smacc_msgs/msg/smacc_transition.hpp"
@@ -294,4 +294,4 @@ static std::string getTransitionType()
 
 }  // namespace introspection
 }  // namespace smacc
-#include <smacc/introspection/smacc_state_machine_info.h>
+#include <smacc/introspection/smacc_state_machine_info.hpp>

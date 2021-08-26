@@ -14,9 +14,9 @@
 
 #pragma once
 
-#include <ros_timer_client/cl_ros_timer.h>
+#include <ros_timer_client/cl_ros_timer.hpp>
 
-#include <smacc/smacc.h>
+#include <smacc/smacc.hpp>
 
 namespace cl_ros_timer
 {

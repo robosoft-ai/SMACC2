@@ -17,8 +17,8 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include "smacc/common.h"
-#include "smacc/client_bases/smacc_action_client_base.h"
+#include "smacc/common.hpp"
+#include "smacc/client_bases/smacc_action_client_base.hpp"
 
 namespace smacc
 {

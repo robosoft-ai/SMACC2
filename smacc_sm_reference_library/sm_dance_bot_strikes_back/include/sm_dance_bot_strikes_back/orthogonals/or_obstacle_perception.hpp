@@ -14,9 +14,9 @@
 
 #pragma once
 
-#include <sm_dance_bot_strikes_back/clients/cl_lidar/cl_lidar.h>
-#include <sm_dance_bot_strikes_back/clients/cl_lidar/components/cp_lidar_data.h>
-#include <smacc/smacc_orthogonal.h>
+#include <sm_dance_bot_strikes_back/clients/cl_lidar/cl_lidar.hpp>
+#include <sm_dance_bot_strikes_back/clients/cl_lidar/components/cp_lidar_data.hpp>
+#include <smacc/smacc_orthogonal.hpp>
 
 namespace sm_dance_bot_strikes_back
 {

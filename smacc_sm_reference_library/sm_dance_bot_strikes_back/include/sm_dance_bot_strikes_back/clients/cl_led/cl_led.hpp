@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <smacc/client_bases/smacc_action_client_base.h>
+#include <smacc/client_bases/smacc_action_client_base.hpp>
 
 #include <sm_dance_bot_msgs/action/led_control.hpp>
 

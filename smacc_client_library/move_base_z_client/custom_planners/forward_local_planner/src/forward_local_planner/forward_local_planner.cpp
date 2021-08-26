@@ -18,8 +18,8 @@
  *
  ******************************************************************************************************************/
 #include <angles/angles.h>
-#include <forward_local_planner/forward_local_planner.h>
 #include <tf2/utils.h>
+#include <forward_local_planner/forward_local_planner.hpp>
 
 #include <boost/intrusive_ptr.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>

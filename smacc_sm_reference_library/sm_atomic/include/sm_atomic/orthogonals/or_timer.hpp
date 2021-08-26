@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ros_timer_client/cl_ros_timer.h>
-#include <smacc/smacc.h>
 #include <chrono>
+#include <ros_timer_client/cl_ros_timer.hpp>
+#include <smacc/smacc.hpp>
 
 using namespace std::chrono_literals;
 

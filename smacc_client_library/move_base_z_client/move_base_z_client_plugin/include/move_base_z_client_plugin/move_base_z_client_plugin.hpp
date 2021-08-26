@@ -19,11 +19,11 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/client_bases/smacc_action_client_base.h>
-#include <smacc/smacc.h>
+#include <smacc/client_bases/smacc_action_client_base.hpp>
+#include <smacc/smacc.hpp>
 
 #include <nav2_msgs/action/navigate_to_pose.hpp>
-//#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
+//#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.hpp>
 
 namespace cl_move_base_z
 {

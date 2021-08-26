@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <eg_conditional_generator/eg_conditional_generator.h>
+#include <eg_conditional_generator/eg_conditional_generator.hpp>
 
 namespace smacc
 {

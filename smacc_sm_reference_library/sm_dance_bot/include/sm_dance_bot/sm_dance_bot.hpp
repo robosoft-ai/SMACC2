@@ -12,34 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.h>
+#include <smacc/smacc.hpp>
 
 #include <sensor_msgs/msg/laser_scan.hpp>
 
 // CLIENT BEHAVIORS
-#include <ros_timer_client/client_behaviors/cb_ros_timer.h>
+#include <ros_timer_client/client_behaviors/cb_ros_timer.hpp>
 
-#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.h>
+#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>
 
-#include <move_base_z_client_plugin/client_behaviors.h>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <move_base_z_client_plugin/client_behaviors.hpp>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
 
 using namespace cl_move_base_z;
 
-#include <sm_dance_bot/clients/cl_led/client_behaviors/cb_led_off.h>
-#include <sm_dance_bot/clients/cl_led/client_behaviors/cb_led_on.h>
+#include <sm_dance_bot/clients/cl_led/client_behaviors/cb_led_off.hpp>
+#include <sm_dance_bot/clients/cl_led/client_behaviors/cb_led_on.hpp>
 
-#include <sm_dance_bot/clients/cl_lidar/client_behaviors/cb_lidar_sensor.h>
-#include <sm_dance_bot/clients/cl_temperature_sensor/client_behaviors/cb_custom_condition_temperature_sensor.h>
+#include <sm_dance_bot/clients/cl_lidar/client_behaviors/cb_lidar_sensor.hpp>
+#include <sm_dance_bot/clients/cl_temperature_sensor/client_behaviors/cb_custom_condition_temperature_sensor.hpp>
 
-#include <sm_dance_bot/clients/cl_service3/client_behaviors/cb_service3.h>
-#include <sm_dance_bot/clients/cl_string_publisher/client_behaviors/cb_string_publisher.h>
+#include <sm_dance_bot/clients/cl_service3/client_behaviors/cb_service3.hpp>
+#include <sm_dance_bot/clients/cl_string_publisher/client_behaviors/cb_string_publisher.hpp>
 
-#include <ros_publisher_client/client_behaviors/cb_default_publish_loop.h>
-#include <ros_publisher_client/client_behaviors/cb_muted_behavior.h>
-#include <ros_publisher_client/client_behaviors/cb_publish_once.h>
+#include <ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp>
+#include <ros_publisher_client/client_behaviors/cb_muted_behavior.hpp>
+#include <ros_publisher_client/client_behaviors/cb_publish_once.hpp>
 
-#include <ros_publisher_client/cl_ros_publisher.h>
+#include <ros_publisher_client/cl_ros_publisher.hpp>
 
 using namespace sm_dance_bot::cl_lidar;
 using namespace sm_dance_bot::cl_service3;
@@ -50,21 +50,21 @@ using namespace sm_dance_bot::cl_led;
 //using namespace sm_dance_bot::cl_updatable_publisher;
 
 //STATE REACTORS
-#include <sr_all_events_go/sr_all_events_go.h>
-#include <sr_conditional/sr_conditional.h>
-#include <sr_event_countdown/sr_event_countdown.h>
+#include <sr_all_events_go/sr_all_events_go.hpp>
+#include <sr_conditional/sr_conditional.hpp>
+#include <sr_event_countdown/sr_event_countdown.hpp>
 
 using namespace smacc::state_reactors;
 
 // ORTHOGONALS
-#include <sm_dance_bot/orthogonals/or_led.h>
-#include <sm_dance_bot/orthogonals/or_navigation.h>
-#include <sm_dance_bot/orthogonals/or_obstacle_perception.h>
-#include <sm_dance_bot/orthogonals/or_service3.h>
-#include <sm_dance_bot/orthogonals/or_string_publisher.h>
-#include <sm_dance_bot/orthogonals/or_temperature_sensor.h>
-#include <sm_dance_bot/orthogonals/or_timer.h>
-#include <sm_dance_bot/orthogonals/or_updatable_publisher.h>
+#include <sm_dance_bot/orthogonals/or_led.hpp>
+#include <sm_dance_bot/orthogonals/or_navigation.hpp>
+#include <sm_dance_bot/orthogonals/or_obstacle_perception.hpp>
+#include <sm_dance_bot/orthogonals/or_service3.hpp>
+#include <sm_dance_bot/orthogonals/or_string_publisher.hpp>
+#include <sm_dance_bot/orthogonals/or_temperature_sensor.hpp>
+#include <sm_dance_bot/orthogonals/or_timer.hpp>
+#include <sm_dance_bot/orthogonals/or_updatable_publisher.hpp>
 
 namespace sm_dance_bot
 {
@@ -162,32 +162,32 @@ struct SmDanceBot : public smacc::SmaccStateMachineBase<SmDanceBot, MsDanceBotRu
 }  // namespace sm_dance_bot
 
 //MODE STATES
-#include <sm_dance_bot/modestates/ms_dance_bot_run_mode.h>
+#include <sm_dance_bot/modestates/ms_dance_bot_run_mode.hpp>
 
-#include <sm_dance_bot/modestates/ms_dance_bot_recovery_mode.h>
+#include <sm_dance_bot/modestates/ms_dance_bot_recovery_mode.hpp>
 
 //SUPERSTATES
-#include <sm_dance_bot/superstates/ss_f_pattern_1.h>
-#include <sm_dance_bot/superstates/ss_radial_pattern_1.h>
-#include <sm_dance_bot/superstates/ss_radial_pattern_2.h>
-#include <sm_dance_bot/superstates/ss_radial_pattern_3.h>
-#include <sm_dance_bot/superstates/ss_s_pattern_1.h>
+#include <sm_dance_bot/superstates/ss_f_pattern_1.hpp>
+#include <sm_dance_bot/superstates/ss_radial_pattern_1.hpp>
+#include <sm_dance_bot/superstates/ss_radial_pattern_2.hpp>
+#include <sm_dance_bot/superstates/ss_radial_pattern_3.hpp>
+#include <sm_dance_bot/superstates/ss_s_pattern_1.hpp>
 
 //STATES
-#include <sm_dance_bot/states/st_acquire_sensors.h>
-#include <sm_dance_bot/states/st_event_count_down.h>
+#include <sm_dance_bot/states/st_acquire_sensors.hpp>
+#include <sm_dance_bot/states/st_event_count_down.hpp>
 
-#include <sm_dance_bot/states/st_navigate_to_waypoints_x.h>
+#include <sm_dance_bot/states/st_navigate_to_waypoints_x.hpp>
 
-#include <sm_dance_bot/states/st_navigate_forward_1.h>
-#include <sm_dance_bot/states/st_navigate_forward_2.h>
-#include <sm_dance_bot/states/st_navigate_reverse_1.h>
-#include <sm_dance_bot/states/st_navigate_reverse_2.h>
-#include <sm_dance_bot/states/st_navigate_reverse_3.h>
-#include <sm_dance_bot/states/st_navigate_to_waypoint_1.h>
-#include <sm_dance_bot/states/st_rotate_degrees_1.h>
-#include <sm_dance_bot/states/st_rotate_degrees_2.h>
-#include <sm_dance_bot/states/st_rotate_degrees_3.h>
-#include <sm_dance_bot/states/st_rotate_degrees_4.h>
-#include <sm_dance_bot/states/st_rotate_degrees_5.h>
-#include <sm_dance_bot/states/st_rotate_degrees_6.h>
+#include <sm_dance_bot/states/st_navigate_forward_1.hpp>
+#include <sm_dance_bot/states/st_navigate_forward_2.hpp>
+#include <sm_dance_bot/states/st_navigate_reverse_1.hpp>
+#include <sm_dance_bot/states/st_navigate_reverse_2.hpp>
+#include <sm_dance_bot/states/st_navigate_reverse_3.hpp>
+#include <sm_dance_bot/states/st_navigate_to_waypoint_1.hpp>
+#include <sm_dance_bot/states/st_rotate_degrees_1.hpp>
+#include <sm_dance_bot/states/st_rotate_degrees_2.hpp>
+#include <sm_dance_bot/states/st_rotate_degrees_3.hpp>
+#include <sm_dance_bot/states/st_rotate_degrees_4.hpp>
+#include <sm_dance_bot/states/st_rotate_degrees_5.hpp>
+#include <sm_dance_bot/states/st_rotate_degrees_6.hpp>

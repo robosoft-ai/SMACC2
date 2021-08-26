@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <sm_three_some/clients/cl_subscriber/cl_subscriber.h>
-#include <smacc/smacc_orthogonal.h>
+#include <sm_three_some/clients/cl_subscriber/cl_subscriber.hpp>
+#include <smacc/smacc_orthogonal.hpp>
 
 namespace sm_three_some
 {

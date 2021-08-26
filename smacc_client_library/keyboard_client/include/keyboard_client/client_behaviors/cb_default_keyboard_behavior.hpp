@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <keyboard_client/cl_keyboard.h>
-#include <smacc/smacc_client_behavior.h>
+#include <keyboard_client/cl_keyboard.hpp>
+#include <smacc/smacc_client_behavior.hpp>
 
 #include <std_msgs/msg/u_int16.hpp>
 

@@ -19,11 +19,11 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <smacc/smacc_client_behavior_base.h>
-#include <smacc/smacc_signal.h>
 #include <condition_variable>
 #include <future>
 #include <mutex>
+#include <smacc/smacc_client_behavior_base.hpp>
+#include <smacc/smacc_signal.hpp>
 #include <thread>
 
 namespace smacc
@@ -97,4 +97,4 @@ private:
 };
 }  // namespace smacc
 
-#include <smacc/impl/smacc_asynchronous_client_behavior_impl.h>
+#include <smacc/impl/smacc_asynchronous_client_behavior_impl.hpp>

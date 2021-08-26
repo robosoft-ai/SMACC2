@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #pragma once
-#include <sm_respira_1/clients/cl_subscriber/cl_subscriber.h>
+#include <sm_respira_1/clients/cl_subscriber/cl_subscriber.hpp>
 
 namespace sm_respira_1
 {

@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <smacc/smacc_client.h>
-#include <smacc/smacc_state_machine.h>
+#include <smacc/smacc_client.hpp>
+#include <smacc/smacc_state_machine.hpp>
 
 #include <rclcpp_action/client.hpp>
 

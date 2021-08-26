@@ -27,8 +27,8 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include <smacc/component.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+#include <smacc/component.hpp>
 
 // #include <dynamic_reconfigure/DoubleParameter.h>
 // #include <dynamic_reconfigure/Reconfigure.h>

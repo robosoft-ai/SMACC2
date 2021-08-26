@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #pragma once
-#include <smacc/client_bases/smacc_subscriber_client.h>
+#include <smacc/client_bases/smacc_subscriber_client.hpp>
 #include <std_msgs/msg/float32.hpp>
 
 namespace sm_ferrari

@@ -21,7 +21,7 @@
 
 #include <tf2_ros/buffer.h>
 
-#include "cb_move_base_client_behavior_base.h"
+#include "cb_move_base_client_behavior_base.hpp"
 
 namespace cl_move_base_z
 {

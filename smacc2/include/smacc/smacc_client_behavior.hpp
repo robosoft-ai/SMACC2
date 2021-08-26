@@ -19,7 +19,7 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <smacc/smacc_client_behavior_base.h>
+#include <smacc/smacc_client_behavior_base.hpp>
 
 namespace smacc
 {
@@ -31,4 +31,4 @@ public:
 };
 }  // namespace smacc
 
-#include <smacc/impl/smacc_client_behavior_impl.h>
+#include <smacc/impl/smacc_client_behavior_impl.hpp>

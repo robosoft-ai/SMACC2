@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <sm_dance_bot_strikes_back/clients/cl_service3/cl_service3.h>
-#include <smacc/smacc_client_behavior.h>
+#include <sm_dance_bot_strikes_back/clients/cl_service3/cl_service3.hpp>
+#include <smacc/smacc_client_behavior.hpp>
 
 namespace sm_dance_bot_strikes_back
 {

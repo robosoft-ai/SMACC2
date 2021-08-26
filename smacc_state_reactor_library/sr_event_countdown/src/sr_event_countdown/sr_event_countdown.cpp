@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/common.h>
-#include <sr_event_countdown/sr_event_countdown.h>
 #include <memory>
+#include <smacc/common.hpp>
+#include <sr_event_countdown/sr_event_countdown.hpp>
 
 namespace smacc
 {

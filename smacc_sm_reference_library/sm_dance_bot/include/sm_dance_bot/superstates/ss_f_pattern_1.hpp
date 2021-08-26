@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.h>
+#include <smacc/smacc.hpp>
 
 namespace sm_dance_bot
 {
@@ -84,9 +84,9 @@ public:
 }  // namespace SS4
 }  // namespace sm_dance_bot
 
-#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_forward_1.h>
-#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_forward_2.h>
-#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_loop_start.h>
-#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_return_1.h>
-#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_rotate_1.h>
-#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_rotate_2.h>
+#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_forward_1.hpp>
+#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_forward_2.hpp>
+#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_loop_start.hpp>
+#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_return_1.hpp>
+#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_rotate_1.hpp>
+#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_rotate_2.hpp>

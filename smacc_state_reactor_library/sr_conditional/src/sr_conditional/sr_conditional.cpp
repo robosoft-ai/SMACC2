@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <sr_conditional/sr_conditional.h>
+#include <sr_conditional/sr_conditional.hpp>
 
 namespace smacc
 {

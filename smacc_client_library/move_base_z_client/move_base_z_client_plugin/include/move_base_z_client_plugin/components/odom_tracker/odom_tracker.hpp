@@ -19,9 +19,9 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/common.h>
-#include <smacc/component.h>
 #include <tf2/transform_datatypes.h>
+#include <smacc/common.hpp>
+#include <smacc/component.hpp>
 
 #include <geometry_msgs/msg/point.hpp>
 #include <memory>

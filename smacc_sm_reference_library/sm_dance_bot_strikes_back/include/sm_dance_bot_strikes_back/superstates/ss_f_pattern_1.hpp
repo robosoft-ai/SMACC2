@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #include <angles/angles.h>
-#include <smacc/smacc.h>
 #include <tf2/transform_datatypes.h>
+#include <smacc/smacc.hpp>
 
 namespace sm_dance_bot_strikes_back
 {
@@ -97,9 +97,9 @@ public:
 // FORWARD DECLARATION FOR THE SUPERSTATE
 }  // namespace SS4
 }  // namespace sm_dance_bot_strikes_back
-#include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_forward_1.h>
-#include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_forward_2.h>
-#include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_loop_start.h>
-#include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_return_1.h>
-#include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_rotate_1.h>
-#include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_rotate_2.h>
+#include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_forward_1.hpp>
+#include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_forward_2.hpp>
+#include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_loop_start.hpp>
+#include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_return_1.hpp>
+#include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_rotate_1.hpp>
+#include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_rotate_2.hpp>

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #pragma once
-#include <sm_three_some/clients/cl_subscriber/cl_subscriber.h>
+#include <sm_three_some/clients/cl_subscriber/cl_subscriber.hpp>
 
 namespace sm_three_some
 {

@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <keyboard_client/cl_keyboard.h>
-#include <smacc/smacc_orthogonal.h>
+#include <keyboard_client/cl_keyboard.hpp>
+#include <smacc/smacc_orthogonal.hpp>
 namespace sm_respira_1
 {
 class OrKeyboard : public smacc::Orthogonal<OrKeyboard>

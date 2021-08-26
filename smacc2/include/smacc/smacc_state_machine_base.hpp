@@ -18,10 +18,10 @@
  *
  ******************************************************************************************************************/
 #pragma once
-#include <smacc/common.h>
+#include <smacc/common.hpp>
 
-#include <smacc/smacc_state_base.h>
-#include <smacc/smacc_state_machine.h>
+#include <smacc/smacc_state_base.hpp>
+#include <smacc/smacc_state_machine.hpp>
 
 namespace smacc
 {

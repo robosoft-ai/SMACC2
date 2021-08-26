@@ -19,10 +19,10 @@
  ******************************************************************************************************************/
 #include <geometry_msgs/msg/quaternion_stamped.hpp>
 
-#include <move_base_z_client_plugin/client_behaviors/cb_rotate.h>
-#include <move_base_z_client_plugin/common.h>
-#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
-#include <move_base_z_client_plugin/components/pose/cp_pose.h>
+#include <move_base_z_client_plugin/client_behaviors/cb_rotate.hpp>
+#include <move_base_z_client_plugin/common.hpp>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
+#include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
 
 namespace cl_move_base_z
 {

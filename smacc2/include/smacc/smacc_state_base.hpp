@@ -19,12 +19,12 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <smacc/introspection/state_traits.h>
-#include <smacc/smacc_event_generator.h>
-#include <smacc/smacc_state.h>
-#include <smacc/smacc_state_machine.h>
-#include <smacc/smacc_state_reactor.h>
-#include <smacc/smacc_tracing/trace_provider.h>
+#include <smacc/introspection/state_traits.hpp>
+#include <smacc/smacc_event_generator.hpp>
+#include <smacc/smacc_state.hpp>
+#include <smacc/smacc_state_machine.hpp>
+#include <smacc/smacc_state_reactor.hpp>
+#include <smacc/smacc_tracing/trace_provider.hpp>
 
 namespace smacc
 {

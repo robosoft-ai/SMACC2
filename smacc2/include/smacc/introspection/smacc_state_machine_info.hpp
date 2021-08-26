@@ -25,8 +25,8 @@
 #include <string>
 #include <vector>
 
-#include <smacc/common.h>
-#include <smacc/smacc_orthogonal.h>
+#include <smacc/common.hpp>
+#include <smacc/smacc_orthogonal.hpp>
 
 // smacc_msgs
 #include <smacc_msgs/msg/smacc_event_generator.hpp>

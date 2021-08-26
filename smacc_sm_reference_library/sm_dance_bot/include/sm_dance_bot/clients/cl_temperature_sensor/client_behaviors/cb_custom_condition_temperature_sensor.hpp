@@ -13,9 +13,9 @@
 // limitations under the License.
 
 #pragma once
-#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.h>
-#include <sm_dance_bot/clients/cl_temperature_sensor/cl_temperature_sensor.h>
+#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>
 #include <sensor_msgs/msg/temperature.hpp>
+#include <sm_dance_bot/clients/cl_temperature_sensor/cl_temperature_sensor.hpp>
 
 namespace sm_dance_bot
 {

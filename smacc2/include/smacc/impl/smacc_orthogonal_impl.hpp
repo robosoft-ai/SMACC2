@@ -19,9 +19,9 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <smacc/smacc_client.h>
-#include <smacc/smacc_orthogonal.h>
 #include <cassert>
+#include <smacc/smacc_client.hpp>
+#include <smacc/smacc_orthogonal.hpp>
 
 namespace smacc
 {

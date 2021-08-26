@@ -14,9 +14,9 @@
 
 #pragma once
 
-#include <smacc/client_bases/smacc_subscriber_client.h>
-#include <smacc/introspection/introspection.h>
-#include <smacc/smacc.h>
+#include <smacc/client_bases/smacc_subscriber_client.hpp>
+#include <smacc/introspection/introspection.hpp>
+#include <smacc/smacc.hpp>
 
 #include <boost/asio.hpp>
 #include <boost/asio/posix/stream_descriptor.hpp>

@@ -22,7 +22,7 @@
 
 #include <string>
 
-#include <smacc/common.h>
+#include <smacc/common.hpp>
 
 namespace smacc
 {

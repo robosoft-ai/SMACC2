@@ -13,10 +13,10 @@
 // limitations under the License.
 
 #pragma once
-#include <smacc/common.h>
-#include <smacc/smacc_state_reactor.h>
 #include <boost/statechart/event.hpp>
 #include <map>
+#include <smacc/common.hpp>
+#include <smacc/smacc_state_reactor.hpp>
 #include <typeinfo>
 
 namespace smacc

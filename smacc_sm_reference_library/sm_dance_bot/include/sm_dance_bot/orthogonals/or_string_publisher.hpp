@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <sm_dance_bot/clients/cl_string_publisher/cl_string_publisher.h>
-#include <smacc/smacc_orthogonal.h>
+#include <sm_dance_bot/clients/cl_string_publisher/cl_string_publisher.hpp>
+#include <smacc/smacc_orthogonal.hpp>
 namespace sm_dance_bot
 {
 class OrStringPublisher : public smacc::Orthogonal<OrStringPublisher>

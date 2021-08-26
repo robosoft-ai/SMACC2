@@ -19,8 +19,8 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/common.h>
-#include <smacc/component.h>
+#include <smacc/common.hpp>
+#include <smacc/component.hpp>
 #include <typeinfo>
 
 namespace smacc

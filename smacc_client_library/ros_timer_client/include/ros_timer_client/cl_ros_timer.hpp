@@ -14,10 +14,10 @@
 
 #pragma once
 
-#include <smacc/smacc.h>
 #include <boost/signals2.hpp>
 #include <chrono>
 #include <optional>
+#include <smacc/smacc.hpp>
 
 namespace cl_ros_timer
 {

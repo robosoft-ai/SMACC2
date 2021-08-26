@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <smacc/introspection/introspection.h>
-#include <smacc/introspection/state_traits.h>
+#include <smacc/introspection/introspection.hpp>
+#include <smacc/introspection/state_traits.hpp>
 namespace smacc
 {
 //////////////////////////////////////////////////////////////////////////////

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.h>
+#include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.hpp>
 
 namespace cl_keyboard
 {

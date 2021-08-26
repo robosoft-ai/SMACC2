@@ -13,11 +13,11 @@
 // limitations under the License.
 
 #pragma once
-#include <smacc/common.h>
-#include <smacc/smacc_event_generator.h>
-#include <smacc/smacc_updatable.h>
 #include <boost/statechart/event.hpp>
 #include <functional>
+#include <smacc/common.hpp>
+#include <smacc/smacc_event_generator.hpp>
+#include <smacc/smacc_updatable.hpp>
 #include <typeinfo>
 
 namespace smacc

@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <smacc/client_bases/smacc_service_client.h>
+#include <smacc/client_bases/smacc_service_client.hpp>
 #include <std_srvs/srv/set_bool.hpp>
 namespace sm_dance_bot
 {

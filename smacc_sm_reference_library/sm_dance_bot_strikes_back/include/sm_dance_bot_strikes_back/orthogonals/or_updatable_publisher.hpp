@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <ros_publisher_client/cl_ros_publisher.h>
-#include <smacc/smacc_orthogonal.h>
+#include <ros_publisher_client/cl_ros_publisher.hpp>
+#include <smacc/smacc_orthogonal.hpp>
 
 namespace sm_dance_bot_strikes_back
 {

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.h>
+#include <smacc/smacc.hpp>
 
 namespace sm_dance_bot
 {
@@ -75,14 +75,14 @@ public:
 
 // FORWARD DECLARATION FOR THE SUPERSTATE
 using SS = SsSPattern1;
-#include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_1.h>
-#include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_2.h>
-#include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_3.h>
-#include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_4.h>
-#include <sm_dance_bot/states/s_pattern_states/sti_spattern_loop_start.h>
-#include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_1.h>
-#include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_2.h>
-#include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_3.h>
-#include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_4.h>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_1.hpp>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_2.hpp>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_3.hpp>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_4.hpp>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_loop_start.hpp>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_1.hpp>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_2.hpp>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_3.hpp>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_4.hpp>
 }  // namespace SS5
 }  // namespace sm_dance_bot

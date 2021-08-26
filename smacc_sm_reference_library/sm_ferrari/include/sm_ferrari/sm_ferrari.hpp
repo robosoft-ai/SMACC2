@@ -14,17 +14,17 @@
 
 #pragma once
 
-#include <smacc/smacc.h>
+#include <smacc/smacc.hpp>
 
 // CLIENTS
-//#include <ros_timer_client/cl_ros_timer.h>
-#include <keyboard_client/cl_keyboard.h>
+//#include <ros_timer_client/cl_ros_timer.hpp>
+#include <keyboard_client/cl_keyboard.hpp>
 
 // ORTHOGONALS
-//#include "orthogonals/or_timer.h"
-//#include "orthogonals/or_updatable_publisher.h"
-#include "orthogonals/or_keyboard.h"
-#include "orthogonals/or_subscriber.h"
+//#include "orthogonals/or_timer.hpp"
+//#include "orthogonals/or_updatable_publisher.hpp"
+#include "orthogonals/or_keyboard.hpp"
+#include "orthogonals/or_subscriber.hpp"
 
 // using namespace cl_ros_timer;
 // using namespace cl_ros_publisher;
@@ -32,16 +32,16 @@ using namespace cl_keyboard;
 
 using namespace sm_ferrari::cl_subscriber;
 
-#include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.h>
+#include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.hpp>
 
-#include "clients/cl_subscriber/client_behaviors/cb_my_subscriber_behavior.h"
+#include "clients/cl_subscriber/client_behaviors/cb_my_subscriber_behavior.hpp"
 
-//#include <ros_timer_client/client_behaviors/cb_ros_timer.h>
-//#include <ros_timer_client/client_behaviors/cb_timer_countdown_once.h>
+//#include <ros_timer_client/client_behaviors/cb_ros_timer.hpp>
+//#include <ros_timer_client/client_behaviors/cb_timer_countdown_once.hpp>
 
 // STATE REACTORS
-//#include <sr_all_events_go/sr_all_events_go.h>
-#include <eg_conditional_generator/eg_conditional_generator.h>
+//#include <sr_all_events_go/sr_all_events_go.hpp>
+#include <eg_conditional_generator/eg_conditional_generator.hpp>
 
 using namespace smacc;
 using namespace smacc::state_reactors;
@@ -95,14 +95,14 @@ struct SmFerrari : public smacc::SmaccStateMachineBase<SmFerrari, MsRun>
 }  // namespace sm_ferrari
 
 // MODE STATES
-#include <sm_ferrari/mode_states/ms_run.h>
+#include <sm_ferrari/mode_states/ms_run.hpp>
 
-#include <sm_ferrari/mode_states/ms_recover.h>
+#include <sm_ferrari/mode_states/ms_recover.hpp>
 
 // STATES
-#include <sm_ferrari/states/st_state_1.h>
-#include <sm_ferrari/states/st_state_2.h>
-#include <sm_ferrari/states/st_state_3.h>
-#include <sm_ferrari/states/st_state_4.h>
-#include <sm_ferrari/superstates/ss_superstate_1.h>
-#include <sm_ferrari/superstates/ss_superstate_2.h>
+#include <sm_ferrari/states/st_state_1.hpp>
+#include <sm_ferrari/states/st_state_2.hpp>
+#include <sm_ferrari/states/st_state_3.hpp>
+#include <sm_ferrari/states/st_state_4.hpp>
+#include <sm_ferrari/superstates/ss_superstate_1.hpp>
+#include <sm_ferrari/superstates/ss_superstate_2.hpp>

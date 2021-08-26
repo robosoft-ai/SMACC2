@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc_fifo_worker.h>
 #include <boost/statechart/fifo_scheduler.hpp>
+#include <smacc/smacc_fifo_worker.hpp>
 
 typedef boost::statechart::fifo_scheduler<SmaccFifoWorker, SmaccAllocator> SmaccFifoScheduler;

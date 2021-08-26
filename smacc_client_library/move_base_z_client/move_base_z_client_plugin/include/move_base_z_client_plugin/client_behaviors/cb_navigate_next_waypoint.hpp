@@ -19,9 +19,9 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
 
-#include "cb_move_base_client_behavior_base.h"
+#include "cb_move_base_client_behavior_base.hpp"
 
 namespace cl_move_base_z
 {

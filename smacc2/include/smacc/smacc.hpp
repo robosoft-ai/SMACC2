@@ -18,7 +18,7 @@
  *
  ******************************************************************************************************************/
 #pragma once
-#include <smacc/common.h>
-#include <smacc/smacc_default_events.h>
-#include <smacc/smacc_signal_detector.h>
-#include <smacc/smacc_state_machine_base.h>
+#include <smacc/common.hpp>
+#include <smacc/smacc_default_events.hpp>
+#include <smacc/smacc_signal_detector.hpp>
+#include <smacc/smacc_state_machine_base.hpp>

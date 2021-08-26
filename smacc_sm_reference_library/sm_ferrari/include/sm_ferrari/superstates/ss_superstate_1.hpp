@@ -56,9 +56,9 @@ public:
 // forward declaration for the superstate
 using SS = SS1::Ss1;
 
-#include <sm_ferrari/states/inner_states/sti_state_1.h>
-#include <sm_ferrari/states/inner_states/sti_state_2.h>
-#include <sm_ferrari/states/inner_states/sti_state_3.h>
+#include <sm_ferrari/states/inner_states/sti_state_1.hpp>
+#include <sm_ferrari/states/inner_states/sti_state_2.hpp>
+#include <sm_ferrari/states/inner_states/sti_state_3.hpp>
 
 }  // namespace SS1
 }  // namespace sm_ferrari

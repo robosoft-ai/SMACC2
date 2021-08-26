@@ -20,10 +20,10 @@
 // #include <rclcpp/rclcpp.hpp>
 
 #include <angles/angles.h>
-#include <move_base_z_planners_common/common.h>
-#include <move_base_z_planners_common/move_base_z_client_tools.h>
 #include <tf2/transform_datatypes.h>
 #include <tf2/utils.h>
+#include <move_base_z_planners_common/common.hpp>
+#include <move_base_z_planners_common/move_base_z_client_tools.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 #include <geometry_msgs/msg/pose_stamped.hpp>

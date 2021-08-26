@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <multirole_sensor_client/cl_multirole_sensor.h>
+#include <multirole_sensor_client/cl_multirole_sensor.hpp>
 
 #include <sensor_msgs/msg/laser_scan.hpp>
 #include <std_msgs/msg/string.hpp>

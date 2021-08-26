@@ -24,18 +24,18 @@
 #include <sstream>
 #include <string>
 
-#include <smacc/introspection/introspection.h>
-#include <smacc/smacc_client.h>
-#include <smacc/smacc_orthogonal.h>
-#include <smacc/smacc_signal_detector.h>
-#include <smacc/smacc_state.h>
-#include <smacc/smacc_state_machine.h>
-#include <smacc/smacc_state_reactor.h>
+#include <smacc/introspection/introspection.hpp>
+#include <smacc/smacc_client.hpp>
+#include <smacc/smacc_orthogonal.hpp>
+#include <smacc/smacc_signal_detector.hpp>
+#include <smacc/smacc_state.hpp>
+#include <smacc/smacc_state_machine.hpp>
+#include <smacc/smacc_state_reactor.hpp>
 
-#include <smacc/smacc_tracing/smacc_tracing.h>
 #include <boost/function_types/function_arity.hpp>
 #include <boost/function_types/function_type.hpp>
 #include <boost/function_types/parameter_types.hpp>
+#include <smacc/smacc_tracing/smacc_tracing.hpp>
 #include <smacc_msgs/msg/smacc_status.hpp>
 
 namespace smacc

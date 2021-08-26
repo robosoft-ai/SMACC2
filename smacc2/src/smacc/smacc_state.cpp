@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc_state.h>
-#include <smacc/smacc_state_machine.h>
+#include <smacc/smacc_state.hpp>
+#include <smacc/smacc_state_machine.hpp>
 
 namespace smacc
 {

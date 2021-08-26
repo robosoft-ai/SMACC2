@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <ros_timer_client/cl_ros_timer.h>
-#include <smacc/smacc_orthogonal.h>
+#include <ros_timer_client/cl_ros_timer.hpp>
+#include <smacc/smacc_orthogonal.hpp>
 
 namespace sm_ferrari
 {

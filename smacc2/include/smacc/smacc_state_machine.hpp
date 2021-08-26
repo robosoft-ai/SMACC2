@@ -23,20 +23,20 @@
 #include <map>
 #include <mutex>
 
-#include <smacc/common.h>
-#include <smacc/introspection/introspection.h>
-#include <smacc/introspection/smacc_state_machine_info.h>
-#include <smacc/smacc_signal.h>
-#include <smacc/smacc_updatable.h>
+#include <smacc/common.hpp>
+#include <smacc/introspection/introspection.hpp>
+#include <smacc/introspection/smacc_state_machine_info.hpp>
+#include <smacc/smacc_signal.hpp>
+#include <smacc/smacc_updatable.hpp>
 
 #include <smacc_msgs/msg/smacc_state_machine.hpp>
 #include <smacc_msgs/msg/smacc_status.hpp>
 #include <smacc_msgs/msg/smacc_transition_log_entry.hpp>
 #include <smacc_msgs/srv/smacc_get_transition_history.hpp>
 
-#include <smacc/smacc_state.h>
-#include <smacc/smacc_state_reactor.h>
-//#include <smacc/smacc_event_generator.h>
+#include <smacc/smacc_state.hpp>
+#include <smacc/smacc_state_reactor.hpp>
+//#include <smacc/smacc_event_generator.hpp>
 
 namespace smacc
 {
@@ -228,7 +228,7 @@ private:
 };
 }  // namespace smacc
 
-#include <smacc/impl/smacc_client_impl.h>
-#include <smacc/impl/smacc_component_impl.h>
-#include <smacc/impl/smacc_orthogonal_impl.h>
-#include <smacc/impl/smacc_state_impl.h>
+#include <smacc/impl/smacc_client_impl.hpp>
+#include <smacc/impl/smacc_component_impl.hpp>
+#include <smacc/impl/smacc_orthogonal_impl.hpp>
+#include <smacc/impl/smacc_state_impl.hpp>

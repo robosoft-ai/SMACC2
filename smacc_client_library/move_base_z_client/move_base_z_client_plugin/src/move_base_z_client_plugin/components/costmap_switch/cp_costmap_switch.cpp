@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <move_base_z_client_plugin/components/costmap_switch/cp_costmap_switch.h>
+#include <move_base_z_client_plugin/components/costmap_switch/cp_costmap_switch.hpp>
 
 namespace cl_move_base_z
 {

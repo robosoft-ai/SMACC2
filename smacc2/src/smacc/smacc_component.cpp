@@ -17,8 +17,8 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <smacc/component.h>
-#include <smacc/impl/smacc_component_impl.h>
+#include <smacc/component.hpp>
+#include <smacc/impl/smacc_component_impl.hpp>
 namespace smacc
 {
 ISmaccComponent::~ISmaccComponent() {}

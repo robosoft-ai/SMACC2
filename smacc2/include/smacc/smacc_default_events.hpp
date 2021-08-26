@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <smacc/smacc_types.h>
+#include <smacc/smacc_types.hpp>
 
 #include <boost/statechart/event.hpp>
 #include <boost/statechart/state.hpp>

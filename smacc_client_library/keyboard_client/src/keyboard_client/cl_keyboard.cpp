@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <keyboard_client/cl_keyboard.h>
+#include <keyboard_client/cl_keyboard.hpp>
 
 namespace cl_keyboard
 {

@@ -17,13 +17,13 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <move_base_z_client_plugin/common.h>
+#include <move_base_z_client_plugin/common.hpp>
 
-#include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.h>
-#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
-#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
-#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
-#include <move_base_z_client_plugin/components/pose/cp_pose.h>
+#include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.hpp>
+#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.hpp>
+#include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
 
 namespace cl_move_base_z
 {

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/client_bases/smacc_subscriber_client.h>
-#include <smacc/smacc.h>
+#include <smacc/client_bases/smacc_subscriber_client.hpp>
+#include <smacc/smacc.hpp>
 
 #include <std_msgs/msg/int16.hpp>
 

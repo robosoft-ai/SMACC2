@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <smacc/client_bases/smacc_publisher_client.h>
+#include <smacc/client_bases/smacc_publisher_client.hpp>
 #include <std_msgs/msg/string.hpp>
 
 namespace sm_dance_bot

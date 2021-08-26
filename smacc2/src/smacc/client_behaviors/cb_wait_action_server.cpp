@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/client_behaviors/cb_wait_action_server.h>
+#include <smacc/client_behaviors/cb_wait_action_server.hpp>
 
 namespace smacc
 {

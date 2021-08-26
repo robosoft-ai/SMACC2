@@ -14,11 +14,11 @@
 
 #pragma once
 
-#include <multirole_sensor_client/cl_multirole_sensor.h>
+#include <multirole_sensor_client/cl_multirole_sensor.hpp>
 
 #include <string>
 
-#include <smacc/smacc_client_behavior.h>
+#include <smacc/smacc_client_behavior.hpp>
 
 namespace cl_multirole_sensor
 {

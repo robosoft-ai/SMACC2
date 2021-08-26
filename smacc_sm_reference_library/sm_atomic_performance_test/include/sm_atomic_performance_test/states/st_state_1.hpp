@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.h>
+#include <smacc/smacc.hpp>
 
 namespace sm_atomic_performance_test
 {

@@ -19,7 +19,7 @@
 #define TRACEPOINT_PROVIDER ros2
 
 #undef TRACEPOINT_INCLUDE
-#define TRACEPOINT_INCLUDE "smacc/smacc_tracing/trace_provider.h"
+#define TRACEPOINT_INCLUDE "smacc/smacc_tracing/trace_provider.hpp"
 
 #if !defined(_TRACEPOINT_PROVIDER_PROVIDER_H) || defined(TRACEPOINT_HEADER_MULTI_READ)
 #define _TRACEPOINT_PROVIDER_PROVIDER_H

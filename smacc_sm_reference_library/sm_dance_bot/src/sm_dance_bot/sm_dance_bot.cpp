@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <sm_dance_bot/sm_dance_bot.h>
+#include <sm_dance_bot/sm_dance_bot.hpp>
 
 int main(int argc, char ** argv)
 {

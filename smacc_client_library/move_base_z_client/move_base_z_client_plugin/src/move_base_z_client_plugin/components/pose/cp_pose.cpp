@@ -18,7 +18,7 @@
  *
  ******************************************************************************************************************/
 
-#include <move_base_z_client_plugin/components/pose/cp_pose.h>
+#include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
 
 #include <memory>
 #include <string>

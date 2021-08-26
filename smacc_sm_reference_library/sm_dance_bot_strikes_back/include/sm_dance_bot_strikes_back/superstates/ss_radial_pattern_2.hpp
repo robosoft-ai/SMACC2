@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.h>
+#include <smacc/smacc.hpp>
 
 namespace sm_dance_bot_strikes_back
 {
@@ -61,9 +61,9 @@ public:
 
 // FORWARD DECLARATION FOR THE SUPERSTATE
 using SS = SsRadialPattern2;
-#include <sm_dance_bot_strikes_back/states/radial_motion_states/sti_radial_end_point.h>
-#include <sm_dance_bot_strikes_back/states/radial_motion_states/sti_radial_loop_start.h>
-#include <sm_dance_bot_strikes_back/states/radial_motion_states/sti_radial_return.h>
-#include <sm_dance_bot_strikes_back/states/radial_motion_states/sti_radial_rotate.h>
+#include <sm_dance_bot_strikes_back/states/radial_motion_states/sti_radial_end_point.hpp>
+#include <sm_dance_bot_strikes_back/states/radial_motion_states/sti_radial_loop_start.hpp>
+#include <sm_dance_bot_strikes_back/states/radial_motion_states/sti_radial_return.hpp>
+#include <sm_dance_bot_strikes_back/states/radial_motion_states/sti_radial_rotate.hpp>
 }  // namespace SS2
 }  // namespace sm_dance_bot_strikes_back

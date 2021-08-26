@@ -13,10 +13,10 @@
 // limitations under the License.
 
 #pragma once
-#include <smacc/client_bases/smacc_subscriber_client.h>
-#include <smacc/component.h>
-#include <smacc/smacc_signal.h>
 #include <optional>
+#include <smacc/client_bases/smacc_subscriber_client.hpp>
+#include <smacc/component.hpp>
+#include <smacc/smacc_signal.hpp>
 
 namespace smacc
 {

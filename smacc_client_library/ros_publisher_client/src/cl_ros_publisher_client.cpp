@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ros_publisher_client/cl_ros_publisher.h>
+#include <ros_publisher_client/cl_ros_publisher.hpp>
 
 namespace cl_ros_publisher
 {

@@ -39,9 +39,9 @@
 #include <mutex>
 #include <rclcpp/rclcpp.hpp>
 
-#include <smacc/introspection/introspection.h>
-#include <smacc/smacc_fifo_scheduler.h>
-#include <smacc/smacc_types.h>
+#include <smacc/introspection/introspection.hpp>
+#include <smacc/smacc_fifo_scheduler.hpp>
+#include <smacc/smacc_types.hpp>
 
 typedef boost::statechart::processor_container<
   boost::statechart::fifo_scheduler<>, boost::function0<void>,
@@ -70,5 +70,5 @@ template <typename StateMachineType>
 void run();
 }  // namespace smacc
 
-#include <smacc/smacc_default_events.h>
-#include <smacc/smacc_transition.h>
+#include <smacc/smacc_default_events.hpp>
+#include <smacc/smacc_transition.hpp>

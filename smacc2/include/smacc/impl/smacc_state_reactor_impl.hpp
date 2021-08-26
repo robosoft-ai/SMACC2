@@ -19,8 +19,8 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <smacc/introspection/introspection.h>
-#include <smacc/smacc_state_reactor.h>
+#include <smacc/introspection/introspection.hpp>
+#include <smacc/smacc_state_reactor.hpp>
 
 namespace smacc
 {

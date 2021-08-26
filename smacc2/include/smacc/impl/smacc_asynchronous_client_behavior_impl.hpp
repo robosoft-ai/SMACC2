@@ -19,8 +19,8 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <smacc/smacc_asynchronous_client_behavior.h>
-#include <smacc/smacc_state_machine.h>
+#include <smacc/smacc_asynchronous_client_behavior.hpp>
+#include <smacc/smacc_state_machine.hpp>
 
 namespace smacc
 {

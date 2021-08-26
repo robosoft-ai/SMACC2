@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include <smacc/smacc.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+#include <smacc/smacc.hpp>
 
 namespace sm_dance_bot
 {

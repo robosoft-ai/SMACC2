@@ -18,11 +18,11 @@
  *
  ******************************************************************************************************************/
 #include <angles/angles.h>
-#include <forward_global_planner/forward_global_planner.h>
-#include <move_base_z_planners_common/common.h>
-#include <move_base_z_planners_common/move_base_z_client_tools.h>
 #include <tf2/transform_datatypes.h>
 #include <tf2/utils.h>
+#include <forward_global_planner/forward_global_planner.hpp>
+#include <move_base_z_planners_common/common.hpp>
+#include <move_base_z_planners_common/move_base_z_client_tools.hpp>
 
 #include <boost/assign.hpp>
 #include <boost/range/adaptor/reversed.hpp>

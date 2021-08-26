@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.h>
-#include <sm_dance_bot_strikes_back/clients/cl_lidar/cl_lidar.h>
+#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>
+#include <sm_dance_bot_strikes_back/clients/cl_lidar/cl_lidar.hpp>
 
 #include <sensor_msgs/msg/laser_scan.hpp>
 

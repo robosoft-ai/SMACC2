@@ -21,8 +21,8 @@
 
 #include <string>
 
-#include <smacc/component.h>
 #include <rclcpp/rclcpp.hpp>
+#include <smacc/component.hpp>
 #include <std_msgs/msg/string.hpp>
 
 namespace cl_move_base_z

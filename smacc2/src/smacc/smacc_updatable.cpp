@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc_updatable.h>
+#include <smacc/smacc_updatable.hpp>
 
 namespace smacc
 {

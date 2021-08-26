@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #pragma once
-#include <sm_dance_bot/clients/cl_led/cl_led.h>
-#include <smacc/smacc_orthogonal.h>
+#include <sm_dance_bot/clients/cl_led/cl_led.hpp>
+#include <smacc/smacc_orthogonal.hpp>
 
 namespace sm_dance_bot
 {

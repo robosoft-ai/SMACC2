@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.h>
-#include "orthogonals/or_subscriber.h"
+#include <smacc/smacc.hpp>
+#include "orthogonals/or_subscriber.hpp"
 
 using namespace boost;
 using namespace smacc;
@@ -36,5 +36,5 @@ struct SmAtomicSubscribersPerformanceTest
 
 }  // namespace sm_atomic_subscribers_performance_test
 
-#include "states/st_state_1.h"
-#include "states/st_state_2.h"
+#include "states/st_state_1.hpp"
+#include "states/st_state_2.hpp"

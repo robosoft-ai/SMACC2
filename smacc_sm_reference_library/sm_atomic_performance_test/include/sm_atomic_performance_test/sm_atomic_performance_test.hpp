@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.h>
+#include <smacc/smacc.hpp>
 
 using namespace boost;
 using namespace smacc;
@@ -35,5 +35,5 @@ struct SmAtomicPerformanceTest
 
 }  // namespace sm_atomic_performance_test
 
-#include "states/st_state_1.h"
-#include "states/st_state_2.h"
+#include "states/st_state_1.hpp"
+#include "states/st_state_2.hpp"

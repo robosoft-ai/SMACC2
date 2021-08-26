@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <move_base_z_client_plugin/common.h>
-#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
-#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
-#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
-#include <move_base_z_client_plugin/components/pose/cp_pose.h>
-#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <move_base_z_client_plugin/common.hpp>
+#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.hpp>
+#include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
+#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.hpp>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
 
 #include <tf2/transform_datatypes.h>
 #include <yaml-cpp/yaml.h>

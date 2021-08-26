@@ -21,8 +21,8 @@
 
 #include <string>
 
-#include <smacc/common.h>
 #include <boost/optional.hpp>
+#include <smacc/common.hpp>
 
 namespace smacc
 {

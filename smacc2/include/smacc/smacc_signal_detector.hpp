@@ -19,9 +19,9 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/common.h>
 #include <atomic>
 #include <boost/thread.hpp>
+#include <smacc/common.hpp>
 #include <smacc_msgs/msg/smacc_status.hpp>
 
 namespace smacc

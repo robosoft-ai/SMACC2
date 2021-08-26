@@ -20,7 +20,7 @@
 
 #include <angles/angles.h>
 #include <tf2/transform_datatypes.h>
-#include <undo_path_global_planner/undo_path_global_planner.h>
+#include <undo_path_global_planner/undo_path_global_planner.hpp>
 
 #include <boost/assign.hpp>
 #include <boost/range/adaptor/reversed.hpp>

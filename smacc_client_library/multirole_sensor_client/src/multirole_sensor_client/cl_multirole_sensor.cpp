@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <multirole_sensor_client/cl_multirole_sensor.h>
-#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.h>
+#include <multirole_sensor_client/cl_multirole_sensor.hpp>
+#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>

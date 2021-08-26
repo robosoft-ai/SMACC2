@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/impl/smacc_state_machine_impl.h>
-#include <smacc/smacc_client_behavior.h>
-#include <smacc/smacc_orthogonal.h>
-#include <smacc/smacc_tracing/smacc_tracing.h>
+#include <smacc/impl/smacc_state_machine_impl.hpp>
+#include <smacc/smacc_client_behavior.hpp>
+#include <smacc/smacc_orthogonal.hpp>
+#include <smacc/smacc_tracing/smacc_tracing.hpp>
 
 #define statename stateMachine_->getCurrentState()->getClassName().c_str()
 #define orthogonalName getName().c_str()

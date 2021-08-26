@@ -19,9 +19,9 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_event_dispatcher.h>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include <smacc/smacc.h>
+#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_event_dispatcher.hpp>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+#include <smacc/smacc.hpp>
 
 #include <geometry_msgs/msg/pose.hpp>
 

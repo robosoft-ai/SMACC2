@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <smacc/smacc_client.h>
 #include <optional>
+#include <smacc/smacc_client.hpp>
 
 namespace smacc
 {

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/common.h>
-#include <sr_all_events_go/sr_all_events_go.h>
+#include <smacc/common.hpp>
+#include <sr_all_events_go/sr_all_events_go.hpp>
 
 namespace smacc
 {

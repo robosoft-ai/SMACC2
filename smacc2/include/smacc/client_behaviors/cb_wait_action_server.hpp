@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #pragma once
-#include <smacc/client_bases/smacc_action_client_base.h>
-#include <smacc/smacc_asynchronous_client_behavior.h>
+#include <smacc/client_bases/smacc_action_client_base.hpp>
+#include <smacc/smacc_asynchronous_client_behavior.hpp>
 
 namespace smacc
 {

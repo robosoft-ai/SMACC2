@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ros_timer_client/cl_ros_timer.h>
+#include <ros_timer_client/cl_ros_timer.hpp>
 
 namespace cl_ros_timer
 {

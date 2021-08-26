@@ -19,12 +19,12 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
 #include <tf2_ros/buffer.h>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
 
 #include <optional>
 
-#include "cb_move_base_client_behavior_base.h"
+#include "cb_move_base_client_behavior_base.hpp"
 
 namespace cl_move_base_z
 {

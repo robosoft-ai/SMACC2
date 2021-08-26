@@ -19,9 +19,9 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include <smacc/smacc_asynchronous_client_behavior.h>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.hpp>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+#include <smacc/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_move_base_z
 {

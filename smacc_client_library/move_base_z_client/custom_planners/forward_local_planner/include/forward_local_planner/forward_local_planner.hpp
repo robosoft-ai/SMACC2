@@ -21,9 +21,9 @@
 #include <Eigen/Eigen>
 
 //#include <dynamic_reconfigure/server.h>
-#include <move_base_z_planners_common/common.h>
 #include <tf2/transform_datatypes.h>
 #include <tf2/utils.h>
+#include <move_base_z_planners_common/common.hpp>
 
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <nav2_core/controller.hpp>

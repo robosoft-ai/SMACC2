@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <ros_publisher_client/cl_ros_publisher.h>
-#include <smacc/smacc_orthogonal.h>
+#include <ros_publisher_client/cl_ros_publisher.hpp>
+#include <smacc/smacc_orthogonal.hpp>
 #include <std_msgs/msg/string.hpp>
 
 namespace sm_three_some

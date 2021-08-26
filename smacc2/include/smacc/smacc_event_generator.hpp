@@ -20,12 +20,12 @@
 
 #pragma once
 
-#include <smacc/introspection/introspection.h>
 #include <algorithm>
 #include <boost/statechart/event.hpp>
 #include <functional>
 #include <map>
 #include <memory>
+#include <smacc/introspection/introspection.hpp>
 #include <vector>
 
 namespace smacc

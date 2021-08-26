@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #pragma once
-#include <ros_publisher_client/cl_ros_publisher.h>
-#include <smacc/smacc_client_behavior.h>
+#include <ros_publisher_client/cl_ros_publisher.hpp>
+#include <smacc/smacc_client_behavior.hpp>
 
 namespace cl_ros_publisher
 {

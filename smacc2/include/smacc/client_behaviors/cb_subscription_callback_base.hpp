@@ -18,7 +18,7 @@
  *
  ******************************************************************************************************************/
 #pragma once
-#include <smacc/smacc_client_behavior.h>
+#include <smacc/smacc_client_behavior.hpp>
 
 namespace smacc
 {

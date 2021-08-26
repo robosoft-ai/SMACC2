@@ -17,7 +17,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <move_base_z_client_plugin/client_behaviors/cb_move_base_client_behavior_base.h>
+#include <move_base_z_client_plugin/client_behaviors/cb_move_base_client_behavior_base.hpp>
 
 namespace cl_move_base_z
 {

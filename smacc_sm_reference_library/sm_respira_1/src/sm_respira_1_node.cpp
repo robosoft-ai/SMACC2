@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <sm_respira_1/sm_respira_1.h>
+#include <sm_respira_1/sm_respira_1.hpp>
 
 int main(int argc, char ** argv)
 {

@@ -20,9 +20,9 @@
 
 #pragma once
 
-#include <smacc/client_bases/smacc_action_client.h>
-#include <smacc/smacc_default_events.h>
-#include <smacc/smacc_signal.h>
+#include <smacc/client_bases/smacc_action_client.hpp>
+#include <smacc/smacc_default_events.hpp>
+#include <smacc/smacc_signal.hpp>
 
 #include <optional>
 #include <rclcpp_action/rclcpp_action.hpp>

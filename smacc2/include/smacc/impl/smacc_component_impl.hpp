@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include <smacc/component.h>
-#include <smacc/impl/smacc_state_machine_impl.h>
+#include <smacc/component.hpp>
+#include <smacc/impl/smacc_state_machine_impl.hpp>
 
 namespace smacc
 {

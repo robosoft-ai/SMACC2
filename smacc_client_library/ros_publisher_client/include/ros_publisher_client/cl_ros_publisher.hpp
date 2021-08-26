@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <smacc/client_bases/smacc_publisher_client.h>
+#include <smacc/client_bases/smacc_publisher_client.hpp>
 
 namespace cl_ros_publisher
 {

@@ -14,8 +14,8 @@
 
 #include <memory>
 
-#include <smacc/smacc_state.h>
-#include <smacc/smacc_state_reactor.h>
+#include <smacc/smacc_state.hpp>
+#include <smacc/smacc_state_reactor.hpp>
 #include "rclcpp/rclcpp.hpp"
 
 namespace smacc
