@@ -38,7 +38,7 @@ set(msg_files
   msg/SmaccTransitionLogEntry.msg
 )
 
-set (srv_files
+set(srv_files
   srv/SmaccGetTransitionHistory.srv
 )
 
