@@ -22,13 +22,13 @@ find_package(tf2_ros)
 find_package(tf2_geometry_msgs)
 
 set(dependencies
-    rclcpp
-    nav_msgs
-    geometry_msgs
-    angles
-    tf2
-    tf2_geometry_msgs
-  )
+  rclcpp
+  nav_msgs
+  geometry_msgs
+  angles
+  tf2
+  tf2_geometry_msgs
+)
 
 include_directories(include)
 

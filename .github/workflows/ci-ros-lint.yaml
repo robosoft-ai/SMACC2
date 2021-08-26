@@ -9,7 +9,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          linter: [copyright, cppcheck, lint_cmake]
+          #linter: [copyright, cppcheck, lint_cmake]
+          linter: [copyright, lint_cmake]
     steps:
     - uses: actions/checkout@v1
     - uses: ros-tooling/setup-ros@v0.2
@@ -103,3 +104,10 @@ jobs:
           #sr_all_events_go
           #sr_conditional
           #sr_event_countdown
+
+          #smacc2_ci
+          #smacc_client_library
+          #smacc_event_generators
+          #smacc_msgs
+          #smacc_sm_reference_library
+          #smacc_state_reactor_library

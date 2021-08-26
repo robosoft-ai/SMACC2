@@ -17,6 +17,11 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+#include <limits>
+#include <memory>
+#include <thread>
+#include <vector>
+
 #include <lttng/tracepoint.h>
 #include <smacc/client_bases/smacc_action_client_base.h>
 #include <smacc/smacc_signal_detector.h>
@@ -24,7 +29,6 @@
 // #include <smacc/smacc_tracing/trace_provider.h>
 #include <smacc/smacc_tracing/smacc_tracing.h>
 
-#include <thread>
 //#include "tracetools/tracetools.h"
 
 namespace smacc

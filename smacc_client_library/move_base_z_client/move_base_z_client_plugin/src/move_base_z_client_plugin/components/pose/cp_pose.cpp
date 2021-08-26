@@ -20,6 +20,9 @@
 
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
+#include <memory>
+#include <string>
+
 namespace cl_move_base_z
 {
 using namespace std::chrono_literals;
@@ -116,7 +119,7 @@ void Pose::update()
   }
   catch (tf2::TransformException & ex)
   {
-    //RCLCPP_DEBUG(getLogger(), "[pose] EXCEPTION");
+    // RCLCPP_DEBUG(getLogger(), "[pose] EXCEPTION");
     RCLCPP_ERROR_STREAM_THROTTLE(
       getLogger(), *(getNode()->get_clock()), 1000,
       "[Component pose] (" << poseFrameName_ << "/[" << referenceFrame_

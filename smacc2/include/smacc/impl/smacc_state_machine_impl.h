@@ -12,13 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*****************************************************************************************************************
+/**************************************************************************************************
  *
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
- ******************************************************************************************************************/
+ **************************************************************************************************/
 
 #pragma once
+
+#include <memory>
+#include <sstream>
+#include <string>
 
 #include <smacc/introspection/introspection.h>
 #include <smacc/smacc_client.h>
@@ -33,7 +37,7 @@
 #include <boost/function_types/function_type.hpp>
 #include <boost/function_types/parameter_types.hpp>
 #include <smacc_msgs/msg/smacc_status.hpp>
-#include <sstream>
+
 namespace smacc
 {
 using namespace smacc::introspection;
@@ -174,10 +178,10 @@ void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
       getLogger(),
       "CURRENT STATE SCOPED EVENT SKIPPED, state is exiting/transitioning " << eventtypename);
     return;
-    // in this case we may lose/skip events, if this is not right for some cases we should create a queue
-    // to lock the events during the transitions. This issues appeared when a client asyncbehavior was posting an event
-    // meanwhile we were doing the transition, but the main thread was waiting for its correct finalization (with
-    // thread.join)
+    // in this case we may lose/skip events, if this is not right for some cases we should create a
+    // queue to lock the events during the transitions. This issues appeared when a client
+    // asyncbehavior was posting an event meanwhile we were doing the transition, but the main
+    // thread was waiting for its correct finalization (with thread.join)
   }
 
   // when a postting event is requested by any component, client, or client behavior
@@ -382,8 +386,8 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(
 }
 
 // template <typename TSmaccSignal, typename TMemberFunctionPrototype>
-// boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype
-// callback)
+// boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal,
+// TMemberFunctionPrototype callback)
 // {
 //     return signal.connect(callback);
 //     // return signal;
@@ -599,7 +603,7 @@ void ISmaccStateMachine::notifyOnStateExited(StateType *)
   stateMachineCurrentAction = StateMachineInternalAction::TRANSITIONING;
   this->unlockStateMachine("state exit");
 }
-//-------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
 template <typename EventType>
 void ISmaccStateMachine::propagateEventToStateReactors(ISmaccState * st, EventType * ev)
 {

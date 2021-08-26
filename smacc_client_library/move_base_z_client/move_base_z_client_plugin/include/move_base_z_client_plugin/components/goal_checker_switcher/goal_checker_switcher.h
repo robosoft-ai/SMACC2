@@ -19,6 +19,8 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <string>
+
 #include <smacc/component.h>
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/string.hpp>

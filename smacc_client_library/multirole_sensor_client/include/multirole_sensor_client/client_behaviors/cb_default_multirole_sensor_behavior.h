@@ -15,6 +15,9 @@
 #pragma once
 
 #include <multirole_sensor_client/cl_multirole_sensor.h>
+
+#include <string>
+
 #include <smacc/smacc_client_behavior.h>
 
 namespace cl_multirole_sensor
@@ -89,7 +92,7 @@ public:
       deferedEventPropagation();
       RCLCPP_INFO(
         getNode()->get_logger(), "[CbDefaultMultiRoleSensorBehavior] onEntry. sensor initialize");
-      //sensor_->initialize();
+      // sensor_->initialize();
     }
   }
 

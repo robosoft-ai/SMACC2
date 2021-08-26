@@ -19,6 +19,9 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include <nav2_core/global_planner.hpp>
 #include <nav_msgs/msg/path.hpp>
 #include <rclcpp/rclcpp.hpp>

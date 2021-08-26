@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <string>
+
 #include <smacc/component.h>
 #include <smacc/impl/smacc_state_machine_impl.h>
 

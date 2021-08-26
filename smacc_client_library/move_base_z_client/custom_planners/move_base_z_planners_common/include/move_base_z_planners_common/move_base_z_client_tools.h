@@ -19,6 +19,8 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <vector>
+
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <rclcpp/rclcpp.hpp>
 
