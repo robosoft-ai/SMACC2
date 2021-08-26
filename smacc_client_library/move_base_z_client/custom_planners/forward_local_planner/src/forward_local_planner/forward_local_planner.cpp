@@ -341,7 +341,7 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
   geometry_msgs::msg::TwistStamped cmd_vel;
   goalReached_ = false;
   RCLCPP_DEBUG(
-    nh_->get_logger(), "[ForwardLocalPlanner] ----- COMUTE VELOCITY COMMAND LOCAL PLANNER ---");
+    nh_->get_logger(), "[ForwardLocalPlanner] ----- COMPUTE VELOCITY COMMAND LOCAL PLANNER ---");
 
   bool ok = false;
   while (!ok)
@@ -628,7 +628,7 @@ void ForwardLocalPlanner::setPlan(const nav_msgs::msg::Path & plan)
 {
   nav_msgs::msg::Path transformedPlan;
 
-  rclcpp::Duration ttol(transform_tolerance_);
+  rclcpp::Duration ttol = rclcpp::Duration::from_seconds(transform_tolerance_);
   // transform global plan
   for (auto & p : plan.poses)
   {

@@ -22,21 +22,22 @@ find_package(pluginlib)
 find_package(nav_2d_utils)
 
 set(dependencies
-    nav2_core
-    nav_msgs
-    nav2_costmap_2d
-    geometry_msgs
-    visualization_msgs
-    tf2
-    move_base_z_planners_common
-    pluginlib
-    nav_2d_utils)
+  nav2_core
+  nav_msgs
+  nav2_costmap_2d
+  geometry_msgs
+  visualization_msgs
+  tf2
+  move_base_z_planners_common
+  pluginlib
+  nav_2d_utils
+)
 
 include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
-            src/${PROJECT_NAME}/forward_local_planner.cpp
-           )
+  src/${PROJECT_NAME}/forward_local_planner.cpp
+)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC "PLUGINLIB__DISABLE_BOOST_FUNCTIONS")
 pluginlib_export_plugin_description_file(nav2_core flp_plugin.xml)
@@ -59,8 +60,8 @@ install(DIRECTORY include/
 )
 
 install(FILES
-   flp_plugin.xml
-   DESTINATION share
+  flp_plugin.xml
+  DESTINATION share
 )
 
 ament_package()

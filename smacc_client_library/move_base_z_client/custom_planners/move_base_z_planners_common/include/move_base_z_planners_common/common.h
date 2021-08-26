@@ -13,9 +13,10 @@
 // limitations under the License.
 
 #pragma once
+#include <iostream>
+
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/twist.hpp>
-#include <iostream>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Twist & msg);

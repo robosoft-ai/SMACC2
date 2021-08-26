@@ -162,8 +162,9 @@ struct SmDanceBot : public smacc::SmaccStateMachineBase<SmDanceBot, MsDanceBotRu
 }  // namespace sm_dance_bot
 
 //MODE STATES
-#include <sm_dance_bot/modestates/ms_dance_bot_recovery_mode.h>
 #include <sm_dance_bot/modestates/ms_dance_bot_run_mode.h>
+
+#include <sm_dance_bot/modestates/ms_dance_bot_recovery_mode.h>
 
 //SUPERSTATES
 #include <sm_dance_bot/superstates/ss_f_pattern_1.h>

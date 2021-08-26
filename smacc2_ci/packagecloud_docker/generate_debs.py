@@ -17,7 +17,6 @@
 import rospkg
 import subprocess
 import os
-import time
 import shutil
 import re
 
@@ -89,7 +88,7 @@ def build_deb_package(
     print(already_visited)
 
     debianfilename = [
-        f for f in debianfiles if re.search(regexstr, f) and not f in already_visited
+        f for f in debianfiles if re.search(regexstr, f) and f not in already_visited
     ][0]
 
     print("Debian file found: ")

@@ -24,44 +24,44 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(pluginlib REQUIRED)
 
 set(dependencies
-    smacc2
-    std_srvs
-    std_msgs
-    nav2_msgs
-    tf2
-    tf2_ros
-    angles
-    yaml_cpp_vendor
-    tf2_geometry_msgs
-    pluginlib
-    )
+  smacc2
+  std_srvs
+  std_msgs
+  nav2_msgs
+  tf2
+  tf2_ros
+  angles
+  yaml_cpp_vendor
+  tf2_geometry_msgs
+  pluginlib
+)
 
 include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
-            src/${PROJECT_NAME}/move_base_z_client_plugin.cpp
-            src/${PROJECT_NAME}/common.cpp
+  src/${PROJECT_NAME}/move_base_z_client_plugin.cpp
+  src/${PROJECT_NAME}/common.cpp
 
-            src/${PROJECT_NAME}/client_behaviors/cb_move_base_client_behavior_base.cpp
-            src/${PROJECT_NAME}/client_behaviors/cb_absolute_rotate.cpp
-            src/${PROJECT_NAME}/client_behaviors/cb_navigate_backward.cpp
-            src/${PROJECT_NAME}/client_behaviors/cb_navigate_forward.cpp
-            src/${PROJECT_NAME}/client_behaviors/cb_navigate_global_position.cpp
-            src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint.cpp
-            src/${PROJECT_NAME}/client_behaviors/cb_rotate.cpp
-            src/${PROJECT_NAME}/client_behaviors/cb_undo_path_backwards.cpp
-            src/${PROJECT_NAME}/client_behaviors/cb_wait_pose.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_move_base_client_behavior_base.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_absolute_rotate.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_navigate_backward.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_navigate_forward.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_navigate_global_position.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_rotate.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_undo_path_backwards.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_wait_pose.cpp
 
-            # COMPONENTS
-            src/${PROJECT_NAME}/components/costmap_switch/cp_costmap_switch.cpp
-            #src/${PROJECT_NAME}/components/odom_tracker/odom_tracker_node.cpp
-            src/${PROJECT_NAME}/components/odom_tracker/odom_tracker.cpp
-            src/${PROJECT_NAME}/components/planner_switcher/planner_switcher.cpp
-            src/${PROJECT_NAME}/components/goal_checker_switcher/goal_checker_switcher.cpp
-            src/${PROJECT_NAME}/components/pose/cp_pose.cpp
-            src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_event_dispatcher.cpp
-            src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_navigator.cpp
-            )
+  # COMPONENTS
+  src/${PROJECT_NAME}/components/costmap_switch/cp_costmap_switch.cpp
+  #src/${PROJECT_NAME}/components/odom_tracker/odom_tracker_node.cpp
+  src/${PROJECT_NAME}/components/odom_tracker/odom_tracker.cpp
+  src/${PROJECT_NAME}/components/planner_switcher/planner_switcher.cpp
+  src/${PROJECT_NAME}/components/goal_checker_switcher/goal_checker_switcher.cpp
+  src/${PROJECT_NAME}/components/pose/cp_pose.cpp
+  src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_event_dispatcher.cpp
+  src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_navigator.cpp
+)
 
 ament_target_dependencies(${PROJECT_NAME}
                           ${dependencies})

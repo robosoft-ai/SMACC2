@@ -18,39 +18,41 @@ from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition, UnlessCondition
+
+# from launch.conditions import UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
-from nav2_common.launch import HasNodeParams, RewrittenYaml
+
+# from launch_ros.actions import Node
+# from nav2_common.launch import RewrittenYaml
 
 
 def generate_launch_description():
     # Input parameters declaration
-    namespace = LaunchConfiguration("namespace")
-    params_file = LaunchConfiguration("params_file")
+    # namespace = LaunchConfiguration("namespace")
+    # params_file = LaunchConfiguration("params_file")
     use_sim_time = LaunchConfiguration("use_sim_time")
-    autostart = LaunchConfiguration("autostart")
-    sm_dance_bot_strikes_back_dir = get_package_share_directory("sm_dance_bot_strikes_back")
+    # autostart = LaunchConfiguration("autostart")
+    # sm_dance_bot_strikes_back_dir = get_package_share_directory("sm_dance_bot_strikes_back")
 
     # Variables
-    lifecycle_nodes = ["slam_toolbox"]
+    # lifecycle_nodes = ["slam_toolbox"]
 
     # Getting directories and launch-files
-    bringup_dir = get_package_share_directory("nav2_bringup")
+    # bringup_dir = get_package_share_directory("nav2_bringup")
     slam_toolbox_dir = get_package_share_directory("slam_toolbox")
     # slam_launch_file = os.path.join(sm_dance_bot_strikes_back_dir, 'launch', 'online_sync_launch.py')
     slam_launch_file = os.path.join(slam_toolbox_dir, "launch", "online_sync_launch.py")
 
     # Create our own temporary YAML files that include substitutions
-    param_substitutions = {"use_sim_time": use_sim_time}
+    # param_substitutions = {"use_sim_time": use_sim_time}
 
-    configured_params = RewrittenYaml(
-        source_file=params_file,
-        root_key=namespace,
-        param_rewrites=param_substitutions,
-        convert_types=True,
-    )
+    # configured_params = RewrittenYaml(
+    # source_file=params_file,
+    # root_key=namespace,
+    # param_rewrites=param_substitutions,
+    # convert_types=True,
+    # )
 
     # Declare the launch arguments
     declare_namespace_cmd = DeclareLaunchArgument(
@@ -78,20 +80,21 @@ def generate_launch_description():
     #         output='screen',
     #         parameters=[configured_params])
 
-    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
+    # xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' " \
+    # "-hold -geometry 1000x600 -sl 10000 -e"
 
-    start_lifecycle_manager_cmd = Node(
-        package="nav2_lifecycle_manager",
-        executable="lifecycle_manager",
-        name="lifecycle_manager_slam",
-        output="screen",
-        parameters=[
-            {"use_sim_time": use_sim_time},
-            {"autostart": autostart},
-            {"node_names": lifecycle_nodes},
-        ],
-        prefix=xtermprefix,
-    )
+    # start_lifecycle_manager_cmd = Node(
+    # package="nav2_lifecycle_manager",
+    # executable="lifecycle_manager",
+    # name="lifecycle_manager_slam",
+    # output="screen",
+    # parameters=[
+    # {"use_sim_time": use_sim_time},
+    # {"autostart": autostart},
+    # {"node_names": lifecycle_nodes},
+    # ],
+    # prefix=xtermprefix,
+    # )
 
     # If the provided param file doesn't have slam_toolbox params, we must remove the 'params_file'
     # LaunchConfiguration, or it will be passed automatically to slam_toolbox and will not load

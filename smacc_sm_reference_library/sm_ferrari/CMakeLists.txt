@@ -18,13 +18,14 @@ find_package(std_msgs REQUIRED)
 find_package(eg_conditional_generator REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
-include_directories(include
-                    ${smacc2_INCLUDE_DIRS}
-                    ${std_msgs_INCLUDE_DIRS}
-                    ${smacc_msgs_INCLUDE_DIRS}
-                    ${eg_conditional_generator_INCLUDE_DIRS}
-                    ${keyboard_client_INCLUDE_DIRS}
-                    )
+include_directories(
+  include
+  ${smacc2_INCLUDE_DIRS}
+  ${std_msgs_INCLUDE_DIRS}
+  ${smacc_msgs_INCLUDE_DIRS}
+  ${eg_conditional_generator_INCLUDE_DIRS}
+  ${keyboard_client_INCLUDE_DIRS}
+)
 
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
 
@@ -40,8 +41,7 @@ target_link_libraries(
 
 file(GLOB_RECURSE SRC_FILES2 servers/*.cpp)
 
-add_executable(temperature_sensor_node
-               ${SRC_FILES2})
+add_executable(temperature_sensor_node ${SRC_FILES2})
 
 target_link_libraries(
   temperature_sensor_node
