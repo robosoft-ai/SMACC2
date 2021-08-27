@@ -23,6 +23,7 @@
 #include <optional>
 #include <smacc/smacc_client.hpp>
 #include <smacc/smacc_signal.hpp>
+#include <smacc/smacc_state_machine.hpp>
 
 namespace smacc
 {
