@@ -1,10 +1,12 @@
 name: "Doxygen Doc Deployment"
 on:
-  push:
-    branches:
-      - master
-  schedule:
-    - cron: '6 43 * * *'
+  workflow_dispatch:
+#  push:
+#    branches:
+#      - master
+#  schedule:
+#    - cron: '6 43 * * *'
+
 
 jobs:
   deploy-doc:
