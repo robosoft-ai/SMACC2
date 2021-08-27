@@ -175,6 +175,10 @@ void ISmaccStateMachine::state_machine_visualization()
 
   smacc_msgs::msg::SmaccStateMachine state_machine_msg;
   state_machine_msg.states = stateMachineInfo_->stateMsgs;
+
+  std::sort(
+    state_machine_msg.states.begin(), state_machine_msg.states.end(),
+    [](auto & a, auto & b) { return a.index < b.index; });
   stateMachinePub_->publish(state_machine_msg);
 
   status_msg_.header.stamp = this->nh_->now();

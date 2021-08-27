@@ -22,7 +22,7 @@ struct StiState2 : smacc::SmaccState<StiState2, SS>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : SUCCESS
+  struct TIMEOUT : ABORT
   {
   };
   struct NEXT : SUCCESS

@@ -17,6 +17,7 @@
 #include <optional>
 #include <rclcpp/rclcpp.hpp>
 #include <smacc/client_bases/smacc_subscriber_client.hpp>
+#include <smacc/impl/smacc_state_machine_impl.hpp>
 #include <smacc/smacc_signal.hpp>
 
 namespace cl_multirole_sensor
