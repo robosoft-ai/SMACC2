@@ -12,19 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.h>
+#pragma once
+
+#include <smacc/smacc.hpp>
 
 namespace sm_branching
 {
 // STATE DECLARATION
-struct State2 : smacc::SmaccState<State2, SmBranching>
+struct State5 : smacc::SmaccState<State5, SmBranching>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State3, SUCCESS>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State6, SUCCESS>
 
     >
     reactions;
@@ -36,7 +38,7 @@ struct State2 : smacc::SmaccState<State2, SmBranching>
       5);  // EvTimer triggers once at 10 client ticks
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State2"); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State5"); }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 

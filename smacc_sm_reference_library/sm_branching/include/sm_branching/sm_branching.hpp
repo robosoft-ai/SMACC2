@@ -12,17 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.h>
+#pragma once
+
+#include <smacc/smacc.hpp>
 
 // CLIENTS
-#include <ros_timer_client/cl_ros_timer.h>
+#include <ros_timer_client/cl_ros_timer.hpp>
 
 //CLIENT BEHAVIORS
-#include <ros_timer_client/client_behaviors/cb_timer_countdown_loop.h>
-#include <ros_timer_client/client_behaviors/cb_timer_countdown_once.h>
+#include <ros_timer_client/client_behaviors/cb_timer_countdown_loop.hpp>
+#include <ros_timer_client/client_behaviors/cb_timer_countdown_once.hpp>
 
 // ORTHOGONALS
-#include "orthogonals/or_timer.h"
+#include "orthogonals/or_timer.hpp"
 
 using namespace boost;
 using namespace smacc;
@@ -54,15 +56,15 @@ struct SmBranching : public smacc::SmaccStateMachineBase<SmBranching, State1>
 
 }  // namespace sm_branching
 
-#include "states/st_state_1.h"
-#include "states/st_state_2.h"
-#include "states/st_state_2b.h"
-#include "states/st_state_2c.h"
-#include "states/st_state_3.h"
-#include "states/st_state_3b.h"
-#include "states/st_state_3c.h"
-#include "states/st_state_4.h"
-#include "states/st_state_4c.h"
-#include "states/st_state_5.h"
-#include "states/st_state_5b.h"
-#include "states/st_state_6.h"
+#include "states/st_state_1.hpp"
+#include "states/st_state_2.hpp"
+#include "states/st_state_2b.hpp"
+#include "states/st_state_2c.hpp"
+#include "states/st_state_3.hpp"
+#include "states/st_state_3b.hpp"
+#include "states/st_state_3c.hpp"
+#include "states/st_state_4.hpp"
+#include "states/st_state_4c.hpp"
+#include "states/st_state_5.hpp"
+#include "states/st_state_5b.hpp"
+#include "states/st_state_6.hpp"

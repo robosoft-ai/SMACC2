@@ -16,23 +16,28 @@ find_package(smacc2 REQUIRED)
 find_package(ros_timer_client REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
-include_directories(include
-                    ${smacc2_INCLUDE_DIRS}
-                    ${ros_timer_client_INCLUDE_DIRS})
+include_directories(
+  include
+  ${smacc2_INCLUDE_DIRS}
+  ${ros_timer_client_INCLUDE_DIRS}
+)
 
-add_executable(${PROJECT_NAME}_node
-                src/sm_branching/sm_branching_node.cpp)
+add_executable(
+  ${PROJECT_NAME}_node
+  src/sm_branching/sm_branching_node.cpp
+)
 
-target_link_libraries(${PROJECT_NAME}_node
-                      ${smacc2_LIBRARIES}
-                      ${ros_timer_client_LIBRARIES}
-                      ${Boost_LIBRARIES}
-                      )
+target_link_libraries(
+  ${PROJECT_NAME}_node
+  ${smacc2_LIBRARIES}
+  ${ros_timer_client_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
 
 ament_target_dependencies(${PROJECT_NAME}_node smacc2)
 
-install(
-  DIRECTORY include/
+install(DIRECTORY
+  include/
   DESTINATION include
 )
 
@@ -47,7 +52,8 @@ install(DIRECTORY
 )
 
 install(TARGETS
-        ${PROJECT_NAME}_node
-        DESTINATION lib/${PROJECT_NAME})
+  ${PROJECT_NAME}_node
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 ament_package()
