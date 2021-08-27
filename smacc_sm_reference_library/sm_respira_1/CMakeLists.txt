@@ -65,6 +65,7 @@ install(TARGETS ${PROJECT_NAME}_node
   RUNTIME DESTINATION lib/${PROJECT_NAME} # executables
 )
 
-install(DIRECTORY launch/
+install(
+  DIRECTORY launch/
   DESTINATION share/${PROJECT_NAME}
 )
