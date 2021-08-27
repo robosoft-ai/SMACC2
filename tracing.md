@@ -5,7 +5,7 @@ First, make sure that smacc and tracetools installed (or built in your workspace
 Then start your smacc application:
 
 ```
-ros2 launch sm_three_some sm_three_some
+ros2 launch sm_three_some sm_three_some.launch
 ```
 
 Once the application is running you can check if the tracepoints are available via the lttng command:
@@ -51,6 +51,12 @@ ID: 1663722 - Name: /home/geus/Desktop/smacc_tracing/install/sm_three_some/lib/s
 ```
 Now lets start a recording session. We use a custom command ```trace.sh```, it is essentially an extended version of ```ros2 trace``` but also adding the smacc tracepoints to be recorded:
 
+First ensure you have the necessary package installed.
+```
+sudo apt-get install ros-rolling-ros2trace
+```
+
+Then run this command.
 ```
 ros2 run smacc2 trace.sh
 ```
