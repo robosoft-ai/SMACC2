@@ -1,0 +1,24 @@
+name: "Doxygen Doc Deployment"
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '6 43 * * *'
+
+jobs:
+  deploy-doc:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: mattnotmitt/doxygen-action@v1
+      with:
+        doxyfile-path: 'smacc2_ci/Doxyfile'
+    
+    - uses: peaceiris/actions-gh-pages@v3
+      with:
+        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        external_repository:  robosoft-ai/SMACC2_Documentation 
+        publish_branch: gh-pages
+        destination_dir: ${{ github.ref }}  # Branch name
+        commit_message: ${{ github.event.head_commit.message }}
