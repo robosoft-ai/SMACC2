@@ -18,13 +18,13 @@
  *
  ******************************************************************************************************************/
 
-#include <move_base_z_client_plugin/client_behaviors/cb_navigate_forward.h>
-#include <move_base_z_client_plugin/common.h>
+#include <move_base_z_client_plugin/client_behaviors/cb_navigate_forward.hpp>
+#include <move_base_z_client_plugin/common.hpp>
 
-#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
-#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
-#include <move_base_z_client_plugin/components/pose/cp_pose.h>
 #include <tf2/utils.h>
+#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
+#include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
 
 namespace cl_move_base_z
 {

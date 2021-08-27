@@ -17,7 +17,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <sm_dance_bot_strikes_back/clients/cl_led/cl_led.h>
+#include <sm_dance_bot_strikes_back/clients/cl_led/cl_led.hpp>
 //#include <pluginlib/class_list_macros.h>
 
 namespace sm_dance_bot_strikes_back

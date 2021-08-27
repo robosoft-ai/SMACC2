@@ -18,8 +18,8 @@
  *
  ******************************************************************************************************************/
 
-#include <smacc/impl/smacc_client_impl.h>
-#include <smacc/smacc_client.h>
+#include <smacc/impl/smacc_client_impl.hpp>
+#include <smacc/smacc_client.hpp>
 
 namespace smacc
 {

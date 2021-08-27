@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/introspection/introspection.h>
+#include <smacc/introspection/introspection.hpp>
 #include "rclcpp/rclcpp.hpp"
 
 namespace smacc

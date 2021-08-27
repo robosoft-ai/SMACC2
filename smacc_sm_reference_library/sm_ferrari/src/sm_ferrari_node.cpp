@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <sm_ferrari/sm_ferrari.h>
+#include <sm_ferrari/sm_ferrari.hpp>
 
 int main(int argc, char ** argv)
 {

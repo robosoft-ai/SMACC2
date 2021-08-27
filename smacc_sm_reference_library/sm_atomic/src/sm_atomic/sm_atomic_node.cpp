@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <sm_atomic/sm_atomic.h>
+#include <sm_atomic/sm_atomic.hpp>
 
 //--------------------------------------------------------------------
 int main(int argc, char ** argv)

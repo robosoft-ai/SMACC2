@@ -18,10 +18,10 @@
  *
  ******************************************************************************************************************/
 
-#include <move_base_z_client_plugin/client_behaviors/cb_wait_pose.h>
-#include <move_base_z_client_plugin/components/pose/cp_pose.h>
+#include <move_base_z_client_plugin/client_behaviors/cb_wait_pose.hpp>
+#include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
 
-#include <move_base_z_client_plugin/common.h>
+#include <move_base_z_client_plugin/common.hpp>
 #include <rclcpp/parameter_client.hpp>
 
 namespace cl_move_base_z

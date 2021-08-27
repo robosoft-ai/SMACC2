@@ -18,7 +18,7 @@
  *
  ******************************************************************************************************************/
 
-#include <smacc/smacc_event_generator.h>
+#include <smacc/smacc_event_generator.hpp>
 
 namespace smacc
 {

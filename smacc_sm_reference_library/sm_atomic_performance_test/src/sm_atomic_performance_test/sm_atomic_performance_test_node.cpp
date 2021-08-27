@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <sm_atomic_performance_test/sm_atomic_performance_test.h>
+#include <sm_atomic_performance_test/sm_atomic_performance_test.hpp>
 
 //--------------------------------------------------------------------
 int main(int argc, char ** argv)

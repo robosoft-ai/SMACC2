@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include <angles/angles.h>
-#include <pure_spinning_local_planner/pure_spinning_local_planner.h>
+#include <pure_spinning_local_planner/pure_spinning_local_planner.hpp>
 
 #include <nav_2d_utils/tf_help.hpp>
 #include <pluginlib/class_list_macros.hpp>

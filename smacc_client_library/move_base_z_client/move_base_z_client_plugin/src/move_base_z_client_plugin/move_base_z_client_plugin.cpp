@@ -17,7 +17,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
 
 #include <string>
 

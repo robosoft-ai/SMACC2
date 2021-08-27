@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ros_timer_client/client_behaviors/cb_timer_countdown_loop.h>
+#include <ros_timer_client/client_behaviors/cb_timer_countdown_loop.hpp>
 
 namespace cl_ros_timer
 {

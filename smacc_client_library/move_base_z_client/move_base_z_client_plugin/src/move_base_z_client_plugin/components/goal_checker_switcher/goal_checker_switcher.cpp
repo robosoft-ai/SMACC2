@@ -17,7 +17,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
+#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
 
 namespace cl_move_base_z
 {

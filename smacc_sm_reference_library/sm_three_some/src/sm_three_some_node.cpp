@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <sm_three_some/sm_three_some.h>
+#include <sm_three_some/sm_three_some.hpp>
 
 int main(int argc, char ** argv)
 {

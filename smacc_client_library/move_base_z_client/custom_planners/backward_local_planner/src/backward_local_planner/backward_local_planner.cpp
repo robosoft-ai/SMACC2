@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #include <angles/angles.h>
-#include <backward_local_planner/backward_local_planner.h>
-#include <move_base_z_planners_common/common.h>
+#include <backward_local_planner/backward_local_planner.hpp>
+#include <move_base_z_planners_common/common.hpp>
 
 #include <boost/intrusive_ptr.hpp>
 #include <chrono>

@@ -23,11 +23,11 @@
 #include <vector>
 
 #include <lttng/tracepoint.h>
-#include <smacc/client_bases/smacc_action_client_base.h>
-#include <smacc/smacc_signal_detector.h>
-#include <smacc/smacc_state_machine.h>
-// #include <smacc/smacc_tracing/trace_provider.h>
-#include <smacc/smacc_tracing/smacc_tracing.h>
+#include <smacc/client_bases/smacc_action_client_base.hpp>
+#include <smacc/smacc_signal_detector.hpp>
+#include <smacc/smacc_state_machine.hpp>
+// #include <smacc/smacc_tracing/trace_provider.hpp>
+#include <smacc/smacc_tracing/smacc_tracing.hpp>
 
 //#include "tracetools/tracetools.h"
 

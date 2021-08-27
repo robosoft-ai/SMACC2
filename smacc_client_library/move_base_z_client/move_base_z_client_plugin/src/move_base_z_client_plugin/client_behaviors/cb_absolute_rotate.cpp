@@ -18,12 +18,12 @@
  *
  ******************************************************************************************************************/
 
-#include <move_base_z_client_plugin/client_behaviors/cb_absolute_rotate.h>
-#include <move_base_z_client_plugin/common.h>
-#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
-#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
-#include <move_base_z_client_plugin/components/pose/cp_pose.h>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <move_base_z_client_plugin/client_behaviors/cb_absolute_rotate.hpp>
+#include <move_base_z_client_plugin/common.hpp>
+#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
+#include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
 
 #include <rclcpp/parameter_client.hpp>
 

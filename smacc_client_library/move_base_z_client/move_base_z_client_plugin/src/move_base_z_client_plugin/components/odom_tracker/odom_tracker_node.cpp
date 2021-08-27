@@ -18,9 +18,9 @@
  *
  ******************************************************************************************************************/
 #include <actionlib/server/simple_action_server.h>
-#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
 #include <odom_tracker/OdomTrackerAction.h>
 #include <memory>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
 
 typedef actionlib::SimpleActionServer<odom_tracker::OdomTrackerAction> Server;
 

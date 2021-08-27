@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/introspection/smacc_type_info.h>
+#include <smacc/introspection/smacc_type_info.hpp>
 
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
@@ -24,7 +24,7 @@
 #include <regex>
 #include <set>
 
-#include <smacc/common.h>
+#include <smacc/common.hpp>
 
 namespace smacc
 {

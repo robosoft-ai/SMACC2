@@ -18,8 +18,8 @@
  *
  ******************************************************************************************************************/
 
-#include <move_base_z_client_plugin/client_behaviors/cb_navigate_next_waypoint.h>
-#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
+#include <move_base_z_client_plugin/client_behaviors/cb_navigate_next_waypoint.hpp>
+#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.hpp>
 
 namespace cl_move_base_z
 {

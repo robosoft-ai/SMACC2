@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc_tracing/smacc_tracing.h>
+#include <smacc/smacc_tracing/smacc_tracing.hpp>
 
 #ifdef TRACETOOLS_LTTNG_ENABLED
-#include <smacc/smacc_tracing/trace_provider.h>
+#include <smacc/smacc_tracing/trace_provider.hpp>
 #define CONDITIONAL_TP(...) tracepoint(TRACEPOINT_PROVIDER, __VA_ARGS__)
 #else
 #define CONDITIONAL_TP(...)

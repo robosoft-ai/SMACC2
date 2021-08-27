@@ -17,8 +17,8 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.hpp>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
 
 namespace cl_move_base_z
 {

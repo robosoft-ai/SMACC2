@@ -18,11 +18,11 @@
  *
  ******************************************************************************************************************/
 
-#include <move_base_z_client_plugin/client_behaviors/cb_undo_path_backwards.h>
-#include <move_base_z_client_plugin/common.h>
-#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.h>
-#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
-#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/client_behaviors/cb_undo_path_backwards.hpp>
+#include <move_base_z_client_plugin/common.hpp>
+#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.hpp>
 
 namespace cl_move_base_z
 {

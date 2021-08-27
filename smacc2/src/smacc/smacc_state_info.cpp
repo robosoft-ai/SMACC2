@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/common.h>
-#include <smacc/introspection/introspection.h>
+#include <smacc/common.hpp>
+#include <smacc/introspection/introspection.hpp>
 
 namespace smacc
 {
