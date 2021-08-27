@@ -6,6 +6,7 @@ jobs:
   check-doc:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - uses: mattnotmitt/doxygen-action@v1
       with:
         doxyfile-path: 'smacc2_ci/Doxyfile'
