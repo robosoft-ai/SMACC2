@@ -22,7 +22,7 @@ struct StiACCycleExpire : smacc::SmaccState<StiACCycleExpire, SsACCycle>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : SUCCESS
+  struct TIMEOUT : ABORT
   {
   };
   struct NEXT : SUCCESS

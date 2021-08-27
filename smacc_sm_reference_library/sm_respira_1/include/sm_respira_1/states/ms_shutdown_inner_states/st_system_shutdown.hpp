@@ -20,7 +20,7 @@ struct StSystemShutdown : smacc::SmaccState<StSystemShutdown, MsShutdown>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : SUCCESS
+  struct TIMEOUT : ABORT
   {
   };
   struct NEXT : SUCCESS

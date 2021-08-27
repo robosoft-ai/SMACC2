@@ -207,8 +207,5 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
     RCLCPP_INFO_STREAM(getLogger(), ss.str());
     stateMsgs.push_back(stateMsg);
   }
-
-  std::sort(
-    stateMsgs.begin(), stateMsgs.end(), [](auto & a, auto & b) { return a.index > b.index; });
 }
 }  // namespace smacc

@@ -20,7 +20,7 @@ struct StLeakyLungStep2 : smacc::SmaccState<StLeakyLungStep2, MsLeakyLung>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : SUCCESS
+  struct TIMEOUT : ABORT
   {
   };
   struct NEXT : SUCCESS
