@@ -21,6 +21,7 @@ jobs:
       with:
         deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
         external_repository:  robosoft-ai/SMACC2_Documentation 
-        publish_branch: gh-pages
+        # publish_branch: gh-pages
+        publish_dir: docs/
         destination_dir: ${{ github.ref }}  # Branch name
         commit_message: ${{ github.event.head_commit.message }}
