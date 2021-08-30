@@ -18,7 +18,7 @@ namespace f_pattern_states
 {
 // STATE DECLARATION
 template <typename SS>
-struct StiFPatternReturn1 : smacc::SmaccState<StiFPatternReturn1<SS>, SS>
+struct StiFPatternReturn1 : smacc2::SmaccState<StiFPatternReturn1<SS>, SS>
 {
   typedef SmaccState<StiFPatternReturn1<SS>, SS> TSti;
   using TSti::context_type;

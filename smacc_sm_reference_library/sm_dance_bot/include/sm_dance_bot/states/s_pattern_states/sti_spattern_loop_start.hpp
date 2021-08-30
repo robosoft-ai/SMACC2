@@ -17,7 +17,7 @@ namespace sm_dance_bot
 namespace s_pattern_states
 {
 template <class TDerived, typename TContext>
-struct B : smacc::SmaccState<TDerived, TContext>
+struct B : smacc2::SmaccState<TDerived, TContext>
 {
 public:
   using SmaccState<TDerived, TContext>::SmaccState;

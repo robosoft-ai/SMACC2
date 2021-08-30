@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace sm_atomic_subscribers_performance_test
 {
 // STATE DECLARATION
-struct State2 : smacc::SmaccState<State2, SmAtomicSubscribersPerformanceTest>
+struct State2 : smacc2::SmaccState<State2, SmAtomicSubscribersPerformanceTest>
 {
   using SmaccState::SmaccState;
 

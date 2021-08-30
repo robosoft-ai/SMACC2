@@ -14,14 +14,14 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
-find_package(smacc_msgs REQUIRED)
+find_package(smacc2_msgs REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 find_package(tracetools)
 find_package(LTTngUST REQUIRED)
 
 set(dependencies
   rclcpp
-  smacc_msgs
+  smacc2_msgs
   rclcpp_action
   tracetools
 )

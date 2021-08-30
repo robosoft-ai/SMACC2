@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_dance_bot_strikes_back
 {
 // STATE DECLARATION
-struct StSpatternPrealignment : smacc::SmaccState<StSpatternPrealignment, MsDanceBotRunMode>
+struct StSpatternPrealignment : smacc2::SmaccState<StSpatternPrealignment, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 

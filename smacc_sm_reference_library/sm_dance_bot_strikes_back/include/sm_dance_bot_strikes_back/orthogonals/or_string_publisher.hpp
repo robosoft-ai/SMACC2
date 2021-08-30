@@ -15,10 +15,10 @@
 #pragma once
 
 #include <sm_dance_bot_strikes_back/clients/cl_string_publisher/cl_string_publisher.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 namespace sm_dance_bot_strikes_back
 {
-class OrStringPublisher : public smacc::Orthogonal<OrStringPublisher>
+class OrStringPublisher : public smacc2::Orthogonal<OrStringPublisher>
 {
 public:
   void onInitialize() override { this->createClient<ClStringPublisher>("/string_publisher_out"); }

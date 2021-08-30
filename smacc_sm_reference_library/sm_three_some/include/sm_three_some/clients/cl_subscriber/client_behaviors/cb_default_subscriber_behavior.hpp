@@ -19,7 +19,7 @@ namespace sm_three_some
 {
 namespace cl_subscriber
 {
-class CbDefaultSubscriberBehavior : public smacc::SmaccClientBehavior
+class CbDefaultSubscriberBehavior : public smacc2::SmaccClientBehavior
 {
 public:
   typedef std_msgs::msg::UInt16 TMessageType;

@@ -15,11 +15,11 @@
 #pragma once
 
 #include <sm_dance_bot_strikes_back/clients/cl_service3/cl_service3.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_dance_bot_strikes_back
 {
-class OrService3 : public smacc::Orthogonal<OrService3>
+class OrService3 : public smacc2::Orthogonal<OrService3>
 {
 public:
   void onInitialize() override

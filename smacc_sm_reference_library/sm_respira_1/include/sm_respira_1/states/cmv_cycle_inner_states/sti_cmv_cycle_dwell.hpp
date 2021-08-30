@@ -17,7 +17,7 @@ namespace sm_respira_1
 namespace cmv_cycle_inner_states
 {
 // STATE DECLARATION
-struct StiCMVCycleDwell : smacc::SmaccState<StiCMVCycleDwell, SsCMVCycle>
+struct StiCMVCycleDwell : smacc2::SmaccState<StiCMVCycleDwell, SsCMVCycle>
 {
   using SmaccState::SmaccState;
 

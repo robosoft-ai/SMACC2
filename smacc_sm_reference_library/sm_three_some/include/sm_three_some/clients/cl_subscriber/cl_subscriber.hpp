@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #pragma once
-#include <smacc/client_bases/smacc_subscriber_client.hpp>
+#include <smacc2/client_bases/smacc_subscriber_client.hpp>
 
 #include <std_msgs/msg/int16.hpp>
 
@@ -21,7 +21,7 @@ namespace sm_three_some
 {
 namespace cl_subscriber
 {
-class ClSubscriber : public smacc::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>
+class ClSubscriber : public smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>
 {
 };
 }  // namespace cl_subscriber

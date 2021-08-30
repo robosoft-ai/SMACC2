@@ -15,11 +15,11 @@
 #pragma once
 #include <boost/statechart/event.hpp>
 #include <map>
-#include <smacc/common.hpp>
-#include <smacc/smacc_state_reactor.hpp>
+#include <smacc2/common.hpp>
+#include <smacc2/smacc_state_reactor.hpp>
 #include <typeinfo>
 
-namespace smacc
+namespace smacc2
 {
 namespace state_reactors
 {
@@ -52,4 +52,4 @@ public:
   virtual bool triggers() override;
 };
 }  // namespace state_reactors
-}  // namespace smacc
+}  // namespace smacc2

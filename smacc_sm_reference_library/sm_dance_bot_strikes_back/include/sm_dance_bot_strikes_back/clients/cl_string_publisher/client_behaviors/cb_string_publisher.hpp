@@ -15,14 +15,14 @@
 #pragma once
 
 #include <sm_dance_bot_strikes_back/clients/cl_string_publisher/cl_string_publisher.hpp>
-#include <smacc/smacc_client_behavior.hpp>
+#include <smacc2/smacc_client_behavior.hpp>
 #include <std_msgs/msg/string.hpp>
 
 namespace sm_dance_bot_strikes_back
 {
 namespace cl_string_publisher
 {
-class CbStringPublisher : public smacc::SmaccClientBehavior
+class CbStringPublisher : public smacc2::SmaccClientBehavior
 {
 public:
   ClStringPublisher * publisherClient_;

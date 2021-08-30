@@ -15,11 +15,11 @@
 #pragma once
 
 #include <ros_publisher_client/cl_ros_publisher.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_dance_bot
 {
-class OrUpdatablePublisher : public smacc::Orthogonal<OrUpdatablePublisher>
+class OrUpdatablePublisher : public smacc2::Orthogonal<OrUpdatablePublisher>
 {
 public:
   void onInitialize() override

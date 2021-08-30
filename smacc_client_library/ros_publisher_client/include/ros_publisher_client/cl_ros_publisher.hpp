@@ -14,11 +14,11 @@
 
 #pragma once
 
-#include <smacc/client_bases/smacc_publisher_client.hpp>
+#include <smacc2/client_bases/smacc_publisher_client.hpp>
 
 namespace cl_ros_publisher
 {
-class ClRosPublisher : public smacc::client_bases::SmaccPublisherClient
+class ClRosPublisher : public smacc2::client_bases::SmaccPublisherClient
 {
 public:
   ClRosPublisher();

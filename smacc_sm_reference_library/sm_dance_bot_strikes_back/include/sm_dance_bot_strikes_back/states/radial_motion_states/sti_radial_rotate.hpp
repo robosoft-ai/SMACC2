@@ -17,7 +17,7 @@ namespace sm_dance_bot_strikes_back
 namespace radial_motion_states
 {
 // STATE DECLARATION
-struct StiRadialRotate : smacc::SmaccState<StiRadialRotate, SS>
+struct StiRadialRotate : smacc2::SmaccState<StiRadialRotate, SS>
 {
   using SmaccState::SmaccState;
 

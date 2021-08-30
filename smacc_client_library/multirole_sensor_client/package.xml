@@ -10,7 +10,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>smacc2</depend>
-  <depend>smacc_msgs</depend>
+  <depend>smacc2_msgs</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

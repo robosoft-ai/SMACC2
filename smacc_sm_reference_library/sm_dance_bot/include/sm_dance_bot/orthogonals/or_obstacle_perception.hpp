@@ -15,11 +15,11 @@
 #pragma once
 
 #include <sm_dance_bot/clients/cl_lidar/cl_lidar.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_dance_bot
 {
-class OrObstaclePerception : public smacc::Orthogonal<OrObstaclePerception>
+class OrObstaclePerception : public smacc2::Orthogonal<OrObstaclePerception>
 {
 public:
   void onInitialize() override

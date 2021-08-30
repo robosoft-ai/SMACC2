@@ -15,7 +15,7 @@
 namespace sm_three_some
 {
 // STATE DECLARATION
-struct StState1 : smacc::SmaccState<StState1, MsRun>
+struct StState1 : smacc2::SmaccState<StState1, MsRun>
 {
   using SmaccState::SmaccState;
 
@@ -38,7 +38,7 @@ struct StState1 : smacc::SmaccState<StState1, MsRun>
     // Keyboard events
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1, PREVIOUS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState2, NEXT>,
-    Transition<EvFail, MsRecover, smacc::ABORT>
+    Transition<EvFail, MsRecover, smacc2::ABORT>
 
     >
     reactions;

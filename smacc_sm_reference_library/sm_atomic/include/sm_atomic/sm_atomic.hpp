@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 // CLIENTS
 #include <ros_timer_client/cl_ros_timer.hpp>
@@ -25,7 +25,7 @@
 #include "orthogonals/or_timer.hpp"
 
 using namespace boost;
-using namespace smacc;
+using namespace smacc2;
 
 namespace sm_atomic
 {
@@ -35,7 +35,7 @@ class State2;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
-struct SmAtomic : public smacc::SmaccStateMachineBase<SmAtomic, State1>
+struct SmAtomic : public smacc2::SmaccStateMachineBase<SmAtomic, State1>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 

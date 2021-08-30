@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_dance_bot_strikes_back
 {
 // STATE DECLARATION
 class MsDanceBotRecoveryMode
-: public smacc::SmaccState<MsDanceBotRecoveryMode, SmDanceBotStrikesBack>
+: public smacc2::SmaccState<MsDanceBotRecoveryMode, SmDanceBotStrikesBack>
 {
 public:
   using SmaccState::SmaccState;

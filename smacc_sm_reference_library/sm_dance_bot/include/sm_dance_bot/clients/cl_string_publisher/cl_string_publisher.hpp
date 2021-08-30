@@ -14,14 +14,14 @@
 
 #pragma once
 
-#include <smacc/client_bases/smacc_publisher_client.hpp>
+#include <smacc2/client_bases/smacc_publisher_client.hpp>
 #include <std_msgs/msg/string.hpp>
 
 namespace sm_dance_bot
 {
 namespace cl_string_publisher
 {
-class ClStringPublisher : public smacc::client_bases::SmaccPublisherClient
+class ClStringPublisher : public smacc2::client_bases::SmaccPublisherClient
 {
 public:
   ClStringPublisher(std::string topicName) : topicName_(topicName) {}

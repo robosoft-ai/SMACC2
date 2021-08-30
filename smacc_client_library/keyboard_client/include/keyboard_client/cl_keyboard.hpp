@@ -14,9 +14,9 @@
 
 #pragma once
 
-#include <smacc/client_bases/smacc_subscriber_client.hpp>
-#include <smacc/introspection/introspection.hpp>
-#include <smacc/smacc.hpp>
+#include <smacc2/client_bases/smacc_subscriber_client.hpp>
+#include <smacc2/introspection/introspection.hpp>
+#include <smacc2/smacc.hpp>
 
 #include <boost/asio.hpp>
 #include <boost/asio/posix/stream_descriptor.hpp>
@@ -159,14 +159,14 @@ struct EvKeyPressZ : sc::event<EvKeyPressZ<TSource, TOrthogonal>>
 
 //------------------  KEYBOARD CLIENT ---------------------------------------------
 
-class ClKeyboard : public smacc::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>
+class ClKeyboard : public smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>
 {
 public:
   ClKeyboard();
   virtual ~ClKeyboard();
   virtual void onInitialize() override;
 
-  smacc::SmaccSignal<void(char keypress)> OnKeyPress_;
+  smacc2::SmaccSignal<void(char keypress)> OnKeyPress_;
 
   template <typename T>
   void OnKeyPress(void (T::*callback)(char keypress), T * object)
@@ -181,7 +181,7 @@ public:
   void onOrthogonalAllocation()
   {
     // call to the base configuration to properly handling the message and initial message smacc events
-    smacc::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>::onOrthogonalAllocation<
+    smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>::onOrthogonalAllocation<
       TOrthogonal, TSourceObject>();
 
     postEventKeyPress = [=](auto unicode_keychar) {
@@ -251,7 +251,7 @@ public:
   {
     RCLCPP_WARN(
       getNode()->get_logger(), "ClKeyboard ev: %s",
-      smacc::demangleSymbol(typeid(TEv).name()).c_str());
+      smacc2::demangleSymbol(typeid(TEv).name()).c_str());
     this->postEvent<TEv>();
   }
 

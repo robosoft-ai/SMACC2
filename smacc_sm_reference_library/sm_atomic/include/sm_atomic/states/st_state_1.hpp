@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace sm_atomic
 {
 using namespace cl_ros_timer;
-using namespace smacc::default_transition_tags;
+using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
-struct State1 : smacc::SmaccState<State1, SmAtomic>
+struct State1 : smacc2::SmaccState<State1, SmAtomic>
 {
   using SmaccState::SmaccState;
 

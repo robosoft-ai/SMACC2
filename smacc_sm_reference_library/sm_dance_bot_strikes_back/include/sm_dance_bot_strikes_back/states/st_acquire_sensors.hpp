@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_dance_bot_strikes_back
 {
 // STATE DECLARATION
-struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
+struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 

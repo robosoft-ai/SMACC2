@@ -17,7 +17,7 @@ namespace sm_ferrari
 using namespace std::chrono_literals;
 
 // STATE DECLARATION
-struct StState2 : smacc::SmaccState<StState2, MsRun>, smacc::ISmaccUpdatable
+struct StState2 : smacc2::SmaccState<StState2, MsRun>, smacc2::ISmaccUpdatable
 {
   using SmaccState::SmaccState;
 

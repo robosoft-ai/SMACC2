@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_respira_1
 {
 // STATE DECLARATION
-class MsCalibration : public smacc::SmaccState<MsCalibration, SmRespira1, StCalibrationStep1>
+class MsCalibration : public smacc2::SmaccState<MsCalibration, SmRespira1, StCalibrationStep1>
 {
 public:
   using SmaccState::SmaccState;

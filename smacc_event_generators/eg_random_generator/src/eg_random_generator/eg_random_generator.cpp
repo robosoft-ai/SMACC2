@@ -14,7 +14,7 @@
 
 #include <eg_random_generator/eg_random_generator.hpp>
 
-namespace smacc
+namespace smacc2
 {
 namespace state_reactors
 {
@@ -84,4 +84,4 @@ void EgRandomGenerator::update()
   }
 }
 }  // namespace state_reactors
-}  // namespace smacc
+}  // namespace smacc2

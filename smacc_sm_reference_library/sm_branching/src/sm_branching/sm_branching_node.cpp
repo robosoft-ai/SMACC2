@@ -18,5 +18,5 @@
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
-  smacc::run<sm_branching::SmBranching>();
+  smacc2::run<sm_branching::SmBranching>();
 }

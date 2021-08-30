@@ -16,7 +16,7 @@ namespace sm_respira_1
 {
 // STATE DECLARATION
 struct StPatientObstructionStep2
-: smacc::SmaccState<StPatientObstructionStep2, MsPatientObstruction>
+: smacc2::SmaccState<StPatientObstructionStep2, MsPatientObstruction>
 {
   using SmaccState::SmaccState;
 

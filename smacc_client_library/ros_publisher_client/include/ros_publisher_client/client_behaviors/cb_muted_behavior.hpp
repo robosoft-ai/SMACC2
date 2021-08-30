@@ -14,12 +14,12 @@
 
 #pragma once
 #include <ros_publisher_client/cl_ros_publisher.hpp>
-#include <smacc/smacc_client_behavior.hpp>
+#include <smacc2/smacc_client_behavior.hpp>
 
 namespace cl_ros_publisher
 {
 template <typename RosMsgType>
-class CbMutedBehavior : public smacc::SmaccClientBehavior
+class CbMutedBehavior : public smacc2::SmaccClientBehavior
 {
 public:
   void onEntry() override {}

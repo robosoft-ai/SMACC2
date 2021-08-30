@@ -17,13 +17,13 @@
 #include <multirole_sensor_client/cl_multirole_sensor.hpp>
 #include <sensor_msgs/msg/temperature.hpp>
 #include <sm_dance_bot_strikes_back/clients/cl_temperature_sensor/cl_temperature_sensor.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 
 using namespace std::chrono_literals;
 
 namespace sm_dance_bot_strikes_back
 {
-class OrTemperatureSensor : public smacc::Orthogonal<OrTemperatureSensor>
+class OrTemperatureSensor : public smacc2::Orthogonal<OrTemperatureSensor>
 {
 public:
   void onInitialize() override

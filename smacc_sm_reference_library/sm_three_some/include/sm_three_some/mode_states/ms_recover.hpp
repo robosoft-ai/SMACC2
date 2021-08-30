@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_three_some
 {
 // STATE DECLARATION
-class MsRecover : public smacc::SmaccState<MsRecover, SmThreeSome>
+class MsRecover : public smacc2::SmaccState<MsRecover, SmThreeSome>
 {
 public:
   using SmaccState::SmaccState;

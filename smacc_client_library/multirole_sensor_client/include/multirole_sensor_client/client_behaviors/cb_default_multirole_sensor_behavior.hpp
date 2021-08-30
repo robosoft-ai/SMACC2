@@ -18,12 +18,12 @@
 
 #include <string>
 
-#include <smacc/smacc_client_behavior.hpp>
+#include <smacc2/smacc_client_behavior.hpp>
 
 namespace cl_multirole_sensor
 {
 template <typename ClientType>
-class CbDefaultMultiRoleSensorBehavior : public smacc::SmaccClientBehavior
+class CbDefaultMultiRoleSensorBehavior : public smacc2::SmaccClientBehavior
 {
 public:
   typedef typename ClientType::TMessageType TMessageType;

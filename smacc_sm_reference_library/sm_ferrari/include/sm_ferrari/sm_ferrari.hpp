@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 // CLIENTS
 //#include <ros_timer_client/cl_ros_timer.hpp>
@@ -43,10 +43,10 @@ using namespace sm_ferrari::cl_subscriber;
 //#include <sr_all_events_go/sr_all_events_go.hpp>
 #include <eg_conditional_generator/eg_conditional_generator.hpp>
 
-using namespace smacc;
-using namespace smacc::state_reactors;
-using namespace smacc::default_events;
-using namespace smacc::event_generators;
+using namespace smacc2;
+using namespace smacc2::state_reactors;
+using namespace smacc2::default_events;
+using namespace smacc2::event_generators;
 
 namespace sm_ferrari
 {
@@ -80,7 +80,7 @@ struct EvFail : sc::event<EvFail>
 };
 
 // STATE MACHINE
-struct SmFerrari : public smacc::SmaccStateMachineBase<SmFerrari, MsRun>
+struct SmFerrari : public smacc2::SmaccStateMachineBase<SmFerrari, MsRun>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 

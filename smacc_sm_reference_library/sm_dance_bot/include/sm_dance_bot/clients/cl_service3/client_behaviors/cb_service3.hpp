@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include <sm_dance_bot/clients/cl_service3/cl_service3.hpp>
-#include <smacc/smacc_client_behavior.hpp>
+#include <smacc2/smacc_client_behavior.hpp>
 
 namespace sm_dance_bot
 {
@@ -25,7 +25,7 @@ enum class Service3Command
   SERVICE3_OFF
 };
 
-class CbService3 : public smacc::SmaccClientBehavior
+class CbService3 : public smacc2::SmaccClientBehavior
 {
 private:
   ClService3 * serviceClient_;

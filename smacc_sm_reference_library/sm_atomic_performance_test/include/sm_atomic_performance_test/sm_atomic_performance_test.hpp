@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 using namespace boost;
-using namespace smacc;
+using namespace smacc2;
 
 namespace sm_atomic_performance_test
 {
@@ -26,7 +26,7 @@ class State2;
 //--------------------------------------------------------------------
 //STATE_MACHINE
 struct SmAtomicPerformanceTest
-: public smacc::SmaccStateMachineBase<SmAtomicPerformanceTest, State1>
+: public smacc2::SmaccStateMachineBase<SmAtomicPerformanceTest, State1>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 

@@ -13,11 +13,11 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(smacc2 REQUIRED)
-find_package(smacc_msgs REQUIRED)
+find_package(smacc2_msgs REQUIRED)
 
 set(dependencies
     smacc2
-    smacc_msgs)
+    smacc2_msgs)
 
 include_directories(include)
 

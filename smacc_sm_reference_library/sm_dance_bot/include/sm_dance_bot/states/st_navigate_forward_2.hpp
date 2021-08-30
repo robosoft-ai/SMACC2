@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_dance_bot
 {
 // STATE DECLARATION
-struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunMode>
+struct StNavigateForward2 : smacc2::SmaccState<StNavigateForward2, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 

@@ -14,19 +14,19 @@ endif()
 find_package(ament_cmake REQUIRED)
 
 find_package(smacc2 REQUIRED)
-find_package(smacc_msgs REQUIRED)
+find_package(smacc2_msgs REQUIRED)
 
 include_directories(include
                     ${smacc2_INCLUDE_DIRS}
-                    ${smacc_msgs_INCLUDE_DIRS})
+                    ${smacc2_msgs_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME} src/${PROJECT_NAME}/sr_all_events_go.cpp)
 
 target_link_libraries(${PROJECT_NAME} SHARED
   ${smacc2_LIBRARIES}
-  ${smacc_msgs_LIBRARIES}
+  ${smacc2_msgs_LIBRARIES}
 )
-ament_target_dependencies(${PROJECT_NAME} smacc2 smacc_msgs)
+ament_target_dependencies(${PROJECT_NAME} smacc2 smacc2_msgs)
 
 ament_export_dependencies(smacc2)
 ament_export_include_directories(include)

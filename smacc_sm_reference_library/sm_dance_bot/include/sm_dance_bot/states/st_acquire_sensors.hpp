@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_dance_bot
 {
-using namespace smacc::default_events;
+using namespace smacc2::default_events;
 
 // STATE DECLARATION
-struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
+struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
@@ -49,7 +49,7 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 
     // Create State Reactor
     auto srAllSensorsReady = static_createStateReactor<
-      SrAllEventsGo, smacc::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>,
+      SrAllEventsGo, smacc2::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>,
       mpl::list<
         EvTopicMessage<CbLidarSensor, OrObstaclePerception>,
         EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>,
@@ -58,7 +58,7 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
     //srAllSensorsReady->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
     //srAllSensorsReady->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
 
-    //srAllSensorsReady->setOutputEvent<smacc::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
+    //srAllSensorsReady->setOutputEvent<smacc2::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
     // srAllSensorsReady->setOutputEvent<EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
   }
 };

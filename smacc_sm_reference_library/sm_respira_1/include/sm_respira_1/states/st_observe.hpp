@@ -15,7 +15,7 @@
 namespace sm_respira_1
 {
 // STATE DECLARATION
-struct StObserve : smacc::SmaccState<StObserve, MsRun>
+struct StObserve : smacc2::SmaccState<StObserve, MsRun>
 {
   using SmaccState::SmaccState;
 
@@ -43,7 +43,7 @@ struct StObserve : smacc::SmaccState<StObserve, MsRun>
   typedef mpl::list<
 
     // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACCycle, TIMEOUT>,
-    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
+    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
     // Keyboard events
     Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle, AC_CYCLE>,
     Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, CMV_CYCLE>,

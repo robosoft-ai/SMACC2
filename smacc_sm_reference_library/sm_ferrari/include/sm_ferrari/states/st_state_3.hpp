@@ -15,7 +15,7 @@
 namespace sm_ferrari
 {
 // STATE DECLARATION
-struct StState3 : smacc::SmaccState<StState3, MsRun>
+struct StState3 : smacc2::SmaccState<StState3, MsRun>
 {
   using SmaccState::SmaccState;
 
@@ -34,7 +34,7 @@ struct StState3 : smacc::SmaccState<StState3, MsRun>
   typedef mpl::list<
 
     // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SS1::Ss1, TIMEOUT>,
-    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SS1::Ss1>,
+    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SS1::Ss1>,
     // Keyboard events
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState2, PREVIOUS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1, NEXT>,

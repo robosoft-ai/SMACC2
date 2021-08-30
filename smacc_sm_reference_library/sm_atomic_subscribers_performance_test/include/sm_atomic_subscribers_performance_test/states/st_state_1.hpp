@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace sm_atomic_subscribers_performance_test
 {
-using namespace smacc::default_transition_tags;
+using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
-struct State1 : smacc::SmaccState<State1, SmAtomicSubscribersPerformanceTest>
+struct State1 : smacc2::SmaccState<State1, SmAtomicSubscribersPerformanceTest>
 {
   using SmaccState::SmaccState;
 

@@ -13,12 +13,12 @@
 // limitations under the License.
 
 #include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot
 {
 // STATE DECLARATION
-struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, MsDanceBotRunMode>
+struct StNavigateForward1 : smacc2::SmaccState<StNavigateForward1, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 

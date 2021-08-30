@@ -13,14 +13,14 @@
 // limitations under the License.
 
 #include <memory>
-#include <smacc/common.hpp>
+#include <smacc2/common.hpp>
 #include <sr_event_countdown/sr_event_countdown.hpp>
 
-namespace smacc
+namespace smacc2
 {
 namespace state_reactors
 {
-using namespace smacc::introspection;
+using namespace smacc2::introspection;
 SrEventCountdown::SrEventCountdown(int eventCount) : eventCount_(eventCount) {}
 
 void SrEventCountdown::onInitialized()
@@ -70,4 +70,4 @@ bool SrEventCountdown::triggers()
 }
 
 }  // namespace state_reactors
-}  // namespace smacc
+}  // namespace smacc2

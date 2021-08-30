@@ -16,30 +16,30 @@
 
 #include <optional>
 #include <rclcpp/rclcpp.hpp>
-#include <smacc/client_bases/smacc_subscriber_client.hpp>
-#include <smacc/impl/smacc_state_machine_impl.hpp>
-#include <smacc/smacc_signal.hpp>
+#include <smacc2/client_bases/smacc_subscriber_client.hpp>
+#include <smacc2/impl/smacc_state_machine_impl.hpp>
+#include <smacc2/smacc_signal.hpp>
 
 namespace cl_multirole_sensor
 {
-using namespace smacc;
+using namespace smacc2;
 
 template <typename TSource, typename TOrthogonal>
 struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource, TOrthogonal>>
 {
 };
 
-using namespace smacc::client_bases;
+using namespace smacc2::client_bases;
 
 //---------------------------------------------------------------
 template <typename MessageType>
-class ClMultiroleSensor : public smacc::client_bases::SmaccSubscriberClient<MessageType>
+class ClMultiroleSensor : public smacc2::client_bases::SmaccSubscriberClient<MessageType>
 {
 public:
   typedef MessageType TMessageType;
   SmaccSignal<void()> onMessageTimeout_;
 
-  ClMultiroleSensor() : smacc::client_bases::SmaccSubscriberClient<MessageType>()
+  ClMultiroleSensor() : smacc2::client_bases::SmaccSubscriberClient<MessageType>()
   {
     //RCLCPP_INFO( getNode()->get_logger(),"[ClMultiroleSensor] constructor");
     initialized_ = false;

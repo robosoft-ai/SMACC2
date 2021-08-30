@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 // CLIENTS
 #include <keyboard_client/cl_keyboard.hpp>
@@ -45,9 +45,9 @@ using namespace sm_three_some::cl_subscriber;
 // STATE REACTORS
 #include <sr_all_events_go/sr_all_events_go.hpp>
 
-using namespace smacc;
-using namespace smacc::state_reactors;
-using namespace smacc::default_events;
+using namespace smacc2;
+using namespace smacc2::state_reactors;
+using namespace smacc2::default_events;
 
 namespace sm_three_some
 {
@@ -81,7 +81,7 @@ struct EvFail : sc::event<EvFail>
 };
 
 // STATE MACHINE
-struct SmThreeSome : public smacc::SmaccStateMachineBase<SmThreeSome, MsRun>
+struct SmThreeSome : public smacc2::SmaccStateMachineBase<SmThreeSome, MsRun>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 

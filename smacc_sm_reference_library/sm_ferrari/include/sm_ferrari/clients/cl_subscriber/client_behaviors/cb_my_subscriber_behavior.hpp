@@ -24,7 +24,7 @@ struct EvMyBehavior : sc::event<EvMyBehavior<TSource, TOrthogonal>>
 {
 };
 
-class CbMySubscriberBehavior : public smacc::SmaccClientBehavior
+class CbMySubscriberBehavior : public smacc2::SmaccClientBehavior
 {
 public:
   void onEntry()

@@ -15,7 +15,7 @@
 namespace sm_respira_1
 {
 // STATE DECLARATION
-struct StLeakyLungStep3 : smacc::SmaccState<StLeakyLungStep3, MsLeakyLung>
+struct StLeakyLungStep3 : smacc2::SmaccState<StLeakyLungStep3, MsLeakyLung>
 {
   using SmaccState::SmaccState;
 

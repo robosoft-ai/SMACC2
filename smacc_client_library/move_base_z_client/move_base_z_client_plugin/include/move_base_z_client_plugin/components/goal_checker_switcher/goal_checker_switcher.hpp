@@ -22,13 +22,13 @@
 #include <string>
 
 #include <rclcpp/rclcpp.hpp>
-#include <smacc/component.hpp>
+#include <smacc2/component.hpp>
 #include <std_msgs/msg/string.hpp>
 
 namespace cl_move_base_z
 {
 // this class is used to switch the current goal checker of the remote navigation2 stack controller
-class GoalCheckerSwitcher : public smacc::ISmaccComponent
+class GoalCheckerSwitcher : public smacc2::ISmaccComponent
 {
 public:
   GoalCheckerSwitcher(

@@ -18,7 +18,7 @@ namespace f_pattern_states
 {
 // STATE DECLARATION
 template <typename SS>
-struct StiFPatternRotate2 : smacc::SmaccState<StiFPatternRotate2<SS>, SS>
+struct StiFPatternRotate2 : smacc2::SmaccState<StiFPatternRotate2<SS>, SS>
 {
   typedef SmaccState<StiFPatternRotate2<SS>, SS> TSti;
   using TSti::context_type;

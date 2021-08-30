@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot
 {
@@ -32,7 +32,8 @@ class StiRadialLoopStart;
 using namespace sm_dance_bot::radial_motion_states;
 
 // STATE DECLARATION
-struct SsRadialPattern1 : smacc::SmaccState<SsRadialPattern1, MsDanceBotRunMode, StiRadialLoopStart>
+struct SsRadialPattern1
+: smacc2::SmaccState<SsRadialPattern1, MsDanceBotRunMode, StiRadialLoopStart>
 {
 public:
   using SmaccState::SmaccState;

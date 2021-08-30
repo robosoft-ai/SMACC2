@@ -16,11 +16,11 @@
 
 #include <ros_timer_client/cl_ros_timer.hpp>
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace cl_ros_timer
 {
-class CbTimerCountdownLoop : public smacc::SmaccClientBehavior
+class CbTimerCountdownLoop : public smacc2::SmaccClientBehavior
 {
 public:
   explicit CbTimerCountdownLoop(unsigned long triggerTickCount);
@@ -48,7 +48,7 @@ private:
 
   ClRosTimer * timerClient_;
   std::function<void()> postCountDownEvent_;
-  smacc::SmaccSignal<void()> onTimerTick_;
+  smacc2::SmaccSignal<void()> onTimerTick_;
   void onClientTimerTickCallback();
 };
 }  // namespace cl_ros_timer

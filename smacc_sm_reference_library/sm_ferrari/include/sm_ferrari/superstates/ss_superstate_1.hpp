@@ -30,7 +30,7 @@ class StiState3;
 using namespace sm_ferrari::inner_states;
 
 // STATE DECLARATION
-struct Ss1 : smacc::SmaccState<Ss1, MsRun, StiState1>
+struct Ss1 : smacc2::SmaccState<Ss1, MsRun, StiState1>
 {
 public:
   using SmaccState::SmaccState;

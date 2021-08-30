@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 // CLIENTS
 #include <ros_timer_client/cl_ros_timer.hpp>
@@ -27,7 +27,7 @@
 #include "orthogonals/or_timer.hpp"
 
 using namespace boost;
-using namespace smacc;
+using namespace smacc2;
 
 namespace sm_branching
 {
@@ -47,7 +47,7 @@ class State6;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
-struct SmBranching : public smacc::SmaccStateMachineBase<SmBranching, State1>
+struct SmBranching : public smacc2::SmaccStateMachineBase<SmBranching, State1>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 

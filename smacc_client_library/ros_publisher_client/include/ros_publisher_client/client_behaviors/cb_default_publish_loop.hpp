@@ -14,11 +14,11 @@
 
 #pragma once
 #include <ros_publisher_client/cl_ros_publisher.hpp>
-#include <smacc/smacc_client_behavior.hpp>
+#include <smacc2/smacc_client_behavior.hpp>
 
 namespace cl_ros_publisher
 {
-class CbDefaultPublishLoop : public smacc::SmaccClientBehavior, public smacc::ISmaccUpdatable
+class CbDefaultPublishLoop : public smacc2::SmaccClientBehavior, public smacc2::ISmaccUpdatable
 {
 private:
   std::function<void()> deferedPublishFn;

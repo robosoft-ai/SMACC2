@@ -17,7 +17,7 @@ namespace sm_respira_1
 using namespace sm_respira_1::ps_cycle_inner_states;
 
 // STATE DECLARATION
-struct SsPSCycle : smacc::SmaccState<SsPSCycle, MsRun, StiPSCycleLoop>
+struct SsPSCycle : smacc2::SmaccState<SsPSCycle, MsRun, StiPSCycleLoop>
 {
 public:
   using SmaccState::SmaccState;

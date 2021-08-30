@@ -17,7 +17,7 @@
 #include <boost/signals2.hpp>
 #include <chrono>
 #include <optional>
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace cl_ros_timer
 {
@@ -36,7 +36,7 @@ struct EvTimer : sc::event<EvTimer<TSource, TOrthogonal>>
     */
 };
 
-class ClRosTimer : public smacc::ISmaccClient
+class ClRosTimer : public smacc2::ISmaccClient
 {
 public:
   ClRosTimer(rclcpp::Duration duration, bool oneshot = false);
@@ -64,6 +64,6 @@ protected:
 
   void timerCallback();
   std::function<void()> postTimerEvent_;
-  smacc::SmaccSignal<void()> onTimerTick_;
+  smacc2::SmaccSignal<void()> onTimerTick_;
 };
 }  // namespace cl_ros_timer

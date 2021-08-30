@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 #include <sensor_msgs/msg/laser_scan.hpp>
 
@@ -54,7 +54,7 @@ using namespace sm_dance_bot_strikes_back::cl_led;
 #include <sr_conditional/sr_conditional.hpp>
 #include <sr_event_countdown/sr_event_countdown.hpp>
 
-using namespace smacc::state_reactors;
+using namespace smacc2::state_reactors;
 
 // ORTHOGONALS
 #include <sm_dance_bot_strikes_back/orthogonals/or_led.hpp>
@@ -115,14 +115,14 @@ struct EvGlobalError : sc::event<EvGlobalError>
 
 using namespace sm_dance_bot_strikes_back;
 using namespace cl_ros_timer;
-using namespace smacc;
+using namespace smacc2;
 
 namespace sm_dance_bot_strikes_back
 {
 /// \brief Advanced example of state machine with smacc that shows multiple techniques
 ///  for the development of state machines
 struct SmDanceBotStrikesBack
-: public smacc::SmaccStateMachineBase<SmDanceBotStrikesBack, MsDanceBotRunMode>
+: public smacc2::SmaccStateMachineBase<SmDanceBotStrikesBack, MsDanceBotRunMode>
 {
   int counter_1;
   bool rt_ready_flag;

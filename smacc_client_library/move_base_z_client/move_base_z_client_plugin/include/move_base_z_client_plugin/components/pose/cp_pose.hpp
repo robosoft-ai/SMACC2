@@ -29,13 +29,13 @@
 #include <tf2/utils.h>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
-#include <smacc/component.hpp>
-#include <smacc/smacc_updatable.hpp>
+#include <smacc2/component.hpp>
+#include <smacc2/smacc_updatable.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 namespace cl_move_base_z
 {
-class Pose : public smacc::ISmaccComponent, public smacc::ISmaccUpdatable
+class Pose : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdatable
 {
 public:
   Pose(std::string poseFrameName = "base_link", std::string referenceFrame = "odom");

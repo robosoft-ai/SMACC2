@@ -14,7 +14,7 @@
 
 #include <eg_conditional_generator/eg_conditional_generator.hpp>
 
-namespace smacc
+namespace smacc2
 {
 namespace event_generators
 {
@@ -60,4 +60,4 @@ void EgConditionalGenerator::setPredicateFunction(std::function<bool()> updatePr
 }
 
 }  // namespace event_generators
-}  // namespace smacc
+}  // namespace smacc2

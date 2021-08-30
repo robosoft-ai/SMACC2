@@ -18,7 +18,7 @@ namespace f_pattern_states
 {
 // STATE DECLARATION
 template <typename SS>
-struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, SS>
+struct StiFPatternForward1 : public smacc2::SmaccState<StiFPatternForward1<SS>, SS>
 {
   typedef SmaccState<StiFPatternForward1<SS>, SS> TSti;
   using TSti::context_type;

@@ -17,5 +17,5 @@
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
-  smacc::run<sm_three_some::SmThreeSome>();
+  smacc2::run<sm_three_some::SmThreeSome>();
 }
