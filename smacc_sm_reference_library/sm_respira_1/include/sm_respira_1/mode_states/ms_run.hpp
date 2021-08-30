@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_respira_1
 {
 // STATE DECLARATION
-class MsRun : public smacc::SmaccState<MsRun, SmRespira1, StObserve>
+class MsRun : public smacc2::SmaccState<MsRun, SmRespira1, StObserve>
 {
 public:
   using SmaccState::SmaccState;

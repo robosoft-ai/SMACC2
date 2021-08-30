@@ -21,11 +21,11 @@
 
 #include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.hpp>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
-#include <smacc/smacc_asynchronous_client_behavior.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_move_base_z
 {
-class CbMoveBaseClientBehaviorBase : public smacc::SmaccAsyncClientBehavior
+class CbMoveBaseClientBehaviorBase : public smacc2::SmaccAsyncClientBehavior
 {
 public:
   virtual ~CbMoveBaseClientBehaviorBase();
@@ -34,7 +34,7 @@ public:
   void onOrthogonalAllocation()
   {
     this->requiresClient(moveBaseClient_);
-    smacc::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
     moveBaseClient_->onSucceeded(&CbMoveBaseClientBehaviorBase::propagateSuccessEvent, this);
     moveBaseClient_->onAborted(&CbMoveBaseClientBehaviorBase::propagateFailureEvent, this);
   }

@@ -15,13 +15,13 @@
 #pragma once
 
 #include <keyboard_client/cl_keyboard.hpp>
-#include <smacc/smacc_client_behavior.hpp>
+#include <smacc2/smacc_client_behavior.hpp>
 
 #include <std_msgs/msg/u_int16.hpp>
 
 namespace cl_keyboard
 {
-class CbDefaultKeyboardBehavior : public smacc::SmaccClientBehavior
+class CbDefaultKeyboardBehavior : public smacc2::SmaccClientBehavior
 {
 public:
   ClKeyboard * ClKeyboard_;
@@ -95,7 +95,7 @@ public:
   {
     RCLCPP_WARN(
       getNode()->get_logger(), "CbDefaultKeyboardBehavior %ld ev: %s", (long)(void *)this,
-      smacc::demangleSymbol(typeid(TEv).name()).c_str());
+      smacc2::demangleSymbol(typeid(TEv).name()).c_str());
     auto event = new TEv();
     this->postEvent(event);
   }

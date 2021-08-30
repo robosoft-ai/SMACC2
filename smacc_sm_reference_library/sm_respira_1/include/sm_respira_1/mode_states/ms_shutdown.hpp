@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_respira_1
 {
 // STATE DECLARATION
-class MsShutdown : public smacc::SmaccState<MsShutdown, SmRespira1, StSystemShutdown>
+class MsShutdown : public smacc2::SmaccState<MsShutdown, SmRespira1, StSystemShutdown>
 {
 public:
   using SmaccState::SmaccState;

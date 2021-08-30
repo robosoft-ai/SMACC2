@@ -14,11 +14,11 @@
 
 #pragma once
 #include <sm_dance_bot/clients/cl_led/cl_led.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_dance_bot
 {
-class OrLED : public smacc::Orthogonal<OrLED>
+class OrLED : public smacc2::Orthogonal<OrLED>
 {
 public:
   void onInitialize() override

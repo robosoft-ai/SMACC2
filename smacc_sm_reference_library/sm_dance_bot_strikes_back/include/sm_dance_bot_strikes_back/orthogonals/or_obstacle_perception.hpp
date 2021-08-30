@@ -16,11 +16,11 @@
 
 #include <sm_dance_bot_strikes_back/clients/cl_lidar/cl_lidar.hpp>
 #include <sm_dance_bot_strikes_back/clients/cl_lidar/components/cp_lidar_data.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_dance_bot_strikes_back
 {
-class OrObstaclePerception : public smacc::Orthogonal<OrObstaclePerception>
+class OrObstaclePerception : public smacc2::Orthogonal<OrObstaclePerception>
 {
 public:
   void onInitialize() override

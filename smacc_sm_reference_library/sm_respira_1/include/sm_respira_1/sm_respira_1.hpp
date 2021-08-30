@@ -15,7 +15,7 @@
 #pragma once
 
 #include <rclcpp/rclcpp.hpp>
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 // CLIENTS
 #include <keyboard_client/cl_keyboard.hpp>
@@ -48,9 +48,9 @@ using namespace sm_respira_1::cl_subscriber;
 //STATE REACTORS
 #include <sr_all_events_go/sr_all_events_go.hpp>
 
-using namespace smacc;
-using namespace smacc::state_reactors;
-using namespace smacc::default_events;
+using namespace smacc2;
+using namespace smacc2::state_reactors;
+using namespace smacc2::default_events;
 
 namespace sm_respira_1
 {
@@ -125,7 +125,7 @@ struct EvFail : sc::event<EvFail>
 };
 
 // STATE MACHINE
-struct SmRespira1 : public smacc::SmaccStateMachineBase<SmRespira1, MsRun>
+struct SmRespira1 : public smacc2::SmaccStateMachineBase<SmRespira1, MsRun>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 

@@ -42,5 +42,5 @@ std::ostream & operator<<(
 
 }  // namespace cl_led
 
-//PLUGINLIB_EXPORT_CLASS(cl_led::ClLED, smacc::ISmaccComponent)
+//PLUGINLIB_EXPORT_CLASS(cl_led::ClLED, smacc2::ISmaccComponent)
 }  // namespace sm_dance_bot

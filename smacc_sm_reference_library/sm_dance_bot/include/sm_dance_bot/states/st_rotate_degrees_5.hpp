@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_dance_bot
 {
 // STATE DECLARATION
-struct StRotateDegrees5 : smacc::SmaccState<StRotateDegrees5, MsDanceBotRunMode>
+struct StRotateDegrees5 : smacc2::SmaccState<StRotateDegrees5, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 

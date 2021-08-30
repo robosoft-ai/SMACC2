@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 #include "orthogonals/or_subscriber.hpp"
 
 using namespace boost;
-using namespace smacc;
+using namespace smacc2;
 
 namespace sm_atomic_subscribers_performance_test
 {
@@ -27,7 +27,7 @@ class State2;
 //--------------------------------------------------------------------
 //STATE_MACHINE
 struct SmAtomicSubscribersPerformanceTest
-: public smacc::SmaccStateMachineBase<SmAtomicSubscribersPerformanceTest, State1>
+: public smacc2::SmaccStateMachineBase<SmAtomicSubscribersPerformanceTest, State1>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 

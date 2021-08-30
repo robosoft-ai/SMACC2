@@ -14,12 +14,12 @@
 
 #pragma once
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace sm_branching
 {
 // STATE DECLARATION
-struct State5 : smacc::SmaccState<State5, SmBranching>
+struct State5 : smacc2::SmaccState<State5, SmBranching>
 {
   using SmaccState::SmaccState;
 

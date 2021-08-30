@@ -20,15 +20,15 @@
 #pragma once
 
 #include <rclcpp/rclcpp.hpp>
-#include <smacc/client_bases/smacc_action_client.hpp>
-#include <smacc/component.hpp>
+#include <smacc2/client_bases/smacc_action_client.hpp>
+#include <smacc2/component.hpp>
 #include <std_msgs/msg/string.hpp>
 
 namespace cl_move_base_z
 {
 // this component is used to switch the current planner and controller interacting
 // with the remote navigation2 stack nodes (bt_navigator, planner_server, controller_server)
-class PlannerSwitcher : public smacc::ISmaccComponent
+class PlannerSwitcher : public smacc2::ISmaccComponent
 {
 public:
   PlannerSwitcher();

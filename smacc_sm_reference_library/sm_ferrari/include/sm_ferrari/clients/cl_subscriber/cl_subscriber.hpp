@@ -13,18 +13,18 @@
 // limitations under the License.
 
 #pragma once
-#include <smacc/client_bases/smacc_subscriber_client.hpp>
+#include <smacc2/client_bases/smacc_subscriber_client.hpp>
 #include <std_msgs/msg/float32.hpp>
 
 namespace sm_ferrari
 {
 namespace cl_subscriber
 {
-class ClSubscriber : public smacc::client_bases::SmaccSubscriberClient<std_msgs::msg::Float32>
+class ClSubscriber : public smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Float32>
 {
 public:
   ClSubscriber(std::string topicname)
-  : smacc::client_bases::SmaccSubscriberClient<std_msgs::msg::Float32>(topicname)
+  : smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Float32>(topicname)
   {
   }
 };

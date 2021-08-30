@@ -14,15 +14,15 @@
 
 #pragma once
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace sm_branching
 {
 using namespace cl_ros_timer;
-using namespace smacc::default_transition_tags;
+using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
-struct State1 : smacc::SmaccState<State1, SmBranching>
+struct State1 : smacc2::SmaccState<State1, SmBranching>
 {
   using SmaccState::SmaccState;
 

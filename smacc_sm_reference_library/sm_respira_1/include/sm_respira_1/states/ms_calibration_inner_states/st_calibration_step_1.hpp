@@ -15,7 +15,7 @@
 namespace sm_respira_1
 {
 // STATE DECLARATION
-struct StCalibrationStep1 : smacc::SmaccState<StCalibrationStep1, MsCalibration>
+struct StCalibrationStep1 : smacc2::SmaccState<StCalibrationStep1, MsCalibration>
 {
   using SmaccState::SmaccState;
 
@@ -23,7 +23,7 @@ struct StCalibrationStep1 : smacc::SmaccState<StCalibrationStep1, MsCalibration>
   typedef mpl::list<
 
     // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACCycle, TIMEOUT>,
-    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
+    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
     // Keyboard events
     Transition<EvKeyPressL<CbDefaultKeyboardBehavior, OrKeyboard>, MsRun, SUCCESS>
 

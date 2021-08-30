@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_three_some
 {
 // STATE DECLARATION
-class MsRun : public smacc::SmaccState<MsRun, SmThreeSome, StState1>
+class MsRun : public smacc2::SmaccState<MsRun, SmThreeSome, StState1>
 {
 public:
   using SmaccState::SmaccState;

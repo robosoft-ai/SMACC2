@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_ferrari
 {
 // STATE DECLARATION
-class MsRecover : public smacc::SmaccState<MsRecover, SmFerrari>
+class MsRecover : public smacc2::SmaccState<MsRecover, SmFerrari>
 {
 public:
   using SmaccState::SmaccState;

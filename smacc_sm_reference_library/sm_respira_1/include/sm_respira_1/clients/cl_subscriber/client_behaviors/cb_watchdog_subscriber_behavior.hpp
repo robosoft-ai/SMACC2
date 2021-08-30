@@ -19,7 +19,7 @@ namespace sm_respira_1
 {
 namespace cl_subscriber
 {
-class CbWatchdogSubscriberBehavior : public smacc::SmaccClientBehavior
+class CbWatchdogSubscriberBehavior : public smacc2::SmaccClientBehavior
 {
 public:
   typedef std_msgs::msg::UInt16 TMessageType;

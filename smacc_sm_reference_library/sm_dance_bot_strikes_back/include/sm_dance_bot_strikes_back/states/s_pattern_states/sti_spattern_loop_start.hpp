@@ -17,7 +17,7 @@ namespace sm_dance_bot_strikes_back
 namespace s_pattern_states
 {
 // STATE DECLARATION
-struct StiSPatternLoopStart : smacc::SmaccState<StiSPatternLoopStart, SS>
+struct StiSPatternLoopStart : smacc2::SmaccState<StiSPatternLoopStart, SS>
 {
   using SmaccState::SmaccState;
 

@@ -16,12 +16,12 @@
 
 #include <chrono>
 #include <ros_timer_client/cl_ros_timer.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_respira_1
 {
 using namespace std::chrono_literals;
-class OrTimer : public smacc::Orthogonal<OrTimer>
+class OrTimer : public smacc2::Orthogonal<OrTimer>
 {
 public:
   virtual void onInitialize() override

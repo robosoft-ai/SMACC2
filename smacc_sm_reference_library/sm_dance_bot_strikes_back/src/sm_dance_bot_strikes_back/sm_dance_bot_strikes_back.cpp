@@ -16,5 +16,5 @@
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
-  smacc::run<SmDanceBotStrikesBack>();
+  smacc2::run<SmDanceBotStrikesBack>();
 }

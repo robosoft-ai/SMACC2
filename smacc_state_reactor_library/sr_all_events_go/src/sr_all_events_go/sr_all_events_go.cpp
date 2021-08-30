@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/common.hpp>
+#include <smacc2/common.hpp>
 #include <sr_all_events_go/sr_all_events_go.hpp>
 
-namespace smacc
+namespace smacc2
 {
 namespace state_reactors
 {
-using namespace smacc::introspection;
+using namespace smacc2::introspection;
 void SrAllEventsGo::onInitialized()
 {
   for (auto type : eventTypes)
@@ -51,4 +51,4 @@ bool SrAllEventsGo::triggers()
   return true;
 }
 }  // namespace state_reactors
-}  // namespace smacc
+}  // namespace smacc2

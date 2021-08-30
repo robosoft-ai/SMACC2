@@ -15,7 +15,7 @@
 namespace sm_respira_1
 {
 // STATE DECLARATION
-struct StLeakyLungStep2 : smacc::SmaccState<StLeakyLungStep2, MsLeakyLung>
+struct StLeakyLungStep2 : smacc2::SmaccState<StLeakyLungStep2, MsLeakyLung>
 {
   using SmaccState::SmaccState;
 
@@ -34,7 +34,7 @@ struct StLeakyLungStep2 : smacc::SmaccState<StLeakyLungStep2, MsLeakyLung>
   typedef mpl::list<
 
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StLeakyLungStep3, SUCCESS>
-    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
+    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
     // Keyboard events
     // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle, MOVE>,
     // Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, BUILD>,

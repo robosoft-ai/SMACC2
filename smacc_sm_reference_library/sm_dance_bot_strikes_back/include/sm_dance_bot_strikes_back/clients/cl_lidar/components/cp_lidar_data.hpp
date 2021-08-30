@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot_strikes_back
 {
@@ -20,7 +20,7 @@ namespace cl_lidar
 {
 using namespace std::chrono_literals;
 
-class CpLidarSensorData : public smacc::ISmaccComponent
+class CpLidarSensorData : public smacc2::ISmaccComponent
 {
 public:
   sensor_msgs::msg::LaserScan lastMessage_;
@@ -31,7 +31,7 @@ public:
   void onInitialize() override
   {
     auto client_ =
-      dynamic_cast<smacc::client_bases::SmaccSubscriberClient<sensor_msgs::msg::LaserScan> *>(
+      dynamic_cast<smacc2::client_bases::SmaccSubscriberClient<sensor_msgs::msg::LaserScan> *>(
         owner_);
     client_->onMessageReceived(&CpLidarSensorData::MessageCallbackStoreDistanceToWall, this);
   }

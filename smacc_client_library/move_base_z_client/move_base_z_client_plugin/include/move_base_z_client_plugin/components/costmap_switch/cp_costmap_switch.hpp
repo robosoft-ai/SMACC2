@@ -28,7 +28,7 @@
 #include <rclcpp/rclcpp.hpp>
 
 #include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
-#include <smacc/component.hpp>
+#include <smacc2/component.hpp>
 
 // #include <dynamic_reconfigure/DoubleParameter.h>
 // #include <dynamic_reconfigure/Reconfigure.h>
@@ -38,7 +38,7 @@ namespace cl_move_base_z
 {
 class CostmapProxy;
 
-class CostmapSwitch : public smacc::ISmaccComponent
+class CostmapSwitch : public smacc2::ISmaccComponent
 {
 public:
   enum class StandardLayers

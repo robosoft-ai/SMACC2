@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot
 {
@@ -44,7 +44,7 @@ enum class TDirection
 using namespace sm_dance_bot::s_pattern_states;
 
 // STATE DECLARATION
-struct SsSPattern1 : smacc::SmaccState<SsSPattern1, MsDanceBotRunMode, StiSPatternLoopStart>
+struct SsSPattern1 : smacc2::SmaccState<SsSPattern1, MsDanceBotRunMode, StiSPatternLoopStart>
 {
 public:
   using SmaccState::SmaccState;

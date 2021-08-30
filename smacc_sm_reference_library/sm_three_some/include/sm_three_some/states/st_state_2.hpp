@@ -15,7 +15,7 @@
 namespace sm_three_some
 {
 // STATE DECLARATION
-struct StState2 : smacc::SmaccState<StState2, MsRun>
+struct StState2 : smacc2::SmaccState<StState2, MsRun>
 {
   using SmaccState::SmaccState;
 
@@ -51,7 +51,7 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
     // auto sbAll = static_createStateReactor<SrAllEventsGo>();
 
     auto sbAll = static_createStateReactor<
-      smacc::state_reactors::SrAllEventsGo, smacc::state_reactors::EvAllGo<SrAllEventsGo>,
+      smacc2::state_reactors::SrAllEventsGo, smacc2::state_reactors::EvAllGo<SrAllEventsGo>,
       mpl::list<
         EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>,
         EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>,

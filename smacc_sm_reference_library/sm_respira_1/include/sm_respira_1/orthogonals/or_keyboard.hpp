@@ -15,10 +15,10 @@
 #pragma once
 
 #include <keyboard_client/cl_keyboard.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 namespace sm_respira_1
 {
-class OrKeyboard : public smacc::Orthogonal<OrKeyboard>
+class OrKeyboard : public smacc2::Orthogonal<OrKeyboard>
 {
 public:
   virtual void onInitialize() override

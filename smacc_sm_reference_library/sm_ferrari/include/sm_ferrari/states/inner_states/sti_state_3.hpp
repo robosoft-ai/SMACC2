@@ -17,7 +17,7 @@ namespace sm_ferrari
 namespace inner_states
 {
 // STATE DECLARATION
-struct StiState3 : smacc::SmaccState<StiState3, SS>
+struct StiState3 : smacc2::SmaccState<StiState3, SS>
 {
   using SmaccState::SmaccState;
 

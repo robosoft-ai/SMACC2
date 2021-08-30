@@ -15,12 +15,12 @@
 #pragma once
 #include <boost/statechart/event.hpp>
 #include <functional>
-#include <smacc/common.hpp>
-#include <smacc/smacc_event_generator.hpp>
-#include <smacc/smacc_updatable.hpp>
+#include <smacc2/common.hpp>
+#include <smacc2/smacc_event_generator.hpp>
+#include <smacc2/smacc_updatable.hpp>
 #include <typeinfo>
 
-namespace smacc
+namespace smacc2
 {
 namespace event_generators
 {
@@ -41,7 +41,7 @@ enum class ConditionalGeneratorMode
 };
 
 //-----------------------------------------------------------------------
-class EgConditionalGenerator : public smacc::SmaccEventGenerator, public ISmaccUpdatable
+class EgConditionalGenerator : public smacc2::SmaccEventGenerator, public ISmaccUpdatable
 {
 public:
   EgConditionalGenerator(
@@ -69,4 +69,4 @@ private:
   std::function<bool()> updatePredicate_;
 };
 }  // namespace event_generators
-}  // namespace smacc
+}  // namespace smacc2

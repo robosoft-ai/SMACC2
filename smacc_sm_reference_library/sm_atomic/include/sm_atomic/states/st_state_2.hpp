@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace sm_atomic
 {
 // STATE DECLARATION
-struct State2 : smacc::SmaccState<State2, SmAtomic>
+struct State2 : smacc2::SmaccState<State2, SmAtomic>
 {
   using SmaccState::SmaccState;
 

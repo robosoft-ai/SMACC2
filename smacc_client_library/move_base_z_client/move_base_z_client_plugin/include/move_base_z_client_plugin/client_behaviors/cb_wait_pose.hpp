@@ -20,12 +20,12 @@
 #pragma once
 
 #include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
-#include <smacc/smacc_asynchronous_client_behavior.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_move_base_z
 {
 // waits a robot pose message. Usually used for the startup synchronization.
-class CbWaitPose : public smacc::SmaccAsyncClientBehavior
+class CbWaitPose : public smacc2::SmaccAsyncClientBehavior
 {
 public:
   CbWaitPose();
@@ -35,7 +35,7 @@ public:
   void onOrthogonalAllocation()
   {
     this->requiresClient(moveBaseClient_);
-    smacc::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 
   void onEntry() override;

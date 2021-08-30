@@ -15,7 +15,7 @@
 #pragma once
 
 #include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 
 #include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
@@ -27,7 +27,7 @@ namespace sm_dance_bot
 using namespace cl_move_base_z;
 using namespace std::chrono_literals;
 
-class OrNavigation : public smacc::Orthogonal<OrNavigation>
+class OrNavigation : public smacc2::Orthogonal<OrNavigation>
 {
 public:
   void onInitialize() override

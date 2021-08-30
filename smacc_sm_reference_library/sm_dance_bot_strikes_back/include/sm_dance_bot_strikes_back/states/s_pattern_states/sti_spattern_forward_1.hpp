@@ -17,7 +17,7 @@ namespace sm_dance_bot_strikes_back
 namespace s_pattern_states
 {
 // STATE DECLARATION
-struct StiSPatternForward1 : public smacc::SmaccState<StiSPatternForward1, SS>
+struct StiSPatternForward1 : public smacc2::SmaccState<StiSPatternForward1, SS>
 {
   using SmaccState::SmaccState;
 

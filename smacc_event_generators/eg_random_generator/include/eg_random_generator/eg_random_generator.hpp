@@ -15,12 +15,12 @@
 #pragma once
 #include <boost/statechart/event.hpp>
 #include <functional>
-#include <smacc/common.hpp>
-#include <smacc/smacc_event_generator.hpp>
-#include <smacc/smacc_updatable.hpp>
+#include <smacc2/common.hpp>
+#include <smacc2/smacc_event_generator.hpp>
+#include <smacc2/smacc_updatable.hpp>
 #include <typeinfo>
 
-namespace smacc
+namespace smacc2
 {
 namespace state_reactors
 {
@@ -86,4 +86,4 @@ private:
   double maxValue;
 };
 }  // namespace state_reactors
-}  // namespace smacc
+}  // namespace smacc2

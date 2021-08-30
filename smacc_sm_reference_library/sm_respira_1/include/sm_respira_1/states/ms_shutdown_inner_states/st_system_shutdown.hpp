@@ -15,7 +15,7 @@
 namespace sm_respira_1
 {
 // STATE DECLARATION
-struct StSystemShutdown : smacc::SmaccState<StSystemShutdown, MsShutdown>
+struct StSystemShutdown : smacc2::SmaccState<StSystemShutdown, MsShutdown>
 {
   using SmaccState::SmaccState;
 
@@ -34,7 +34,7 @@ struct StSystemShutdown : smacc::SmaccState<StSystemShutdown, MsShutdown>
   typedef mpl::list<
 
     // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACCycle, TIMEOUT>,
-    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
+    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
     // Keyboard events
     // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle, MOVE>,
     // Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, BUILD>,

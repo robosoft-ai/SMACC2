@@ -16,14 +16,14 @@
 
 #include <chrono>
 #include <ros_timer_client/cl_ros_timer.hpp>
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 using namespace std::chrono_literals;
 
 namespace sm_branching
 {
 using namespace std::chrono_literals;
-class OrTimer : public smacc::Orthogonal<OrTimer>
+class OrTimer : public smacc2::Orthogonal<OrTimer>
 {
 public:
   void onInitialize() override { auto client = this->createClient<cl_ros_timer::ClRosTimer>(1s); }

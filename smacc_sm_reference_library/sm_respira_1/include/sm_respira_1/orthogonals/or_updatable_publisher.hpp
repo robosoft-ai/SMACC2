@@ -15,14 +15,14 @@
 #pragma once
 
 #include <ros_publisher_client/cl_ros_publisher.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 #include <std_msgs/msg/string.hpp>
 
 namespace sm_respira_1
 {
 using namespace cl_ros_publisher;
 
-class OrUpdatablePublisher : public smacc::Orthogonal<OrUpdatablePublisher>
+class OrUpdatablePublisher : public smacc2::Orthogonal<OrUpdatablePublisher>
 {
 public:
   virtual void onInitialize() override

@@ -15,13 +15,13 @@
 #pragma once
 
 #include <sm_ferrari/clients/cl_subscriber/cl_subscriber.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_ferrari
 {
 using namespace sm_ferrari::cl_subscriber;
 
-class OrSubscriber : public smacc::Orthogonal<OrSubscriber>
+class OrSubscriber : public smacc2::Orthogonal<OrSubscriber>
 {
 public:
   void onInitialize() override

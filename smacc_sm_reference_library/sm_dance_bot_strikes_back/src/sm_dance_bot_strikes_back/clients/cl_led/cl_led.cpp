@@ -35,5 +35,5 @@ std::string ClLED::getName() const { return "TOOL ACTION CLIENT"; }
 ClLED::~ClLED() {}
 }  // namespace cl_led
 
-// PLUGINLIB_EXPORT_CLASS(cl_led::ClLED, smacc::ISmaccComponent)
+// PLUGINLIB_EXPORT_CLASS(cl_led::ClLED, smacc2::ISmaccComponent)
 }  // namespace sm_dance_bot_strikes_back

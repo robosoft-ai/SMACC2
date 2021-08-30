@@ -19,8 +19,8 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/client_bases/smacc_action_client_base.hpp>
-#include <smacc/smacc.hpp>
+#include <smacc2/client_bases/smacc_action_client_base.hpp>
+#include <smacc2/smacc.hpp>
 
 #include <nav2_msgs/action/navigate_to_pose.hpp>
 //#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.hpp>
@@ -28,7 +28,7 @@
 namespace cl_move_base_z
 {
 class ClMoveBaseZ
-: public smacc::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>
+: public smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>
 {
 public:
   ClMoveBaseZ(std::string navigateToPoseAction = "/navigate_to_pose");

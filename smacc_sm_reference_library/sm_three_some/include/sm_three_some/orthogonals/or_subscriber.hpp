@@ -15,13 +15,13 @@
 #pragma once
 
 #include <sm_three_some/clients/cl_subscriber/cl_subscriber.hpp>
-#include <smacc/smacc_orthogonal.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_three_some
 {
 using namespace sm_three_some::cl_subscriber;
 
-class OrSubscriber : public smacc::Orthogonal<OrSubscriber>
+class OrSubscriber : public smacc2::Orthogonal<OrSubscriber>
 {
 public:
   void onInitialize() override { auto subscriber_client = this->createClient<ClSubscriber>(); }

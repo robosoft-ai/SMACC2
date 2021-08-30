@@ -15,13 +15,13 @@
 #pragma once
 
 #include <sm_dance_bot/clients/cl_led/cl_led.hpp>
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot
 {
 namespace cl_led
 {
-class CbLEDOff : public smacc::SmaccClientBehavior
+class CbLEDOff : public smacc2::SmaccClientBehavior
 {
 public:
   cl_led::ClLED * ledActionClient_;

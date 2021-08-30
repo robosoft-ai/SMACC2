@@ -30,7 +30,7 @@ class StiState3;
 using namespace sm_three_some::inner_states;
 
 // STATE DECLARATION
-struct Ss2 : smacc::SmaccState<Ss2, MsRun, StiState1>
+struct Ss2 : smacc2::SmaccState<Ss2, MsRun, StiState1>
 {
 public:
   using SmaccState::SmaccState;

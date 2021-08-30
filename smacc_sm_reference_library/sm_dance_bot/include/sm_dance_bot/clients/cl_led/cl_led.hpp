@@ -15,13 +15,13 @@
 #pragma once
 
 #include <sm_dance_bot_msgs/action/led_control.hpp>
-#include <smacc/client_bases/smacc_action_client_base.hpp>
+#include <smacc2/client_bases/smacc_action_client_base.hpp>
 
 namespace sm_dance_bot
 {
 namespace cl_led
 {
-// class ClLED: public smacc::client_bases::ISmaccActionClient
+// class ClLED: public smacc2::client_bases::ISmaccActionClient
 // {
 //     public:
 //         ClLED(std::string actionServerName);
@@ -31,7 +31,7 @@ namespace cl_led
 // };
 
 class ClLED
-: public smacc::client_bases::SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>
+: public smacc2::client_bases::SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>
 {
 public:
   // SMACC_ACTION_CLIENT_DEFINITION(sm_dance_bot_msgs::action::LEDControlAction);

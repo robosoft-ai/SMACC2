@@ -20,8 +20,8 @@
 #pragma once
 
 #include <tf2/transform_datatypes.h>
-#include <smacc/common.hpp>
-#include <smacc/component.hpp>
+#include <smacc2/common.hpp>
+#include <smacc2/component.hpp>
 
 #include <geometry_msgs/msg/point.hpp>
 #include <memory>
@@ -49,7 +49,7 @@ enum class WorkingMode : uint8_t
 };
 
 /// This class track the required distance of the cord based on the external localization system
-class OdomTracker : public smacc::ISmaccComponent
+class OdomTracker : public smacc2::ISmaccComponent
 {
 public:
   // by default, the component start in record_path mode and publishing the

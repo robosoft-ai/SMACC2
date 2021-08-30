@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot
 {
@@ -47,7 +47,7 @@ using namespace f_pattern_states;
 
 // STATE DECLARATION
 struct SsFPattern1
-: smacc::SmaccState<SsFPattern1, MsDanceBotRunMode, StiFPatternStartLoop<SsFPattern1>>
+: smacc2::SmaccState<SsFPattern1, MsDanceBotRunMode, StiFPatternStartLoop<SsFPattern1>>
 {
 public:
   using SmaccState::SmaccState;

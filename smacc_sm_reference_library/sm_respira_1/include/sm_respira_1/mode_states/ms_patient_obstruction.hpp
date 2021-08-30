@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_respira_1
 {
 // STATE DECLARATION
 class MsPatientObstruction
-: public smacc::SmaccState<MsPatientObstruction, SmRespira1, StPatientObstructionStep1>
+: public smacc2::SmaccState<MsPatientObstruction, SmRespira1, StPatientObstructionStep1>
 {
 public:
   using SmaccState::SmaccState;

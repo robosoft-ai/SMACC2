@@ -15,11 +15,11 @@
 #pragma once
 
 #include <ros_timer_client/cl_ros_timer.hpp>
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace cl_ros_timer
 {
-class CbTimer : public smacc::SmaccClientBehavior
+class CbTimer : public smacc2::SmaccClientBehavior
 {
 public:
   void onEntry() override;

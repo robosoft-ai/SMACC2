@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc/smacc.hpp>
+#include <smacc2/smacc.hpp>
 namespace sm_respira_1
 {
 // STATE DECLARATION
-class MsLeakyLung : public smacc::SmaccState<MsLeakyLung, SmRespira1, StLeakyLungStep1>
+class MsLeakyLung : public smacc2::SmaccState<MsLeakyLung, SmRespira1, StLeakyLungStep1>
 {
 public:
   using SmaccState::SmaccState;

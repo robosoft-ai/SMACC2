@@ -18,7 +18,7 @@ namespace f_pattern_states
 {
 // STATE DECLARATION
 template <typename SS>
-struct StiFPatternStartLoop : smacc::SmaccState<StiFPatternStartLoop<SS>, SS>
+struct StiFPatternStartLoop : smacc2::SmaccState<StiFPatternStartLoop<SS>, SS>
 {
   typedef SmaccState<StiFPatternStartLoop<SS>, SS> TSti;
   using TSti::context_type;

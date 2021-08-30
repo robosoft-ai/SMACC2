@@ -18,5 +18,5 @@
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
-  smacc::run<sm_atomic_performance_test::SmAtomicPerformanceTest>();
+  smacc2::run<sm_atomic_performance_test::SmAtomicPerformanceTest>();
 }
