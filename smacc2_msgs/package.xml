@@ -6,8 +6,7 @@
 
   <description>Messages and services used in smacc2.</description>
 
-  <author email="pablo@robosoft.ai">Pablo Inigo Blasco</author>
-  <author email="brett@robosoft.ai">Brett Aldrich</author>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
   <maintainer email="pablo@robosoft.ai">Pablo Inigo Blasco</maintainer>
   <maintainer email="denis@stoglrobotics.de">Denis Stogl</maintainer>
   <license>Apache-2.0</license>

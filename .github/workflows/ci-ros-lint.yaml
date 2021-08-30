@@ -38,7 +38,7 @@ jobs:
           eg_conditional_generator
           eg_random_generator
 
-          smacc_msgs
+          smacc2_msgs
 
           sm_atomic
           sm_atomic_performance_test
@@ -89,7 +89,7 @@ jobs:
           #eg_conditional_generator
           #eg_random_generator
 
-          #smacc_msgs
+          #smacc2_msgs
 
           #sm_atomic
           #sm_atomic_performance_test
