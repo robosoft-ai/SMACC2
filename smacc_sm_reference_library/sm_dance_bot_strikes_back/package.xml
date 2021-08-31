@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>sm_dance_bot_strikes_back</name>
-  <version>0.9.1</version>
+  <version>0.0.0</version>
   <description>The dance_bot_strikes_back package</description>
 
   <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
