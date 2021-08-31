@@ -7,11 +7,7 @@ SMACC2 is a state-machine framework for ROS2-based applications written in C++.
 
  ROS2 Distro | Build status | Documentation | Released packages
  :---------: | :----------: | :-----------: | :---------------:
-Galactic <br /> Rolling | [master](https://github.com/robosoft-ai/SMACC2/tree/master) <br />
-[![Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-binary.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-binary.yml) <br />
-[![Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-semi-binary.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-semi-binary.yml) <br />
-[![Source Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-source.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-source.yml) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml)
-[Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/master/html/index.html) | [smacc2](https://index.ros.org/p/smacc2/) <br /> [smacc2_msgs](https://index.ros.org/p/smacc2_msgs/)
+**Galactic** <br /> **Rolling** | [master](https://github.com/robosoft-ai/SMACC2/tree/master) <br /> [![Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-binary.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-binary.yml) <br /> [![Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-semi-binary.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-semi-binary.yml) <br /> [![Source Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-source.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-source.yml) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/master/html/index.html) | [smacc2](https://index.ros.org/p/smacc2/) <br /> [smacc2_msgs](https://index.ros.org/p/smacc2_msgs/)
 
 
 ## Repository Structure
