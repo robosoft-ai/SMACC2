@@ -2,6 +2,13 @@
 
 This small example shows the steps to follow to trace a smacc application.
 First, make sure that smacc and tracetools installed (or built in your workspace) in your system.
+
+To automatically install and configure lttng, source the setupTracing.sh file:
+
+```
+source ~/workspace/ros_ws_rolling_smacc/src/SMACC2/setupTracing.sh
+```
+
 Then start your smacc application:
 
 ```
@@ -51,12 +58,6 @@ ID: 1663722 - Name: /home/geus/Desktop/smacc_tracing/install/sm_three_some/lib/s
 ```
 Now lets start a recording session. We use a custom command ```trace.sh```, it is essentially an extended version of ```ros2 trace``` but also adding the smacc tracepoints to be recorded:
 
-First ensure you have the necessary package installed.
-```
-sudo apt-get install ros-rolling-ros2trace
-```
-
-Then run this command.
 ```
 ros2 run smacc2 trace.sh
 ```
