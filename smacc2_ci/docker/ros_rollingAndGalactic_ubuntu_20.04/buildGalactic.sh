@@ -6,5 +6,5 @@ echo "Building DOCKER from directory `pwd`"
 #TODO: Implement user selection of ROS2 Distro
 #Ex sudo docker build --build-arg ROS2_DISTRO=galactic
 
-sudo docker build -f $DIR/Dockerfile -t smacc2_galactic_ubuntu_2004 .
+docker build -f $DIR/Dockerfile -t smacc2_galactic_ubuntu_2004 .
 cd $DIR
