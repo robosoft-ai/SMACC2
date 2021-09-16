@@ -1,4 +1,4 @@
- <h2>State Machine Diagram</h2>
+## State Machine Diagram
  
  ! New Image required
  
