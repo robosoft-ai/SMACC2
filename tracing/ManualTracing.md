@@ -17,7 +17,7 @@ Create and add your user to a new tracing group
 
 ```
 newgrp tracing
-sudo usermod -aG tracing $USER
+sudo usermod -aG tracing `whoami`
 ```
 Reboot or log out and back in to your user to update user groups
 
