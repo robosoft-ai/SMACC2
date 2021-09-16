@@ -1,6 +1,6 @@
 # SMACC2 Tracing
 
-This small example shows the steps to follow to trace a smacc application.
+This small example shows the steps to follow to trace a SMACC2 library.
 First, make sure that smacc and tracetools installed (or built in your workspace) in your system.
 
 See README.md for setting up a SMACC workspace.
