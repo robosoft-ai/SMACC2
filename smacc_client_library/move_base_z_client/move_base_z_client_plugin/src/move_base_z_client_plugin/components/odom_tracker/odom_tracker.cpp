@@ -17,11 +17,11 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+#include <move_base_z_client_plugin/common.hpp>
+
 #include <angles/angles.h>
 #include <tf2/utils.h>
-#include <move_base_z_client_plugin/common.hpp>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 #include <boost/range/adaptor/reversed.hpp>
 
@@ -311,6 +311,7 @@ bool OdomTracker::updateClearPath(const nav_msgs::msg::Odometry & odom)
     {
       auto & carrotPose = baseTrajectory_.poses.back().pose;
       auto & carrotPoint = carrotPose.position;
+
       double carrotAngle = tf2::getYaw(carrotPose.orientation);
 
       auto & currePose = base_pose.pose;

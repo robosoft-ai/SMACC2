@@ -1,6 +1,6 @@
 [submodule "submodules/navigation2"]
 	path = submodules/navigation2
-	url = https://github.com/pabloinigoblasco/navigation2.git
+	url = https://github.com/ros-planning/navigation2.git
         branch= feature/goal_checker_selector
 [submodule "submodules/slam_toolbox"]
 	path = submodules/slam_toolbox

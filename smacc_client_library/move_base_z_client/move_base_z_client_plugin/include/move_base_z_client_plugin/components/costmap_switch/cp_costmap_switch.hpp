@@ -88,11 +88,5 @@ private:
   rclcpp::Node::SharedPtr nh_;
 
   inline rclcpp::Node::SharedPtr getNode() { return nh_; }
-  // dynamic_reconfigure::Config enableReq;
-  // dynamic_reconfigure::Config disableReq;
-
-  // void dynreconfCallback(const dynamic_reconfigure::Config::ConstPtr &configuration_update);
-
-  // ros::Subscriber dynrecofSub_;
 };
 }  // namespace cl_move_base_z

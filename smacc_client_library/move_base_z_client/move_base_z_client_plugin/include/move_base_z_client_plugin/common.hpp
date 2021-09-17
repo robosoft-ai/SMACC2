@@ -16,12 +16,15 @@
 
 #include <iostream>
 
+#include <tf2/transform_datatypes.h>
 #include <builtin_interfaces/msg/time.hpp>
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/quaternion.hpp>
+#include <geometry_msgs/msg/quaternion_stamped.hpp>
 #include <nav2_msgs/action/navigate_to_pose.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg);
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & msg);
