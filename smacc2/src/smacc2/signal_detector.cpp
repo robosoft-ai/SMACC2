@@ -244,9 +244,9 @@ void SignalDetector::pollOnce()
             node->get_logger(),
             "[PollOnce] update client call:  " << demangleType(typeid(*updatableClient)));
 
-          TRACEPOINT(update_start, updatableElementName);
+          TRACEPOINT(smacc2_state_update_start, updatableElementName);
           updatableClient->executeUpdate(node);
-          TRACEPOINT(update_start, updatableElementName);
+          TRACEPOINT(smacc2_state_update_start, updatableElementName);
         }
         catch (const std::exception & e)
         {
@@ -300,9 +300,9 @@ void SignalDetector::pollOnce()
                 getLogger(),
                 "[SignalDetector] update client behavior call: " << updatableElementName);
 
-              TRACEPOINT(update_start, updatableElementName);
+              TRACEPOINT(smacc2_state_update_start, updatableElementName);
               udpatableStateElement->executeUpdate(node);
-              TRACEPOINT(update_start, updatableElementName);
+              TRACEPOINT(smacc2_state_update_start, updatableElementName);
             }
             catch (const std::exception & e)
             {
