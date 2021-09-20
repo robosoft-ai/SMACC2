@@ -2,13 +2,6 @@
 
 This small example shows the steps to follow to trace a smacc application.
 First, make sure that smacc and tracetools installed (or built in your workspace) in your system.
-
-To automatically install and configure lttng, source the setupTracing.sh file:
-
-```
-source ~/workspace/ros_ws_rolling_smacc/src/SMACC2/setupTracing.sh
-```
-
 Then start your smacc application:
 
 ```
@@ -26,19 +19,19 @@ You should get the list of nodes with tracepoints available. Below it is shown a
 ```
 [...]
 ID: 1663722 - Name: /home/geus/Desktop/smacc_tracing/install/sm_three_some/lib/sm_three_some/sm_three_some_node
-      ros2:client_behavior_on_exit_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
-      ros2:client_behavior_on_exit_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
-      ros2:client_behavior_on_entry_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
-      ros2:client_behavior_on_entry_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
-      ros2:state_onExit_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
-      ros2:state_onExit_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
-      ros2:state_onEntry_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
-      ros2:state_onEntry_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
-      ros2:state_onRuntimeConfigure_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
-      ros2:state_onRuntimeConfigure_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
-      ros2:update_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
-      ros2:update_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
-      ros2:smacc_event (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_client_behavior_on_exit_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_client_behavior_on_exit_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_client_behavior_on_entry_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_client_behavior_on_entry_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_state_onExit_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_state_onExit_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_state_onEntry_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_state_onEntry_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_state_onRuntimeConfigure_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_state_onRuntimeConfigure_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_state_update_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_state_update_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
+      ros2:smacc2_event (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
       ros2:spinOnce (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
       ros2:callback_end (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
       ros2:callback_start (loglevel: TRACE_DEBUG_LINE (13)) (type: tracepoint)
@@ -58,6 +51,12 @@ ID: 1663722 - Name: /home/geus/Desktop/smacc_tracing/install/sm_three_some/lib/s
 ```
 Now lets start a recording session. We use a custom command ```trace.sh```, it is essentially an extended version of ```ros2 trace``` but also adding the smacc tracepoints to be recorded:
 
+First ensure you have the necessary package installed.
+```
+sudo apt-get install ros-rolling-ros2trace
+```
+
+Then run this command.
 ```
 ros2 run smacc2 trace.sh
 ```
