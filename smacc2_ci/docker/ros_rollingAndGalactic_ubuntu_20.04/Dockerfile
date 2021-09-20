@@ -1,16 +1,16 @@
 #FROM osrf/ros2:rolling-desktop
-# ^^ not yet suported
+# ^^ not yet supported
 
 # argument to allow selection of ROS distro at runtime
 # use this command "sudo docker build --build-arg ROS2_DISTRO=(desiredRosTag) (directoryHoldingDockerfile)/"
 # rolling will act as default if no arg is provided
-ARG ROS2_DISTRO=rolling 
+ARG ROS2_DISTRO=rolling
 
 FROM ros:$ROS2_DISTRO
 
 ARG ROS2_DISTRO=${ROS2_DISTRO}
 
-ENV HOME /root 
+ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 ENV DISTRO=${ROS2_DISTRO}
 
@@ -31,7 +31,7 @@ RUN git clone https://github.com/robosoft-ai/SMACC2.git
 WORKDIR /root/smacc2_ws
 
 # Resolve dependencies and build workspace
-#RUN vcs import src --skip-existing --input src/SMACC2/smacc2.repos 
+#RUN vcs import src --skip-existing --input src/SMACC2/smacc2.repos
 RUN rosdep install --ignore-src --from-paths src -y -r
 RUN bash -c "source /opt/ros/${DISTRO}/setup.bash; colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release"
 
@@ -47,4 +47,3 @@ WORKDIR /root
 # #set up trace
 # RUN lttng list --userspace
 # RUN ros2 run smacc2 trace.sh
-

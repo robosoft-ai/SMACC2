@@ -31,7 +31,7 @@ sudo usermod -a -G tracing $user
 #reboot
 
 #START of reboot cheat explained by Denis
-# this should update the exisiting current groups
+# this should update the existing current groups
 sudo su $user
 #END reboot cheat
 
@@ -42,7 +42,7 @@ groups | grep tracing
 #sudo apt-get install lttng-modules-dkms
 
 # SOME DEPENDENCIES WE SHOULD HAVE IN THE ROS2/package.xml file in exec_depends
-sudo apt-get install ros-rolling-tracetools-launch ros-rolling-ros2trace ros-rolling-tracetools* 
+sudo apt-get install ros-rolling-tracetools-launch ros-rolling-ros2trace ros-rolling-tracetools*
 
 #source ros rolling to run trace tools
 sudo source opt/ros/rolling/setup.bash
