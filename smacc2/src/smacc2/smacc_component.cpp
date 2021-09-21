@@ -38,9 +38,9 @@ void ISmaccComponent::setStateMachine(ISmaccStateMachine * stateMachine)
   stateMachine_ = stateMachine;
 }
 
-rclcpp::Node::SharedPtr ISmaccComponent::getNode() { return this->owner_->getNode(); }
+rclcpp::Node::SharedPtr ISmaccComponent::getNode() { return owner_->getNode(); }
 
-rclcpp::Logger ISmaccComponent::getLogger() { return getLogger(); }
+rclcpp::Logger ISmaccComponent::getLogger() { return owner_->getLogger(); }
 
 std::string ISmaccComponent::getName() const
 {

@@ -17,12 +17,13 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <angles/angles.h>
-#include <tf2/transform_datatypes.h>
-#include <tf2/utils.h>
 #include <forward_global_planner/forward_global_planner.hpp>
 #include <move_base_z_planners_common/common.hpp>
 #include <move_base_z_planners_common/move_base_z_client_tools.hpp>
+
+#include <angles/angles.h>
+#include <tf2/transform_datatypes.h>
+// #include <tf2/utils.h>
 
 #include <boost/assign.hpp>
 #include <boost/range/adaptor/reversed.hpp>

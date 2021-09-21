@@ -116,7 +116,7 @@ void CostmapSwitch::disable(StandardLayers layerType)
 //-------------------------------------------------------------------------
 
 CostmapProxy::CostmapProxy(
-  std::string costmap_name, std::string enablePropertyName, rclcpp::Node::SharedPtr nh)
+  std::string /*costmap_name*/, std::string enablePropertyName, rclcpp::Node::SharedPtr nh)
 : nh_(nh)
 {
   // this->costmapName_ = costmap_name + "/set_parameters";
@@ -128,7 +128,7 @@ CostmapProxy::CostmapProxy(
 
   // enableField.value = false;
   // disableReq.bools.push_back(enableField);
-  RCLCPP_ERROR(getLogger(), "costmap switch not implemented %s", costmapName_.c_str());
+  RCLCPP_ERROR(nh->get_logger(), "costmap switch not implemented %s", costmapName_.c_str());
 }
 
 void CostmapProxy::setCostmapEnabled(bool value)
@@ -151,7 +151,7 @@ void CostmapProxy::setCostmapEnabled(bool value)
   //     RCLCPP_WARN(getLogger(),"could not call dynamic reconfigure server. It does not exist: %s", costmapName_.c_str());
   // }
 
-  RCLCPP_ERROR(getLogger(), "costmap switch not implemented %s", costmapName_.c_str());
+  RCLCPP_ERROR(nh_->get_logger(), "costmap switch not implemented %s", costmapName_.c_str());
 }
 
 // void CostmapProxy::dynreconfCallback(const dynamic_reconfigure::Config::ConstPtr &configuration_update)
