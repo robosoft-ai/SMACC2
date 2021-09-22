@@ -17,6 +17,8 @@
 #include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 
+#include <ament_index_cpp/get_package_share_directory.hpp>
+#include <boost/algorithm/string.hpp>
 #include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
 #include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
@@ -58,11 +60,12 @@ public:
   {
     // if it is the first time and the waypoints navigator is not configured
     std::string planfilepath;
-
-    RCLCPP_INFO_STREAM(getLogger(), "Reasing parameter file from node: " << getNode()->get_name());
     getNode()->declare_parameter("waypoints_plan");
     if (getNode()->get_parameter("waypoints_plan", planfilepath))
     {
+      std::string package_share_directory =
+        ament_index_cpp::get_package_share_directory("sm_dance_bot");
+      boost::replace_all(planfilepath, "$(pkg_share)", package_share_directory);
       waypointsNavigator->loadWayPointsFromFile(planfilepath);
       RCLCPP_INFO(getLogger(), "waypoints plan: %s", planfilepath.c_str());
     }

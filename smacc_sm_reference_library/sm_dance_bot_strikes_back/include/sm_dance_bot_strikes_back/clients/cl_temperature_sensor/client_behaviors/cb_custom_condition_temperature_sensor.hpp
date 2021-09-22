@@ -31,6 +31,11 @@ class CbConditionTemperatureSensor
 {
 public:
   CbConditionTemperatureSensor() {}
+  void onEntry() override
+  {
+    RCLCPP_INFO(getLogger(), "[CbConditionTemperatureSensor] onEntry");
+    cl_multirole_sensor::CbDefaultMultiRoleSensorBehavior<ClTemperatureSensor>::onEntry();
+  }
   void onMessageCallback(const sensor_msgs::msg::Temperature & msg) override
   {
     if (msg.temperature > 40)

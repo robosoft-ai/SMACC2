@@ -20,6 +20,7 @@ import rclpy
 from rclpy.node import Node
 
 import std_srvs
+import std_srvs.srv
 
 if __name__ == "__main__":
 

@@ -44,6 +44,10 @@ public:
   void onOrthogonalAllocation()
   {
     deferedEventPropagation = [=]() {
+      RCLCPP_INFO(
+        getLogger(), "[CbDefaultMultiRoleSensorBehavior] onEntry. Requires client of type '%s'",
+        demangleSymbol<ClientType>().c_str());
+
       // just propagate the client events from this client behavior source.
       sensor_->onMessageReceived(
         &CbDefaultMultiRoleSensorBehavior<ClientType>::propagateEvent<
@@ -63,6 +67,7 @@ public:
   template <typename EvType>
   void propagateEvent(const TMessageType & /*msg*/)
   {
+    // TODO: copy event concept fields
     this->postEvent<EvType>();
   }
 
@@ -75,24 +80,25 @@ public:
   void onEntry() override
   {
     RCLCPP_INFO(
-      getNode()->get_logger(),
-      "[CbDefaultMultiRoleSensorBehavior] onEntry. Requires client of type '%s'",
+      getLogger(), "[CbDefaultMultiRoleSensorBehavior] onEntry. Requires client of type '%s'",
       demangleSymbol<ClientType>().c_str());
 
-    this->requiresClient(sensor_);
+    if (sensor_ == nullptr)
+    {
+      this->requiresClient(sensor_);
+    }
 
     if (sensor_ == nullptr)
     {
       RCLCPP_FATAL_STREAM(
-        getNode()->get_logger(), "Sensor client behavior needs a client of type: "
-                                   << demangleSymbol<ClientType>() << " but it is not found.");
+        getLogger(),
+        "[CbDefaultMultiRoleSensorBehavior]Sensor client behavior needs a client of type: "
+          << demangleSymbol<ClientType>() << " but it is not found.");
     }
     else
     {
       deferedEventPropagation();
-      RCLCPP_INFO(
-        getNode()->get_logger(), "[CbDefaultMultiRoleSensorBehavior] onEntry. sensor initialize");
-      // sensor_->initialize();
+      RCLCPP_INFO(getLogger(), "[CbDefaultMultiRoleSensorBehavior] onEntry. sensor initialize");
     }
   }
 

@@ -31,6 +31,9 @@ namespace client_bases
 {
 using namespace smacc2::default_events;
 
+// This client class warps a ros subscriber and publishes two kind of
+// smacc events: EvTopicMessage (always a ros topic message is received)
+// and EvTopicInitialMessage (only once)
 template <typename MessageType>
 class SmaccSubscriberClient : public smacc2::ISmaccClient
 {
@@ -44,10 +47,7 @@ public:
 
   SmaccSubscriberClient(std::string topicname) { topicName = topicname; }
 
-  virtual ~SmaccSubscriberClient()
-  {
-    // sub_.reset() // not needed
-  }
+  virtual ~SmaccSubscriberClient() {}
 
   smacc2::SmaccSignal<void(const MessageType &)> onFirstMessageReceived_;
   smacc2::SmaccSignal<void(const MessageType &)> onMessageReceived_;
@@ -73,12 +73,14 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
+    // ros topic message received smacc event callback
     this->postMessageEvent = [=](auto msg) {
       auto event = new EvTopicMessage<TSourceObject, TOrthogonal>();
       event->msgData = msg;
       this->postEvent(event);
     };
 
+    // initial ros topic message received smacc event callback
     this->postInitialMessageEvent = [=](auto msg) {
       auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal>();
       event->msgData = msg;
