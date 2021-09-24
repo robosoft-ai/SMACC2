@@ -13,11 +13,13 @@ SMACC2 is a state-machine framework for ROS2-based applications written in C++.
 ## Repository Structure
 
 - `smacc2` - core library of SMACC2.
-- `smacc_client_library` - client libraries for SMACC2, e.g., Navigation2 (`move_base_z_client`), MoveIt2 (`move_group_interface_client`).
-- `smacc_event_generators` - ...
-- `smacc_msgs` - ROS2 messages for SMACC2 framework.
-- `smacc_sm_reference_library` - libraries with reference implementations of state-machines used for demonstaration and testing of functionalities.
-- `↓smacc_state_reactor_library` - ...
+- `smacc2_ci` - ...
+- `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`move_base_z_client`), MoveIt2 (`move_group_interface_client`).
+- `smacc2_event_generators` - ...
+- `smacc2_msgs` - ROS2 messages for SMACC2 framework.
+- `smacc2_sm_reference_library` - libraries with reference implementations of state-machines used for demonstaration and testing of functionalities.
+- `↓smacc2_state_reactor_library` - ...
+- `smacc2_performance_tools` - ...
 
 
 ## Getting started
@@ -31,7 +33,7 @@ SMACC2 is a state-machine framework for ROS2-based applications written in C++.
 
 3. Create a new ROS2 workspace:
    ```
-   export COLCON_WS=~/workspace/ros_ws_rolling_smacc
+   export COLCON_WS=~/workspace/ros_ws_rolling_smacc2
    mkdir -p $COLCON_WS/src
    ```
 
@@ -74,8 +76,8 @@ SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wik
  *   ***Written in C++:*** Until now, ROS2 has lacked a library to develop task-level behavioral state machines in C++. Although libraries have been developed in scripting languages such as python, these are unsuitable for real-world industrial environments where real-time requirements are demanded.
  *   ***Orthogonals:*** Originally conceived by David Harel in 1987, orthogonality is absolutely crucial to developing state machines for complex robotic systems. This is because complex robots are always a collection of hardware devices which require communication protocols, start-up determinism, etc. With orthogonals, it is an intuitive and relatively straight forward exercise (at least conceptually;) to code a state machine for a robot comprising a mobile base, a robotic arm, a gripper, two lidar sensors, a gps transceiver and an imu, for instance.
  *  ***Static State Machine Checking:*** One of the features that SMACC2 inherits from Boost Statechart is that you get compile time validation checking. This benefits developers in that the amount of runtime testing necessary to ship quality software that is both stable and safe is dramatically reduced. Our philosophy is "Wherever possible, let the compiler do it".
- *  ***State Machine Reference Library:*** With a constantly growing library of out-of-the-box reference state machines, (found in the folder [sm_reference_library](https://github.com/robosoft-ai/SMACC2/tree/master/smacc_sm_reference_library)) guaranteed to compile and run, you can jumpstart your development efforts by choosing a reference machine that is closest to your needs, and then customize and extend to meet the specific requirements of your robotic application. All the while knowing that the library supports advanced functionalities that are practically universal among actual working robots.
- *  ***SMACC2 Client Library:*** SMACC2 also features a constantly growing library of [clients](https://github.com/robosoft-ai/SMACC2/tree/master/smacc_client_library) that support ROS2 Action Servers, Service Servers and other nodes right out-of-the box. The clients within the SMACC2 Client library have been built utilizing a component based architecture that allows for developer to build powerful clients of their own. Current clients of note include MoveBaseZ, a full featured Action Client built to integrate with Nav2, the ros_timer_client, the multi_role_sensor_client, and a keyboard_client used extensively for state machine drafting & debugging.
+ *  ***State Machine Reference Library:*** With a constantly growing library of out-of-the-box reference state machines, (found in the folder [sm_reference_library](https://github.com/robosoft-ai/SMACC2/tree/master/smacc2_sm_reference_library)) guaranteed to compile and run, you can jumpstart your development efforts by choosing a reference machine that is closest to your needs, and then customize and extend to meet the specific requirements of your robotic application. All the while knowing that the library supports advanced functionalities that are practically universal among actual working robots.
+ *  ***SMACC2 Client Library:*** SMACC2 also features a constantly growing library of [clients](https://github.com/robosoft-ai/SMACC2/tree/master/smacc2_client_library) that support ROS2 Action Servers, Service Servers and other nodes right out-of-the box. The clients within the SMACC2 Client library have been built utilizing a component based architecture that allows for developer to build powerful clients of their own. Current clients of note include MoveBaseZ, a full featured Action Client built to integrate with Nav2, the ros_timer_client, the multi_role_sensor_client, and a keyboard_client used extensively for state machine drafting & debugging.
   *  ***Extensive Documentation:*** Although many ROS users are familiar with doxygen, our development team has spent a lot of time researching the more advanced features of doxygen such as uml style class diagrams and call graphs, and we've used them to document the SMACC2 library. Have a look to [our doxygen sites](https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespaces.html) and we think you'll be blown away at what Doxygen looks like when [it's done right](https://robosoft-ai.github.io/SMACC2_Documentation/master/html/classsmacc2_1_1ISmaccStateMachine.html) and it becomes a powerful tool to research a codebase.
   *  ***SMACC2 Runtime Analyzer:*** The SMACC2 library works out of the box with the SMACC2 RTA. This allows developers to visualize and runtime debug the state machines they are working on. The SMACC2 RTA is closed source, but is free for individual and academic use. It can be found [here](https://robosoft.ai/product-category/smacc2-runtime-analyzer/).
 
@@ -85,18 +87,18 @@ From it's inception, SMACC2 was written to support the programming of multi-comp
 
 
 ## Getting Started
-The easiest way to get started is by selecting one of the state machines in our [reference library](https://github.com/robosoft-ai/SMACC2/tree/master/smacc_sm_reference_library), and then hacking it to meet your needs.
+The easiest way to get started is by selecting one of the state machines in our [reference library](https://github.com/robosoft-ai/SMACC2/tree/master/smacc2_sm_reference_library), and then hacking it to meet your needs.
 
 Each state machine in the reference library comes with it's own README.md file, which contains the appropriate operating instructions, so that all you have to do is simply copy & paste some commands into your terminal.
 
 
-  *  If you are looking for a minimal example, we recommend [sm_atomic](https://github.com/robosoft-ai/SMACC2/tree/master/smacc_sm_reference_library/sm_atomic).
+  *  If you are looking for a minimal example, we recommend [sm_atomic](https://github.com/robosoft-ai/SMACC2/tree/master/smacc2_sm_reference_library/sm_atomic).
 
-  *  If you are looking for a minimal example but with a looping superstate, try [sm_three_some](https://github.com/robosoft-ai/SMACC2/tree/master/smacc_sm_reference_library/sm_three_some).
+  *  If you are looking for a minimal example but with a looping superstate, try [sm_three_some](https://github.com/robosoft-ai/SMACC2/tree/master/smacc2_sm_reference_library/sm_three_some).
 
-  *  If you want to get started with the ROS Navigation stack right away, try [sm_dance_bot](https://github.com/robosoft-ai/SMACC2/tree/master/smacc_sm_reference_library/sm_dance_bot).
+  *  If you want to get started with the ROS Navigation stack right away, try [sm_dance_bot](https://github.com/robosoft-ai/SMACC2/tree/master/smacc2_sm_reference_library/sm_dance_bot).
 
-  *  If you want to get started with ROS Navigation and exploring the orthogonal read-write cycle, then try [sm_dance_bot_strikes_back](https://github.com/robosoft-ai/SMACC2/tree/master/smacc_sm_reference_library/sm_dance_bot_strikes_back).
+  *  If you want to get started with ROS Navigation and exploring the orthogonal read-write cycle, then try [sm_dance_bot_strikes_back](https://github.com/robosoft-ai/SMACC2/tree/master/smacc2_sm_reference_library/sm_dance_bot_strikes_back).
 
 
 Operating instructions can be found in each reference state machines readme file.
