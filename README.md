@@ -19,7 +19,7 @@ SMACC2 is a state-machine framework for ROS2-based applications written in C++.
 - `smacc2_msgs` - ROS2 messages for SMACC2 framework.
 - `smacc2_sm_reference_library` - libraries with reference implementations of state-machines used for demonstaration and testing of functionalities.
 - `↓smacc2_state_reactor_library` - ...
-- `tracing_tools` - Resources to setup LTTng tracing on your machine.
+- `smacc2_performance_tools` - ...
 
 
 ## Getting started
