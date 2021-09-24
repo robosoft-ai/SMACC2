@@ -26,124 +26,139 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get the launch directory
-    nav2_bringup_dir = get_package_share_directory('nav2_bringup')
-    bringup_dir = get_package_share_directory('nav2_rosdevday_2021')
-    robot_model_dir = get_package_share_directory('neo_simulation2')
-    warehouse_dir = get_package_share_directory('aws_robomaker_small_warehouse_world')
+    nav2_bringup_dir = get_package_share_directory("nav2_bringup")
+    bringup_dir = get_package_share_directory("nav2_rosdevday_2021")
+    robot_model_dir = get_package_share_directory("neo_simulation2")
+    warehouse_dir = get_package_share_directory("aws_robomaker_small_warehouse_world")
 
-    nav2_launch_dir = os.path.join(nav2_bringup_dir, 'launch')
-    rviz_config_file = os.path.join(nav2_bringup_dir, 'rviz', 'nav2_default_view.rviz')
+    nav2_launch_dir = os.path.join(nav2_bringup_dir, "launch")
+    rviz_config_file = os.path.join(nav2_bringup_dir, "rviz", "nav2_default_view.rviz")
 
     # Create the launch configuration variables
-    slam = LaunchConfiguration('slam')
-    map_yaml_file = LaunchConfiguration('map')
-    use_sim_time = LaunchConfiguration('use_sim_time')
-    params_file = LaunchConfiguration('params_file')
+    slam = LaunchConfiguration("slam")
+    map_yaml_file = LaunchConfiguration("map")
+    use_sim_time = LaunchConfiguration("use_sim_time")
+    params_file = LaunchConfiguration("params_file")
 
     # Launch configuration variables specific to simulation
-    use_simulator = LaunchConfiguration('use_simulator')
-    use_rviz = LaunchConfiguration('use_rviz')
-    headless = LaunchConfiguration('headless')
-    world = LaunchConfiguration('world')
-    urdf = LaunchConfiguration('urdf')
+    use_simulator = LaunchConfiguration("use_simulator")
+    use_rviz = LaunchConfiguration("use_rviz")
+    headless = LaunchConfiguration("headless")
+    world = LaunchConfiguration("world")
+    urdf = LaunchConfiguration("urdf")
 
     # Declare the launch arguments
     declare_slam_cmd = DeclareLaunchArgument(
-        'slam',
-        default_value='False',
-        description='Whether run a SLAM')
+        "slam", default_value="False", description="Whether run a SLAM"
+    )
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
-        'map',
-        default_value=os.path.join(
-            warehouse_dir, 'maps', '005', 'map.yaml'),
-        description='Full path to map file to load')
+        "map",
+        default_value=os.path.join(warehouse_dir, "maps", "005", "map.yaml"),
+        description="Full path to map file to load",
+    )
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
-        'use_sim_time',
-        default_value='true',
-        description='Use simulation (Gazebo) clock if true')
+        "use_sim_time", default_value="true", description="Use simulation (Gazebo) clock if true"
+    )
 
     declare_params_file_cmd = DeclareLaunchArgument(
-        'params_file',
-        default_value=os.path.join(bringup_dir, 'params', 'basic_params.yaml'),
-        description='Full path to the ROS2 parameters file to use for all launched nodes')
+        "params_file",
+        default_value=os.path.join(bringup_dir, "params", "basic_params.yaml"),
+        description="Full path to the ROS2 parameters file to use for all launched nodes",
+    )
 
     declare_use_simulator_cmd = DeclareLaunchArgument(
-        'use_simulator',
-        default_value='True',
-        description='Whether to start the simulator')
+        "use_simulator", default_value="True", description="Whether to start the simulator"
+    )
 
     declare_use_rviz_cmd = DeclareLaunchArgument(
-        'use_rviz',
-        default_value='True',
-        description='Whether to start RVIZ')
+        "use_rviz", default_value="True", description="Whether to start RVIZ"
+    )
 
     declare_simulator_cmd = DeclareLaunchArgument(
-        'headless',
-        default_value='False',
-        description='Whether to execute gzclient for the simulation frontend')
+        "headless",
+        default_value="False",
+        description="Whether to execute gzclient for the simulation frontend",
+    )
 
     declare_world_cmd = DeclareLaunchArgument(
-        'world',
-        default_value=os.path.join(
-            bringup_dir, 'worlds', 'industrial_sim.world'),
-        description='Full path to world model file to load')
+        "world",
+        default_value=os.path.join(bringup_dir, "worlds", "industrial_sim.world"),
+        description="Full path to world model file to load",
+    )
 
     declare_urdf_cmd = DeclareLaunchArgument(
-        'urdf',
-        default_value=os.path.join(
-            robot_model_dir, 'robots', 'mp_400', 'mp_400.urdf'),
-        description='Full path to world model file to load')
+        "urdf",
+        default_value=os.path.join(robot_model_dir, "robots", "mp_400", "mp_400.urdf"),
+        description="Full path to world model file to load",
+    )
 
     # Specify the actions
     start_gazebo_server_cmd = ExecuteProcess(
         condition=IfCondition(use_simulator),
-        cmd=['gzserver', '-s', 'libgazebo_ros_factory.so', world],
-        cwd=[warehouse_dir], output='screen')
+        cmd=["gzserver", "-s", "libgazebo_ros_factory.so", world],
+        cwd=[warehouse_dir],
+        output="screen",
+    )
 
     start_gazebo_client_cmd = ExecuteProcess(
-        condition=IfCondition(PythonExpression(
-            [use_simulator, ' and not ', headless])),
-        cmd=['gzclient'],
-        cwd=[warehouse_dir], output='screen')
+        condition=IfCondition(PythonExpression([use_simulator, " and not ", headless])),
+        cmd=["gzclient"],
+        cwd=[warehouse_dir],
+        output="screen",
+    )
 
     spawn_entity_cmd = Node(
-        package='gazebo_ros',
-        executable='spawn_entity.py',
-        arguments=['-entity', 'robot',
-                   '-file', urdf,
-                   '-x', '3.45',
-                   '-y', '2.15',
-                   '-z', '0.10',
-                   '-Y', '3.14'],
-        output='screen')
+        package="gazebo_ros",
+        executable="spawn_entity.py",
+        arguments=[
+            "-entity",
+            "robot",
+            "-file",
+            urdf,
+            "-x",
+            "3.45",
+            "-y",
+            "2.15",
+            "-z",
+            "0.10",
+            "-Y",
+            "3.14",
+        ],
+        output="screen",
+    )
 
     start_robot_state_publisher_cmd = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        output='screen',
-        parameters=[{'use_sim_time': use_sim_time}],
-        arguments=[urdf])
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        name="robot_state_publisher",
+        output="screen",
+        parameters=[{"use_sim_time": use_sim_time}],
+        arguments=[urdf],
+    )
 
     rviz_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(nav2_launch_dir, 'rviz_launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, "rviz_launch.py")),
         condition=IfCondition(use_rviz),
-        launch_arguments={'namespace': '',
-                          'use_namespace': 'False',
-                          'use_sim_time': use_sim_time,
-                          'rviz_config': rviz_config_file}.items())
+        launch_arguments={
+            "namespace": "",
+            "use_namespace": "False",
+            "use_sim_time": use_sim_time,
+            "rviz_config": rviz_config_file,
+        }.items(),
+    )
 
     bringup_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(nav2_launch_dir, 'bringup_launch.py')),
-        launch_arguments={'slam': slam,
-                          'map': map_yaml_file,
-                          'use_sim_time': use_sim_time,
-                          'params_file': params_file,
-                          'autostart': 'True'}.items())
+        PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, "bringup_launch.py")),
+        launch_arguments={
+            "slam": slam,
+            "map": map_yaml_file,
+            "use_sim_time": use_sim_time,
+            "params_file": params_file,
+            "autostart": "True",
+        }.items(),
+    )
 
     # UNCOMMENT HERE FOR KEEPOUT DEMO
     # start_lifecycle_manager_cmd = Node(

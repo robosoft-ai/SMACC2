@@ -48,11 +48,11 @@ struct State2 : smacc2::SmaccState<State2, SmAtomicPerformanceTest>
     else
     {
       auto now = high_resolution_clock::now();
-      duration<double, std::milli> ellapsed = now - *start;
+      duration<double, std::milli> elapsed = now - *start;
 
-      if (ellapsed.count() > 10000)
+      if (elapsed.count() > 10000)
       {
-        std::cout << "Waited " << ellapsed.count() << " ms" << std::endl;
+        std::cout << "Waited " << elapsed.count() << " ms" << std::endl;
         std::cout << "Number of iterations " << count << std::endl;
 
         ::exit(0);

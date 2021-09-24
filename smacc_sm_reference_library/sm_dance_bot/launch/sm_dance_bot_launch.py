@@ -182,14 +182,17 @@ def generate_launch_description():
         prefix=xtermprefix,
         parameters=[
             os.path.join(
-                get_package_share_directory("sm_dance_bot"), "params/move_base_client/waypoints_plan.yaml")
+                get_package_share_directory("sm_dance_bot"),
+                "params/move_base_client/waypoints_plan.yaml",
+            )
         ],
         remappings=[
             # ("/odom", "/odometry/filtered"),
             # ("/sm_dance_bot_2/odom_tracker/odom_tracker_path", "/odom_tracker_path"),
             # ("/sm_dance_bot_2/odom_tracker/odom_tracker_stacked_path", "/odom_tracker_path_stacked")
         ],
-        arguments=["--ros-args", "--log-level", "INFO"])
+        arguments=["--ros-args", "--log-level", "INFO"],
+    )
 
     led_action_server_node = Node(
         package="sm_dance_bot",
