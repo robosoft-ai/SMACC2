@@ -160,7 +160,7 @@ template <typename T>
 typename enable_if<boost::mpl::is_sequence<T>>::type processTransitions(
   std::shared_ptr<SmaccStateInfo> & sourceState)
 {
-  RCLCPP_INFO_STREAM(globalNh_->get_logger(), "State %s Walker has transition list");
+  RCLCPP_INFO(globalNh_->get_logger(), "State %s Walker has transition list", sourceState->fullStateName.c_str());
   using boost::mpl::_1;
   using wrappedList = typename boost::mpl::transform<T, add_type_wrapper<_1>>::type;
   boost::mpl::for_each<wrappedList>(AddTransition(sourceState));
