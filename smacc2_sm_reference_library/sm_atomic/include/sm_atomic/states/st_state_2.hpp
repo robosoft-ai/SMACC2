@@ -26,8 +26,7 @@ struct State2 : smacc2::SmaccState<State2, SmAtomic>
 
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State1, SUCCESS>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

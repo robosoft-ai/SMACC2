@@ -27,8 +27,7 @@ public:
 
     Transition<EvLoopContinue<StiPCCycleLoop>, StiPCCycleInspire, CONTINUELOOP>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
