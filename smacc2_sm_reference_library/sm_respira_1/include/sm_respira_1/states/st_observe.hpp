@@ -20,12 +20,24 @@ struct StObserve : smacc2::SmaccState<StObserve, MsRun>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct AC_CYCLE : SUCCESS{};
-  struct CMV_CYCLE : SUCCESS{};
-  struct PC_CYCLE : SUCCESS{};
-  struct PS_CYCLE : SUCCESS{};
-  struct SHUTDOWN : SUCCESS{};
-  struct CALIBRATION : SUCCESS{};
+  struct AC_CYCLE : SUCCESS
+  {
+  };
+  struct CMV_CYCLE : SUCCESS
+  {
+  };
+  struct PC_CYCLE : SUCCESS
+  {
+  };
+  struct PS_CYCLE : SUCCESS
+  {
+  };
+  struct SHUTDOWN : SUCCESS
+  {
+  };
+  struct CALIBRATION : SUCCESS
+  {
+  };
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -41,7 +53,8 @@ struct StObserve : smacc2::SmaccState<StObserve, MsRun>
     Transition<EvKeyPressL<CbDefaultKeyboardBehavior, OrKeyboard>, MsCalibration, CALIBRATION>,
     Transition<EvKeyPressS<CbDefaultKeyboardBehavior, OrKeyboard>, MsShutdown, SHUTDOWN>
 
-    >reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

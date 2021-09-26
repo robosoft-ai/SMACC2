@@ -27,7 +27,8 @@ public:
 
     Transition<EvLoopEnd<StiCMVCycleLoop>, StObserve>
 
-    >reactions;
+    >
+    reactions;
 
   // STATE VARIABLES
   static constexpr int total_iterations() { return 1000; }

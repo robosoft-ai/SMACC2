@@ -20,9 +20,15 @@ struct StLeakyLungStep1 : smacc2::SmaccState<StLeakyLungStep1, MsLeakyLung>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : ABORT{};
-  struct NEXT : SUCCESS{};
-  struct PREVIOUS : ABORT{};
+  struct TIMEOUT : ABORT
+  {
+  };
+  struct NEXT : SUCCESS
+  {
+  };
+  struct PREVIOUS : ABORT
+  {
+  };
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -34,7 +40,8 @@ struct StLeakyLungStep1 : smacc2::SmaccState<StLeakyLungStep1, MsLeakyLung>
     // Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, BUILD>,
     // Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsPCCycle, ATTACK>
 
-    >reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
