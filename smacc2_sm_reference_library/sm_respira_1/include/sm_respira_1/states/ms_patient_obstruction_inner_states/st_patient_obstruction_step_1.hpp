@@ -21,23 +21,16 @@ struct StPatientObstructionStep1
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : ABORT
-  {
-  };
-  struct NEXT : SUCCESS
-  {
-  };
-  struct PREVIOUS : ABORT
-  {
-  };
+  struct TIMEOUT : ABORT{};
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
 
   // TRANSITION TABLE
   typedef mpl::list<
 
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StPatientObstructionStep2, SUCCESS>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

@@ -27,8 +27,7 @@ struct StCalibrationStep1 : smacc2::SmaccState<StCalibrationStep1, MsCalibration
     // Keyboard events
     Transition<EvKeyPressL<CbDefaultKeyboardBehavior, OrKeyboard>, MsRun, SUCCESS>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
