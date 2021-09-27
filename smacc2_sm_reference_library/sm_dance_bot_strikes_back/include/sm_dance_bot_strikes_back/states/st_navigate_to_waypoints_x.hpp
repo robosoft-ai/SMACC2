@@ -21,21 +21,11 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TRANSITION_1 : SUCCESS
-  {
-  };
-  struct TRANSITION_2 : SUCCESS
-  {
-  };
-  struct TRANSITION_3 : SUCCESS
-  {
-  };
-  struct TRANSITION_4 : SUCCESS
-  {
-  };
-  struct TRANSITION_5 : SUCCESS
-  {
-  };
+  struct TRANSITION_1 : SUCCESS{};
+  struct TRANSITION_2 : SUCCESS{};
+  struct TRANSITION_3 : SUCCESS{};
+  struct TRANSITION_4 : SUCCESS{};
+  struct TRANSITION_5 : SUCCESS{};
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -48,8 +38,7 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
     Transition<EvCbFailure<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>,
     Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

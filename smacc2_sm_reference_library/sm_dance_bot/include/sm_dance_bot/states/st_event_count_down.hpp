@@ -26,8 +26,7 @@ struct StEventCountDown : smacc2::SmaccState<StEventCountDown, MsDanceBotRunMode
     Transition<EvCountdownEnd<SrEventCountdown>, StNavigateToWaypointsX>,
     Transition<EvGlobalError, MsDanceBotRecoveryMode>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
@@ -44,8 +43,7 @@ struct StEventCountDown : smacc2::SmaccState<StEventCountDown, MsDanceBotRunMode
     //srCountdown->setOutputEvent<EvCountdownEnd<SrEventCountdown>>();
 
     auto srCountdown = static_createStateReactor<
-      SrEventCountdown, EvCountdownEnd<SrEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(
-      5);
+      SrEventCountdown, EvCountdownEnd<SrEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(5);
   }
 };
 }  // namespace sm_dance_bot

@@ -23,8 +23,10 @@ struct State2 : smacc2::SmaccState<State2, SmAtomicSubscribersPerformanceTest>
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvTopicMessage<SmaccSubscriberClient<std_msgs::msg::Int16>, OrSubscriber>, State1> >
-    reactions;
+
+    Transition<EvTopicMessage<SmaccSubscriberClient<std_msgs::msg::Int16>, OrSubscriber>, State1>
+
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}

@@ -20,19 +20,12 @@ struct StState4 : smacc2::SmaccState<StState4, MsRun>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : ABORT
-  {
-  };
-  struct NEXT : SUCCESS
-  {
-  };
+  struct TIMEOUT : ABORT{};
+  struct NEXT : SUCCESS{};
 
-  typedef mpl::list<Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SS1::Ss1, TIMEOUT>>
-    transitions;
+  typedef mpl::list<Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SS1::Ss1, TIMEOUT>>transitions;
 
-  struct PREVIOUS : ABORT
-  {
-  };
+  struct PREVIOUS : ABORT{};
 
   // STATE FUNCTIONS
   static void staticConfigure() { configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10); }

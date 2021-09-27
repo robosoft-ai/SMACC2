@@ -27,6 +27,7 @@ class StiRadialRotate;
 class StiRadialReturn;
 class StiRadialEndPoint;
 class StiRadialLoopStart;
+
 }  // namespace radial_motion_states
 }  // namespace sm_dance_bot
 using namespace sm_dance_bot::radial_motion_states;
@@ -43,8 +44,7 @@ public:
 
     Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees1, ENDLOOP>
 
-    >
-    reactions;
+    >reactions;
 
   static constexpr int total_iterations() { return 6; }
   static constexpr float ray_angle_increment_degree() { return 360.0 / total_iterations(); }

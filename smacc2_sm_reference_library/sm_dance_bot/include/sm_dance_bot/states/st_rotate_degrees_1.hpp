@@ -26,8 +26,7 @@ struct StRotateDegrees1 : smacc2::SmaccState<StRotateDegrees1, MsDanceBotRunMode
     Transition<EvCbSuccess<CbRotate, OrNavigation>, StNavigateForward1>,
     Transition<EvCbFailure<CbRotate, OrNavigation>, StNavigateToWaypointsX>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

@@ -27,18 +27,13 @@ enum class TDirection
 };
 
 // FORWARD DECLARATIONS OF INNER STATES
-template <typename SS>
-class StiFPatternRotate1;
-template <typename SS>
-class StiFPatternForward1;
-template <typename SS>
-class StiFPatternReturn1;
-template <typename SS>
-class StiFPatternRotate2;
-template <typename SS>
-class StiFPatternForward2;
-template <typename SS>
-class StiFPatternStartLoop;
+template <typename SS>class StiFPatternRotate1;
+template <typename SS>class StiFPatternForward1;
+template <typename SS>class StiFPatternReturn1;
+template <typename SS>class StiFPatternRotate2;
+template <typename SS>class StiFPatternForward2;
+template <typename SS>class StiFPatternStartLoop;
+
 }  // namespace f_pattern_states
 }  // namespace sm_dance_bot_strikes_back
 namespace sm_dance_bot_strikes_back
@@ -56,8 +51,10 @@ public:
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateToWaypointsX, ENDLOOP>>
-    reactions;
+
+    Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateToWaypointsX, ENDLOOP>
+
+    >reactions;
 
   // STATE VARIABLES
   // superstate parameters

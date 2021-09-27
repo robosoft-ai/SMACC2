@@ -54,8 +54,7 @@ public:
 
     Transition<EvLoopEnd<StiSPatternLoopStart>, StRotateDegrees6, ENDLOOP>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

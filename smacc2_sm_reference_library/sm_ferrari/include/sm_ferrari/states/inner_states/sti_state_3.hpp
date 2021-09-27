@@ -22,15 +22,9 @@ struct StiState3 : smacc2::SmaccState<StiState3, SS>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : ABORT
-  {
-  };
-  struct NEXT : SUCCESS
-  {
-  };
-  struct PREVIOUS : ABORT
-  {
-  };
+  struct TIMEOUT : ABORT{};
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -40,8 +34,7 @@ struct StiState3 : smacc2::SmaccState<StiState3, SS>
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1, NEXT>,
     Transition<EvMyBehavior<CbMySubscriberBehavior, OrSubscriber>, StiState1, NEXT>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

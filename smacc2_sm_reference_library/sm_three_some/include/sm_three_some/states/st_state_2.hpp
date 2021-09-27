@@ -20,24 +20,20 @@ struct StState2 : smacc2::SmaccState<StState2, MsRun>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : ABORT
-  {
-  };
-  struct NEXT : SUCCESS
-  {
-  };
-  struct PREVIOUS : ABORT
-  {
-  };
+  struct TIMEOUT : ABORT{};
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
 
   // TRANSITION TABLE
   typedef mpl::list<
+
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState3, TIMEOUT>,
     Transition<EvAllGo<SrAllEventsGo>, StState3>,
     // Keyboard events
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1, PREVIOUS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3, NEXT>>
-    reactions;
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3, NEXT>
+
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

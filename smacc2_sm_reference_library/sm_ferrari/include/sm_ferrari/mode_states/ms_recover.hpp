@@ -26,7 +26,6 @@ public:
 
     Transition<EvToDeep, sc::deep_history<typename MsRun::LastDeepState>, SUCCESS>
 
-    >
-    reactions;
+    >reactions;
 };
 }  // namespace sm_ferrari

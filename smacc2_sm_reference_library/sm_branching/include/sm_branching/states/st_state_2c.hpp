@@ -28,14 +28,13 @@ struct State2c : smacc2::SmaccState<State2c, SmBranching>
 
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State3c, SUCCESS>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(
-      5);  // EvTimer triggers once at 10 client ticks
+    // EvTimer triggers once at 10 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State2"); }

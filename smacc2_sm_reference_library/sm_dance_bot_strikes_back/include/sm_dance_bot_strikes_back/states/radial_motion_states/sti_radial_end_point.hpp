@@ -27,8 +27,7 @@ struct StiRadialEndPoint : smacc2::SmaccState<StiRadialEndPoint, SS>
     Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiRadialReturn, SUCCESS>,
     Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiRadialLoopStart, ABORT>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

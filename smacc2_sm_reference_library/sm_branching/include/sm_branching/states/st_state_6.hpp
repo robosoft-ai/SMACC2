@@ -26,14 +26,13 @@ struct State6 : smacc2::SmaccState<State6, SmBranching>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(
-      5);  // EvTimer triggers once at 10 client ticks
+    // EvTimer triggers once at 10 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State6"); }

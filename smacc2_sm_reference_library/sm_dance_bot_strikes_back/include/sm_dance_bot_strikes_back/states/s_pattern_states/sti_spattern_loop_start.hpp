@@ -26,8 +26,7 @@ struct StiSPatternLoopStart : smacc2::SmaccState<StiSPatternLoopStart, SS>
 
     Transition<EvLoopContinue<StiSPatternLoopStart>, StiSPatternRotate1, CONTINUELOOP>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}

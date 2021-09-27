@@ -27,8 +27,7 @@ public:
 
     Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
