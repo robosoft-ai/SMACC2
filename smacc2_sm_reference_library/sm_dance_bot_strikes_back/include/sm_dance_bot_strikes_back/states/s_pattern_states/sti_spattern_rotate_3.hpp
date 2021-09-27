@@ -23,10 +23,10 @@ struct StiSPatternRotate3 : smacc2::SmaccState<StiSPatternRotate3, SS>
 
   // TRANSITION TABLE
   typedef mpl::list<
-    
+
     Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward3>,
     Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternForward2>
-    
+
     >reactions;
 
   // STATE FUNCTIONS

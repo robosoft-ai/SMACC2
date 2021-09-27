@@ -26,9 +26,9 @@ struct StiFPatternStartLoop : smacc2::SmaccState<StiFPatternStartLoop<SS>, SS>
 
   // TRANSITION TABLE
   typedef mpl::list<
-    
+
     Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternForward2<SS>, CONTINUELOOP>
-    
+
     >reactions;
 
   // STATE FUNCTIONS

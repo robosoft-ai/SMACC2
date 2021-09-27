@@ -51,9 +51,9 @@ public:
 
   // TRANSITION TABLE
   typedef mpl::list<
-    
+
     Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateToWaypointsX, ENDLOOP>
-    
+
     >reactions;
 
   // STATE VARIABLES

@@ -33,7 +33,7 @@ struct StState1 : smacc2::SmaccState<StState1, MsRun>
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState2, NEXT>,
     Transition<EvMyBehavior<CbMySubscriberBehavior, OrSubscriber>, StState2, NEXT>
     //, Transition<EvFail, MsRecover, smacc2::ABORT>
-    
+
     >reactions;
 
   // STATE FUNCTIONS

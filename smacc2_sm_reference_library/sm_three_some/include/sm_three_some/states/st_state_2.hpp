@@ -32,7 +32,7 @@ struct StState2 : smacc2::SmaccState<StState2, MsRun>
     // Keyboard events
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1, PREVIOUS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3, NEXT>
-    
+
     >reactions;
 
   // STATE FUNCTIONS

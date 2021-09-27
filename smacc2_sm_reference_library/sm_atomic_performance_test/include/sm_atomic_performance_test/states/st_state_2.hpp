@@ -23,9 +23,9 @@ struct State2 : smacc2::SmaccState<State2, SmAtomicPerformanceTest>
 
   // TRANSITION TABLE
   typedef mpl::list<
-    
+
     Transition<EvStateRequestFinish<State2>, State1>
-    
+
     >reactions;
 
   // STATE FUNCTIONS
