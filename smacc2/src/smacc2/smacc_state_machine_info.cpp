@@ -19,7 +19,9 @@ namespace smacc2
 {
 void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
 {
-  RCLCPP_INFO(getLogger(), "----------- PRINT STATE MACHINE STRUCTURE -------------------");
+  std::stringstream ss;
+
+  ss << "----------- PRINT STATE MACHINE STRUCTURE -------------------" << std::endl;
   stateMsgs.clear();
   for (auto & val : this->states)
   {
@@ -27,13 +29,10 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
     auto state = val.second;
     stateMsg.index = state->stateIndex_;
 
-    std::stringstream ss;
     ss << "**** State: " << demangleSymbol(val.first.c_str()) << std::endl;
 
     stateMsg.name = state->getDemangledFullName();
     stateMsg.level = (int)state->getStateLevel();
-
-    ss << "**** State: " << stateMsg.name << std::endl;
 
     ss << "Index: " << stateMsg.index << std::endl;
     ss << "StateLevel: " << stateMsg.level << std::endl;
@@ -117,7 +116,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
       }
       else
       {
-        ss << "          - NO Client BEHAVIORS -" << std::endl;
+        ss << "          - NO CLIENT BEHAVIORS -" << std::endl;
       }
 
       auto & clients = orthogonal.second->getClients();
@@ -204,7 +203,10 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
       ss << "- NO STATE REACTORS - " << std::endl;
     }
 
-    RCLCPP_INFO_STREAM(getLogger(), ss.str());
+    ss << "----------------------------------------------------------" << std::endl;
+
+    auto resumeMsg = ss.str();
+    RCLCPP_INFO(getLogger(), "%s", resumeMsg.c_str());
     stateMsgs.push_back(stateMsg);
   }
 }

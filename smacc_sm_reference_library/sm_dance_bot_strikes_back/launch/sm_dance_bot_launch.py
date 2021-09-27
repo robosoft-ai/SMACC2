@@ -189,12 +189,6 @@ def generate_launch_description():
         output="screen",
         prefix=xtermprefix,
         parameters=[
-            {
-                "waypoints_plan": os.path.join(
-                    get_package_share_directory("sm_dance_bot_strikes_back"),
-                    "params/move_base_client/waypoints_plan.yaml",
-                )
-            },
             os.path.join(
                 get_package_share_directory("sm_dance_bot_strikes_back"),
                 "params/sm_dance_bot_strikes_back_config.yaml",
