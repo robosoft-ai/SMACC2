@@ -22,15 +22,9 @@ struct StiACCyclePlateau : smacc2::SmaccState<StiACCyclePlateau, SsACCycle>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : ABORT
-  {
-  };
-  struct NEXT : SUCCESS
-  {
-  };
-  struct PREVIOUS : ABORT
-  {
-  };
+  struct TIMEOUT : ABORT{};
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -42,8 +36,7 @@ struct StiACCyclePlateau : smacc2::SmaccState<StiACCyclePlateau, SsACCycle>
     Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
     Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, MsPatientObstruction, ABORT>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
