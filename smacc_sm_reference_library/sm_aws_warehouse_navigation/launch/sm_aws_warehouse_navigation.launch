@@ -1,0 +1,18 @@
+<launch>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="urdf" default="$(find-pkg-share neo_simulation2)/robots/mp_400/mp_400.urdf"/>
+    <arg name="world" default="$(find-pkg-share nav2_rosdevday_2021)/worlds/industrial_sim.world"/>
+    
+    <node pkg="gazebo_ros" exec="spawn_entity.py" name="gazebo_ros" args="-entity robot -file $(var urdf) -x 3.45 -y 2.15 -z 0.10 -Y 3.14">
+    </node>
+
+    <executable cmd="gzserver -s libgazebo_ros_factory.so $(var world)" output="screen">
+    </executable>
+    
+    <executable cmd="gzclient" output="screen">
+    </executable>
+
+    <node pkg="robot_state_publisher" exec="robot_state_publisher" name="robot_state_publisher" output="screen">
+        <param name="use_sim_time" value="$(use_sim_time)"/> 
+    </node>
+</launch>
