@@ -26,7 +26,6 @@ public:
 
     Transition<EvGlobalError, MsDanceBotRecoveryMode>
 
-    >
-    reactions;
+    >reactions;
 };
 }  // namespace sm_dance_bot

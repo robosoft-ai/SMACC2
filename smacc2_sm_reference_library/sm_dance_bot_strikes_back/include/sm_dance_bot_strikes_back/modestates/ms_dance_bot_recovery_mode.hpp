@@ -27,8 +27,8 @@ public:
 
     Transition<EvGlobalError, sc::deep_history<typename MsDanceBotRunMode::LastDeepState>>
 
-    >
-    reactions;
+    >reactions;
+    
   // typedef Transition<EvGlobalError, MsDanceBotRunMode> reactions;
 };
 }  // namespace sm_dance_bot_strikes_back

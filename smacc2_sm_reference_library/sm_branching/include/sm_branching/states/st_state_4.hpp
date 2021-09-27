@@ -27,15 +27,17 @@ struct State4 : smacc2::SmaccState<State4, SmBranching>
   typedef mpl::list<
 
     Transition<EvTimer<CbTimerCountdownLoop, OrTimer>, State5, SUCCESS>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State5b, SUCCESS> >
-    reactions;
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State5b, SUCCESS> 
+    
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3);  // EvTimer triggers each 3 client ticks
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(
-      5);  // EvTimer triggers once at 10 client ticks
+    // EvTimer triggers each 3 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3);  
+    // EvTimer triggers once at 10 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5); 
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State4"); }

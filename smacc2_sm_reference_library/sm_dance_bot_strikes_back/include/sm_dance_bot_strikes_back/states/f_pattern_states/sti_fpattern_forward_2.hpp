@@ -29,8 +29,7 @@ struct StiFPatternForward2 : smacc2::SmaccState<StiFPatternForward2<SS>, SS>
 
     Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternRotate2<SS>>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}

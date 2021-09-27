@@ -27,8 +27,7 @@ struct StiSPatternForward4 : public smacc2::SmaccState<StiSPatternForward4, SS>
     Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiSPatternLoopStart>,
     Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiSPatternRotate4>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}

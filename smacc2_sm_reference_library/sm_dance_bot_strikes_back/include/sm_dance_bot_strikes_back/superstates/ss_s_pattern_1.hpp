@@ -32,6 +32,7 @@ class StiSPatternForward3;
 class StiSPatternRotate4;
 class StiSPatternForward4;
 class StiSPatternLoopStart;
+
 }  // namespace s_pattern_states
 }  // namespace sm_dance_bot_strikes_back
 
@@ -54,8 +55,7 @@ public:
 
     Transition<EvLoopEnd<StiSPatternLoopStart>, StNavigateToWaypointsX, ENDLOOP>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

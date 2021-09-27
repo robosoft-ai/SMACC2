@@ -40,8 +40,7 @@ public:
 
     Transition<EvLoopEnd<StiState1>, SS2::Ss2>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE VARIABLES
   static constexpr int total_iterations() { return 5; }

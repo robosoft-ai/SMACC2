@@ -22,15 +22,9 @@ struct StState2 : smacc2::SmaccState<StState2, MsRun>, smacc2::ISmaccUpdatable
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : ABORT
-  {
-  };
-  struct NEXT : SUCCESS
-  {
-  };
-  struct PREVIOUS : ABORT
-  {
-  };
+  struct TIMEOUT : ABORT{};
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -43,8 +37,7 @@ struct StState2 : smacc2::SmaccState<StState2, MsRun>, smacc2::ISmaccUpdatable
     Transition<EvMyBehavior<CbMySubscriberBehavior, OrSubscriber>, StState3, NEXT>,
     Transition<EvTrue<EgConditionalGenerator, StState2>, StState3, NEXT>
 
-    >
-    reactions;
+    >reactions;
 
   static int k;
 

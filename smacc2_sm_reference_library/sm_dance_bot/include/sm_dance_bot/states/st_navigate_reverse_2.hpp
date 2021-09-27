@@ -26,8 +26,7 @@ struct StNavigateReverse2 : smacc2::SmaccState<StNavigateReverse2, MsDanceBotRun
     Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StNavigateToWaypointsX>,
     Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StNavigateToWaypointsX>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

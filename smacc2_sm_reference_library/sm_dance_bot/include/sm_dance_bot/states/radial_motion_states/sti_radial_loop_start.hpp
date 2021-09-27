@@ -26,8 +26,7 @@ struct StiRadialLoopStart : smacc2::SmaccState<StiRadialLoopStart, SS>
 
     Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate, CONTINUELOOP>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}

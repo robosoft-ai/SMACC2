@@ -34,8 +34,7 @@ struct StiSPatternLoopStart : public B<StiSPatternLoopStart, SS>
 
     Transition<EvLoopContinue<StiSPatternLoopStart>, StiSPatternRotate1, CONTINUELOOP>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}

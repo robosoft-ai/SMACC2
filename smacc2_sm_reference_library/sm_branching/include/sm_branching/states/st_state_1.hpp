@@ -31,15 +31,17 @@ struct State1 : smacc2::SmaccState<State1, SmBranching>
 
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>,
     Transition<EvTimer<CbTimerCountdownLoop, OrTimer>, State2b, SUCCESS>,
-    Transition<EvTimer<CbTimerCountdownLoop, OrTimer>, State2c, SUCCESS> >
-    reactions;
+    Transition<EvTimer<CbTimerCountdownLoop, OrTimer>, State2c, SUCCESS> 
+    
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3);  // EvTimer triggers each 3 client ticks
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(
-      5);  // EvTimer triggers once at 10 client ticks
+    // EvTimer triggers each 3 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3); 
+    // EvTimer triggers once at 10 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);
   }
 
   void runtimeConfigure() {}

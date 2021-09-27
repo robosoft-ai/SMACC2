@@ -26,8 +26,7 @@ struct StSpatternPrealignment : smacc2::SmaccState<StSpatternPrealignment, MsDan
     Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, SS5::SsSPattern1>,
     Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StNavigateToWaypointsX>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

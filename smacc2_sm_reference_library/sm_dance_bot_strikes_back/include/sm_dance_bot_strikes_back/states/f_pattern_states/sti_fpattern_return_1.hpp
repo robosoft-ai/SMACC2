@@ -29,8 +29,7 @@ struct StiFPatternReturn1 : smacc2::SmaccState<StiFPatternReturn1<SS>, SS>
 
     Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiFPatternRotate1<SS>>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

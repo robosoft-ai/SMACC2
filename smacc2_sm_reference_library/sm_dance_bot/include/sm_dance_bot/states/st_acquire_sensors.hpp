@@ -23,9 +23,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, MsDanceBotRunMode
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct ON_SENSORS_AVAILABLE : SUCCESS
-  {
-  };
+  struct ON_SENSORS_AVAILABLE : SUCCESS{};
   struct SrAcquireSensors;
 
   // TRANSITION TABLE
@@ -34,8 +32,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, MsDanceBotRunMode
     Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StEventCountDown, ON_SENSORS_AVAILABLE>,
     Transition<EvGlobalError, MsDanceBotRecoveryMode>
 
-    >
-    reactions;
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

@@ -28,8 +28,8 @@ struct StNavigateForward1 : smacc2::SmaccState<StNavigateForward1, MsDanceBotRun
     Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateDegrees2>,
     Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateToWaypointsX, ABORT>
     //, Transition<EvActionPreempted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, PREEMPT>
-    >
-    reactions;
+    
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
