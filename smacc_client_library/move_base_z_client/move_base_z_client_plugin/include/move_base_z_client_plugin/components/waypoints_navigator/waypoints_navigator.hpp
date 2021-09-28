@@ -59,6 +59,7 @@ public:
   void removeWaypoint(int index);
 
   void loadWayPointsFromFile(std::string filepath);
+  void loadWayPointsFromFile2(std::string filepath);
 
   void setWaypoints(const std::vector<geometry_msgs::msg::Pose> & waypoints);
 
@@ -82,6 +83,7 @@ private:
   void onGoalReached(ClMoveBaseZ::WrappedResult & res);
 
   std::vector<geometry_msgs::msg::Pose> waypoints_;
+  std::vector<std::string> waypointsNames_;
 
   boost::signals2::connection succeddedConnection_;
 };

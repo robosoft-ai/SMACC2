@@ -70,12 +70,13 @@ public:
         ament_index_cpp::get_package_share_directory("sm_aws_warehouse_navigation");
       boost::replace_all(planfilepath, "$(pkg_share)", package_share_directory);
 
-      waypointsNavigator->loadWayPointsFromFile(planfilepath);
+      waypointsNavigator->loadWayPointsFromFile2(planfilepath);
       RCLCPP_INFO(getLogger(), "waypoints plan: %s", planfilepath.c_str());
     }
     else
     {
       RCLCPP_ERROR(getLogger(), "waypoints plan file not found: NONE");
+      exit(0);
     }
   }
 };

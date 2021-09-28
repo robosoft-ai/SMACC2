@@ -3,14 +3,22 @@
 namespace sm_aws_warehouse_navigation
 {
 // STATE DECLARATION
-struct StState1 : smacc2::SmaccState<StState1, SmAwsWarehouseNavigation>
+struct StInitialNavigateForward : smacc2::SmaccState<StInitialNavigateForward, SmAwsWarehouseNavigation>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
+  typedef mpl::list<
+
+  Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StState2>
+  > 
+  reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure() {}
+  static void staticConfigure() 
+  {
+    configure_orthogonal<OrNavigation, CbNavigateForward>(2);
+  }
 
   void runtimeConfigure() {}
 

@@ -24,6 +24,31 @@
             }
         ]
     },
+
+    {
+        "name": "(gdb) sm_aws_warehouse_navigation_node",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/../install/sm_aws_warehouse_navigation/lib/sm_aws_warehouse_navigation/sm_aws_warehouse_navigation_node",
+        "args": ["--ros-args",
+                "-r",
+                "__node:=sm_aws_warehouse_navigation",
+                "--params-file",
+                "${workspaceFolder}/../install/sm_aws_warehouse_navigation/share/sm_aws_warehouse_navigation/params/sm_aws_warehouse_navigation_config.yaml"],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+                "description": "Enable pretty-printing for gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ]
+    },
+    
     {
         "name": "(gdb) sm_atomic_performance_test",
         "type": "cppdbg",

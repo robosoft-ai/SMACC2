@@ -59,10 +59,10 @@ def generate_launch_description():
             warehouse_dir, 'maps', '005', 'map.yaml'),
         description='Full path to map file to load')
 
-    # declare_use_sim_time_cmd = DeclareLaunchArgument(
-    #     'use_sim_time',
-    #     default_value='true',
-    #     description='Use simulation (Gazebo) clock if true')
+    declare_use_sim_time_cmd = DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='true',
+        description='Use simulation (Gazebo) clock if true')
 
     declare_params_file_cmd = DeclareLaunchArgument(
         'params_file',
@@ -84,11 +84,11 @@ def generate_launch_description():
         default_value='False',
         description='Whether to execute gzclient for the simulation frontend')
 
-    # declare_world_cmd = DeclareLaunchArgument(
-    #     'world',
-    #     default_value=os.path.join(
-    #         bringup_dir, 'worlds', 'industrial_sim.world'),
-    #     description='Full path to world model file to load')
+    declare_world_cmd = DeclareLaunchArgument(
+        'world',
+        default_value=os.path.join(
+            bringup_dir, 'worlds', 'industrial_sim.world'),
+        description='Full path to world model file to load')
 
     declare_urdf_cmd = DeclareLaunchArgument(
         'urdf',
@@ -96,28 +96,28 @@ def generate_launch_description():
             robot_model_dir, 'robots', 'mp_400', 'mp_400.urdf'),
         description='Full path to world model file to load')
 
-    # Specify the actions
-    # start_gazebo_server_cmd = ExecuteProcess(
-    #     condition=IfCondition(use_simulator),
-    #     cmd=['gzserver', '-s', 'libgazebo_ros_factory.so', world],
-    #     cwd=[warehouse_dir], output='screen')
+    #Specify the actions
+    start_gazebo_server_cmd = ExecuteProcess(
+        condition=IfCondition(use_simulator),
+        cmd=['gzserver', '-s', 'libgazebo_ros_factory.so', world],
+        cwd=[warehouse_dir], output='screen')
 
-    # start_gazebo_client_cmd = ExecuteProcess(
-    #     condition=IfCondition(PythonExpression(
-    #         [use_simulator, ' and not ', headless])),
-    #     cmd=['gzclient'],
-    #     cwd=[warehouse_dir], output='screen')
+    start_gazebo_client_cmd = ExecuteProcess(
+        condition=IfCondition(PythonExpression(
+            [use_simulator, ' and not ', headless])),
+        cmd=['gzclient'],
+        cwd=[warehouse_dir], output='screen')
 
-    # spawn_entity_cmd = Node(
-    #     package='gazebo_ros',
-    #     executable='spawn_entity.py',
-    #     arguments=['-entity', 'robot',
-    #                '-file', urdf,
-    #                '-x', '3.45',
-    #                '-y', '2.15',
-    #                '-z', '0.10',
-    #                '-Y', '3.14'],
-    #     output='screen')
+    spawn_entity_cmd = Node(
+        package='gazebo_ros',
+        executable='spawn_entity.py',
+        arguments=['-entity', 'robot',
+                   '-file', urdf,
+                   '-x', '3.45',
+                   '-y', '2.15',
+                   '-z', '0.10',
+                   '-Y', '3.14'],
+        output='screen')
 
     start_robot_state_publisher_cmd = Node(
         package='robot_state_publisher',
@@ -144,6 +144,14 @@ def generate_launch_description():
                             'use_sim_time': use_sim_time,
                             'params_file': params_file,
                             'autostart': 'True'}.items())
+
+    sm_aws_warehouse_navigation_node = Node(
+        package='sm_aws_warehouse_navigation',
+        executable='sm_aws_warehouse_navigation_node',
+        name='sm_aws_warehouse_navigation',
+        output='screen',
+        parameters=[{'use_sim_time': use_sim_time},
+                    os.path.join(get_package_share_directory("sm_aws_warehouse_navigation"),"params","sm_aws_warehouse_navigation_config.yaml")])
 
     # UNCOMMENT HERE FOR KEEPOUT DEMO
     # start_lifecycle_manager_cmd = Node(
@@ -191,6 +199,7 @@ def generate_launch_description():
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)
+    ld.add_action(sm_aws_warehouse_navigation_node)
     # UNCOMMENT HERE FOR KEEPOUT DEMO
     # ld.add_action(start_lifecycle_manager_cmd)
     # ld.add_action(start_map_server_cmd)

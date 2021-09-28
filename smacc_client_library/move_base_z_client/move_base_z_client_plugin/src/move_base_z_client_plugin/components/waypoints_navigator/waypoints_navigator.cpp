@@ -102,7 +102,9 @@ void WaypointNavigator::setWaypoints(const std::vector<geometry_msgs::msg::Pose>
 
 void WaypointNavigator::setWaypoints(const std::vector<Pose2D> & waypoints)
 {
-  this->waypoints_.clear();
+  waypoints_.clear();
+  waypointsNames_.clear();
+  int i=0;
   for (auto & p : waypoints)
   {
     geometry_msgs::msg::Pose pose;
@@ -113,7 +115,8 @@ void WaypointNavigator::setWaypoints(const std::vector<Pose2D> & waypoints)
     q.setRPY(0, 0, p.yaw_);
     pose.orientation = tf2::toMsg(q);
 
-    this->waypoints_.push_back(pose);
+    waypoints_.push_back(pose);
+    waypointsNames_.push_back(std::to_string(i++));
   }
 }
 
@@ -179,6 +182,70 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
           wp.orientation.w = (*wp_node)[i]["orientation"]["w"].as<double>();
 
           this->waypoints_.push_back(wp);
+        }
+        catch (...)
+        {
+          RCLCPP_ERROR(getLogger(), "parsing waypoint file, syntax error in point %d", i);
+        }
+      }
+      RCLCPP_INFO_STREAM(getLogger(), "Parsed " << this->waypoints_.size() << " waypoints.");
+    }
+    else
+    {
+      RCLCPP_WARN_STREAM(getLogger(), "Couldn't find any waypoints in the provided yaml file.");
+    }
+  }
+  catch (const YAML::ParserException & ex)
+  {
+    RCLCPP_ERROR_STREAM(
+      getLogger(), "Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
+  }
+}
+
+void WaypointNavigator::loadWayPointsFromFile2(std::string filepath)
+{
+  RCLCPP_INFO_STREAM(getLogger(), "[WaypointNavigator] Loading file:" << filepath);
+  this->waypoints_.clear();
+  std::ifstream ifs(filepath.c_str(), std::ifstream::in);
+  if (ifs.good() == false)
+  {
+    throw std::string("Waypoints file not found");
+  }
+
+  try
+  {
+#ifdef HAVE_NEW_YAMLCPP
+    YAML::Node node = YAML::Load(ifs);
+#else
+    YAML::Parser parser(ifs);
+    parser.GetNextDocument(node);
+#endif
+
+#ifdef HAVE_NEW_YAMLCPP
+    const YAML::Node & wp_node_tmp = node["waypoints"];
+    const YAML::Node * wp_node = wp_node_tmp ? &wp_node_tmp : NULL;
+#else
+    const YAML::Node * wp_node = node.FindValue("waypoints");
+#endif
+
+    if (wp_node != NULL)
+    {
+      for (unsigned int i = 0; i < wp_node->size(); ++i)
+      {
+        // Parse waypoint entries on YAML
+        geometry_msgs::msg::Pose wp;
+
+        try
+        {
+          // (*wp_node)[i]["name"] >> wp.name;
+          // (*wp_node)[i]["frame_id"] >> wp.header.frame_id;
+          wp.position.x = (*wp_node)[i]["x"].as<double>();
+          wp.position.y = (*wp_node)[i]["y"].as<double>();
+          auto name = (*wp_node)[i]["name"].as<std::string>();
+
+          this->waypoints_.push_back(wp);
+          this->waypointsNames_.push_back(name);
+
         }
         catch (...)
         {

@@ -14,18 +14,28 @@
 
 #include <smacc2/smacc.hpp>
 
+// CLIENTS
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+
+// CLIENT BEHAVIORS
+#include <move_base_z_client_plugin/client_behaviors.hpp>
+
+using namespace cl_move_base_z;
+
+// ORTHOGONALS
 #include "orthogonals/or_navigation.hpp"
 using namespace smacc2;
 
 namespace sm_aws_warehouse_navigation
 {
 //STATES
-class StState1;
-class StState2;
+struct StAcquireSensors;
+struct StInitialNavigateForward;
+struct StState2;
 
 //STATE_MACHINE
 struct SmAwsWarehouseNavigation
-: public smacc2::SmaccStateMachineBase<SmAwsWarehouseNavigation, StState1>
+: public smacc2::SmaccStateMachineBase<SmAwsWarehouseNavigation, StAcquireSensors>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -34,5 +44,6 @@ struct SmAwsWarehouseNavigation
 
 }  // namespace sm_aws_warehouse_navigation
 
-#include "states/st_state_1.hpp"
+#include "states/st_acquire_sensors.hpp"
+#include "states/st_initial_forward.hpp"
 #include "states/st_state_2.hpp"
