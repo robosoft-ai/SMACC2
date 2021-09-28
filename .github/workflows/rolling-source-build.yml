@@ -1,8 +1,5 @@
 name: Rolling Source Build
 on:
-  pull_request:  # just for testing
-    branches:
-      - master
   push:
     branches:
       - master
