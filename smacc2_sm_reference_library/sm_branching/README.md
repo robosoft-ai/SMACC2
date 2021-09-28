@@ -44,7 +44,7 @@ ros2 launch sm_branching sm_branching.launch
 If you have the SMACC2 Runtime Analyzer installed then type...
 
 ```
-ros2 run smacc2_rta smacc2_rta_node
+ros2 run smacc2_rta smacc2_rta
 ```
 
 If you don't have the SMACC2 Runtime Analyzer click <a href="https://robosoft.ai/product-category/smacc2-runtime-analyzer/">here</a>.
