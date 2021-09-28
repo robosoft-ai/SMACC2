@@ -1,0 +1,7 @@
+state_machine_rosparam_ws: /SmAtomicPerformanceTrace1
+success_switch:
+   - type: state_reached
+     state_name: "sm_atomic_performance_trace_1::State2"
+failure_switch:
+   - type: timeout
+     duration: 10.0 # sec
