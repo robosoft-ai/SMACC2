@@ -181,15 +181,10 @@ def generate_launch_description():
         output="screen",
         prefix=xtermprefix,
         parameters=[
-            {
-                "waypoints_plan": os.path.join(
-                    get_package_share_directory("sm_dance_bot"),
-                    "params/move_base_client/waypoints_plan.yaml",
-                )
-            },
             os.path.join(
-                get_package_share_directory("sm_dance_bot"), "params/sm_dance_bot_config.yaml"
-            ),
+                get_package_share_directory("sm_dance_bot"),
+                "params/move_base_client/waypoints_plan.yaml",
+            )
         ],
         remappings=[
             # ("/odom", "/odometry/filtered"),

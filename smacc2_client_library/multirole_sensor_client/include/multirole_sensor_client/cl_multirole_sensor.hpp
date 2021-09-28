@@ -31,7 +31,8 @@ struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource, TOrthogo
 
 using namespace smacc2::client_bases;
 
-//---------------------------------------------------------------
+// This class extends a ros topic subscriber object that reads from
+// some sensor source. It provides timeout event.
 template <typename MessageType>
 class ClMultiroleSensor : public smacc2::client_bases::SmaccSubscriberClient<MessageType>
 {
@@ -41,7 +42,6 @@ public:
 
   ClMultiroleSensor() : smacc2::client_bases::SmaccSubscriberClient<MessageType>()
   {
-    //RCLCPP_INFO( getNode()->get_logger(),"[ClMultiroleSensor] constructor");
     initialized_ = false;
   }
 
@@ -81,7 +81,7 @@ public:
         timeoutTimer_ = rclcpp::create_timer(
           this->getNode(), this->getNode()->get_clock(), *timeout_,
           std::bind(&ClMultiroleSensor<MessageType>::timeoutCallback, this));
-        //timeoutTimer_->start();
+
         timeoutTimer_->reset();
       }
       else

@@ -12,11 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <chrono>
+#include <optional>
 #include <smacc2/smacc.hpp>
+
+// STATE DECLARATION
+using namespace std::chrono;
 
 namespace sm_atomic_performance_test
 {
-// STATE DECLARATION
+static std::optional<system_clock::time_point> start;
+static int count = 0;
+
 struct State2 : smacc2::SmaccState<State2, SmAtomicPerformanceTest>
 {
   using SmaccState::SmaccState;
@@ -33,7 +40,31 @@ struct State2 : smacc2::SmaccState<State2, SmAtomicPerformanceTest>
 
   void runtimeConfigure() {}
 
-  void onEntry() { this->postEvent<EvStateRequestFinish<State2>>(); }
+  void onEntry()
+  {
+    using namespace std::chrono;
+
+    count++;
+    if (!start)
+    {
+      start = high_resolution_clock::now();
+    }
+    else
+    {
+      auto now = high_resolution_clock::now();
+      duration<double, std::milli> elapsed = now - *start;
+
+      if (elapsed.count() > 10000)
+      {
+        std::cout << "Waited " << elapsed.count() << " ms" << std::endl;
+        std::cout << "Number of iterations " << count << std::endl;
+
+        ::exit(0);
+      }
+    }
+
+    this->postEvent<EvStateRequestFinish<State2>>();
+  }
 
   void onExit() {}
 };

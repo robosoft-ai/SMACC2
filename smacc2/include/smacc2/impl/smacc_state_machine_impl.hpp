@@ -197,7 +197,7 @@ void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
   // we reach this place. Now, we propagate the events to all the state state reactors to generate
   // some more events
 
-  RCLCPP_INFO_STREAM(getLogger(), "[PostEvent entry point] " << eventtypename);
+  RCLCPP_DEBUG_STREAM(getLogger(), "[PostEvent entry point] " << eventtypename);
   auto currentstate = currentState_;
   if (currentstate != nullptr)
   {
@@ -447,7 +447,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
 
   for (auto pair : this->orthogonals_)
   {
-    // RCLCPP_INFO(getLogger(),"ortho onentry: %s", pair.second->getName().c_str());
+    RCLCPP_DEBUG(getLogger(), "ortho onentry: %s", pair.second->getName().c_str());
     auto & orthogonal = pair.second;
     try
     {
@@ -617,7 +617,7 @@ template <typename EventType>
 void ISmaccStateMachine::propagateEventToStateReactors(ISmaccState * st, EventType * ev)
 {
   RCLCPP_DEBUG(
-    getLogger(), "PROPAGATING EVENT [%s] TO LUs [%s]: ", demangleSymbol<EventType>().c_str(),
+    getLogger(), "PROPAGATING EVENT [%s] TO SRs [%s]: ", demangleSymbol<EventType>().c_str(),
     st->getClassName().c_str());
   for (auto & sb : st->getStateReactors())
   {

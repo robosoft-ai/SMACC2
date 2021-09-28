@@ -75,7 +75,8 @@
         "forward_list": "cpp",
         "qapplication": "cpp",
         "slist": "cpp",
-        "*.inc": "cpp"
+        "*.inc": "cpp",
+        "shared_mutex": "cpp"
     },
     "python.autoComplete.extraPaths": [
         "/opt/ros/galactic/lib/python3.8/site-packages"

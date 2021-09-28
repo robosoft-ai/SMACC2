@@ -51,12 +51,6 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, MsDanceBotRunMode
         EvTopicMessage<CbLidarSensor, OrObstaclePerception>,
         EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>,
         EvCbSuccess<CbWaitPose, OrNavigation>>>();
-
-    //srAllSensorsReady->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
-    //srAllSensorsReady->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
-
-    //srAllSensorsReady->setOutputEvent<smacc2::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
-    // srAllSensorsReady->setOutputEvent<EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
   }
 };
 }  // namespace sm_dance_bot
