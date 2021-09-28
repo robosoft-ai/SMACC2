@@ -67,6 +67,7 @@ repos:
         language: system
         files: \.(c|cc|cxx|cpp|frag|glsl|h|hpp|hxx|ih|ispc|ipp|java|js|m|proto|vert)$
         args: ['-fallback-style=none', '-i']
+        exclude: smacc2_sm_reference_library/
 
   - repo: local
     hooks:
