@@ -121,8 +121,8 @@
         "args": [
             "--ros-args",
             "-r",
-            "__node:=SmDanceBot", 
-            "--params-file", 
+            "__node:=SmDanceBot",
+            "--params-file",
             "${workspaceFolder}/../install/sm_dance_bot/share/sm_dance_bot/params/sm_dance_bot_config.yaml"
         ],
         "stopAtEntry": false,
