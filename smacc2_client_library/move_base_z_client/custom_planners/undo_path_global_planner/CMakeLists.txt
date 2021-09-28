@@ -13,14 +13,14 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 
-find_package(nav2_core)
-find_package(nav_msgs)
-find_package(nav2_costmap_2d)
 find_package(geometry_msgs)
+find_package(nav_msgs)
+find_package(nav_2d_utils)
+find_package(nav2_core)
+find_package(nav2_costmap_2d)
 find_package(tf2)
 find_package(tf2_geometry_msgs)
 find_package(pluginlib)
-find_package(nav_2d_utils)
 
 
 set(dependencies
@@ -30,6 +30,7 @@ set(dependencies
   geometry_msgs
   visualization_msgs
   tf2
+  tf2_geometry_msgs
   pluginlib
   nav_2d_utils
 )
