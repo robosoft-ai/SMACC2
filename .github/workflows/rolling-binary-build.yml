@@ -1,6 +1,8 @@
-name: Binary Build
+name: Rolling Binary Build
 on:
   pull_request:
+    branches:
+      - master
   push:
     branches:
       - master

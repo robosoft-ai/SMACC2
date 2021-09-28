@@ -1,24 +1,28 @@
-name: Source Build
+name: Galactic Source Build
 on:
   pull_request:  # just for testing
+    branches:
+      - galactic
   push:
     branches:
-      - master
+      - galactic
   schedule:
     # Run every day to detect flakiness and broken dependencies
     - cron: '43 3 * * *'
 
 jobs:
-  rolling_source:
-    name: rolling source build
+  galactic_source:
+    name: galactic source build
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
+    env:
+      ROS_DISTRO: galactic
     steps:
       - uses: ros-tooling/setup-ros@v0.2
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
-          target-ros2-distro: rolling
+          target-ros2-distro: ${{ ROS_DISTRO }}
           # build all packages listed in the meta package
           package-name:
             smacc2
@@ -47,21 +51,21 @@ jobs:
             sr_conditional
             sr_event_countdown
 
-            #backward_global_planner
-            #backward_local_planner
-            #forward_global_planner
-            #forward_local_planner
-            #move_base_z_planners_common
-            #pure_spinning_local_planner
-            #undo_path_global_planner
-            #move_base_z_client_plugin
+            backward_global_planner
+            backward_local_planner
+            forward_global_planner
+            forward_local_planner
+            move_base_z_planners_common
+            pure_spinning_local_planner
+            undo_path_global_planner
+            move_base_z_client_plugin
 
-            #sm_dance_bot
-            #sm_dance_bot_msgs
-            #sm_dance_bot_strikes_back
+            sm_dance_bot
+            sm_dance_bot_msgs
+            sm_dance_bot_strikes_back
 
           vcs-repo-file-url: |
-            https://raw.githubusercontent.com/ros2/ros2/master/ros2.repos
+            https://raw.githubusercontent.com/ros2/ros2/${{ ROS_DISTRO }}/ros2.repos
             https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/SMACC2.repos
           colcon-mixin-repository: https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
       - uses: actions/upload-artifact@v1

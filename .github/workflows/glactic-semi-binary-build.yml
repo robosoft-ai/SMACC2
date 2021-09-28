@@ -1,22 +1,24 @@
-name: Semi-Binary Build
+name: Galactic Semi-Binary Build
 on:
   pull_request:
+    branches:
+      - galactic
   push:
     branches:
-      - master
+      - galactic
   schedule:
     # Run every day to detect flakiness and broken dependencies
-    - cron: '23 3 * * *'
+    - cron: '33 3 * * *'
 
 jobs:
-  semi_binary_rolling:
-    name: rolling semi-binary build
+  galactic_semi_binary:
+    name: galactic semi-binary build
     runs-on: ubuntu-latest
     strategy:
       matrix:
         env:
-          - {ROS_DISTRO: rolling, ROS_REPO: main}
-          - {ROS_DISTRO: rolling, ROS_REPO: testing}
+          - {ROS_DISTRO: galactic, ROS_REPO: main}
+          - {ROS_DISTRO: galactic, ROS_REPO: testing}
     env:
       UPSTREAM_WORKSPACE: SMACC2.repos
       CCACHE_DIR: ${{ github.workspace }}/.ccache
