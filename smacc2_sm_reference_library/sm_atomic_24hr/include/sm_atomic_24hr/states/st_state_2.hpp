@@ -32,7 +32,7 @@ struct State2 : smacc2::SmaccState<State2, SmAtomic24Hr>
   static void staticConfigure()
   {
     // EvTimer triggers once at 500 client ticks
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(500);  
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(500);
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State2"); }

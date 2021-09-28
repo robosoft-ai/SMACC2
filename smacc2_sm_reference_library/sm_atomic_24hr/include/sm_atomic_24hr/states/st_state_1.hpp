@@ -33,7 +33,7 @@ struct State1 : smacc2::SmaccState<State1, SmAtomic24Hr>
 
   // STATE FUNCTIONS
   static void staticConfigure()
-  { 
+  {
     // EvTimer triggers once at 500 client ticks
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(500);
   }
