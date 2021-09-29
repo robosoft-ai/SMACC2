@@ -9,7 +9,7 @@
         "name": "(gdb) smacc_rta",
         "type": "cppdbg",
         "request": "launch",
-        "program": "${workspaceFolder}/../install/smacc2_rta/lib/smacc2_rta/smacc2_rta_node",
+        "program": "${workspaceFolder}/../install/smacc2_rta/lib/smacc2_rta/smacc2_rta",
         "args": [],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",
