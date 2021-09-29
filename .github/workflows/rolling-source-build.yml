@@ -13,11 +13,13 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
+    env:
+      ROS_DISTRO: galactic
     steps:
       - uses: ros-tooling/setup-ros@v0.2
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
-          target-ros2-distro: rolling
+          target-ros2-distro: ${{ env.ROS_DISTRO }}
           # build all packages listed in the meta package
           package-name:
             smacc2
@@ -61,7 +63,7 @@ jobs:
 
           vcs-repo-file-url: |
             https://raw.githubusercontent.com/ros2/ros2/master/ros2.repos
-            https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/SMACC2.repos
+            https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/${{ github.repository }}.repos
           colcon-mixin-repository: https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
       - uses: actions/upload-artifact@v1
         with:

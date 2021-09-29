@@ -23,7 +23,7 @@ jobs:
       UPSTREAM_WORKSPACE: SMACC2-not-released.${{ matrix.env.ROS_DISTRO }}.repos
       CCACHE_DIR: ${{ github.workspace }}/.ccache
       BASEDIR: ${{ github.workspace }}/.work
-      CACHE_PREFIX: ${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}
+      CACHE_PREFIX: ${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}-binary
     steps:
       - uses: actions/checkout@v1
       # The target directory cache doesn't include the source directory because
@@ -45,7 +45,8 @@ jobs:
             ccache-${{ env.CACHE_PREFIX }}-${{ github.sha }}
             ccache-${{ env.CACHE_PREFIX }}
       - uses: 'ros-industrial/industrial_ci@master'
-        env: ${{matrix.env}}
+        with:
+          config: ${{ toJSON(matrix.env) }}
       - name: prepare target_ws for cache
         if: ${{ always() && ! matrix.env.CCOV }}
         run: |

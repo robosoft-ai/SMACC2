@@ -8,7 +8,7 @@ on:
       - galactic
   schedule:
     # Run every day to detect flakiness and broken dependencies
-    - cron: '43 3 * * *'
+    - cron: '43 4 * * *'
 
 jobs:
   galactic_source:
@@ -22,7 +22,7 @@ jobs:
       - uses: ros-tooling/setup-ros@v0.2
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
-          target-ros2-distro: ${{ ROS_DISTRO }}
+          target-ros2-distro: ${{ env.ROS_DISTRO }}
           # build all packages listed in the meta package
           package-name:
             smacc2
@@ -65,8 +65,8 @@ jobs:
             sm_dance_bot_strikes_back
 
           vcs-repo-file-url: |
-            https://raw.githubusercontent.com/ros2/ros2/${{ ROS_DISTRO }}/ros2.repos
-            https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/SMACC2.repos
+            https://raw.githubusercontent.com/ros2/ros2/${{ env.ROS_DISTRO }}/ros2.repos
+            https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/${{ github.repository }}.repos
           colcon-mixin-repository: https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
       - uses: actions/upload-artifact@v1
         with:
