@@ -5,9 +5,24 @@ SMACC2 is a state-machine framework for ROS2-based applications written in C++.
 
 ## Repository Status, Packages and Documentation
 
- ROS2 Distro | Build status | Documentation | Released packages
- :---------: | :----------: | :-----------: | :---------------:
-**Galactic** <br /> **Rolling** | [master](https://github.com/robosoft-ai/SMACC2/tree/master) <br /> [![Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-binary.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-binary.yml) <br /> [![Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-semi-binary.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-semi-binary.yml) <br /> [![Source Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-source.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/ci-build-source.yml) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/master/html/index.html) | [smacc2](https://index.ros.org/p/smacc2/) <br /> [smacc2_msgs](https://index.ros.org/p/smacc2_msgs/)
+ ROS2 Distro | Branch | Build status | Documentation | Released packages
+ :---------: | :----: | :----------: | :-----------: | :---------------:
+**Galactic** | [`galactic`](https://github.com/robosoft-ai/smacc2/tree/galactic) | [![Galactic Binary Build](https://github.com/robosoft-ai/smacc2/actions/workflows/galactic-binary-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/smacc2/actions/workflows/galactic-binary-build.yml?branch=galactic) <br /> [![Galactic Semi-Binary Build](https://github.com/robosoft-ai/smacc2/actions/workflows/galactic-semi-binary-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/smacc2/actions/workflows/galactic-semi-binary-build.yml?branch=galactic) <br /> [![Galactic Source Build](https://github.com/robosoft-ai/smacc2/actions/workflows/galactic-source-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/smacc2/actions/workflows/galactic-source-build.yml?branch=galactic) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/smacc2/actions/workflows/doxygen-deploy.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/smacc2/actions/workflows/doxygen-deploy.yml?branch=galactic) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/galactic/html/index.html) | [smacc2](https://index.ros.org/p/smacc2/#galactic) <br /> [smacc2_msgs](https://index.ros.org/p/smacc2_msgs/#galactic)
+**Rolling** | [`rolling`](https://github.com/robosoft-ai/smacc2/tree/rolling) | [![Rolling Binary Build](https://github.com/robosoft-ai/smacc2/actions/workflows/rolling-binary-build.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/smacc2/actions/workflows/rolling-binary-build.yml?branch=master) <br /> [![Rolling Semi-Binary Build](https://github.com/robosoft-ai/smacc2/actions/workflows/rolling-semi-binary-build.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/smacc2/actions/workflows/rolling-semi-binary-build.yml?branch=master) <br /> [![Rolling Source Build](https://github.com/robosoft-ai/smacc2/actions/workflows/rolling-source-build.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/smacc2/actions/workflows/rolling-source-build.yml?branch=master) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/smacc2/actions/workflows/doxygen-deploy.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/smacc2/actions/workflows/doxygen-deploy.yml?branch=master) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/master/html/index.html) | [smacc2](https://index.ros.org/p/smacc2/#rolling) <br /> [smacc2_msgs](https://index.ros.org/p/smacc2_msgs/#rolling)
+
+**NOTE**: There are three build stages checking current and future compatibility of the package.
+
+1. Binary builds - against released packages (main and testing) in ROS distributions. Shows that direct local build is possible.
+
+   Uses repos file: `src/SMACC2/SMACC2-not-released.<ros-distro>.repos`
+
+1. Semi-binary builds - against released core ROS packages (main and testing), but the immediate dependencies are pulled from source.
+   Shows that local build with dependencies is possible and if fails there we can expect that after the next package sync we will not be able to build.
+
+   Uses repos file: `src/SMACC2/SMACC2.repos`
+
+1. Source build - also core ROS packages are build from source. It shows potential issues in the mid future.
+
 
 
 ## Repository Structure
