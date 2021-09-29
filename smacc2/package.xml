@@ -2,27 +2,30 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>smacc2</name>
-  <version>2.9.1</version>
+  <version>0.1.0</version>
 
-  <description>SMACC is a ROS/C++ library to implement in easy and systematic way UML StateCharts (AKA state machines). SMACC is inspired by the SMACH ROS package and it is built on top of Boost StateChart library. Developed by Reel Robotics </description>
+  <description>An Event-Driven, Asynchronous, Behavioral State Machine Library for ROS2 (Robotic Operating System) applications written in C++.</description>
 
-  <author email="pablo@ibrobotics.com">Pablo Inigo Blasco</author>
-  <author email="ba@leadtank.org">Brett Aldrich</author>
-  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
-  <license>BSD-3</license>
+  <author email="pablo@robosoft.ai">Pablo Inigo Blasco</author>
+  <author email="brett@robosoft.ai">Brett Aldrich</author>
+  <maintainer email="pablo@robosoft.ai">Pablo Inigo Blasco</maintainer>
+  <maintainer email="denis@stoglrobotics.de">Denis Stogl</maintainer>
+  <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <build_depend>libboost-thread-dev</build_depend>
+
+  <depend>liblttng-ust-dev</depend>
   <depend>rcl</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_action</depend>
-  <depend>smacc_msgs</depend>
+  <depend>smacc2_msgs</depend>
   <depend>tracetools</depend>
-  <build_depend>libboost-thread-dev</build_depend>
-  <exec_depend>libboost-thread</exec_depend>
+  <depend>tracetools_trace</depend>
+  <depend>tracetools_launch</depend>
 
-  <test_depend>ament_lint_auto</test_depend>
-  <test_depend>ament_lint_common</test_depend>
+  <exec_depend>libboost-thread</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

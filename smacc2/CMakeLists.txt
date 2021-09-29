@@ -14,26 +14,28 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
-find_package(smacc_msgs REQUIRED)
+find_package(smacc2_msgs REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 find_package(tracetools)
 find_package(LTTngUST REQUIRED)
 
-set(dependencies rclcpp 
-                 smacc_msgs
-                 rclcpp_action
-                 tracetools)
+set(dependencies
+  rclcpp
+  smacc2_msgs
+  rclcpp_action
+  tracetools
+)
 
 include_directories(include ${LTTNGUST_INCLUDE_DIRS})
 
-file(GLOB_RECURSE SRC_FILES src *.cpp) 
+file(GLOB_RECURSE SRC_FILES src *.cpp)
 add_library(smacc2 SHARED ${SRC_FILES})
 
 ament_target_dependencies(smacc2 ${dependencies})
-target_link_libraries(smacc2 
-      ${Boost_LIBRARIES} 
-      ${LTTNGUST_LIBRARIES}
-      )
+target_link_libraries(smacc2
+  ${Boost_LIBRARIES}
+  ${LTTNGUST_LIBRARIES}
+)
 
 ament_export_include_directories(include)
 ament_export_libraries(smacc2)
@@ -43,17 +45,6 @@ install(
   DIRECTORY include/
   DESTINATION include
 )
-
-if(BUILD_TESTING)
-  #find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # uncomment the line when a copyright and license is not present in all source files
-  #set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # uncomment the line when this package is not in a git repo
-  #set(ament_cmake_cpplint_FOUND TRUE)
-  #ament_lint_auto_find_test_dependencies()
-endif()
 
 install(TARGETS
   smacc2

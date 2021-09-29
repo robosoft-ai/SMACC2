@@ -1,0 +1,6 @@
+<library path="forward_local_planner">
+  <class name="cl_move_base_z::forward_local_planner::ForwardLocalPlanner" type="cl_move_base_z::forward_local_planner::ForwardLocalPlanner" base_class_type="nav2_core::Controller">
+    <description>
+    </description>
+  </class>
+</library>

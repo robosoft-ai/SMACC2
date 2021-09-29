@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          linter: [copyright, cppcheck, lint_cmake]
+        linter: [copyright, cppcheck, lint_cmake]
     steps:
     - uses: actions/checkout@v1
     - uses: ros-tooling/setup-ros@v0.2
@@ -19,33 +19,94 @@ jobs:
         linter: ${{ matrix.linter }}
         package-name:
           smacc2
-          smacc2_ci
-          smacc_client_library
-          smacc_event_generators
-          smacc_msgs
-          smacc_sm_reference_library
-          smacc_state_reactor_library
 
-  ament_lint_cpplint:
-    name: ament_${{ matrix.linter }}
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-          linter: [cpplint]
-    steps:
-    - uses: actions/checkout@v1
-    - uses: ros-tooling/setup-ros@v0.2
-    - uses: ros-tooling/action-ros-lint@v0.1
-      with:
-        distribution: galactic
-        linter: cpplint
-        arguments: "--filter=-whitespace/newline"
-        package-name:
-          smacc2
-          smacc2_ci
-          smacc_client_library
-          smacc_event_generators
-          smacc_msgs
-          smacc_sm_reference_library
-          smacc_state_reactor_library
+          keyboard_client
+
+          backward_global_planner
+          backward_local_planner
+          forward_global_planner
+          forward_local_planner
+          move_base_z_planners_common
+          pure_spinning_local_planner
+          undo_path_global_planner
+          move_base_z_client_plugin
+
+          multirole_sensor_client
+          ros_publisher_client
+          ros_timer_client
+
+          eg_conditional_generator
+          eg_random_generator
+
+          smacc2_msgs
+
+          sm_atomic
+          sm_atomic_performance_test
+          sm_atomic_subscribers_performance_test
+          sm_dance_bot
+          sm_dance_bot_msgs
+          sm_dance_bot_strikes_back
+          sm_ferrari
+          sm_three_some
+
+          sr_all_events_go
+          sr_conditional
+          sr_event_countdown
+
+  #ament_lint_cpplint:
+    #name: ament_${{ matrix.linter }}
+    #runs-on: ubuntu-20.04
+    #strategy:
+      #fail-fast: false
+      #matrix:
+          #linter: [cpplint]
+    #steps:
+    #- uses: actions/checkout@v1
+    #- uses: ros-tooling/setup-ros@v0.2
+    #- uses: ros-tooling/action-ros-lint@v0.1
+      #with:
+        #distribution: galactic
+        #linter: cpplint
+        #arguments: "--filter=-whitespace/newline"
+        #package-name:
+          #smacc2
+
+          #keyboard_client
+
+          #backward_global_planner
+          #backward_local_planner
+          #forward_global_planner
+          #forward_local_planner
+          #move_base_z_planners_common
+          #pure_spinning_local_planner
+          #undo_path_global_planner
+          #move_base_z_client_plugin
+
+          #multirole_sensor_client
+          #ros_publisher_client
+          #ros_timer_client
+
+          #eg_conditional_generator
+          #eg_random_generator
+
+          #smacc2_msgs
+
+          #sm_atomic
+          #sm_atomic_performance_test
+          #sm_atomic_subscribers_performance_test
+          #sm_dance_bot
+          #sm_dance_bot_msgs
+          #sm_dance_bot_strikes_back
+          #sm_ferrari
+          #sm_three_some
+
+          #sr_all_events_go
+          #sr_conditional
+          #sr_event_countdown
+
+          #smacc2_ci
+          #smacc_client_library
+          #smacc_event_generators
+          #smacc_msgs
+          #smacc_sm_reference_library
+          #smacc_state_reactor_library

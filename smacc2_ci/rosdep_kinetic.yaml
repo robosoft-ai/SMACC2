@@ -23,14 +23,10 @@ sr_event_countdown:
 eg_random_generator:
   ubuntu: [ros-kinetic-sr-random-generator]
 sr_conditional:
-  ubuntu: [ros-kinetic-sr-conditional]    
+  ubuntu: [ros-kinetic-sr-conditional]
 forward_global_planner:
-  ubuntu: [ros-kinetic-forward-global-planner]    
+  ubuntu: [ros-kinetic-forward-global-planner]
 sm_dance_bot:
   ubuntu: [ros-kinetic-sm-dance-bot]
-smacc_runtime_test:    
+smacc_runtime_test:
    ubuntu: [ros-kinetic-smacc-runtime-test]
-
-
-
-
