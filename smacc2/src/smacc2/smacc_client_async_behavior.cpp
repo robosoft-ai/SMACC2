@@ -46,7 +46,8 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::future<int> & thread
         }
       }
 
-      r.sleep();
+      //r.sleep();
+      rclcpp::sleep_for(100ms);
       // rclcpp::spin_some(getNode());
       RCLCPP_WARN_THROTTLE(
         getLogger(), *(getNode()->get_clock()), 1000,

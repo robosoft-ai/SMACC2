@@ -19,35 +19,25 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
+#include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace cl_move_base_z
 {
-// waits a robot pose message. Usually used for the startup synchronization.
-enum class WaitPoseStandardReferenceFrame
-{
-  Map,
-  Odometry
-};
-
-class CbWaitPose : public smacc2::SmaccAsyncClientBehavior
+class Amcl : public smacc2::ISmaccComponent
 {
 public:
-  CbWaitPose();
-  CbWaitPose(WaitPoseStandardReferenceFrame frame);
-  virtual ~CbWaitPose();
+  Amcl();
+  virtual ~Amcl();
 
-  template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
-  {
-    this->requiresClient(moveBaseClient_);
-    smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
-  }
+  std::string getName() const override;
 
-  void onEntry() override;
+  void onInitialize() override;
 
-protected:
-  cl_move_base_z::ClMoveBaseZ * moveBaseClient_;
+  void setInitialPose(const geometry_msgs::msg::PoseWithCovarianceStamped & initialpose);
+
+private:
+  rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr initalPosePub_;
 };
+
 }  // namespace cl_move_base_z

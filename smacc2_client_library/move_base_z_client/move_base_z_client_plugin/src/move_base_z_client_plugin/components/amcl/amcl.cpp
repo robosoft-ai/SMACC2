@@ -17,22 +17,27 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#pragma once
+#include <move_base_z_client_plugin/components/amcl/amcl.hpp>
 
-#include <smacc2/client_bases/smacc_action_client_base.hpp>
-#include <smacc2/smacc.hpp>
-
-#include <nav2_msgs/action/navigate_to_pose.hpp>
-//#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.hpp>
+#include <string>
 
 namespace cl_move_base_z
 {
-class Amcl : public smacc2::ISmaccClient
+Amcl::Amcl() {}
+
+Amcl::~Amcl() {}
+
+std::string Amcl::getName() const { return "AMCL"; }
+
+void Amcl::onInitialize()
 {
-public:
-  Amcl();
-  virtual ~Amcl();
-  std::string getName() const override;
-};
+  initalPosePub_ = getNode()->create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>(
+    "initialpose", rclcpp::QoS(10));
+}
+
+void Amcl::setInitialPose(const geometry_msgs::msg::PoseWithCovarianceStamped & initialpose)
+{
+  initalPosePub_->publish(initialpose);
+}
 
 }  // namespace cl_move_base_z

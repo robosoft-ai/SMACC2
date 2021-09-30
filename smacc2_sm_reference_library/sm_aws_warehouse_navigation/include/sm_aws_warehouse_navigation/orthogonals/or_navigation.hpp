@@ -14,33 +14,37 @@
 
 #pragma once
 
-#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 
-#include <ament_index_cpp/get_package_share_directory.hpp>
+// clients
+#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+
+// components
 #include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.hpp>
 #include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
 #include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.hpp>
+#include <move_base_z_client_plugin/components/amcl/amcl.hpp>
+
 #include <ament_index_cpp/get_package_share_directory.hpp>
 
-namespace sm_dance_bot_strikes_back
+namespace sm_aws_warehouse_navigation
 {
 using namespace cl_move_base_z;
-using namespace std::chrono_literals;
 
 class OrNavigation : public smacc2::Orthogonal<OrNavigation>
 {
 public:
   void onInitialize() override
   {
-    auto movebaseClient = this->createClient<ClMoveBaseZ>();
+    auto movebaseClient = this->createClient<cl_move_base_z::ClMoveBaseZ>();
 
     // create pose component
-    movebaseClient->createComponent<cl_move_base_z::Pose>();
+    movebaseClient->createComponent<cl_move_base_z::Pose>(StandardReferenceFrames::Map);
 
     // create planner switcher
-    movebaseClient->createComponent<PlannerSwitcher>();
+    movebaseClient->createComponent<cl_move_base_z::PlannerSwitcher>();
 
     // create goal checker switcher
     movebaseClient->createComponent<cl_move_base_z::GoalCheckerSwitcher>();
@@ -48,8 +52,10 @@ public:
     // create odom tracker
     movebaseClient->createComponent<cl_move_base_z::odom_tracker::OdomTracker>();
 
+    movebaseClient->createComponent<cl_move_base_z::Amcl>();
+
     // create waypoints navigator component
-    auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();
+    auto waypointsNavigator = movebaseClient->createComponent<cl_move_base_z::WaypointNavigator>();
     loadWaypointsFromYaml(waypointsNavigator);
 
     // change this to skip some points of the yaml file, default = 0
@@ -60,21 +66,21 @@ public:
   {
     // if it is the first time and the waypoints navigator is not configured
     std::string planfilepath;
-
-    RCLCPP_INFO_STREAM(getLogger(), "Reasing parameter file from node: " << getNode()->get_name());
-    getNode()->declare_parameter("waypoints_plan");
-    if (getNode()->get_parameter("waypoints_plan", planfilepath))
+    getNode()->declare_parameter("waypoints_plan_2");
+    if (getNode()->get_parameter("waypoints_plan_2", planfilepath))
     {
       std::string package_share_directory =
-        ament_index_cpp::get_package_share_directory("sm_dance_bot");
+        ament_index_cpp::get_package_share_directory("sm_aws_warehouse_navigation");
       boost::replace_all(planfilepath, "$(pkg_share)", package_share_directory);
-      waypointsNavigator->loadWayPointsFromFile(planfilepath);
+
+      waypointsNavigator->loadWayPointsFromFile2(planfilepath);
       RCLCPP_INFO(getLogger(), "waypoints plan: %s", planfilepath.c_str());
     }
     else
     {
       RCLCPP_ERROR(getLogger(), "waypoints plan file not found: NONE");
+      exit(0);
     }
   }
 };
-}  // namespace sm_dance_bot_strikes_back
+}  // namespace sm_aws_warehouse_navigation

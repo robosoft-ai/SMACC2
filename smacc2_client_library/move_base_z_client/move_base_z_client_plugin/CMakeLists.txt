@@ -61,6 +61,7 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/components/pose/cp_pose.cpp
   src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_event_dispatcher.cpp
   src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_navigator.cpp
+  src/${PROJECT_NAME}/components/amcl/amcl.cpp
 )
 
 ament_target_dependencies(${PROJECT_NAME}

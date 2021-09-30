@@ -39,6 +39,24 @@ Pose::Pose(std::string targetFrame, std::string referenceFrame)
   this->pose_.header.frame_id = referenceFrame_;
 }
 
+std::string referenceFrameToString(StandardReferenceFrames referenceFrame)
+{
+  switch (referenceFrame)
+  {
+    case StandardReferenceFrames::Map:
+      return "map";
+    case StandardReferenceFrames::Odometry:
+      return "odom";
+    default:
+      return "odom";
+  }
+}
+
+Pose::Pose(StandardReferenceFrames referenceFrame)
+: Pose("base_link", referenceFrameToString(referenceFrame))
+{
+}
+
 void Pose::onInitialize()
 {
   RCLCPP_INFO(
