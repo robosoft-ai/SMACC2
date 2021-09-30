@@ -25,7 +25,11 @@
 namespace cl_move_base_z
 {
 // waits a robot pose message. Usually used for the startup synchronization.
-enum class WaitPoseStandardReferenceFrame {Map, Odometry};
+enum class WaitPoseStandardReferenceFrame
+{
+  Map,
+  Odometry
+};
 
 class CbWaitPose : public smacc2::SmaccAsyncClientBehavior
 {

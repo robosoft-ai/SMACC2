@@ -63,12 +63,9 @@ protected:
   virtual rclcpp::Node::SharedPtr getNode();
 
   virtual rclcpp::Logger getLogger();
-  
-  
 
 private:
-  
-  //internal visibility (private + friend) 
+  //internal visibility (private + friend)
   virtual void executeOnEntry();
 
   //internal visibility (private + friend)

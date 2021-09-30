@@ -48,7 +48,7 @@
             }
         ]
     },
-    
+
     {
         "name": "(gdb) sm_atomic_performance_test",
         "type": "cppdbg",

@@ -77,7 +77,6 @@ public:
   int currentWaypoint_;
 
 private:
-
   void insertWaypoint(int index, geometry_msgs::msg::Pose & newpose);
 
   void removeWaypoint(int index);
@@ -85,7 +84,7 @@ private:
   void onGoalReached(ClMoveBaseZ::WrappedResult & res);
 
   std::vector<geometry_msgs::msg::Pose> waypoints_;
-  
+
   std::vector<std::string> waypointsNames_;
 
   boost::signals2::connection succeddedConnection_;

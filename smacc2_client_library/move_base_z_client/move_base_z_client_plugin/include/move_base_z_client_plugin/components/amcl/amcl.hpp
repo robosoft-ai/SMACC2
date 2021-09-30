@@ -19,8 +19,8 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc2/smacc.hpp>
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace cl_move_base_z
 {
@@ -29,14 +29,14 @@ class Amcl : public smacc2::ISmaccComponent
 public:
   Amcl();
   virtual ~Amcl();
-  
+
   std::string getName() const override;
 
   void onInitialize() override;
 
-  void setInitialPose(const geometry_msgs::msg::PoseWithCovarianceStamped& initialpose);
+  void setInitialPose(const geometry_msgs::msg::PoseWithCovarianceStamped & initialpose);
 
-  private:
+private:
   rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr initalPosePub_;
 };
 
