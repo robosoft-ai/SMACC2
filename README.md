@@ -48,7 +48,7 @@ A state-machine framework for ROS2-based applications written in C++.
 
 3. Create a new ROS2 workspace:
    ```
-   export COLCON_WS=~/workspace/ros_ws_rolling_smacc2
+   export COLCON_WS=~/workspace/rolling_ws
    mkdir -p $COLCON_WS/src
    ```
 
