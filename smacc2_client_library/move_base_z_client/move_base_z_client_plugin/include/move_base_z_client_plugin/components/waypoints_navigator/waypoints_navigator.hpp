@@ -54,11 +54,14 @@ public:
 
   void onInitialize() override;
 
-  void insertWaypoint(int index, geometry_msgs::msg::Pose & newpose);
-
-  void removeWaypoint(int index);
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
+  {
+    waypointsEventDispatcher.initialize<TSourceObject, TOrthogonal>(client_);
+  }
 
   void loadWayPointsFromFile(std::string filepath);
+
   void loadWayPointsFromFile2(std::string filepath);
 
   void setWaypoints(const std::vector<geometry_msgs::msg::Pose> & waypoints);
@@ -71,18 +74,18 @@ public:
 
   long getCurrentWaypointIndex() const;
 
-  template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
-  {
-    waypointsEventDispatcher.initialize<TSourceObject, TOrthogonal>(client_);
-  }
-
   int currentWaypoint_;
 
 private:
+
+  void insertWaypoint(int index, geometry_msgs::msg::Pose & newpose);
+
+  void removeWaypoint(int index);
+
   void onGoalReached(ClMoveBaseZ::WrappedResult & res);
 
   std::vector<geometry_msgs::msg::Pose> waypoints_;
+  
   std::vector<std::string> waypointsNames_;
 
   boost::signals2::connection succeddedConnection_;

@@ -58,17 +58,22 @@ protected:
 
   inline ISmaccState * getCurrentState();
 
-  virtual void executeOnEntry();
-
-  virtual void executeOnExit();
-
   virtual void dispose();
 
   virtual rclcpp::Node::SharedPtr getNode();
 
   virtual rclcpp::Logger getLogger();
+  
+  
 
 private:
+  
+  //internal visibility (private + friend) 
+  virtual void executeOnEntry();
+
+  //internal visibility (private + friend)
+  virtual void executeOnExit();
+
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation();
 
@@ -81,5 +86,6 @@ private:
 
   friend class ISmaccState;
   friend class ISmaccOrthogonal;
+  friend class ISmaccAsynchronousClientBehavior;
 };
 }  // namespace smacc2

@@ -16,10 +16,10 @@
 
 namespace smacc2
 {
-ISmaccUpdatable::ISmaccUpdatable() : lastUpdate_(0) {}
+ISmaccUpdatable::ISmaccUpdatable() {}
 
 ISmaccUpdatable::ISmaccUpdatable(rclcpp::Duration duration)
-: periodDuration_(duration), lastUpdate_(0)
+: periodDuration_(duration)
 
 {
 }
@@ -28,19 +28,27 @@ void ISmaccUpdatable::setUpdatePeriod(rclcpp::Duration duration) { periodDuratio
 
 void ISmaccUpdatable::executeUpdate(rclcpp::Node::SharedPtr node)
 {
-  bool update = true;
+  bool triggerUpdateMethod = true;
   if (periodDuration_)
   {
-    auto now = node->now();
-    auto elapsed = now - this->lastUpdate_;
-    update = elapsed > *periodDuration_;
-    if (update)
+    // bool use_simtime = node->get_parameter("use_sim_time").as_bool();
+    auto now = node->get_clock()->now();
+    // RCLCPP_INFO(node->get_logger(), "update time: %lf", now.seconds());
+    
+    if (!lastUpdate_)
+    {
+      lastUpdate_ = now;
+    }
+
+    auto ellapsed = now - *lastUpdate_;
+    triggerUpdateMethod = ellapsed > *periodDuration_;
+    if (triggerUpdateMethod)
     {
       this->lastUpdate_ = now;
     }
   }
 
-  if (update)
+  if (triggerUpdateMethod)
   {
     this->update();
   }
