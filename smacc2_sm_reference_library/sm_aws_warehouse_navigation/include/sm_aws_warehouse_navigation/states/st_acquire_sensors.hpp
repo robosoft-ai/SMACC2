@@ -13,9 +13,9 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
 
   // TRANSITION TABLE
   typedef mpl::list<
-    
+
     Transition<EvCbSuccess<CbWaitPose, OrNavigation>, StInitialNavigateForward, SUCCESS>
-    
+
     >
     reactions;
 
@@ -37,7 +37,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
     amcl_ = navClient->getComponent<Amcl>();
   }
 
-  void onEntry() 
+  void onEntry()
   {
     rclcpp::sleep_for(10s);
     // this->setUpdatePeriod(rclcpp::Duration(1s));
@@ -50,7 +50,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
     geometry_msgs::msg::PoseWithCovarianceStamped initialposemsg;
     initialposemsg.header.stamp = getNode()->now();
     initialposemsg.header.frame_id = "map";
-    
+
     initialposemsg.pose.pose.position.x = 3.415412425994873;
     initialposemsg.pose.pose.position.y = 2.0;
     initialposemsg.pose.pose.position.z = 0;

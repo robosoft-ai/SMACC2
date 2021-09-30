@@ -14,7 +14,7 @@ public:
 private :
 
     std::mutex m_mutex_;
-    
+
 };
 
 }  // namespace cl_move_base_z
