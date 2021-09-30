@@ -23,7 +23,7 @@
         <arg name="namespace" value=""/>
         <arg name="use_sim_time" value="$(var use_sim_time)"/>
         <arg name="use_namespace" value="False"/>
-        <arg name="rviz_config" value="$(find-pkg-share nav2_bringup)/rviz/nav2_default_view.rviz"/>
+        <arg name="rviz_config" value="$(find-pkg-share sm_aws_warehouse_navigation)/params/rviz_config.rviz"/>
     </include>
 
     <include file="$(find-pkg-share sm_aws_warehouse_navigation)/launch/bringup_launch.py">

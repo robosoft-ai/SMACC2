@@ -39,15 +39,24 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
 
   void onEntry()
   {
-    rclcpp::sleep_for(10s);
+    //rclcpp::sleep_for(10s);
     // this->setUpdatePeriod(rclcpp::Duration(1s));
+    sendInitialPoseEstimation();
   }
 
   void update()
   {
-    // insist in a loop publishing the initial state estimation until amcl responds with a correct global pose estimation
+    // insist publishing the initial state estimation until amcl responds with a correct global pose estimation
 
+    
+  }
+
+  void sendInitialPoseEstimation()
+  {
     geometry_msgs::msg::PoseWithCovarianceStamped initialposemsg;
+    bool useSimTime = getNode()->get_parameter("use_sim_time").as_bool();
+    //getNode()->set_parameter("use_sim_time",true);
+    
     initialposemsg.header.stamp = getNode()->now();
     initialposemsg.header.frame_id = "map";
 
