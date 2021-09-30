@@ -11,7 +11,7 @@ struct StRotateMainAisle : smacc2::SmaccState<StRotateMainAisle, SmAwsWarehouseN
   // TRANSITION TABLE
 
   // STATE FUNCTIONS
-  static void staticConfigure() 
+  static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbAbsoluteRotate>(-90);
   }

@@ -91,7 +91,10 @@ def generate_launch_description():
             DeclareLaunchArgument(
                 "params_file",
                 default_value=os.path.join(
-                    sm_aws_warehouse_navigation_dir, "params", "move_base_client", "nav2_params.yaml"
+                    sm_aws_warehouse_navigation_dir,
+                    "params",
+                    "move_base_client",
+                    "nav2_params.yaml",
                 ),
                 description="Full path to the ROS2 parameters file to use",
             ),

@@ -11,7 +11,7 @@
 
     <executable cmd="gzserver -s libgazebo_ros_factory.so $(var world)" cwd="$(find-pkg-share aws_robomaker_small_warehouse_world)" output="screen">
     </executable>
-    
+
     <executable cmd="gzclient" cwd="$(find-pkg-share aws_robomaker_small_warehouse_world)" output="screen">
     </executable>
 

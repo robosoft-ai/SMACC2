@@ -12,11 +12,11 @@ struct StInitialNavigateForward : smacc2::SmaccState<StInitialNavigateForward, S
   typedef mpl::list<
 
   Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateMainAisle>
-  > 
+  >
   reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure() 
+  static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbNavigateForward>(2);
   }
