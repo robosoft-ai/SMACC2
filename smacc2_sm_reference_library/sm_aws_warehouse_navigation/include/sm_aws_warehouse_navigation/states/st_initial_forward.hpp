@@ -1,3 +1,4 @@
+#pragma once
 #include <smacc2/smacc.hpp>
 
 namespace sm_aws_warehouse_navigation
@@ -10,7 +11,7 @@ struct StInitialNavigateForward : smacc2::SmaccState<StInitialNavigateForward, S
   // TRANSITION TABLE
   typedef mpl::list<
 
-  Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StState2>
+  Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateMainAisle>
   > 
   reactions;
 

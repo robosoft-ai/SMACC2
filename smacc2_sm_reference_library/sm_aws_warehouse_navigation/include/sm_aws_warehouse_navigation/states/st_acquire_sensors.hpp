@@ -1,24 +1,75 @@
+#pragma once
 #include <smacc2/smacc.hpp>
+
+using namespace std::chrono_literals;
 
 namespace sm_aws_warehouse_navigation
 {
 // STATE DECLARATION
-struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNavigation>
+struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNavigation>,
+                          smacc2::ISmaccUpdatable
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
-        Transition<EvCbSuccess<CbWaitPose, OrNavigation>, StInitialNavigateForward, SUCCESS> 
-        >
+    
+    Transition<EvCbSuccess<CbWaitPose, OrNavigation>, StInitialNavigateForward, SUCCESS>
+    
+    >
     reactions;
 
+  cl_move_base_z::Amcl * amcl_;
+
   // STATE FUNCTIONS
-  static void staticConfigure() { configure_orthogonal<OrNavigation, CbWaitPose>(); }
+  static void staticConfigure()
+  {
+    configure_orthogonal<OrNavigation, CbWaitPose>();
+    configure_orthogonal<OrNavigation, CbWaitActionServer>(std::chrono::milliseconds(10000));
+  }
 
-  void runtimeConfigure() {}
+  void runtimeConfigure()
+  {
+    ClMoveBaseZ * navClient;
+    getOrthogonal<OrNavigation>()->requiresClient(navClient);
 
-  void onEntry() {}
+
+    amcl_ = navClient->getComponent<Amcl>();
+  }
+
+  void onEntry() 
+  {
+    rclcpp::sleep_for(10s);
+    // this->setUpdatePeriod(rclcpp::Duration(1s));
+  }
+
+  void update()
+  {
+    // insist in a loop publishing the initial state estimation until amcl responds with a correct global pose estimation
+
+    geometry_msgs::msg::PoseWithCovarianceStamped initialposemsg;
+    initialposemsg.header.stamp = getNode()->now();
+    initialposemsg.header.frame_id = "map";
+    
+    initialposemsg.pose.pose.position.x = 3.415412425994873;
+    initialposemsg.pose.pose.position.y = 2.0;
+    initialposemsg.pose.pose.position.z = 0;
+
+    initialposemsg.pose.pose.orientation.x = 0;
+    initialposemsg.pose.pose.orientation.y = 0;
+    initialposemsg.pose.pose.orientation.z = 1;
+    initialposemsg.pose.pose.orientation.w = 0;
+
+    //z: 0.9999985465626609
+    // w: 0.00170495529732811
+
+    initialposemsg.pose.covariance = {
+      0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0,
+      0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,
+      0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.06853891909122467};
+
+    amcl_->setInitialPose(initialposemsg);
+  }
 
   void onExit() {}
 };
