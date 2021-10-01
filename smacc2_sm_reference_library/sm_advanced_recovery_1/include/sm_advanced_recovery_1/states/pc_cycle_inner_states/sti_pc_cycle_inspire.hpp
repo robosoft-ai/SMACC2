@@ -33,7 +33,7 @@ struct StiPCCycleInspire : smacc2::SmaccState<StiPCCycleInspire, SsPCCycle>
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiPCCyclePlateau, NEXT>,
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiPCCycleLoop, PREVIOUS>,
 
-    Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT> 
+    Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>
 
     >reactions;
 
