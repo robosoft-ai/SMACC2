@@ -22,6 +22,7 @@ find_package(angles REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(pluginlib REQUIRED)
+find_package(bond REQUIRED)
 
 set(dependencies
   smacc2
@@ -33,7 +34,7 @@ set(dependencies
   angles
   yaml_cpp_vendor
   tf2_geometry_msgs
-  pluginlib
+  bond
 )
 
 include_directories(include)
@@ -51,6 +52,7 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/client_behaviors/cb_rotate.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_undo_path_backwards.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_wait_pose.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_wait_nav2_nodes.cpp
 
   # COMPONENTS
   src/${PROJECT_NAME}/components/costmap_switch/cp_costmap_switch.cpp
