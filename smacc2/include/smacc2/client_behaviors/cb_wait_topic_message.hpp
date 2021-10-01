@@ -24,46 +24,49 @@
 
 namespace smacc2
 {
-  namespace client_behaviors
+namespace client_behaviors
+{
+using namespace std::chrono_literals;
+
+// Asynchronous behavior that waits to a topic message to send EvCbSuccess event
+// a guard function can be set to use conditions on the contents
+template <typename TMessage>
+class CbWaitTopicMessage : public smacc2::SmaccAsyncClientBehavior
+{
+public:
+  CbWaitTopicMessage(
+    const char * topicname, std::function<bool(const TMessage &)> checkfunction = nullptr)
   {
-    using namespace std::chrono_literals;
+    topicname_ = topicname;
+    checkFn_ = checkfunction;
+  }
 
-    // Asynchronous behavior that waits to a topic message to send EvCbSuccess event
-    // a guard function can be set to use conditions on the contents
-    template <typename TMessage>
-    class CbWaitTopicMessage : public smacc2::SmaccAsyncClientBehavior
+  void onEntry() override
+  {
+    rclcpp::SensorDataQoS qos;
+    rclcpp::SubscriptionOptions sub_option;
+
+    sub_ = getNode()->create_subscription<TMessage>(
+      topicname_, qos,
+      std::bind(&CbWaitTopicMessage<TMessage>::onMessageReceived, this, std::placeholders::_1),
+      sub_option);
+  }
+
+  void onMessageReceived(const typename TMessage::SharedPtr msg)
+  {
+    if (checkFn_ == nullptr || checkFn_(*msg))
     {
-    public:
-      CbWaitTopicMessage(
-          const char* topicname, std::function<bool(const TMessage &)> checkfunction = nullptr) 
-      {
-        topicname_ = topicname;
-        checkFn_ = checkfunction;
-      }
+      RCLCPP_INFO(getLogger(), "[CbWaitTopicMessage] message received.");
+      success = true;
+      this->postSuccessEvent();
+    }
+  }
 
-      void onEntry() override
-      {
-        rclcpp::SensorDataQoS qos;
-        rclcpp::SubscriptionOptions sub_option;
-
-        sub_ = getNode()->create_subscription<TMessage>(topicname_, qos, std::bind(&CbWaitTopicMessage<TMessage>::onMessageReceived, this, std::placeholders::_1), sub_option);
-      }
-
-      void onMessageReceived(const typename TMessage::SharedPtr msg)
-      {
-        if (checkFn_ == nullptr || checkFn_(*msg))
-        {
-          RCLCPP_INFO(getLogger(), "[CbWaitTopicMessage] message received.");
-          success = true;
-          this->postSuccessEvent();
-        }
-      }
-
-    protected:
-      bool success = false;
-      typename rclcpp::Subscription<TMessage>::SharedPtr sub_;
-      std::function<bool(const TMessage &)> checkFn_;
-      std::string topicname_;
-    };
-  } // namespace client_behaviors
-} // namespace smacc2
+protected:
+  bool success = false;
+  typename rclcpp::Subscription<TMessage>::SharedPtr sub_;
+  std::function<bool(const TMessage &)> checkFn_;
+  std::string topicname_;
+};
+}  // namespace client_behaviors
+}  // namespace smacc2
