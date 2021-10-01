@@ -1,6 +1,4 @@
 #pragma once
-#include <bond/msg/status.hpp>
-#include <smacc2/client_behaviors/cb_wait_topic_message.hpp>
 #include <smacc2/smacc.hpp>
 
 using namespace std::chrono_literals;
@@ -14,7 +12,10 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvCbSuccess<CbWaitNav2Nodes, OrNavigation>, StInitialNavigateForward, SUCCESS> >
+    Transition<EvCbSuccess<CbWaitNav2Nodes, OrNavigation>, StInitialNavigateForward, SUCCESS> 
+    , Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StAcquireSensors, ABORT>
+
+    >
     reactions;
 
   cl_move_base_z::Amcl * amcl_;
