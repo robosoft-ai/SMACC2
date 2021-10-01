@@ -1,4 +1,6 @@
 #pragma once
+#include <bond/msg/status.hpp>
+#include <smacc2/client_behaviors/cb_wait_topic_message.hpp>
 #include <smacc2/smacc.hpp>
 
 using namespace std::chrono_literals;
@@ -6,17 +8,13 @@ using namespace std::chrono_literals;
 namespace sm_aws_warehouse_navigation
 {
 // STATE DECLARATION
-struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNavigation>,
-                          smacc2::ISmaccUpdatable
+struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNavigation>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
-
-    Transition<EvCbSuccess<CbWaitPose, OrNavigation>, StInitialNavigateForward, SUCCESS>
-
-    >
+    Transition<EvCbSuccess<CbWaitNav2Nodes, OrNavigation>, StInitialNavigateForward, SUCCESS> >
     reactions;
 
   cl_move_base_z::Amcl * amcl_;
@@ -26,37 +24,26 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
   {
     configure_orthogonal<OrNavigation, CbWaitPose>();
     configure_orthogonal<OrNavigation, CbWaitActionServer>(std::chrono::milliseconds(10000));
+    configure_orthogonal<OrNavigation, CbWaitNav2Nodes>(std::vector<Nav2Nodes>{
+      Nav2Nodes::PlannerServer, Nav2Nodes::ControllerServer, Nav2Nodes::RecoveriesServer,
+      Nav2Nodes::BtNavigator, Nav2Nodes::MapServer});
   }
 
   void runtimeConfigure()
   {
     ClMoveBaseZ * navClient;
     getOrthogonal<OrNavigation>()->requiresClient(navClient);
-
-
     amcl_ = navClient->getComponent<Amcl>();
   }
 
-  void onEntry()
-  {
-    //rclcpp::sleep_for(10s);
-    // this->setUpdatePeriod(rclcpp::Duration(1s));
-    sendInitialPoseEstimation();
-  }
-
-  void update()
-  {
-    // insist publishing the initial state estimation until amcl responds with a correct global pose estimation
-
-    
-  }
+  void onEntry() { sendInitialPoseEstimation(); }
 
   void sendInitialPoseEstimation()
   {
     geometry_msgs::msg::PoseWithCovarianceStamped initialposemsg;
     bool useSimTime = getNode()->get_parameter("use_sim_time").as_bool();
     //getNode()->set_parameter("use_sim_time",true);
-    
+
     initialposemsg.header.stamp = getNode()->now();
     initialposemsg.header.frame_id = "map";
 
