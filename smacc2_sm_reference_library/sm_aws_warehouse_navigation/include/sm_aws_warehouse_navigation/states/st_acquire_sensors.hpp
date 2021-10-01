@@ -16,8 +16,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
 
     Transition<EvCbSuccess<CbWaitPose, OrNavigation>, StInitialNavigateForward, SUCCESS>
 
-    >
-    reactions;
+    >reactions;
 
   cl_move_base_z::Amcl * amcl_;
 
@@ -32,7 +31,6 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
   {
     ClMoveBaseZ * navClient;
     getOrthogonal<OrNavigation>()->requiresClient(navClient);
-
 
     amcl_ = navClient->getComponent<Amcl>();
   }

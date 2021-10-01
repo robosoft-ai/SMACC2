@@ -88,41 +88,18 @@ class StiPCCycleExpire;
 class StiPCCycleDwell;
 }  // namespace pc_cycle_inner_states
 
-class SsPSCycle;
-namespace ps_cycle_inner_states
-{
-//FORWARD DECLARATIONS OF ALL INNER STATES
-class StiPSCycleLoop;
-class StiPSCycleInspire;
-class StiPSCyclePlateau;
-class StiPSCycleExpire;
-class StiPSCycleDwell;
-}  // namespace ps_cycle_inner_states
-
 //STATES
 class StObserve;
 class StLeakyLungStep1;
 class StLeakyLungStep2;
 class StLeakyLungStep3;
-class StPatientObstructionStep1;
-class StPatientObstructionStep2;
-class StCalibrationStep1;
-class StSystemShutdown;
 
 //MODE STATES
 class MsRun;
 class MsLeakyLung;
-class MsPatientObstruction;
-class MsCalibration;
-class MsShutdown;
 
-struct EvToDeep : sc::event<EvToDeep>
-{
-};
-
-struct EvFail : sc::event<EvFail>
-{
-};
+struct EvToDeep : sc::event<EvToDeep>{};
+struct EvFail : sc::event<EvFail>{};
 
 // STATE MACHINE
 struct SmAdvancedRecovery1 : public smacc2::SmaccStateMachineBase<SmAdvancedRecovery1, MsRun>
@@ -140,26 +117,19 @@ struct SmAdvancedRecovery1 : public smacc2::SmaccStateMachineBase<SmAdvancedReco
 }  // namespace sm_advanced_recovery_1
 
 // MODE STATES
-#include <sm_advanced_recovery_1/mode_states/ms_calibration.hpp>
 #include <sm_advanced_recovery_1/mode_states/ms_leaky_lung.hpp>
-#include <sm_advanced_recovery_1/mode_states/ms_patient_obstruction.hpp>
 #include <sm_advanced_recovery_1/mode_states/ms_run.hpp>
-#include <sm_advanced_recovery_1/mode_states/ms_shutdown.hpp>
 
 //STATES
-#include <sm_advanced_recovery_1/states/ms_calibration_inner_states/st_calibration_step_1.hpp>
 #include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_1.hpp>
 #include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_2.hpp>
 #include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_3.hpp>
-#include <sm_advanced_recovery_1/states/ms_patient_obstruction_inner_states/st_patient_obstruction_step_1.hpp>
-#include <sm_advanced_recovery_1/states/ms_patient_obstruction_inner_states/st_patient_obstruction_step_2.hpp>
-#include <sm_advanced_recovery_1/states/ms_shutdown_inner_states/st_system_shutdown.hpp>
+
 #include <sm_advanced_recovery_1/states/st_observe.hpp>
 
 #include <sm_advanced_recovery_1/superstates/ss_ac_cycle.hpp>
 #include <sm_advanced_recovery_1/superstates/ss_cmv_cycle.hpp>
 #include <sm_advanced_recovery_1/superstates/ss_pc_cycle.hpp>
-#include <sm_advanced_recovery_1/superstates/ss_ps_cycle.hpp>
 
 //ss_ac_cycle
 #include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_dwell.hpp>
@@ -181,10 +151,3 @@ struct SmAdvancedRecovery1 : public smacc2::SmaccStateMachineBase<SmAdvancedReco
 #include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_inspire.hpp>
 #include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_loop.hpp>
 #include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_plateau.hpp>
-
-//ss_ps_cycle
-#include <sm_advanced_recovery_1/states/ps_cycle_inner_states/sti_ps_cycle_dwell.hpp>
-#include <sm_advanced_recovery_1/states/ps_cycle_inner_states/sti_ps_cycle_expire.hpp>
-#include <sm_advanced_recovery_1/states/ps_cycle_inner_states/sti_ps_cycle_inspire.hpp>
-#include <sm_advanced_recovery_1/states/ps_cycle_inner_states/sti_ps_cycle_loop.hpp>
-#include <sm_advanced_recovery_1/states/ps_cycle_inner_states/sti_ps_cycle_plateau.hpp>
