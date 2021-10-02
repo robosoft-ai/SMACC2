@@ -25,6 +25,7 @@ struct StiACCycleDwell : smacc2::SmaccState<StiACCycleDwell, SsACCycle>
   struct TIMEOUT : ABORT{};
   struct NEXT : SUCCESS{};
   struct PREVIOUS : ABORT{};
+  struct RETURN : CANCEL{};
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -33,6 +34,7 @@ struct StiACCycleDwell : smacc2::SmaccState<StiACCycleDwell, SsACCycle>
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleExpire, PREVIOUS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleLoop, NEXT>,
 
+    Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve, RETURN>,
     Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>
 
     >reactions;
@@ -40,7 +42,7 @@ struct StiACCycleDwell : smacc2::SmaccState<StiACCycleDwell, SsACCycle>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(40);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
     configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

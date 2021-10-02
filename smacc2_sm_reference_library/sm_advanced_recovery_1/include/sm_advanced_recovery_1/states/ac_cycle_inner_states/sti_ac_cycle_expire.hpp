@@ -25,6 +25,7 @@ struct StiACCycleExpire : smacc2::SmaccState<StiACCycleExpire, SsACCycle>
   struct TIMEOUT : ABORT{};
   struct NEXT : SUCCESS{};
   struct PREVIOUS : ABORT{};
+  struct RETURN : CANCEL{};
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -33,6 +34,7 @@ struct StiACCycleExpire : smacc2::SmaccState<StiACCycleExpire, SsACCycle>
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCyclePlateau, PREVIOUS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleDwell, NEXT>,
 
+    Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve, RETURN>,
     Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>
     >reactions;
 

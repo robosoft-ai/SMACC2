@@ -46,7 +46,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
   {
     // insist publishing the initial state estimation until amcl responds with a correct global pose estimation
 
-    
+
   }
 
   void sendInitialPoseEstimation()
@@ -54,7 +54,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
     geometry_msgs::msg::PoseWithCovarianceStamped initialposemsg;
     bool useSimTime = getNode()->get_parameter("use_sim_time").as_bool();
     //getNode()->set_parameter("use_sim_time",true);
-    
+
     initialposemsg.header.stamp = getNode()->now();
     initialposemsg.header.frame_id = "map";
 
