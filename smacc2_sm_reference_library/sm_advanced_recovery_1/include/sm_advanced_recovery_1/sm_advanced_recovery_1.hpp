@@ -108,6 +108,10 @@ class StObserve;
 class StLeakyLungStep1;
 class StLeakyLungStep2;
 class StLeakyLungStep3;
+class StLeakyLungStep4;
+class StLeakyLungStep5;
+class StLeakyLungStep6;
+class StLeakyLungStep7;
 
 //MODE STATES
 class MsRun;
@@ -139,6 +143,10 @@ struct SmAdvancedRecovery1 : public smacc2::SmaccStateMachineBase<SmAdvancedReco
 #include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_1.hpp>
 #include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_2.hpp>
 #include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_3.hpp>
+#include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_4.hpp>
+#include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_5.hpp>
+#include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_6.hpp>
+#include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_7.hpp>
 
 #include <sm_advanced_recovery_1/states/st_observe.hpp>
 
