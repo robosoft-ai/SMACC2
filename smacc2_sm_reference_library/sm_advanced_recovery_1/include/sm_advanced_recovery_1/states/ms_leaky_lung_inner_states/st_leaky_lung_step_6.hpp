@@ -15,7 +15,7 @@
 namespace sm_advanced_recovery_1
 {
 // STATE DECLARATION
-struct StLeakyLungStep3 : smacc2::SmaccState<StLeakyLungStep3, MsLeakyLung>
+struct StLeakyLungStep6 : smacc2::SmaccState<StLeakyLungStep6, MsLeakyLung>
 {
   using SmaccState::SmaccState;
 
@@ -27,7 +27,7 @@ struct StLeakyLungStep3 : smacc2::SmaccState<StLeakyLungStep3, MsLeakyLung>
   // TRANSITION TABLE
   typedef mpl::list<
 
-        Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StLeakyLungStep4, SUCCESS>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StLeakyLungStep7, SUCCESS>
     // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
     // Keyboard events
     // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle, MOVE>,
