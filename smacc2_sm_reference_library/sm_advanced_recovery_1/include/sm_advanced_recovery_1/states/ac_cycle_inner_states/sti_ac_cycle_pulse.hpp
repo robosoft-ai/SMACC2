@@ -17,7 +17,7 @@ namespace sm_advanced_recovery_1
 namespace ac_cycle_inner_states
 {
 // STATE DECLARATION
-struct StiACCycleDwell : smacc2::SmaccState<StiACCycleDwell, SsACCycle>
+struct StiACCyclePulse : smacc2::SmaccState<StiACCyclePulse, SsACCycle>
 {
   using SmaccState::SmaccState;
 
@@ -30,9 +30,9 @@ struct StiACCycleDwell : smacc2::SmaccState<StiACCycleDwell, SsACCycle>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiACCyclePulse, TIMEOUT>,
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleExpire, PREVIOUS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCyclePulse, NEXT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiACCycleTitrate, TIMEOUT>,
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleDwell, PREVIOUS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleTitrate, NEXT>,
 
     Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve, RETURN>,
     Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>

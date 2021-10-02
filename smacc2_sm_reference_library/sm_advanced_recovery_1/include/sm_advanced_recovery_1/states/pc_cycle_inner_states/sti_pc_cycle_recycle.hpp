@@ -14,10 +14,10 @@
 
 namespace sm_advanced_recovery_1
 {
-namespace ac_cycle_inner_states
+namespace pc_cycle_inner_states
 {
 // STATE DECLARATION
-struct StiACCycleDwell : smacc2::SmaccState<StiACCycleDwell, SsACCycle>
+struct StiPCCycleRecycle : smacc2::SmaccState<StiPCCycleRecycle, SsPCCycle>
 {
   using SmaccState::SmaccState;
 
@@ -30,9 +30,9 @@ struct StiACCycleDwell : smacc2::SmaccState<StiACCycleDwell, SsACCycle>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiACCyclePulse, TIMEOUT>,
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleExpire, PREVIOUS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCyclePulse, NEXT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiPCCyclePush, TIMEOUT>,
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiPCCycleRinse, PREVIOUS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiPCCyclePush, NEXT>,
 
     Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve, RETURN>,
     Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>
@@ -54,5 +54,5 @@ struct StiACCycleDwell : smacc2::SmaccState<StiACCycleDwell, SsACCycle>
 
   void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-}  // namespace ac_cycle_inner_states
+}  // namespace pc_cycle_inner_states
 }  // namespace sm_advanced_recovery_1
