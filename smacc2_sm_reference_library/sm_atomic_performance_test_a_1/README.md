@@ -36,7 +36,7 @@ source ~/colcon_ws/install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_atomic_performance_test sm_atomic_performance_test.launch
+ros2 launch sm_atomic_performance_test_a_1 sm_atomic_performance_test_a_1.launch
 ```
 
  <h2>Viewer Instructions</h2>

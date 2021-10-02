@@ -19,12 +19,12 @@
 // STATE DECLARATION
 using namespace std::chrono;
 
-namespace sm_atomic_performance_test
+namespace sm_atomic_performance_test_a_1
 {
 static std::optional<system_clock::time_point> start;
 static int count = 0;
 
-struct State2 : smacc2::SmaccState<State2, SmAtomicPerformanceTest>
+struct State2 : smacc2::SmaccState<State2, SmAtomicPerformanceTestA1>
 {
   using SmaccState::SmaccState;
 
@@ -68,4 +68,4 @@ struct State2 : smacc2::SmaccState<State2, SmAtomicPerformanceTest>
 
   void onExit() {}
 };
-}  // namespace sm_atomic_performance_test
+}  // namespace sm_atomic_performance_test_a_1

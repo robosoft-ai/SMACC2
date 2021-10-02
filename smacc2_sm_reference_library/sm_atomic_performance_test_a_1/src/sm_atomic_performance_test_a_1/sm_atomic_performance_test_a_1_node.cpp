@@ -12,31 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc2/smacc.hpp>
+#include <sm_atomic_performance_test_a_1/sm_atomic_performance_test_a_1.hpp>
 
-namespace sm_atomic_performance_test
+//--------------------------------------------------------------------
+int main(int argc, char ** argv)
 {
-using namespace smacc2::default_transition_tags;
-
-// STATE DECLARATION
-struct State1 : smacc2::SmaccState<State1, SmAtomicPerformanceTest>
-{
-  using SmaccState::SmaccState;
-
-  // TRANSITION TABLE
-  typedef mpl::list<
-
-    Transition<EvStateRequestFinish<State1>, State2>
-
-    >reactions;
-
-  // STATE FUNCTIONS
-  static void staticConfigure() {}
-
-  void runtimeConfigure() {}
-
-  void onEntry() { this->postEvent<EvStateRequestFinish<State1>>(); }
-
-  void onExit() {}
-};
-}  // namespace sm_atomic_performance_test
+  rclcpp::init(argc, argv);
+  smacc2::run<sm_atomic_performance_test_a_1::SmAtomicPerformanceTestA1>();
+}
