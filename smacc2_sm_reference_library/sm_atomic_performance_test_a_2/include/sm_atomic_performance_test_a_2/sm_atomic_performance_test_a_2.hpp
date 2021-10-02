@@ -14,29 +14,26 @@
 
 #include <smacc2/smacc.hpp>
 
-namespace sm_atomic_performance_test
+using namespace boost;
+using namespace smacc2;
+
+namespace sm_atomic_performance_test_a_2
 {
-using namespace smacc2::default_transition_tags;
+//STATE
+class State1;
+class State2;
 
-// STATE DECLARATION
-struct State1 : smacc2::SmaccState<State1, SmAtomicPerformanceTest>
+//--------------------------------------------------------------------
+//STATE_MACHINE
+struct SmAtomicPerformanceTestA2
+: public smacc2::SmaccStateMachineBase<SmAtomicPerformanceTestA2, State1>
 {
-  using SmaccState::SmaccState;
+  using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  // TRANSITION TABLE
-  typedef mpl::list<
-
-    Transition<EvStateRequestFinish<State1>, State2>
-
-    >reactions;
-
-  // STATE FUNCTIONS
-  static void staticConfigure() {}
-
-  void runtimeConfigure() {}
-
-  void onEntry() { this->postEvent<EvStateRequestFinish<State1>>(); }
-
-  void onExit() {}
+  void onInitialize() override {}
 };
-}  // namespace sm_atomic_performance_test
+
+}  // namespace sm_atomic_performance_test_a_2
+
+#include "states/st_state_1.hpp"
+#include "states/st_state_2.hpp"

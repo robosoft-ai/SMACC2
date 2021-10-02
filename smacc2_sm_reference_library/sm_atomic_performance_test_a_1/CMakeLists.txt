@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(sm_atomic_performance_test)
+project(sm_atomic_performance_test_a_1)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
@@ -23,7 +23,7 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME}_node
-  src/sm_atomic_performance_test/sm_atomic_performance_test_node.cpp
+  src/sm_atomic_performance_test_a_1/sm_atomic_performance_test_a_1_node.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}_node

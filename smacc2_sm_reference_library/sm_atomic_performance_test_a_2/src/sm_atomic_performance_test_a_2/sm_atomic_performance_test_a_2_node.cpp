@@ -12,28 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc2/smacc.hpp>
-
-using namespace boost;
-using namespace smacc2;
-
-namespace sm_atomic_performance_test
-{
-//STATE
-class State1;
-class State2;
+#include <sm_atomic_performance_test_a_2/sm_atomic_performance_test_a_2.hpp>
 
 //--------------------------------------------------------------------
-//STATE_MACHINE
-struct SmAtomicPerformanceTest
-: public smacc2::SmaccStateMachineBase<SmAtomicPerformanceTest, State1>
+int main(int argc, char ** argv)
 {
-  using SmaccStateMachineBase::SmaccStateMachineBase;
-
-  void onInitialize() override {}
-};
-
-}  // namespace sm_atomic_performance_test
-
-#include "states/st_state_1.hpp"
-#include "states/st_state_2.hpp"
+  rclcpp::init(argc, argv);
+  smacc2::run<sm_atomic_performance_test_a_2::SmAtomicPerformanceTestA2>();
+}
