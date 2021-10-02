@@ -63,6 +63,11 @@ class StiACCycleInspire;
 class StiACCyclePlateau;
 class StiACCycleExpire;
 class StiACCycleDwell;
+class StiACCyclePulse;
+class StiACCycleTitrate;
+class StiACCycleRinse;
+class StiACCycleRecycle;
+class StiACCyclePush;
 }  // namespace ac_cycle_inner_states
 
 class SsCMVCycle;
@@ -75,6 +80,11 @@ class StiCMVCycleInspire;
 class StiCMVCyclePlateau;
 class StiCMVCycleExpire;
 class StiCMVCycleDwell;
+class StiCMVCyclePulse;
+class StiCMVCycleTitrate;
+class StiCMVCycleRinse;
+class StiCMVCycleRecycle;
+class StiCMVCyclePush;
 }  // namespace cmv_cycle_inner_states
 
 class SsPCCycle;
@@ -86,6 +96,11 @@ class StiPCCycleInspire;
 class StiPCCyclePlateau;
 class StiPCCycleExpire;
 class StiPCCycleDwell;
+class StiPCCyclePulse;
+class StiPCCycleTitrate;
+class StiPCCycleRinse;
+class StiPCCycleRecycle;
+class StiPCCyclePush;
 }  // namespace pc_cycle_inner_states
 
 //STATES
@@ -137,6 +152,11 @@ struct SmAdvancedRecovery1 : public smacc2::SmaccStateMachineBase<SmAdvancedReco
 #include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_inspire.hpp>
 #include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_loop.hpp>
 #include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_plateau.hpp>
+#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_pulse.hpp>
+#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_titrate.hpp>
+#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_rinse.hpp>
+#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_recycle.hpp>
+#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_push.hpp>
 
 //ss_cmv_cycle
 #include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_dwell.hpp>
@@ -144,10 +164,19 @@ struct SmAdvancedRecovery1 : public smacc2::SmaccStateMachineBase<SmAdvancedReco
 #include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_inspire.hpp>
 #include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_loop.hpp>
 #include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_plateau.hpp>
-
+#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_pulse.hpp>
+#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_titrate.hpp>
+#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_rinse.hpp>
+#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_recycle.hpp>
+#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_push.hpp>
 //ss_pc_cycle
 #include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_dwell.hpp>
 #include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_expire.hpp>
 #include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_inspire.hpp>
 #include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_loop.hpp>
 #include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_plateau.hpp>
+#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_pulse.hpp>
+#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_titrate.hpp>
+#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_rinse.hpp>
+#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_recycle.hpp>
+#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_push.hpp>
