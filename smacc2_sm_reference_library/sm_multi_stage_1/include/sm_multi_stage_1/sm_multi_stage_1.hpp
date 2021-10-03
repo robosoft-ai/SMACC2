@@ -161,4 +161,3 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/states/cmv_cycle_inner_states/sti_cmv_cycle_rinse.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_inner_states/sti_cmv_cycle_recycle.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_inner_states/sti_cmv_cycle_push.hpp>
-
