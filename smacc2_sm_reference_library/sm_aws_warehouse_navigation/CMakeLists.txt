@@ -17,8 +17,7 @@ include_directories(include
                     ${smacc2_INCLUDE_DIRS}
                     ${move_base_z_client_plugin_INCLUDE_DIRS}
                     ${bond_INCLUDE_DIRS}
-                    ${ament_cmake_INCLUDE_DIRS}
-                    )
+                    ${ament_cmake_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME}_node src/sm_aws_warehouse_navigation/sm_aws_warehouse_navigation.cpp)
 
