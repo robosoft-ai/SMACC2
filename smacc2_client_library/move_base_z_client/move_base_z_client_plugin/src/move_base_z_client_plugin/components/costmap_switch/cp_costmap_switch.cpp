@@ -116,7 +116,7 @@ void CostmapSwitch::disable(StandardLayers layerType)
 //-------------------------------------------------------------------------
 
 CostmapProxy::CostmapProxy(
-  std::string /*costmap_name*/, std::string enablePropertyName, rclcpp::Node::SharedPtr nh)
+  std::string /*costmap_name*/, std::string /*enablePropertyName*/, rclcpp::Node::SharedPtr nh)
 : nh_(nh)
 {
   // this->costmapName_ = costmap_name + "/set_parameters";
@@ -131,7 +131,7 @@ CostmapProxy::CostmapProxy(
   RCLCPP_ERROR(nh->get_logger(), "costmap switch not implemented %s", costmapName_.c_str());
 }
 
-void CostmapProxy::setCostmapEnabled(bool value)
+void CostmapProxy::setCostmapEnabled(bool /*value*/)
 {
   // dynamic_reconfigure::ReconfigureRequest srv_req;
   // dynamic_reconfigure::ReconfigureResponse srv_resp;

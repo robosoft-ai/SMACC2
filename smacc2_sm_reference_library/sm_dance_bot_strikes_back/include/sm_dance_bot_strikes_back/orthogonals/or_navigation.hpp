@@ -61,7 +61,7 @@ public:
     std::string planfilepath;
 
     RCLCPP_INFO_STREAM(getLogger(), "Reasing parameter file from node: " << getNode()->get_name());
-    getNode()->declare_parameter("waypoints_plan");
+    getNode()->declare_parameter<std::string>("waypoints_plan", "");
     if (getNode()->get_parameter("waypoints_plan", planfilepath))
     {
       std::string package_share_directory =
