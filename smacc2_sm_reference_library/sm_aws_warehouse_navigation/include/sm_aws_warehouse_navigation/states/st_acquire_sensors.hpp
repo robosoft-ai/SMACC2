@@ -47,12 +47,12 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
 
   void runtimeConfigure()
   {
-    // ilegal wait workaround
+    // illegal wait workaround
     rclcpp::sleep_for(6s);
-    
+
     ClMoveBaseZ * navClient;
     getOrthogonal<OrNavigation>()->requiresClient(navClient);
-    
+
     amcl_ = navClient->getComponent<Amcl>();
   }
 
