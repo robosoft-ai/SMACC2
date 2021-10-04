@@ -131,7 +131,7 @@ CostmapProxy::CostmapProxy(
   RCLCPP_ERROR(nh->get_logger(), "costmap switch not implemented %s", costmapName_.c_str());
 }
 
-void CostmapProxy::setCostmapEnabled(bool value)
+void CostmapProxy::setCostmapEnabled(bool /*value*/)
 {
   // dynamic_reconfigure::ReconfigureRequest srv_req;
   // dynamic_reconfigure::ReconfigureResponse srv_resp;

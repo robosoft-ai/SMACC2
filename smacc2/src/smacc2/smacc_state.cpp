@@ -19,7 +19,7 @@ namespace smacc2
 {
 std::string ISmaccState::getClassName() { return demangleSymbol(typeid(*this).name()); }
 
-void ISmaccState::param(std::string param_name) { getNode()->declare_parameter(param_name); }
+void ISmaccState::param(std::string param_name) { getNode()->declare_parameter(param_name, ""); }
 
 void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transitionType)
 {
