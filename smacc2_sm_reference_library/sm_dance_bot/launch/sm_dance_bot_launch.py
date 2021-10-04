@@ -183,7 +183,7 @@ def generate_launch_description():
         parameters=[
             os.path.join(
                 get_package_share_directory("sm_dance_bot"),
-                "params/move_base_client/waypoints_plan.yaml",
+                "params/sm_dance_bot_config.yaml",
             )
         ],
         remappings=[
