@@ -21,8 +21,9 @@
   <depend>std_srvs</depend>
   <depend>tf2</depend>
   <depend>tf2_ros</depend>
-  <depend>bond</depend>
   <depend>tf2_geometry_msgs</depend>
+  <depend>bond</depend>
+  <depend>slam_toolbox</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
