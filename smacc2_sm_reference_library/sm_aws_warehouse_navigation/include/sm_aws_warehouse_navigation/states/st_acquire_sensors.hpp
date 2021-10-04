@@ -26,8 +26,8 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
 
   // TRANSITION TABLE
   typedef mpl::list<
-
-    Transition<EvCbSuccess<CbWaitNav2Nodes, OrNavigation>, StInitialNavigateForward, SUCCESS>
+  
+      Transition<EvCbSuccess<CbWaitNav2Nodes, OrNavigation>, StInitialNavigateForward, SUCCESS>
     , Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StAcquireSensors, ABORT>
 
     >
@@ -47,6 +47,9 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
 
   void runtimeConfigure()
   {
+    // illegal wait workaround
+    rclcpp::sleep_for(6s);
+
     ClMoveBaseZ * navClient;
     getOrthogonal<OrNavigation>()->requiresClient(navClient);
 
