@@ -74,10 +74,10 @@ public:
   void onInitialize() override
   {
     this->client_ = rclcpp_action::create_client<ActionType>(getNode(), name_);
-    RCLCPP_INFO_STREAM(
-      this->getNode()->get_logger(),
-      "Waiting for action server '" << name_ << "' of type: " << demangledTypeName<ActionType>());
-    client_->wait_for_action_server();
+    // RCLCPP_INFO_STREAM(
+    //   this->getNode()->get_logger(),
+    //   "Waiting for action server '" << name_ << "' of type: " << demangledTypeName<ActionType>());
+    //client_->wait_for_action_server();
   }
 
   static std::string getEventLabel()

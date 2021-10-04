@@ -4,7 +4,6 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/../**",
-                "${workspaceFolder}/../build/smacc_viewer22/ogdf_install/include/",
                 "/opt/ros/galactic/include",
                 "/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
                 "/usr/include/x86_64-linux-gnu/qt5",

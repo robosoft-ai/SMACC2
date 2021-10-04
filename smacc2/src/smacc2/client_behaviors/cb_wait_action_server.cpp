@@ -22,7 +22,7 @@ CbWaitActionServer::CbWaitActionServer(std::chrono::milliseconds timeout) : time
 
 CbWaitActionServer::~CbWaitActionServer() {}
 
-void CbWaitActionServer::executeOnEntry()
+void CbWaitActionServer::onEntry()
 {
   if (client_ != nullptr)
   {

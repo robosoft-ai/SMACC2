@@ -36,7 +36,7 @@ public:
     this->requiresClient(client_);
   }
 
-  void executeOnEntry() override;
+  void onEntry() override;
 
 private:
   ISmaccActionClient * client_;

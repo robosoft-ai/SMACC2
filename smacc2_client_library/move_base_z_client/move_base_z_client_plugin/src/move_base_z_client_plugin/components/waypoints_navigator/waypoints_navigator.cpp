@@ -104,7 +104,7 @@ void WaypointNavigator::setWaypoints(const std::vector<Pose2D> & waypoints)
 {
   waypoints_.clear();
   waypointsNames_.clear();
-  int i=0;
+  int i = 0;
   for (auto & p : waypoints)
   {
     geometry_msgs::msg::Pose pose;
@@ -245,7 +245,6 @@ void WaypointNavigator::loadWayPointsFromFile2(std::string filepath)
 
           this->waypoints_.push_back(wp);
           this->waypointsNames_.push_back(name);
-
         }
         catch (...)
         {

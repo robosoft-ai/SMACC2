@@ -34,10 +34,9 @@ source ~/colcon_ws/install/setup.bash
 ```
 
 And then run the launch file...
-! refactor state machine name
 
 ```
-ros2 launch sm_respira sm_respira.launch
+ros2 launch sm_respira_1 sm_respira_1.launch
 ```
 
  <h2>Viewer Instructions</h2>

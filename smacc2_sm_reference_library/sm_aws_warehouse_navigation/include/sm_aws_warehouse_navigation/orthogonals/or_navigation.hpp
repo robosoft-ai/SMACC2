@@ -25,6 +25,7 @@
 #include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.hpp>
 #include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
 #include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.hpp>
+#include <move_base_z_client_plugin/components/amcl/amcl.hpp>
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
 
@@ -40,7 +41,7 @@ public:
     auto movebaseClient = this->createClient<cl_move_base_z::ClMoveBaseZ>();
 
     // create pose component
-    movebaseClient->createComponent<cl_move_base_z::Pose>();
+    movebaseClient->createComponent<cl_move_base_z::Pose>(StandardReferenceFrames::Map);
 
     // create planner switcher
     movebaseClient->createComponent<cl_move_base_z::PlannerSwitcher>();
@@ -50,6 +51,8 @@ public:
 
     // create odom tracker
     movebaseClient->createComponent<cl_move_base_z::odom_tracker::OdomTracker>();
+
+    movebaseClient->createComponent<cl_move_base_z::Amcl>();
 
     // create waypoints navigator component
     auto waypointsNavigator = movebaseClient->createComponent<cl_move_base_z::WaypointNavigator>();
@@ -63,8 +66,8 @@ public:
   {
     // if it is the first time and the waypoints navigator is not configured
     std::string planfilepath;
-    getNode()->declare_parameter("waypoints_plan");
-    if (getNode()->get_parameter("waypoints_plan", planfilepath))
+    getNode()->declare_parameter("waypoints_plan_2");
+    if (getNode()->get_parameter("waypoints_plan_2", planfilepath))
     {
       std::string package_share_directory =
         ament_index_cpp::get_package_share_directory("sm_aws_warehouse_navigation");

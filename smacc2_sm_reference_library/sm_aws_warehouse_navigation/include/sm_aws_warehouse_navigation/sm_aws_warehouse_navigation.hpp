@@ -19,8 +19,10 @@
 
 // CLIENT BEHAVIORS
 #include <move_base_z_client_plugin/client_behaviors.hpp>
+#include <smacc2/client_behaviors/cb_wait_action_server.hpp>
 
 using namespace cl_move_base_z;
+using namespace smacc2::client_behaviors;
 
 // ORTHOGONALS
 #include "orthogonals/or_navigation.hpp"
@@ -31,7 +33,8 @@ namespace sm_aws_warehouse_navigation
 //STATES
 struct StAcquireSensors;
 struct StInitialNavigateForward;
-struct StState2;
+struct StRotateMainAisle;
+struct StCheckPoint1;
 
 //STATE_MACHINE
 struct SmAwsWarehouseNavigation
@@ -46,4 +49,5 @@ struct SmAwsWarehouseNavigation
 
 #include "states/st_acquire_sensors.hpp"
 #include "states/st_initial_forward.hpp"
-#include "states/st_state_2.hpp"
+#include "states/st_rotate_main_aisle.hpp"
+#include "states/st_checkpoint_1.hpp"
