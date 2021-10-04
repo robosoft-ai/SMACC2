@@ -12,34 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
 #include <smacc2/smacc.hpp>
 
 namespace sm_aws_warehouse_navigation
 {
 // STATE DECLARATION
-struct StInitialNavigateForward : smacc2::SmaccState<StInitialNavigateForward, SmAwsWarehouseNavigation>
+struct StCheckPoint1 : smacc2::SmaccState<StCheckPoint1, SmAwsWarehouseNavigation>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
-  typedef mpl::list<
-
-  Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateMainAisle>,
-  Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StInitialNavigateForward, ABORT>
-
-  >
-  reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateForward>(2);
+        configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(-2,-3,0);
   }
 
   void runtimeConfigure() {}
 
-  void onEntry() { }
+  void onEntry() {}
 
   void onExit() {}
 };

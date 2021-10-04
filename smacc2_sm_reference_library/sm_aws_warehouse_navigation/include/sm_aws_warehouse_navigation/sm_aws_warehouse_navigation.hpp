@@ -34,6 +34,7 @@ namespace sm_aws_warehouse_navigation
 struct StAcquireSensors;
 struct StInitialNavigateForward;
 struct StRotateMainAisle;
+struct StCheckPoint1;
 
 //STATE_MACHINE
 struct SmAwsWarehouseNavigation
@@ -49,3 +50,4 @@ struct SmAwsWarehouseNavigation
 #include "states/st_acquire_sensors.hpp"
 #include "states/st_initial_forward.hpp"
 #include "states/st_rotate_main_aisle.hpp"
+#include "states/st_checkpoint_1.hpp"

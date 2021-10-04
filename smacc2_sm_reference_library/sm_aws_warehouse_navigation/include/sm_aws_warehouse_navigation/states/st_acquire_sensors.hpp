@@ -47,6 +47,9 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
 
   void runtimeConfigure()
   {
+    // illegal wait workaround
+    rclcpp::sleep_for(6s);
+
     ClMoveBaseZ * navClient;
     getOrthogonal<OrNavigation>()->requiresClient(navClient);
 

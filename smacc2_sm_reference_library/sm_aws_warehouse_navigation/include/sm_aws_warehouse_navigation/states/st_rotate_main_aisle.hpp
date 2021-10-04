@@ -23,6 +23,12 @@ struct StRotateMainAisle : smacc2::SmaccState<StRotateMainAisle, SmAwsWarehouseN
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
+    typedef mpl::list<
+
+  Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StCheckPoint1, SUCCESS>,
+  Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StRotateMainAisle, ABORT>
+
+  > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

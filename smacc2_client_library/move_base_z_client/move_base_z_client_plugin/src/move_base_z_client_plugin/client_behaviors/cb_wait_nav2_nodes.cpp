@@ -40,35 +40,51 @@ CbWaitNav2Nodes::CbWaitNav2Nodes(std::string topic, std::vector<Nav2Nodes> waitN
 void CbWaitNav2Nodes::onMessageReceived(const bond::msg::Status & msg)
 {
   auto value = fromString(msg.id);
+  bool updated = false;
+  // RCLCPP_INFO(getLogger(), "[CbWaitNav2Nodes] received '%s'", msg.id.c_str());
+
   if (receivedAliveMsg_.count(value) && !receivedAliveMsg_[value])
   {
+    RCLCPP_INFO(getLogger(), "[CbWaitNav2Nodes] '%s' alive received", msg.id.c_str());
     receivedAliveMsg_[value] = true;
+    updated = true;
   }
 
-  bool success = true;
-  for (auto & pair : receivedAliveMsg_)
+  if (updated)
   {
-    if (!pair.second)
+    bool success = true;
+    std::stringstream ss;
+    for (auto & pair : receivedAliveMsg_)
     {
-      success = false;
-      break;
+      if (!pair.second)
+      {
+        success = false;
+      }
+      ss << "[CbWaitNav2Nodes] - " << toString(pair.first) << ":" << pair.second << std::endl;
     }
-  }
 
-  if (success)
-  {
-    this->postSuccessEvent();
-    sub_ = nullptr;
+    RCLCPP_INFO(getLogger(), ss.str().c_str());
+
+    if (success)
+    {
+      RCLCPP_INFO(getLogger(), "[CbWaitNav2Nodes] success event");
+      this->postSuccessEvent();
+      sub_ = nullptr;
+    }
+    else
+    {
+      RCLCPP_INFO(getLogger(), "[CbWaitNav2Nodes] still missing nodes");
+    }
   }
 }
 
 void CbWaitNav2Nodes::onEntry()
 {
-  rclcpp::SensorDataQoS qos;
+  //rclcpp::SensorDataQoS qos;
   rclcpp::SubscriptionOptions sub_option;
 
   sub_ = getNode()->create_subscription<bond::msg::Status>(
-    topicname_, qos, std::bind(&CbWaitNav2Nodes::onMessageReceived, this, std::placeholders::_1),
+    topicname_, 20, std::bind(&CbWaitNav2Nodes::onMessageReceived, this, std::placeholders::_1),
     sub_option);
 }
 
