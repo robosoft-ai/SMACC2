@@ -59,8 +59,6 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
   void update()
   {
     // insist publishing the initial state estimation until amcl responds with a correct global pose estimation
-
-
   }
 
   void sendInitialPoseEstimation()
