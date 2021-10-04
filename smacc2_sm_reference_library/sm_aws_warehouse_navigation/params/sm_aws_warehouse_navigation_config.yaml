@@ -1,7 +1,7 @@
 sm_aws_warehouse_navigation:
   ros__parameters:
     use_sim_time: true
-    signal_detector_loop_freq: 20.0
+    signal_detector_loop_freq: 30.0
     clear_angular_distance_threshold: 0.1 # 0.05
     clear_point_distance_threshold:  0.4 #0.1
     record_angular_distance_threshold: 0.005
