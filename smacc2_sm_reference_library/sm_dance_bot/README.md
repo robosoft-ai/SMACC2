@@ -36,10 +36,8 @@ source ~/colcon_ws/install/setup.bash
 
 And then run the launch file...
 
-! .launch vs .launch.py
-
 ```
-ros2 launch sm_dance_bot sm_dance_bot.launch
+ros2 launch sm_dance_bot sm_dance_bot_launch.py
 ```
 
  <h2>Viewer Instructions</h2>

@@ -23,9 +23,6 @@ struct StObserve : smacc2::SmaccState<StObserve, MsRun>
   struct AC_CYCLE : SUCCESS{};
   struct CMV_CYCLE : SUCCESS{};
   struct PC_CYCLE : SUCCESS{};
-  struct PS_CYCLE : SUCCESS{};
-  struct SHUTDOWN : SUCCESS{};
-  struct CALIBRATION : SUCCESS{};
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -35,11 +32,7 @@ struct StObserve : smacc2::SmaccState<StObserve, MsRun>
     // Keyboard events
     Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle, AC_CYCLE>,
     Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, CMV_CYCLE>,
-    Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsPCCycle, PC_CYCLE>,
-    Transition<EvKeyPressD<CbDefaultKeyboardBehavior, OrKeyboard>, SsPSCycle, PS_CYCLE>,
-
-    Transition<EvKeyPressL<CbDefaultKeyboardBehavior, OrKeyboard>, MsCalibration, CALIBRATION>,
-    Transition<EvKeyPressS<CbDefaultKeyboardBehavior, OrKeyboard>, MsShutdown, SHUTDOWN>
+    Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsPCCycle, PC_CYCLE>
 
     >reactions;
 
