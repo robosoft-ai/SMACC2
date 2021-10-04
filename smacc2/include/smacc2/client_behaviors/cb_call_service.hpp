@@ -39,11 +39,10 @@ public:
     RCLCPP_INFO_STREAM(
       getNode()->get_logger(),
       "[" << this->getName() << "] creating service client: " << serviceName_);
-    this->initialized_ = true;
 
     client_ = getNode()->create_client<ServiceType>(serviceName_);
 
-    result_ = client_->async_send_request(request_).get();
+    // result_ = client_->async_send_request(request_).get();
 
     //, std::bind(&CbServiceCall<ServiceType>::onServiceResponse, this, std::placeholders::_1));
   }

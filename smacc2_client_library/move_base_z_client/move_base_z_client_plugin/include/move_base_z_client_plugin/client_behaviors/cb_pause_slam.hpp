@@ -28,7 +28,7 @@ class CbPauseSlam : public smacc2::client_behaviors::CbServiceCall<slam_toolbox:
 {
 public:
   CbPauseSlam(std::string serviceName = "/slam_toolbox/pause_new_measurements")
-  : smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>(serviceName)
+  : smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>(serviceName.c_str())
   {
   }
 };
