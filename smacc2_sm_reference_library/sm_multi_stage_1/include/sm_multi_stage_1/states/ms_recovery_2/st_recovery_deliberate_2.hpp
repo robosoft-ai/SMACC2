@@ -14,10 +14,8 @@
 
 namespace sm_multi_stage_1
 {
-namespace cmv_cycle_1
-{
 // STATE DECLARATION
-struct StiCMVCycleExpire1 : smacc2::SmaccState<StiCMVCycleExpire1, SsCMVCycle1>
+struct StRecoveryDeliberate2 : smacc2::SmaccState<StRecoveryDeliberate2, MsRecovery2>
 {
   using SmaccState::SmaccState;
 
@@ -25,24 +23,19 @@ struct StiCMVCycleExpire1 : smacc2::SmaccState<StiCMVCycleExpire1, SsCMVCycle1>
   struct TIMEOUT : ABORT{};
   struct NEXT : SUCCESS{};
   struct PREVIOUS : ABORT{};
-  struct RETURN : CANCEL{};
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiCMVCycleDwell1, TIMEOUT>,
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCyclePlateau1, PREVIOUS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCycleDwell1, NEXT>,
-
-    Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve1, RETURN>,
-    Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery1, ABORT>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StRecoveryEvaluate2, NEXT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, sc::deep_history<MsRun2::LastDeepState>, SUCCESS>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(40);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(50);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
     configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
@@ -54,5 +47,4 @@ struct StiCMVCycleExpire1 : smacc2::SmaccState<StiCMVCycleExpire1, SsCMVCycle1>
 
   void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-}  // namespace cmv_cycle_1
 }  // namespace sm_multi_stage_1
