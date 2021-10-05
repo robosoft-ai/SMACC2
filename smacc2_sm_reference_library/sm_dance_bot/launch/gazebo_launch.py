@@ -60,11 +60,15 @@ def generate_launch_description():
     # xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' " \
     # "-hold -geometry 1000x600 -sl 10000 -e"
 
+    gzenv = dict(os.environ)
+    model_database_uri = os.environ["GAZEBO_MODEL_PATH"]
+    gzenv["GAZEBO_MODEL_DATABASE_URI"] = model_database_uri
+
     # Specify the actions
     start_gazebo_server_cmd = ExecuteProcess(
         condition=IfCondition(use_simulator),
         cmd=["gzserver", "-s", "libgazebo_ros_init.so", world, "--verbose"],
-        # env={"GAZEBO_MODEL_PATH": os.getcwd(),"HOME": os.environ["HOME"]},
+        env=gzenv,
         cwd=[launch_dir],
         output="screen",
     )
@@ -73,6 +77,7 @@ def generate_launch_description():
         condition=IfCondition(PythonExpression([use_simulator, " and not ", headless])),
         cmd=["gzclient"],
         cwd=[launch_dir],
+        env=gzenv,
         output="screen",
     )
 
