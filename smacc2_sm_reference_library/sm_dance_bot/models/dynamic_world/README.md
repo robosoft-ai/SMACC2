@@ -4,7 +4,7 @@ A world model with a ground plane, 20x20 meter empty room, and 9 dynamic obstacl
 
 ## How to Add a Dynamic Obstacle
 
-dynamic_world/world.model  
+dynamic_world/world.model
 
     <model name="DynamicObstacle">
           -- Position of the new obstacle
@@ -13,4 +13,3 @@ dynamic_world/world.model
             <uri>model://dynamic_obstacle</uri>
           </include>
     </model>
-

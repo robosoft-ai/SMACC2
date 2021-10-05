@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-  <model name="turtlebot3_burger">  
+  <model name="turtlebot3_burger">
 
     <link name="base">
 
@@ -181,7 +181,7 @@
         </inertia>
         <mass>0.1</mass>
       </inertial>
-    
+
       <collision name="right_wheel_collision">
         <pose>0.0 -0.08 0.023 -1.57 0 0</pose>
         <geometry>

@@ -163,7 +163,7 @@ def generate_launch_description():
 
     gazebo_simulator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, "gazebo_launch.py")),
-        launch_arguments= {"show_gz_lidar": show_gz_lidar}.items()
+        launch_arguments={"show_gz_lidar": show_gz_lidar}.items(),
     )
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"

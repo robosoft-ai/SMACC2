@@ -31,7 +31,7 @@ def generate_launch_description():
     world = LaunchConfiguration("world")
     headless = LaunchConfiguration("headless")
     show_gz_lidar = LaunchConfiguration("show_gz_lidar")
-    
+
     sm_dance_bot_dir = get_package_share_directory("sm_dance_bot")
     launch_dir = os.path.join(sm_dance_bot_dir, "launch")
 
@@ -53,17 +53,16 @@ def generate_launch_description():
         "world",
         default_value=os.path.join(sm_dance_bot_dir, "worlds", "ridgeback_race.world"),
         description="Full path to world model file to load",
-        condition = IfCondition(show_gz_lidar)
+        condition=IfCondition(show_gz_lidar),
     )
 
     declare_world_cmd_2 = DeclareLaunchArgument(
         "world",
         default_value=os.path.join(sm_dance_bot_dir, "worlds", "ridgeback_race_no_lidar.world"),
         description="Full path to world model file to load",
-        condition = UnlessCondition(show_gz_lidar)
+        condition=UnlessCondition(show_gz_lidar),
     )
 
-    
     # Create the launch description and populate
     ld = LaunchDescription()
 
@@ -96,9 +95,9 @@ def generate_launch_description():
     ld.add_action(declare_use_simulator_cmd)
     ld.add_action(declare_world_cmd)
     ld.add_action(declare_world_cmd_2)
-    
+
     ld.add_action(declare_show_gz_lidar)
-    
+
     ld.add_action(start_gazebo_server_cmd)
     ld.add_action(start_gazebo_client_cmd)
 
