@@ -1,0 +1,28 @@
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <RecoveryNode number_of_retries="1" name="NavigateRecovery">
+      <PipelineSequence name="NavigateWithReplanning">
+        <RateController hz="0.01">
+          <RecoveryNode number_of_retries="1" name="ComputePathToPose">
+            <PipelineSequence name="ComputePathToPoseSequence">
+              <PlannerSelector selected_planner="{selected_planner}" />
+              <ComputePathToPose goal="{goal}" path="{path}" planner_id="{selected_planner}" />
+            </PipelineSequence>
+            <ReactiveFallback name="ComputePathToPoseRecoveryFallback">
+              <PipelineSequence name="RecoveryGlobalPlan">
+                <GoalUpdated/>
+                <ClearEntireCostmap name="ClearGlobalCostmap-Context" service_name="global_costmap/clear_entirely_global_costmap" />
+              </PipelineSequence>
+            </ReactiveFallback>
+          </RecoveryNode>
+        </RateController>
+
+        <ControllerSelector selected_controller="{selected_controller}" default_controller="FollowPath" />
+        <GoalCheckerSelector selected_goal_checker="{selected_goal_checker}"/>
+        <FollowPath path="{path}" controller_id="{selected_controller}" goal_checker_id="{selected_goal_checker}" />
+      </PipelineSequence>
+      <ReactiveFallback name="RecoveryFallback">
+      </ReactiveFallback>
+    </RecoveryNode>
+  </BehaviorTree>
+</root>
