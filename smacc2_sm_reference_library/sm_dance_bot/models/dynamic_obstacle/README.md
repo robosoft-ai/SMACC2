@@ -10,7 +10,7 @@ Updates its velocity direction and amount every 3 seconds. Max velocity is 0.5.
 dynamic_obstacle/model.sdf
 
       <plugin name="random" filename="libRandomVelocityPlugin.so">
-      
+
         -- Name of the link in this model that receives the velocity
         <link>link</link>
 
