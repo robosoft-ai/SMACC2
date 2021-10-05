@@ -6,6 +6,7 @@ A world model with a ground plane, 20x20 meter empty room, and 9 dynamic obstacl
 
 dynamic_world/world.model
 
+
     <model name="DynamicObstacle">
           -- Position of the new obstacle
            <pose>-4 4 0.15 0 0 0</pose>

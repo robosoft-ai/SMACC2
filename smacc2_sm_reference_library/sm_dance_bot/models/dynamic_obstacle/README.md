@@ -4,12 +4,13 @@ Dynamic Obstacle. 30x30x30 cm box.
 
 Updates its velocity direction and amount every 3 seconds. Max velocity is 0.5.
 
+
 ## How to Configure a Dynamic Obstacle
 
 dynamic_obstacle/model.sdf
 
       <plugin name="random" filename="libRandomVelocityPlugin.so">
-
+      
         -- Name of the link in this model that receives the velocity
         <link>link</link>
 

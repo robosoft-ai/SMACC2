@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <sdf version="1.4">
-  <model name="turtlebot3_burger">
 
+  <model name="turtlebot3_burger">
     <link name="base">
 
       <inertial>

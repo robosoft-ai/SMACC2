@@ -238,7 +238,6 @@
         </inertia>
         <mass>0.1</mass>
       </inertial>
-
       <collision name="wheel_right_collision">
         <pose>0.0 -0.144 0.023 -1.57 0 0</pose>
         <geometry>
