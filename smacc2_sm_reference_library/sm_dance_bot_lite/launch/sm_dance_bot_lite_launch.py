@@ -131,7 +131,9 @@ def generate_launch_description():
     )
 
     rviz_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_lite_launch_dir, "rviz_launch.py")),
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_dance_bot_lite_launch_dir, "rviz_launch.py")
+        ),
         condition=IfCondition(use_rviz),
         launch_arguments={
             "namespace": "",
@@ -141,7 +143,9 @@ def generate_launch_description():
     )
 
     bringup_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_lite_launch_dir, "bringup_launch.py")),
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_dance_bot_lite_launch_dir, "bringup_launch.py")
+        ),
         launch_arguments={
             "namespace": namespace,
             "use_namespace": use_namespace,
@@ -155,7 +159,9 @@ def generate_launch_description():
     )
 
     gazebo_simulator = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_lite_launch_dir, "gazebo_launch.py"))
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_dance_bot_lite_launch_dir, "gazebo_launch.py")
+        )
     )
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
