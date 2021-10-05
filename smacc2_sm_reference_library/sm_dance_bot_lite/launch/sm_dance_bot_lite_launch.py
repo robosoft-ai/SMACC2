@@ -166,8 +166,10 @@ def generate_launch_description():
     )
 
     gazebo_simulator = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_lite_launch_dir, "gazebo_launch.py")),
-            launch_arguments={"show_gz_lidar": show_gz_lidar}.items(),
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_dance_bot_lite_launch_dir, "gazebo_launch.py")
+        ),
+        launch_arguments={"show_gz_lidar": show_gz_lidar}.items(),
     )
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
@@ -230,7 +232,7 @@ def generate_launch_description():
     ld.add_action(declare_autostart_cmd)
     ld.add_action(declare_map_yaml_cmd)
     ld.add_action(declare_show_gz_lidar)
-    
+
     ld.add_action(declare_rviz_config_file_cmd)
     ld.add_action(declare_use_robot_state_pub_cmd)
     ld.add_action(declare_use_rviz_cmd)

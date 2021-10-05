@@ -58,7 +58,9 @@ def generate_launch_description():
 
     declare_world_cmd_2 = DeclareLaunchArgument(
         "world",
-        default_value=os.path.join(sm_dance_bot_lite_dir, "worlds", "ridgeback_race_no_lidar.world"),
+        default_value=os.path.join(
+            sm_dance_bot_lite_dir, "worlds", "ridgeback_race_no_lidar.world"
+        ),
         description="Full path to world model file to load",
         condition=UnlessCondition(show_gz_lidar),
     )
