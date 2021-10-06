@@ -34,7 +34,7 @@ struct StiCMVCyclePlateau1 : smacc2::SmaccState<StiCMVCyclePlateau1, SsCMVCycle1
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCycleInspire1, PREVIOUS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCycleExpire1, NEXT>,
 
-    Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve, RETURN>,
+    Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve1, RETURN>,
     Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery1, ABORT>
 
     >reactions;

@@ -34,7 +34,7 @@ struct StiACCycleRecycle1 : smacc2::SmaccState<StiACCycleRecycle1, SsACCycle1>
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleRinse1, PREVIOUS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCyclePush1, NEXT>,
 
-    Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve, RETURN>,
+    Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve1, RETURN>,
     Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery1, ABORT>
 
     >reactions;

@@ -16,7 +16,7 @@
 namespace sm_multi_stage_1
 {
 // STATE DECLARATION
-class MsRun1 : public smacc2::SmaccState<MsRun1, SmMultiStage1, StObserve1>
+class MsRecovery1 : public smacc2::SmaccState<MsRecovery1, SmMultiStage1, StRecoveryAnalyze1>
 {
 public:
   using SmaccState::SmaccState;

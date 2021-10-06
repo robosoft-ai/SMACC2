@@ -12,13 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc2/smacc.hpp>
 namespace sm_multi_stage_1
 {
+using namespace sm_multi_stage_1::cmv_cycle_2;
+
 // STATE DECLARATION
-class MsRun1 : public smacc2::SmaccState<MsRun1, SmMultiStage1, StObserve1>
+struct SsCMVCycle2 : smacc2::SmaccState<SsCMVCycle2, MsRun2, StiCMVCycleLoop2>
 {
 public:
   using SmaccState::SmaccState;
-};
+
+  // TRANSITION TABLE
+  typedef mpl::list<
+
+    Transition<EvLoopEnd<StiCMVCycleLoop1>, StObserve2>
+
+    >reactions;
+
+  // STATE VARIABLES
+  static constexpr int total_iterations() { return 1000; }
+  int iteration_count = 0;
+
+  // STATE FUNCTIONS
+  static void staticConfigure() {}
+
+  void runtimeConfigure() {}
+};  // namespace SS4
+
 }  // namespace sm_multi_stage_1

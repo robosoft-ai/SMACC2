@@ -14,10 +14,10 @@
 
 namespace sm_multi_stage_1
 {
-using namespace sm_multi_stage_1::ac_cycle_1;
-
+namespace cmv_cycle_2
+{
 // STATE DECLARATION
-struct SsACCycle1 : smacc2::SmaccState<SsACCycle1, MsRun1, StiACCycleLoop1>
+struct StiCMVCycleLoop2 : smacc2::SmaccState<StiCMVCycleLoop2, SsCMVCycle2>
 {
 public:
   using SmaccState::SmaccState;
@@ -25,18 +25,30 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiACCycleLoop1>, MsRun2>
+    Transition<EvLoopContinue<StiCMVCycleLoop2>, StiCMVCycleInspire2, CONTINUELOOP>
 
     >reactions;
-
-  // STATE VARIABLES
-  static constexpr int total_iterations() { return 1000; }
-  int iteration_count = 0;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
-};  // namespace SS1
 
+  bool loopWhileCondition()
+  {
+    auto & superstate = this->context<SsCMVCycle2>();
+
+    RCLCPP_INFO(
+      getLogger(), "Loop start, current iterations: %d, total iterations: %d",
+      superstate.iteration_count, superstate.total_iterations());
+    return superstate.iteration_count++ < superstate.total_iterations();
+  }
+
+  void onEntry()
+  {
+    RCLCPP_INFO(getLogger(), "LOOP START ON ENTRY");
+    checkWhileLoopConditionAndThrowEvent(&StiCMVCycleLoop2::loopWhileCondition);
+  }
+};
+}  // namespace cmv_cycle_1
 }  // namespace sm_multi_stage_1

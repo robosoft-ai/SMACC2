@@ -14,10 +14,10 @@
 
 namespace sm_multi_stage_1
 {
-namespace cmv_cycle_1
+namespace ac_cycle_2
 {
 // STATE DECLARATION
-struct StiCMVCycleExpire1 : smacc2::SmaccState<StiCMVCycleExpire1, SsCMVCycle1>
+struct StiACCycleRinse2 : smacc2::SmaccState<StiACCycleRinse2, SsACCycle2>
 {
   using SmaccState::SmaccState;
 
@@ -30,12 +30,12 @@ struct StiCMVCycleExpire1 : smacc2::SmaccState<StiCMVCycleExpire1, SsCMVCycle1>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiCMVCycleDwell1, TIMEOUT>,
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCyclePlateau1, PREVIOUS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCycleDwell1, NEXT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiACCycleRecycle2, TIMEOUT>,
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleTitrate2, PREVIOUS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleRecycle2, NEXT>,
 
-    Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve1, RETURN>,
-    Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery1, ABORT>
+    Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve2, RETURN>,
+    Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery2, ABORT>
 
     >reactions;
 
@@ -54,5 +54,5 @@ struct StiCMVCycleExpire1 : smacc2::SmaccState<StiCMVCycleExpire1, SsCMVCycle1>
 
   void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-}  // namespace cmv_cycle_1
+}  // namespace ac_cycle_1
 }  // namespace sm_multi_stage_1
