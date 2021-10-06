@@ -1,0 +1,15 @@
+material ar_tag
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture MarkerData_2.png
+	scale 1 1
+      }
+    }
+  }
+}
+

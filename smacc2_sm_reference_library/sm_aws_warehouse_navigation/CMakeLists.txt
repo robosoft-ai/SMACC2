@@ -29,13 +29,15 @@ target_link_libraries(${PROJECT_NAME}_node
   ${ament_cmake_LIBRARIES}
 )
 
+ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sm_aws_warehouse_navigation.dsv.in")
 ament_target_dependencies(${PROJECT_NAME}_node smacc2)
 
 install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
-#install(DIRECTORY maps DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY models DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY maps DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY params DESTINATION share/${PROJECT_NAME})
 #install(DIRECTORY scripts DESTINATION share/${PROJECT_NAME})
-#install(DIRECTORY worlds DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY worlds DESTINATION share/${PROJECT_NAME})
 
 install(TARGETS ${PROJECT_NAME}_node
   ARCHIVE DESTINATION lib                 # static libraries

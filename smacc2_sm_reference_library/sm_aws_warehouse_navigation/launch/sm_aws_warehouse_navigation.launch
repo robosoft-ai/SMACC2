@@ -1,18 +1,24 @@
 <launch>
     <arg name="use_sim_time" default="true"/>
-    <arg name="urdf" default="$(find-pkg-share neo_simulation2)/robots/mp_400/mp_400.urdf"/>
-    <arg name="world" default="$(find-pkg-share nav2_rosdevday_2021)/worlds/industrial_sim.world"/>
-    <arg name="map" default="$(find-pkg-share aws_robomaker_small_warehouse_world)/maps/005/map.yaml"/>
+    <arg name="urdf" default="$(find-pkg-share sm_aws_warehouse_navigation)/models/neo_simulation2/robots/mp_400/mp_400.urdf"/>
+    <arg name="world" default="$(find-pkg-share sm_aws_warehouse_navigation)/worlds/industrial_sim.world"/>
+    <arg name="map" default="$(find-pkg-share sm_aws_warehouse_navigation)/maps/005/map.yaml"/>
     <arg name="params_file" default="$(find-pkg-share sm_aws_warehouse_navigation)/params/move_base_client/nav2_params.yaml"/>
     <arg name="xterm_prefix" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"/>
 
     <node pkg="gazebo_ros" exec="spawn_entity.py" name="gazebo_ros" args="-entity robot -file $(var urdf) -x 3.45 -y 2.15 -z 0.10 -Y 3.14">
     </node>
 
-    <executable cmd="gzserver -s libgazebo_ros_factory.so $(var world)" cwd="$(find-pkg-share aws_robomaker_small_warehouse_world)" output="screen">
+    <!-- gzenv = dict(os.environ)
+    model_database_uri = os.environ["GAZEBO_MODEL_PATH"]
+    gzenv["GAZEBO_MODEL_DATABASE_URI"] = model_database_uri -->
+
+    <executable cmd="gzserver -s libgazebo_ros_factory.so $(var world)" cwd="$(find-pkg-share sm_aws_warehouse_navigation)" output="screen">
+      <env name="GAZEBO_MODEL_DATABASE_URI" value="$(env GAZEBO_MODEL_PATH)"/>
     </executable>
 
-    <executable cmd="gzclient" cwd="$(find-pkg-share aws_robomaker_small_warehouse_world)" output="screen">
+    <executable cmd="gzclient" cwd="$(find-pkg-share sm_aws_warehouse_navigation)" output="screen">
+      <env name="GAZEBO_MODEL_DATABASE_URI" value="$(env GAZEBO_MODEL_PATH)"/>
     </executable>
 
     <node pkg="robot_state_publisher" exec="robot_state_publisher" name="robot_state_publisher" output="screen" args="$(var urdf)">
