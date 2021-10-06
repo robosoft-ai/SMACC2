@@ -28,7 +28,7 @@
             <size>0.8 0.15 0.8</size>
           </box>
         </geometry>
-       
+
       </collision>
     </link>
     <static>1</static>

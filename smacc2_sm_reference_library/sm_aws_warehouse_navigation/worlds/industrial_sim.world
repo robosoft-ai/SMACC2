@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <sdf version="1.6">
   <world name="default">
-    
+
     <gravity>0 0 -9.8</gravity>
     <physics default="0" name="default_physics" type="ode">
       <max_step_size>0.01</max_step_size>
@@ -9,7 +9,7 @@
       <real_time_update_rate>100</real_time_update_rate>
     </physics>
 
-    
+
         <!--model name="aws_robomaker_warehouse_RoofB_01_001">
         <include>
             <uri>model://aws_robomaker_warehouse_RoofB_01</uri>
@@ -44,7 +44,7 @@
         </include>
         <pose frame="">4.73156 -4.827049 0 0 0 0</pose>
 	</model>
-        
+
         <model name="aws_robomaker_warehouse_ShelfE_01_003">
         <include>
             <uri>model://aws_robomaker_warehouse_ShelfE_01</uri>
@@ -100,15 +100,15 @@
         </include>
         <pose frame="">0.0 0.0 -0.090092 0 0 0</pose>
 	</model>
-       
+
         <model name="aws_robomaker_warehouse_Lamp_01_005">
         <include>
             <uri>model://aws_robomaker_warehouse_Lamp_01</uri>
         </include>
         <pose frame="">0 0 -4 0 0 0</pose>
 	</model>
-       
-	
+
+
 
         <model name="aws_robomaker_warehouse_Bucket_01_020">
         <include>
@@ -201,7 +201,7 @@
         </include>
         <pose frame=''>-1.634682 -7.811813 -0.319559 0 0 0</pose>
 	</model>
-                                                 
+
       <model name='aws_robomaker_warehouse_TrashCanC_01_002'>
         <include>
             <uri>model://aws_robomaker_warehouse_TrashCanC_01</uri>
@@ -217,7 +217,7 @@
         <pose frame=''>-0.276098 -9.481944 0.023266 0 0 0</pose>
 	</model>
 
-    	
+
     <light name="Warehouse_CeilingLight_003" type="point">
       <pose frame="">0 0 9 0 0 0</pose>
       <diffuse>0.5 0.5 0.5 1</diffuse>

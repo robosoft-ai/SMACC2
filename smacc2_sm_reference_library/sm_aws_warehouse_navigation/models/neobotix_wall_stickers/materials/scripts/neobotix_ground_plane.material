@@ -6,7 +6,7 @@ material NeobotixGroundPlane/Image
         {
           ambient 1 1 1 1.000000
           diffuse 1 1 1 1.000000
-          specular 0.03 0.03 0.03 1.000000 
+          specular 0.03 0.03 0.03 1.000000
 
           texture_unit
           {
@@ -15,5 +15,3 @@ material NeobotixGroundPlane/Image
         }
       }
     }
-
-

@@ -225,7 +225,7 @@
         <pose frame=''>0.058694 0 2.25 0 -0 0</pose>
       </collision>
     </link>
- 
+
  <include>
 <pose frame=''>0.064966 -8.062 0 0 -0 0</pose>
 	<uri>model://door_3d</uri>
@@ -663,7 +663,7 @@
         <pose frame=''>-0.585848 0 2.25 0 -0 0</pose>
       </collision>
     </link>
-  
+
    <include>
 	<pose frame=''>10.018000 -0.585848 0 0 -0 1.5708</pose>
 	<uri>model://door_3d</uri>
