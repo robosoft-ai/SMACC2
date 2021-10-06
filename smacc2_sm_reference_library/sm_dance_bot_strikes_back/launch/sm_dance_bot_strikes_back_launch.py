@@ -123,7 +123,9 @@ def generate_launch_description():
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         "map",
-        default_value=os.path.join(sm_dance_bot_strikes_back_launch_dir, "maps", "turtlebot3_world.yaml"),
+        default_value=os.path.join(
+            sm_dance_bot_strikes_back_launch_dir, "maps", "turtlebot3_world.yaml"
+        ),
         description="Full path to map file to load",
     )
 
@@ -140,7 +142,9 @@ def generate_launch_description():
     )
 
     rviz_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_strikes_back_launch_dir, "rviz_launch.py")),
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_dance_bot_strikes_back_launch_dir, "rviz_launch.py")
+        ),
         condition=IfCondition(use_rviz),
         launch_arguments={
             "namespace": "",
@@ -150,7 +154,9 @@ def generate_launch_description():
     )
 
     bringup_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_strikes_back_launch_dir, "bringup_launch.py")),
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_dance_bot_strikes_back_launch_dir, "bringup_launch.py")
+        ),
         launch_arguments={
             "namespace": namespace,
             "use_namespace": use_namespace,
@@ -164,12 +170,13 @@ def generate_launch_description():
     )
 
     gazebo_simulator = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_strikes_back_launch_dir, "gazebo_launch.py")),
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_dance_bot_strikes_back_launch_dir, "gazebo_launch.py")
+        ),
         launch_arguments={"show_gz_lidar": show_gz_lidar}.items(),
     )
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
-
 
     sm_dance_bot_strikes_back_node = Node(
         package="sm_dance_bot_strikes_back",
