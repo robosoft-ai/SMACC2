@@ -62,10 +62,7 @@ def generate_launch_description():
         convert_types=True,
     )
 
-    xtermprefix = (
-        "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' "
-        "-hold -geometry 1000x600 -sl 10000 -e"
-    )
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
 
     print("+********************************")
     print(str(param_substitutions))

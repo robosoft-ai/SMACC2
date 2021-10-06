@@ -72,6 +72,8 @@ ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(${dependencies})
 
+ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sm_dance_bot_strikes_back.dsv.in")
+
 if(BUILD_TESTING)
 endif()
 
