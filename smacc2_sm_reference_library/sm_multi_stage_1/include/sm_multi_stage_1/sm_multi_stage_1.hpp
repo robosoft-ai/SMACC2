@@ -113,7 +113,22 @@ class StiACCycleTitrate4;
 class StiACCycleRinse4;
 class StiACCycleRecycle4;
 class StiACCyclePush4;
-}  // namespace ac_cycle_2
+}  // namespace ac_cycle_4
+
+class SsACCycle5;
+namespace ac_cycle_5
+{
+class StiACCycleLoop5;
+class StiACCycleInspire5;
+class StiACCyclePlateau5;
+class StiACCycleExpire5;
+class StiACCycleDwell5;
+class StiACCyclePulse5;
+class StiACCycleTitrate5;
+class StiACCycleRinse5;
+class StiACCycleRecycle5;
+class StiACCyclePush5;
+}  // namespace ac_cycle_5
 
 class SsCMVCycle1;
 
@@ -183,6 +198,23 @@ class StiCMVCycleRecycle4;
 class StiCMVCyclePush4;
 }  // namespace cmv_cycle_4
 
+class SsCMVCycle5;
+
+namespace cmv_cycle_5
+{
+//FORWARD DECLARATIONS OF ALL INNER STATES
+class StiCMVCycleLoop5;
+class StiCMVCycleInspire5;
+class StiCMVCyclePlateau5;
+class StiCMVCycleExpire5;
+class StiCMVCycleDwell5;
+class StiCMVCyclePulse5;
+class StiCMVCycleTitrate5;
+class StiCMVCycleRinse5;
+class StiCMVCycleRecycle5;
+class StiCMVCyclePush5;
+}  // namespace cmv_cycle_5
+
 //STATES
 class StObserve1;
 class StRecoveryAnalyze1;
@@ -204,6 +236,7 @@ class StRecoveryInnervate2;
 
 class StObserve3;
 class StObserve4;
+class StObserve5;
 
 class ACCycleLoop1;
 class CMVCycleLoop1;
@@ -213,6 +246,8 @@ class ACCycleLoop3;
 class CMVCycleLoop3;
 class ACCycleLoop4;
 class CMVCycleLoop4;
+class ACCycleLoop5;
+class CMVCycleLoop5;
 
 //MODE STATES
 class MsRun1;
@@ -224,6 +259,7 @@ class MsRecovery2;
 
 class MsRun3;
 class MsRun4;
+class MsRun5;
 
 struct EvToDeep : sc::event<EvToDeep>
 {
@@ -254,6 +290,7 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/mode_states/ms_run_2.hpp>
 #include <sm_multi_stage_1/mode_states/ms_run_3.hpp>
 #include <sm_multi_stage_1/mode_states/ms_run_4.hpp>
+#include <sm_multi_stage_1/mode_states/ms_run_5.hpp>
 
 //STATES
 #include <sm_multi_stage_1/states/ms_recovery_1/st_recovery_analyze_1.hpp>
@@ -276,24 +313,29 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/states/ac_cycle_loop_2.hpp>
 #include <sm_multi_stage_1/states/ac_cycle_loop_3.hpp>
 #include <sm_multi_stage_1/states/ac_cycle_loop_4.hpp>
+#include <sm_multi_stage_1/states/ac_cycle_loop_5.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_loop_1.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_loop_2.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_loop_3.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_loop_4.hpp>
+#include <sm_multi_stage_1/states/cmv_cycle_loop_5.hpp>
 #include <sm_multi_stage_1/states/st_observe_1.hpp>
 #include <sm_multi_stage_1/states/st_observe_2.hpp>
 #include <sm_multi_stage_1/states/st_observe_3.hpp>
 #include <sm_multi_stage_1/states/st_observe_4.hpp>
+#include <sm_multi_stage_1/states/st_observe_5.hpp>
 
 #include <sm_multi_stage_1/superstates/ss_ac_cycle_1.hpp>
 #include <sm_multi_stage_1/superstates/ss_ac_cycle_2.hpp>
 #include <sm_multi_stage_1/superstates/ss_ac_cycle_3.hpp>
 #include <sm_multi_stage_1/superstates/ss_ac_cycle_4.hpp>
+#include <sm_multi_stage_1/superstates/ss_ac_cycle_5.hpp>
 
 #include <sm_multi_stage_1/superstates/ss_cmv_cycle_1.hpp>
 #include <sm_multi_stage_1/superstates/ss_cmv_cycle_2.hpp>
 #include <sm_multi_stage_1/superstates/ss_cmv_cycle_3.hpp>
 #include <sm_multi_stage_1/superstates/ss_cmv_cycle_4.hpp>
+#include <sm_multi_stage_1/superstates/ss_cmv_cycle_5.hpp>
 
 //ss_ac_cycle_1
 #include <sm_multi_stage_1/states/ac_cycle_1/sti_ac_cycle_dwell_1.hpp>
@@ -343,6 +385,18 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/states/ac_cycle_4/sti_ac_cycle_rinse_4.hpp>
 #include <sm_multi_stage_1/states/ac_cycle_4/sti_ac_cycle_titrate_4.hpp>
 
+//ss_ac_cycle_5
+#include <sm_multi_stage_1/states/ac_cycle_5/sti_ac_cycle_dwell_5.hpp>
+#include <sm_multi_stage_1/states/ac_cycle_5/sti_ac_cycle_expire_5.hpp>
+#include <sm_multi_stage_1/states/ac_cycle_5/sti_ac_cycle_inspire_5.hpp>
+#include <sm_multi_stage_1/states/ac_cycle_5/sti_ac_cycle_loop_5.hpp>
+#include <sm_multi_stage_1/states/ac_cycle_5/sti_ac_cycle_plateau_5.hpp>
+#include <sm_multi_stage_1/states/ac_cycle_5/sti_ac_cycle_pulse_5.hpp>
+#include <sm_multi_stage_1/states/ac_cycle_5/sti_ac_cycle_push_5.hpp>
+#include <sm_multi_stage_1/states/ac_cycle_5/sti_ac_cycle_recycle_5.hpp>
+#include <sm_multi_stage_1/states/ac_cycle_5/sti_ac_cycle_rinse_5.hpp>
+#include <sm_multi_stage_1/states/ac_cycle_5/sti_ac_cycle_titrate_5.hpp>
+
 //ss_cmv_cycle_1
 #include <sm_multi_stage_1/states/cmv_cycle_1/sti_cmv_cycle_dwell_1.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_1/sti_cmv_cycle_expire_1.hpp>
@@ -390,3 +444,15 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/states/cmv_cycle_4/sti_cmv_cycle_recycle_4.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_4/sti_cmv_cycle_rinse_4.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_4/sti_cmv_cycle_titrate_4.hpp>
+
+//ss_cmv_cycle_5
+#include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_dwell_5.hpp>
+#include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_expire_5.hpp>
+#include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_inspire_5.hpp>
+#include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_loop_5.hpp>
+#include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_plateau_5.hpp>
+#include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_pulse_5.hpp>
+#include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_push_5.hpp>
+#include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_recycle_5.hpp>
+#include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_rinse_5.hpp>
+#include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_titrate_5.hpp>
