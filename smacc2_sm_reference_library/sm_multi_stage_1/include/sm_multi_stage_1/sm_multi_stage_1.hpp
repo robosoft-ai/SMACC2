@@ -130,6 +130,7 @@ class StiACCycleRecycle5;
 class StiACCyclePush5;
 }  // namespace ac_cycle_5
 
+
 class SsCMVCycle1;
 
 namespace cmv_cycle_1
@@ -238,6 +239,7 @@ class StObserve3;
 class StObserve4;
 class StObserve5;
 
+
 class ACCycleLoop1;
 class CMVCycleLoop1;
 class ACCycleLoop2;
@@ -248,6 +250,7 @@ class ACCycleLoop4;
 class CMVCycleLoop4;
 class ACCycleLoop5;
 class CMVCycleLoop5;
+
 
 //MODE STATES
 class MsRun1;
@@ -314,11 +317,13 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/states/ac_cycle_loop_3.hpp>
 #include <sm_multi_stage_1/states/ac_cycle_loop_4.hpp>
 #include <sm_multi_stage_1/states/ac_cycle_loop_5.hpp>
+
 #include <sm_multi_stage_1/states/cmv_cycle_loop_1.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_loop_2.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_loop_3.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_loop_4.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_loop_5.hpp>
+
 #include <sm_multi_stage_1/states/st_observe_1.hpp>
 #include <sm_multi_stage_1/states/st_observe_2.hpp>
 #include <sm_multi_stage_1/states/st_observe_3.hpp>
@@ -331,11 +336,13 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/superstates/ss_ac_cycle_4.hpp>
 #include <sm_multi_stage_1/superstates/ss_ac_cycle_5.hpp>
 
+
 #include <sm_multi_stage_1/superstates/ss_cmv_cycle_1.hpp>
 #include <sm_multi_stage_1/superstates/ss_cmv_cycle_2.hpp>
 #include <sm_multi_stage_1/superstates/ss_cmv_cycle_3.hpp>
 #include <sm_multi_stage_1/superstates/ss_cmv_cycle_4.hpp>
 #include <sm_multi_stage_1/superstates/ss_cmv_cycle_5.hpp>
+
 
 //ss_ac_cycle_1
 #include <sm_multi_stage_1/states/ac_cycle_1/sti_ac_cycle_dwell_1.hpp>
@@ -456,3 +463,4 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_recycle_5.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_rinse_5.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_titrate_5.hpp>
+
