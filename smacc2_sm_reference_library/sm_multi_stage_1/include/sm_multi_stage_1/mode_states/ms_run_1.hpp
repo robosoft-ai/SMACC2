@@ -20,5 +20,18 @@ class MsRun1 : public smacc2::SmaccState<MsRun1, SmMultiStage1, StObserve1>
 {
 public:
   using SmaccState::SmaccState;
+
+// TRANSITION TABLE
+typedef mpl::list<
+
+  Transition<EvLoopEnd<ACCycleLoop1>, MsRun2>
+
+    >reactions;
+
+
+// STATE VARIABLES
+  static constexpr int ztotal_iterations() { return 1; }
+  int ziteration_count = 0;
+
 };
 }  // namespace sm_multi_stage_1
