@@ -16,7 +16,7 @@
 namespace sm_multi_stage_1
 {
 // STATE DECLARATION
-class MsRun4 : public smacc2::SmaccState<MsRun4, SmMultiStage1, StObserve4>
+class MsRun5 : public smacc2::SmaccState<MsRun5, SmMultiStage1, StObserve5>
 {
 public:
   using SmaccState::SmaccState;
@@ -24,8 +24,8 @@ public:
 // TRANSITION TABLE
 typedef mpl::list<
 
-  Transition<EvLoopEnd<ACCycleLoop5>, MsRun5>,
-  Transition<EvLoopEnd<CMVCycleLoop5>, MsRun5>
+  // Transition<EvLoopEnd<ACCycleLoop2>, MsRun5>,
+  // Transition<EvLoopEnd<CMVCycleLoop2>, MsRun5>
 
     >reactions;
 
