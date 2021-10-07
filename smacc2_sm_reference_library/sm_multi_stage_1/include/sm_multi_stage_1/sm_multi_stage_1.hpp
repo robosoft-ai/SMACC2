@@ -463,4 +463,3 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_recycle_5.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_rinse_5.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_5/sti_cmv_cycle_titrate_5.hpp>
-
