@@ -29,8 +29,10 @@ struct StObserve2 : smacc2::SmaccState<StObserve2, MsRun2>
     // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACCycle1, TIMEOUT>,
     // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle1>,
     // Keyboard events
-    //Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle2, ac_cycle_2>,
-    //Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle2, cmv_cycle_2>
+    // Transition<EvKeyPressF<CbDefaultKeyboardBehavior, OrKeyboard>, MsRun2, SUCCESS>,
+    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, ACCycleLoop2, SUCCESS>,
+    // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle1, ac_cycle_1>,
+    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, CMVCycleLoop2, SUCCESS>
 
     >reactions;
 

@@ -27,7 +27,7 @@ struct StRecoveryCalculate1 : smacc2::SmaccState<StRecoveryCalculate1, MsRecover
   // TRANSITION TABLE
   typedef mpl::list<
 
-        Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StRecoveryDeliberate1, SUCCESS>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StRecoveryDeliberate1, SUCCESS>
     // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle1>,
     // Keyboard events
     // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle1, MOVE>,
