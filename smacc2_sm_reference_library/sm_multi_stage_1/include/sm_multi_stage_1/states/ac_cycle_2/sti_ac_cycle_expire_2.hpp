@@ -36,6 +36,7 @@ struct StiACCycleExpire2 : smacc2::SmaccState<StiACCycleExpire2, SsACCycle2>
 
     //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve2, RETURN>,
     //Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery2, ABORT>
+
     >reactions;
 
   // STATE FUNCTIONS
