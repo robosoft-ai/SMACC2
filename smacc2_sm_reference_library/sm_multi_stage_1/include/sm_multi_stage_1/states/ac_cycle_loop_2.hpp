@@ -14,10 +14,9 @@
 
 namespace sm_multi_stage_1
 {
-using namespace sm_multi_stage_1::ac_cycle_2;
 
 // STATE DECLARATION
-struct SsACCycle2 : smacc2::SmaccState<SsACCycle2, MsRun2, StiACCycleLoop2>
+struct ACCycleLoop2 : smacc2::SmaccState<ACCycleLoop2, MsRun2>
 {
 public:
   using SmaccState::SmaccState;
@@ -25,18 +24,29 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiACCycleLoop2>, ACCycleLoop2>
+    // Transition<EvLoopContinue<ACCycleLoop2>, SsACCycle2, CONTINUELOOP>
 
     >reactions;
-
-  // STATE VARIABLES
-  static constexpr int total_iterations() { return 1000; }
-  int iteration_count = 0;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
-};  // namespace SS1
 
+  bool loopWhileCondition()
+  {
+    auto & superstate = this->context<MsRun2>();
+
+    RCLCPP_INFO(
+      getLogger(), "Loop start, current iterations: %d, total iterations: %d",
+      superstate.ziteration_count, superstate.ztotal_iterations());
+    return superstate.ziteration_count++ < superstate.ztotal_iterations();
+  }
+
+  void onEntry()
+  {
+    RCLCPP_INFO(getLogger(), "LOOP START ON ENTRY");
+    checkWhileLoopConditionAndThrowEvent(&ACCycleLoop2::loopWhileCondition);
+  }
+};
 }  // namespace sm_multi_stage_1

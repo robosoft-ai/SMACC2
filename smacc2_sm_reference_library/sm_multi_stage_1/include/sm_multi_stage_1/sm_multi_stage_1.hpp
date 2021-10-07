@@ -140,6 +140,8 @@ class StRecoveryInnervate2;
 
 class ACCycleLoop1;
 class CMVCycleLoop1;
+class ACCycleLoop2;
+class CMVCycleLoop2;
 
 //MODE STATES
 class MsRun1;
@@ -194,10 +196,12 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/states/ms_recovery_2/st_recovery_generate_2.hpp>
 #include <sm_multi_stage_1/states/ms_recovery_2/st_recovery_innervate_2.hpp>
 
+#include <sm_multi_stage_1/states/ac_cycle_loop_1.hpp>
+#include <sm_multi_stage_1/states/ac_cycle_loop_2.hpp>
+#include <sm_multi_stage_1/states/cmv_cycle_loop_1.hpp>
+#include <sm_multi_stage_1/states/cmv_cycle_loop_2.hpp>
 #include <sm_multi_stage_1/states/st_observe_1.hpp>
 #include <sm_multi_stage_1/states/st_observe_2.hpp>
-#include <sm_multi_stage_1/states/ac_cycle_loop_1.hpp>
-#include <sm_multi_stage_1/states/cmv_cycle_loop_1.hpp>
 
 #include <sm_multi_stage_1/superstates/ss_ac_cycle_1.hpp>
 #include <sm_multi_stage_1/superstates/ss_cmv_cycle_1.hpp>
