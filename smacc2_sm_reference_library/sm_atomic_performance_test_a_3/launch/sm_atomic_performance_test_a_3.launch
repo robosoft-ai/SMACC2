@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="sm_atomic_performance_test_a_3" exec="sm_atomic_performance_test_a_3_node" name="sm_atomic_performance_test_a_3" args="--ros-args --log-level FATAL" output="screen">
+        <param from="$(find-pkg-share sm_atomic_performance_test_a_3)/config/sm_atomic_performance_test_a_3_config.yaml"/>
+    </node>
+</launch>
