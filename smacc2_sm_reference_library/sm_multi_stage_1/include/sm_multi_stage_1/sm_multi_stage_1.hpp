@@ -115,6 +115,36 @@ class StiACCycleRecycle4;
 class StiACCyclePush4;
 }  // namespace ac_cycle_4
 
+class SsDCCycle4;
+namespace dc_cycle_4
+{
+class StiDCCycleLoop4;
+class StiDCCycleInspire4;
+class StiDCCyclePlateau4;
+class StiDCCycleExpire4;
+class StiDCCycleDwell4;
+class StiDCCyclePulse4;
+class StiDCCycleTitrate4;
+class StiDCCycleRinse4;
+class StiDCCycleRecycle4;
+class StiDCCyclePush4;
+}  // namespace dc_cycle_4
+
+class SsGCCycle4;
+namespace gc_cycle_4
+{
+class StiGCCycleLoop4;
+class StiGCCycleInspire4;
+class StiGCCyclePlateau4;
+class StiGCCycleExpire4;
+class StiGCCycleDwell4;
+class StiGCCyclePulse4;
+class StiGCCycleTitrate4;
+class StiGCCycleRinse4;
+class StiGCCycleRecycle4;
+class StiGCCyclePush4;
+}  // namespace gc_cycle_4
+
 class SsACCycle5;
 namespace ac_cycle_5
 {
@@ -247,6 +277,8 @@ class CMVCycleLoop2;
 class ACCycleLoop3;
 class CMVCycleLoop3;
 class ACCycleLoop4;
+class DCCycleLoop4;
+class GCCycleLoop4;
 class CMVCycleLoop4;
 class ACCycleLoop5;
 class CMVCycleLoop5;
@@ -318,6 +350,9 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/states/ac_cycle_loop_4.hpp>
 #include <sm_multi_stage_1/states/ac_cycle_loop_5.hpp>
 
+#include <sm_multi_stage_1/states/dc_cycle_loop_4.hpp>
+#include <sm_multi_stage_1/states/gc_cycle_loop_4.hpp>
+
 #include <sm_multi_stage_1/states/cmv_cycle_loop_1.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_loop_2.hpp>
 #include <sm_multi_stage_1/states/cmv_cycle_loop_3.hpp>
@@ -335,6 +370,9 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/superstates/ss_ac_cycle_3.hpp>
 #include <sm_multi_stage_1/superstates/ss_ac_cycle_4.hpp>
 #include <sm_multi_stage_1/superstates/ss_ac_cycle_5.hpp>
+
+#include <sm_multi_stage_1/superstates/ss_dc_cycle_4.hpp>
+#include <sm_multi_stage_1/superstates/ss_gc_cycle_4.hpp>
 
 
 #include <sm_multi_stage_1/superstates/ss_cmv_cycle_1.hpp>
@@ -391,6 +429,30 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 #include <sm_multi_stage_1/states/ac_cycle_4/sti_ac_cycle_recycle_4.hpp>
 #include <sm_multi_stage_1/states/ac_cycle_4/sti_ac_cycle_rinse_4.hpp>
 #include <sm_multi_stage_1/states/ac_cycle_4/sti_ac_cycle_titrate_4.hpp>
+
+//ss_dc_cycle_4
+#include <sm_multi_stage_1/states/dc_cycle_4/sti_dc_cycle_dwell_4.hpp>
+#include <sm_multi_stage_1/states/dc_cycle_4/sti_dc_cycle_expire_4.hpp>
+#include <sm_multi_stage_1/states/dc_cycle_4/sti_dc_cycle_inspire_4.hpp>
+#include <sm_multi_stage_1/states/dc_cycle_4/sti_dc_cycle_loop_4.hpp>
+#include <sm_multi_stage_1/states/dc_cycle_4/sti_dc_cycle_plateau_4.hpp>
+#include <sm_multi_stage_1/states/dc_cycle_4/sti_dc_cycle_pulse_4.hpp>
+#include <sm_multi_stage_1/states/dc_cycle_4/sti_dc_cycle_push_4.hpp>
+#include <sm_multi_stage_1/states/dc_cycle_4/sti_dc_cycle_recycle_4.hpp>
+#include <sm_multi_stage_1/states/dc_cycle_4/sti_dc_cycle_rinse_4.hpp>
+#include <sm_multi_stage_1/states/dc_cycle_4/sti_dc_cycle_titrate_4.hpp>
+
+//ss_gc_cycle_4
+#include <sm_multi_stage_1/states/gc_cycle_4/sti_gc_cycle_dwell_4.hpp>
+#include <sm_multi_stage_1/states/gc_cycle_4/sti_gc_cycle_expire_4.hpp>
+#include <sm_multi_stage_1/states/gc_cycle_4/sti_gc_cycle_inspire_4.hpp>
+#include <sm_multi_stage_1/states/gc_cycle_4/sti_gc_cycle_loop_4.hpp>
+#include <sm_multi_stage_1/states/gc_cycle_4/sti_gc_cycle_plateau_4.hpp>
+#include <sm_multi_stage_1/states/gc_cycle_4/sti_gc_cycle_pulse_4.hpp>
+#include <sm_multi_stage_1/states/gc_cycle_4/sti_gc_cycle_push_4.hpp>
+#include <sm_multi_stage_1/states/gc_cycle_4/sti_gc_cycle_recycle_4.hpp>
+#include <sm_multi_stage_1/states/gc_cycle_4/sti_gc_cycle_rinse_4.hpp>
+#include <sm_multi_stage_1/states/gc_cycle_4/sti_gc_cycle_titrate_4.hpp>
 
 //ss_ac_cycle_5
 #include <sm_multi_stage_1/states/ac_cycle_5/sti_ac_cycle_dwell_5.hpp>
