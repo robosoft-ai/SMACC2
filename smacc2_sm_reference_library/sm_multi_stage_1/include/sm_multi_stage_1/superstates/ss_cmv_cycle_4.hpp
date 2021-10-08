@@ -30,7 +30,7 @@ public:
     >reactions;
 
   // STATE VARIABLES
-  static constexpr int total_iterations() { return 1000; }
+  static constexpr int total_iterations() { return 1; }
   int iteration_count = 0;
 
   // STATE FUNCTIONS

@@ -24,8 +24,8 @@ public:
 // TRANSITION TABLE
 typedef mpl::list<
 
-  // Transition<EvLoopEnd<ACCycleLoop2>, MsRun5>,
-  // Transition<EvLoopEnd<CMVCycleLoop2>, MsRun5>
+  Transition<EvLoopEnd<ACCycleLoop5>, MsRun1>,
+  Transition<EvLoopEnd<CMVCycleLoop5>, MsRun1>
 
     >reactions;
 

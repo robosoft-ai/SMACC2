@@ -31,7 +31,7 @@ struct StiACCycleRinse2 : smacc2::SmaccState<StiACCycleRinse2, SsACCycle2>
   typedef mpl::list<
 
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiACCycleRecycle2, TIMEOUT>,
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleTitrate2, PREVIOUS>,
+    // Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleTitrate2, PREVIOUS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiACCycleRecycle2, NEXT>
 
     //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve2, RETURN>,

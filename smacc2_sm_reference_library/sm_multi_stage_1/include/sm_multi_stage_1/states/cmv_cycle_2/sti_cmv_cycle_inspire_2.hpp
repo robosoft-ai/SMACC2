@@ -30,8 +30,8 @@ struct StiCMVCycleInspire2 : smacc2::SmaccState<StiCMVCycleInspire2, SsCMVCycle2
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiCMVCyclePlateau2, TIMEOUT>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCyclePlateau2, NEXT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiCMVCyclePlateau2, SUCCESS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCycleExpire2, NEXT>,
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCycleLoop2, PREVIOUS>
 
     //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve2, RETURN>,
