@@ -21,18 +21,18 @@ struct StObserve4 : smacc2::SmaccState<StObserve4, MsRun4>
 
   // DECLARE CUSTOM OBJECT TAGS
   struct ac_cycle_4 : SUCCESS{};
+  struct dc_cycle_4 : SUCCESS{};
+  struct gc_cycle_4 : SUCCESS{};
   struct cmv_cycle_4 : SUCCESS{};
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, CMVCycleLoop4, SUCCESS>,
-    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle1>,
-    // Keyboard events
-    // Transition<EvKeyPressF<CbDefaultKeyboardBehavior, OrKeyboard>, MsRun2, SUCCESS>,
     Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, ACCycleLoop4, SUCCESS>,
-    // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle1, ac_cycle_1>,
-    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, CMVCycleLoop4, SUCCESS>
+    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, CMVCycleLoop4, SUCCESS>,
+    Transition<EvKeyPressD<CbDefaultKeyboardBehavior, OrKeyboard>, DCCycleLoop4, SUCCESS>,
+    Transition<EvKeyPressG<CbDefaultKeyboardBehavior, OrKeyboard>, GCCycleLoop4, SUCCESS>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, GCCycleLoop4, SUCCESS>
 
     >reactions;
 
