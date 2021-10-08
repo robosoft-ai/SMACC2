@@ -1,5 +1,8 @@
 name: Rolling Source Build
 on:
+  pull_request:
+    branches:
+      - master
   push:
     branches:
       - master
@@ -38,7 +41,11 @@ jobs:
             smacc2_msgs
 
             sm_atomic
-            sm_atomic_performance_test
+            sm_atomic_performance_test_a_1
+            sm_atomic_performance_test_a_2
+            sm_atomic_performance_test_b_1
+            sm_atomic_performance_test_c_1
+            sm_atomic_performance_trace_1
             sm_atomic_subscribers_performance_test
 
             sm_ferrari

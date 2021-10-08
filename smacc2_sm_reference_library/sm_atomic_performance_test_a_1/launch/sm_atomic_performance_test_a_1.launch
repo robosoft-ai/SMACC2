@@ -1,5 +1,5 @@
 <launch>
-    <node pkg="sm_atomic_performance_test_a_1" exec="sm_atomic_performance_test_a_1_node" name="sm_atomic_performance_test_a_1" args="--ros-args --log-level FATAL" output="screen">
+    <node launch-prefix="valgrind --tool=callgrind" pkg="sm_atomic_performance_test_a_1" exec="sm_atomic_performance_test_a_1_node" name="sm_atomic_performance_test_a_1" args="--ros-args --log-level FATAL" output="screen">
         <param from="$(find-pkg-share sm_atomic_performance_test_a_1)/config/sm_atomic_performance_test_a_1_config.yaml"/>
     </node>
 </launch>
