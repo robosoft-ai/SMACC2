@@ -6,8 +6,8 @@
 
           <RecoveryNode number_of_retries="1" name="ComputePathToPose">
             <PipelineSequence name="ComputePathToPoseSequence">
-              <PlannerSelector selected_planner="{selected_planner}" />
-              <ComputePathToPose goal="{goal}" path="{path}" planner_id="{selected_planner}" />
+              <!-- <PlannerSelector selected_planner="{selected_planner}" /> -->
+              <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased" />
             </PipelineSequence>
             <ReactiveFallback name="ComputePathToPoseRecoveryFallback">
             </ReactiveFallback>
@@ -17,9 +17,9 @@
 
         <RecoveryNode number_of_retries="1" name="FollowPath">
           <PipelineSequence name="FollowPathSequence">
-            <ControllerSelector selected_controller="{selected_controller}" default_controller="FollowPath" />
-            <GoalCheckerSelector selected_goal_checker="{selected_goal_checker}"/>
-            <FollowPath path="{path}" controller_id="{selected_controller}" goal_checker_id="{selected_goal_checker}" />
+            <!-- <ControllerSelector selected_controller="{selected_controller}" default_controller="FollowPath" />
+            <GoalCheckerSelector selected_goal_checker="{selected_goal_checker}"/> -->
+            <FollowPath path="{path}" controller_id="FollowPath" goal_checker_id="goal_checker" />
           </PipelineSequence>
           <ReactiveFallback name="FollowPathRecoveryFallback">
             <!-- <GoalUpdated/>

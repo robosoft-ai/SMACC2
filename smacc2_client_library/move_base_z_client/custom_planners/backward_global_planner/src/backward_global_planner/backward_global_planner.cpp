@@ -71,7 +71,7 @@ void BackwardGlobalPlanner::configure(
   markersPub_ =
     nh_->create_publisher<visualization_msgs::msg::MarkerArray>("backward_planner/markers", 1);
 
-  nh_->declare_parameter(name_ + ".transform_tolerance", transform_tolerance_);
+  declareOrSet(nh_, name_ + ".transform_tolerance", transform_tolerance_);
 }
 
 /**

@@ -91,7 +91,7 @@ public:
       smacc2::utils::cleanShortTypeName(typeid(MostDerived)),
       std::string(this->contextNh->get_fully_qualified_name()));
 
-    RCLCPP_WARN(getNode()->get_logger(), "[%s] creating ", STATE_NAME);
+    RCLCPP_WARN(getNode()->get_logger(), "[%s] creating state ", STATE_NAME);
     this->set_context(ctx.pContext_);
 
     this->stateInfo_ = getStateInfo();

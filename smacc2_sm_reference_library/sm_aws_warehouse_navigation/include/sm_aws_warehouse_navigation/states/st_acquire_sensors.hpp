@@ -27,10 +27,9 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbWaitNav2Nodes, OrNavigation>, StInitialNavigateForward, SUCCESS>
-    , Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StAcquireSensors, ABORT>
-
-    >
+    // Transition<EvCbSuccess<CbWaitNav2Nodes, OrNavigation>, StInitialNavigateForward, SUCCESS>
+    // , Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StAcquireSensors, ABORT>
+    Transition<EvCbSuccess<CbWaitTransform, OrNavigation>, StStartNavigation, SUCCESS> >
     reactions;
 
   cl_move_base_z::Amcl * amcl_;
@@ -38,30 +37,38 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAwsWarehouseNav
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbWaitPose>();
-    configure_orthogonal<OrNavigation, CbWaitActionServer>(std::chrono::milliseconds(10000));
-    configure_orthogonal<OrNavigation, CbWaitNav2Nodes>(std::vector<Nav2Nodes>{
-      Nav2Nodes::PlannerServer, Nav2Nodes::ControllerServer, Nav2Nodes::RecoveriesServer,
-      Nav2Nodes::BtNavigator, Nav2Nodes::MapServer});
+    configure_orthogonal<OrNavigation, CbWaitTransform>("odom", "map", rclcpp::Duration(30000s));
+
+    //configure_orthogonal<OrNavigation, CbWaitPose>();
+    // configure_orthogonal<OrNavigation, CbWaitActionServer>(std::chrono::milliseconds(10000));
+    // configure_orthogonal<OrNavigation, CbWaitNav2Nodes>(std::vector<Nav2Nodes>{
+    //   Nav2Nodes::PlannerServer, Nav2Nodes::ControllerServer, Nav2Nodes::BtNavigator});
   }
+
+
 
   void runtimeConfigure()
   {
     // illegal wait workaround
-    rclcpp::sleep_for(6s);
+    // rclcpp::sleep_for(6s);
 
-    ClMoveBaseZ * navClient;
-    getOrthogonal<OrNavigation>()->requiresClient(navClient);
+    // ClMoveBaseZ * navClient;
+    // getOrthogonal<OrNavigation>()->requiresClient(navClient);
 
-    amcl_ = navClient->getComponent<Amcl>();
+    // amcl_ = navClient->getComponent<Amcl>();
   }
 
-  void onEntry() { sendInitialPoseEstimation(); }
+  void onEntry()
+  {
+    //sendInitialPoseEstimation();
+    //auto res = exec("ros2");
+    //RCLCPP_INFO(getLogger(), "launch result: %s", res.c_str());
+  }
 
   void sendInitialPoseEstimation()
   {
     geometry_msgs::msg::PoseWithCovarianceStamped initialposemsg;
-    bool useSimTime = getNode()->get_parameter("use_sim_time").as_bool();
+    //bool useSimTime = getNode()->get_parameter("use_sim_time").as_bool();
     //getNode()->set_parameter("use_sim_time",true);
 
     initialposemsg.header.stamp = getNode()->now();

@@ -15,6 +15,14 @@
 #pragma once
 #include <smacc2/smacc.hpp>
 
+#include <cstdio>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <array>
+
+
 namespace sm_aws_warehouse_navigation
 {
 // STATE DECLARATION
@@ -34,12 +42,16 @@ struct StInitialNavigateForward : smacc2::SmaccState<StInitialNavigateForward, S
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateForward>(2);
+    // configure_orthogonal<OrNavigation, CbNavigateForward>(2);
+
   }
+
 
   void runtimeConfigure() {}
 
-  void onEntry() { }
+  void onEntry()
+  {
+  }
 
   void onExit() {}
 };

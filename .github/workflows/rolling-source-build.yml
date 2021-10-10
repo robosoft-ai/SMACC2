@@ -29,8 +29,6 @@ jobs:
 
             keyboard_client
 
-
-
             multirole_sensor_client
             ros_publisher_client
             ros_timer_client

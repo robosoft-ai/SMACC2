@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <angles/angles.h>
+#include <move_base_z_planners_common/common.hpp>
 #include <pure_spinning_local_planner/pure_spinning_local_planner.hpp>
 
 #include <nav_2d_utils/tf_help.hpp>
@@ -28,16 +29,6 @@ void tryGetOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::string 
   if (!node->get_parameter(param, value))
   {
     node->set_parameter(rclcpp::Parameter(param, value));
-  }
-}
-
-template <typename T>
-void declareOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::string param, T & value)
-{
-  if (!node->has_parameter(param))
-  {
-    node->declare_parameter(param, value);
-    // node->set_parameter(rclcpp::Parameter(param, value));
   }
 }
 
