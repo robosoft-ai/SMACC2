@@ -33,7 +33,30 @@ def generate_launch_description():
     autostart = LaunchConfiguration("autostart")
     params_file = LaunchConfiguration("params_file")
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
-    map_subscribe_transient_local = LaunchConfiguration("map_subscribe_transient_local")
+    # map_subscribe_transient_local = LaunchConfiguration("map_subscribe_transient_local")
+
+    params_file_path = os.path.join(
+        sm_aws_warehouse_navigation_dir,
+        "params",
+        "move_base_client",
+        "nav2_params.yaml",
+    )
+
+    # params_file_path = os.path.join(
+    #                 nav_configuration_dir,
+    #                 "params",
+    #                 "nav2_params.yaml",
+    #              )
+
+    default_nav_bt_tree_xml_filepath = os.path.join(
+        sm_aws_warehouse_navigation_dir, "params", "move_base_client", "navigation_tree.xml"
+    )
+
+    # default_nav_bt_tree_xml_filepath = os.path.join(
+    #          get_package_share_directory("nav2_bt_navigator"), "behavior_trees", "navigate_to_pose_w_replanning_and_recovery.xml")
+
+    # default_nav_bt_tree_xml_filepath = os.path.join(get_package_share_directory('nav2_bt_navigator'),
+    #              'behavior_trees', 'navigate_w_replanning_and_recovery.xml')
 
     params_file_path = os.path.join(
         sm_aws_warehouse_navigation_dir,
