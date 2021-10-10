@@ -33,7 +33,7 @@ def generate_launch_description():
     autostart = LaunchConfiguration("autostart")
     params_file = LaunchConfiguration("params_file")
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
-    map_subscribe_transient_local = LaunchConfiguration("map_subscribe_transient_local")
+    # map_subscribe_transient_local = LaunchConfiguration("map_subscribe_transient_local")
 
     params_file_path = os.path.join(
         sm_aws_warehouse_navigation_dir,
