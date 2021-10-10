@@ -42,35 +42,32 @@ void ClRosLaunch::stop() { cancellationToken_.store(true); }
 std::future<std::string> ClRosLaunch::executeRosLaunch(
   std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition)
 {
-  return std::async(
-    std::launch::async,
-    [=]()
+  return std::async(std::launch::async, [=]() {
+    RCLCPP_WARN_STREAM(
+      rclcpp::get_logger("smacc2"), "[ClRosLaunch] starting ros launch thread " << ss.str());
+    std::stringstream cmd;
+    cmd << "ros2 launch " << packageName << " " << launchFileName;
+
+    std::array<char, 128> buffer;
+    std::string result;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.str().c_str(), "r"), pclose);
+    if (!pipe)
     {
-      RCLCPP_WARN_STREAM(
-        rclcpp::get_logger("smacc2"), "[ClRosLaunch] starting ros launch thread " << ss.str());
-      std::stringstream cmd;
-      cmd << "ros2 launch " << packageName << " " << launchFileName;
+      throw std::runtime_error("popen() failed!");
+    }
 
-      std::array<char, 128> buffer;
-      std::string result;
-      std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.str().c_str(), "r"), pclose);
-      if (!pipe)
-      {
-        throw std::runtime_error("popen() failed!");
-      }
+    std::stringstream ss;
+    bool cancelled = false;
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr &&
+           !(cancelled = cancelCondition()))
+    {
+      ss << buffer.data();
+    }
 
-      std::stringstream ss;
-      bool cancelled = false;
-      while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr &&
-             !(cancelled = cancelCondition()))
-      {
-        ss << buffer.data();
-      }
-
-      result = ss.str();
-      RCLCPP_WARN_STREAM(rclcpp::get_logger("smacc2"), "[ClRosLaunch] RESULT = \n " << ss.str());
-      return result;
-    });
+    result = ss.str();
+    RCLCPP_WARN_STREAM(rclcpp::get_logger("smacc2"), "[ClRosLaunch] RESULT = \n " << ss.str());
+    return result;
+  });
 }
 
 }  // namespace client_bases
