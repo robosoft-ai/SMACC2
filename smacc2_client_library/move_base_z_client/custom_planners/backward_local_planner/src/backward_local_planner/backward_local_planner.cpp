@@ -83,16 +83,6 @@ void tryGetOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::string 
   }
 }
 
-template <typename T>
-void declareOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::string param, T & value)
-{
-  if (!node->has_parameter(param))
-  {
-    node->declare_parameter(param, value);
-    // node->set_parameter(rclcpp::Parameter(param, value));
-  }
-}
-
 void BackwardLocalPlanner::configure(
   const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent, std::string name,
   const std::shared_ptr<tf2_ros::Buffer> & tf,

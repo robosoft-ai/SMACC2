@@ -20,15 +20,17 @@
 
 #include <angles/angles.h>
 #include <tf2/transform_datatypes.h>
-#include <undo_path_global_planner/undo_path_global_planner.hpp>
 
 #include <boost/assign.hpp>
 #include <boost/range/adaptor/reversed.hpp>
 #include <boost/range/algorithm/copy.hpp>
 #include <geometry_msgs/msg/quaternion.hpp>
+
+#include <move_base_z_planners_common/common.hpp>
 #include <nav_2d_utils/tf_help.hpp>
 #include <pluginlib/class_list_macros.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <undo_path_global_planner/undo_path_global_planner.hpp>
 
 // register this planner as a BaseGlobalPlanner plugin
 namespace cl_move_base_z
@@ -97,7 +99,7 @@ void UndoPathGlobalPlanner::configure(
   markersPub_ =
     nh_->create_publisher<visualization_msgs::msg::MarkerArray>("undo_path_planner/markers", 1);
 
-  nh_->declare_parameter(name_ + ".transform_tolerance", transform_tolerance_);
+  declareOrSet(nh_, name_ + ".transform_tolerance", transform_tolerance_);
 }
 /**
  ******************************************************************************************************************

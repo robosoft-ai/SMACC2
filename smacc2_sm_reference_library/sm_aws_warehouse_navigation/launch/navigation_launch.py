@@ -26,6 +26,7 @@ from nav2_common.launch import RewrittenYaml
 def generate_launch_description():
     # Get the launch directory
     sm_aws_warehouse_navigation_dir = get_package_share_directory("sm_aws_warehouse_navigation")
+    nav_configuration_dir = get_package_share_directory("nav2_bringup")
 
     namespace = LaunchConfiguration("namespace")
     use_sim_time = LaunchConfiguration("use_sim_time")
@@ -33,6 +34,29 @@ def generate_launch_description():
     params_file = LaunchConfiguration("params_file")
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
     map_subscribe_transient_local = LaunchConfiguration("map_subscribe_transient_local")
+
+    params_file_path = os.path.join(
+        sm_aws_warehouse_navigation_dir,
+        "params",
+        "move_base_client",
+        "nav2_params.yaml",
+    )
+
+    # params_file_path = os.path.join(
+    #                 nav_configuration_dir,
+    #                 "params",
+    #                 "nav2_params.yaml",
+    #              )
+
+    default_nav_bt_tree_xml_filepath = os.path.join(
+        sm_aws_warehouse_navigation_dir, "params", "move_base_client", "navigation_tree.xml"
+    )
+
+    # default_nav_bt_tree_xml_filepath = os.path.join(
+    #          get_package_share_directory("nav2_bt_navigator"), "behavior_trees", "navigate_to_pose_w_replanning_and_recovery.xml")
+
+    # default_nav_bt_tree_xml_filepath = os.path.join(get_package_share_directory('nav2_bt_navigator'),
+    #              'behavior_trees', 'navigate_w_replanning_and_recovery.xml')
 
     lifecycle_nodes = ["controller_server", "planner_server", "recoveries_server", "bt_navigator"]
 
@@ -48,11 +72,9 @@ def generate_launch_description():
     param_substitutions = {
         "use_sim_time": use_sim_time,
         # 'default_nav_to_pose_bt_xml': default_nav_to_pose_bt_xml,
-        "default_nav_to_pose_bt_xml": os.path.join(
-            sm_aws_warehouse_navigation_dir, "params", "move_base_client", "navigation_tree.xml"
-        ),
-        "autostart": autostart,
-        "map_subscribe_transient_local": map_subscribe_transient_local,
+        "default_nav_to_pose_bt_xml": default_nav_bt_tree_xml_filepath,
+        # "autostart": autostart,
+        # "map_subscribe_transient_local": map_subscribe_transient_local,
     }
 
     configured_params = RewrittenYaml(
@@ -90,12 +112,7 @@ def generate_launch_description():
             ),
             DeclareLaunchArgument(
                 "params_file",
-                default_value=os.path.join(
-                    sm_aws_warehouse_navigation_dir,
-                    "params",
-                    "move_base_client",
-                    "nav2_params.yaml",
-                ),
+                default_value=params_file_path,
                 description="Full path to the ROS2 parameters file to use",
             ),
             DeclareLaunchArgument(
@@ -103,7 +120,7 @@ def generate_launch_description():
                 # default_value=os.path.join(get_package_share_directory('nav2_bt_navigator'),
                 # 'behavior_trees', 'navigate_w_replanning_and_recovery.xml'),
                 default_value=os.path.join(
-                    sm_aws_warehouse_navigation_dir,
+                    nav_configuration_dir,
                     "params",
                     "move_base_client",
                     "navigation_tree.xml",
