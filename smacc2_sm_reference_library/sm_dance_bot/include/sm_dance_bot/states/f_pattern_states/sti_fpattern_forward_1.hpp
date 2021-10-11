@@ -35,6 +35,7 @@ struct StiFPatternForward1 : public smacc2::SmaccState<StiFPatternForward1<SS>, 
   static void staticConfigure()
   {
     TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>(SS::ray_lenght_meters());
+    TSti::template configure_orthogonal<OrNavigation, CbPauseSlam>();
     TSti::template configure_orthogonal<OrLED, CbLEDOn>();
   }
 

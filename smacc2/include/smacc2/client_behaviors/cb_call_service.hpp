@@ -19,6 +19,7 @@
  ******************************************************************************************************************/
 #pragma once
 #include <smacc2/smacc_client_behavior.hpp>
+#include <smacc2/impl/smacc_asynchronous_client_behavior_impl.hpp>
 
 namespace smacc2
 {

@@ -25,13 +25,12 @@
 
 namespace cl_move_base_z
 {
-class CbPauseSlam : public smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>
+class CbResumeSlam : public smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>
 {
 public:
-  CbPauseSlam(std::string serviceName = "/slam_toolbox/pause_new_measurements");
+  CbResumeSlam(std::string serviceName = "/slam_toolbox/pause_new_measurements");
   void onEntry() override;
-
 protected:
-  CpSlamToolbox* slam_;
+ CpSlamToolbox* slam_;
 };
 }  // namespace cl_move_base_z

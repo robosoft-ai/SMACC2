@@ -25,7 +25,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvGlobalError, sc::deep_history<typename MsDanceBotRunMode::LastDeepState>>
+    Transition<EvGlobalError, smacc2::deep_history<typename MsDanceBotRunMode::LastDeepState>>
 
     >reactions;
 

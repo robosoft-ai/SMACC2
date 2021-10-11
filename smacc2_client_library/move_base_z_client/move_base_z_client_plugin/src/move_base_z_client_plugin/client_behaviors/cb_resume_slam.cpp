@@ -17,21 +17,30 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#pragma once
-
-#include <slam_toolbox/srv/pause.hpp>
-#include "smacc2/client_behaviors/cb_call_service.hpp"
-#include "move_base_z_client_plugin/components/slam_toolbox/cp_slam_toolbox.hpp"
+#include <move_base_z_client_plugin/client_behaviors/cb_resume_slam.hpp>
 
 namespace cl_move_base_z
 {
-class CbPauseSlam : public smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>
+CbResumeSlam::CbResumeSlam(std::string serviceName)
+  : smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>(serviceName.c_str())
 {
-public:
-  CbPauseSlam(std::string serviceName = "/slam_toolbox/pause_new_measurements");
-  void onEntry() override;
+}
 
-protected:
-  CpSlamToolbox* slam_;
-};
+void CbResumeSlam::onEntry()
+{
+  this->requiresComponent(this->slam_);
+
+  auto currentState = slam_->getState();
+
+  if (currentState == CpSlamToolbox::SlamToolboxState::Paused)
+  {
+    RCLCPP_INFO(getLogger(), "[CbResumeSlam] calling pause service to toggle from paused to resumed");
+    smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>::onEntry();
+  }
+  else
+  {
+      RCLCPP_INFO(getLogger(), "[CbResumeSlam] calling skipped. The current slam state is already resumed.");
+  }
+}
+
 }  // namespace cl_move_base_z

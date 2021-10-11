@@ -17,21 +17,28 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#pragma once
 
-#include <slam_toolbox/srv/pause.hpp>
-#include "smacc2/client_behaviors/cb_call_service.hpp"
-#include "move_base_z_client_plugin/components/slam_toolbox/cp_slam_toolbox.hpp"
+#include <move_base_z_client_plugin/components/slam_toolbox/cp_slam_toolbox.hpp>
 
 namespace cl_move_base_z
 {
-class CbPauseSlam : public smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>
+CpSlamToolbox::CpSlamToolbox()
 {
-public:
-  CbPauseSlam(std::string serviceName = "/slam_toolbox/pause_new_measurements");
-  void onEntry() override;
+}
+CpSlamToolbox::~CpSlamToolbox()
+{
+}
 
-protected:
-  CpSlamToolbox* slam_;
-};
+void CpSlamToolbox::toogleState()
+{
+  if (state_ == SlamToolboxState::Paused)
+  {
+    state_ = SlamToolboxState::Resumed;
+  }
+  else
+  {
+    state_ = SlamToolboxState::Paused;
+  }
+}
+
 }  // namespace cl_move_base_z

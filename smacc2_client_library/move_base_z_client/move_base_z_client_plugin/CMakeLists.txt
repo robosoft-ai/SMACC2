@@ -55,6 +55,8 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/client_behaviors/cb_undo_path_backwards.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_wait_pose.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_wait_nav2_nodes.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_pause_slam.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_resume_slam.cpp
 
   # COMPONENTS
   src/${PROJECT_NAME}/components/costmap_switch/cp_costmap_switch.cpp
@@ -66,6 +68,7 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_event_dispatcher.cpp
   src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_navigator.cpp
   src/${PROJECT_NAME}/components/amcl/amcl.cpp
+  src/${PROJECT_NAME}/components/slam_toolbox/cp_slam_toolbox.cpp
 )
 
 ament_target_dependencies(${PROJECT_NAME}

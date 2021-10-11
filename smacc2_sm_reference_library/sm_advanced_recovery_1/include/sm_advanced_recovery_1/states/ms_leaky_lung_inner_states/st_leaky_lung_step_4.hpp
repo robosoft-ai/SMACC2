@@ -28,7 +28,7 @@ struct StLeakyLungStep4 : smacc2::SmaccState<StLeakyLungStep4, MsLeakyLung>
   typedef mpl::list<
 
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StLeakyLungStep5, NEXT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, sc::deep_history<MsRun::LastDeepState>, SUCCESS>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, smacc2::deep_history<MsRun::LastDeepState>, SUCCESS>
 
     >reactions;
 

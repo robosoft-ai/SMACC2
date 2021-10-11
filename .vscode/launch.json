@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
     {
         "name": "(gdb) smacc_rta",
         "type": "cppdbg",
@@ -54,6 +55,25 @@
         "type": "cppdbg",
         "request": "launch",
         "program": "${workspaceFolder}/../install/sm_atomic_performance_test/lib/sm_atomic_performance_test/sm_atomic_performance_test_node",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+                "description": "Enable pretty-printing for gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ]
+    },
+    {
+        "name": "(gdb) sm_atomic_performance_test_a_1",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/../install/sm_atomic_performance_test_a_1/lib/sm_atomic_performance_test_a_1/sm_atomic_performance_test_a_1_node",
         "args": [],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",
