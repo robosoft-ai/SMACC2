@@ -24,3 +24,4 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_undo_path_backwards.hpp>
 #include <move_base_z_client_plugin/client_behaviors/cb_wait_nav2_nodes.hpp>
 #include <move_base_z_client_plugin/client_behaviors/cb_wait_pose.hpp>
+#include <move_base_z_client_plugin/client_behaviors/cb_wait_transform.hpp>

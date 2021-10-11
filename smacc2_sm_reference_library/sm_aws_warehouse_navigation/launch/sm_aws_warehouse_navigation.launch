@@ -6,12 +6,10 @@
     <arg name="params_file" default="$(find-pkg-share sm_aws_warehouse_navigation)/params/move_base_client/nav2_params.yaml"/>
     <arg name="xterm_prefix" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"/>
 
-    <node pkg="gazebo_ros" exec="spawn_entity.py" name="gazebo_ros" args="-entity robot -file $(var urdf) -x 3.45 -y 2.15 -z 0.10 -Y 3.14">
-    </node>
+    <!-- <node pkg="gazebo_ros" exec="spawn_entity.py" name="gazebo_ros" args="-entity robot -file $(var urdf) -x 3.45 -y 2.15 -z 0.10 -Y 3.14"> -->
 
-    <!-- gzenv = dict(os.environ)
-    model_database_uri = os.environ["GAZEBO_MODEL_PATH"]
-    gzenv["GAZEBO_MODEL_DATABASE_URI"] = model_database_uri -->
+    <node pkg="gazebo_ros" exec="spawn_entity.py" name="gazebo_ros" args="-entity robot -file $(var urdf) -x 0 -y 0 -z 0 -Y 3.14">
+    </node>
 
     <executable cmd="gzserver -s libgazebo_ros_factory.so $(var world)" cwd="$(find-pkg-share sm_aws_warehouse_navigation)" output="screen">
       <env name="GAZEBO_MODEL_DATABASE_URI" value="$(env GAZEBO_MODEL_PATH)"/>
@@ -32,12 +30,19 @@
         <arg name="rviz_config" value="$(find-pkg-share sm_aws_warehouse_navigation)/params/rviz_config.rviz"/>
     </include>
 
-    <include file="$(find-pkg-share sm_aws_warehouse_navigation)/launch/bringup_launch.py">
-        <arg name="map" value="$(var map)"/>
+    <include file="$(find-pkg-share sm_aws_warehouse_navigation)/launch/slam_launch.py">
         <arg name="use_sim_time" value="$(var use_sim_time)"/>
         <arg name="params_file" value="$(var params_file)"/>
         <arg name="autostart" value="True"/>
     </include>
+
+<!--
+    <include file="$(find-pkg-share sm_aws_warehouse_navigation)/launch/navigation_launch.py">
+        <arg name="map" value="$(var map)"/>
+        <arg name="use_sim_time" value="$(var use_sim_time)"/>
+        <arg name="params_file" value="$(var params_file)"/>
+        <arg name="autostart" value="True"/>
+    </include>  -->
 
     <node pkg="sm_aws_warehouse_navigation" exec="sm_aws_warehouse_navigation_node" name="sm_aws_warehouse_navigation" launch-prefix="$(var xterm_prefix)">
       <param from="$(find-pkg-share sm_aws_warehouse_navigation)/params/sm_aws_warehouse_navigation_config.yaml"/>

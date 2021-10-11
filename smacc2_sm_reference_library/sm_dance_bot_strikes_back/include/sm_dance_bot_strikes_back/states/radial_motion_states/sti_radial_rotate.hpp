@@ -41,7 +41,9 @@ struct StiRadialRotate : smacc2::SmaccState<StiRadialRotate, SS>
     auto cbAbsRotate = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbAbsoluteRotate>();
 
     cbAbsRotate->spinningPlanner = SpiningPlanner::PureSpinning;
+
     auto & superstate = this->context<SS>();
+
     cbAbsRotate->absoluteGoalAngleDegree =
       superstate.iteration_count * SS::ray_angle_increment_degree();
   }

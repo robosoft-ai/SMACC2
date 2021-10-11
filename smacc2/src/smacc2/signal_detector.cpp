@@ -272,18 +272,19 @@ void SignalDetector::pollOnce()
       if (currentState != nullptr)
       {
         RCLCPP_DEBUG_STREAM(getLogger(), "[SignalDetector] current state: " << currentStateIndex);
-        RCLCPP_DEBUG_STREAM(getLogger(), "[SignalDetector] last state: " << this->lastState_);
+        RCLCPP_DEBUG_STREAM(
+          getLogger(), "[SignalDetector] last state: " << this->lastState_.load());
 
         if (currentStateIndex != 0)
         {
-          if (currentStateIndex != (long)this->lastState_)
+          if (currentStateIndex != (long)this->lastState_.load())
           {
             RCLCPP_DEBUG_STREAM(
               getLogger(),
               "[PollOnce] detected new state, refreshing updatable client "
               "behavior table");
             // we are in a new state, refresh the updatable client behaviors table
-            this->lastState_ = currentStateIndex;
+            this->lastState_.store(currentStateIndex);
             this->findUpdatableStateElements(currentState);
           }
 

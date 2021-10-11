@@ -38,6 +38,8 @@ class OrNavigation : public smacc2::Orthogonal<OrNavigation>
 public:
   void onInitialize() override
   {
+    auto roslaunchClient =this->createClient<smacc2::client_bases::ClRosLaunch>("sm_aws_warehouse_navigation", "navigation_launch.py");
+
     auto movebaseClient = this->createClient<cl_move_base_z::ClMoveBaseZ>();
 
     // create pose component
@@ -55,11 +57,11 @@ public:
     movebaseClient->createComponent<cl_move_base_z::Amcl>();
 
     // create waypoints navigator component
-    auto waypointsNavigator = movebaseClient->createComponent<cl_move_base_z::WaypointNavigator>();
-    loadWaypointsFromYaml(waypointsNavigator);
+    // auto waypointsNavigator = movebaseClient->createComponent<cl_move_base_z::WaypointNavigator>();
+    // loadWaypointsFromYaml(waypointsNavigator);
 
-    // change this to skip some points of the yaml file, default = 0
-    waypointsNavigator->currentWaypoint_ = 0;
+    // // change this to skip some points of the yaml file, default = 0
+    // waypointsNavigator->currentWaypoint_ = 0;
   }
 
   void loadWaypointsFromYaml(WaypointNavigator * waypointsNavigator)

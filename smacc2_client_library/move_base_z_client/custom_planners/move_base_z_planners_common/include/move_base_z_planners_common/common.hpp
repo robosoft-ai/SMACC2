@@ -18,6 +18,7 @@
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include "rclcpp_lifecycle/lifecycle_node.hpp"
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Twist & msg);
 
@@ -28,3 +29,13 @@ std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStam
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Point & msg);
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg);
+
+template <typename T>
+void declareOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::string param, T & value)
+{
+  if (!node->has_parameter(param))
+  {
+    node->declare_parameter(param, value);
+    // node->set_parameter(rclcpp::Parameter(param, value));
+  }
+}

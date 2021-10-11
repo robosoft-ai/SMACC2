@@ -31,11 +31,17 @@ enum class WaitPoseStandardReferenceFrame
   Odometry
 };
 
+// Waits a new pose using the Pose Component
+// the specific pose to wait is configured in that component
 class CbWaitPose : public smacc2::SmaccAsyncClientBehavior
 {
 public:
+  // waits a new pose update of the Pose Component
   CbWaitPose();
+
+  // waits a new pose update of the Pose Component in some reference frame (if there is no connection it will wait)
   CbWaitPose(WaitPoseStandardReferenceFrame frame);
+
   virtual ~CbWaitPose();
 
   template <typename TOrthogonal, typename TSourceObject>

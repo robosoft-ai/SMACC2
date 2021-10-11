@@ -88,15 +88,15 @@ void ForwardLocalPlanner::configure(
 
   currentPoseIndex_ = 0;
 
-  nh_->declare_parameter(name_ + ".k_rho", k_rho_);
-  nh_->declare_parameter(name_ + ".k_alpha", k_alpha_);
-  nh_->declare_parameter(name_ + ".k_betta", k_betta_);
-  nh_->declare_parameter(name_ + ".carrot_distance", carrot_distance_);
-  nh_->declare_parameter(name_ + ".yaw_goal_tolerance", yaw_goal_tolerance_);
-  nh_->declare_parameter(name_ + ".xy_goal_tolerance", xy_goal_tolerance_);
-  nh_->declare_parameter(name_ + ".max_linear_x_speed", max_linear_x_speed_);
-  nh_->declare_parameter(name_ + ".max_angular_z_speed", max_angular_z_speed_);
-  nh_->declare_parameter(name_ + ".transform_tolerance", transform_tolerance_);
+  declareOrSet(nh_, name_ + ".k_rho", k_rho_);
+  declareOrSet(nh_, name_ + ".k_alpha", k_alpha_);
+  declareOrSet(nh_, name_ + ".k_betta", k_betta_);
+  declareOrSet(nh_, name_ + ".carrot_distance", carrot_distance_);
+  declareOrSet(nh_, name_ + ".yaw_goal_tolerance", yaw_goal_tolerance_);
+  declareOrSet(nh_, name_ + ".xy_goal_tolerance", xy_goal_tolerance_);
+  declareOrSet(nh_, name_ + ".max_linear_x_speed", max_linear_x_speed_);
+  declareOrSet(nh_, name_ + ".max_angular_z_speed", max_angular_z_speed_);
+  declareOrSet(nh_, name_ + ".transform_tolerance", transform_tolerance_);
 
   RCLCPP_DEBUG(
     nh_->get_logger(),
