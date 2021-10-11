@@ -22,6 +22,7 @@
 #include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
 #include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
+#include <move_base_z_client_plugin/components/slam_toolbox/cp_slam_toolbox.hpp>
 #include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.hpp>
 
 namespace sm_dance_bot
@@ -47,6 +48,9 @@ public:
 
     // create odom tracker
     movebaseClient->createComponent<cl_move_base_z::odom_tracker::OdomTracker>();
+
+    // create odom tracker
+    movebaseClient->createComponent<cl_move_base_z::CpSlamToolbox>();
 
     // create waypoints navigator component
     auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();

@@ -19,9 +19,9 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <move_base_z_client_plugin/components/slam_toolbox/cp_slam_toolbox.hpp>
 #include <slam_toolbox/srv/pause.hpp>
-#include "smacc2/client_behaviors/cb_call_service.hpp"
-#include "move_base_z_client_plugin/components/slam_toolbox/cp_slam_toolbox.hpp"
+#include <smacc2/client_behaviors/cb_call_service.hpp>
 
 namespace cl_move_base_z
 {
@@ -32,6 +32,6 @@ public:
   void onEntry() override;
 
 protected:
-  CpSlamToolbox* slam_;
+  CpSlamToolbox * slam_;
 };
 }  // namespace cl_move_base_z

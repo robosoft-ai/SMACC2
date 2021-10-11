@@ -22,7 +22,7 @@
 namespace cl_move_base_z
 {
 CbPauseSlam::CbPauseSlam(std::string serviceName)
-  : smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>(serviceName.c_str())
+: smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>(serviceName.c_str())
 {
 }
 
@@ -34,12 +34,17 @@ void CbPauseSlam::onEntry()
 
   if (currentState == CpSlamToolbox::SlamToolboxState::Resumed)
   {
-    RCLCPP_INFO(getLogger(), "[CbPauseSlam] calling pause service to toggle from resumed to paused");
+    RCLCPP_INFO(
+      getLogger(), "[CbPauseSlam] calling pause service to toggle from resumed to paused");
+    this->request_ = std::make_shared<slam_toolbox::srv::Pause::Request>();
     smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>::onEntry();
+    this->slam_->toogleState();
   }
   else
   {
-      RCLCPP_INFO(getLogger(), "[CbPauseSlam] calling skipped. The current slam state is already paused.");
+    this->request_ = nullptr;
+    RCLCPP_INFO(
+      getLogger(), "[CbPauseSlam] calling skipped. The current slam state is already paused.");
   }
 }
 

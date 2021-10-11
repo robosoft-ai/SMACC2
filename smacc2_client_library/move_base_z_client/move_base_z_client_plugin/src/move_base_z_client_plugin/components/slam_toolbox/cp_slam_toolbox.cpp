@@ -22,12 +22,8 @@
 
 namespace cl_move_base_z
 {
-CpSlamToolbox::CpSlamToolbox()
-{
-}
-CpSlamToolbox::~CpSlamToolbox()
-{
-}
+CpSlamToolbox::CpSlamToolbox() : state_(SlamToolboxState::Resumed) {}
+CpSlamToolbox::~CpSlamToolbox() {}
 
 void CpSlamToolbox::toogleState()
 {

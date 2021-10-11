@@ -36,12 +36,9 @@ public:
   {
     Resumed,
     Paused
-  } ;
-  
-  inline SlamToolboxState getState()
-  {
-    return state_;
-  }
+  };
+
+  inline SlamToolboxState getState() { return state_; }
 
   void toogleState();
 

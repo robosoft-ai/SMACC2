@@ -38,7 +38,7 @@ struct StNavigateForward1 : smacc2::SmaccState<StNavigateForward1, MsDanceBotRun
     configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
-    
+
   }
 
   void runtimeConfigure()

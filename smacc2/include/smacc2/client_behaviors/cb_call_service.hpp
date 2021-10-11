@@ -18,8 +18,8 @@
  *
  ******************************************************************************************************************/
 #pragma once
-#include <smacc2/smacc_client_behavior.hpp>
 #include <smacc2/impl/smacc_asynchronous_client_behavior_impl.hpp>
+#include <smacc2/smacc_client_behavior.hpp>
 
 namespace smacc2
 {
@@ -31,7 +31,8 @@ class CbServiceCall : public smacc2::SmaccAsyncClientBehavior
 public:
   CbServiceCall(const char * serviceName) : serviceName_(serviceName) {}
 
-  CbServiceCall(const char * serviceName, typename ServiceType::Request) : serviceName_(serviceName)
+  CbServiceCall(const char * serviceName, std::shared_ptr<typename ServiceType::Request>)
+  : serviceName_(serviceName)
   {
   }
 
@@ -43,18 +44,18 @@ public:
 
     client_ = getNode()->create_client<ServiceType>(serviceName_);
 
-    // result_ = client_->async_send_request(request_).get();
+    result_ = client_->async_send_request(request_).get();
 
     //, std::bind(&CbServiceCall<ServiceType>::onServiceResponse, this, std::placeholders::_1));
   }
 
-  typename rclcpp::Client<ServiceType>::SharedFuture result_;
+  typename std::shared_ptr<typename ServiceType::Response> result_;
 
 protected:
   //rclcpp::NodeHandle nh_;
   std::shared_ptr<rclcpp::Client<ServiceType>> client_;
   std::string serviceName_;
-  typename ServiceType::Request request_;
+  std::shared_ptr<typename ServiceType::Request> request_;
 
   void onServiceResponse(typename rclcpp::Client<ServiceType>::SharedFuture result)
   {
