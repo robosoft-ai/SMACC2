@@ -19,6 +19,7 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.hpp>
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_next_waypoint.hpp>
 #include <move_base_z_client_plugin/client_behaviors/cb_pause_slam.hpp>
+#include <move_base_z_client_plugin/client_behaviors/cb_resume_slam.hpp>
 #include <move_base_z_client_plugin/client_behaviors/cb_rotate.hpp>
 #include <move_base_z_client_plugin/client_behaviors/cb_undo_path_backwards.hpp>
 #include <move_base_z_client_plugin/client_behaviors/cb_wait_nav2_nodes.hpp>

@@ -47,6 +47,7 @@ struct StiSPatternRotate4 : smacc2::SmaccState<StiSPatternRotate4, SS>
       angle = 90 + offset;
 
     this->configure<OrNavigation, CbAbsoluteRotate>(angle);
+    this->configure<OrNavigation, CbResumeSlam>();
     this->configure<OrLED, CbLEDOff>();
   }
 };

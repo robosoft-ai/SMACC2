@@ -33,6 +33,7 @@ struct StiRadialRotate : smacc2::SmaccState<StiRadialRotate, SS>
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbAbsoluteRotate>();
+    configure_orthogonal<OrNavigation, CbResumeSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
   }
 

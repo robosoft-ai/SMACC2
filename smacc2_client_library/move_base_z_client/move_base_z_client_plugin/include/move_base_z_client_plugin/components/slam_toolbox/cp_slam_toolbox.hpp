@@ -19,19 +19,30 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <move_base_z_client_plugin/components/slam_toolbox/cp_slam_toolbox.hpp>
-#include <slam_toolbox/srv/pause.hpp>
-#include <smacc2/client_behaviors/cb_call_service.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <smacc2/client_bases/smacc_action_client.hpp>
+#include <smacc2/component.hpp>
+#include <std_msgs/msg/string.hpp>
 
 namespace cl_move_base_z
 {
-class CbPauseSlam : public smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>
+class CpSlamToolbox : public smacc2::ISmaccComponent
 {
 public:
-  CbPauseSlam(std::string serviceName = "/slam_toolbox/pause_new_measurements");
-  void onEntry() override;
+  CpSlamToolbox();
+  virtual ~CpSlamToolbox();
 
-protected:
-  CpSlamToolbox * slam_;
+  enum class SlamToolboxState
+  {
+    Resumed,
+    Paused
+  };
+
+  inline SlamToolboxState getState() { return state_; }
+
+  void toogleState();
+
+private:
+  SlamToolboxState state_;
 };
 }  // namespace cl_move_base_z

@@ -46,8 +46,12 @@
 typedef boost::statechart::processor_container<
   boost::statechart::fifo_scheduler<>, boost::function0<void>,
   std::allocator<boost::statechart::none>>::processor_context my_context;
+
 namespace smacc2
 {
+template <class T>
+using deep_history = sc::deep_history<T>;
+
 namespace utils
 {
 // demangles the type name to be used as a ros node name

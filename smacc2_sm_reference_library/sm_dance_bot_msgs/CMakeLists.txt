@@ -19,6 +19,8 @@ find_package(sensor_msgs REQUIRED)
 find_package(action_msgs REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+find_package(rosidl_generator_cpp REQUIRED)
+
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "servers/led_action_server/action/LEDControl.action"
