@@ -25,7 +25,7 @@ struct StiRadialRotate : smacc2::SmaccState<StiRadialRotate, SS>
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiRadialEndPoint, SUCCESS>,
-    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiRadialLoopStart, ABORT>
+    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiRadialRotate, ABORT>
 
     >reactions;
 
