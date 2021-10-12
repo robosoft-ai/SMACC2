@@ -58,12 +58,14 @@ void BackwardLocalPlanner::activate()
 
 void BackwardLocalPlanner::deactivate()
 {
+  RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] deactivated");
   planPub_->on_deactivate();
   goalMarkerPublisher_->on_deactivate();
 }
 
 void BackwardLocalPlanner::cleanup()
 {
+  RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] cleanup");
   this->backwardsPlanPath_.clear();
   this->currentCarrotPoseIndex_ = 0;
 }

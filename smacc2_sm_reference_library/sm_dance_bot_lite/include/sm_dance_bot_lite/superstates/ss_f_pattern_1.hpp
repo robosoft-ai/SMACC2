@@ -50,7 +50,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateForward2, ENDLOOP>  //,
+    Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StRotateDegrees5, ENDLOOP>  //,
 
     >reactions;
 

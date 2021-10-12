@@ -29,6 +29,8 @@ void CbMoveBaseClientBehaviorBase::propagateSuccessEvent(ClMoveBaseZ::WrappedRes
 }
 void CbMoveBaseClientBehaviorBase::propagateFailureEvent(ClMoveBaseZ::WrappedResult &)
 {
+  auto name = smacc2::demangleType(typeid(*this));
+  RCLCPP_INFO(getLogger(), "[%s] Propagating failure event from action server", name.c_str());
   this->postFailureEvent();
 }
 }  // namespace cl_move_base_z
