@@ -80,7 +80,7 @@ class StRotateDegrees1;
 class StNavigateReverse2;
 class StRotateDegrees3;
 class StNavigateReverse1;
-class StNavigateForward2;
+class StNavigateReverse4;
 class StRotateDegrees5;
 class StNavigateReverse3;
 class StRotateDegrees6;
@@ -180,10 +180,10 @@ struct SmDanceBot : public smacc2::SmaccStateMachineBase<SmDanceBot, MsDanceBotR
 #include <sm_dance_bot/states/st_navigate_to_waypoints_x.hpp>
 
 #include <sm_dance_bot/states/st_navigate_forward_1.hpp>
-#include <sm_dance_bot/states/st_navigate_forward_2.hpp>
 #include <sm_dance_bot/states/st_navigate_reverse_1.hpp>
 #include <sm_dance_bot/states/st_navigate_reverse_2.hpp>
 #include <sm_dance_bot/states/st_navigate_reverse_3.hpp>
+#include <sm_dance_bot/states/st_navigate_reverse_4.hpp>
 #include <sm_dance_bot/states/st_navigate_to_waypoint_1.hpp>
 #include <sm_dance_bot/states/st_rotate_degrees_1.hpp>
 #include <sm_dance_bot/states/st_rotate_degrees_2.hpp>
