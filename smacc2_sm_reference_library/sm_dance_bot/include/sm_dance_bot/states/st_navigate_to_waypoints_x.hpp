@@ -26,6 +26,7 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
   struct TRANSITION_3 : SUCCESS{};
   struct TRANSITION_4 : SUCCESS{};
   struct TRANSITION_5 : SUCCESS{};
+  struct TRANSITION_6 : SUCCESS{};
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -34,8 +35,9 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
     Transition<EvWaypoint1<ClMoveBaseZ, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_2>,
     Transition<EvWaypoint2<ClMoveBaseZ, OrNavigation>, SS3::SsRadialPattern3, TRANSITION_3>,
     Transition<EvWaypoint3<ClMoveBaseZ, OrNavigation>, SS4::SsFPattern1, TRANSITION_4>,
-    Transition<EvWaypoint4<ClMoveBaseZ, OrNavigation>, SS5::SsSPattern1, TRANSITION_5>,
-    Transition<EvCbFailure<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
+    Transition<EvWaypoint4<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, TRANSITION_5>,
+    Transition<EvWaypoint5<ClMoveBaseZ, OrNavigation>, SS5::SsSPattern1, TRANSITION_6>,
+    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX, ABORT>
 
     >reactions;
 
@@ -43,11 +45,19 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
   static void staticConfigure()
   {
     configure_orthogonal<OrLED, CbLEDOn>();
+    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
     configure_orthogonal<OrNavigation, CbResumeSlam>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
-    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+
   }
 
   void runtimeConfigure() {}
+
+  void onExit(ABORT)
+  {
+    // this->getOrthogonal<OrNavigation>()
+    //     ->getClientBehavior<CbNavigateNextWaypoint>()
+    //     ->waypointsNavigator_->rewind(1);
+  }
 };
 }  // namespace sm_dance_bot

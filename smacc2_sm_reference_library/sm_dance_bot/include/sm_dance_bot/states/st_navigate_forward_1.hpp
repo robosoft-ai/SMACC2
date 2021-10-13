@@ -26,7 +26,7 @@ struct StNavigateForward1 : smacc2::SmaccState<StNavigateForward1, MsDanceBotRun
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateDegrees2>,
-    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateToWaypointsX, ABORT>
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateForward1, ABORT>
     //, Transition<EvActionPreempted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, PREEMPT>
 
     >reactions;
