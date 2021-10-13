@@ -236,12 +236,6 @@ public:
     }
   }
 
-  /*
-      virtual SimpleClientGoalState getState() override
-      {
-          return client_->getState();
-      }*/
-
   void sendGoal(Goal & goal)
   {
     RCLCPP_INFO_STREAM(

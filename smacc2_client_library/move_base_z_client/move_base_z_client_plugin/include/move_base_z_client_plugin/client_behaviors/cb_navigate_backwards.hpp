@@ -19,7 +19,6 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <tf2_ros/buffer.h>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
 
 #include <optional>
@@ -38,8 +37,6 @@ public:
   std::optional<float> backwardSpeed;
 
   std::optional<std::string> goalChecker_;
-
-  std::shared_ptr<tf2_ros::Buffer> listener;
 
   cl_move_base_z::odom_tracker::OdomTracker * odomTracker_;
 

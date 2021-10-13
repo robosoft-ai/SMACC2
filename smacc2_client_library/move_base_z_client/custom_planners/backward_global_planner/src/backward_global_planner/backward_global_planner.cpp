@@ -44,7 +44,11 @@ namespace backward_global_planner
 * Constructor()
 ******************************************************************************************************************
 */
-BackwardGlobalPlanner::BackwardGlobalPlanner() { skip_straight_motion_distance_ = 0.2; }
+BackwardGlobalPlanner::BackwardGlobalPlanner()
+{
+  skip_straight_motion_distance_ = 0.2;
+  puresSpinningRadStep_ = 1000;  // rads
+}
 
 BackwardGlobalPlanner::~BackwardGlobalPlanner() {}
 
@@ -174,7 +178,9 @@ void BackwardGlobalPlanner::createDefaultBackwardPath(
   if (length > skip_straight_motion_distance_)
   {
     // skip initial pure spinning and initial straight motion
-    // RCLCPP_INFO(nh_->get_logger(), "1 - heading to goal position pure spinning");
+    RCLCPP_INFO(
+      nh_->get_logger(), "1 - heading to goal position pure spinning radstep: %lf",
+      puresSpinningRadStep_);
     double heading_direction = atan2(dy, dx);
     double startyaw = tf2::getYaw(q);
     double offset = angles::shortest_angular_distance(startyaw, heading_direction);
@@ -182,7 +188,7 @@ void BackwardGlobalPlanner::createDefaultBackwardPath(
 
     prevState = cl_move_base_z::makePureSpinningSubPlan(
       start, heading_direction, plan, puresSpinningRadStep_);
-    // RCLCPP_INFO(nh_->get_logger(), "2 - going forward keep orientation pure straight");
+    RCLCPP_INFO(nh_->get_logger(), "2 - going forward keep orientation pure straight");
 
     prevState =
       cl_move_base_z::makePureStraightSubPlan(prevState, goal.pose.position, length, plan);
@@ -220,20 +226,26 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(
   nav_2d_utils::transformPose(tf_, costmap_ros_->getGlobalFrameID(), goal, transformedGoal, ttol);
   transformedGoal.header.frame_id = costmap_ros_->getGlobalFrameID();
 
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[BackwardGlobalPlanner] creating default backward global plan");
   //---------------------------------------------------------------------
   std::vector<geometry_msgs::msg::PoseStamped> plan;
   this->createDefaultBackwardPath(transformedStart, transformedGoal, plan);
 
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardGlobalPlanner] publishing markers");
   publishGoalMarker(transformedGoal.pose, 1.0, 0, 1.0);
 
   nav_msgs::msg::Path planMsg;
   planMsg.poses = plan;
+  planMsg.header.stamp = this->nh_->now();
   planMsg.header.frame_id = this->costmap_ros_->getGlobalFrameID();
 
   //---------------------------------------------------------------------
   // check plan rejection if obstacle is found
   bool acceptedGlobalPlan = true;
 
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[BackwardGlobalPlanner] checking backwards trajectory on costmap");
   auto costmap2d = this->costmap_ros_->getCostmap();
   for (auto & p : plan)
   {
@@ -252,7 +264,7 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(
     }
   }
 
-  if (acceptedGlobalPlan)
+  if (!acceptedGlobalPlan)
   {
     RCLCPP_WARN_STREAM(
       nh_->get_logger(),

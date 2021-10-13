@@ -36,7 +36,7 @@ CbNavigateBackwards::CbNavigateBackwards(float backwardDistance)
 {
   if (backwardDistance < 0)
   {
-    RCLCPP_ERROR(getLogger(), "cb backward: distance must be greater or equal than 0");
+    RCLCPP_ERROR(getLogger(), "[CbNavigateBackwards] distance must be greater or equal than 0");
     this->backwardDistance = 0;
   }
   this->backwardDistance = backwardDistance;
@@ -58,31 +58,37 @@ void CbNavigateBackwards::onEntry()
     dist = *backwardDistance;
   }
 
-  this->listener = std::make_shared<tf2_ros::Buffer>(getNode()->get_clock());
   RCLCPP_INFO_STREAM(
     getLogger(), "[CbNavigateBackwards] Straight backwards motion distance: " << dist);
 
   auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
   auto referenceFrame = p->getReferenceFrame();
   auto currentPoseMsg = p->toPoseMsg();
-
   tf2::Transform currentPose;
   tf2::fromMsg(currentPoseMsg, currentPose);
-  tf2::Transform forwardDeltaTransform;
-  forwardDeltaTransform.setIdentity();
-  forwardDeltaTransform.setOrigin(tf2::Vector3(-dist, 0, 0));
-  tf2::Transform targetPose = currentPose * forwardDeltaTransform;
+
+  tf2::Transform backwardDeltaTransform;
+  backwardDeltaTransform.setIdentity();
+  backwardDeltaTransform.setOrigin(tf2::Vector3(-dist, 0, 0));
+
+  tf2::Transform targetPose = currentPose * backwardDeltaTransform;
+
   ClMoveBaseZ::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
   goal.pose.header.stamp = getNode()->now();
   tf2::toMsg(targetPose, goal.pose.pose);
   RCLCPP_INFO_STREAM(getLogger(), "[CbNavigateBackwards] TARGET POSE BACKWARDS: " << goal.pose);
 
+  geometry_msgs::msg::PoseStamped currentStampedPoseMsg;
+  currentStampedPoseMsg.header.frame_id = referenceFrame;
+  currentStampedPoseMsg.header.stamp = getNode()->now();
+  tf2::toMsg(currentPose, currentStampedPoseMsg.pose);
+
   odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
   if (odomTracker_ != nullptr)
   {
     this->odomTracker_->clearPath();
-    this->odomTracker_->setStartPoint(currentPoseMsg);
+    this->odomTracker_->setStartPoint(currentStampedPoseMsg);
     this->odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
   }
 

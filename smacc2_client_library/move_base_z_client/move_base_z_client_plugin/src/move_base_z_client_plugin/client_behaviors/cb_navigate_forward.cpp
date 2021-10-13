@@ -87,8 +87,7 @@ void CbNavigateForward::onEntry()
   goal.pose.header.frame_id = referenceFrame;
   goal.pose.header.stamp = getNode()->now();
   tf2::toMsg(targetPose, goal.pose.pose);
-
-  RCLCPP_INFO_STREAM(getLogger(), "TARGET POSE FORWARD: " << goal.pose.pose);
+  RCLCPP_INFO_STREAM(getLogger(), "[CbNavigateForward] TARGET POSE FORWARD: " << goal.pose.pose);
 
   geometry_msgs::msg::PoseStamped currentStampedPoseMsg;
   currentStampedPoseMsg.header.frame_id = referenceFrame;
@@ -96,10 +95,12 @@ void CbNavigateForward::onEntry()
   tf2::toMsg(currentPose, currentStampedPoseMsg.pose);
 
   odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
-  odomTracker_->pushPath();
-
-  odomTracker_->setStartPoint(currentStampedPoseMsg);
-  odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
+  if (odomTracker_ != nullptr)
+  {
+    odomTracker_->pushPath();
+    odomTracker_->setStartPoint(currentStampedPoseMsg);
+    odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
+  }
 
   auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
   plannerSwitcher->setForwardPlanner();
@@ -110,6 +111,12 @@ void CbNavigateForward::onEntry()
   moveBaseClient_->sendGoal(goal);
 }
 
-void CbNavigateForward::onExit() { this->odomTracker_->setWorkingMode(WorkingMode::IDLE); }
+void CbNavigateForward::onExit()
+{
+  if (odomTracker_)
+  {
+    this->odomTracker_->setWorkingMode(WorkingMode::IDLE);
+  }
+}
 
 }  // namespace cl_move_base_z

@@ -54,9 +54,15 @@ public:
   void runtimeConfigure() {}
 
   int iteration_count = 0;
-  static constexpr int total_iterations() { return 4; }
+  static constexpr int total_iterations() { return 1; }
   static constexpr float ray_angle_increment_degree() { return 360.0 / total_iterations(); }
   static constexpr float ray_length_meters() { return 5; }
+
+  void onExit()
+  {
+    rclcpp::sleep_for(5s);
+    RCLCPP_INFO(getLogger(), "[SsRadialPattern1] waiting 5 seconds");
+  }
 };
 
 // FORWARD DECLARATION FOR THE SUPERSTATE
