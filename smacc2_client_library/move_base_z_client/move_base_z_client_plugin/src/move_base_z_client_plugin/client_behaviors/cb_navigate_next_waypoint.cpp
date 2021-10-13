@@ -19,7 +19,6 @@
  ******************************************************************************************************************/
 
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_next_waypoint.hpp>
-#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.hpp>
 
 namespace cl_move_base_z
 {
@@ -29,11 +28,11 @@ CbNavigateNextWaypoint::~CbNavigateNextWaypoint() {}
 
 void CbNavigateNextWaypoint::onEntry()
 {
-  auto waypointsNavigator = moveBaseClient_->getComponent<WaypointNavigator>();
-  waypointsNavigator->sendNextGoal();
+  waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
+  waypointsNavigator_->sendNextGoal();
   RCLCPP_INFO(
     getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints x: %ld",
-    waypointsNavigator->getCurrentWaypointIndex());
+    waypointsNavigator_->getCurrentWaypointIndex());
 }
 
 void CbNavigateNextWaypoint::onExit() {}

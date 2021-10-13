@@ -27,7 +27,9 @@ struct StiFPatternForward1 : public smacc2::SmaccState<StiFPatternForward1<SS>, 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternReturn1<SS>>
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternReturn1<SS>>,
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiFPatternForward1<SS>, ABORT>
+
 
     >reactions;
 

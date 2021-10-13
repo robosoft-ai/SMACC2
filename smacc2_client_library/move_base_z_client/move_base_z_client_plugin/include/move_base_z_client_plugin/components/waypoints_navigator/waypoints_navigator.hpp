@@ -76,6 +76,8 @@ public:
 
   int currentWaypoint_;
 
+  void rewind(int count);
+
 private:
   void insertWaypoint(int index, geometry_msgs::msg::Pose & newpose);
 

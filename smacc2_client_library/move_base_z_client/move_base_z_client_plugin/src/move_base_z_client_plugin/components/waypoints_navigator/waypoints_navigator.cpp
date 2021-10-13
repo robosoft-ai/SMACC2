@@ -39,6 +39,12 @@ void WaypointNavigator::onGoalReached(ClMoveBaseZ::WrappedResult & /*res*/)
   this->succeddedConnection_.disconnect();
 }
 
+void WaypointNavigator::rewind(int count)
+{
+  currentWaypoint_--;
+  if (currentWaypoint_ < 0) currentWaypoint_ = 0;
+}
+
 void WaypointNavigator::sendNextGoal()
 {
   if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypoints_.size())

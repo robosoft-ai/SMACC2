@@ -19,6 +19,7 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.hpp>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
 
 #include "cb_move_base_client_behavior_base.hpp"
@@ -35,5 +36,7 @@ public:
   void onEntry() override;
 
   void onExit() override;
+
+  WaypointNavigator * waypointsNavigator_;
 };
 }  // namespace cl_move_base_z
