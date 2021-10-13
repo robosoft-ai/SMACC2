@@ -27,6 +27,7 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
   struct TRANSITION_4 : SUCCESS{};
   struct TRANSITION_5 : SUCCESS{};
   struct TRANSITION_6 : SUCCESS{};
+  struct TRANSITION_7 : SUCCESS{};
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -36,7 +37,8 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
     Transition<EvWaypoint2<ClMoveBaseZ, OrNavigation>, SS3::SsRadialPattern3, TRANSITION_3>,
     Transition<EvWaypoint3<ClMoveBaseZ, OrNavigation>, SS4::SsFPattern1, TRANSITION_4>,
     Transition<EvWaypoint4<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, TRANSITION_5>,
-    Transition<EvWaypoint5<ClMoveBaseZ, OrNavigation>, SS5::SsSPattern1, TRANSITION_6>,
+    Transition<EvWaypoint5<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, TRANSITION_6>,
+    Transition<EvWaypoint6<ClMoveBaseZ, OrNavigation>, SS5::SsSPattern1, TRANSITION_7>,
     Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX, ABORT>
 
     >reactions;

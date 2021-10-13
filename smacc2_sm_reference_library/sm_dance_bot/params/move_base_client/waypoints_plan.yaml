@@ -50,17 +50,27 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-    # POINT 5
+  # POINT 5
   - position:
-      x: -10.0
-      y: 13.5
+      x: -12.0
+      y: 12.0
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 6
+    # POINT 6
+  - position:
+      x: -10.0
+      y: 14.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 7
   - position:
       x: -0.0
       y: 0.0
@@ -70,7 +80,7 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  #POINT 7
+  #POINT 8
   - position:
       x: 6.0
       y: 8.0
