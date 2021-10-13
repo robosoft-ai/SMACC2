@@ -117,7 +117,17 @@ Each state machine in the reference library comes with it's own README.md file, 
 
 
 Operating instructions can be found in each reference state machines readme file.
-Happy Coding.
+
+## Writing your State Machines
+There is a [state machine generator in the reference library](smacc2_sm_reference_library/create-sm-package.bash).
+To use it go to the `src` folder of your ROS2 workspace and execute:
+  ```
+  smacc2/smacc2_sm_reference_library/create-sm-package.bash <name_of_state_machine>
+  ```
+After than compile your workspace and source it to set paths of the new package.
+Check `README.md` in new package about instructions to start newly created state machine.
+
+Happy Coding!
 
 ## Support
 If you are interested in getting involved or need a little support, feel free to contact us by emailing techsupport@robosoft.ai
