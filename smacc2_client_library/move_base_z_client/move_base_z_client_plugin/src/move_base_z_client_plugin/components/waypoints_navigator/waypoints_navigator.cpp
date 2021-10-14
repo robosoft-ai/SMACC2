@@ -32,17 +32,39 @@ WaypointNavigator::WaypointNavigator() : currentWaypoint_(0), waypoints_(0) {}
 
 void WaypointNavigator::onInitialize() { client_ = dynamic_cast<ClMoveBaseZ *>(owner_); }
 
+void WaypointNavigator::onGoalCancelled(ClMoveBaseZ::WrappedResult & /*res*/)
+{
+  stopWaitingResult();
+}
+
+void WaypointNavigator::onGoalAborted(ClMoveBaseZ::WrappedResult & /*res*/)
+{
+  stopWaitingResult();
+}
+
+
 void WaypointNavigator::onGoalReached(ClMoveBaseZ::WrappedResult & /*res*/)
 {
   waypointsEventDispatcher.postWaypointEvent(currentWaypoint_);
   currentWaypoint_++;
-  this->succeddedConnection_.disconnect();
+  RCLCPP_WARN(getLogger(), "[WaypointNavigator] Goal result received, incrementing waypoint index: %ld", currentWaypoint_);
+  stopWaitingResult();
 }
 
 void WaypointNavigator::rewind(int count)
 {
   currentWaypoint_--;
   if (currentWaypoint_ < 0) currentWaypoint_ = 0;
+}
+
+void WaypointNavigator::stopWaitingResult()
+{
+  if(succeddedConnection_.connected())
+  {
+    this->succeddedConnection_.disconnect();
+    this->cancelledConnection_.disconnect();
+    this->abortedConnection_.disconnect();
+  }
 }
 
 void WaypointNavigator::sendNextGoal()
@@ -82,7 +104,13 @@ void WaypointNavigator::sendNextGoal()
     }
 
     // SEND GOAL
-    this->succeddedConnection_ = client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
+    if(!succeddedConnection_.connected() )
+    {
+      this->succeddedConnection_ = client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
+      this->cancelledConnection_ = client_->onAborted(&WaypointNavigator::onGoalCancelled, this);
+      this->abortedConnection_ = client_->onCancelled(&WaypointNavigator::onGoalAborted, this);
+    }
+
     client_->sendGoal(goal);
   }
   else
