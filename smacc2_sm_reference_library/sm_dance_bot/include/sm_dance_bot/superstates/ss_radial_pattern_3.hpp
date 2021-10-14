@@ -41,7 +41,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees4, ENDLOOP>
+    Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateReverse3, ENDLOOP>
 
     >reactions;
 
@@ -53,7 +53,7 @@ public:
 
   int iteration_count;
 
-  static constexpr int total_iterations() { return 3; }
+  static constexpr int total_iterations() { return 2; }
   static constexpr float ray_angle_increment_degree() { return 360.0 / total_iterations(); }
   static constexpr float ray_length_meters() { return 4; }
 
