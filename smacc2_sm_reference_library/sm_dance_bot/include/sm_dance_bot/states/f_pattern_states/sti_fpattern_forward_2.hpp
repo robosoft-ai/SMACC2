@@ -27,7 +27,8 @@ struct StiFPatternForward2 : smacc2::SmaccState<StiFPatternForward2<SS>, SS>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternStartLoop<SS>>
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternStartLoop<SS>>,
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiFPatternStartLoop<SS>>
 
     >reactions;
 
