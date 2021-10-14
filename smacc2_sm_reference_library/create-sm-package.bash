@@ -82,6 +82,8 @@ FILES_TO_RENAME=(
   $SM_CPP
 )
 
+# Rename package.xml because if it has proper name immediately then ROS-tools are making problems
+mv "$sm_name/$SM_PACKAGE.template" "$sm_name/$SM_PACKAGE"
 
 # sed all needed files
 cd $sm_name
