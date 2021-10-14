@@ -51,10 +51,15 @@ void ForwardLocalPlanner::activate()
   this->goalMarkerPublisher_->on_activate();
 }
 
-void ForwardLocalPlanner::deactivate() { this->goalMarkerPublisher_->on_deactivate(); }
+void ForwardLocalPlanner::deactivate()
+{
+  this->cleanMarkers();
+  this->goalMarkerPublisher_->on_deactivate();
+}
 
 void ForwardLocalPlanner::cleanup()
 {
+  this->cleanMarkers();
   this->plan_.clear();
   this->currentPoseIndex_ = 0;
   yaw_goal_tolerance_ = -1;
@@ -224,13 +229,14 @@ void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
 {
   visualization_msgs::msg::Marker marker;
 
-  marker.header.frame_id = this->costmapRos_->getGlobalFrameID();
+  marker.header.frame_id = costmapRos_->getGlobalFrameID();
   marker.header.stamp = nh_->now();
   marker.ns = "my_namespace2";
   marker.id = 0;
   marker.type = visualization_msgs::msg::Marker::ARROW;
   marker.action = visualization_msgs::msg::Marker::ADD;
   marker.pose.orientation.w = 1;
+  marker.lifetime = rclcpp::Duration(1.0s);
 
   marker.scale.x = 0.1;
   marker.scale.y = 0.3;
@@ -249,6 +255,23 @@ void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
 
   marker.points.push_back(start);
   marker.points.push_back(end);
+
+  visualization_msgs::msg::MarkerArray ma;
+  ma.markers.push_back(marker);
+
+  goalMarkerPublisher_->publish(ma);
+}
+
+void ForwardLocalPlanner::cleanMarkers()
+{
+  RCLCPP_INFO_STREAM(nh_->get_logger(), "[ForwardLocalPlanner] cleaning markers.");
+  visualization_msgs::msg::Marker marker;
+
+  marker.header.frame_id = costmapRos_->getGlobalFrameID();
+  marker.header.stamp = nh_->now();
+  marker.ns = "my_namespace2";
+  marker.id = 0;
+  marker.action = visualization_msgs::msg::Marker::DELETEALL;
 
   visualization_msgs::msg::MarkerArray ma;
   ma.markers.push_back(marker);

@@ -83,6 +83,7 @@ private:
   nav2_util::LifecycleNode::SharedPtr nh_;
 
   void publishGoalMarker(double x, double y, double phi);
+  void cleanMarkers();
 
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmapRos_;
   std::string name_;

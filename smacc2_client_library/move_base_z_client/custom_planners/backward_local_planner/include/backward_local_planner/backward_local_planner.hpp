@@ -97,6 +97,7 @@ private:
     const geometry_msgs::msg::PoseStamped & pose, double & vetta, double & gamma,
     double alpha_error, double betta_error, double rho_error);
 
+  void clearMarkers();
   void publishGoalMarker(double x, double y, double phi);
 
   void computeCurrentEuclideanAndAngularErrorsToCarrotGoal(

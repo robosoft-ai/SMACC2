@@ -87,6 +87,7 @@ private:
   void onForwardTrailMsg(const nav_msgs::msg::Path::ConstPtr & trailMessage);
 
   void publishGoalMarker(const geometry_msgs::msg::Pose & pose, double r, double g, double b);
+  void cleanMarkers();
 
   double skip_straight_motion_distance_;  //meters
 

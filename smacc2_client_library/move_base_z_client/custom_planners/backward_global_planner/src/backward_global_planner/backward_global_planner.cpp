@@ -35,6 +35,7 @@
 #include <pluginlib/class_list_macros.hpp>
 #include <streambuf>
 
+using namespace std::chrono_literals;
 namespace cl_move_base_z
 {
 namespace backward_global_planner
@@ -83,7 +84,7 @@ void BackwardGlobalPlanner::configure(
 * cleanup()
 ******************************************************************************************************************
 */
-void BackwardGlobalPlanner::cleanup() {}
+void BackwardGlobalPlanner::cleanup() { this->cleanMarkers(); }
 
 /**
 ******************************************************************************************************************
@@ -112,6 +113,7 @@ void BackwardGlobalPlanner::deactivate()
   planPub_->publish(planMsg);
 
   planPub_->on_deactivate();
+  this->cleanMarkers();
   markersPub_->on_deactivate();
 }
 
@@ -131,6 +133,7 @@ void BackwardGlobalPlanner::publishGoalMarker(
   marker.id = 0;
   marker.type = visualization_msgs::msg::Marker::ARROW;
   marker.action = visualization_msgs::msg::Marker::ADD;
+  marker.lifetime = rclcpp::Duration(0s);
   marker.scale.x = 0.1;
   marker.scale.y = 0.3;
   marker.scale.z = 0.1;
@@ -148,6 +151,21 @@ void BackwardGlobalPlanner::publishGoalMarker(
 
   marker.points.push_back(start);
   marker.points.push_back(end);
+
+  visualization_msgs::msg::MarkerArray ma;
+  ma.markers.push_back(marker);
+
+  markersPub_->publish(ma);
+}
+
+void BackwardGlobalPlanner::cleanMarkers()
+{
+  visualization_msgs::msg::Marker marker;
+  marker.header.frame_id = this->costmap_ros_->getGlobalFrameID();
+  marker.header.stamp = nh_->now();
+  marker.ns = "my_namespace2";
+  marker.id = 0;
+  marker.action = visualization_msgs::msg::Marker::DELETEALL;
 
   visualization_msgs::msg::MarkerArray ma;
   ma.markers.push_back(marker);

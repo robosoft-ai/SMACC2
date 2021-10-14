@@ -58,6 +58,7 @@ void BackwardLocalPlanner::activate()
 
 void BackwardLocalPlanner::deactivate()
 {
+  this->clearMarkers();
   RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] deactivated");
   planPub_->on_deactivate();
   goalMarkerPublisher_->on_deactivate();
@@ -65,6 +66,7 @@ void BackwardLocalPlanner::deactivate()
 
 void BackwardLocalPlanner::cleanup()
 {
+  this->clearMarkers();
   RCLCPP_WARN_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] cleanup");
   this->backwardsPlanPath_.clear();
   this->currentCarrotPoseIndex_ = 0;
@@ -1154,6 +1156,23 @@ Eigen::Vector3f BackwardLocalPlanner::computeNewPositions(
   return new_pos;
 }
 
+void BackwardLocalPlanner::clearMarkers()
+{
+  visualization_msgs::msg::Marker marker;
+  marker.header.frame_id = this->costmapRos_->getGlobalFrameID();
+  marker.header.stamp = nh_->now();
+
+  marker.ns = "my_namespace2";
+  marker.id = 0;
+  marker.type = visualization_msgs::msg::Marker::ARROW;
+  marker.action = visualization_msgs::msg::Marker::DELETEALL;
+
+  visualization_msgs::msg::MarkerArray ma;
+  ma.markers.push_back(marker);
+
+  goalMarkerPublisher_->publish(ma);
+}
+
 /**
  ******************************************************************************************************************
  * publishGoalMarker()
@@ -1169,6 +1188,8 @@ void BackwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
   marker.id = 0;
   marker.type = visualization_msgs::msg::Marker::ARROW;
   marker.action = visualization_msgs::msg::Marker::ADD;
+  marker.lifetime = rclcpp::Duration(1.0s);
+
   marker.pose.orientation.w = 1;
 
   marker.scale.x = 0.05;

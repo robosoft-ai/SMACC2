@@ -37,6 +37,8 @@ namespace cl_move_base_z
 {
 namespace undo_path_global_planner
 {
+using namespace std::chrono_literals;
+
 /**
  ******************************************************************************************************************
  * Constructor()
@@ -126,8 +128,7 @@ void UndoPathGlobalPlanner::clearGoalMarker()
   marker.header.stamp = nh_->now();
   marker.ns = "my_namespace2";
   marker.id = 0;
-  marker.type = visualization_msgs::msg::Marker::ARROW;
-  marker.action = visualization_msgs::msg::Marker::DELETE;
+  marker.action = visualization_msgs::msg::Marker::DELETEALL;
 
   visualization_msgs::msg::MarkerArray ma;
   ma.markers.push_back(marker);
@@ -159,6 +160,8 @@ void UndoPathGlobalPlanner::publishGoalMarker(
   marker.color.r = r;
   marker.color.g = g;
   marker.color.b = b;
+
+  marker.lifetime = rclcpp::Duration(0s);
 
   geometry_msgs::msg::Point start, end;
   start.x = pose.position.x;
