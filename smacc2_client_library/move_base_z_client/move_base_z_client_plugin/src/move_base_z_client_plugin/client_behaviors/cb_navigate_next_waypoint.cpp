@@ -31,10 +31,13 @@ void CbNavigateNextWaypoint::onEntry()
   waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
   waypointsNavigator_->sendNextGoal();
   RCLCPP_INFO(
-    getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints x: %ld",
+    getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints i: %ld",
     waypointsNavigator_->getCurrentWaypointIndex());
 }
 
-void CbNavigateNextWaypoint::onExit() {}
+void CbNavigateNextWaypoint::onExit() 
+{
+  waypointsNavigator_->stopWaitingResult();
+}
 
 }  // namespace cl_move_base_z

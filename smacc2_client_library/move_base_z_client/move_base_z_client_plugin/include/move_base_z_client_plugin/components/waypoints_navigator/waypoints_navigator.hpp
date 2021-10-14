@@ -69,6 +69,7 @@ public:
   void setWaypoints(const std::vector<Pose2D> & waypoints);
 
   void sendNextGoal();
+  void stopWaitingResult();
 
   const std::vector<geometry_msgs::msg::Pose> & getWaypoints() const;
 
@@ -84,11 +85,15 @@ private:
   void removeWaypoint(int index);
 
   void onGoalReached(ClMoveBaseZ::WrappedResult & res);
+  void onGoalCancelled(ClMoveBaseZ::WrappedResult & /*res*/);
+  void onGoalAborted(ClMoveBaseZ::WrappedResult & /*res*/);
 
   std::vector<geometry_msgs::msg::Pose> waypoints_;
 
   std::vector<std::string> waypointsNames_;
 
   boost::signals2::connection succeddedConnection_;
+  boost::signals2::connection abortedConnection_;
+  boost::signals2::connection cancelledConnection_;
 };
 }  // namespace cl_move_base_z

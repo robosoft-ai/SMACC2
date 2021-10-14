@@ -24,7 +24,7 @@ struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDance
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypointsX>,
-    Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypointsX>
+    Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypoint1>
 
     >reactions;
 
