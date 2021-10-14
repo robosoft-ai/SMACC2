@@ -35,9 +35,6 @@ void CbNavigateNextWaypoint::onEntry()
     waypointsNavigator_->getCurrentWaypointIndex());
 }
 
-void CbNavigateNextWaypoint::onExit() 
-{
-  waypointsNavigator_->stopWaitingResult();
-}
+void CbNavigateNextWaypoint::onExit() { waypointsNavigator_->stopWaitingResult(); }
 
 }  // namespace cl_move_base_z
