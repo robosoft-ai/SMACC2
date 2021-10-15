@@ -37,8 +37,9 @@ struct StiSPatternForward4 : public smacc2::SmaccState<StiSPatternForward4, SS>
     //auto &superstate = this->context<SS>();
 
     this->configure<OrNavigation, CbNavigateForward>(SS::pitch2_lenght_meters());
+    this->configure<OrNavigation, CbPauseSlam>();
     this->configure<OrLED, CbLEDOn>();
   }
 };
 }  // namespace s_pattern_states
-}  // namespace sm_dance_bot_lite
+}  // namespace sm_dance_bot_lite_lite

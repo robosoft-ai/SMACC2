@@ -34,6 +34,7 @@ struct StiSPatternForward1 : public smacc2::SmaccState<StiSPatternForward1, SS>
   {
     configure_orthogonal<OrLED, CbLEDOn>();
     configure_orthogonal<OrNavigation, CbNavigateForward>(SS::pitch1_lenght_meters());
+    configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 
   void runtimeConfigure() {}

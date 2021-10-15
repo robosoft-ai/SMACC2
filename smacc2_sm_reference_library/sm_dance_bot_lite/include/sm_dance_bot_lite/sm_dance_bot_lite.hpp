@@ -80,7 +80,7 @@ class StRotateDegrees1;
 class StNavigateReverse2;
 class StRotateDegrees3;
 class StNavigateReverse1;
-class StNavigateForward2;
+class StNavigateReverse4;
 class StRotateDegrees5;
 class StNavigateReverse3;
 class StRotateDegrees6;
@@ -95,6 +95,16 @@ class MsDanceBotRecoveryMode;
 namespace SS1
 {
 class SsRadialPattern1;
+}
+
+namespace SS2
+{
+class SsRadialPattern2;
+}
+
+namespace SS3
+{
+class SsRadialPattern3;
 }
 
 namespace SS4
@@ -159,6 +169,8 @@ struct SmDanceBotLite : public smacc2::SmaccStateMachineBase<SmDanceBotLite, MsD
 //SUPERSTATES
 #include <sm_dance_bot_lite/superstates/ss_f_pattern_1.hpp>
 #include <sm_dance_bot_lite/superstates/ss_radial_pattern_1.hpp>
+#include <sm_dance_bot_lite/superstates/ss_radial_pattern_2.hpp>
+#include <sm_dance_bot_lite/superstates/ss_radial_pattern_3.hpp>
 #include <sm_dance_bot_lite/superstates/ss_s_pattern_1.hpp>
 
 //STATES
@@ -168,10 +180,10 @@ struct SmDanceBotLite : public smacc2::SmaccStateMachineBase<SmDanceBotLite, MsD
 #include <sm_dance_bot_lite/states/st_navigate_to_waypoints_x.hpp>
 
 #include <sm_dance_bot_lite/states/st_navigate_forward_1.hpp>
-#include <sm_dance_bot_lite/states/st_navigate_forward_2.hpp>
 #include <sm_dance_bot_lite/states/st_navigate_reverse_1.hpp>
 #include <sm_dance_bot_lite/states/st_navigate_reverse_2.hpp>
 #include <sm_dance_bot_lite/states/st_navigate_reverse_3.hpp>
+#include <sm_dance_bot_lite/states/st_navigate_reverse_4.hpp>
 #include <sm_dance_bot_lite/states/st_navigate_to_waypoint_1.hpp>
 #include <sm_dance_bot_lite/states/st_rotate_degrees_1.hpp>
 #include <sm_dance_bot_lite/states/st_rotate_degrees_2.hpp>

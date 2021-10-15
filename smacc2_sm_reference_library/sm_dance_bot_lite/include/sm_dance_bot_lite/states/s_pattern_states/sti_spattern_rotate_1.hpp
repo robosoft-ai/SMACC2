@@ -25,7 +25,7 @@ struct StiSPatternRotate1 : smacc2::SmaccState<StiSPatternRotate1, SS>
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward1>,
-    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternLoopStart>
+    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternRotate1>
 
     >reactions;
 

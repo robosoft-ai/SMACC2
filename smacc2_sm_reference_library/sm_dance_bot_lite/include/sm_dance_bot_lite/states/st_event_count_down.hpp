@@ -23,7 +23,7 @@ struct StEventCountDown : smacc2::SmaccState<StEventCountDown, MsDanceBotRunMode
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCountdownEnd<SrEventCountdown>, StNavigateToWaypointsX>,
+    Transition<EvCountdownEnd<SrEventCountdown>, StRotateDegrees3>,
     Transition<EvGlobalError, MsDanceBotRecoveryMode>
 
     >reactions;

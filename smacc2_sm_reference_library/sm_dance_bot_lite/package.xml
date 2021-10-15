@@ -5,6 +5,7 @@
   <version>0.0.0</version>
   <description>The dance_bot package</description>
   <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
@@ -18,10 +19,10 @@
   <depend>slam_toolbox</depend>
   <depend>smacc2</depend>
   <depend>sm_dance_bot_msgs</depend>
+  <depend>std_msgs</depend>
   <depend>sr_all_events_go</depend>
   <depend>sr_event_countdown</depend>
   <depend>sr_conditional</depend>
-  <depend>std_msgs</depend>
   <depend>visualization_msgs</depend>
   <depend>tf2</depend>
 
