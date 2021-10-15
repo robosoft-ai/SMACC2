@@ -25,7 +25,7 @@ struct StiSPatternRotate3 : smacc2::SmaccState<StiSPatternRotate3, SS>
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward3>,
-    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternForward2>
+    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternRotate3>
 
     >reactions;
 
@@ -59,6 +59,7 @@ struct StiSPatternRotate3 : smacc2::SmaccState<StiSPatternRotate3, SS>
       this->configure<OrNavigation, CbAbsoluteRotate>(180 + offset);
     }
 
+    this->configure<OrNavigation, CbResumeSlam>();
     this->configure<OrLED, CbLEDOff>();
   }
 };

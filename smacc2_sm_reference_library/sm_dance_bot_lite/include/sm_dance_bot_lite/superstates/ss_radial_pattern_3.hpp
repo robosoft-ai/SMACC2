@@ -14,27 +14,26 @@
 
 #include <smacc2/smacc.hpp>
 
-namespace sm_dance_bot
+namespace sm_dance_bot_lite
 {
-namespace SS1
+namespace SS3
 {
-namespace sm_dance_bot
+namespace sm_dance_bot_lite
 {
 namespace radial_motion_states
 {
-//FORWARD DECLARATION OF INNER STATES
+// FORWARD DECLARATION OF INNER STATES
 class StiRadialRotate;
 class StiRadialReturn;
 class StiRadialEndPoint;
 class StiRadialLoopStart;
-
 }  // namespace radial_motion_states
-}  // namespace sm_dance_bot
-using namespace sm_dance_bot::radial_motion_states;
+}  // namespace sm_dance_bot_lite
+using namespace sm_dance_bot_lite::radial_motion_states;
 
 // STATE DECLARATION
-struct SsRadialPattern1
-: smacc2::SmaccState<SsRadialPattern1, MsDanceBotRunMode, StiRadialLoopStart>
+struct SsRadialPattern3
+: smacc2::SmaccState<SsRadialPattern3, MsDanceBotRunMode, StiRadialLoopStart>
 {
 public:
   using SmaccState::SmaccState;
@@ -42,16 +41,9 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    // Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees1, ENDLOOP>
-    Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateReverse1, ENDLOOP>
+    Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees4, ENDLOOP>
 
     >reactions;
-
-  static constexpr int total_iterations() { return 16; }
-  static constexpr float ray_angle_increment_degree() { return 360.0 / total_iterations(); }
-  static constexpr float ray_length_meters() { return 4; }
-
-  int iteration_count = 0;
 
   // STATE FUNCTIONS
   static void staticConfigure()
@@ -59,14 +51,20 @@ public:
     //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
-  void runtimeConfigure() {}
+  int iteration_count;
+
+  static constexpr int total_iterations() { return 16; }
+  static constexpr float ray_angle_increment_degree() { return 360.0 / total_iterations(); }
+  static constexpr float ray_length_meters() { return 4; }
+
+  void runtimeConfigure() { iteration_count = 0; }
 };
 
 // FORWARD DECLARATION FOR THE SUPERSTATE
-using SS = SsRadialPattern1;
-#include <sm_dance_bot/states/radial_motion_states/sti_radial_end_point.hpp>
-#include <sm_dance_bot/states/radial_motion_states/sti_radial_loop_start.hpp>
-#include <sm_dance_bot/states/radial_motion_states/sti_radial_return.hpp>
-#include <sm_dance_bot/states/radial_motion_states/sti_radial_rotate.hpp>
-}  // namespace SS1
-}  // namespace sm_dance_bot
+using SS = SsRadialPattern3;
+#include <sm_dance_bot_lite/states/radial_motion_states/sti_radial_end_point.hpp>
+#include <sm_dance_bot_lite/states/radial_motion_states/sti_radial_loop_start.hpp>
+#include <sm_dance_bot_lite/states/radial_motion_states/sti_radial_return.hpp>
+#include <sm_dance_bot_lite/states/radial_motion_states/sti_radial_rotate.hpp>
+}  // namespace SS3
+}  // namespace sm_dance_bot_lite

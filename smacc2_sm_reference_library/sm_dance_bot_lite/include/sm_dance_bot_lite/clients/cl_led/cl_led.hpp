@@ -34,7 +34,7 @@ class ClLED
 : public smacc2::client_bases::SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>
 {
 public:
-  // SMACC_ACTION_CLIENT_DEFINITION(sm_dance_bot_msgs::action::LEDControlAction);
+  // SMACC_ACTION_CLIENT_DEFINITION(sm_dance_bot_lite_msgs::action::LEDControlAction);
 
   ClLED(std::string actionServerName);
   virtual std::string getName() const override;

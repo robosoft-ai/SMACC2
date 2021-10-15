@@ -120,8 +120,8 @@ controller_server:
       stateful: True
     backward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.02
-      yaw_goal_tolerance: 0.3
+      xy_goal_tolerance: 0.09
+      yaw_goal_tolerance: 0.05
       stateful: True
     forward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
@@ -135,7 +135,7 @@ controller_server:
       stateful: True
     undo_path_backwards_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.04 # 4 cm
+      xy_goal_tolerance: 0.03 # 4 cm
       yaw_goal_tolerance: 0.1
       stateful: True
 
@@ -184,7 +184,7 @@ controller_server:
       RotateToGoal.lookahead_time: -1.0
     BackwardLocalPlanner:
       plugin: "backward_local_planner::BackwardLocalPlanner"
-      transform_tolerance: 0.1
+      transform_tolerance: 0.5
       k_rho: -1.4 # linear distance to the goal gain, default = -1.0 (related with carrot distance)
       k_alpha: -0.1 #-0.1
       k_betta: -0.1 # -1.0
@@ -194,7 +194,7 @@ controller_server:
       max_linear_x_speed: 0.25
     ForwardLocalPlanner:
       plugin: "cl_move_base_z::forward_local_planner::ForwardLocalPlanner"
-      transform_tolerance: 0.1
+      transform_tolerance: 0.5
       k_rho: 2.5
       k_alpha: -0.4
       k_betta: -1.0
@@ -204,7 +204,7 @@ controller_server:
       max_angular_z_speed: 0.2
     PureSpinningLocalPlanner:
       plugin: "pure_spinning_local_planner::PureSpinningLocalPlanner"
-      transform_tolerance: 0.1
+      transform_tolerance: 0.5
       k_betta: 10.0
       max_angular_z_speed: 0.2
 
