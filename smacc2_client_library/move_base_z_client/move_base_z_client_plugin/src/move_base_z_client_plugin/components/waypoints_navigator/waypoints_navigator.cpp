@@ -49,7 +49,7 @@ void WaypointNavigator::onGoalReached(ClMoveBaseZ::WrappedResult & /*res*/)
   stopWaitingResult();
 }
 
-void WaypointNavigator::rewind(int count)
+void WaypointNavigator::rewind(int /*count*/)
 {
   currentWaypoint_--;
   if (currentWaypoint_ < 0) currentWaypoint_ = 0;
