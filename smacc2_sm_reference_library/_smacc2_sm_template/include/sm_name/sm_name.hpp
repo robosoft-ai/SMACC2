@@ -31,9 +31,12 @@ struct State1;
 struct State2;
 
 //VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
-static unsigned int _counter_ = 0;
+static unsigned int _counter_ = 1;
 std::shared_ptr<rclcpp::Node> _node_;
 rclcpp::Time _start_time_;
+
+unsigned int _sum_of_iterations_ = 0.0;
+double _sum_of_elapsed_time_ = 0.0;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE

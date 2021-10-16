@@ -34,6 +34,10 @@ extern unsigned int _counter_;
 extern std::shared_ptr<rclcpp::Node> _node_;
 extern rclcpp::Time _start_time_;
 
+extern unsigned int _sum_of_iterations_;
+extern double _sum_of_elapsed_time_;
+
+
 // State constants
 constexpr unsigned int ITERATIONS_CHECK = 1000;
 
@@ -61,20 +65,30 @@ struct State1 : smacc2::SmaccState<State1, $SmName$>
     {
       rclcpp::Duration elapsed = _node_->now() - _start_time_;
       double frequency_Hz = ITERATIONS_CHECK / elapsed.seconds();
+      _sum_of_iterations_ += ITERATIONS_CHECK;
+      _sum_of_elapsed_time_ += elapsed.seconds();
+      double global_frequency_Hz = _sum_of_iterations_ / _sum_of_elapsed_time_;
 
       // Using fatal to override all logging restrictions.
       RCLCPP_FATAL(
-        _node_->get_logger(), "Executed %u iterations in %lf seconds: %lf Hz",
-        ITERATIONS_CHECK, elapsed.seconds(), frequency_Hz
+        _node_->get_logger(),
+        "Executed %u iterations in %lf seconds: %lf Hz. Longtime frequency: %lf Hz",
+        ITERATIONS_CHECK, elapsed.seconds(), frequency_Hz, global_frequency_Hz
       );
 
-      _counter_ = 0;
+      _counter_ = 1;
       _start_time_ = _node_->now();
     }
+
+    RCLCPP_FATAL(
+        _node_->get_logger(),
+        "End of State1");
 
     this->postEvent<EvStateRequestFinish<State1>>();
   }
 
   void onExit() {}
+
+
 };
 }  // namespace sm_atomic_performance_test_a_1
