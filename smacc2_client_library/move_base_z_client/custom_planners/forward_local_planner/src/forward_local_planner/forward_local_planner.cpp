@@ -40,7 +40,7 @@ namespace forward_local_planner
 * ForwardLocalPlanner()
 ******************************************************************************************************************
 */
-ForwardLocalPlanner::ForwardLocalPlanner() : waitingTimeout_(2s), transform_tolerance_(0.1) {}
+ForwardLocalPlanner::ForwardLocalPlanner() : transform_tolerance_(0.1), waitingTimeout_(2s) {}
 
 ForwardLocalPlanner::~ForwardLocalPlanner() {}
 
@@ -320,8 +320,8 @@ void clamp(
 */
 
 geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
-  const geometry_msgs::msg::PoseStamped & currentPose, const geometry_msgs::msg::Twist & velocity,
-  nav2_core::GoalChecker * goal_checker)
+  const geometry_msgs::msg::PoseStamped & currentPose,
+  const geometry_msgs::msg::Twist & /*velocity*/, nav2_core::GoalChecker * goal_checker)
 {
   this->updateParameters();
 
@@ -628,7 +628,7 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
   return cmd_vel;
 }
 
-void ForwardLocalPlanner::setSpeedLimit(const double & speed_limit, const bool & percentage)
+void ForwardLocalPlanner::setSpeedLimit(const double & /*speed_limit*/, const bool & /*percentage*/)
 {
   RCLCPP_WARN_STREAM(
     nh_->get_logger(),

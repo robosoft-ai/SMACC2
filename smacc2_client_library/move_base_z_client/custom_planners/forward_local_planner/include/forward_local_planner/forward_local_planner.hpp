@@ -18,7 +18,8 @@
  *
  ******************************************************************************************************************/
 #pragma once
-#include <Eigen/Eigen>
+
+#include <eigen3/Eigen/Eigen>
 
 //#include <dynamic_reconfigure/server.h>
 #include <tf2/transform_datatypes.h>
@@ -85,6 +86,12 @@ private:
   void publishGoalMarker(double x, double y, double phi);
   void cleanMarkers();
 
+  void generateTrajectory(
+    const Eigen::Vector3f & pos, const Eigen::Vector3f & vel, float maxdist, float maxangle,
+    float maxtime, float dt, std::vector<Eigen::Vector3f> & outtraj);
+  Eigen::Vector3f computeNewPositions(
+    const Eigen::Vector3f & pos, const Eigen::Vector3f & vel, double dt);
+
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmapRos_;
   std::string name_;
 
@@ -108,12 +115,6 @@ private:
   double max_angular_z_speed_;
   double max_linear_x_speed_;
   double transform_tolerance_;
-
-  void generateTrajectory(
-    const Eigen::Vector3f & pos, const Eigen::Vector3f & vel, float maxdist, float maxangle,
-    float maxtime, float dt, std::vector<Eigen::Vector3f> & outtraj);
-  Eigen::Vector3f computeNewPositions(
-    const Eigen::Vector3f & pos, const Eigen::Vector3f & vel, double dt);
 
   // references the current point inside the backwardsPlanPath were the robot is located
   int currentPoseIndex_;
