@@ -80,10 +80,6 @@ struct State1 : smacc2::SmaccState<State1, $SmName$>
       _start_time_ = _node_->now();
     }
 
-    RCLCPP_FATAL(
-        _node_->get_logger(),
-        "End of State1");
-
     this->postEvent<EvStateRequestFinish<State1>>();
   }
 

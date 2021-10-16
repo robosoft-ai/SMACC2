@@ -118,6 +118,9 @@ for FOLDER in "${SM_FOLDERS[@]}"; do
 done
 rm "COLCON_IGNORE"
 
+# Remove currently not used files
+rm "launch/NOT_USED_sm_name_with_arguments.launch"
+
 cd -
 
 echo -e "\e[0;32mState machine package is generated\e[0m"
