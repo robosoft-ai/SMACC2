@@ -22,7 +22,6 @@
 #include <tf2_ros/buffer.h>
 
 #include "cb_move_base_client_behavior_base.hpp"
-
 namespace cl_move_base_z
 {
 class CbRotate : public CbMoveBaseClientBehaviorBase
@@ -31,6 +30,8 @@ public:
   std::optional<float> rotateDegree;
 
   std::optional<std::string> goalChecker_;
+
+  std::optional<SpiningPlanner> spinningPlanner;
 
   CbRotate();
 

@@ -44,7 +44,7 @@ void WaypointNavigator::onGoalReached(ClMoveBaseZ::WrappedResult & /*res*/)
   waypointsEventDispatcher.postWaypointEvent(currentWaypoint_);
   currentWaypoint_++;
   RCLCPP_WARN(
-    getLogger(), "[WaypointNavigator] Goal result received, incrementing waypoint index: %ld",
+    getLogger(), "[WaypointNavigator] Goal result received, incrementing waypoint index: %d",
     currentWaypoint_);
   stopWaitingResult();
 }
