@@ -84,7 +84,7 @@ private:
 
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros_;
 
-  void onForwardTrailMsg(const nav_msgs::msg::Path::ConstPtr & trailMessage);
+  void onForwardTrailMsg(const nav_msgs::msg::Path::ConstSharedPtr & trailMessage);
 
   void publishGoalMarker(const geometry_msgs::msg::Pose & pose, double r, double g, double b);
   void cleanMarkers();
