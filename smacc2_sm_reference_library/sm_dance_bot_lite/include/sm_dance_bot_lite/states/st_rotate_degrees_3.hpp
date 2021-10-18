@@ -23,8 +23,8 @@ struct StRotateDegrees3 : smacc2::SmaccState<StRotateDegrees3, MsDanceBotRunMode
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbRotate, OrNavigation>, StNavigateForward1, SUCCESS>
-    //Transition<EvCbFailure<CbRotate, OrNavigation>, StNavigateToWaypointsX>
+    Transition<EvCbSuccess<CbRotate, OrNavigation>, StNavigateForward1, SUCCESS>,
+    Transition<EvCbFailure<CbRotate, OrNavigation>, StRotateDegrees3>
 
     >reactions;
 
@@ -35,6 +35,15 @@ struct StRotateDegrees3 : smacc2::SmaccState<StRotateDegrees3, MsDanceBotRunMode
     //configure_orthogonal<OrNavigation, CbResumeSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+  }
+
+  void runtimeConfigure()
+  {
+    auto cbrotate = this->getOrthogonal<OrNavigation>()
+                    ->getClientBehavior<CbAbsoluteRotate>();
+
+    cbrotate->spinningPlanner = cl_move_base_z::SpiningPlanner::PureSpinning;
+
   }
 };
 }  // namespace sm_dance_bot_lite
