@@ -204,12 +204,11 @@ void BackwardGlobalPlanner::createDefaultBackwardPath(
     double offset = angles::shortest_angular_distance(startyaw, heading_direction);
     heading_direction = startyaw + offset;
 
-    prevState = cl_nav2z::makePureSpinningSubPlan(
-      start, heading_direction, plan, puresSpinningRadStep_);
+    prevState =
+      cl_nav2z::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
     RCLCPP_INFO(nh_->get_logger(), "2 - going forward keep orientation pure straight");
 
-    prevState =
-      cl_nav2z::makePureStraightSubPlan(prevState, goal.pose.position, length, plan);
+    prevState = cl_nav2z::makePureStraightSubPlan(prevState, goal.pose.position, length, plan);
   }
   else
   {

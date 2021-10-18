@@ -115,8 +115,8 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(
       transformedStart, heading_direction, plan, puresSpinningRadStep_);
 
     // RCLCPP_INFO(nh_->get_logger(), "2 - going forward keep orientation pure straight");
-    prevState = cl_nav2z::makePureStraightSubPlan(
-      prevState, transformedGoal.pose.position, length, plan);
+    prevState =
+      cl_nav2z::makePureStraightSubPlan(prevState, transformedGoal.pose.position, length, plan);
   }
   else
   {

@@ -667,5 +667,4 @@ void ForwardLocalPlanner::setPlan(const nav_msgs::msg::Path & plan)
 }
 }  // namespace forward_local_planner
 }  // namespace cl_nav2z
-PLUGINLIB_EXPORT_CLASS(
-  cl_nav2z::forward_local_planner::ForwardLocalPlanner, nav2_core::Controller)
+PLUGINLIB_EXPORT_CLASS(cl_nav2z::forward_local_planner::ForwardLocalPlanner, nav2_core::Controller)

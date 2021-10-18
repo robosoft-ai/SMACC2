@@ -47,7 +47,6 @@ private:
   void propagateFailureEvent(ClNav2Z::WrappedResult &);
 };
 
-
 enum class SpiningPlanner
 {
   Default,

@@ -32,10 +32,7 @@ WaypointNavigator::WaypointNavigator() : currentWaypoint_(0), waypoints_(0) {}
 
 void WaypointNavigator::onInitialize() { client_ = dynamic_cast<ClNav2Z *>(owner_); }
 
-void WaypointNavigator::onGoalCancelled(ClNav2Z::WrappedResult & /*res*/)
-{
-  stopWaitingResult();
-}
+void WaypointNavigator::onGoalCancelled(ClNav2Z::WrappedResult & /*res*/) { stopWaitingResult(); }
 
 void WaypointNavigator::onGoalAborted(ClNav2Z::WrappedResult & /*res*/) { stopWaitingResult(); }
 
