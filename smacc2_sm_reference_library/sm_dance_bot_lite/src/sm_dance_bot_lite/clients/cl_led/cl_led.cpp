@@ -25,7 +25,7 @@ namespace sm_dance_bot_lite
 namespace cl_led
 {
 ClLED::ClLED(std::string actionServerName)
-: SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>(actionServerName)
+: SmaccActionClientBase<sm_dance_bot_lite::action::LEDControl>(actionServerName)
 {
 }
 
@@ -34,7 +34,7 @@ std::string ClLED::getName() const { return "TOOL ACTION CLIENT"; }
 ClLED::~ClLED() {}
 
 std::ostream & operator<<(
-  std::ostream & out, const sm_dance_bot_msgs::action::LEDControl::Goal & msg)
+  std::ostream & out, const sm_dance_bot_lite::action::LEDControl::Goal & msg)
 {
   out << "LED CONTROL: " << msg.command;
   return out;
