@@ -19,7 +19,6 @@
   <depend>ros_timer_client</depend>
   <depend>slam_toolbox</depend>
   <depend>smacc2</depend>
-  <depend>sm_dance_bot_msgs</depend>
   <depend>std_msgs</depend>
   <depend>sr_all_events_go</depend>
   <depend>sr_event_countdown</depend>
