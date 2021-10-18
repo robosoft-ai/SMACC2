@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project($sm_name$)
+project(sm_coretest_transition_speed_1)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)

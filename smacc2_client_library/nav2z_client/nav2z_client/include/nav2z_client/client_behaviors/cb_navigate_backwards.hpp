@@ -29,7 +29,7 @@
 namespace cl_nav2z
 {
 // It sends the mobile base some distance backwards
-class CbNavigateBackwards : public CbMoveBaseClientBehaviorBase
+class CbNavigateBackwards : public CbNav2ZClientBehaviorBase
 {
 public:
   std::optional<float> backwardDistance;

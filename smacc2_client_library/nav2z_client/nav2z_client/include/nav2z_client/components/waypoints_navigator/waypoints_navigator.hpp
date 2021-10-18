@@ -75,7 +75,7 @@ public:
 
   long getCurrentWaypointIndex() const;
 
-  int currentWaypoint_;
+  long currentWaypoint_;
 
   void rewind(int count);
 

@@ -61,7 +61,7 @@ struct StStartNavigation : smacc2::SmaccState<StStartNavigation, SmAwsWarehouseN
   void sendInitialPoseEstimation()
   {
     geometry_msgs::msg::PoseWithCovarianceStamped initialposemsg;
-    bool useSimTime = getNode()->get_parameter("use_sim_time").as_bool();
+    // bool useSimTime = getNode()->get_parameter("use_sim_time").as_bool();
     //getNode()->set_parameter("use_sim_time",true);
 
     initialposemsg.header.stamp = getNode()->now();

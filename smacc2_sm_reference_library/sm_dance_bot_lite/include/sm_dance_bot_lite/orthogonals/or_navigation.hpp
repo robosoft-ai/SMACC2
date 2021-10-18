@@ -64,7 +64,7 @@ public:
   {
     // if it is the first time and the waypoints navigator is not configured
     std::string planfilepath;
-    getNode()->declare_parameter("waypoints_plan");
+    getNode()->declare_parameter("waypoints_plan", planfilepath);
     if (getNode()->get_parameter("waypoints_plan", planfilepath))
     {
       std::string package_share_directory =

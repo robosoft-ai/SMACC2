@@ -1,5 +1,4 @@
-// Copyright 2021 MyName/MyCompany Inc.
-// Copyright 2021 RobosoftAI Inc. (template)
+// Copyright 2021 RobosoftAI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +23,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "smacc2/smacc.hpp"
 
-namespace $sm_name$
+namespace sm_coretest_transition_speed_1
 {
 //STATES
 struct State1;
@@ -40,18 +39,18 @@ double _sum_of_elapsed_time_ = 0.0;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
-struct $SmName$
-: public smacc2::SmaccStateMachineBase<$SmName$, State1>
+struct SmCoretestTransitionSpeed1
+: public smacc2::SmaccStateMachineBase<SmCoretestTransitionSpeed1, State1>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
   void onInitialize() override {
-    _node_ = std::make_shared<rclcpp::Node>("$sm_name$");
+    _node_ = std::make_shared<rclcpp::Node>("sm_coretest_transition_speed_1");
     _start_time_ = _node_->now();
   }
 };
 
-}  // namespace $sm_name$
+}  // namespace sm_coretest_transition_speed_1
 
 #include "states/st_state_1.hpp"
 #include "states/st_state_2.hpp"

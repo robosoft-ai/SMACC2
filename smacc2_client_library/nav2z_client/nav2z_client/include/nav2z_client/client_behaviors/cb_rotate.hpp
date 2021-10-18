@@ -25,12 +25,14 @@
 
 namespace cl_nav2z
 {
-class CbRotate : public CbMoveBaseClientBehaviorBase
+class CbRotate : public CbNav2ZClientBehaviorBase
 {
 public:
   std::optional<float> rotateDegree;
 
   std::optional<std::string> goalChecker_;
+
+  std::optional<SpiningPlanner> spinningPlanner;
 
   CbRotate();
 

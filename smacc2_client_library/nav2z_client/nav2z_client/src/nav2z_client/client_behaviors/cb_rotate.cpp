@@ -44,9 +44,15 @@ void CbRotate::onEntry()
   }
 
   auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
-  // this should work better with a coroutine and await
-  // this->plannerSwitcher_->setForwardPlanner();
-  plannerSwitcher->setDefaultPlanners();
+
+  if (spinningPlanner && *spinningPlanner == SpiningPlanner::PureSpinning)
+  {
+    plannerSwitcher->setPureSpinningPlanner();
+  }
+  else
+  {
+    plannerSwitcher->setDefaultPlanners();
+  }
 
   auto p = moveBaseClient_->getComponent<cl_nav2z::Pose>();
   auto referenceFrame = p->getReferenceFrame();

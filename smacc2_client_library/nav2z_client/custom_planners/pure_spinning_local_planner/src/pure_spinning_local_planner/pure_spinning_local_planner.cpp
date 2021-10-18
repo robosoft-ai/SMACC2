@@ -84,7 +84,7 @@ void PureSpinningLocalPlanner::updateParameters()
 }
 
 geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityCommands(
-  const geometry_msgs::msg::PoseStamped & pose, const geometry_msgs::msg::Twist & velocity,
+  const geometry_msgs::msg::PoseStamped & pose, const geometry_msgs::msg::Twist & /*velocity*/,
   nav2_core::GoalChecker * goal_checker)
 {
   this->updateParameters();
@@ -173,7 +173,8 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
   return cmd_vel;
 }
 
-void PureSpinningLocalPlanner::setSpeedLimit(const double & speed_limit, const bool & percentage)
+void PureSpinningLocalPlanner::setSpeedLimit(
+  const double & /*speed_limit*/, const bool & /*percentage*/)
 {
   RCLCPP_WARN_STREAM(
     nh_->get_logger(),

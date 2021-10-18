@@ -411,8 +411,9 @@ bool BackwardLocalPlanner::checkCarrotHalfPlainConstraint(
 }
 
 bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(
-  const geometry_msgs::msg::PoseStamped & tfpose, const geometry_msgs::msg::Twist & currentTwist,
-  double angle_error, bool & linearGoalReached, nav2_core::GoalChecker * goal_checker)
+  const geometry_msgs::msg::PoseStamped & tfpose,
+  const geometry_msgs::msg::Twist & /*currentTwist*/, double angle_error, bool & linearGoalReached,
+  nav2_core::GoalChecker * /*goal_checker*/)
 {
   auto & finalgoal = backwardsPlanPath_.back();
   double gdx = finalgoal.pose.position.x - tfpose.pose.position.x;
@@ -439,7 +440,7 @@ bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(
  ******************************************************************************************************************
  */
 void BackwardLocalPlanner::straightBackwardsAndPureSpinCmd(
-  const geometry_msgs::msg::PoseStamped & tfpose, double & vetta, double & gamma,
+  const geometry_msgs::msg::PoseStamped & /*tfpose*/, double & vetta, double & gamma,
   double alpha_error, double betta_error, double rho_error)
 {
   if (rho_error > linear_mode_rho_error_threshold_)  // works in straight motion mode
@@ -766,7 +767,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
         }
 
         costmap2d->worldToMap(p[0], p[1], mx, my);
-        unsigned int cost = costmap2d->getCost(mx, my);
+        //         unsigned int cost = costmap2d->getCost(mx, my);
 
         // RCLCPP_INFO(nh_->get_logger(),"[BackwardLocalPlanner] checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i,
         // p[0], p[1], mx, my, cost); RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] cost: " << cost);
@@ -862,7 +863,7 @@ bool BackwardLocalPlanner::findInitialCarrotGoal(geometry_msgs::msg::PoseStamped
   // initial state check
   computeCurrentEuclideanAndAngularErrorsToCarrotGoal(tfpose, lineardisterr, angleerr);
 
-  double minpointdist = std::numeric_limits<double>::max();
+  // double minpointdist = std::numeric_limits<double>::max();
 
   // lets set the carrot-goal in the correct place with this loop
   while (currentCarrotPoseIndex_ < (int)backwardsPlanPath_.size() && !inCarrotRange)

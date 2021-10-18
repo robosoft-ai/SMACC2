@@ -25,7 +25,7 @@
 
 namespace cl_nav2z
 {
-class CbUndoPathBackwards : public CbMoveBaseClientBehaviorBase
+class CbUndoPathBackwards : public CbNav2ZClientBehaviorBase
 {
 public:
   std::optional<std::string> goalChecker_;

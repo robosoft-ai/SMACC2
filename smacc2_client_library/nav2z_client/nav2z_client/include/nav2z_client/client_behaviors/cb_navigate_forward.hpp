@@ -30,7 +30,7 @@
 
 namespace cl_nav2z
 {
-class CbNavigateForward : public CbMoveBaseClientBehaviorBase
+class CbNavigateForward : public CbNav2ZClientBehaviorBase
 {
 public:
   std::optional<float> forwardDistance;

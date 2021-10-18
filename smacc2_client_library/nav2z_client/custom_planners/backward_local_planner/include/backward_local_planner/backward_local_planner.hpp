@@ -28,7 +28,7 @@
 #include <visualization_msgs/msg/marker_array.hpp>
 
 #include <tf2/utils.h>
-#include <Eigen/Eigen>
+#include <eigen3/Eigen/Eigen>
 
 typedef double meter;
 typedef double rad;

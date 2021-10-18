@@ -25,18 +25,18 @@
 
 namespace cl_nav2z
 {
-class CbMoveBaseClientBehaviorBase : public smacc2::SmaccAsyncClientBehavior
+class CbNav2ZClientBehaviorBase : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  virtual ~CbMoveBaseClientBehaviorBase();
+  virtual ~CbNav2ZClientBehaviorBase();
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
     this->requiresClient(moveBaseClient_);
     smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
-    moveBaseClient_->onSucceeded(&CbMoveBaseClientBehaviorBase::propagateSuccessEvent, this);
-    moveBaseClient_->onAborted(&CbMoveBaseClientBehaviorBase::propagateFailureEvent, this);
+    moveBaseClient_->onSucceeded(&CbNav2ZClientBehaviorBase::propagateSuccessEvent, this);
+    moveBaseClient_->onAborted(&CbNav2ZClientBehaviorBase::propagateFailureEvent, this);
   }
 
 protected:
@@ -45,5 +45,13 @@ protected:
 private:
   void propagateSuccessEvent(ClNav2Z::WrappedResult &);
   void propagateFailureEvent(ClNav2Z::WrappedResult &);
+};
+
+
+enum class SpiningPlanner
+{
+  Default,
+  PureSpinning,
+  Forward
 };
 }  // namespace cl_nav2z

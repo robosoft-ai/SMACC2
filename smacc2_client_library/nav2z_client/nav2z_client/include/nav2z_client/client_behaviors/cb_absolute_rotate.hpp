@@ -26,14 +26,7 @@
 
 namespace cl_nav2z
 {
-enum class SpiningPlanner
-{
-  Default,
-  PureSpinning,
-  Forward
-};
-
-class CbAbsoluteRotate : public CbMoveBaseClientBehaviorBase
+class CbAbsoluteRotate : public CbNav2ZClientBehaviorBase
 {
 public:
   std::shared_ptr<tf2_ros::Buffer> listener;

@@ -1,5 +1,4 @@
-// Copyright 2021 MyName/MyCompany Inc.
-// Copyright 2021 RobosoftAI Inc. (template)
+// Copyright 2021 RobosoftAI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +22,7 @@
 #include "smacc2/smacc.hpp"
 
 
-namespace $sm_name$
+namespace sm_coretest_transition_speed_1
 {
 // SMACC2 clases
 using smacc2::Transition;
@@ -39,10 +38,10 @@ extern double _sum_of_elapsed_time_;
 
 
 // State constants
-constexpr unsigned int ITERATIONS_CHECK = 1000;
+constexpr unsigned int ITERATIONS_CHECK = 100;
 
 // STATE DECLARATION
-struct State1 : smacc2::SmaccState<State1, $SmName$>
+struct State1 : smacc2::SmaccState<State1, SmCoretestTransitionSpeed1>
 {
   using SmaccState::SmaccState;
 

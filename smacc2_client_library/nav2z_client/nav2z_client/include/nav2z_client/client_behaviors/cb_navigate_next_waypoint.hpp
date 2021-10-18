@@ -26,7 +26,7 @@
 
 namespace cl_nav2z
 {
-class CbNavigateNextWaypoint : public CbMoveBaseClientBehaviorBase
+class CbNavigateNextWaypoint : public CbNav2ZClientBehaviorBase
 {
 public:
   CbNavigateNextWaypoint();

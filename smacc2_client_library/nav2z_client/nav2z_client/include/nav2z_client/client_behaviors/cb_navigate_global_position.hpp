@@ -27,7 +27,7 @@
 
 namespace cl_nav2z
 {
-class CbNavigateGlobalPosition : public CbMoveBaseClientBehaviorBase
+class CbNavigateGlobalPosition : public CbNav2ZClientBehaviorBase
 {
 public:
   std::optional<geometry_msgs::msg::Point> goalPosition;
