@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="sm_coretest_transition_speed_1" exec="sm_coretest_transition_speed_1_node" name="sm_coretest_transition_speed_1" args="--ros-args --log-level FATAL" output="screen">
+    <param from="$(find-pkg-share sm_coretest_transition_speed_1)/config/sm_coretest_transition_speed_1_config.yaml" />
+  </node>
+</launch>
