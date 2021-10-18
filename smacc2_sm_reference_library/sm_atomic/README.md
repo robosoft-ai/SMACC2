@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ! New Image required
+ ![sm_atomic](docs/SmAtomic_2021-10-18_93942.svg)
 
  <h2>Description</h2> A completely minimal state machine example.<br></br>
 <a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__atomic.html">Doxygen Namespace & Class Reference</a>
