@@ -6,4 +6,4 @@ SmDanceBotLite:
         clear_point_distance_threshold:  0.4 #0.1
         record_angular_distance_threshold: 0.005
         record_point_distance_threshold: 0.1
-        waypoints_plan: $(pkg_share)/params/move_base_client/waypoints_plan.yaml
+        waypoints_plan: $(pkg_share)/params/nav2z_client/waypoints_plan.yaml

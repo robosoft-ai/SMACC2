@@ -3,7 +3,7 @@
     <arg name="urdf" default="$(find-pkg-share sm_aws_warehouse_navigation)/models/neo_simulation2/robots/mp_400/mp_400.urdf"/>
     <arg name="world" default="$(find-pkg-share sm_aws_warehouse_navigation)/worlds/industrial_sim.world"/>
     <arg name="map" default="$(find-pkg-share sm_aws_warehouse_navigation)/maps/005/map.yaml"/>
-    <arg name="params_file" default="$(find-pkg-share sm_aws_warehouse_navigation)/params/move_base_client/nav2_params.yaml"/>
+    <arg name="params_file" default="$(find-pkg-share sm_aws_warehouse_navigation)/params/nav2z_client/nav2_params.yaml"/>
     <arg name="xterm_prefix" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"/>
 
     <!-- <node pkg="gazebo_ros" exec="spawn_entity.py" name="gazebo_ros" args="-entity robot -file $(var urdf) -x 3.45 -y 2.15 -z 0.10 -Y 3.14"> -->

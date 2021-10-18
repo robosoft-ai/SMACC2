@@ -1,6 +1,0 @@
-<library path="pure_spinning_local_planner">
-  <class name="pure_spinning_local_planner::PureSpinningLocalPlanner" type="cl_move_base_z::pure_spinning_local_planner::PureSpinningLocalPlanner" base_class_type="nav2_core::Controller">
-    <description>
-    </description>
-  </class>
-</library>

@@ -42,7 +42,7 @@ struct StRotateDegrees3 : smacc2::SmaccState<StRotateDegrees3, MsDanceBotRunMode
     auto cbrotate = this->getOrthogonal<OrNavigation>()
                     ->getClientBehavior<CbAbsoluteRotate>();
 
-    cbrotate->spinningPlanner = cl_move_base_z::SpiningPlanner::PureSpinning;
+    cbrotate->spinningPlanner = cl_nav2z::SpiningPlanner::PureSpinning;
 
   }
 };

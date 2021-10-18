@@ -71,7 +71,7 @@ def generate_launch_description():
     declare_params_file_cmd = DeclareLaunchArgument(
         "params_file",
         default_value=os.path.join(
-            sm_dance_bot_lite_dir, "params", "move_base_client", "nav2_params.yaml"
+            sm_dance_bot_lite_dir, "params", "nav2z_client", "nav2_params.yaml"
         ),
         description="Full path to the ROS2 parameters file to use for all launched nodes",
     )
@@ -79,7 +79,7 @@ def generate_launch_description():
     declare_bt_xml_cmd = DeclareLaunchArgument(
         "default_nav_to_pose_bt_xml",
         default_value=os.path.join(
-            sm_dance_bot_lite_dir, "params", "move_base_client", "navigation_tree.xml"
+            sm_dance_bot_lite_dir, "params", "nav2z_client", "navigation_tree.xml"
         ),
         description="Full path to the behavior tree xml file to use",
     )

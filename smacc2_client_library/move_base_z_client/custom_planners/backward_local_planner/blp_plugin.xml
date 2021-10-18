@@ -1,6 +1,0 @@
-<library path="backward_local_planner">
-  <class name="backward_local_planner::BackwardLocalPlanner" type="cl_move_base_z::backward_local_planner::BackwardLocalPlanner" base_class_type="nav2_core::Controller">
-    <description>
-    </description>
-  </class>
-</library>

@@ -39,10 +39,10 @@ struct StiRadialReturn : smacc2::SmaccState<StiRadialReturn, SS>
 
   void onExit()
   {
-    ClMoveBaseZ * moveBase;
+    ClNav2Z * moveBase;
     this->requiresClient(moveBase);
 
-    auto odomTracker = moveBase->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
+    auto odomTracker = moveBase->getComponent<cl_nav2z::odom_tracker::OdomTracker>();
     odomTracker->clearPath();
   }
 };

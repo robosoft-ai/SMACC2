@@ -29,7 +29,7 @@ A state-machine framework for ROS2-based applications written in C++.
 
 - `smacc2` - core library of SMACC2.
 - `smacc2_ci` - ...
-- `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`move_base_z_client`), MoveIt2 (`move_group_interface_client`).
+- `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`nav2z_client`), MoveIt2 (`move_group_interface_client`).
 - `smacc2_event_generators` - ...
 - `smacc2_msgs` - ROS2 messages for SMACC2 framework.
 - `smacc2_sm_reference_library` - libraries with reference implementations of state-machines used for demonstaration and testing of functionalities.

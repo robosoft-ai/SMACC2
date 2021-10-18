@@ -14,18 +14,18 @@
 
 #pragma once
 
-#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+#include <nav2z_client/nav2z_client.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
-#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
-#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
-#include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
-#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.hpp>
+#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
+#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/pose/cp_pose.hpp>
+#include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
 
 namespace sm_dance_bot_strikes_back
 {
-using namespace cl_move_base_z;
+using namespace cl_nav2z;
 using namespace std::chrono_literals;
 
 class OrNavigation : public smacc2::Orthogonal<OrNavigation>
@@ -33,19 +33,19 @@ class OrNavigation : public smacc2::Orthogonal<OrNavigation>
 public:
   void onInitialize() override
   {
-    auto movebaseClient = this->createClient<ClMoveBaseZ>();
+    auto movebaseClient = this->createClient<ClNav2Z>();
 
     // create pose component
-    movebaseClient->createComponent<cl_move_base_z::Pose>();
+    movebaseClient->createComponent<cl_nav2z::Pose>();
 
     // create planner switcher
     movebaseClient->createComponent<PlannerSwitcher>();
 
     // create goal checker switcher
-    movebaseClient->createComponent<cl_move_base_z::GoalCheckerSwitcher>();
+    movebaseClient->createComponent<cl_nav2z::GoalCheckerSwitcher>();
 
     // create odom tracker
-    movebaseClient->createComponent<cl_move_base_z::odom_tracker::OdomTracker>();
+    movebaseClient->createComponent<cl_nav2z::odom_tracker::OdomTracker>();
 
     // create waypoints navigator component
     auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();
