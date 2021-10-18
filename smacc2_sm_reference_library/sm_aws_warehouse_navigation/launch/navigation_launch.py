@@ -38,7 +38,7 @@ def generate_launch_description():
     params_file_path = os.path.join(
         sm_aws_warehouse_navigation_dir,
         "params",
-        "move_base_client",
+        "nav2z_client",
         "nav2_params.yaml",
     )
 
@@ -49,7 +49,7 @@ def generate_launch_description():
     #              )
 
     default_nav_bt_tree_xml_filepath = os.path.join(
-        sm_aws_warehouse_navigation_dir, "params", "move_base_client", "navigation_tree.xml"
+        sm_aws_warehouse_navigation_dir, "params", "nav2z_client", "navigation_tree.xml"
     )
 
     # default_nav_bt_tree_xml_filepath = os.path.join(
@@ -61,7 +61,7 @@ def generate_launch_description():
     params_file_path = os.path.join(
         sm_aws_warehouse_navigation_dir,
         "params",
-        "move_base_client",
+        "nav2z_client",
         "nav2_params.yaml",
     )
 
@@ -72,7 +72,7 @@ def generate_launch_description():
     #              )
 
     default_nav_bt_tree_xml_filepath = os.path.join(
-        sm_aws_warehouse_navigation_dir, "params", "move_base_client", "navigation_tree.xml"
+        sm_aws_warehouse_navigation_dir, "params", "nav2z_client", "navigation_tree.xml"
     )
 
     # default_nav_bt_tree_xml_filepath = os.path.join(
@@ -145,7 +145,7 @@ def generate_launch_description():
                 default_value=os.path.join(
                     nav_configuration_dir,
                     "params",
-                    "move_base_client",
+                    "nav2z_client",
                     "navigation_tree.xml",
                 ),
                 description="Full path to the behavior tree xml file to use",

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+#include <nav2z_client/nav2z_client.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot_lite
@@ -27,7 +27,7 @@ struct StNavigateForward1 : smacc2::SmaccState<StNavigateForward1, MsDanceBotRun
 
     Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateDegrees3>,
     Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateForward1, ABORT>
-    //, Transition<EvActionPreempted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, PREEMPT>
+    //, Transition<EvActionPreempted<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, PREEMPT>
 
     >reactions;
 
@@ -43,14 +43,14 @@ struct StNavigateForward1 : smacc2::SmaccState<StNavigateForward1, MsDanceBotRun
 
   void runtimeConfigure()
   {
-    ClMoveBaseZ * move_base_action_client;
+    ClNav2Z * move_base_action_client;
     this->requiresClient(move_base_action_client);
 
     // we careful with the lifetime of the callbac, us a scoped connection if is not forever
     move_base_action_client->onSucceeded(&StNavigateForward1::onActionClientSucceeded, this);
   }
 
-  void onActionClientSucceeded(cl_move_base_z::ClMoveBaseZ::WrappedResult & msg)
+  void onActionClientSucceeded(cl_nav2z::ClNav2Z::WrappedResult & msg)
   {
     RCLCPP_INFO_STREAM(
       getLogger(),

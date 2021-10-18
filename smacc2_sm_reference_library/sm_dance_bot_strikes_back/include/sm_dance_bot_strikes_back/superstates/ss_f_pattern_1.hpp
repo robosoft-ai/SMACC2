@@ -74,12 +74,12 @@ public:
   void runtimeConfigure()
   {
     this->offset = 0;  //13.5;
-    cl_move_base_z::ClMoveBaseZ * robot;
+    cl_nav2z::ClNav2Z * robot;
     this->requiresClient(robot);
 
     if (robot != nullptr)
     {
-      auto pose = robot->getComponent<cl_move_base_z::Pose>()->toPoseMsg();
+      auto pose = robot->getComponent<cl_nav2z::Pose>()->toPoseMsg();
       this->initialStateAngle =
         angles::to_degrees(angles::normalize_angle(tf2::getYaw(pose.orientation)));
       RCLCPP_INFO(getLogger(), "Initial angle for F pattern: %lf degrees", initialStateAngle);
