@@ -10,9 +10,6 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>libboost-thread-dev</depend>
-
-  <depend>ros_timer_client</depend>
   <depend>smacc2</depend>
 
   <export>
