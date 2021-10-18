@@ -26,13 +26,6 @@
 
 namespace cl_move_base_z
 {
-enum class SpiningPlanner
-{
-  Default,
-  PureSpinning,
-  Forward
-};
-
 class CbAbsoluteRotate : public CbMoveBaseClientBehaviorBase
 {
 public:

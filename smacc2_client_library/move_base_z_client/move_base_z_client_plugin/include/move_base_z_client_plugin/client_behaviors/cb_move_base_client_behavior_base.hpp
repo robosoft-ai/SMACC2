@@ -46,4 +46,11 @@ private:
   void propagateSuccessEvent(ClMoveBaseZ::WrappedResult &);
   void propagateFailureEvent(ClMoveBaseZ::WrappedResult &);
 };
+
+enum class SpiningPlanner
+{
+  Default,
+  PureSpinning,
+  Forward
+};
 }  // namespace cl_move_base_z
