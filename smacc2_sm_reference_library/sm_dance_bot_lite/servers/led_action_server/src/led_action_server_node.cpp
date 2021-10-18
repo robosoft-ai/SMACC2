@@ -24,7 +24,7 @@
 
 #include <functional>
 #include <rclcpp_action/rclcpp_action.hpp>
-#include <sm_dance_bot_msgs/action/led_control.hpp>
+#include <sm_dance_bot_lite/action/led_control.hpp>
 #include <std_msgs/msg/u_int8.hpp>
 #include <thread>
 // #include <sm_dance_bot_lite/action/LEDControlActionResult.h>
@@ -39,9 +39,9 @@
 class LEDActionServer : public rclcpp::Node
 {
 public:
-  std::shared_ptr<rclcpp_action::Server<sm_dance_bot_msgs::action::LEDControl>> as_;
+  std::shared_ptr<rclcpp_action::Server<sm_dance_bot_lite::action::LEDControl>> as_;
   using GoalHandleLEDControl =
-    rclcpp_action::ServerGoalHandle<sm_dance_bot_msgs::action::LEDControl>;
+    rclcpp_action::ServerGoalHandle<sm_dance_bot_lite::action::LEDControl>;
 
   rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr stateMarkerPublisher_;
 
@@ -57,7 +57,7 @@ public:
   LEDActionServer(const rclcpp::NodeOptions & options = rclcpp::NodeOptions())
   : Node("led_action_server_node", options)
   {
-    currentState_ = sm_dance_bot_msgs::action::LEDControl::Result::STATE_UNKNOWN;
+    currentState_ = sm_dance_bot_lite::action::LEDControl::Result::STATE_UNKNOWN;
   }
 
   /**
@@ -73,18 +73,18 @@ public:
 
     cmd = goal->command;
 
-    if (goal->command == sm_dance_bot_msgs::action::LEDControl_Goal::CMD_ON)
+    if (goal->command == sm_dance_bot_lite::action::LEDControl_Goal::CMD_ON)
     {
       RCLCPP_INFO(this->get_logger(), "ON");
-      currentState_ = sm_dance_bot_msgs::action::LEDControl_Result::STATE_RUNNING;
+      currentState_ = sm_dance_bot_lite::action::LEDControl_Result::STATE_RUNNING;
     }
-    else if (goal->command == sm_dance_bot_msgs::action::LEDControl_Goal::CMD_OFF)
+    else if (goal->command == sm_dance_bot_lite::action::LEDControl_Goal::CMD_OFF)
     {
       RCLCPP_INFO(this->get_logger(), "OFF");
-      currentState_ = sm_dance_bot_msgs::action::LEDControl_Result::STATE_IDLE;
+      currentState_ = sm_dance_bot_lite::action::LEDControl_Result::STATE_IDLE;
     }
 
-    auto feedback_msg = std::make_shared<sm_dance_bot_msgs::action::LEDControl::Feedback>();
+    auto feedback_msg = std::make_shared<sm_dance_bot_lite::action::LEDControl::Feedback>();
 
     // 10Hz internal loop
     rclcpp::Rate rate(20);
@@ -98,7 +98,7 @@ public:
       RCLCPP_INFO_THROTTLE(this->get_logger(), *(this->get_clock()), 2000, "Loop feedback");
     }
 
-    auto result = std::make_shared<sm_dance_bot_msgs::action::LEDControl::Result>();
+    auto result = std::make_shared<sm_dance_bot_lite::action::LEDControl::Result>();
     result->state = this->currentState_;
 
     // never reach succeeded because were are interested in keeping the feedback alive
@@ -108,7 +108,7 @@ public:
 
   rclcpp_action::GoalResponse handle_goal(
     const rclcpp_action::GoalUUID & /*uuid*/,
-    std::shared_ptr<const sm_dance_bot_msgs::action::LEDControl::Goal> /*goal*/)
+    std::shared_ptr<const sm_dance_bot_lite::action::LEDControl::Goal> /*goal*/)
   {
     // (void)uuid;
     // // Let's reject sequences that are over 9000
@@ -146,7 +146,7 @@ public:
     RCLCPP_INFO(this->get_logger(), "Creating tool action server");
     //as_ = std::make_shared<Server>(n, "led_action_server", boost::bind(&LEDActionServer::execute, this,  _1), false);
 
-    this->as_ = rclcpp_action::create_server<sm_dance_bot_msgs::action::LEDControl>(
+    this->as_ = rclcpp_action::create_server<sm_dance_bot_lite::action::LEDControl>(
       this, "led_action_server",
       std::bind(&LEDActionServer::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
       std::bind(&LEDActionServer::handle_cancel, this, std::placeholders::_1),
@@ -179,14 +179,14 @@ public:
 
     marker.color.a = 1;
 
-    if (currentState_ == sm_dance_bot_msgs::action::LEDControl::Result::STATE_RUNNING)
+    if (currentState_ == sm_dance_bot_lite::action::LEDControl::Result::STATE_RUNNING)
     {
       // show green ball
       marker.color.r = 0;
       marker.color.g = 1;
       marker.color.b = 0;
     }
-    else if (currentState_ == sm_dance_bot_msgs::action::LEDControl::Result::STATE_IDLE)
+    else if (currentState_ == sm_dance_bot_lite::action::LEDControl::Result::STATE_IDLE)
     {
       // show gray ball
       marker.color.r = 0.7;

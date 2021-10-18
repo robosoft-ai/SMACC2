@@ -27,7 +27,6 @@ find_package(sr_event_countdown REQUIRED)
 find_package(sr_conditional REQUIRED)
 find_package(ros_timer_client REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(sm_dance_bot_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
 set(dependencies
@@ -41,17 +40,15 @@ set(dependencies
   sr_event_countdown
   sr_conditional
   ros_timer_client
-  sm_dance_bot_msgs
   visualization_msgs
   rosidl_default_runtime
 )
 
-
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(builtin_interfaces REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
 
+find_package(rosidl_default_generators REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(action_msgs REQUIRED)
@@ -78,9 +75,10 @@ target_link_libraries(${PROJECT_NAME}_node ${Boost_LIBS}
                       ${PROJECT_NAME}__rosidl_typesupport_cpp)
 
 ament_target_dependencies(led_action_server_node_${PROJECT_NAME} ${dependencies} rosidl_default_runtime)
+target_link_libraries(led_action_server_node_${PROJECT_NAME} ${PROJECT_NAME}__rosidl_typesupport_cpp)
 set_target_properties(led_action_server_node_${PROJECT_NAME} PROPERTIES OUTPUT_NAME "led_action_server_node")
 
-ament_target_dependencies(temperature_sensor_node_${PROJECT_NAME} ${dependencies})
+                      ament_target_dependencies(temperature_sensor_node_${PROJECT_NAME} ${dependencies})
 set_target_properties(temperature_sensor_node_${PROJECT_NAME} PROPERTIES OUTPUT_NAME "temperature_sensor_node")
 
 ament_export_include_directories(include)
