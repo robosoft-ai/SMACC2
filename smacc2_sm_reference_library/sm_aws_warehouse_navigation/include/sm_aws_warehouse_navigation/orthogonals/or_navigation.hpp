@@ -17,21 +17,21 @@
 #include <smacc2/smacc_orthogonal.hpp>
 
 // clients
-#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+#include <nav2z_client/nav2z_client.hpp>
 
 // components
-#include <move_base_z_client_plugin/components/goal_checker_switcher/goal_checker_switcher.hpp>
-#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.hpp>
-#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.hpp>
-#include <move_base_z_client_plugin/components/pose/cp_pose.hpp>
-#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.hpp>
-#include <move_base_z_client_plugin/components/amcl/amcl.hpp>
+#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
+#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/planner_switcher/planner_switcher.hpp>
+#include <nav2z_client/components/pose/cp_pose.hpp>
+#include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
+#include <nav2z_client/components/amcl/amcl.hpp>
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
 
 namespace sm_aws_warehouse_navigation
 {
-using namespace cl_move_base_z;
+using namespace cl_nav2z;
 
 class OrNavigation : public smacc2::Orthogonal<OrNavigation>
 {
@@ -40,24 +40,24 @@ public:
   {
     auto roslaunchClient =this->createClient<smacc2::client_bases::ClRosLaunch>("sm_aws_warehouse_navigation", "navigation_launch.py");
 
-    auto movebaseClient = this->createClient<cl_move_base_z::ClMoveBaseZ>();
+    auto movebaseClient = this->createClient<cl_nav2z::ClNav2Z>();
 
     // create pose component
-    movebaseClient->createComponent<cl_move_base_z::Pose>(StandardReferenceFrames::Map);
+    movebaseClient->createComponent<cl_nav2z::Pose>(StandardReferenceFrames::Map);
 
     // create planner switcher
-    movebaseClient->createComponent<cl_move_base_z::PlannerSwitcher>();
+    movebaseClient->createComponent<cl_nav2z::PlannerSwitcher>();
 
     // create goal checker switcher
-    movebaseClient->createComponent<cl_move_base_z::GoalCheckerSwitcher>();
+    movebaseClient->createComponent<cl_nav2z::GoalCheckerSwitcher>();
 
     // create odom tracker
-    movebaseClient->createComponent<cl_move_base_z::odom_tracker::OdomTracker>();
+    movebaseClient->createComponent<cl_nav2z::odom_tracker::OdomTracker>();
 
-    movebaseClient->createComponent<cl_move_base_z::Amcl>();
+    movebaseClient->createComponent<cl_nav2z::Amcl>();
 
     // create waypoints navigator component
-    // auto waypointsNavigator = movebaseClient->createComponent<cl_move_base_z::WaypointNavigator>();
+    // auto waypointsNavigator = movebaseClient->createComponent<cl_nav2z::WaypointNavigator>();
     // loadWaypointsFromYaml(waypointsNavigator);
 
     // // change this to skip some points of the yaml file, default = 0

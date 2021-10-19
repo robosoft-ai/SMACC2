@@ -71,10 +71,10 @@ jobs:
             backward_local_planner
             forward_global_planner
             forward_local_planner
-            move_base_z_planners_common
+            nav2z_planners_common
             pure_spinning_local_planner
             undo_path_global_planner
-            move_base_z_client_plugin
+            nav2z_client
 
           vcs-repo-file-url: |
             https://raw.githubusercontent.com/ros2/ros2/${{ env.ROS_DISTRO }}/ros2.repos

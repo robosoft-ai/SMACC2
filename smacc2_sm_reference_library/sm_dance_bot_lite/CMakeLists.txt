@@ -17,7 +17,7 @@ find_package(Boost COMPONENTS thread REQUIRED)
 
 find_package(smacc2 REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(move_base_z_client_plugin REQUIRED)
+find_package(nav2z_client REQUIRED)
 
 find_package(ros_publisher_client REQUIRED)
 find_package(multirole_sensor_client REQUIRED)
@@ -27,26 +27,40 @@ find_package(sr_event_countdown REQUIRED)
 find_package(sr_conditional REQUIRED)
 find_package(ros_timer_client REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(sm_dance_bot_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
 set(dependencies
   smacc2
   std_msgs
   sensor_msgs
-  move_base_z_client_plugin
+  nav2z_client
   ros_publisher_client
   multirole_sensor_client
   sr_all_events_go
   sr_event_countdown
   sr_conditional
   ros_timer_client
-  sm_dance_bot_msgs
   visualization_msgs
+  rosidl_default_runtime
+)
+
+# find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+
+find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(action_msgs REQUIRED)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "servers/led_action_server/action/LEDControl.action"
+  DEPENDENCIES builtin_interfaces std_msgs action_msgs sensor_msgs
 )
 
 include_directories(include
-                    ${Boost_INCLUDE_DIRS})
+                    ${Boost_INCLUDE_DIRS}
+                    ${CMAKE_BINARY_DIR}/rosidl_generator_cpp)
 
 add_executable(${PROJECT_NAME}_node
   src/${PROJECT_NAME}/sm_dance_bot_lite.cpp
@@ -56,13 +70,16 @@ add_executable(${PROJECT_NAME}_node
 add_executable(temperature_sensor_node_${PROJECT_NAME} servers/temperature_sensor_node/src/temperature_sensor_node.cpp)
 add_executable(led_action_server_node_${PROJECT_NAME} servers/led_action_server/src/led_action_server_node.cpp)
 
-ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
-target_link_libraries(${PROJECT_NAME}_node ${Boost_LIBS})
+ament_target_dependencies(${PROJECT_NAME}_node ${dependencies} rosidl_generator_cpp)
+target_link_libraries(${PROJECT_NAME}_node ${Boost_LIBS}
+                      ${PROJECT_NAME}__rosidl_typesupport_cpp)
 
-ament_target_dependencies(led_action_server_node_${PROJECT_NAME} ${dependencies})
+ament_target_dependencies(led_action_server_node_${PROJECT_NAME} ${dependencies} rosidl_default_runtime)
 set_target_properties(led_action_server_node_${PROJECT_NAME} PROPERTIES OUTPUT_NAME "led_action_server_node")
+target_link_libraries(led_action_server_node_${PROJECT_NAME}
+                      ${PROJECT_NAME}__rosidl_typesupport_cpp)
 
-ament_target_dependencies(temperature_sensor_node_${PROJECT_NAME} ${dependencies})
+                      ament_target_dependencies(temperature_sensor_node_${PROJECT_NAME} ${dependencies})
 set_target_properties(temperature_sensor_node_${PROJECT_NAME} PROPERTIES OUTPUT_NAME "temperature_sensor_node")
 
 ament_export_include_directories(include)

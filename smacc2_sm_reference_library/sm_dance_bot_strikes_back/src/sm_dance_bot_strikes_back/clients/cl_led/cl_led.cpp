@@ -25,7 +25,7 @@ namespace sm_dance_bot_strikes_back
 namespace cl_led
 {
 ClLED::ClLED(std::string actionServerName)
-: SmaccActionClientBase<sm_dance_bot_msgs::action::LEDControl>(actionServerName)
+: SmaccActionClientBase<sm_dance_bot_strikes_back::action::LEDControl>(actionServerName)
 
 {
 }

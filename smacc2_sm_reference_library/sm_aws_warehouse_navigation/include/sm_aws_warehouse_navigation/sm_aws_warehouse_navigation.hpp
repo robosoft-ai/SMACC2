@@ -15,14 +15,14 @@
 #include <smacc2/smacc.hpp>
 
 // CLIENTS
-#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+#include <nav2z_client/nav2z_client.hpp>
 
 // CLIENT BEHAVIORS
-#include <move_base_z_client_plugin/client_behaviors.hpp>
+#include <nav2z_client/client_behaviors.hpp>
 #include <smacc2/client_behaviors/cb_ros_launch.hpp>
 #include <smacc2/client_behaviors/cb_wait_action_server.hpp>
 
-using namespace cl_move_base_z;
+using namespace cl_nav2z;
 using namespace smacc2::client_behaviors;
 
 // ORTHOGONALS

@@ -28,7 +28,7 @@ struct StStartNavigation : smacc2::SmaccState<StStartNavigation, SmAwsWarehouseN
   typedef mpl::list<
 
      Transition<EvCbSuccess<CbWaitNav2Nodes, OrNavigation>, StInitialNavigateForward, SUCCESS>
-    // , Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StAcquireSensors, ABORT>
+    // , Transition<EvActionAborted<ClNav2Z, OrNavigation>, StAcquireSensors, ABORT>
     //Transition<EvCbSuccess<OrNavigation, CbWaitTransform>, StInitialNavigateForward, SUCCESS> >
     >
     reactions;
@@ -45,7 +45,7 @@ struct StStartNavigation : smacc2::SmaccState<StStartNavigation, SmAwsWarehouseN
     // illegal wait workaround
     // rclcpp::sleep_for(6s);
 
-    // ClMoveBaseZ * navClient;
+    // ClNav2Z * navClient;
     // getOrthogonal<OrNavigation>()->requiresClient(navClient);
 
     // amcl_ = navClient->getComponent<Amcl>();

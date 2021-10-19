@@ -21,10 +21,10 @@
 
 #include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>
 
-#include <move_base_z_client_plugin/client_behaviors.hpp>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+#include <nav2z_client/client_behaviors.hpp>
+#include <nav2z_client/nav2z_client.hpp>
 
-using namespace cl_move_base_z;
+using namespace cl_nav2z;
 
 #include <sm_dance_bot_strikes_back/clients/cl_led/client_behaviors/cb_led_off.hpp>
 #include <sm_dance_bot_strikes_back/clients/cl_led/client_behaviors/cb_led_on.hpp>
@@ -46,7 +46,7 @@ using namespace sm_dance_bot_strikes_back::cl_service3;
 using namespace sm_dance_bot_strikes_back::cl_string_publisher;
 using namespace sm_dance_bot_strikes_back::cl_temperature_sensor;
 using namespace sm_dance_bot_strikes_back::cl_led;
-//using namespace sm_dance_bot_strikes_back::cl_move_base_z;
+//using namespace sm_dance_bot_strikes_back::cl_nav2z;
 //using namespace sm_dance_bot_strikes_back::cl_updatable_publisher;
 
 //STATE REACTORS

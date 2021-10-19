@@ -186,7 +186,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
         "multirole_sensor_client",
         "ros_publisher_client",
         "ros_timer_client",
-        "move_base_z_client_plugin",
+        "nav2z_client",
         "forward_global_planner",
         "forward_local_planner",
         "backward_global_planner",

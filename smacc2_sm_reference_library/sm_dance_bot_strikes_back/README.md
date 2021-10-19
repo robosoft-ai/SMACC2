@@ -2,7 +2,7 @@
 
  ! New Image required
 
- <h2>Description</h2> A full-featured state machine example, that highlights the capabilities of SMACC2, ROS2 & Nav2 via the Nav2z Client. In the original sm_dance_bot state machine, the variables that controlled the movements of the robot were entirely static, but in this example we made them dynamic, in that the robot uses a lidar sensor to find the range of the wall in front of it, then moves forward that value minus some margin. This also shows the "Orthogonal Read-Write Cycle" where we are reading data from one orthogonal (in this case the lidar client, "cl_lidar" is inside the obstacle perception orthogonal "or_obstacle_perception" and writes via the client "cl_move_base_z" in the navigation orthogonal "or_navigation".<br></br>
+ <h2>Description</h2> A full-featured state machine example, that highlights the capabilities of SMACC2, ROS2 & Nav2 via the Nav2z Client. In the original sm_dance_bot state machine, the variables that controlled the movements of the robot were entirely static, but in this example we made them dynamic, in that the robot uses a lidar sensor to find the range of the wall in front of it, then moves forward that value minus some margin. This also shows the "Orthogonal Read-Write Cycle" where we are reading data from one orthogonal (in this case the lidar client, "cl_lidar" is inside the obstacle perception orthogonal "or_obstacle_perception" and writes via the client "cl_nav2z" in the navigation orthogonal "or_navigation".<br></br>
 <a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__dance__bot__strikes__back.html">Doxygen Namespace & Class Reference</a>
 
 ! Updated video url required
