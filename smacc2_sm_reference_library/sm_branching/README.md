@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ! New Image required
+ ![sm_branching](docs/SmBranching_2021-10-18_101026.svg)
 
  <h2>Description</h2> A state machine example that highlights some of the advanced layout features available in the SMACC2 RTA.<br></br>
 <a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__branching.html">Doxygen Namespace & Class Reference</a>

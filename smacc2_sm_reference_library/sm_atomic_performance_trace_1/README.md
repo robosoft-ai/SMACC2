@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ! New Image required
+ ![sm_atomic_performance_trace_1](docs/SmAtomicPerformanceTrace1_2021-10-18_1008.svg)
 
  <h2>Description</h2> ! New Description required.<br></br>
 <a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__atomic__performance__test.html">Doxygen Namespace & Class Reference</a>
