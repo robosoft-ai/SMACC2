@@ -26,6 +26,8 @@
 #include <smacc2/smacc_state_reactor.hpp>
 #include <smacc2/smacc_tracing/trace_provider.hpp>
 
+#include "rcutils/logging_macros.h"
+
 namespace smacc2
 {
 using namespace smacc2::introspection;
@@ -83,15 +85,15 @@ public:
     //   auto st = dynamic_cast<ISmaccState*>(ctx.pContext_);
     //   this->contextNh = st->getNode();
     // }
-    this->contextNh = static_cast<Context *>(optionalNodeHandle(ctx.pContext_))
-                        ->getNode();  // static_cast<Context*>(ctx.pContext_.get())->getNode();
+    //     this->contextNh = static_cast<Context *>(optionalNodeHandle(ctx.pContext_))
+    //                         ->getNode();  // static_cast<Context*>(ctx.pContext_.get())->getNode();
 
     // stateNode_ = contextNh->create_sub_node(smacc2::utils::cleanShortTypeName(typeid(MostDerived)));
-    stateNode_ = rclcpp::Node::make_shared(
-      smacc2::utils::cleanShortTypeName(typeid(MostDerived)),
-      std::string(this->contextNh->get_fully_qualified_name()));
+    //     stateNode_ = rclcpp::Node::make_shared(
+    //       smacc2::utils::cleanShortTypeName(typeid(MostDerived)),
+    //       std::string(this->contextNh->get_fully_qualified_name()));
 
-    RCLCPP_WARN(getNode()->get_logger(), "[%s] creating state ", STATE_NAME);
+    RCUTILS_LOG_DEBUG_NAMED(STATE_NAME, "creating state ");
     this->set_context(ctx.pContext_);
 
     this->stateInfo_ = getStateInfo();
@@ -352,7 +354,7 @@ public:
     {
       this->postEvent<EvLoopEnd<MostDerived>>();
     }
-    RCLCPP_INFO(getNode()->get_logger(), "[%s] POST THROW CONDITION", STATE_NAME);
+    RCUTILS_LOG_INFO_NAMED(STATE_NAME, "POST THROW CONDITION");
   }
 
   void throwSequenceFinishedEvent() { this->postEvent<EvSequenceFinished<MostDerived>>(); }
@@ -426,42 +428,40 @@ private:
 #define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
     // finally we go to the derived state onEntry Function
 
-    RCLCPP_INFO(
-      getNode()->get_logger(), "[%s] State object created. Initializating...", STATE_NAME);
+    RCUTILS_LOG_INFO_NAMED(STATE_NAME, "[%s] State object created. Initializating...", STATE_NAME);
     this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
 
     // TODO: make this static to build the parameter tree at startup
     // this->getNode() = rclcpp::Node::make_shared(std::string(contextNh->get_namespace()) + std::string("/") +
     // smacc2::utils::cleanShortTypeName(typeid(MostDerived)).c_str());
-    RCLCPP_INFO_STREAM(
-      this->getNode()->get_logger(),
-      "[" << smacc2::utils::cleanShortTypeName(typeid(MostDerived)).c_str()
-          << "] creating ros subnode");
+    //     RCUTILS_LOG_INFO_NAMED(STATE_NAME,
+    //       "[" << smacc2::utils::cleanShortTypeName(typeid(MostDerived)).c_str()
+    //           << "] creating ros subnode");
 
-    RCLCPP_DEBUG(
-      getNode()->get_logger(), "[%s] nodehandle namespace: %s", STATE_NAME,
-      getNode()->get_namespace());
+    //     RCUTILS_LOG_INFO_NAMED(STATE_NAME, "[%s] nodehandle namespace: %s", STATE_NAME,
+    //       getNode()->get_namespace());
 
-    bool created;
-    if (!this->getParam("visited", created))
-    {
-      this->param("visited");
-      this->setParam("visited", true);
-    }
+    // destogl: Why do we need this?
+    //     bool created;
+    //     if (!this->getParam("visited", created))
+    //     {
+    //       this->param("visited");
+    //       this->setParam("visited", true);
+    //     }
 
     // before dynamic runtimeConfigure, we execute the staticConfigure behavior configurations
     {
-      RCLCPP_INFO(getNode()->get_logger(), "[%s] -- STATIC STATE DESCRIPTION --", STATE_NAME);
+      RCUTILS_LOG_INFO_NAMED(STATE_NAME, "[%s] -- STATIC STATE DESCRIPTION --", STATE_NAME);
 
       for (const auto & stateReactorsVector : SmaccStateInfo::staticBehaviorInfo)
       {
-        RCLCPP_DEBUG(
-          getNode()->get_logger(), "[%s] state reactor info: %s", STATE_NAME,
+        RCUTILS_LOG_INFO_NAMED(
+          STATE_NAME, "[%s] state reactor info: %s", STATE_NAME,
           demangleSymbol(stateReactorsVector.first->name()).c_str());
         for (auto & srinfo : stateReactorsVector.second)
         {
-          RCLCPP_DEBUG(
-            getNode()->get_logger(), "[%s] state reactor: %s", STATE_NAME,
+          RCUTILS_LOG_INFO_NAMED(
+            STATE_NAME, "[%s] state reactor: %s", STATE_NAME,
             demangleSymbol(srinfo.behaviorType->name()).c_str());
         }
       }
@@ -471,39 +471,38 @@ private:
       auto & staticDefinedStateReactors = SmaccStateInfo::stateReactorsInfo[tindex];
       auto & staticDefinedEventGenerators = SmaccStateInfo::eventGeneratorsInfo[tindex];
 
-      RCLCPP_DEBUG_STREAM(
-        getNode()->get_logger(), "finding static client behaviors. State Database: "
-                                   << SmaccStateInfo::staticBehaviorInfo.size()
-                                   << ". Current state " << cleanShortTypeName(*tindex) << " cbs: "
-                                   << SmaccStateInfo::staticBehaviorInfo[tindex].size());
+      //       RCUTILS_LOG_INFO_NAMED_STREAM(STATE_NAME, "finding static client behaviors. State Database: "
+      //                                    << SmaccStateInfo::staticBehaviorInfo.size()
+      //                                    << ". Current state " << cleanShortTypeName(*tindex) << " cbs: "
+      //                                    << SmaccStateInfo::staticBehaviorInfo[tindex].size());
       for (auto & bhinfo : staticDefinedBehaviors)
       {
-        RCLCPP_INFO(
-          getNode()->get_logger(), "[%s] Creating static client behavior: %s", STATE_NAME,
+        RCUTILS_LOG_INFO_NAMED(
+          STATE_NAME, "[%s] Creating static client behavior: %s", STATE_NAME,
           demangleSymbol(bhinfo.behaviorType->name()).c_str());
         bhinfo.factoryFunction(this);
       }
 
       for (auto & sr : staticDefinedStateReactors)
       {
-        RCLCPP_INFO(
-          getNode()->get_logger(), "[%s] Creating static state reactor: %s", STATE_NAME,
+        RCUTILS_LOG_INFO_NAMED(
+          STATE_NAME, "[%s] Creating static state reactor: %s", STATE_NAME,
           sr->stateReactorType->getFullName().c_str());
         sr->factoryFunction(this);
       }
 
       for (auto & eg : staticDefinedEventGenerators)
       {
-        RCLCPP_INFO(
-          getNode()->get_logger(), "[%s] Creating static event generator: %s", STATE_NAME,
+        RCUTILS_LOG_INFO_NAMED(
+          STATE_NAME, "[%s] Creating static event generator: %s", STATE_NAME,
           eg->eventGeneratorType->getFullName().c_str());
         eg->factoryFunction(this);
       }
 
-      RCLCPP_INFO(getNode()->get_logger(), "[%s] ---- END STATIC DESCRIPTION", STATE_NAME);
+      RCUTILS_LOG_INFO_NAMED(STATE_NAME, "[%s] ---- END STATIC DESCRIPTION", STATE_NAME);
     }
 
-    RCLCPP_INFO(getNode()->get_logger(), "[%s] State runtime configuration", STATE_NAME);
+    RCUTILS_LOG_INFO_NAMED(STATE_NAME, "[%s] State runtime configuration", STATE_NAME);
 
     auto * derivedthis = static_cast<MostDerived *>(this);
 
@@ -517,7 +516,7 @@ private:
 
     this->getStateMachine().notifyOnRuntimeConfigurationFinished(derivedthis);
 
-    RCLCPP_INFO(getNode()->get_logger(), "[%s] State OnEntry", STATE_NAME);
+    RCUTILS_LOG_INFO_NAMED(STATE_NAME, "[%s] State OnEntry", STATE_NAME);
 
     static_cast<MostDerived *>(this)->onEntry();
 

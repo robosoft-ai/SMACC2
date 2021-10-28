@@ -34,34 +34,34 @@ namespace smacc2
 using namespace smacc2::introspection;
 //-------------------------------------------------------------------------------------------------------
 // Delegates to ROS param access with the current NodeHandle
-template <typename T>
-bool ISmaccState::getParam(std::string param_name, T & param_storage)
-{
-  RCLCPP_INFO_STREAM(this->getLogger(), "getParam from node: " << getNode()->get_namespace());
-  return getNode()->get_parameter(param_name, param_storage);
-}
-//-------------------------------------------------------------------------------------------------------
-
-// Delegates to ROS param access with the current NodeHandle
-template <typename T>
-void ISmaccState::setParam(std::string param_name, T param_val)
-{
-  getNode()->set_parameter(rclcpp::Parameter(param_name, param_val));
-}
-//-------------------------------------------------------------------------------------------------------
-template <typename T>
-void ISmaccState::param(std::string param_name, T default_value)
-{
-  getNode()->declare_parameter(param_name, default_value);
-}
+// template <typename T>
+// bool ISmaccState::getParam(std::string param_name, T & param_storage)
+// {
+// //   RCLCPP_INFO_STREAM(this->getLogger(), "getParam from node: " << getNode()->get_namespace());
+//   return getNode()->get_parameter(param_name, param_storage);
+// }
+// //-------------------------------------------------------------------------------------------------------
+//
+// // Delegates to ROS param access with the current NodeHandle
+// template <typename T>
+// void ISmaccState::setParam(std::string param_name, T param_val)
+// {
+//   getNode()->set_parameter(rclcpp::Parameter(param_name, param_val));
+// }
+// //-------------------------------------------------------------------------------------------------------
+// template <typename T>
+// void ISmaccState::param(std::string param_name, T default_value)
+// {
+//   getNode()->declare_parameter(param_name, default_value);
+// }
 //-------------------------------------------------------------------------------------------------------
 #define THIS_STATE_NAME ((demangleSymbol(typeid(*this).name()).c_str()))
 template <typename TOrthogonal, typename TBehavior, typename... Args>
 std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
 {
   std::string orthogonalkey = demangledTypeName<TOrthogonal>();
-  RCLCPP_INFO(
-    getLogger(), "[%s] Configuring orthogonal: %s", THIS_STATE_NAME, orthogonalkey.c_str());
+  //   RCLCPP_INFO(
+  //     getLogger(), "[%s] Configuring orthogonal: %s", THIS_STATE_NAME, orthogonalkey.c_str());
 
   TOrthogonal * orthogonal = this->getOrthogonal<TOrthogonal>();
   if (orthogonal != nullptr)
@@ -74,9 +74,9 @@ std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
   }
   else
   {
-    RCLCPP_ERROR(
-      getLogger(), "[%s] Skipping client behavior creation in orthogonal [%s]. It does not exist.",
-      THIS_STATE_NAME, orthogonalkey.c_str());
+    //     RCLCPP_ERROR(
+    //       getLogger(), "[%s] Skipping client behavior creation in orthogonal [%s]. It does not exist.",
+    //       THIS_STATE_NAME, orthogonalkey.c_str());
     return nullptr;
   }
 }
@@ -101,11 +101,11 @@ void ISmaccState::requiresClient(SmaccClientType *& storage)
     if (storage != nullptr) return;
   }
 
-  RCLCPP_ERROR(
-    getLogger(),
-    "[%s] Client of type '%s' not found in any orthogonal of the current state machine. This may "
-    "produce a segmentation fault if the returned reference is used.",
-    sname, demangleSymbol<SmaccClientType>().c_str());
+  //   RCLCPP_ERROR(
+  //     getLogger(),
+  //     "[%s] Client of type '%s' not found in any orthogonal of the current state machine. This may "
+  //     "produce a segmentation fault if the returned reference is used.",
+  //     sname, demangleSymbol<SmaccClientType>().c_str());
 }
 //-------------------------------------------------------------------------------------------------------
 

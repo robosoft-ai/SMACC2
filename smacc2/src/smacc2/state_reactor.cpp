@@ -42,12 +42,12 @@ void StateReactor::update()
 {
   if (this->triggers())
   {
-    RCLCPP_INFO(getLogger(), "State reactor base REALLY TRIGGERS!!");
+    //     RCLCPP_INFO(getLogger(), "State reactor base REALLY TRIGGERS!!");
     this->postEventFn();
   }
 }
 
-rclcpp::Node::SharedPtr StateReactor::getNode() { return ownerState->getNode(); }
+// rclcpp::Node::SharedPtr StateReactor::getNode() { return ownerState->getNode(); }
 
 namespace introspection
 {

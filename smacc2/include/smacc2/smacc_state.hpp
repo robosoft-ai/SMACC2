@@ -29,9 +29,9 @@ public:
 
   inline ISmaccState * getParentState() { return parentState_; }
 
-  inline rclcpp::Node::SharedPtr & getNode() { return stateNode_; }
+  //   inline rclcpp::Node::SharedPtr & getNode() { return stateNode_; }
 
-  inline rclcpp::Logger getLogger() { return stateNode_->get_logger(); }
+  //   inline rclcpp::Logger getLogger() { return stateNode_->get_logger(); }
 
   virtual std::string getClassName();
 

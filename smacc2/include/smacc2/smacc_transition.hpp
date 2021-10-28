@@ -40,7 +40,7 @@ private:
   {
     static boost::statechart::result react_without_action(State & stt)
     {
-      RCLCPP_DEBUG(stt.getLogger(), "[Smacc Transition] REACT WITHOUT ACTION");
+      //       RCLCPP_DEBUG(stt.getLogger(), "[Smacc Transition] REACT WITHOUT ACTION");
       typedef smacc2::Transition<Event, Destination, Tag, TransitionContext, pTransitionAction>
         Transtype;
       TRANSITION_TAG mock;
@@ -52,7 +52,7 @@ private:
 
     static boost::statechart::result react_with_action(State & stt, const Event & evt)
     {
-      RCLCPP_DEBUG(stt.getLogger(), "[Smacc Transition] REACT WITH ACTION AND EVENT");
+      //       RCLCPP_DEBUG(stt.getLogger(), "[Smacc Transition] REACT WITH ACTION AND EVENT");
       typedef smacc2::Transition<Event, Destination, Tag, TransitionContext, pTransitionAction>
         Transtype;
       TRANSITION_TAG mock;
