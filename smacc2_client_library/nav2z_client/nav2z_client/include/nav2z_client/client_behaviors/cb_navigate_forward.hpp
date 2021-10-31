@@ -33,7 +33,7 @@ namespace cl_nav2z
 class CbNavigateForward : public CbNav2ZClientBehaviorBase
 {
 public:
-  std::optional<float> forwardDistance;
+  float forwardDistance;
 
   // just a stub to show how to use parameterless constructor
   std::optional<float> forwardSpeed;

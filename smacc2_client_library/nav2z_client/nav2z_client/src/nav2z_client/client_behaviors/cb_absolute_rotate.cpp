@@ -30,7 +30,6 @@
 namespace cl_nav2z
 {
 CbAbsoluteRotate::CbAbsoluteRotate() {}
-
 CbAbsoluteRotate::CbAbsoluteRotate(float absoluteGoalAngleDegree, float yaw_goal_tolerance)
 {
   this->absoluteGoalAngleDegree = absoluteGoalAngleDegree;
@@ -43,18 +42,9 @@ CbAbsoluteRotate::CbAbsoluteRotate(float absoluteGoalAngleDegree, float yaw_goal
 
 void CbAbsoluteRotate::onEntry()
 {
-  double goal_angle;
-
   listener = std::make_shared<tf2_ros::Buffer>(getNode()->get_clock());
-  if (!this->absoluteGoalAngleDegree)
-  {
-    goal_angle = 0;
-    this->getCurrentState()->param("goal_angle", goal_angle);
-  }
-  else
-  {
-    goal_angle = *this->absoluteGoalAngleDegree;
-  }
+  double goal_angle = this->absoluteGoalAngleDegree;
+
   RCLCPP_INFO_STREAM(getLogger(), "[CbAbsoluteRotate] Absolute yaw Angle:" << goal_angle);
 
   auto plannerSwitcher = this->moveBaseClient_->getComponent<PlannerSwitcher>();
