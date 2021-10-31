@@ -40,7 +40,6 @@ jobs:
 
             sm_advanced_recovery_1
             sm_atomic
-            sm_atomic_24hr
             sm_atomic_performance_test_a_1
             sm_atomic_performance_trace_1
             sm_atomic_subscribers_performance_test
