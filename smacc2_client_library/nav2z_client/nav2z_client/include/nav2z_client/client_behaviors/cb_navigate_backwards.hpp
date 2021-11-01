@@ -32,7 +32,7 @@ namespace cl_nav2z
 class CbNavigateBackwards : public CbNav2ZClientBehaviorBase
 {
 public:
-  std::optional<float> backwardDistance;
+  float backwardDistance;
 
   // just a stub to show how to use parameterless constructor
   std::optional<float> backwardSpeed;
@@ -42,8 +42,6 @@ public:
   cl_nav2z::odom_tracker::OdomTracker * odomTracker_;
 
   CbNavigateBackwards(float backwardDistance);
-
-  CbNavigateBackwards();
 
   void onEntry() override;
 

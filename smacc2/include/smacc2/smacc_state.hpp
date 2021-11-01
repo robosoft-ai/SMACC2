@@ -82,21 +82,6 @@ public:
     return eventGenerators_;
   }
 
-  // Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  bool getParam(std::string param_name, T & param_storage);
-
-  // Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  void setParam(std::string param_name, T param_val);
-
-  //Delegates to ROS param access with the current NodeHandle
-  void param(std::string param_name);
-
-  //Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  void param(std::string param_name, T default_value);
-
   template <typename TOrthogonal>
   TOrthogonal * getOrthogonal();
 

@@ -160,18 +160,6 @@ protected:
   template <typename TOrthogonal>
   void createOrthogonal();
 
-  // Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  bool getParam(std::string param_name, T & param_storage);
-
-  // Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  void setParam(std::string param_name, T param_val);
-
-  // Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  bool param(std::string param_name, T & param_val, const T & default_val);
-
   // The node handle for this state
   rclcpp::Node::SharedPtr nh_;
 

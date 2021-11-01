@@ -29,8 +29,6 @@ namespace cl_nav2z
 {
 using namespace ::cl_nav2z::odom_tracker;
 
-CbNavigateGlobalPosition::CbNavigateGlobalPosition() {}
-
 CbNavigateGlobalPosition::CbNavigateGlobalPosition(float x, float y, float yaw)
 {
   auto p = geometry_msgs::msg::Point();
@@ -78,37 +76,16 @@ void CbNavigateGlobalPosition::execute()
   ClNav2Z::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
   goal.pose.header.stamp = getNode()->now();
-  readStartPoseFromParameterServer(goal);
 
+  goal.pose.pose.position = goalPosition;
+  tf2::Quaternion q;
+  q.setRPY(0, 0, goalYaw);
+  goal.pose.pose.orientation = tf2::toMsg(q);
   // store the start pose on the state machine storage so that it can
   // be referenced from other states (for example return to radial start)
   this->getStateMachine()->setGlobalSMData("radial_start_pose", goal.pose);
 
   moveBaseClient_->sendGoal(goal);
-}
-
-void CbNavigateGlobalPosition::readStartPoseFromParameterServer(ClNav2Z::Goal & goal)
-{
-  if (!goalPosition)
-  {
-    this->getCurrentState()->getParam("start_position_x", goal.pose.pose.position.x);
-    this->getCurrentState()->getParam("start_position_y", goal.pose.pose.position.y);
-    double yaw;
-    this->getCurrentState()->getParam("start_position_yaw", yaw);
-    tf2::Quaternion q;
-    q.setRPY(0, 0, yaw);
-    goal.pose.pose.orientation = tf2::toMsg(q);
-  }
-  else
-  {
-    goal.pose.pose.position = *goalPosition;
-    tf2::Quaternion q;
-    q.setRPY(0, 0, *goalYaw);
-    goal.pose.pose.orientation = tf2::toMsg(q);
-  }
-
-  RCLCPP_INFO_STREAM(
-    getLogger(), "start position read from parameter server: " << goal.pose.pose.position);
 }
 
 // This is the substate destructor. This code will be executed when the

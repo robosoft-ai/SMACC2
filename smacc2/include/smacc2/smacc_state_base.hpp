@@ -442,13 +442,6 @@ private:
       getNode()->get_logger(), "[%s] nodehandle namespace: %s", STATE_NAME,
       getNode()->get_namespace());
 
-    bool created;
-    if (!this->getParam("visited", created))
-    {
-      this->param("visited");
-      this->setParam("visited", true);
-    }
-
     // before dynamic runtimeConfigure, we execute the staticConfigure behavior configurations
     {
       RCLCPP_INFO(getNode()->get_logger(), "[%s] -- STATIC STATE DESCRIPTION --", STATE_NAME);

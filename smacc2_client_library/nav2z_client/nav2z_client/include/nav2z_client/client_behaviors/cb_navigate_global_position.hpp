@@ -30,8 +30,9 @@ namespace cl_nav2z
 class CbNavigateGlobalPosition : public CbNav2ZClientBehaviorBase
 {
 public:
-  std::optional<geometry_msgs::msg::Point> goalPosition;
-  std::optional<float> goalYaw;
+  geometry_msgs::msg::Point goalPosition;
+  float goalYaw;
+
   std::optional<float> yawTolerance;
   std::optional<float> yawToleranceX;
   std::optional<float> yawToleranceY;
