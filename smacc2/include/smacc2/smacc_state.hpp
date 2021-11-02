@@ -29,9 +29,7 @@ public:
 
   inline ISmaccState * getParentState() { return parentState_; }
 
-  inline rclcpp::Node::SharedPtr & getNode() { return stateNode_; }
-
-  inline rclcpp::Logger getLogger() { return stateNode_->get_logger(); }
+  inline rclcpp::Logger getLogger() { return *logger_; }
 
   virtual std::string getClassName();
 
@@ -91,7 +89,7 @@ public:
   template <typename TStateReactor>
   TStateReactor * getStateReactor();
 
-  rclcpp::Node::SharedPtr stateNode_;
+  std::shared_ptr<rclcpp::Logger> logger_;
 
 protected:
   std::vector<std::shared_ptr<StateReactor>> stateReactors_;
