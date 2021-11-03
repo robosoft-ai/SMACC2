@@ -17,39 +17,44 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  *****************************************************************************************************************/
-#pragma once 
+#pragma once
 
-#include "cb_move_end_effector_trajectory.hpp"
 #include <tf2/transform_datatypes.h>
+#include "cb_move_end_effector_trajectory.hpp"
 
 namespace cl_move_group_interface
 {
-    class CbCircularPivotMotion : public CbMoveEndEffectorTrajectory
-    {
-    public:
-        std::optional<double> angularSpeed_rad_s_;
-        std::optional<double> linearSpeed_m_s_;
+class CbCircularPivotMotion : public CbMoveEndEffectorTrajectory
+{
+public:
+  std::optional<double> angularSpeed_rad_s_;
+  std::optional<double> linearSpeed_m_s_;
 
-        // if not specified it would be used the current robot pose
-        std::optional<geometry_msgs::msg::Pose> relativeInitialPose_;
+  // if not specified it would be used the current robot pose
+  std::optional<geometry_msgs::msg::Pose> relativeInitialPose_;
 
-        CbCircularPivotMotion(std::string tipLink = "");
+  CbCircularPivotMotion(std::string tipLink = "");
 
-        CbCircularPivotMotion(const geometry_msgs::msg::PoseStamped &planePivotPose, double deltaRadians, std::string tipLink = "");
+  CbCircularPivotMotion(
+    const geometry_msgs::msg::PoseStamped & planePivotPose, double deltaRadians,
+    std::string tipLink = "");
 
-        CbCircularPivotMotion(const geometry_msgs::msg::PoseStamped &planePivotPose, const geometry_msgs::msg::Pose &relativeInitialPose, double deltaRadians, std::string tipLink = "");
+  CbCircularPivotMotion(
+    const geometry_msgs::msg::PoseStamped & planePivotPose,
+    const geometry_msgs::msg::Pose & relativeInitialPose, double deltaRadians,
+    std::string tipLink = "");
 
-        virtual void generateTrajectory() override;
+  virtual void generateTrajectory() override;
 
-        virtual void createMarkers() override;
+  virtual void createMarkers() override;
 
-    protected:
-        geometry_msgs::msg::PoseStamped planePivotPose_;
+protected:
+  geometry_msgs::msg::PoseStamped planePivotPose_;
 
-        double deltaRadians_;
+  double deltaRadians_;
 
-    private:
-        void computeCurrentEndEffectorPoseRelativeToPivot();
-    };
+private:
+  void computeCurrentEndEffectorPoseRelativeToPivot();
+};
 
-} // namespace cl_move_group_interface
+}  // namespace cl_move_group_interface

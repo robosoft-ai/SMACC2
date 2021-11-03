@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <move_group_interface_client/cl_movegroup.hpp>
 #include <tf2/transform_datatypes.h>
+#include <move_group_interface_client/cl_movegroup.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_move_group_interface
