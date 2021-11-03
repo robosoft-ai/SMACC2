@@ -18,12 +18,15 @@
  *
  ******************************************************************************************************************/
 
-#include <move_group_interface_client/client_behaviors/cb_move_end_effector_trajectory.h>
+
 #include <tf2/transform_datatypes.h>
 #include <tf2_ros/transform_listener.h>
+
+#include <move_group_interface_client/client_behaviors/cb_move_end_effector_trajectory.hpp>
 #include <move_group_interface_client/common.hpp>
 #include <move_group_interface_client/components/cp_trajectory_history.hpp>
 #include <moveit_msgs/srv/get_position_ik.hpp>
+
 #include <visualization_msgs/msg/marker_array.hpp>
 
 using namespace std::chrono_literals;

@@ -21,7 +21,7 @@
 #pragma once
 
 #include <move_group_interface_client/cl_movegroup.hpp>
-#include <move_group_interface_client/components/cp_grasping_objects.h>
+#include <move_group_interface_client/components/cp_grasping_objects.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace cl_move_group_interface

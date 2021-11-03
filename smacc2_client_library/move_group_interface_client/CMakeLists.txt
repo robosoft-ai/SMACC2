@@ -25,25 +25,25 @@ include_directories(include)
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
-            src/move_group_interface_client/cl_movegroup.cpp
-            src/move_group_interface_client/components/cp_trajectory_history.cpp
-            src/move_group_interface_client/components/cp_grasping_objects.cpp
+  src/move_group_interface_client/cl_movegroup.cpp
+  src/move_group_interface_client/components/cp_trajectory_history.cpp
+  src/move_group_interface_client/components/cp_grasping_objects.cpp
 
-            src/move_group_interface_client/client_behaviors/cb_execute_last_trajectory.cpp
-            src/move_group_interface_client/client_behaviors/cb_move_end_effector_relative.cpp
-            src/move_group_interface_client/client_behaviors/cb_move_end_effector.cpp
-            src/move_group_interface_client/client_behaviors/cb_circular_pivot_motion.cpp
-            src/move_group_interface_client/client_behaviors/cb_move_known_state.cpp
-            src/move_group_interface_client/client_behaviors/cb_move_joints.cpp
-            src/move_group_interface_client/client_behaviors/cb_pouring_motion.cpp
-            src/move_group_interface_client/client_behaviors/cb_detach_object.cpp
-            src/move_group_interface_client/client_behaviors/cb_undo_last_trajectory.cpp
-            src/move_group_interface_client/client_behaviors/cb_move_end_effector_trajectory.cpp
-            src/move_group_interface_client/client_behaviors/cb_end_effector_rotate.cpp
-            src/move_group_interface_client/client_behaviors/cb_move_cartesian_relative.cpp
-            src/move_group_interface_client/client_behaviors/cb_move_named_target.cpp
-            src/move_group_interface_client/client_behaviors/cb_attach_object.cpp
-            src/move_group_interface_client/client_behaviors/cb_move_last_trajectory_initial_state.cpp
+  src/move_group_interface_client/client_behaviors/cb_execute_last_trajectory.cpp
+  src/move_group_interface_client/client_behaviors/cb_move_end_effector_relative.cpp
+  src/move_group_interface_client/client_behaviors/cb_move_end_effector.cpp
+  src/move_group_interface_client/client_behaviors/cb_circular_pivot_motion.cpp
+  src/move_group_interface_client/client_behaviors/cb_move_known_state.cpp
+  src/move_group_interface_client/client_behaviors/cb_move_joints.cpp
+  src/move_group_interface_client/client_behaviors/cb_pouring_motion.cpp
+  src/move_group_interface_client/client_behaviors/cb_detach_object.cpp
+  src/move_group_interface_client/client_behaviors/cb_undo_last_trajectory.cpp
+  src/move_group_interface_client/client_behaviors/cb_move_end_effector_trajectory.cpp
+  src/move_group_interface_client/client_behaviors/cb_end_effector_rotate.cpp
+  src/move_group_interface_client/client_behaviors/cb_move_cartesian_relative.cpp
+  src/move_group_interface_client/client_behaviors/cb_move_named_target.cpp
+  src/move_group_interface_client/client_behaviors/cb_attach_object.cpp
+  src/move_group_interface_client/client_behaviors/cb_move_last_trajectory_initial_state.cpp)
 
 
 ament_target_dependencies(${PROJECT_NAME}
