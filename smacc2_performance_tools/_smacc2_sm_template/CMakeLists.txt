@@ -12,17 +12,13 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(ros_timer_client REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
-set(THIS_PACKAGE_INCLUDE_DEPENDS
-  ros_timer_client
-  smacc2
-)
-
 include_directories(
   include
+  ${smacc2_INCLUDE_DIRS}
+  ${ros_timer_client_INCLUDE_DIRS}
 )
 
 add_executable(${PROJECT_NAME}_node
@@ -35,7 +31,7 @@ target_link_libraries(${PROJECT_NAME}_node
   ${Boost_LIBRARIES}
 )
 
-ament_target_dependencies(${PROJECT_NAME}_node ${THIS_PACKAGE_INCLUDE_DEPENDS})
+ament_target_dependencies(${PROJECT_NAME}_node smacc2)
 
 install(
   DIRECTORY include/
@@ -43,7 +39,12 @@ install(
 )
 
 install(DIRECTORY
-  config launch
+  launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(DIRECTORY
+  config
   DESTINATION share/${PROJECT_NAME}
 )
 

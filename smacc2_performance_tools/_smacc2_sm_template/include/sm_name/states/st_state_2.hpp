@@ -22,49 +22,43 @@
 #include "rclcpp/rclcpp.hpp"
 #include "smacc2/smacc.hpp"
 
-// CLIENTS
-#include "ros_timer_client/cl_ros_timer.hpp"
-#include "ros_timer_client/client_behaviors/cb_timer_countdown_loop.hpp"
-#include "ros_timer_client/client_behaviors/cb_timer_countdown_once.hpp"
-
-// ORTHOGONALS
-#include "$sm_name$/orthogonals/or_timer.hpp"
+// STATE DECLARATION
+using namespace std::chrono;
 
 namespace $sm_name$
 {
 // SMACC2 clases
-using smacc2::Transition;
 using smacc2::EvStateRequestFinish;
-using smacc2::default_transition_tags::SUCCESS;
+using smacc2::Transition;
 
-using cl_ros_timer::EvTimer;
-using cl_ros_timer::CbTimerCountdownLoop;
-using cl_ros_timer::CbTimerCountdownOnce;
-
-using $sm_name$::OrTimer;
+// STATE MACHINE SHARED VARIABLES (used in this state)
+extern unsigned int _counter_;
 
 // STATE DECLARATION
 struct State2 : smacc2::SmaccState<State2, $SmName$>
 {
   using SmaccState::SmaccState;
-
   // TRANSITION TABLE
   typedef boost::mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State1, SUCCESS>
+    Transition<EvStateRequestFinish<State2>, State1>
 
-    >reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure()
+  static void staticConfigure() {}
+
+  void runtimeConfigure() {}
+
+  void onEntry()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);  // EvTimer triggers once at 10 client ticks
+    // only update counter in this state
+    ++_counter_;
+
+    this->postEvent<EvStateRequestFinish<State2>>();
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State2"); }
-
-  void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
-
-  void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
+  void onExit() {}
 };
-}  // namespace sm_atomic_performance_test_a_1
+}  // namespace $sm_name$
