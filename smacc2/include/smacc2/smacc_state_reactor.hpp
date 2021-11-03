@@ -86,6 +86,8 @@ public:
   //TDerived
   void initialize(ISmaccState * ownerState);
 
+  rclcpp::Node::SharedPtr & getNode();
+
   rclcpp::Logger getLogger();
 
 private:

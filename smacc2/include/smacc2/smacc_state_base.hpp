@@ -26,6 +26,8 @@
 #include <smacc2/smacc_state_reactor.hpp>
 #include <smacc2/smacc_tracing/trace_provider.hpp>
 
+#define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
+
 namespace smacc2
 {
 using namespace smacc2::introspection;
@@ -62,8 +64,6 @@ public:
   // Constructor that initializes the state ros node handle
   SmaccState(my_context ctx)
   {
-#define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
-
     static_assert(
       std::is_base_of<ISmaccState, Context>::value ||
         std::is_base_of<ISmaccStateMachine, Context>::value,
@@ -78,6 +78,8 @@ public:
 
     RCLCPP_INFO(getLogger(), "[%s] creating state ", STATE_NAME);
     this->set_context(ctx.pContext_);
+
+    node_ = this->getStateMachine().getNode();
 
     this->stateInfo_ = getStateInfo();
 
@@ -118,8 +120,6 @@ public:
   // this function is called by boot statechart before the destructor call
   void exit()
   {
-#define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
-
     auto * derivedThis = static_cast<MostDerived *>(this);
     this->getStateMachine().notifyOnStateExitting(derivedThis);
     try
@@ -314,7 +314,6 @@ public:
 
   void checkWhileLoopConditionAndThrowEvent(bool (MostDerived::*conditionFn)())
   {
-#define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
     auto * thisobject = static_cast<MostDerived *>(this);
     auto condition = boost::bind(conditionFn, thisobject);
     bool conditionResult = condition();
@@ -360,7 +359,6 @@ public:
   static inner_context_ptr_type shallow_construct(
     const context_ptr_type & pContext, outermost_context_base_type & outermostContextBase)
   {
-#define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
     // allocating in memory
     auto state = new MostDerived(
       SmaccState<MostDerived, Context, InnerInitial, historyMode>::my_context(pContext));
@@ -399,15 +397,11 @@ private:
 
   void entryStateInternal()
   {
-#define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
     // finally we go to the derived state onEntry Function
 
     RCLCPP_INFO(getLogger(), "[%s] State object created. Initializating...", STATE_NAME);
     this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
 
-    // TODO: make this static to build the parameter tree at startup
-    // this->getNode() = rclcpp::Node::make_shared(std::string(contextNh->get_namespace()) + std::string("/") +
-    // smacc2::utils::cleanShortTypeName(typeid(MostDerived)).c_str());
     RCLCPP_INFO_STREAM(
       getLogger(), "[" << smacc2::utils::cleanShortTypeName(typeid(MostDerived)).c_str()
                        << "] creating ros subnode");
