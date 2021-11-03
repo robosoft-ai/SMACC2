@@ -41,20 +41,7 @@ CbNavigateForward::~CbNavigateForward() {}
 void CbNavigateForward::onEntry()
 {
   // straight motion distance
-  double dist = 3.5;
-
-  if (!forwardDistance)
-  {
-    // second choice parameter server
-    if (!this->getCurrentState()->getParam("straight_motion_distance", dist))
-    {
-      // last choice default value;
-    }
-  }
-  else
-  {
-    dist = *forwardDistance;
-  }
+  double dist = forwardDistance;
 
   RCLCPP_INFO_STREAM(getLogger(), "[CbNavigateForward] Straight motion distance: " << dist);
 

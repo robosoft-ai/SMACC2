@@ -394,34 +394,6 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(
   return connection;
 }
 
-// template <typename TSmaccSignal, typename TMemberFunctionPrototype>
-// boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal,
-// TMemberFunctionPrototype callback)
-// {
-//     return signal.connect(callback);
-//     // return signal;
-// }
-
-template <typename T>
-bool ISmaccStateMachine::getParam(std::string param_name, T & param_storage)
-{
-  return getNode()->get_parameter(param_name, param_storage);
-}
-
-// Delegates to ROS param access with the current NodeHandle
-template <typename T>
-void ISmaccStateMachine::setParam(std::string param_name, T param_val)
-{
-  getNode()->set_parameter(rclcpp::Parameter(param_name, param_val));
-}
-
-// Delegates to ROS param access with the current NodeHandle
-template <typename T>
-bool ISmaccStateMachine::param(std::string param_name, T & param_val, const T & default_val)
-{
-  return getNode()->declare_parameter(param_name, param_val, default_val);
-}
-
 template <typename StateType>
 void ISmaccStateMachine::notifyOnStateEntryStart(StateType * state)
 {

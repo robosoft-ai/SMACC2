@@ -39,12 +39,8 @@ source ~/colcon_ws/install/setup.bash
 
 And then run the launch file...
 
-! gazebo demo vs lightweight demo for ros2?
-
-! .launch vs .launch.py
-
 ```
-ros2 launch sm_dance_bot_strikes_back sm_dance_bot_strikes_back.launch
+ros2 launch sm_dance_bot_strikes_back sm_dance_bot_strikes_back_launch.py
 ```
 
  <h2>Viewer Instructions</h2>

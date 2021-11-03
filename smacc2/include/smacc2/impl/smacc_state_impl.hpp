@@ -34,26 +34,7 @@ namespace smacc2
 using namespace smacc2::introspection;
 //-------------------------------------------------------------------------------------------------------
 // Delegates to ROS param access with the current NodeHandle
-template <typename T>
-bool ISmaccState::getParam(std::string param_name, T & param_storage)
-{
-  RCLCPP_INFO_STREAM(this->getLogger(), "getParam from node: " << getNode()->get_namespace());
-  return getNode()->get_parameter(param_name, param_storage);
-}
-//-------------------------------------------------------------------------------------------------------
 
-// Delegates to ROS param access with the current NodeHandle
-template <typename T>
-void ISmaccState::setParam(std::string param_name, T param_val)
-{
-  getNode()->set_parameter(rclcpp::Parameter(param_name, param_val));
-}
-//-------------------------------------------------------------------------------------------------------
-template <typename T>
-void ISmaccState::param(std::string param_name, T default_value)
-{
-  getNode()->declare_parameter(param_name, default_value);
-}
 //-------------------------------------------------------------------------------------------------------
 #define THIS_STATE_NAME ((demangleSymbol(typeid(*this).name()).c_str()))
 template <typename TOrthogonal, typename TBehavior, typename... Args>

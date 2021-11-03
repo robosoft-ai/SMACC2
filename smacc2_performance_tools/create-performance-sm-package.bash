@@ -47,7 +47,6 @@ SM_CONFIG_YAML="config/sm_name_config.yaml"
 SM_HPP="include/sm_name/sm_name.hpp"
 SM_ST1_HPP="include/sm_name/states/st_state_1.hpp"
 SM_ST2_HPP="include/sm_name/states/st_state_2.hpp"
-SM_OR_TIMER_HPP="include/sm_name/orthogonals/or_timer.hpp"
 SM_LAUNCH="launch/sm_name.launch"
 SM_CPP="src/sm_name/sm_name_node.cpp"
 SM_CMAKELISTS="CMakeLists.txt"
@@ -55,7 +54,6 @@ SM_PACKAGE="package.xml"
 SM_README="README.md"
 
 SM_FOLDERS=(
-  "include/sm_name/orthogonals"
   "include/sm_name/states"
   "include/sm_name"
   "src/sm_name"
@@ -67,7 +65,6 @@ FILES_TO_SED=(
   $SM_HPP
   $SM_ST1_HPP
   $SM_ST2_HPP
-  $SM_OR_TIMER_HPP
   $SM_LAUNCH
   $SM_CPP
   $SM_CMAKELISTS
@@ -81,7 +78,6 @@ FILES_TO_RENAME=(
   $SM_HPP
   $SM_ST1_HPP
   $SM_ST2_HPP
-  $SM_OR_TIMER_HPP
   $SM_LAUNCH
   $SM_CPP
 )
@@ -121,9 +117,6 @@ for FOLDER in "${SM_FOLDERS[@]}"; do
   rm -r $FOLDER
 done
 rm "COLCON_IGNORE"
-
-# Remove currently not used files
-rm "launch/NOT_USED_sm_name_with_arguments.launch"
 
 cd -
 

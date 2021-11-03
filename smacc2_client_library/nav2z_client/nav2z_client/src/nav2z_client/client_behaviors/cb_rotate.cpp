@@ -26,22 +26,11 @@
 
 namespace cl_nav2z
 {
-CbRotate::CbRotate() {}
-
 CbRotate::CbRotate(float rotate_degree) { rotateDegree = rotate_degree; }
 
 void CbRotate::onEntry()
 {
-  double angle_increment_degree = 45.0;
-
-  if (!rotateDegree)
-  {
-    this->getCurrentState()->getParam("angle_increment_degree", angle_increment_degree);
-  }
-  else
-  {
-    angle_increment_degree = *rotateDegree;
-  }
+  double angle_increment_degree = rotateDegree;
 
   auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
 

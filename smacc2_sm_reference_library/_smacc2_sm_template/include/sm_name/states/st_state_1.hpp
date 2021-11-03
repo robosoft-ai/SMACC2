@@ -22,24 +22,29 @@
 #include "rclcpp/rclcpp.hpp"
 #include "smacc2/smacc.hpp"
 
+// CLIENTS
+#include "ros_timer_client/cl_ros_timer.hpp"
+#include "ros_timer_client/client_behaviors/cb_timer_countdown_loop.hpp"
+#include "ros_timer_client/client_behaviors/cb_timer_countdown_once.hpp"
+
+// ORTHOGONALS
+#include "$sm_name$/orthogonals/or_timer.hpp"
 
 namespace $sm_name$
 {
 // SMACC2 clases
 using smacc2::Transition;
 using smacc2::EvStateRequestFinish;
+using smacc2::default_transition_tags::SUCCESS;
+
+using cl_ros_timer::EvTimer;
+using cl_ros_timer::CbTimerCountdownLoop;
+using cl_ros_timer::CbTimerCountdownOnce;
+
+using $sm_name$::OrTimer;
 
 // STATE MACHINE SHARED VARIABLES (used in this state)
-extern unsigned int _counter_;
 extern std::shared_ptr<rclcpp::Node> _node_;
-extern rclcpp::Time _start_time_;
-
-extern unsigned int _sum_of_iterations_;
-extern double _sum_of_elapsed_time_;
-
-
-// State constants
-constexpr unsigned int ITERATIONS_CHECK = 1000;
 
 // STATE DECLARATION
 struct State1 : smacc2::SmaccState<State1, $SmName$>
@@ -49,42 +54,21 @@ struct State1 : smacc2::SmaccState<State1, $SmName$>
   // TRANSITION TABLE
   typedef boost::mpl::list<
 
-    Transition<EvStateRequestFinish<State1>, State2>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>
 
     >reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure() {}
+  static void staticConfigure()
+  {
+    configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3);  // EvTimer triggers each 3 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);  // EvTimer triggers once at 10 client ticks
+  }
 
   void runtimeConfigure() {}
 
-  void onEntry()
-  {
-    // NOTE: counter is updated in 'State2'
-    if (_counter_ == ITERATIONS_CHECK)
-    {
-      rclcpp::Duration elapsed = _node_->now() - _start_time_;
-      double frequency_Hz = ITERATIONS_CHECK / elapsed.seconds();
-      _sum_of_iterations_ += ITERATIONS_CHECK;
-      _sum_of_elapsed_time_ += elapsed.seconds();
-      double global_frequency_Hz = _sum_of_iterations_ / _sum_of_elapsed_time_;
+  void onEntry() { RCLCPP_INFO(_node_->get_logger(), "On Entry!"); }
 
-      // Using fatal to override all logging restrictions.
-      RCLCPP_FATAL(
-        _node_->get_logger(),
-        "Executed %u iterations in %lf seconds: %lf Hz. Longtime frequency: %lf Hz",
-        ITERATIONS_CHECK, elapsed.seconds(), frequency_Hz, global_frequency_Hz
-      );
-
-      _counter_ = 1;
-      _start_time_ = _node_->now();
-    }
-
-    this->postEvent<EvStateRequestFinish<State1>>();
-  }
-
-  void onExit() {}
-
-
+  void onExit() { RCLCPP_INFO(_node_->get_logger(), "On Exit!"); }
 };
 }  // namespace sm_atomic_performance_test_a_1

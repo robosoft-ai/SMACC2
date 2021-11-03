@@ -42,21 +42,10 @@ CbNavigateBackwards::CbNavigateBackwards(float backwardDistance)
   this->backwardDistance = backwardDistance;
 }
 
-CbNavigateBackwards::CbNavigateBackwards() {}
-
 void CbNavigateBackwards::onEntry()
 {
   // straight motion distance
-  double dist = 3.5;
-
-  if (!backwardDistance)
-  {
-    this->getCurrentState()->param("straight_motion_distance", dist);
-  }
-  else
-  {
-    dist = *backwardDistance;
-  }
+  double dist = backwardDistance;
 
   RCLCPP_INFO_STREAM(
     getLogger(), "[CbNavigateBackwards] Straight backwards motion distance: " << dist);

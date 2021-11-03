@@ -31,13 +31,12 @@ class CbAbsoluteRotate : public CbNav2ZClientBehaviorBase
 public:
   std::shared_ptr<tf2_ros::Buffer> listener;
 
-  std::optional<float> absoluteGoalAngleDegree;
+  float absoluteGoalAngleDegree;
   std::optional<float> yawGoalTolerance;
   std::optional<float> maxVelTheta;  // if not defined, default parameter server
   std::optional<SpiningPlanner> spinningPlanner;
 
   CbAbsoluteRotate();
-
   CbAbsoluteRotate(float absoluteGoalAngleDegree, float yawGoalTolerance = -1);
 
   void onEntry() override;
