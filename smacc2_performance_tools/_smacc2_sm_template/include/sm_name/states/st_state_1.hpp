@@ -72,8 +72,7 @@ struct State1 : smacc2::SmaccState<State1, $SmName$>
       RCLCPP_FATAL(
         _node_->get_logger(),
         "Executed %u iterations in %lf seconds: %lf Hz. Longtime frequency: %lf Hz",
-        ITERATIONS_CHECK, elapsed.seconds(), frequency_Hz, global_frequency_Hz
-      );
+        ITERATIONS_CHECK, elapsed.seconds(), frequency_Hz, global_frequency_Hz);
 
       _counter_ = 1;
       _start_time_ = _node_->now();
