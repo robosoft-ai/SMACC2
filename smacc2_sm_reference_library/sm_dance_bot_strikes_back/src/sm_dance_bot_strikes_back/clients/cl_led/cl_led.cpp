@@ -33,6 +33,13 @@ ClLED::ClLED(std::string actionServerName)
 std::string ClLED::getName() const { return "TOOL ACTION CLIENT"; }
 
 ClLED::~ClLED() {}
+
+std::ostream & operator<<(
+  std::ostream & out, const sm_dance_bot_strikes_back::action::LEDControl::Goal & msg)
+{
+  out << "LED CONTROL: " << msg.command;
+  return out;
+}
 }  // namespace cl_led
 
 // PLUGINLIB_EXPORT_CLASS(cl_led::ClLED, smacc2::ISmaccComponent)

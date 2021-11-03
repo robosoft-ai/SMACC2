@@ -17,6 +17,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+
 #include <smacc2/component.hpp>
 #include <smacc2/impl/smacc_component_impl.hpp>
 namespace smacc2

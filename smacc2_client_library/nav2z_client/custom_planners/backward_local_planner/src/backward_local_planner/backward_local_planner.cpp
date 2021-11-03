@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <angles/angles.h>
 #include <backward_local_planner/backward_local_planner.hpp>
 #include <nav2z_planners_common/common.hpp>

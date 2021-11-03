@@ -17,6 +17,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+
 #include "smacc2/common.hpp"
 #include "smacc2/client_bases/smacc_action_client_base.hpp"
 

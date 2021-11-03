@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#pragma once
 #include <smacc2/smacc.hpp>
 namespace sm_dance_bot_strikes_back
 {
@@ -20,12 +21,13 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
 {
   using SmaccState::SmaccState;
 
-  // DECLARE CUSTOM OBJECT TAGS
+  // CUSTOM TRANSITION TAGS
   struct TRANSITION_1 : SUCCESS{};
   struct TRANSITION_2 : SUCCESS{};
   struct TRANSITION_3 : SUCCESS{};
   struct TRANSITION_4 : SUCCESS{};
   struct TRANSITION_5 : SUCCESS{};
+  struct TRANSITION_6 : SUCCESS{};
 
   // TRANSITION TABLE
   typedef mpl::list<
@@ -33,10 +35,10 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
     Transition<EvWaypoint0<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_1>,
     Transition<EvWaypoint1<ClNav2Z, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_2>,
     Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS3::SsRadialPattern3, TRANSITION_3>,
-    Transition<EvWaypoint3<ClNav2Z, OrNavigation>, StFpatternPrealignment, TRANSITION_4>,
-    Transition<EvWaypoint4<ClNav2Z, OrNavigation>, StSpatternPrealignment, TRANSITION_5>,
-    Transition<EvCbFailure<ClNav2Z, OrNavigation>, StNavigateToWaypointsX>,
-    Transition<EvActionAborted<ClNav2Z, OrNavigation>, StNavigateToWaypointsX>
+    Transition<EvWaypoint3<ClNav2Z, OrNavigation>, SS4::SsFPattern1, TRANSITION_4>,
+    Transition<EvWaypoint4<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_5>,
+    Transition<EvWaypoint5<ClNav2Z, OrNavigation>, SS5::SsSPattern1, TRANSITION_6>,
+    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX, ABORT>
 
     >reactions;
 
@@ -44,10 +46,19 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
   static void staticConfigure()
   {
     configure_orthogonal<OrLED, CbLEDOn>();
-    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+    configure_orthogonal<OrNavigation, CbResumeSlam>();
+    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+
   }
 
   void runtimeConfigure() {}
+
+  void onExit(ABORT)
+  {
+    // this->getOrthogonal<OrNavigation>()
+    //     ->getClientBehavior<CbNavigateNextWaypoint>()
+    //     ->waypointsNavigator_->rewind(1);
+  }
 };
 }  // namespace sm_dance_bot_strikes_back

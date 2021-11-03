@@ -27,20 +27,20 @@ struct StiFPatternForward2 : smacc2::SmaccState<StiFPatternForward2<SS>, SS>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternRotate2<SS>>
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternStartLoop<SS>>,
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiFPatternStartLoop<SS>>
 
     >reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure() {}
-
-  void runtimeConfigure()
+  static void staticConfigure()
   {
-    // auto &superstate = TSti::template context<SS>();
-
-    TSti::template configure<OrNavigation, CbNavigateForward>(SS::pitch_lenght_meters());
-    TSti::template configure<OrLED, CbLEDOff>();
+    TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>(SS::pitch_lenght_meters());
+    TSti::template configure_orthogonal<OrNavigation, CbPauseSlam>();
+    TSti::template configure_orthogonal<OrLED, CbLEDOff>();
   }
+
+  void runtimeConfigure() {}
 };
 }  // namespace f_pattern_states
 }  // namespace sm_dance_bot_strikes_back

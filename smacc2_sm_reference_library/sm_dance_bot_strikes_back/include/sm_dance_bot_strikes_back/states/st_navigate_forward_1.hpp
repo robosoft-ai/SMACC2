@@ -11,12 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #pragma once
 #include <nav2z_client/nav2z_client.hpp>
 #include <smacc2/smacc.hpp>
 
-namespace sm_dance_bot
+namespace sm_dance_bot_strikes_back
 {
 // STATE DECLARATION
 struct StNavigateForward1 : smacc2::SmaccState<StNavigateForward1, MsDanceBotRunMode>
@@ -60,4 +59,4 @@ struct StNavigateForward1 : smacc2::SmaccState<StNavigateForward1, MsDanceBotRun
         << msg.result);
   }
 };
-}  // namespace sm_dance_bot
+}  // namespace sm_dance_bot_strikes_back
