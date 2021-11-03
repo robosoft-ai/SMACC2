@@ -24,37 +24,34 @@
 #include "rclcpp/rclcpp.hpp"
 #include "smacc2/smacc.hpp"
 
-// ORTHOGONALS
-#include "$sm_name$/orthogonals/or_timer.hpp"
-
 namespace $sm_name$
 {
-// SMACC2 clases
-using $sm_name$::OrTimer;
-
 //STATES
 struct State1;
 struct State2;
 
 //VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
+static unsigned int _counter_ = 0;
 std::shared_ptr<rclcpp::Node> _node_;
+rclcpp::Time _start_time_;
+
+unsigned int _sum_of_iterations_ = 0.0;
+double _sum_of_elapsed_time_ = 0.0;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
-struct $SmName$
-: public smacc2::SmaccStateMachineBase<$SmName$, State1>
+struct $SmName$ : public smacc2::SmaccStateMachineBase<$SmName$, State1>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
   void onInitialize() override
   {
-    this->createOrthogonal<OrTimer>();
     _node_ = std::make_shared<rclcpp::Node>("$sm_name$");
+    _start_time_ = _node_->now();
   }
 };
 
 }  // namespace $sm_name$
 
-// STATES
 #include "states/st_state_1.hpp"
 #include "states/st_state_2.hpp"
