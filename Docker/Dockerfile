@@ -12,12 +12,12 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     python3-colcon-ros \
     && apt-get clean
 
-RUN mkdir -p /home/ros2_ws/src 
-   
+RUN mkdir -p /home/ros2_ws/src
+
 WORKDIR "/home/ros2_ws/src"
 
 RUN git clone https://github.com/robosoft-ai/SMACC2.git
-    
+
 WORKDIR "/home/ros2_ws"
 
 RUN vcs import src --skip-existing --input src/SMACC2/SMACC2-not-released.rolling.repos \
@@ -27,4 +27,3 @@ RUN vcs import src --skip-existing --input src/SMACC2/SMACC2-not-released.rollin
 # ENTRYPOINT /bin/bash -c 'source /opt/ros/rolling/setup.sh && source /home/ros2_ws/install/setup.sh && ros2 launch sm_atomic sm_atomic.launch'
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-
