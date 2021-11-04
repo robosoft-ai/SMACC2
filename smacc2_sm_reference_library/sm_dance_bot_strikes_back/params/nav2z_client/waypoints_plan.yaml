@@ -42,7 +42,7 @@ waypoints:
       w: 1.0
   # POINT 4
   - position:
-      x: -12.00
+      x: -10.00
       y: 12.0
       z: 0.0
     orientation:
