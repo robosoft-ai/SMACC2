@@ -47,7 +47,9 @@ void StateReactor::update()
   }
 }
 
-rclcpp::Node::SharedPtr StateReactor::getNode() { return ownerState->getNode(); }
+rclcpp::Node::SharedPtr & StateReactor::getNode() { return ownerState->getNode(); }
+
+rclcpp::Logger StateReactor::getLogger() { return ownerState->getLogger(); }
 
 namespace introspection
 {
