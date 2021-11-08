@@ -1,0 +1,13 @@
+<launch>
+  <node pkg="sm_test_moveit_ur5_sim" exec="sm_test_moveit_ur5_sim_node" name="sm_test_moveit_ur5_sim" output="screen">
+    <param from="$(find-pkg-share sm_test_moveit_ur5_sim)/config/sm_test_moveit_ur5_sim_config.yaml" />
+  </node>
+
+  <include file="$(find-pkg-share ur_bringup)/launch/ur_control.launch.py">
+    <arg name="ur_type" value="ur5e"/>
+    <arg name="robot_ip" value="yyy.yyy.yyy.yyy"/>
+    <arg name="robot_controller" value="scaled_joint_trajectory_controller"/>
+    <arg name="use_fake_hardware" value="true"/>
+  </include>
+
+</launch>
