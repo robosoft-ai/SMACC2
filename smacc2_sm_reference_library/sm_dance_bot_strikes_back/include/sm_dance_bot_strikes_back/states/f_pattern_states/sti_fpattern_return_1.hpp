@@ -27,7 +27,7 @@ struct StiFPatternReturn1 : smacc2::SmaccState<StiFPatternReturn1<SS>, SS>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiFPatternRotate1<SS>>
+    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiFPatternRotate2<SS>>
 
     >reactions;
 
@@ -35,6 +35,7 @@ struct StiFPatternReturn1 : smacc2::SmaccState<StiFPatternReturn1<SS>, SS>
   static void staticConfigure()
   {
     TSti::template configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+    TSti::template configure_orthogonal<OrNavigation, CbPauseSlam>();
     TSti::template configure_orthogonal<OrLED, CbLEDOn>();
   }
 

@@ -52,18 +52,19 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateToWaypointsX, ENDLOOP>
+    Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateReverse4, ENDLOOP>  //,
 
     >reactions;
 
   // STATE VARIABLES
   // superstate parameters
-  static constexpr float ray_lenght_meters() { return 4; }
-  static constexpr float pitch_lenght_meters() { return 0.6; }
+  static constexpr float ray_lenght_meters() { return 3.25; }
+  static constexpr float pitch_lenght_meters() { return 0.75; }
+  static constexpr int total_iterations() { return 9; }
   static constexpr TDirection direction() { return TDirection::RIGHT; }
 
-  double initialStateAngle = 0;
-  double offset;
+  // superstate state variables
+  int iteration_count;
 
   // STATE FUNCTIONS
   static void staticConfigure()
@@ -71,27 +72,11 @@ public:
     //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
-  void runtimeConfigure()
-  {
-    this->offset = 0;  //13.5;
-    cl_nav2z::ClNav2Z * robot;
-    this->requiresClient(robot);
-
-    if (robot != nullptr)
-    {
-      auto pose = robot->getComponent<cl_nav2z::Pose>()->toPoseMsg();
-      this->initialStateAngle =
-        angles::to_degrees(angles::normalize_angle(tf2::getYaw(pose.orientation)));
-      RCLCPP_INFO(getLogger(), "Initial angle for F pattern: %lf degrees", initialStateAngle);
-    }
-    else
-    {
-      RCLCPP_ERROR(getLogger(), "robot pose not found to plan the FPattern motion");
-    }
-  }
+  void runtimeConfigure() { iteration_count = 0; }
 };  // namespace SS4
 
 // FORWARD DECLARATION FOR THE SUPERSTATE
+
 }  // namespace SS4
 }  // namespace sm_dance_bot_strikes_back
 #include <sm_dance_bot_strikes_back/states/f_pattern_states/sti_fpattern_forward_1.hpp>

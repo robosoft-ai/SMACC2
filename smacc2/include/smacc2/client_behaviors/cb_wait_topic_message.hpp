@@ -17,7 +17,9 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+
 #pragma once
+
 #include <functional>
 #include <rclcpp/rclcpp.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>

@@ -33,6 +33,7 @@ struct StiSPatternForward2 : public smacc2::SmaccState<StiSPatternForward2, SS>
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbNavigateForward>();
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOn>();
   }
 

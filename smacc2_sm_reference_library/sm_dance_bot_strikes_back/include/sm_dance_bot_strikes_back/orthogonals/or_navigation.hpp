@@ -18,9 +18,11 @@
 #include <smacc2/smacc_orthogonal.hpp>
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
+
 #include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
 #include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
+#include <nav2z_client/components/slam_toolbox/cp_slam_toolbox.hpp>
 #include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
 
 namespace sm_dance_bot_strikes_back
@@ -46,6 +48,9 @@ public:
 
     // create odom tracker
     movebaseClient->createComponent<cl_nav2z::odom_tracker::OdomTracker>();
+
+    // create odom tracker
+    movebaseClient->createComponent<cl_nav2z::CpSlamToolbox>();
 
     // create waypoints navigator component
     auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();

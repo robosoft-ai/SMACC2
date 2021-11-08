@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#pragma once
+
 #include <nav2z_client/nav2z_client.hpp>
 #include <smacc2/smacc.hpp>
 

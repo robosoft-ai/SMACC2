@@ -16,7 +16,6 @@
             </ReactiveFallback>
           </RecoveryNode>
         </RateController>
-
         <ControllerSelector selected_controller="{selected_controller}" default_controller="FollowPath" />
         <GoalCheckerSelector selected_goal_checker="{selected_goal_checker}"/>
         <FollowPath path="{path}" controller_id="{selected_controller}" goal_checker_id="{selected_goal_checker}" />

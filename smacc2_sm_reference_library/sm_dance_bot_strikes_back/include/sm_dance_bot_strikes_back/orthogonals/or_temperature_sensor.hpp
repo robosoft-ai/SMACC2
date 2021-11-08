@@ -31,10 +31,7 @@ public:
     auto clTemperatureSensor = this->createClient<ClTemperatureSensor>();
 
     clTemperatureSensor->topicName = "/temperature";
-    // ClTemperatureSensor->queueSize = "/front/scan";
     clTemperatureSensor->timeout_ = rclcpp::Duration(10s);
-
-    // clTemperatureSensor->initialize();
   }
 };
 }  // namespace sm_dance_bot_strikes_back

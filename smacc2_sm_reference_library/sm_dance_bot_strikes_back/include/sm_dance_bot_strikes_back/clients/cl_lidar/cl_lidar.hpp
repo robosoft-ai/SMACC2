@@ -26,10 +26,8 @@ namespace cl_lidar
 class ClLidarSensor : public cl_multirole_sensor::ClMultiroleSensor<sensor_msgs::msg::LaserScan>
 {
 public:
-  ClLidarSensor(std::string topicname, rclcpp::Duration timeout)
+  ClLidarSensor()
   {
-    this->topicName = topicname;
-    this->timeout_ = timeout;
   }
 };
 }  // namespace cl_lidar

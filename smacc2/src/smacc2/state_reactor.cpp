@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <memory>
 
 #include <smacc2/smacc_state.hpp>
@@ -47,7 +53,9 @@ void StateReactor::update()
   }
 }
 
-rclcpp::Node::SharedPtr StateReactor::getNode() { return ownerState->getNode(); }
+rclcpp::Node::SharedPtr & StateReactor::getNode() { return ownerState->getNode(); }
+
+rclcpp::Logger StateReactor::getLogger() { return ownerState->getLogger(); }
 
 namespace introspection
 {
