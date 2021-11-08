@@ -15,17 +15,17 @@
 #pragma once
 
 #include <smacc2/smacc.hpp>
-namespace sm_dance_bot
+namespace sm_dance_bot_strikes_back
 {
 // STATE DECLARATION
-struct StRotateDegrees6 : smacc2::SmaccState<StRotateDegrees6, MsDanceBotRunMode>
+struct StRotateDegrees5 : smacc2::SmaccState<StRotateDegrees5, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbRotate, OrNavigation>, StNavigateReverse3>,
+    Transition<EvCbSuccess<CbRotate, OrNavigation>, StNavigateToWaypointsX>,
     Transition<EvCbFailure<CbRotate, OrNavigation>, StNavigateToWaypointsX>
 
     >reactions;
@@ -39,4 +39,4 @@ struct StRotateDegrees6 : smacc2::SmaccState<StRotateDegrees6, MsDanceBotRunMode
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 };
-}  // namespace sm_dance_bot
+}  // namespace sm_dance_bot_strikes_back

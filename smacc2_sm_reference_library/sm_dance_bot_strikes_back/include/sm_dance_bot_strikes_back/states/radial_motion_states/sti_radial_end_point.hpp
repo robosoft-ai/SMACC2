@@ -25,14 +25,16 @@ struct StiRadialEndPoint : smacc2::SmaccState<StiRadialEndPoint, SS>
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiRadialReturn, SUCCESS>,
-    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiRadialLoopStart, ABORT>
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiRadialReturn, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateForward>();
+    //RCLCPP_INFO(getLogger(),"ssr radial end point, distance in meters: %lf", SS::ray_length_meters());
+    configure_orthogonal<OrNavigation, CbNavigateForward>(SS::ray_length_meters());
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOn>();
   }
 

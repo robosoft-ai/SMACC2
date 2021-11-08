@@ -25,7 +25,7 @@ struct StiRadialReturn : smacc2::SmaccState<StiRadialReturn, SS>
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiRadialLoopStart, SUCCESS>,
-    Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StiRadialLoopStart, ABORT>
+    Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StiRadialEndPoint, ABORT>
 
     >reactions;
 
@@ -33,10 +33,18 @@ struct StiRadialReturn : smacc2::SmaccState<StiRadialReturn, SS>
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
   }
 
-  void runtimeConfigure() {}
+  void onExit()
+  {
+    ClNav2Z * moveBase;
+    this->requiresClient(moveBase);
+
+    auto odomTracker = moveBase->getComponent<cl_nav2z::odom_tracker::OdomTracker>();
+    odomTracker->clearPath();
+  }
 };
 }  // namespace radial_motion_states
 }  // namespace sm_dance_bot_strikes_back

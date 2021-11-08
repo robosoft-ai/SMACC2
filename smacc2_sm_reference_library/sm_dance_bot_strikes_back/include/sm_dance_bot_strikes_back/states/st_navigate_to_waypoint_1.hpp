@@ -15,28 +15,28 @@
 #pragma once
 
 #include <smacc2/smacc.hpp>
-namespace sm_dance_bot
+namespace sm_dance_bot_strikes_back
 {
 // STATE DECLARATION
-struct StRotateDegrees6 : smacc2::SmaccState<StRotateDegrees6, MsDanceBotRunMode>
+struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbRotate, OrNavigation>, StNavigateReverse3>,
-    Transition<EvCbFailure<CbRotate, OrNavigation>, StNavigateToWaypointsX>
+    Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypointsX>,
+    Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypoint1>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbRotate>(/*30*/ -180);
-    configure_orthogonal<OrNavigation, CbResumeSlam>();
-    configure_orthogonal<OrLED, CbLEDOff>();
+    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(0, 0, 0);
+    configure_orthogonal<OrLED, CbLEDOn>();
+    configure_orthogonal<OrStringPublisher, CbStringPublisher>("All Done!");
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 };
-}  // namespace sm_dance_bot
+}  // namespace sm_dance_bot_strikes_back

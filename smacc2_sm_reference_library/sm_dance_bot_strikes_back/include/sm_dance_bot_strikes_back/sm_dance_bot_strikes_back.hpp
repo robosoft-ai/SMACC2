@@ -46,8 +46,6 @@ using namespace sm_dance_bot_strikes_back::cl_service3;
 using namespace sm_dance_bot_strikes_back::cl_string_publisher;
 using namespace sm_dance_bot_strikes_back::cl_temperature_sensor;
 using namespace sm_dance_bot_strikes_back::cl_led;
-//using namespace sm_dance_bot_strikes_back::cl_nav2z;
-//using namespace sm_dance_bot_strikes_back::cl_updatable_publisher;
 
 //STATE REACTORS
 #include <sr_all_events_go/sr_all_events_go.hpp>
@@ -69,17 +67,30 @@ using namespace smacc2::state_reactors;
 namespace sm_dance_bot_strikes_back
 {
 //STATE FORWARD DECLARATIONS
-class StAcquireSensors;
-class StEventCountDown;
-class StNavigateToWaypointsX;
-class StFpatternPrealignment;
-class StSpatternPrealignment;
+struct StAcquireSensors;
+struct StEventCountDown;
+
+struct StNavigateForward1;
+struct StNavigateToWaypoint1;
+struct StNavigateToWaypointsX;
+
+struct StRotateDegrees1;
+struct StRotateDegrees2;
+struct StRotateDegrees3;
+struct StRotateDegrees4;
+struct StRotateDegrees5;
+struct StRotateDegrees6;
+
+struct StNavigateReverse1;
+struct StNavigateReverse2;
+struct StNavigateReverse3;
+struct StNavigateReverse4;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
 // MODE STATES FORWARD DECLARATIONS
-class MsDanceBotRunMode;
-class MsDanceBotRecoveryMode;
+struct MsDanceBotRunMode;
+struct MsDanceBotRecoveryMode;
 
 namespace SS1
 {
@@ -166,7 +177,17 @@ struct SmDanceBotStrikesBack
 //STATES
 #include <sm_dance_bot_strikes_back/states/st_acquire_sensors.hpp>
 #include <sm_dance_bot_strikes_back/states/st_event_count_down.hpp>
-#include <sm_dance_bot_strikes_back/states/st_fpattern_prealignment.hpp>
-#include <sm_dance_bot_strikes_back/states/st_spattern_prealignment.hpp>
-
 #include <sm_dance_bot_strikes_back/states/st_navigate_to_waypoints_x.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_1.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_forward_1.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_1.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_2.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_3.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_4.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_to_waypoint_1.hpp>
+#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_1.hpp>
+#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_2.hpp>
+#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_3.hpp>
+#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_4.hpp>
+#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_5.hpp>
+#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_6.hpp>

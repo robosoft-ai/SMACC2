@@ -24,19 +24,20 @@ struct StiFPatternForward1 : public smacc2::SmaccState<StiFPatternForward1<SS>, 
   using TSti::context_type;
   using TSti::SmaccState;
 
-  using TSti::configure_orthogonal;
-
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternReturn1<SS>>
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternReturn1<SS>>,
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiFPatternReturn1<SS>, ABORT>
+
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>();
+    TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>(SS::ray_lenght_meters());
+    TSti::template configure_orthogonal<OrNavigation, CbPauseSlam>();
     TSti::template configure_orthogonal<OrLED, CbLEDOn>();
   }
 

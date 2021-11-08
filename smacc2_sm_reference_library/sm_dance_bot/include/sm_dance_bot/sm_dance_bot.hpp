@@ -46,8 +46,6 @@ using namespace sm_dance_bot::cl_service3;
 using namespace sm_dance_bot::cl_string_publisher;
 using namespace sm_dance_bot::cl_temperature_sensor;
 using namespace sm_dance_bot::cl_led;
-//using namespace sm_dance_bot::cl_nav2z;
-//using namespace sm_dance_bot::cl_updatable_publisher;
 
 //STATE REACTORS
 #include <sr_all_events_go/sr_all_events_go.hpp>
@@ -71,23 +69,24 @@ namespace sm_dance_bot
 //STATE FORWARD DECLARATIONS
 class StAcquireSensors;
 class StEventCountDown;
-class StRotateDegrees4;
+
 class StNavigateForward1;
 class StNavigateToWaypoint1;
 class StNavigateToWaypointsX;
-class StRotateDegrees2;
+
 class StRotateDegrees1;
-class StNavigateReverse2;
+class StRotateDegrees2;
 class StRotateDegrees3;
-class StNavigateReverse1;
-class StNavigateReverse4;
+class StRotateDegrees4;
 class StRotateDegrees5;
-class StNavigateReverse3;
 class StRotateDegrees6;
+
+class StNavigateReverse1;
+class StNavigateReverse2;
 class StNavigateReverse3;
+class StNavigateReverse4;
 
 //SUPERSTATE FORWARD DECLARATIONS
-
 //MODE STATES FORWARD DECLARATIONS
 class MsDanceBotRunMode;
 class MsDanceBotRecoveryMode;

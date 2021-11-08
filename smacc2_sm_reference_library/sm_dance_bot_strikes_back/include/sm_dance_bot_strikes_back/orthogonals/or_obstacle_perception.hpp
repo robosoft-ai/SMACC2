@@ -25,9 +25,11 @@ class OrObstaclePerception : public smacc2::Orthogonal<OrObstaclePerception>
 public:
   void onInitialize() override
   {
-    auto lidarClient = this->createClient<ClLidarSensor>("/scan", rclcpp::Duration(10s));
+    auto lidarClient = this->createClient<ClLidarSensor>();
 
     lidarClient->createComponent<CpLidarSensorData>();
+    lidarClient->topicName = "/scan";
+    lidarClient->timeout_ = rclcpp::Duration(std::chrono::seconds(10));
   }
 };
 }  // namespace sm_dance_bot_strikes_back
