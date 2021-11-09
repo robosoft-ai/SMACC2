@@ -19,10 +19,10 @@
  ******************************************************************************************************************/
 
 #pragma once
+#include <tf2/utils.h>
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/quaternion_stamped.hpp>
 #include <moveit_msgs/srv/get_position_ik.hpp>
-#include <tf2/utils.h>
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg)
 {
@@ -34,7 +34,6 @@ std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaterni
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg)
 {
   return out << "[serialization geometry_msgs::msg::PoseStamped]";
-
 }
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Transform & msg)

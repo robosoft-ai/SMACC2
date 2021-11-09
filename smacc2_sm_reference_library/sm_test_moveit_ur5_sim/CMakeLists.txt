@@ -25,8 +25,8 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
 
 include_directories(
   include
-  ${smacc2_INCLUDE_DIRS} 
-  ${move_group_interface_client_INCLUDE_DIRS} 
+  ${smacc2_INCLUDE_DIRS}
+  ${move_group_interface_client_INCLUDE_DIRS}
 )
 
 add_executable(${PROJECT_NAME}_node
