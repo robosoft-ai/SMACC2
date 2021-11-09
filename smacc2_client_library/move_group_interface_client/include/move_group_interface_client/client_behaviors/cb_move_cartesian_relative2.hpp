@@ -23,6 +23,7 @@
 #include <tf2/transform_datatypes.h>
 #include <move_group_interface_client/cl_movegroup.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 namespace cl_move_group_interface
 {
@@ -33,81 +34,12 @@ public:
 
   std::optional<double> linearSpeed_m_s_;
 
-  CbMoveCartesianRelative2(std::string referenceFrame, std::string tipLink)
-  : CbMoveEndEffectorTrajectory(tipLink)
-  {
-    globalFrame_ = referenceFrame;
-  }
+  CbMoveCartesianRelative2(std::string referenceFrame, std::string tipLink);
 
   CbMoveCartesianRelative2(
-    std::string referenceFrame, std::string tipLink, geometry_msgs::msg::Vector3 offset)
-  : CbMoveEndEffectorTrajectory(tipLink)
-  {
-    globalFrame_ = referenceFrame;
-    offset_ = offset;
-  }
+    std::string referenceFrame, std::string tipLink, geometry_msgs::msg::Vector3 offset);
 
-  virtual void generateTrajectory() override
-  {
-    // at least 1 sample per centimeter (average)
-    const double METERS_PER_SAMPLE = 0.001;
-
-    float dist_meters = 0;
-    tf2::Vector3 voffset;
-    tf2::fromMsg(offset_, voffset);
-
-    float totallineardist = voffset.length();
-
-    int totalSamplesCount = totallineardist / METERS_PER_SAMPLE;
-    int steps = totallineardist / METERS_PER_SAMPLE;
-
-    float interpolation_factor_step = 1.0 / totalSamplesCount;
-
-    double secondsPerSample;
-
-    if (!linearSpeed_m_s_)
-    {
-      linearSpeed_m_s_ = 0.1;
-    }
-
-    secondsPerSample = METERS_PER_SAMPLE / (*linearSpeed_m_s_);
-
-    tf2::Stamped<tf2::Transform> currentEndEffectorTransform;
-
-    this->getCurrentEndEffectorPose(globalFrame_, currentEndEffectorTransform);
-
-    tf2::Transform finalEndEffectorTransform = currentEndEffectorTransform;
-    finalEndEffectorTransform.setOrigin(finalEndEffectorTransform.getOrigin() + voffset);
-
-    float linc = totallineardist / steps;  // METERS_PER_SAMPLE with sign
-    float interpolation_factor = 0;
-
-    rclcpp::Time startTime = getNode()->now();
-
-    for (float i = 0; i < steps; i++)
-    {
-      interpolation_factor += interpolation_factor_step;
-      dist_meters += linc;
-
-      tf2::Vector3 vi = currentEndEffectorTransform.getOrigin().lerp(
-        finalEndEffectorTransform.getOrigin(), interpolation_factor);
-
-      tf2::Transform pose;
-      pose.setOrigin(vi);
-      pose.setRotation(currentEndEffectorTransform.getRotation());
-
-      geometry_msgs::msg::PoseStamped pointerPose;
-      pointerPose.pose = tf2::toMsg(pose);
-      pointerPose.header.frame_id = globalFrame_;
-      pointerPose.header.stamp = startTime + rclcpp::Duration(i * secondsPerSample);
-
-      this->endEffectorTrajectory_.push_back(pointerPose);
-    }
-
-    RCLCPP_INFO_STREAM(
-      getLogger(), "[CbMoveEndEffectorRelative2] Target End efector Pose: "
-                     << this->endEffectorTrajectory_.back());
-  }
+  void generateTrajectory() override;
 
 private:
   std::string globalFrame_;

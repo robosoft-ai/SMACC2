@@ -15,14 +15,18 @@ find_package(ament_cmake REQUIRED)
 find_package(ros_timer_client REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
+find_package(move_group_interface_client REQUIRED)
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   ros_timer_client
   smacc2
+  move_group_interface_client
 )
 
 include_directories(
   include
+  ${smacc2_INCLUDE_DIRS} 
+  ${move_group_interface_client_INCLUDE_DIRS} 
 )
 
 add_executable(${PROJECT_NAME}_node
@@ -33,6 +37,7 @@ target_link_libraries(${PROJECT_NAME}_node
   ${smacc2_LIBRARIES}
   ${ros_timer_client_LIBRARIES}
   ${Boost_LIBRARIES}
+  ${move_group_interface_client_LIBRARIES}
 )
 
 ament_target_dependencies(${PROJECT_NAME}_node ${THIS_PACKAGE_INCLUDE_DEPENDS})
@@ -50,6 +55,11 @@ install(DIRECTORY
 install(TARGETS
   ${PROJECT_NAME}_node
   DESTINATION lib/${PROJECT_NAME}
+)
+
+install(
+  DIRECTORY launch/
+  DESTINATION share/${PROJECT_NAME}
 )
 
 ament_package()

@@ -21,37 +21,38 @@
 
 #pragma once
 
-#include <memory>
-
-#include "rclcpp/rclcpp.hpp"
-#include "smacc2/smacc.hpp"
-
-// ORTHOGONALS
-#include "sm_test_moveit_ur5_sim/orthogonals/or_arm.hpp"
-
-#include <move_group_interface_client/cl_movegroup.hpp>
-#include <move_group_interface_client/client_behaviors.hpp>
-
 namespace sm_test_moveit_ur5_sim
 {
-
+// SMACC2 clases
+using smacc2::EvStateRequestFinish;
+using smacc2::Transition;
+using smacc2::default_transition_tags::SUCCESS;
+using namespace smacc2;
 using namespace cl_move_group_interface;
 
-//STATES
-struct StMoveJoints;
-struct State2;
-
-//--------------------------------------------------------------------
-//STATE_MACHINE
-struct SmTestMoveitUr5Sim : public smacc2::SmaccStateMachineBase<SmTestMoveitUr5Sim, StMoveJoints>
+// STATE DECLARATION
+struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmTestMoveitUr5Sim>
 {
-  using SmaccStateMachineBase::SmaccStateMachineBase;
+  using SmaccState::SmaccState;
 
-  void onInitialize() override { this->createOrthogonal<OrArm>(); }
+  // TRANSITION TABLE
+  typedef boost::mpl::list<
+    //Transition<EvMoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StCloseGripper>
+    Transition<EvCbFailure<CbMoveKnownState, OrArm>, State2, ABORT>>
+    reactions;
+
+  // STATE FUNCTIONS
+  static void staticConfigure()
+  {
+    std::map<std::string, double> jointValues;
+    configure_orthogonal<OrArm, CbMoveJoints>(jointValues);
+  }
+
+  void runtimeConfigure()
+  {
+    ClMoveGroup * moveGroupClient;
+    this->requiresClient(moveGroupClient);
+    this->getOrthogonal<OrArm>()->getClientBehavior<CbMoveJoints>()->scalingFactor_ = 1;
+  }
 };
-
 }  // namespace sm_test_moveit_ur5_sim
-
-// STATES
-#include "states/st_move_joints.hpp"
-#include "states/st_state_2.hpp"

@@ -89,8 +89,8 @@ void CbCircularPouringMotion::generateTrajectory()
   tf2::Quaternion finalPointerOrientation =
     finalEndEffectorOrientation * lidEndEffectorTransform.getRotation();
 
-  auto shortestAngle =
-    tf2::angleShortestPath(initialEndEffectorOrientation, finalEndEffectorOrientation);
+  // auto shortestAngle =
+  //   tf2::angleShortestPath(initialEndEffectorOrientation, finalEndEffectorOrientation);
 
   v0 += pivot;
   v1 += pivot;
@@ -104,8 +104,8 @@ void CbCircularPouringMotion::generateTrajectory()
 
   for (float i = 0; i < steps; i++)
   {
-    auto currentEndEffectorOrientation =
-      tf2::slerp(initialEndEffectorOrientation, finalEndEffectorOrientation, interpolation_factor);
+    // auto currentEndEffectorOrientation =
+    //   tf2::slerp(initialEndEffectorOrientation, finalEndEffectorOrientation, interpolation_factor);
     auto currentPointerOrientation =
       tf2::slerp(initialPointerOrientation, finalPointerOrientation, interpolation_factor);
 

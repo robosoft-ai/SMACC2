@@ -16,6 +16,7 @@
 
 #include <chrono>
 
+#include <move_group_interface_client/cl_movegroup.hpp>
 #include "ros_timer_client/cl_ros_timer.hpp"
 #include "smacc2/smacc.hpp"
 
@@ -23,9 +24,12 @@ namespace sm_test_moveit_ur5_sim
 {
 using namespace std::chrono_literals;
 
-class OrTimer : public smacc2::Orthogonal<OrTimer>
+class OrArm : public smacc2::Orthogonal<OrArm>
 {
 public:
-  void onInitialize() override { auto client = this->createClient<cl_ros_timer::ClRosTimer>(1s); }
+  void onInitialize() override
+  {
+    auto client = this->createClient<cl_move_group_interface::ClMoveGroup>("ur5");
+  }
 };
-}  // namespace sm_atomic
+}  // namespace sm_test_moveit_ur5_sim

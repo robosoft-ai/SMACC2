@@ -41,10 +41,11 @@ add_library(${PROJECT_NAME}
   src/move_group_interface_client/client_behaviors/cb_move_end_effector_trajectory.cpp
   src/move_group_interface_client/client_behaviors/cb_end_effector_rotate.cpp
   src/move_group_interface_client/client_behaviors/cb_move_cartesian_relative.cpp
+  src/move_group_interface_client/client_behaviors/cb_move_cartesian_relative2.cpp
   src/move_group_interface_client/client_behaviors/cb_move_named_target.cpp
   src/move_group_interface_client/client_behaviors/cb_attach_object.cpp
-  src/move_group_interface_client/client_behaviors/cb_move_last_trajectory_initial_state.cpp)
-
+  src/move_group_interface_client/client_behaviors/cb_move_last_trajectory_initial_state.cpp
+)
 
 ament_target_dependencies(${PROJECT_NAME}
                           ${dependencies})

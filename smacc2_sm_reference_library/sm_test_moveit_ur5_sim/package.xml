@@ -14,6 +14,7 @@
 
   <depend>ros_timer_client</depend>
   <depend>smacc2</depend>
+  <depend>move_group_interface_client</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

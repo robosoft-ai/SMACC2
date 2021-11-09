@@ -22,3 +22,4 @@
 #include <smacc2/smacc_default_events.hpp>
 #include <smacc2/smacc_signal_detector.hpp>
 #include <smacc2/smacc_state_machine_base.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
