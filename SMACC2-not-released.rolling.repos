@@ -22,4 +22,4 @@ repositories:
   Universal_Robots_ROS2_Driver:
     type: git
     url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
-    version: ros2
+    version: main
