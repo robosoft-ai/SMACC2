@@ -24,6 +24,7 @@
 #include <move_group_interface_client/cl_movegroup.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include "cb_move_end_effector_trajectory.hpp"
 
 namespace cl_move_group_interface
 {
@@ -38,6 +39,8 @@ public:
 
   CbMoveCartesianRelative2(
     std::string referenceFrame, std::string tipLink, geometry_msgs::msg::Vector3 offset);
+
+  virtual ~CbMoveCartesianRelative2();
 
   void generateTrajectory() override;
 

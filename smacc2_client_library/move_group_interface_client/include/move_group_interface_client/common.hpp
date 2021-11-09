@@ -31,11 +31,6 @@ std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaterni
   return out;
 }
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg)
-{
-  return out << "[serialization geometry_msgs::msg::PoseStamped]";
-}
-
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Transform & msg)
 {
   return out << "[serialization geometry_msgs::msg::Transform]";

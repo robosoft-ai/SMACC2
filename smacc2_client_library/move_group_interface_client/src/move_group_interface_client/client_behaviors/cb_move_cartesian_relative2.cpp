@@ -37,6 +37,8 @@ CbMoveCartesianRelative2::CbMoveCartesianRelative2(
   offset_ = offset;
 }
 
+CbMoveCartesianRelative2::~CbMoveCartesianRelative2() {}
+
 void CbMoveCartesianRelative2::generateTrajectory()
 {
   // at least 1 sample per centimeter (average)
