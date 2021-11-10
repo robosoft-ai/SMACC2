@@ -16,11 +16,12 @@ RUN mkdir -p /home/ros2_ws/src
 
 WORKDIR "/home/ros2_ws/src"
 
-RUN git clone https://github.com/robosoft-ai/SMACC2.git
+#RUN git clone https://github.com/robosoft-ai/SMACC2.git
+ADD . "/home/ros2_ws/src"
 
 WORKDIR "/home/ros2_ws"
 
-RUN vcs import src --skip-existing --input src/SMACC2/SMACC2-not-released.rolling.repos \
+RUN ls src && vcs import --skip-existing --input src/SMACC2-not-released.rolling.repos \
   && rosdep install --ignore-src --from-paths src -y -r \
   && bash -c "source /opt/ros/rolling/setup.sh && colcon build --merge-install"
 
