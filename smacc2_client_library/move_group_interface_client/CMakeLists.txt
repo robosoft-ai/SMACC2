@@ -14,6 +14,8 @@ find_package(moveit_ros_planning_interface REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 
+set(YAML_CPP_LIBRARIES yaml-cpp)
+
 set(dependencies
 moveit_ros_planning_interface
 tf2
@@ -46,6 +48,8 @@ add_library(${PROJECT_NAME}
   src/move_group_interface_client/client_behaviors/cb_attach_object.cpp
   src/move_group_interface_client/client_behaviors/cb_move_last_trajectory_initial_state.cpp
 )
+
+target_link_libraries(${PROJECT_NAME} ${YAML_CPP_LIBRARIES})
 
 ament_target_dependencies(${PROJECT_NAME}
                           ${dependencies})

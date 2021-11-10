@@ -1,4 +1,7 @@
 #!/bin/sh
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+DIR="$(dirname "$(realpath "$0")")"
+echo $DIR
+cd $DIR/..
+echo `pwd`
 
-sudo docker run -e DISPLAY -it smacc2 /bin/bash -c 'source /opt/ros/rolling/setup.sh && source /home/ros2_ws/install/setup.sh && ros2 launch sm_atomic sm_atomic.launch'
+sudo docker build -t smacc2 -f docker/Dockerfile .
