@@ -21,6 +21,10 @@ ADD . "/home/ros2_ws/src"
 
 WORKDIR "/home/ros2_ws"
 
+# workaround, installing a moveit dependency that should be already declared in its package.xml file
+RUN apt-get install -y ros-rolling-eigen-stl-containers
+
+# install dependencies and build 
 RUN ls src && vcs import --skip-existing --input src/SMACC2-not-released.rolling.repos \
   && rosdep install --ignore-src --from-paths src -y -r \
   && bash -c "source /opt/ros/rolling/setup.sh && colcon build --merge-install"
