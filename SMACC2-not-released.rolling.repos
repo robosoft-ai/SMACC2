@@ -7,3 +7,7 @@ repositories:
     type: git
     url: https://github.com/SteveMacenski/slam_toolbox.git
     version: ros2
+  husky:
+    type: git
+    url: https://github.com/husky/husky.git
+    version: foxy-devel
