@@ -41,6 +41,11 @@ std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & m
   return out << "[serialization geometry_msgs::msg::Pose]";
 }
 
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg)
+{
+  return out << "[serialization geometry_msgs::msg::PoseStamped]";
+}
+
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Vector3 & msg)
 {
   return out << "[serialization geometry_msgs::msg::Vector3]";

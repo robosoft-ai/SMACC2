@@ -21,38 +21,36 @@
 
 #pragma once
 
-#include <memory>
-
 #include "rclcpp/rclcpp.hpp"
 #include "smacc2/smacc.hpp"
 
-// ORTHOGONALS
-#include "sm_test_moveit_ur5_sim/orthogonals/or_arm.hpp"
-
-#include <move_group_interface_client/cl_movegroup.hpp>
-#include <move_group_interface_client/client_behaviors.hpp>
-
 namespace sm_test_moveit_ur5_sim
 {
+// SMACC2 clases
+using smacc2::Transition;
+using smacc2::EvStateRequestFinish;
+using smacc2::default_transition_tags::SUCCESS;
 
-using namespace cl_move_group_interface;
-
-//STATES
-struct StMoveJoints;
-struct StMoveCartesian;
-
-//--------------------------------------------------------------------
-//STATE_MACHINE
-struct SmTestMoveitUr5Sim : public smacc2::SmaccStateMachineBase<SmTestMoveitUr5Sim, StMoveJoints>
+// STATE DECLARATION
+struct StMoveCartesian : smacc2::SmaccState<StMoveCartesian, SmTestMoveitUr5Sim>
 {
-  using SmaccStateMachineBase::SmaccStateMachineBase;
+  using SmaccState::SmaccState;
 
-  void onInitialize() override { this->createOrthogonal<OrArm>(); }
+  // TRANSITION TABLE
+  typedef boost::mpl::list<
+
+
+    >reactions;
+
+  // STATE FUNCTIONS
+  static void staticConfigure()
+  {
+  }
+
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveCartesian"); }
+
+  void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
+
+  void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-
-}  // namespace sm_test_moveit_ur5_sim
-
-// STATES
-#include "states/st_move_joints.hpp"
-#include "states/st_move_cartesian.hpp"
-#include "states/st_move_cartesian_relative.hpp"
+}  // namespace sm_atomic_performance_test_a_1

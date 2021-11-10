@@ -28,11 +28,10 @@ namespace sm_test_moveit_ur5_sim
 {
 // SMACC2 clases
 using smacc2::Transition;
-using smacc2::EvStateRequestFinish;
 using smacc2::default_transition_tags::SUCCESS;
 
 // STATE DECLARATION
-struct State2 : smacc2::SmaccState<State2, SmTestMoveitUr5Sim>
+struct StMoveCartesianRelative : smacc2::SmaccState<StMoveCartesianRelative, SmTestMoveitUr5Sim>
 {
   using SmaccState::SmaccState;
 
@@ -47,7 +46,7 @@ struct State2 : smacc2::SmaccState<State2, SmTestMoveitUr5Sim>
   {
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State2"); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveCartesianRelative"); }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 
