@@ -21,39 +21,36 @@
 
 #pragma once
 
+#include "rclcpp/rclcpp.hpp"
+#include "smacc2/smacc.hpp"
+
 namespace sm_test_moveit_ur5_sim
 {
 // SMACC2 clases
-using smacc2::EvStateRequestFinish;
 using smacc2::Transition;
+using smacc2::EvStateRequestFinish;
 using smacc2::default_transition_tags::SUCCESS;
-using namespace smacc2;
-using namespace cl_move_group_interface;
 
 // STATE DECLARATION
-struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmTestMoveitUr5Sim>
+struct StMoveCartesian2 : smacc2::SmaccState<StMoveCartesian2, SmTestMoveitUr5Sim>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    //Transition<EvMoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StCloseGripper>
-    // Transition<EvCbFailure<CbMoveKnownState, OrArm>, State2, ABORT>
-    >
-    reactions;
+
+
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    std::map<std::string, double> jointValues;
-    configure_orthogonal<OrArm, CbMoveJoints>(jointValues);
   }
 
-  void runtimeConfigure()
-  {
-    ClMoveGroup * moveGroupClient;
-    this->requiresClient(moveGroupClient);
-    this->getOrthogonal<OrArm>()->getClientBehavior<CbMoveJoints>()->scalingFactor_ = 1;
-  }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveCartesian"); }
+
+  void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
+
+  void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-}  // namespace sm_test_moveit_ur5_sim
+}  // namespace sm_atomic_performance_test_a_1

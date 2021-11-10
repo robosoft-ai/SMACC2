@@ -29,4 +29,3 @@ RUN rosdep install --from-paths src -r -y
 RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
 
 RUN bash -c "source /opt/ros/rolling/setup.sh && colcon build --merge-install"
-
