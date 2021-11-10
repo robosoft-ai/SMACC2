@@ -21,11 +21,12 @@ ADD . "/home/ros2_ws/src"
 
 WORKDIR "/home/ros2_ws"
 
-# install dependencies and build 
+# install dependencies and build
 RUN ls src && vcs import  src --skip-existing --input src/SMACC2-not-released.rolling.repos \
-  && ls src 
+  && ls src
 
-RUN rosdep install --from-paths src --ignore-src -r -y 
+RUN rosdep install --from-paths src -r -y
+RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
+
 RUN bash -c "source /opt/ros/rolling/setup.sh && colcon build --merge-install"
 
-RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
