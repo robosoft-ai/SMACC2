@@ -7,3 +7,27 @@ repositories:
     type: git
     url: https://github.com/SteveMacenski/slam_toolbox.git
     version: ros2
+  moveit2:
+    type: git
+    url: https://github.com/ros-planning/moveit2.git
+    version: main
+  moveit2:
+    type: git
+    url: https://github.com/ros-planning/moveit_msgs.git
+    version: ros2
+  ros2_control_demos:
+    type: git
+    url: https://github.com/ros-controls/ros2_control_demos.git
+    version: master
+  ur_msgs:
+    type: git
+    url: https://github.com/destogl/ur_msgs.git
+    version: ros2
+  Universal_Robots_ROS2_Driver:
+    type: git
+    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
+    version: main
+  Universal_Robots_Client_Library:
+    type: git
+    url: https://github.com/UniversalRobots/Universal_Robots_Client_Library.git
+    version: master

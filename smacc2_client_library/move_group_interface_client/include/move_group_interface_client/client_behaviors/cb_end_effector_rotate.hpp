@@ -16,10 +16,19 @@
  *
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
- ******************************************************************************************************************/
-#pragma once
-#include <smacc2/common.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
-#include <smacc2/smacc_default_events.hpp>
-#include <smacc2/smacc_signal_detector.hpp>
-#include <smacc2/smacc_state_machine_base.hpp>
+ *****************************************************************************************************************/
+
+#include "cb_circular_pivot_motion.hpp"
+
+namespace cl_move_group_interface
+{
+class CbEndEffectorRotate : public CbCircularPivotMotion
+{
+public:
+  CbEndEffectorRotate(double deltaRadians, std::string tipLink = "");
+  virtual ~CbEndEffectorRotate();
+
+  virtual void onEntry() override;
+};
+
+}  // namespace cl_move_group_interface

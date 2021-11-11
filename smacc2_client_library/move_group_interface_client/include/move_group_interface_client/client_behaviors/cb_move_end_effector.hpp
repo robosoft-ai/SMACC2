@@ -16,10 +16,32 @@
  *
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
- ******************************************************************************************************************/
+ *****************************************************************************************************************/
+
 #pragma once
-#include <smacc2/common.hpp>
+
+#include <future>
+#include <move_group_interface_client/cl_movegroup.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
-#include <smacc2/smacc_default_events.hpp>
-#include <smacc2/smacc_signal_detector.hpp>
-#include <smacc2/smacc_state_machine_base.hpp>
+namespace cl_move_group_interface
+{
+class CbMoveEndEffector : public smacc2::SmaccAsyncClientBehavior
+{
+public:
+  geometry_msgs::msg::PoseStamped targetPose;
+  std::string tip_link_;
+  std::optional<std::string> group_;
+
+  CbMoveEndEffector();
+  CbMoveEndEffector(geometry_msgs::msg::PoseStamped target_pose, std::string tip_link = "");
+
+  virtual void onEntry() override;
+
+protected:
+  bool moveToAbsolutePose(
+    moveit::planning_interface::MoveGroupInterface & moveGroupInterface,
+    geometry_msgs::msg::PoseStamped & targetObjectPose);
+
+  ClMoveGroup * movegroupClient_;
+};
+}  // namespace cl_move_group_interface

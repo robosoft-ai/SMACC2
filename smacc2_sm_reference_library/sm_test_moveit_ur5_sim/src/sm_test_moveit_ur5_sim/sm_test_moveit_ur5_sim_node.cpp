@@ -1,4 +1,5 @@
-// Copyright 2021 RobosoftAI Inc.
+// Copyright 2021 MyName/MyCompany Inc.
+// Copyright 2021 RobosoftAI Inc. (template)
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*****************************************************************************************************************
- *
- * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
- *
- ******************************************************************************************************************/
-#pragma once
-#include <smacc2/common.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
-#include <smacc2/smacc_default_events.hpp>
-#include <smacc2/smacc_signal_detector.hpp>
-#include <smacc2/smacc_state_machine_base.hpp>
+//
+// Author: Denis Štogl (template)
+//
+
+#include <sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim.hpp>
+
+//--------------------------------------------------------------------
+int main(int argc, char ** argv)
+{
+  rclcpp::init(argc, argv);
+  smacc2::run<sm_test_moveit_ur5_sim::SmTestMoveitUr5Sim>();
+}
