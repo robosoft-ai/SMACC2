@@ -19,6 +19,8 @@
  ******************************************************************************************************************/
 #pragma once
 
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
+
 // boost statechart
 #include <boost/statechart/asynchronous_state_machine.hpp>
 #include <boost/statechart/custom_reaction.hpp>
