@@ -16,10 +16,23 @@
  *
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
- ******************************************************************************************************************/
+ *****************************************************************************************************************/
+
 #pragma once
-#include <smacc2/common.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
-#include <smacc2/smacc_default_events.hpp>
-#include <smacc2/smacc_signal_detector.hpp>
-#include <smacc2/smacc_state_machine_base.hpp>
+
+#include <map>
+#include <string>
+#include "cb_move_joints.hpp"
+
+namespace cl_move_group_interface
+{
+class CbMoveKnownState : public CbMoveJoints
+{
+public:
+  CbMoveKnownState(std::string pkg, std::string config_path);
+  virtual ~CbMoveKnownState();
+
+private:
+  std::map<std::string, double> loadJointStatesFromFile(std::string pkg, std::string filepath);
+};
+}  // namespace cl_move_group_interface

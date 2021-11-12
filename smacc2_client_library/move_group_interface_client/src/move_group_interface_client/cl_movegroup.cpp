@@ -17,9 +17,32 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#pragma once
-#include <smacc2/common.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
-#include <smacc2/smacc_default_events.hpp>
-#include <smacc2/smacc_signal_detector.hpp>
-#include <smacc2/smacc_state_machine_base.hpp>
+
+#include <move_group_interface_client/cl_movegroup.hpp>
+
+using namespace std::chrono_literals;
+using namespace moveit::planning_interface;
+
+namespace cl_move_group_interface
+{
+ClMoveGroup::ClMoveGroup(std::string groupName)
+: moveGroupClientInterface(getNode(), MoveGroupInterface::Options(groupName))
+{
+  rclcpp::sleep_for(10s);
+}
+
+ClMoveGroup::~ClMoveGroup() {}
+
+void ClMoveGroup::postEventMotionExecutionSucceded()
+{
+  RCLCPP_INFO(getLogger(), "[ClMoveGroup] Post Motion Success Event");
+  postEventMotionExecutionSucceded_();
+}
+
+void ClMoveGroup::postEventMotionExecutionFailed()
+{
+  RCLCPP_INFO(getLogger(), "[ClMoveGroup] Post Motion Failure Event");
+  postEventMotionExecutionFailed_();
+}
+
+}  // namespace cl_move_group_interface

@@ -16,10 +16,26 @@
  *
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
- ******************************************************************************************************************/
+ *****************************************************************************************************************/
+
 #pragma once
-#include <smacc2/common.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
-#include <smacc2/smacc_default_events.hpp>
-#include <smacc2/smacc_signal_detector.hpp>
-#include <smacc2/smacc_state_machine_base.hpp>
+
+#include "cb_move_joints.hpp"
+
+namespace cl_move_group_interface
+{
+class CbMoveLastTrajectoryInitialState : public CbMoveJoints
+{
+public:
+  CbMoveLastTrajectoryInitialState();
+
+  CbMoveLastTrajectoryInitialState(int backIndex);
+
+  virtual ~CbMoveLastTrajectoryInitialState();
+
+  virtual void onEntry() override;
+
+private:
+  int backIndex_ = -1;
+};
+}  // namespace cl_move_group_interface

@@ -16,10 +16,28 @@
  *
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
- ******************************************************************************************************************/
+ *****************************************************************************************************************/
+
 #pragma once
-#include <smacc2/common.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
-#include <smacc2/smacc_default_events.hpp>
-#include <smacc2/smacc_signal_detector.hpp>
-#include <smacc2/smacc_state_machine_base.hpp>
+
+#include <move_group_interface_client/cl_movegroup.hpp>
+#include <smacc2/smacc.hpp>
+
+namespace cl_move_group_interface
+{
+class CbAttachObject : public smacc2::SmaccClientBehavior
+{
+public:
+  CbAttachObject(std::string targetObjectName);
+
+  CbAttachObject();
+
+  virtual void onEntry() override;
+
+  virtual void onExit() override;
+
+  std::string targetObjectName_;
+
+private:
+};
+}  // namespace cl_move_group_interface

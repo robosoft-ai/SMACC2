@@ -16,10 +16,31 @@
  *
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
- ******************************************************************************************************************/
+ *****************************************************************************************************************/
+
 #pragma once
-#include <smacc2/common.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
-#include <smacc2/smacc_default_events.hpp>
-#include <smacc2/smacc_signal_detector.hpp>
-#include <smacc2/smacc_state_machine_base.hpp>
+
+#include <move_group_interface_client/client_behaviors/cb_move_end_effector_trajectory.hpp>
+#include <move_group_interface_client/components/cp_trajectory_history.hpp>
+
+namespace cl_move_group_interface
+{
+class CbUndoLastTrajectory : public CbMoveEndEffectorTrajectory
+{
+public:
+  CbUndoLastTrajectory();
+
+  CbUndoLastTrajectory(int backIndex);
+
+  virtual ~CbUndoLastTrajectory();
+
+  virtual void onEntry() override;
+
+private:
+  int backIndex_ = -1;
+
+  moveit_msgs::msg::RobotTrajectory trajectory;
+  moveit_msgs::msg::RobotTrajectory reversed;
+};
+
+}  // namespace cl_move_group_interface

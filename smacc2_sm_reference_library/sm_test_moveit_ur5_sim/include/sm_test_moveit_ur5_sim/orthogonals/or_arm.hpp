@@ -12,14 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*****************************************************************************************************************
- *
- * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
- *
- ******************************************************************************************************************/
 #pragma once
-#include <smacc2/common.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
-#include <smacc2/smacc_default_events.hpp>
-#include <smacc2/smacc_signal_detector.hpp>
-#include <smacc2/smacc_state_machine_base.hpp>
+
+#include <chrono>
+
+#include <move_group_interface_client/cl_movegroup.hpp>
+#include "ros_timer_client/cl_ros_timer.hpp"
+#include "smacc2/smacc.hpp"
+
+namespace sm_test_moveit_ur5_sim
+{
+using namespace std::chrono_literals;
+
+class OrArm : public smacc2::Orthogonal<OrArm>
+{
+public:
+  void onInitialize() override
+  {
+    auto client = this->createClient<cl_move_group_interface::ClMoveGroup>("ur5");
+  }
+};
+}  // namespace sm_test_moveit_ur5_sim

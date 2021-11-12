@@ -17,9 +17,26 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#pragma once
-#include <smacc2/common.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
-#include <smacc2/smacc_default_events.hpp>
-#include <smacc2/smacc_signal_detector.hpp>
-#include <smacc2/smacc_state_machine_base.hpp>
+
+#include <move_group_interface_client/cl_movegroup.hpp>
+#include <move_group_interface_client/client_behaviors/cb_detach_object.hpp>
+
+namespace cl_move_group_interface
+{
+void CbDetachObject::onEntry()
+{
+  cl_move_group_interface::GraspingComponent * graspingComponent;
+  this->requiresComponent(graspingComponent);
+
+  cl_move_group_interface::ClMoveGroup * moveGroupClient;
+  this->requiresClient(moveGroupClient);
+
+  auto & planningSceneInterface = moveGroupClient->planningSceneInterface;
+
+  moveGroupClient->moveGroupClientInterface.detachObject(
+    *(graspingComponent->currentAttachedObjectName));
+  planningSceneInterface.removeCollisionObjects({*(graspingComponent->currentAttachedObjectName)});
+}
+
+void CbDetachObject::onExit() {}
+}  // namespace cl_move_group_interface
