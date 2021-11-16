@@ -439,7 +439,7 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
   double rho_error = sqrt(dx * dx + dy * dy);
 
   tf2::Quaternion currentOrientation;
-  tf2::fromMsg(currentPose.pose.orientation, currentOrientation);
+  tf2::convert(currentPose.pose.orientation, currentOrientation);
 
   // current angle
   double theta = tf2::getYaw(currentOrientation);

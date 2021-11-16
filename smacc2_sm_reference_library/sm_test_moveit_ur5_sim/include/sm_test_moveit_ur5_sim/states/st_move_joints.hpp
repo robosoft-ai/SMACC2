@@ -23,7 +23,7 @@
 
 namespace sm_test_moveit_ur5_sim
 {
-// SMACC2 clases
+// SMACC2 classes
 using smacc2::EvStateRequestFinish;
 using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
@@ -38,16 +38,21 @@ struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmTestMoveitUr5Sim>
   // TRANSITION TABLE
   typedef boost::mpl::list<
     //Transition<EvMoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StCloseGripper>
-    // Transition<EvCbFailure<CbMoveKnownState, OrArm>, State2, ABORT>
-    >
+    Transition<EvCbSuccess<CbMoveJoints, OrArm>, StMoveEndEffector, SUCCESS> >
     reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    std::map<std::string, double> jointValues;
+    std::map<std::string, double> jointValues{
+      {"shoulder_lift_joint", 0.0},
+      {"shoulder_pan_joint", 0.0},
+      {"wrist_1_joint", M_PI / 4},
+      {"wrist_2_joint", 0.0},
+      {"wrist_3_joint", 0.0}};
+
     configure_orthogonal<OrArm, CbMoveJoints>(jointValues);
-  }
+  };
 
   void runtimeConfigure()
   {

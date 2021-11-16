@@ -29,7 +29,7 @@ class OrArm : public smacc2::Orthogonal<OrArm>
 public:
   void onInitialize() override
   {
-    auto client = this->createClient<cl_move_group_interface::ClMoveGroup>("ur5");
+    auto client = this->createClient<cl_move_group_interface::ClMoveGroup>("ur_manipulator");
   }
 };
 }  // namespace sm_test_moveit_ur5_sim

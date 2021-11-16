@@ -162,7 +162,7 @@ void CbCircularPivotMotion::computeCurrentEndEffectorPoseRelativeToPivot()
   {
     if (!tipLink_ || *tipLink_ == "")
     {
-      tipLink_ = this->movegroupClient_->moveGroupClientInterface.getEndEffectorLink();
+      tipLink_ = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
     }
 
     tf2::fromMsg(

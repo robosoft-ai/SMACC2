@@ -56,10 +56,10 @@ void CbEndEffectorRotate::onEntry()
       this->requiresClient(movegroupClient_);
       if (!tipLink_ || *tipLink_ == "")
       {
-        tipLink_ = this->movegroupClient_->moveGroupClientInterface.getEndEffectorLink();
+        tipLink_ = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
       }
 
-      auto pivotFrame = this->movegroupClient_->moveGroupClientInterface.getPlanningFrame();
+      auto pivotFrame = this->movegroupClient_->moveGroupClientInterface->getPlanningFrame();
 
       tf2::Stamped<tf2::Transform> endEffectorInPivotFrame;
 

@@ -32,26 +32,27 @@ using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
 
 // STATE DECLARATION
-struct StMoveCartesianRelative : smacc2::SmaccState<StMoveCartesianRelative, SmTestMoveitUr5Sim>
+struct StAttachObject : smacc2::SmaccState<StAttachObject, SmTestMoveitUr5Sim>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbMoveCartesianRelative, OrArm>, StMoveCartesianRelative2, SUCCESS> ,
-    Transition<EvCbFailure<CbMoveCartesianRelative, OrArm>, StMoveCartesianRelative2, SUCCESS>
+    Transition<EvCbSuccess<CbAttachObject, OrArm>, StDetatchObject, SUCCESS>
     >
     reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    geometry_msgs::msg::Vector3 offset;
-    offset.x = -0.01;
-    configure_orthogonal<OrArm, CbMoveCartesianRelative>(offset);
+    // geometry_msgs::msg::Vector3 position;
+    // position.x = -0.01;
+    // position.y = 0.0;
+    // position.z = 0.025;
+    configure_orthogonal<OrArm, CbAttachObject>("virtualObject");
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveCartesianRelative"); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StAttachObject"); }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 

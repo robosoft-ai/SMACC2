@@ -48,11 +48,11 @@ void CbAttachObject::onEntry()
     targetCollisionObject.operation = moveit_msgs::msg::CollisionObject::ADD;
     targetCollisionObject.header.stamp = getNode()->now();
 
-    moveGroup->planningSceneInterface.applyCollisionObject(targetCollisionObject);
+    moveGroup->planningSceneInterface->applyCollisionObject(targetCollisionObject);
     // collisionObjects.push_back(cubeCollision);
 
     graspingComponent->currentAttachedObjectName = targetObjectName_;
-    moveGroup->moveGroupClientInterface.attachObject(
+    moveGroup->moveGroupClientInterface->attachObject(
       targetObjectName_, "gripper_link", graspingComponent->fingerTipNames);
   }
 }

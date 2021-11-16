@@ -57,15 +57,15 @@ ComputeJointTrajectoryErrorCode CbMoveEndEffectorTrajectory::computeJointSpaceTr
   moveit_msgs::msg::RobotTrajectory & computedJointTrajectory)
 {
   // get current robot state
-  auto currentState = movegroupClient_->moveGroupClientInterface.getCurrentState();
+  auto currentState = movegroupClient_->moveGroupClientInterface->getCurrentState();
 
   // get the IK client
-  auto groupname = movegroupClient_->moveGroupClientInterface.getName();
+  auto groupname = movegroupClient_->moveGroupClientInterface->getName();
   auto currentjointnames = currentState->getJointModelGroup(groupname)->getActiveJointModelNames();
 
   if (!tipLink_ || *tipLink_ == "")
   {
-    tipLink_ = movegroupClient_->moveGroupClientInterface.getEndEffectorLink();
+    tipLink_ = movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
   }
 
   std::vector<double> jointPositions;
@@ -264,7 +264,7 @@ void CbMoveEndEffectorTrajectory::executeJointSpaceTrajectory(
   RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Executing joint trajectory");
   // call execute
   auto executionResult =
-    this->movegroupClient_->moveGroupClientInterface.execute(computedJointTrajectory);
+    this->movegroupClient_->moveGroupClientInterface->execute(computedJointTrajectory);
 
   if (executionResult == moveit_msgs::msg::MoveItErrorCodes::SUCCESS)
   {
@@ -432,7 +432,7 @@ void CbMoveEndEffectorTrajectory::getCurrentEndEffectorPose(
   {
     if (!tipLink_ || *tipLink_ == "")
     {
-      tipLink_ = this->movegroupClient_->moveGroupClientInterface.getEndEffectorLink();
+      tipLink_ = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
     }
 
     tf2::fromMsg(

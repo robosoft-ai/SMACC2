@@ -33,9 +33,9 @@ void CbDetachObject::onEntry()
 
   auto & planningSceneInterface = moveGroupClient->planningSceneInterface;
 
-  moveGroupClient->moveGroupClientInterface.detachObject(
+  moveGroupClient->moveGroupClientInterface->detachObject(
     *(graspingComponent->currentAttachedObjectName));
-  planningSceneInterface.removeCollisionObjects({*(graspingComponent->currentAttachedObjectName)});
+  planningSceneInterface->removeCollisionObjects({*(graspingComponent->currentAttachedObjectName)});
 }
 
 void CbDetachObject::onExit() {}

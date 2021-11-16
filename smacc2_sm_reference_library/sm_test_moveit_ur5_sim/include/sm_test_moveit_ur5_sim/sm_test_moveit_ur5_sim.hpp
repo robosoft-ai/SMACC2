@@ -39,7 +39,16 @@ using namespace cl_move_group_interface;
 
 //STATES
 struct StMoveJoints;
-struct StMoveCartesian;
+struct StMoveEndEffector;
+struct StMoveCartesianRelative;
+struct StMoveCartesianRelative2;
+struct StAttachObject;
+struct StDetatchObject;
+struct StEndEffectorRotate;
+struct StExecuteLastTrajectory;
+struct StMoveKnownState;
+struct StPouringMotion;
+struct StUndoLastTrajectory;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
@@ -53,6 +62,17 @@ struct SmTestMoveitUr5Sim : public smacc2::SmaccStateMachineBase<SmTestMoveitUr5
 }  // namespace sm_test_moveit_ur5_sim
 
 // STATES
+#include "states/st_attach_object.hpp"
+#include "states/st_move_end_effector.hpp"
+#include "states/st_circular_pivot_motion.hpp"
 #include "states/st_move_joints.hpp"
-#include "states/st_move_cartesian.hpp"
+#include "states/st_detach_object.hpp"
+#include "states/st_move_known_state.hpp"
+#include "states/st_end_effector_rotate.hpp"
+#include "states/st_move_last_trajectory_initial_state.hpp"
+#include "states/st_execute_last_trajectory.hpp"
+#include "states/st_move_named_target.hpp"
+#include "states/st_move_cartesian_relative2.hpp"
+#include "states/st_pouring_motion.hpp"
 #include "states/st_move_cartesian_relative.hpp"
+#include "states/st_undo_last_trajectory.hpp"

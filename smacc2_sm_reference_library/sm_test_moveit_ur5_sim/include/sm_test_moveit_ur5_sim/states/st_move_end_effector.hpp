@@ -26,31 +26,42 @@
 
 namespace sm_test_moveit_ur5_sim
 {
-// SMACC2 clases
+// SMACC2 classes
 using smacc2::Transition;
-using smacc2::EvStateRequestFinish;
 using smacc2::default_transition_tags::SUCCESS;
+using namespace smacc2;
 
 // STATE DECLARATION
-struct StMoveCartesian2 : smacc2::SmaccState<StMoveCartesian2, SmTestMoveitUr5Sim>
+struct StMoveEndEffector : smacc2::SmaccState<StMoveEndEffector, SmTestMoveitUr5Sim>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-
-
-    >reactions;
+    Transition<EvCbSuccess<CbMoveEndEffector, OrArm>, StMoveCartesianRelative, SUCCESS>
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
+    geometry_msgs::msg::PoseStamped target_pose;
+    target_pose.header.frame_id = "world";
+    target_pose.pose.position.x = 0.5;
+    target_pose.pose.position.y = 0.0;
+    target_pose.pose.position.z = 0.25;
+    target_pose.pose.orientation.x = 0;
+    target_pose.pose.orientation.y = 0;
+    target_pose.pose.orientation.z = 0;
+    target_pose.pose.orientation.w = 1;
+
+    configure_orthogonal<OrArm, CbMoveEndEffector>(target_pose, "tool0");
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveCartesian"); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveEndEffector"); }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 
   void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-}  // namespace sm_atomic_performance_test_a_1
+}  // namespace sm_test_moveit_ur5_sim

@@ -26,31 +26,35 @@
 
 namespace sm_test_moveit_ur5_sim
 {
-// SMACC2 clases
+// SMACC2 classes
 using smacc2::Transition;
-using smacc2::EvStateRequestFinish;
 using smacc2::default_transition_tags::SUCCESS;
+using namespace smacc2;
 
 // STATE DECLARATION
-struct StMoveCartesian : smacc2::SmaccState<StMoveCartesian, SmTestMoveitUr5Sim>
+struct StMoveKnownState : smacc2::SmaccState<StMoveKnownState, SmTestMoveitUr5Sim>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-
-
-    >reactions;
+      Transition<EvCbSuccess<CbMoveKnownState, OrArm>, StPouringMotion, SUCCESS>
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
+    std::string pkg = "sm_test_moveit_ur5_sim";
+    std::string filepath = "config/move_group_client/known_states/initial_posture.yaml";
+
+    configure_orthogonal<OrArm, CbMoveKnownState>(pkg, filepath);
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveCartesian"); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveKnownState"); }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 
   void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-}  // namespace sm_atomic_performance_test_a_1
+}  // namespace sm_test_moveit_ur5_sim

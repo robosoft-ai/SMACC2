@@ -32,26 +32,29 @@ using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
 
 // STATE DECLARATION
-struct StMoveCartesianRelative : smacc2::SmaccState<StMoveCartesianRelative, SmTestMoveitUr5Sim>
+struct StPouringMotion : smacc2::SmaccState<StPouringMotion, SmTestMoveitUr5Sim>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbMoveCartesianRelative, OrArm>, StMoveCartesianRelative2, SUCCESS> ,
-    Transition<EvCbFailure<CbMoveCartesianRelative, OrArm>, StMoveCartesianRelative2, SUCCESS>
+      Transition<EvCbSuccess<CbCircularPouringMotion, OrArm>, StUndoLastTrajectory, SUCCESS>
     >
     reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    geometry_msgs::msg::Vector3 offset;
-    offset.x = -0.01;
-    configure_orthogonal<OrArm, CbMoveCartesianRelative>(offset);
+   geometry_msgs::msg::Point relativePivotPoint;
+   relativePivotPoint.x = -0.01;
+   double deltaHeight = 0.01;
+   std::string tipLink = "tool0";
+   std::string globalFrame = "world";
+
+    configure_orthogonal<OrArm, CbCircularPouringMotion>(relativePivotPoint, deltaHeight, tipLink, globalFrame);
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveCartesianRelative"); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StPouringMotion"); }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 
