@@ -54,7 +54,7 @@ public:
       if (!durability) durability = RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT;
       rclcpp::SensorDataQoS qos;
       qos.keep_last(*queueSize);
-      qos.durability(*durability)
+      qos.durability(*durability);
 
 
       RCLCPP_INFO_STREAM(
