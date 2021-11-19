@@ -56,7 +56,6 @@ public:
       qos.keep_last(*queueSize);
       qos.durability(*durability);
 
-
       RCLCPP_INFO_STREAM(
         getNode()->get_logger(),
         "[" << this->getName() << "] Client Publisher to topic: " << topicName);
