@@ -21,6 +21,8 @@
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 #include <move_group_interface_client/client_behaviors/cb_end_effector_rotate.hpp>
+#include <move_group_interface_client/common.hpp>
+
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
@@ -29,7 +31,7 @@ using namespace std::chrono_literals;
 
 namespace cl_move_group_interface
 {
-CbEndEffectorRotate::CbEndEffectorRotate(double deltaRadians, std::string tipLink)
+CbEndEffectorRotate::CbEndEffectorRotate(double deltaRadians, std::optional<std::string> tipLink)
 : CbCircularPivotMotion(tipLink)
 {
   deltaRadians_ = deltaRadians;
@@ -40,25 +42,25 @@ CbEndEffectorRotate::~CbEndEffectorRotate() {}
 void CbEndEffectorRotate::onEntry()
 {
   // autocompute pivot pose
-
   tf2_ros::Buffer tfBuffer(getNode()->get_clock());
   tf2_ros::TransformListener tfListener(tfBuffer);
 
-  // tf2::Stamped<tf2::Transform>  globalBaseLink;
   tf2::Stamped<tf2::Transform> endEffectorInPivotFrame;
 
   int attempts = 3;
+
+  this->requiresClient(movegroupClient_);
+  if (!tipLink_)
+  {
+    tipLink_ = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
+    RCLCPP_WARN_STREAM(getLogger(), "[" << getName() << "] tip unspecified, using default end effector: "<< *tipLink_);
+
+  }
 
   while (attempts > 0)
   {
     try
     {
-      this->requiresClient(movegroupClient_);
-      if (!tipLink_ || *tipLink_ == "")
-      {
-        tipLink_ = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
-      }
-
       auto pivotFrame = this->movegroupClient_->moveGroupClientInterface->getPlanningFrame();
 
       tf2::Stamped<tf2::Transform> endEffectorInPivotFrame;
@@ -81,6 +83,10 @@ void CbEndEffectorRotate::onEntry()
     }
   }
 
+  
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] pivotPose: " << planePivotPose_);
+  
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] calling base CbCircularPivotMotion::onEntry");
   CbCircularPivotMotion::onEntry();
 }
 }  // namespace cl_move_group_interface

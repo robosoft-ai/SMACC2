@@ -38,18 +38,14 @@ struct StMoveLastTrajectoryInitialState : smacc2::SmaccState<StMoveLastTrajector
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    // Transition<EvCbSuccess<CbMoveCartesianRelative2, OrArm>, StMoveCartesianRelative2, SUCCESS>
+      Transition<EvCbSuccess<CbMoveLastTrajectoryInitialState, OrArm>, StMoveLastTrajectoryInitialState, SUCCESS>
     >
     reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // geometry_msgs::msg::Vector3 position;
-    // position.x = -0.01;
-    // position.y = 0.0;
-    // position.z = 0.025;
-    // configure_orthogonal<OrArm, CbMoveCartesianRelative2>("tool0", "tool0", position);
+      configure_orthogonal<OrArm, CbMoveLastTrajectoryInitialState>();
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveLastTrajectoryInitialState"); }

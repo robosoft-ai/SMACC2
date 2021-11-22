@@ -26,7 +26,9 @@
 
 namespace cl_move_group_interface
 {
-class CbDetachObject : public smacc2::SmaccClientBehavior
+
+// releases the current attached object
+class CbDetachObject : public smacc2::SmaccAsyncClientBehavior
 {
 public:
   virtual void onEntry() override;

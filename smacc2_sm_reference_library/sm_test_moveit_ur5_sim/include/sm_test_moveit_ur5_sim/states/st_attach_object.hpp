@@ -23,6 +23,8 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "smacc2/smacc.hpp"
+#include <move_group_interface_client/cl_movegroup.hpp>
+#include <move_group_interface_client/components/cp_grasping_objects.hpp>
 
 namespace sm_test_moveit_ur5_sim
 {
@@ -45,14 +47,15 @@ struct StAttachObject : smacc2::SmaccState<StAttachObject, SmTestMoveitUr5Sim>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // geometry_msgs::msg::Vector3 position;
-    // position.x = -0.01;
-    // position.y = 0.0;
-    // position.z = 0.025;
-    configure_orthogonal<OrArm, CbAttachObject>("virtualObject");
+    configure_orthogonal<OrArm, CbAttachObject>("virtualBox");
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StAttachObject"); }
+  void runtimeConfigure() 
+  { 
+    RCLCPP_INFO(getLogger(), "Entering StAttachObject"); 
+    cl_move_group_interface::ClMoveGroup* moveGroupClient;
+    requiresClient(moveGroupClient);
+  }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 

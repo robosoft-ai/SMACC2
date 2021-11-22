@@ -32,22 +32,22 @@ using namespace std::chrono_literals;
 
 namespace cl_move_group_interface
 {
-CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory(std::string tipLink)
+CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory(std::optional<std::string> tipLink)
 : tipLink_(tipLink), markersInitialized_(false)
 {
-  initializeROS();
 }
 
 CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory(
-  const std::vector<geometry_msgs::msg::PoseStamped> & endEffectorTrajectory, std::string tipLink)
-: endEffectorTrajectory_(endEffectorTrajectory), tipLink_(tipLink), markersInitialized_(false)
+  const std::vector<geometry_msgs::msg::PoseStamped> & endEffectorTrajectory, std::optional<std::string> tipLink)
+: tipLink_(tipLink), endEffectorTrajectory_(endEffectorTrajectory), markersInitialized_(false)
 
 {
-  initializeROS();
 }
 
 void CbMoveEndEffectorTrajectory::initializeROS()
 {
+  RCLCPP_INFO(getLogger(), "[CbMoveEndEffectorTrajectory] initializing ros");
+
   auto nh = this->getNode();
   markersPub_ = nh->create_publisher<visualization_msgs::msg::MarkerArray>("trajectory_markers", 1);
   iksrv_ = nh->create_client<moveit_msgs::srv::GetPositionIK>("/compute_ik");
@@ -99,18 +99,23 @@ ComputeJointTrajectoryErrorCode CbMoveEndEffectorTrajectory::computeJointSpaceTr
     //pose.header.stamp = getNode()->now();
     req->ik_request.pose_stamped = pose;
 
-    RCLCPP_DEBUG_STREAM(getLogger(), "IK request: " << *req);
+    RCLCPP_INFO_STREAM(getLogger(), "[ComputeJointTrajectoryErrorCode] IK request: " << *req);
 
     auto resfut = iksrv_->async_send_request(req);
 
-    if (rclcpp::spin_until_future_complete(getNode(), resfut) == rclcpp::FutureReturnCode::SUCCESS)
+    auto status = resfut.wait_for(3s); 
+    if (status == std::future_status::ready)
     {
+      
+
+    //if (rclcpp::spin_until_future_complete(getNode(), resfut) == rclcpp::FutureReturnCode::SUCCESS)
+    //{
       auto & prevtrajpoint = trajectory.back();
       //jointPositions.clear();
 
       auto res = resfut.get();
       std::stringstream ss;
-      for (int j = 0; j < res->solution.joint_state.position.size(); j++)
+      for (size_t j = 0; j < res->solution.joint_state.position.size(); j++)
       {
         auto & jointname = res->solution.joint_state.name[j];
         auto it = std::find(currentjointnames.begin(), currentjointnames.end(), jointname);
@@ -123,7 +128,7 @@ ComputeJointTrajectoryErrorCode CbMoveEndEffectorTrajectory::computeJointSpaceTr
       }
 
       // continuity check
-      int jointindex = 0;
+      size_t jointindex = 0;
       int discontinuityJointIndex = -1;
       double discontinuityDeltaJointIndex = -1;
       double deltajoint;
@@ -173,12 +178,12 @@ ComputeJointTrajectoryErrorCode CbMoveEndEffectorTrajectory::computeJointSpaceTr
              << "current joint value: " << jointPositions[discontinuityJointIndex] << std::endl;
 
           ss << std::endl;
-          for (int ji = 0; ji < jointPositions.size(); ji++)
+          for (size_t ji = 0; ji < jointPositions.size(); ji++)
           {
             ss << currentjointnames[ji] << ": " << jointPositions[ji] << std::endl;
           }
 
-          for (int kindex = 0; kindex < trajectory.size(); kindex++)
+          for (size_t kindex = 0; kindex < trajectory.size(); kindex++)
           {
             ss << "[" << kindex << "]: " << trajectory[kindex][discontinuityJointIndex]
                << std::endl;
@@ -298,6 +303,9 @@ void CbMoveEndEffectorTrajectory::onEntry()
 
   moveit_msgs::msg::RobotTrajectory computedTrajectory;
 
+ RCLCPP_WARN_STREAM(
+      getLogger(), "[" << getName() << "] Computing joint space trajectory.");
+ 
   auto errorcode = computeJointSpaceTrajectory(computedTrajectory);
 
   bool trajectoryGenerationSuccess = errorcode == ComputeJointTrajectoryErrorCode::SUCCESS;

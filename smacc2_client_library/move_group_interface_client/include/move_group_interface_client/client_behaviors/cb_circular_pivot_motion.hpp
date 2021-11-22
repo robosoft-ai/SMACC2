@@ -33,16 +33,16 @@ public:
   // if not specified it would be used the current robot pose
   std::optional<geometry_msgs::msg::Pose> relativeInitialPose_;
 
-  CbCircularPivotMotion(std::string tipLink = "");
+  CbCircularPivotMotion(std::optional<std::string> tipLink = std::nullopt);
 
   CbCircularPivotMotion(
     const geometry_msgs::msg::PoseStamped & planePivotPose, double deltaRadians,
-    std::string tipLink = "");
+    std::optional<std::string> tipLink = std::nullopt);
 
   CbCircularPivotMotion(
     const geometry_msgs::msg::PoseStamped & planePivotPose,
     const geometry_msgs::msg::Pose & relativeInitialPose, double deltaRadians,
-    std::string tipLink = "");
+    std::optional<std::string> tipLink = std::nullopt);
 
   virtual void generateTrajectory() override;
 

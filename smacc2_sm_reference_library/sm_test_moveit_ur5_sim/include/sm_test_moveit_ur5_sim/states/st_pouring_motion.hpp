@@ -38,7 +38,7 @@ struct StPouringMotion : smacc2::SmaccState<StPouringMotion, SmTestMoveitUr5Sim>
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-      Transition<EvCbSuccess<CbCircularPouringMotion, OrArm>, StUndoLastTrajectory, SUCCESS>
+      Transition<EvCbSuccess<CbCircularPouringMotion, OrArm>, StMoveLastTrajectoryInitialState, SUCCESS>
     >
     reactions;
 

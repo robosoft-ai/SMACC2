@@ -38,14 +38,14 @@ struct StEndEffectorRotate : smacc2::SmaccState<StEndEffectorRotate, SmTestMovei
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-     Transition<EvCbSuccess<CbEndEffectorRotate, OrArm>, StExecuteLastTrajectory, SUCCESS>
+     Transition<EvCbSuccess<CbEndEffectorRotate, OrArm>, StUndoLastTrajectory, SUCCESS>
     >
     reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-      double deltaRadians = M_PI;
+      double deltaRadians = 0;
       std::string tipLink  = "tool0";
 
      configure_orthogonal<OrArm, CbEndEffectorRotate>(deltaRadians, tipLink);

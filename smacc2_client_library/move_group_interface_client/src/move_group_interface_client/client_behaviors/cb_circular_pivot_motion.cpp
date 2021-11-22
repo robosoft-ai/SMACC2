@@ -26,23 +26,26 @@ using namespace std::chrono_literals;
 
 namespace cl_move_group_interface
 {
-CbCircularPivotMotion::CbCircularPivotMotion(std::string tipLink)
+CbCircularPivotMotion::CbCircularPivotMotion(std::optional<std::string> tipLink)
 : CbMoveEndEffectorTrajectory(tipLink)
 {
 }
 
 CbCircularPivotMotion::CbCircularPivotMotion(
-  const geometry_msgs::msg::PoseStamped & planePivotPose, double deltaRadians, std::string tipLink)
-: planePivotPose_(planePivotPose), deltaRadians_(deltaRadians), CbMoveEndEffectorTrajectory(tipLink)
+  const geometry_msgs::msg::PoseStamped & planePivotPose, double deltaRadians, std::optional<std::string> tipLink)
+:
+deltaRadians_(deltaRadians), 
+planePivotPose_(planePivotPose), 
+CbMoveEndEffectorTrajectory(tipLink)
 {
 }
 
 CbCircularPivotMotion::CbCircularPivotMotion(
   const geometry_msgs::msg::PoseStamped & planePivotPose,
-  const geometry_msgs::msg::Pose & relativeInitialPose, double deltaRadians, std::string tipLink)
-: planePivotPose_(planePivotPose),
+  const geometry_msgs::msg::Pose & relativeInitialPose, double deltaRadians, std::optional<std::string> tipLink)
+: deltaRadians_(deltaRadians),
+  planePivotPose_(planePivotPose),
   relativeInitialPose_(relativeInitialPose),
-  deltaRadians_(deltaRadians),
   CbMoveEndEffectorTrajectory(tipLink)
 {
 }
@@ -165,6 +168,7 @@ void CbCircularPivotMotion::computeCurrentEndEffectorPoseRelativeToPivot()
       tipLink_ = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
     }
 
+    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] waiting transform, pivot: " << planePivotPose_.header.frame_id << " tipLink: " << *tipLink_);
     tf2::fromMsg(
       tfBuffer
         .waitForTransform(

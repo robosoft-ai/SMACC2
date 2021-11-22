@@ -77,8 +77,8 @@ SmaccComponentType * ISmaccClient::createNamedComponent(std::string name, TArgs.
     auto tname = demangledTypeName<SmaccComponentType>();
     RCLCPP_INFO(
       getLogger(),
-      "Creating a new component of type %s smacc component is required. Creating a new instance %s",
-      demangledTypeName<SmaccComponentType>().c_str(), tname.c_str());
+      "Creating a new component of type %s smacc component is required by client '%s'. Creating a new instance %s",
+      this->getName().c_str(), demangledTypeName<SmaccComponentType>().c_str(), tname.c_str());
 
     ret = std::shared_ptr<SmaccComponentType>(new SmaccComponentType(targs...));
     ret->setStateMachine(this->getStateMachine());

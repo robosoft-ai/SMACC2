@@ -45,10 +45,6 @@ struct StDetatchObject : smacc2::SmaccState<StDetatchObject, SmTestMoveitUr5Sim>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // geometry_msgs::msg::Vector3 position;
-    // position.x = -0.01;
-    // position.y = 0.0;
-    // position.z = 0.025;
     configure_orthogonal<OrArm, CbDetachObject>();
   }
 

@@ -47,6 +47,7 @@ enum class ComputeJointTrajectoryErrorCode
   JOINT_TRAJECTORY_DISCONTINUITY
 };
 
+// this is a base behavior to define any kind of parametrized family of trajectories or motions 
 class CbMoveEndEffectorTrajectory : public smacc2::SmaccAsyncClientBehavior,
                                     public smacc2::ISmaccUpdatable
 {
@@ -58,15 +59,17 @@ public:
 
   std::optional<bool> allowInitialTrajectoryStateJointDiscontinuity_;
 
-  CbMoveEndEffectorTrajectory(std::string tipLink = "");
+  CbMoveEndEffectorTrajectory(std::optional<std::string> tipLink = std::nullopt);
 
   CbMoveEndEffectorTrajectory(
     const std::vector<geometry_msgs::msg::PoseStamped> & endEffectorTrajectory,
-    std::string tipLink = "");
+    std::optional<std::string> tipLink = std::nullopt);
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
+    this->initializeROS();
+    
     smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
     postJointDiscontinuityEvent = [this](auto traj) {

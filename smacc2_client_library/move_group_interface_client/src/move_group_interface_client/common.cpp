@@ -25,39 +25,40 @@
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg)
 {
-  //  tf2::Quaternion q;
-  //  tf2::fromMsg(msg, q);
-  //   out << " Orientation [" << msg.x << " , " << msg.y << " , " << msg.z << ", " << msg.w
-  //       << "] , yaw: " << tf2::getYaw(msg);
-  return out << "[serialization geometry_msgs::msg::Quaternion]";
+  return out << " Quaternion[" << msg.x << " , " << msg.y << " , " << msg.z << ", w:" << msg.w;
 }
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Transform & msg)
 {
-  return out << "[serialization geometry_msgs::msg::Transform]";
+  return out << "Poisiton[" << msg.translation << "], Orientation["<< msg.rotation << "]";
 }
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & msg)
 {
-  return out << "[serialization geometry_msgs::msg::Pose]";
+  return out << "Poisiton[" << msg.position << "], Orientation["<< msg.orientation << "]";
 }
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg)
 {
-  return out << "[serialization geometry_msgs::msg::PoseStamped]";
+  return out << "[serialization geometry_msgs::msg::PoseStamped] frame_id: " << msg.header.frame_id << ", pose: " << msg.pose;
 }
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Vector3 & msg)
 {
-  return out << "[serialization geometry_msgs::msg::Vector3]";
+  return out << "[ " << msg.x << " "<< msg.y<<" "<< msg.z <<"]";
+}
+
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Point & msg)
+{
+  return out << "[ " << msg.x << " "<< msg.y<<" "<< msg.z <<"]";
 }
 
 std::ostream & operator<<(std::ostream & out, const moveit_msgs::srv::GetPositionIK::Request & msg)
 {
-  return out << "[moveit_msgs::srv::GetPositionIK::Request]";
+    return out << "[moveit_msgs::srv::GetPositionIK::Request] position[" << msg.ik_request.pose_stamped << "]";
 }
 
 std::ostream & operator<<(std::ostream & out, const sensor_msgs::msg::JointState & msg)
 {
-  return out << "[moveit_msgs::srv::GetPositionIK::Request]";
+    return out << "[sensor_msgs::msg::JointState]";
 }

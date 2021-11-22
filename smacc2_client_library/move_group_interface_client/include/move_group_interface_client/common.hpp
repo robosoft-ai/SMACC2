@@ -33,6 +33,8 @@ std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & m
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg);
 
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Point & msg);
+
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Vector3 & msg);
 
 std::ostream & operator<<(std::ostream & out, const moveit_msgs::srv::GetPositionIK::Request & msg);

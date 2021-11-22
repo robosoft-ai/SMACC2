@@ -22,7 +22,7 @@
 
 namespace cl_move_group_interface
 {
-bool GraspingComponent::getGraspingObject(
+bool CpGraspingComponent::getGraspingObject(
   std::string name, moveit_msgs::msg::CollisionObject & object)
 {
   if (this->graspingObjects.count(name))
@@ -36,9 +36,10 @@ bool GraspingComponent::getGraspingObject(
   }
 }
 
-void GraspingComponent::createGraspableBox(
+void CpGraspingComponent::createGraspableBox(
   std::string frameid, float x, float y, float z, float xl, float yl, float zl)
 {
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] creating grasping object in planning scene: " << frameid);
   moveit_msgs::msg::CollisionObject collision;
   auto boxname = frameid;
   ;
