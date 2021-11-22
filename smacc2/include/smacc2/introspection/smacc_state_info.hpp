@@ -63,8 +63,8 @@ struct SmaccTransitionInfo
 
   bool historyNode;
   int index;
-  std::shared_ptr<SmaccStateInfo> sourceState;
-  std::shared_ptr<SmaccStateInfo> destinyState;
+  std::shared_ptr<const SmaccStateInfo> sourceState;
+  std::shared_ptr<const SmaccStateInfo> destinyState;
 
   std::string transitionTag;
   std::string transitionType;
