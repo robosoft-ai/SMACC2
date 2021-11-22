@@ -51,7 +51,6 @@ SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wik
    source install/setup.bash
    ```
 
-
 ## Features
  *  ***Powered by ROS2:*** SMACC2 has been developed specifically to work with ROS2. It supports ROS2 topics, services and actions, right out of the box.
  *   ***Written in C++:*** Until now, ROS2 has lacked a library to develop task-level behavioral state machines in C++. Although libraries have been developed in scripting languages such as python, these are unsuitable for real-world industrial environments where real-time requirements are demanded.
@@ -61,6 +60,17 @@ SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wik
  *  ***SMACC2 Client Library:*** SMACC2 also features a constantly growing library of [clients](smacc2_client_library) that support ROS2 Action Servers, Service Servers and other nodes right out-of-the box. The clients within the SMACC2 Client library have been built utilizing a component based architecture that allows for developer to build powerful clients of their own. Current clients of note include MoveBaseZ, a full featured Action Client built to integrate with Nav2, the ros_timer_client, the multi_role_sensor_client, and a keyboard_client used extensively for state machine drafting & debugging.
   *  ***Extensive Documentation:*** Although many ROS users are familiar with doxygen, our development team has spent a lot of time researching the more advanced features of doxygen such as uml style class diagrams and call graphs, and we've used them to document the SMACC2 library. Have a look to [our doxygen sites](https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespaces.html) and we think you'll be blown away at what Doxygen looks like when [it's done right](https://robosoft-ai.github.io/SMACC2_Documentation/master/html/classsmacc2_1_1ISmaccStateMachine.html) and it becomes a powerful tool to research a codebase.
   *  ***SMACC2 Runtime Analyzer:*** The SMACC2 library works out of the box with the SMACC2 RTA. This allows developers to visualize and runtime debug the state machines they are working on. The SMACC2 RTA is closed source, but is free for individual and academic use. It can be found [here](https://robosoft.ai/product-category/smacc2-runtime-analyzer/).
+
+
+## Repository Structure
+- `smacc2` - core library of SMACC2.
+- `smacc2_ci` - ...
+- `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`nav2z_client`), MoveIt2 (`move_group_interface_client`).
+- `smacc2_event_generators` - ...
+- `smacc2_msgs` - ROS2 messages for SMACC2 framework.
+- `smacc2_sm_reference_library` - libraries with reference implementations of state-machines used for demonstaration and testing of functionalities.
+- `↓smacc2_state_reactor_library` - ...
+- `smacc2_performance_tools` - ...
 
 
 ## SMACC2 applications
@@ -84,17 +94,6 @@ Each state machine in the reference library comes with it's own README.md file, 
 
 Operating instructions can be found in each reference state machines readme file.
 
-
-## Repository Structure
-
-- `smacc2` - core library of SMACC2.
-- `smacc2_ci` - ...
-- `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`nav2z_client`), MoveIt2 (`move_group_interface_client`).
-- `smacc2_event_generators` - ...
-- `smacc2_msgs` - ROS2 messages for SMACC2 framework.
-- `smacc2_sm_reference_library` - libraries with reference implementations of state-machines used for demonstaration and testing of functionalities.
-- `↓smacc2_state_reactor_library` - ...
-- `smacc2_performance_tools` - ...
 
 ## Writing your State Machines
 There is a [state machine generator in the reference library](smacc2_sm_reference_library/create-sm-package.bash).
