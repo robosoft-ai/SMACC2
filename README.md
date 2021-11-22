@@ -1,6 +1,8 @@
 # SMACC2
 
-A state-machine framework for ROS2-based applications written in C++.
+SMACC2 is an event-driven, asynchronous, behavioral state machine library for real-time ROS2 (Robotic Operating System) applications written in C++, designed to allow programmers to build robot control applications for multicomponent robots, in an intuitive and systematic manner.
+
+SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wiki.ros.org/smach). SMACC is built on top of the [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
 
 
 ## Repository Status, Packages and Documentation
@@ -22,19 +24,6 @@ A state-machine framework for ROS2-based applications written in C++.
    Uses repos file: `src/SMACC2/SMACC2.repos`
 
 1. Source build - also core ROS packages are build from source. It shows potential issues in the mid future.
-
-
-
-## Repository Structure
-
-- `smacc2` - core library of SMACC2.
-- `smacc2_ci` - ...
-- `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`nav2z_client`), MoveIt2 (`move_group_interface_client`).
-- `smacc2_event_generators` - ...
-- `smacc2_msgs` - ROS2 messages for SMACC2 framework.
-- `smacc2_sm_reference_library` - libraries with reference implementations of state-machines used for demonstaration and testing of functionalities.
-- `↓smacc2_state_reactor_library` - ...
-- `smacc2_performance_tools` - ...
 
 
 ## Getting started
@@ -62,29 +51,6 @@ A state-machine framework for ROS2-based applications written in C++.
    source install/setup.bash
    ```
 
-## Examples
-
-To demonstrate some functionalities of the SMACC2 you can use following examples:
-
-### sm_atomic
-TBD: add some description
-```
-ros2 launch sm_atomic sm_atomic.py
-```
-
-### sm_dance_bot
-TBD: add some description
-```
-ros2 launch sm_dance_bot sm_dance_bot_launch.py
-```
-
-
-
-
-SMACC2 is an event-driven, asynchronous, behavioral state machine library for real-time ROS2 (Robotic Operating System) applications written in C++, designed to allow programmers to build robot control applications for multicomponent robots, in an intuitive and systematic manner.
-
-SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wiki.ros.org/smach). SMACC is built on top of the [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
-
 
 ## Features
  *  ***Powered by ROS2:*** SMACC2 has been developed specifically to work with ROS2. It supports ROS2 topics, services and actions, right out of the box.
@@ -101,7 +67,7 @@ SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wik
 From it's inception, SMACC2 was written to support the programming of multi-component, complex robots. If your project involves small, solar-powered insect robots, that simply navigate towards a light source, then SMACC2 might not be the right choice for you. But if you are trying to program a robot with a mobile base, a robotic arm, a gripper, two lidar sensors, a gps transceiver and an imu, then you've come to the right place.
 
 
-## Getting Started
+## Run a State Machine
 The easiest way to get started is by selecting one of the state machines in our [reference library](smacc2_sm_reference_library), and then hacking it to meet your needs.
 
 Each state machine in the reference library comes with it's own README.md file, which contains the appropriate operating instructions, so that all you have to do is simply copy & paste some commands into your terminal.
@@ -117,6 +83,18 @@ Each state machine in the reference library comes with it's own README.md file, 
 
 
 Operating instructions can be found in each reference state machines readme file.
+
+
+## Repository Structure
+
+- `smacc2` - core library of SMACC2.
+- `smacc2_ci` - ...
+- `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`nav2z_client`), MoveIt2 (`move_group_interface_client`).
+- `smacc2_event_generators` - ...
+- `smacc2_msgs` - ROS2 messages for SMACC2 framework.
+- `smacc2_sm_reference_library` - libraries with reference implementations of state-machines used for demonstaration and testing of functionalities.
+- `↓smacc2_state_reactor_library` - ...
+- `smacc2_performance_tools` - ...
 
 ## Writing your State Machines
 There is a [state machine generator in the reference library](smacc2_sm_reference_library/create-sm-package.bash).
