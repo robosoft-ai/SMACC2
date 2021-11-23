@@ -27,8 +27,8 @@ using namespace std::chrono;
 namespace sm_coretest_transition_speed_1
 {
 // SMACC2 clases
-using smacc2::Transition;
 using smacc2::EvStateRequestFinish;
+using smacc2::Transition;
 
 // STATE MACHINE SHARED VARIABLES (used in this state)
 extern unsigned int _counter_;
@@ -42,7 +42,8 @@ struct State2 : smacc2::SmaccState<State2, SmCoretestTransitionSpeed1>
 
     Transition<EvStateRequestFinish<State2>, State1>
 
-    >reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
@@ -59,4 +60,4 @@ struct State2 : smacc2::SmaccState<State2, SmCoretestTransitionSpeed1>
 
   void onExit() {}
 };
-}  // namespace sm_atomic_performance_test_a_1
+}  // namespace sm_coretest_transition_speed_1

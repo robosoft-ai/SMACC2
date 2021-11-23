@@ -26,7 +26,8 @@ struct State2 : smacc2::SmaccState<State2, SmAtomicSubscribersPerformanceTest>
 
     Transition<EvTopicMessage<SmaccSubscriberClient<std_msgs::msg::Int16>, OrSubscriber>, State1>
 
-    >reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}

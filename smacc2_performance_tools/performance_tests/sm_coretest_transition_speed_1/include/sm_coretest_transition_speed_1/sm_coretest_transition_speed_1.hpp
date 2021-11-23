@@ -44,7 +44,8 @@ struct SmCoretestTransitionSpeed1
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  void onInitialize() override {
+  void onInitialize() override
+  {
     _node_ = std::make_shared<rclcpp::Node>("sm_coretest_transition_speed_1");
     _start_time_ = _node_->now();
   }

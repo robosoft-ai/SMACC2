@@ -26,7 +26,8 @@ struct State2 : smacc2::SmaccState<State2, SmAtomicPerformanceTrace1>
 
     Transition<EvStateRequestFinish<State2>, State1>
 
-    >reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
