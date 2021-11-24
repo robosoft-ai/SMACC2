@@ -25,9 +25,7 @@ from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 import math
-import os
 import yaml
-from ament_index_python.packages import get_package_share_directory
 
 
 def construct_angle_radians(loader, node):
