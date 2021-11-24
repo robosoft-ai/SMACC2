@@ -16,24 +16,27 @@
 
 namespace sm_atomic_performance_trace_1
 {
+using namespace smacc2::default_transition_tags;
+
 // STATE DECLARATION
-struct State2 : smacc2::SmaccState<State2, SmAtomicPerformanceTrace1>
+struct State1 : smacc2::SmaccState<State1, SmAtomicPerformanceTrace1>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvStateRequestFinish<State2>, State1>
+    Transition<EvStateRequestFinish<State1>, State2>
 
-    >reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
 
-  void onEntry() { this->postEvent<EvStateRequestFinish<State2>>(); }
+  void onEntry() { this->postEvent<EvStateRequestFinish<State1>>(); }
 
   void onExit() {}
 };

@@ -18,39 +18,46 @@
 
 #pragma once
 
-#include <memory>
-
 #include "rclcpp/rclcpp.hpp"
 #include "smacc2/smacc.hpp"
 
+// STATE DECLARATION
+using namespace std::chrono;
+
 namespace sm_coretest_transition_speed_1
 {
-//STATES
-struct State1;
-struct State2;
+// SMACC2 clases
+using smacc2::EvStateRequestFinish;
+using smacc2::Transition;
 
-//VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
-static unsigned int _counter_ = 1;
-std::shared_ptr<rclcpp::Node> _node_;
-rclcpp::Time _start_time_;
+// STATE MACHINE SHARED VARIABLES (used in this state)
+extern unsigned int _counter_;
 
-unsigned int _sum_of_iterations_ = 0.0;
-double _sum_of_elapsed_time_ = 0.0;
-
-//--------------------------------------------------------------------
-//STATE_MACHINE
-struct SmCoretestTransitionSpeed1
-: public smacc2::SmaccStateMachineBase<SmCoretestTransitionSpeed1, State1>
+// STATE DECLARATION
+struct State2 : smacc2::SmaccState<State2, SmCoretestTransitionSpeed1>
 {
-  using SmaccStateMachineBase::SmaccStateMachineBase;
+  using SmaccState::SmaccState;
+  // TRANSITION TABLE
+  typedef boost::mpl::list<
 
-  void onInitialize() override {
-    _node_ = std::make_shared<rclcpp::Node>("sm_coretest_transition_speed_1");
-    _start_time_ = _node_->now();
+    Transition<EvStateRequestFinish<State2>, State1>
+
+    >
+    reactions;
+
+  // STATE FUNCTIONS
+  static void staticConfigure() {}
+
+  void runtimeConfigure() {}
+
+  void onEntry()
+  {
+    // only update counter in this state
+    ++_counter_;
+
+    this->postEvent<EvStateRequestFinish<State2>>();
   }
+
+  void onExit() {}
 };
-
 }  // namespace sm_coretest_transition_speed_1
-
-#include "states/st_state_1.hpp"
-#include "states/st_state_2.hpp"

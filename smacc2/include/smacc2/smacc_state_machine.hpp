@@ -180,6 +180,8 @@ protected:
   // orthogonals
   std::map<std::string, std::shared_ptr<smacc2::ISmaccOrthogonal>> orthogonals_;
 
+  std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo_;
+
 private:
   std::recursive_mutex m_mutex_;
   std::recursive_mutex eventQueueMutex_;
@@ -191,6 +193,7 @@ private:
   // shared variables
   std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;
 
+  // contains the whole history of transitions of the state machine
   std::vector<smacc2_msgs::msg::SmaccTransitionLogEntry> transitionLogHistory_;
 
   smacc2::SMRunMode runMode_;
@@ -206,8 +209,6 @@ private:
 
   template <typename EventType>
   void propagateEventToStateReactors(ISmaccState * st, EventType * ev);
-
-  std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo_;
 
   void updateStatusMessage();
 

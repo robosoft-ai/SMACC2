@@ -21,12 +21,11 @@
 #include "rclcpp/rclcpp.hpp"
 #include "smacc2/smacc.hpp"
 
-
 namespace sm_coretest_transition_speed_1
 {
 // SMACC2 clases
-using smacc2::Transition;
 using smacc2::EvStateRequestFinish;
+using smacc2::Transition;
 
 // STATE MACHINE SHARED VARIABLES (used in this state)
 extern unsigned int _counter_;
@@ -35,7 +34,6 @@ extern rclcpp::Time _start_time_;
 
 extern unsigned int _sum_of_iterations_;
 extern double _sum_of_elapsed_time_;
-
 
 // State constants
 constexpr unsigned int ITERATIONS_CHECK = 100;
@@ -50,7 +48,8 @@ struct State1 : smacc2::SmaccState<State1, SmCoretestTransitionSpeed1>
 
     Transition<EvStateRequestFinish<State1>, State2>
 
-    >reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
@@ -72,8 +71,7 @@ struct State1 : smacc2::SmaccState<State1, SmCoretestTransitionSpeed1>
       RCLCPP_FATAL(
         _node_->get_logger(),
         "Executed %u iterations in %lf seconds: %lf Hz. Longtime frequency: %lf Hz",
-        ITERATIONS_CHECK, elapsed.seconds(), frequency_Hz, global_frequency_Hz
-      );
+        ITERATIONS_CHECK, elapsed.seconds(), frequency_Hz, global_frequency_Hz);
 
       _counter_ = 1;
       _start_time_ = _node_->now();
@@ -83,7 +81,5 @@ struct State1 : smacc2::SmaccState<State1, SmCoretestTransitionSpeed1>
   }
 
   void onExit() {}
-
-
 };
-}  // namespace sm_atomic_performance_test_a_1
+}  // namespace sm_coretest_transition_speed_1
