@@ -113,25 +113,6 @@
         ]
     },
     {
-        "name": "(gdb) sm_atomic_performance_test_a_1",
-        "type": "cppdbg",
-        "request": "launch",
-        "program": "${workspaceFolder}/../install/sm_atomic_performance_test_a_1/lib/sm_atomic_performance_test_a_1/sm_atomic_performance_test_a_1_node",
-        "args": [],
-        "stopAtEntry": false,
-        "cwd": "${workspaceFolder}",
-        "environment": [],
-        "externalConsole": false,
-        "MIMode": "gdb",
-        "setupCommands": [
-            {
-                "description": "Enable pretty-printing for gdb",
-                "text": "-enable-pretty-printing",
-                "ignoreFailures": true
-            }
-        ]
-    },
-    {
         "name": "(gdb) smacc_aws_warehouse_navigation",
         "type": "cppdbg",
         "request": "launch",
