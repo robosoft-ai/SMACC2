@@ -18,8 +18,11 @@
  *
  ******************************************************************************************************************/
 
-#include <moveit/kinematic_constraints/utils.h>
+// #include <moveit/kinematic_constraints/utils.h>
 #include <future>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+
+#include <tf2/impl/utils.h>
 #include <move_group_interface_client/client_behaviors/cb_move_end_effector.hpp>
 #include <move_group_interface_client/common.hpp>
 
@@ -44,8 +47,7 @@ void CbMoveEndEffector::onEntry()
   {
     RCLCPP_DEBUG(
       getLogger(), "[CbMoveEndEfector] new thread started to move absolute end effector");
-    moveit::planning_interface::MoveGroupInterface move_group(
-      getNode(), moveit::planning_interface::MoveGroupInterface::Options(*(this->group_)));
+    moveit::planning_interface::MoveGroupInterface move_group(getNode(), *group_);
     this->moveToAbsolutePose(move_group, targetPose);
     RCLCPP_DEBUG(getLogger(), "[CbMoveEndEfector] to move absolute end effector thread destroyed");
   }
@@ -53,7 +55,7 @@ void CbMoveEndEffector::onEntry()
   {
     RCLCPP_DEBUG(
       getLogger(), "[CbMoveEndEfector] new thread started to move absolute end effector");
-    this->moveToAbsolutePose(movegroupClient_->moveGroupClientInterface, targetPose);
+    this->moveToAbsolutePose(*(movegroupClient_->moveGroupClientInterface), targetPose);
     RCLCPP_DEBUG(getLogger(), "[CbMoveEndEfector] to move absolute end effector thread destroyed");
   }
 }
@@ -62,7 +64,7 @@ bool CbMoveEndEffector::moveToAbsolutePose(
   moveit::planning_interface::MoveGroupInterface & moveGroupInterface,
   geometry_msgs::msg::PoseStamped & targetObjectPose)
 {
-  auto & planningSceneInterface = movegroupClient_->planningSceneInterface;
+  // auto & planningSceneInterface = movegroupClient_->planningSceneInterface;
   RCLCPP_DEBUG(getLogger(), "[CbMoveEndEffector] Synchronous sleep of 1 seconds");
   rclcpp::sleep_for(500ms);
 

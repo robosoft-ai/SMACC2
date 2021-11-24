@@ -20,6 +20,7 @@
 
 #include <move_group_interface_client/client_behaviors/cb_circular_pivot_motion.hpp>
 #include <move_group_interface_client/client_behaviors/cb_pouring_motion.hpp>
+#include <move_group_interface_client/common.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 namespace cl_move_group_interface
@@ -102,6 +103,7 @@ void CbCircularPouringMotion::generateTrajectory()
   tf2::Transform invertedLidTransform = lidEndEffectorTransform.inverse();
   rclcpp::Time startTime = getNode()->now();
 
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] trajectory steps: " << steps);
   for (float i = 0; i < steps; i++)
   {
     // auto currentEndEffectorOrientation =
@@ -122,7 +124,7 @@ void CbCircularPouringMotion::generateTrajectory()
     geometry_msgs::msg::PoseStamped pointerPose;
     tf2::toMsg(pose, pointerPose.pose);
     pointerPose.header.frame_id = globalFrame_;
-    pointerPose.header.stamp = startTime + rclcpp::Duration(i * secondsPerSample);
+    pointerPose.header.stamp = startTime + rclcpp::Duration::from_seconds(i * secondsPerSample);
     this->pointerTrajectory_.push_back(pointerPose);
 
     tf2::Transform poseEndEffector = pose * invertedLidTransform;
@@ -130,9 +132,12 @@ void CbCircularPouringMotion::generateTrajectory()
     geometry_msgs::msg::PoseStamped globalEndEffectorPose;
     tf2::toMsg(poseEndEffector, globalEndEffectorPose.pose);
     globalEndEffectorPose.header.frame_id = globalFrame_;
-    globalEndEffectorPose.header.stamp = startTime + rclcpp::Duration(i * secondsPerSample);
+    globalEndEffectorPose.header.stamp =
+      startTime + rclcpp::Duration::from_seconds(i * secondsPerSample);
 
     this->endEffectorTrajectory_.push_back(globalEndEffectorPose);
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] " << i << " - " << globalEndEffectorPose);
   }
 }
 

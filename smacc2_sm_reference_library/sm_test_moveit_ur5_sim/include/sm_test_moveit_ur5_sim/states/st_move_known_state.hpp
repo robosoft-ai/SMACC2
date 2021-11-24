@@ -32,26 +32,27 @@ using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
 
 // STATE DECLARATION
-struct StMoveCartesianRelative : smacc2::SmaccState<StMoveCartesianRelative, SmTestMoveitUr5Sim>
+struct StMoveKnownState : smacc2::SmaccState<StMoveKnownState, SmTestMoveitUr5Sim>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbMoveCartesianRelative, OrArm>, StAttachObject, SUCCESS> ,
-    Transition<EvCbFailure<CbMoveCartesianRelative, OrArm>, StAttachObject, ABORT>
+      Transition<EvCbSuccess<CbMoveKnownState, OrArm>, StPouringMotion, SUCCESS>,
+      Transition<EvCbFailure<CbMoveKnownState, OrArm>, StPouringMotion, ABORT>
     >
     reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    geometry_msgs::msg::Vector3 offset;
-    offset.x = -0.01;
-    configure_orthogonal<OrArm, CbMoveCartesianRelative>(offset);
+    std::string pkg = "sm_test_moveit_ur5_sim";
+    std::string filepath = "config/move_group_client/known_states/control_authority_posture.yaml";
+
+    configure_orthogonal<OrArm, CbMoveKnownState>(pkg, filepath);
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveCartesianRelative"); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveKnownState"); }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 

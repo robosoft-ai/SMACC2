@@ -43,7 +43,7 @@ void CbMoveCartesianRelative::onEntry()
   }
   else
   {
-    this->moveRelativeCartesian(&moveGroupSmaccClient_->moveGroupClientInterface, offset_);
+    this->moveRelativeCartesian(moveGroupSmaccClient_->moveGroupClientInterface.get(), offset_);
   }
 }
 

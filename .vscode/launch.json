@@ -4,6 +4,30 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+    {
+        "name": "(gdb) sm_test_moveit_ur5_sim_node",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
+        "args": ["--ros-args",
+            "-r",
+            "__node:=sm_test_moveit_ur5_sim_node",
+            // "--params-file",
+            // "${workspaceFolder}/../install/sm_moveit_ur5_sim/share/sm_moveit_ur5_sim/params/sm_aws_warehouse_navigation_config.yaml"
+        ],
+        "stopAtEntry": false,
+        "cwd": "${fileDirname}",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+                "description": "Enable pretty-printing for gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ]
+    },
 
 
     {

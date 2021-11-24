@@ -27,13 +27,14 @@
 
 namespace cl_move_group_interface
 {
-class GraspingComponent : public smacc2::ISmaccComponent
+class CpGraspingComponent : public smacc2::ISmaccComponent
 {
 private:
   std::map<std::string, moveit_msgs::msg::CollisionObject> graspingObjects;
 
 public:
   std::vector<std::string> fingerTipNames;
+  std::string gripperLink_ = "gripper_link";
 
   std::optional<std::string> currentAttachedObjectName;
 

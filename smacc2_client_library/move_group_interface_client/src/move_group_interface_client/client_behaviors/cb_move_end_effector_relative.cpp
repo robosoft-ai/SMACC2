@@ -22,6 +22,7 @@
 #include <move_group_interface_client/client_behaviors/cb_move_end_effector_relative.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
+#include <tf2/impl/utils.h>
 #include <tf2/transform_datatypes.h>
 #include <tf2/utils.h>
 #include <future>
@@ -50,7 +51,7 @@ void CbMoveEndEffectorRelative::onEntry()
   }
   else
   {
-    this->moveRelative(movegroupClient_->moveGroupClientInterface, this->transform_);
+    this->moveRelative(*movegroupClient_->moveGroupClientInterface, this->transform_);
   }
 }
 
@@ -62,10 +63,10 @@ void CbMoveEndEffectorRelative::moveRelative(
 {
   auto referenceStartPose = moveGroupInterface.getCurrentPose();
   tf2::Quaternion currentOrientation;
-  tf2::fromMsg(referenceStartPose.pose.orientation, currentOrientation);
+  tf2::convert(referenceStartPose.pose.orientation, currentOrientation);
   tf2::Quaternion desiredRelativeRotation;
 
-  tf2::fromMsg(transformOffset.rotation, desiredRelativeRotation);
+  tf2::convert(transformOffset.rotation, desiredRelativeRotation);
 
   auto targetOrientation = desiredRelativeRotation * currentOrientation;
 
