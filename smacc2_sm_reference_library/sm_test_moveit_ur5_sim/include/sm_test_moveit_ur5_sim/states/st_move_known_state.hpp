@@ -38,7 +38,8 @@ struct StMoveKnownState : smacc2::SmaccState<StMoveKnownState, SmTestMoveitUr5Si
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-      Transition<EvCbSuccess<CbMoveKnownState, OrArm>, StPouringMotion, SUCCESS>
+      Transition<EvCbSuccess<CbMoveKnownState, OrArm>, StPouringMotion, SUCCESS>,
+      Transition<EvCbFailure<CbMoveKnownState, OrArm>, StPouringMotion, ABORT>
     >
     reactions;
 
@@ -46,7 +47,7 @@ struct StMoveKnownState : smacc2::SmaccState<StMoveKnownState, SmTestMoveitUr5Si
   static void staticConfigure()
   {
     std::string pkg = "sm_test_moveit_ur5_sim";
-    std::string filepath = "config/move_group_client/known_states/initial_posture.yaml";
+    std::string filepath = "config/move_group_client/known_states/control_authority_posture.yaml";
 
     configure_orthogonal<OrArm, CbMoveKnownState>(pkg, filepath);
   }

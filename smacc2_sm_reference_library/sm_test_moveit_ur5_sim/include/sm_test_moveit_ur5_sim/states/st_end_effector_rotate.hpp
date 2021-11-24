@@ -45,7 +45,7 @@ struct StEndEffectorRotate : smacc2::SmaccState<StEndEffectorRotate, SmTestMovei
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-      double deltaRadians = M_PI * 0.1;
+      double deltaRadians = M_PI * 0.3;
       std::string tipLink  = "tool0";
 
      configure_orthogonal<OrArm, CbEndEffectorRotate>(deltaRadians, tipLink);

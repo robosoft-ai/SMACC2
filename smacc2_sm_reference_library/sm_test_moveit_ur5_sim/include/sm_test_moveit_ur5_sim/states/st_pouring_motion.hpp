@@ -38,7 +38,9 @@ struct StPouringMotion : smacc2::SmaccState<StPouringMotion, SmTestMoveitUr5Sim>
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-      Transition<EvCbSuccess<CbCircularPouringMotion, OrArm>, StMoveLastTrajectoryInitialState, SUCCESS>
+      Transition<EvCbSuccess<CbCircularPouringMotion, OrArm>, StMoveLastTrajectoryInitialState, SUCCESS>,
+      Transition<EvCbFailure<CbCircularPouringMotion, OrArm>, StMoveLastTrajectoryInitialState, ABORT>
+
     >
     reactions;
 
@@ -47,7 +49,7 @@ struct StPouringMotion : smacc2::SmaccState<StPouringMotion, SmTestMoveitUr5Sim>
   {
    geometry_msgs::msg::Point relativePivotPoint;
    relativePivotPoint.x = -0.01;
-   double deltaHeight = 0.1;
+   double deltaHeight = 0.05;
    std::string tipLink = "tool0";
    std::string globalFrame = "tool0";
 
