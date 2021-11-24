@@ -82,6 +82,11 @@ public:
     RCLCPP_INFO(getLogger(), "[SmaccStateMachine] Initializing ROS communication mechanisms");
     this->onInitialized();
 
+    // publish startup state machine transition info
+    auto transitionInfo = std::make_shared<SmaccTransitionInfo>();
+    transitionInfo->destinyState = this->stateMachineInfo_->getState<InitialStateType>();
+    this->publishTransition(*transitionInfo);
+
     RCLCPP_INFO(getLogger(), "[SmaccStateMachine] Initializing state machine");
     sc::state_machine<DerivedStateMachine, InitialStateType, SmaccAllocator>::initiate();
   }

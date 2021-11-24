@@ -70,6 +70,25 @@
         ]
     },
     {
+        "name": "(gdb) sm_atomic",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/../install/sm_atomic/lib/sm_atomic/sm_atomic_node",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+                "description": "Enable pretty-printing for gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ]
+    },
+    {
         "name": "(gdb) sm_atomic_performance_test_a_1",
         "type": "cppdbg",
         "request": "launch",

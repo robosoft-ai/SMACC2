@@ -16,17 +16,20 @@
 
 namespace sm_atomic_subscribers_performance_test
 {
+using namespace smacc2::default_transition_tags;
+
 // STATE DECLARATION
-struct State2 : smacc2::SmaccState<State2, SmAtomicSubscribersPerformanceTest>
+struct State1 : smacc2::SmaccState<State1, SmAtomicSubscribersPerformanceTest>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTopicMessage<SmaccSubscriberClient<std_msgs::msg::Int16>, OrSubscriber>, State1>
+    Transition<EvTopicMessage<SmaccSubscriberClient<std_msgs::msg::Int16>, OrSubscriber>, State2>
 
-    >reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}

@@ -32,6 +32,8 @@ class SmaccPublisherClient : public smacc2::ISmaccClient
 public:
   std::optional<std::string> topicName;
   std::optional<int> queueSize;
+  std::optional<rmw_qos_durability_policy_t> durability;
+  std::optional<rmw_qos_reliability_policy_t> reliability;
 
   SmaccPublisherClient();
   virtual ~SmaccPublisherClient();
@@ -50,8 +52,12 @@ public:
       }
 
       if (!queueSize) queueSize = 1;
+      if (!durability) durability = RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT;
+      if (!reliability) reliability = RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT;
       rclcpp::SensorDataQoS qos;
       qos.keep_last(*queueSize);
+      qos.durability(*durability);
+      qos.reliability(*reliability);
 
       RCLCPP_INFO_STREAM(
         getNode()->get_logger(),
