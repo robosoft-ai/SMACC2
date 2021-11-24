@@ -1,9 +1,0 @@
-<launch>
-    <arg name="use_valgrind" default="false"/>
-    <arg name="valgrind_prefix" if="$(var use_valgrind)" default="valgrind --tool=callgrind --log-file='valgrind.log'" />
-    <arg name="valgrind_prefix" unless="$(var use_valgrind)" default="" />
-
-    <node launch-prefix="$(var valgrind_prefix)" pkg="sm_atomic_performance_test_a_1" exec="sm_atomic_performance_test_a_1_node" name="sm_atomic_performance_test_a_1" args="--ros-args --log-level FATAL" output="screen">
-        <param from="$(find-pkg-share sm_atomic_performance_test_a_1)/config/sm_atomic_performance_test_a_1_config.yaml"/>
-    </node>
-</launch>

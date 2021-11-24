@@ -12,51 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-// Author: Denis Štogl (template)
-//
+#include <smacc2/smacc.hpp>
 
-#pragma once
-
-#include "rclcpp/rclcpp.hpp"
-#include "smacc2/smacc.hpp"
-
-// STATE DECLARATION
-using namespace std::chrono;
-
-namespace sm_coretest_transition_speed_1
+namespace sm_atomic_performance_trace_1
 {
-// SMACC2 clases
-using smacc2::Transition;
-using smacc2::EvStateRequestFinish;
-
-// STATE MACHINE SHARED VARIABLES (used in this state)
-extern unsigned int _counter_;
-
 // STATE DECLARATION
-struct State2 : smacc2::SmaccState<State2, SmCoretestTransitionSpeed1>
+struct State2 : smacc2::SmaccState<State2, SmAtomicPerformanceTrace1>
 {
   using SmaccState::SmaccState;
+
   // TRANSITION TABLE
-  typedef boost::mpl::list<
+  typedef mpl::list<
 
     Transition<EvStateRequestFinish<State2>, State1>
 
-    >reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
 
-  void onEntry()
-  {
-    // only update counter in this state
-    ++_counter_;
-
-    this->postEvent<EvStateRequestFinish<State2>>();
-  }
+  void onEntry() { this->postEvent<EvStateRequestFinish<State2>>(); }
 
   void onExit() {}
 };
-}  // namespace sm_atomic_performance_test_a_1
+}  // namespace sm_atomic_performance_trace_1
