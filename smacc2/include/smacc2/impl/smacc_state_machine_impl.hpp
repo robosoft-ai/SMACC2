@@ -185,7 +185,8 @@ void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
   {
     RCLCPP_WARN_STREAM(
       getLogger(),
-      "CURRENT STATE SCOPED EVENT SKIPPED, state is exiting/transitioning " << eventtypename);
+      "[ISmaccStateMachine] CURRENT STATE SCOPED EVENT DISCARDED, state is exiting/transitioning "
+        << eventtypename);
     return;
     // in this case we may lose/skip events, if this is not right for some cases we should create a
     // queue to lock the events during the transitions. This issues appeared when a client
@@ -504,7 +505,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
   RCLCPP_WARN_STREAM(getLogger(), "exiting state: " << fullname);
   // this->set_parameter("destroyed", true);
 
-  RCLCPP_INFO_STREAM(getLogger(), "Notification State Exit: leaving state" << state);
+  RCLCPP_INFO_STREAM(getLogger(), "Notification State Exit: leaving state " << state);
   for (auto pair : this->orthogonals_)
   {
     auto & orthogonal = pair.second;

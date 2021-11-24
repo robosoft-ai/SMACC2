@@ -58,10 +58,10 @@ struct StMoveCartesianRelative2 : smacc2::SmaccState<StMoveCartesianRelative2, S
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 
-  void onExit(ABORT) 
+  void onExit(ABORT)
   {
-    rclcpp::sleep_for(1s); 
-    RCLCPP_INFO(getLogger(), "On Exit!"); 
+    rclcpp::sleep_for(1s);
+    RCLCPP_INFO(getLogger(), "On Exit!");
   }
 };
 }  // namespace sm_test_moveit_ur5_sim

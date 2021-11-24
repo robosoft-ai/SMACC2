@@ -76,7 +76,7 @@ void CbMoveCartesianRelative2::generateTrajectory()
   float interpolation_factor = 0;
 
   rclcpp::Time startTime = getNode()->now();
-  RCLCPP_INFO(getLogger(), "[CbMoveCartesianRelative2] trajectory steps: %d" , steps);
+  RCLCPP_INFO(getLogger(), "[CbMoveCartesianRelative2] trajectory steps: %d", steps);
 
   for (float i = 0; i < steps; i++)
   {

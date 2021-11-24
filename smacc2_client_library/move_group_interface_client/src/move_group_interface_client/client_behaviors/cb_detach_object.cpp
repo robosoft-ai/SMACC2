@@ -43,7 +43,7 @@ void CbDetachObject::onEntry()
 
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] detach result: " << res);
 
-  if(res)
+  if (res)
     this->postSuccessEvent();
   else
     this->postFailureEvent();

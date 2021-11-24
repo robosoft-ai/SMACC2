@@ -56,14 +56,14 @@ void CbAttachObject::onEntry()
       targetObjectName_, graspingComponent->gripperLink_, graspingComponent->fingerTipNames);
 
     RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Grasping objectfound. attach request.");
-    
+
     this->postSuccessEvent();
   }
   else
   {
     RCLCPP_WARN_STREAM(
       getLogger(), "[" << getName() << "] Grasping object was not found. Ignoring attach request.");
-    
+
     this->postFailureEvent();
   }
 }

@@ -38,8 +38,8 @@ struct StMoveEndEffector : smacc2::SmaccState<StMoveEndEffector, SmTestMoveitUr5
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbMoveEndEffector, OrArm>, StMoveCartesianRelative, SUCCESS>,
-    Transition<EvCbFailure<CbMoveEndEffector, OrArm>, StMoveCartesianRelative, ABORT>
+    Transition<EvCbSuccess<CbMoveEndEffector, OrArm>, StEndEffectorRotate, SUCCESS>,
+    Transition<EvCbFailure<CbMoveEndEffector, OrArm>, StMoveEndEffector, ABORT>
     >
     reactions;
 
@@ -48,13 +48,15 @@ struct StMoveEndEffector : smacc2::SmaccState<StMoveEndEffector, SmTestMoveitUr5
   {
     geometry_msgs::msg::PoseStamped target_pose;
     target_pose.header.frame_id = "world";
-    target_pose.pose.position.x = -0.3;
-    target_pose.pose.position.y = 0.0;
-    target_pose.pose.position.z = 0.25;
-    target_pose.pose.orientation.x = 0;
+    target_pose.pose.position.x = 0.4;
+    target_pose.pose.position.y = 0.3;
+    target_pose.pose.position.z = 0.3;
+
+    //0.8939967, 0, 0, -0.4480736 ]
+    target_pose.pose.orientation.x = 0.8939967;
     target_pose.pose.orientation.y = 0;
     target_pose.pose.orientation.z = 0;
-    target_pose.pose.orientation.w = 1;
+    target_pose.pose.orientation.w = -0.4480736 ;
 
     configure_orthogonal<OrArm, CbMoveEndEffector>(target_pose, "tool0");
   }

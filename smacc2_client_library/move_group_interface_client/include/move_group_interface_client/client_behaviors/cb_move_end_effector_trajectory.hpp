@@ -47,7 +47,7 @@ enum class ComputeJointTrajectoryErrorCode
   JOINT_TRAJECTORY_DISCONTINUITY
 };
 
-// this is a base behavior to define any kind of parametrized family of trajectories or motions 
+// this is a base behavior to define any kind of parametrized family of trajectories or motions
 class CbMoveEndEffectorTrajectory : public smacc2::SmaccAsyncClientBehavior,
                                     public smacc2::ISmaccUpdatable
 {
@@ -69,7 +69,7 @@ public:
   void onOrthogonalAllocation()
   {
     this->initializeROS();
-    
+
     smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
     postJointDiscontinuityEvent = [this](auto traj) {

@@ -53,20 +53,22 @@ void CbEndEffectorRotate::onEntry()
   if (!tipLink_)
   {
     tipLink_ = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
-    RCLCPP_WARN_STREAM(getLogger(), "[" << getName() << "] tip unspecified, using default end effector: "<< *tipLink_);
-
+    RCLCPP_WARN_STREAM(
+      getLogger(),
+      "[" << getName() << "] tip unspecified, using default end effector: " << *tipLink_);
   }
 
   while (attempts > 0)
   {
     try
     {
-      auto pivotFrame = this->movegroupClient_->moveGroupClientInterface->getPlanningFrame();
+      //auto pivotFrameName = this->movegroupClient_->moveGroupClientInterface->getPlanningFrame();
+      auto pivotFrameName = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
 
       tf2::Stamped<tf2::Transform> endEffectorInPivotFrame;
 
       tf2::fromMsg(
-        tfBuffer.lookupTransform(pivotFrame, *tipLink_, rclcpp::Time(), rclcpp::Duration(10s)),
+        tfBuffer.lookupTransform(pivotFrameName, *tipLink_, rclcpp::Time(), rclcpp::Duration(10s)),
         endEffectorInPivotFrame);
 
       tf2::toMsg(endEffectorInPivotFrame, this->planePivotPose_.pose);
@@ -83,10 +85,10 @@ void CbEndEffectorRotate::onEntry()
     }
   }
 
-  
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] pivotPose: " << planePivotPose_);
-  
-  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] calling base CbCircularPivotMotion::onEntry");
+
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[" << getName() << "] calling base CbCircularPivotMotion::onEntry");
   CbCircularPivotMotion::onEntry();
 }
 }  // namespace cl_move_group_interface

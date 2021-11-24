@@ -32,19 +32,19 @@ CbCircularPivotMotion::CbCircularPivotMotion(std::optional<std::string> tipLink)
 }
 
 CbCircularPivotMotion::CbCircularPivotMotion(
-  const geometry_msgs::msg::PoseStamped & planePivotPose, double deltaRadians, std::optional<std::string> tipLink)
-:
-deltaRadians_(deltaRadians), 
-planePivotPose_(planePivotPose), 
-CbMoveEndEffectorTrajectory(tipLink)
+  const geometry_msgs::msg::PoseStamped & planePivotPose, double deltaRadians,
+  std::optional<std::string> tipLink)
+: planePivotPose_(planePivotPose), deltaRadians_(deltaRadians), CbMoveEndEffectorTrajectory(tipLink)
 {
+  if (tipLink_) planePivotPose_.header.frame_id = *tipLink;
 }
 
 CbCircularPivotMotion::CbCircularPivotMotion(
   const geometry_msgs::msg::PoseStamped & planePivotPose,
-  const geometry_msgs::msg::Pose & relativeInitialPose, double deltaRadians, std::optional<std::string> tipLink)
-: deltaRadians_(deltaRadians),
-  planePivotPose_(planePivotPose),
+  const geometry_msgs::msg::Pose & relativeInitialPose, double deltaRadians,
+  std::optional<std::string> tipLink)
+: planePivotPose_(planePivotPose),
+  deltaRadians_(deltaRadians),
   relativeInitialPose_(relativeInitialPose),
   CbMoveEndEffectorTrajectory(tipLink)
 {
@@ -114,10 +114,12 @@ void CbCircularPivotMotion::generateTrajectory()
   tf2::Transform tfBasePose;
   tf2::fromMsg(planePivotPose_.pose, tfBasePose);
 
+  RCLCPP_INFO_STREAM(
+    getLogger(),
+    "[" << getName() << "] generated trajectory, total samples: " << totalSamplesCount);
   for (int i = 0; i < totalSamplesCount; i++)
   {
     // relativePose i
-    currentAngle += angleStep;
     double y = radius * cos(currentAngle);
     double z = radius * sin(currentAngle);
 
@@ -144,10 +146,13 @@ void CbCircularPivotMotion::generateTrajectory()
     geometry_msgs::msg::PoseStamped globalPose;
     tf2::toMsg(tfGlobalPose, globalPose.pose);
     globalPose.header.frame_id = planePivotPose_.header.frame_id;
-    globalPose.header.stamp =
-      rclcpp::Time(planePivotPose_.header.stamp) + rclcpp::Duration(i * secondsPerSample);
+    globalPose.header.stamp = rclcpp::Time(planePivotPose_.header.stamp) +
+                              rclcpp::Duration::from_seconds(i * secondsPerSample);
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "]" << rclcpp::Time(globalPose.header.stamp).nanoseconds());
 
     this->endEffectorTrajectory_.push_back(globalPose);
+    currentAngle += angleStep;
   }
 }
 
@@ -168,14 +173,14 @@ void CbCircularPivotMotion::computeCurrentEndEffectorPoseRelativeToPivot()
       tipLink_ = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
     }
 
-    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] waiting transform, pivot: " << planePivotPose_.header.frame_id << " tipLink: " << *tipLink_);
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] waiting transform, pivot: '"
+                       << planePivotPose_.header.frame_id << "' tipLink: '" << *tipLink_ << "'");
     tf2::fromMsg(
-      tfBuffer
-        .waitForTransform(
-          planePivotPose_.header.frame_id, *tipLink_, rclcpp::Time(0), rclcpp::Duration(10s),
-          nullptr)
-        .get(),
+      tfBuffer.lookupTransform(
+        planePivotPose_.header.frame_id, *tipLink_, rclcpp::Time(), rclcpp::Duration(10s)),
       endEffectorInPivotFrame);
+
     //endEffectorInPivotFrame = tfBuffer.lookupTransform(planePivotPose_.header.frame_id, *tipLink_, rclcpp::Time(0));
 
     // we define here the global frame as the pivot frame id

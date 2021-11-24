@@ -49,7 +49,7 @@ void CbMoveLastTrajectoryInitialState::onEntry()
         trajectory.joint_trajectory.points.front();
 
       std::stringstream ss;
-      for (int i = 0; i < trajectory.joint_trajectory.joint_names.size(); i++)
+      for (size_t i = 0; i < trajectory.joint_trajectory.joint_names.size(); i++)
       {
         auto & name = trajectory.joint_trajectory.joint_names[i];
 

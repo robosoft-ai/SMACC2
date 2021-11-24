@@ -37,6 +37,9 @@ void CbUndoLastTrajectory::onEntry()
 
   if (trajectoryHistory->getLastTrajectory(backIndex_, trajectory))
   {
+    RCLCPP_WARN_STREAM(
+      getLogger(), "[" << getName() << "] reversing last trajectory [" << backIndex_ << "]");
+
     auto initialTime = trajectory.joint_trajectory.points.back().time_from_start;
 
     reversed = trajectory;
@@ -45,10 +48,15 @@ void CbUndoLastTrajectory::onEntry()
 
     for (auto & jp : reversed.joint_trajectory.points)
     {
-      jp.time_from_start = rclcpp::Duration(jp.time_from_start) - rclcpp::Duration(initialTime);
+      jp.time_from_start = rclcpp::Duration(initialTime) - rclcpp::Duration(jp.time_from_start);
     }
 
     this->executeJointSpaceTrajectory(reversed);
+  }
+  else
+  {
+    RCLCPP_WARN_STREAM(
+      getLogger(), "[" << getName() << "] could not undo last trajectory, trajectory not found.");
   }
 }
 

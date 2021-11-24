@@ -34,7 +34,7 @@ private:
 
 public:
   std::vector<std::string> fingerTipNames;
-  std::string gripperLink_= "gripper_link";
+  std::string gripperLink_ = "gripper_link";
 
   std::optional<std::string> currentAttachedObjectName;
 

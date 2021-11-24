@@ -64,7 +64,7 @@ bool CbMoveEndEffector::moveToAbsolutePose(
   moveit::planning_interface::MoveGroupInterface & moveGroupInterface,
   geometry_msgs::msg::PoseStamped & targetObjectPose)
 {
-  auto & planningSceneInterface = movegroupClient_->planningSceneInterface;
+  // auto & planningSceneInterface = movegroupClient_->planningSceneInterface;
   RCLCPP_DEBUG(getLogger(), "[CbMoveEndEffector] Synchronous sleep of 1 seconds");
   rclcpp::sleep_for(500ms);
 

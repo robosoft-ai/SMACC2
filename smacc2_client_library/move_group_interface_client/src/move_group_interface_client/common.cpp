@@ -30,35 +30,37 @@ std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaterni
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Transform & msg)
 {
-  return out << "Poisiton[" << msg.translation << "], Orientation["<< msg.rotation << "]";
+  return out << "Translation[" << msg.translation << "], Rotation[" << msg.rotation << "]";
 }
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & msg)
 {
-  return out << "Poisiton[" << msg.position << "], Orientation["<< msg.orientation << "]";
+  return out << "Position[" << msg.position << "], Orientation[" << msg.orientation << "]";
 }
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg)
 {
-  return out << "[serialization geometry_msgs::msg::PoseStamped] frame_id: " << msg.header.frame_id << ", pose: " << msg.pose;
+  return out << "[serialization geometry_msgs::msg::PoseStamped] frame_id: " << msg.header.frame_id
+             << ", pose: " << msg.pose;
 }
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Vector3 & msg)
 {
-  return out << "[ " << msg.x << " "<< msg.y<<" "<< msg.z <<"]";
+  return out << "[ " << msg.x << " " << msg.y << " " << msg.z << "]";
 }
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Point & msg)
 {
-  return out << "[ " << msg.x << " "<< msg.y<<" "<< msg.z <<"]";
+  return out << "[ " << msg.x << " " << msg.y << " " << msg.z << "]";
 }
 
 std::ostream & operator<<(std::ostream & out, const moveit_msgs::srv::GetPositionIK::Request & msg)
 {
-    return out << "[moveit_msgs::srv::GetPositionIK::Request] position[" << msg.ik_request.pose_stamped << "]";
+  return out << "[moveit_msgs::srv::GetPositionIK::Request] position["
+             << msg.ik_request.pose_stamped << "]";
 }
 
 std::ostream & operator<<(std::ostream & out, const sensor_msgs::msg::JointState & msg)
 {
-    return out << "[sensor_msgs::msg::JointState]";
+  return out << "[sensor_msgs::msg::JointState]";
 }

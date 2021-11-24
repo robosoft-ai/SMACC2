@@ -39,7 +39,8 @@ bool CpGraspingComponent::getGraspingObject(
 void CpGraspingComponent::createGraspableBox(
   std::string frameid, float x, float y, float z, float xl, float yl, float zl)
 {
-  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] creating grasping object in planning scene: " << frameid);
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[" << getName() << "] creating grasping object in planning scene: " << frameid);
   moveit_msgs::msg::CollisionObject collision;
   auto boxname = frameid;
   ;

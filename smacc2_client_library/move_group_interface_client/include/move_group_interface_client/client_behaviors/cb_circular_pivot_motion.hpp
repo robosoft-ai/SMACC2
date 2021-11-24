@@ -24,6 +24,8 @@
 
 namespace cl_move_group_interface
 {
+// executes a circular trajectory of the tipLink around one axis defined
+// by the z-axis of the plaenePivotPose
 class CbCircularPivotMotion : public CbMoveEndEffectorTrajectory
 {
 public:
@@ -49,6 +51,7 @@ public:
   virtual void createMarkers() override;
 
 protected:
+  // the rotation axis (z-axis) and the center of rotation in the space
   geometry_msgs::msg::PoseStamped planePivotPose_;
 
   double deltaRadians_;

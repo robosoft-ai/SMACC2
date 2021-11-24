@@ -26,7 +26,6 @@
 
 namespace cl_move_group_interface
 {
-
 // releases the current attached object
 class CbDetachObject : public smacc2::SmaccAsyncClientBehavior
 {

@@ -47,9 +47,9 @@ struct StPouringMotion : smacc2::SmaccState<StPouringMotion, SmTestMoveitUr5Sim>
   {
    geometry_msgs::msg::Point relativePivotPoint;
    relativePivotPoint.x = -0.01;
-   double deltaHeight = 0.01;
+   double deltaHeight = 0.1;
    std::string tipLink = "tool0";
-   std::string globalFrame = "world";
+   std::string globalFrame = "tool0";
 
     configure_orthogonal<OrArm, CbCircularPouringMotion>(relativePivotPoint, deltaHeight, tipLink, globalFrame);
   }

@@ -201,18 +201,19 @@ def launch_setup(context, *args, **kwargs):
     sm_test_moveit_ur5_sim_node = Node(
         package="sm_test_moveit_ur5_sim",
         executable="sm_test_moveit_ur5_sim_node",
-        prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -e",
+        prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e",
         parameters=[
             robot_description,
             robot_description_semantic,
             robot_description_kinematics,
             os.path.join(
                 get_package_share_directory("sm_test_moveit_ur5_sim"),
-                "config/sm_test_moveit_ur5_sim_config.yaml",),
+                "config/sm_test_moveit_ur5_sim_config.yaml",
+            ),
         ],
-        arguments= ["--log-level", "smacc2:=DEBUG"]
+        arguments=["--log-level", "smacc2:=DEBUG"],
     )
-    
+
     ur5_control_launch_file = os.path.join(
         get_package_share_directory("ur_bringup"), "launch", "ur_control.launch.py"
     )
@@ -239,7 +240,6 @@ def launch_setup(context, *args, **kwargs):
         }.items(),
     )
 
-
     # Planning Configuration
     ompl_planning_pipeline_config = {
         "move_group": {
@@ -255,7 +255,7 @@ def launch_setup(context, *args, **kwargs):
         "robot_description_planning": load_yaml_abs(str(joint_limit_params.perform(context)))
     }
 
-        # rviz with moveit configuration
+    # rviz with moveit configuration
     rviz_config_file = PathJoinSubstitution(
         [FindPackageShare("sm_test_moveit_ur5_sim"), "config", "view_robot.rviz"]
     )
@@ -275,7 +275,6 @@ def launch_setup(context, *args, **kwargs):
             robot_description_planning,
         ],
     )
-
 
     nodes_to_start = [sm_test_moveit_ur5_sim_node, rviz_node]
 
@@ -388,4 +387,3 @@ def generate_launch_description():
     )
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
-

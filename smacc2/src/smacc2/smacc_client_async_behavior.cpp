@@ -30,7 +30,8 @@ void SmaccAsyncClientBehavior::executeOnEntry()
   this->onEntryThread_ = std::async(std::launch::async, [=] {
     this->onEntry();
     this->postFinishEventFn_();
-    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] onEntry asynchronous thread was finished.");
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] onEntry asynchronous thread was finished.");
     return 0;
   });
 }

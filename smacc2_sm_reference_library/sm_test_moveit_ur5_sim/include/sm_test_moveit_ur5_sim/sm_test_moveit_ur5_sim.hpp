@@ -42,6 +42,7 @@ struct StMoveJoints;
 struct StMoveEndEffector;
 struct StMoveCartesianRelative;
 struct StMoveCartesianRelative2;
+struct StCircularPivotMotion;
 struct StAttachObject;
 struct StDetatchObject;
 struct StEndEffectorRotate;

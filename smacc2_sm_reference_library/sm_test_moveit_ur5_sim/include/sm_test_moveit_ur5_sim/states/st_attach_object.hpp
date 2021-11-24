@@ -50,9 +50,9 @@ struct StAttachObject : smacc2::SmaccState<StAttachObject, SmTestMoveitUr5Sim>
     configure_orthogonal<OrArm, CbAttachObject>("virtualBox");
   }
 
-  void runtimeConfigure() 
-  { 
-    RCLCPP_INFO(getLogger(), "Entering StAttachObject"); 
+  void runtimeConfigure()
+  {
+    RCLCPP_INFO(getLogger(), "Entering StAttachObject");
     cl_move_group_interface::ClMoveGroup* moveGroupClient;
     requiresClient(moveGroupClient);
   }

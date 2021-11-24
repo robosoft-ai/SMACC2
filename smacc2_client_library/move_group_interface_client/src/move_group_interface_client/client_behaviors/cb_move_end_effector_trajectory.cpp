@@ -38,7 +38,8 @@ CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory(std::optional<std::stri
 }
 
 CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory(
-  const std::vector<geometry_msgs::msg::PoseStamped> & endEffectorTrajectory, std::optional<std::string> tipLink)
+  const std::vector<geometry_msgs::msg::PoseStamped> & endEffectorTrajectory,
+  std::optional<std::string> tipLink)
 : tipLink_(tipLink), endEffectorTrajectory_(endEffectorTrajectory), markersInitialized_(false)
 
 {
@@ -83,7 +84,7 @@ ComputeJointTrajectoryErrorCode CbMoveEndEffectorTrajectory::computeJointSpaceTr
   std::vector<int> discontinuityIndexes;
 
   int ikAttempts = 4;
-  for (auto k = 0; k < this->endEffectorTrajectory_.size(); k++)
+  for (size_t k = 0; k < this->endEffectorTrajectory_.size(); k++)
   {
     auto & pose = this->endEffectorTrajectory_[k];
     auto req = std::make_shared<moveit_msgs::srv::GetPositionIK::Request>();
@@ -99,17 +100,16 @@ ComputeJointTrajectoryErrorCode CbMoveEndEffectorTrajectory::computeJointSpaceTr
     //pose.header.stamp = getNode()->now();
     req->ik_request.pose_stamped = pose;
 
-    RCLCPP_INFO_STREAM(getLogger(), "[ComputeJointTrajectoryErrorCode] IK request: " << *req);
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[ComputeJointTrajectoryErrorCode] IK request: " << k << " " << *req);
 
     auto resfut = iksrv_->async_send_request(req);
 
-    auto status = resfut.wait_for(3s); 
+    auto status = resfut.wait_for(3s);
     if (status == std::future_status::ready)
     {
-      
-
-    //if (rclcpp::spin_until_future_complete(getNode(), resfut) == rclcpp::FutureReturnCode::SUCCESS)
-    //{
+      //if (rclcpp::spin_until_future_complete(getNode(), resfut) == rclcpp::FutureReturnCode::SUCCESS)
+      //{
       auto & prevtrajpoint = trajectory.back();
       //jointPositions.clear();
 
@@ -219,8 +219,6 @@ ComputeJointTrajectoryErrorCode CbMoveEndEffectorTrajectory::computeJointSpaceTr
     {
       RCLCPP_ERROR(getLogger(), "[CbMoveEndEffectorTrajectory] wrong IK call");
     }
-
-    RCLCPP_WARN_STREAM(getLogger(), "-----");
   }
 
   // interpolate speeds?
@@ -303,9 +301,8 @@ void CbMoveEndEffectorTrajectory::onEntry()
 
   moveit_msgs::msg::RobotTrajectory computedTrajectory;
 
- RCLCPP_WARN_STREAM(
-      getLogger(), "[" << getName() << "] Computing joint space trajectory.");
- 
+  RCLCPP_WARN_STREAM(getLogger(), "[" << getName() << "] Computing joint space trajectory.");
+
   auto errorcode = computeJointSpaceTrajectory(computedTrajectory);
 
   bool trajectoryGenerationSuccess = errorcode == ComputeJointTrajectoryErrorCode::SUCCESS;
