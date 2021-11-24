@@ -19,44 +19,24 @@
  ******************************************************************************************************************/
 
 #pragma once
+
 #include <tf2/utils.h>
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/quaternion_stamped.hpp>
 #include <moveit_msgs/srv/get_position_ik.hpp>
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg)
-{
-  out << " Orientation [" << msg.x << " , " << msg.y << " , " << msg.z << ", " << msg.w
-      << "] , yaw: " << tf2::getYaw(msg);
-  return out;
-}
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg);
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Transform & msg)
-{
-  return out << "[serialization geometry_msgs::msg::Transform]";
-}
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Transform & msg);
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & msg)
-{
-  return out << "[serialization geometry_msgs::msg::Pose]";
-}
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & msg);
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg)
-{
-  return out << "[serialization geometry_msgs::msg::PoseStamped]";
-}
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg);
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Vector3 & msg)
-{
-  return out << "[serialization geometry_msgs::msg::Vector3]";
-}
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Point & msg);
 
-std::ostream & operator<<(std::ostream & out, const moveit_msgs::srv::GetPositionIK::Request & msg)
-{
-  return out << "[moveit_msgs::srv::GetPositionIK::Request]";
-}
+std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Vector3 & msg);
 
-std::ostream & operator<<(std::ostream & out, const sensor_msgs::msg::JointState & msg)
-{
-  return out << "[moveit_msgs::srv::GetPositionIK::Request]";
-}
+std::ostream & operator<<(std::ostream & out, const moveit_msgs::srv::GetPositionIK::Request & msg);
+
+std::ostream & operator<<(std::ostream & out, const sensor_msgs::msg::JointState & msg);

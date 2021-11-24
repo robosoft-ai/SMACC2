@@ -174,7 +174,7 @@ public:
     // }
 
     RCLCPP_INFO(
-      getLogger(), "[%s] creates a client of type '%s' and object tag '%s'",
+      getLogger(), "[%s] creating client object, type:'%s' object tag: '%s'",
       demangleType(typeid(*this)).c_str(), demangledTypeName<TClient>().c_str(),
       demangledTypeName<TOrthogonal>().c_str());
 

@@ -32,29 +32,36 @@ using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
 
 // STATE DECLARATION
-struct StMoveCartesianRelative : smacc2::SmaccState<StMoveCartesianRelative, SmTestMoveitUr5Sim>
+struct StMoveCartesianRelative2 : smacc2::SmaccState<StMoveCartesianRelative2, SmTestMoveitUr5Sim>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbMoveCartesianRelative, OrArm>, StAttachObject, SUCCESS> ,
-    Transition<EvCbFailure<CbMoveCartesianRelative, OrArm>, StAttachObject, ABORT>
+    Transition<EvCbSuccess<CbMoveCartesianRelative2, OrArm>, StAttachObject, SUCCESS>,
+    Transition<EvCbFailure<CbMoveCartesianRelative2, OrArm>, StMoveCartesianRelative2, ABORT> // retry
     >
+
     reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    geometry_msgs::msg::Vector3 offset;
-    offset.x = -0.01;
-    configure_orthogonal<OrArm, CbMoveCartesianRelative>(offset);
+    geometry_msgs::msg::Vector3 position;
+    position.x = -0.01;
+    position.y = 0.0;
+    position.z = 0.01;
+    configure_orthogonal<OrArm, CbMoveCartesianRelative2>("tool0", "tool0", position);
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveCartesianRelative"); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveCartesianRelative2"); }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 
-  void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
+  void onExit(ABORT)
+  {
+    rclcpp::sleep_for(1s);
+    RCLCPP_INFO(getLogger(), "On Exit!");
+  }
 };
 }  // namespace sm_test_moveit_ur5_sim

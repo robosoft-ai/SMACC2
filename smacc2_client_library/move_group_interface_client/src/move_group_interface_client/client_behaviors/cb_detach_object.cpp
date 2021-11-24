@@ -25,7 +25,9 @@ namespace cl_move_group_interface
 {
 void CbDetachObject::onEntry()
 {
-  cl_move_group_interface::GraspingComponent * graspingComponent;
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] requesting components");
+
+  cl_move_group_interface::CpGraspingComponent * graspingComponent;
   this->requiresComponent(graspingComponent);
 
   cl_move_group_interface::ClMoveGroup * moveGroupClient;
@@ -33,9 +35,18 @@ void CbDetachObject::onEntry()
 
   auto & planningSceneInterface = moveGroupClient->planningSceneInterface;
 
-  moveGroupClient->moveGroupClientInterface.detachObject(
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] requesting detach object");
+
+  auto res = moveGroupClient->moveGroupClientInterface->detachObject(
     *(graspingComponent->currentAttachedObjectName));
-  planningSceneInterface.removeCollisionObjects({*(graspingComponent->currentAttachedObjectName)});
+  planningSceneInterface->removeCollisionObjects({*(graspingComponent->currentAttachedObjectName)});
+
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] detach result: " << res);
+
+  if (res)
+    this->postSuccessEvent();
+  else
+    this->postFailureEvent();
 }
 
 void CbDetachObject::onExit() {}

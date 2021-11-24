@@ -13,14 +13,17 @@ find_package(smacc2 REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
+find_package(yaml_cpp_vendor REQUIRED)
 
-set(YAML_CPP_LIBRARIES yaml-cpp)
+#set(YAML_CPP_LIBRARIES yaml-cpp)
 
 set(dependencies
 moveit_ros_planning_interface
 tf2
 tf2_ros
 smacc2
+tf2_geometry_msgs
+yaml_cpp_vendor
 )
 
 include_directories(include)
@@ -28,6 +31,7 @@ include_directories(include)
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
   src/move_group_interface_client/cl_movegroup.cpp
+  src/move_group_interface_client/common.cpp
   src/move_group_interface_client/components/cp_trajectory_history.cpp
   src/move_group_interface_client/components/cp_grasping_objects.cpp
 

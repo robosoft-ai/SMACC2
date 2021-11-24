@@ -27,6 +27,9 @@ bool CpTrajectoryHistory::getLastTrajectory(
 {
   if (trajectoryHistory_.size() == 0)
   {
+    RCLCPP_WARN_STREAM(
+      getLogger(), "[" << getName() << "] requested index: " << backIndex
+                       << ", history size: " << trajectoryHistory_.size());
     return false;
   }
 
@@ -36,6 +39,9 @@ bool CpTrajectoryHistory::getLastTrajectory(
   }
   else if (backIndex >= this->trajectoryHistory_.size())
   {
+    RCLCPP_WARN_STREAM(
+      getLogger(), "[" << getName() << "] requested index: " << backIndex
+                       << ", history size: " << trajectoryHistory_.size());
     return false;
   }
 
@@ -52,6 +58,10 @@ void CpTrajectoryHistory::pushTrajectory(
   std::string name, const moveit_msgs::msg::RobotTrajectory & trajectory,
   moveit_msgs::msg::MoveItErrorCodes result)
 {
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[" << getName() << "] adding a new trajectory to the history ( "
+                     << trajectory.joint_trajectory.points.size() << " poses)");
+
   TrajectoryHistoryEntry entry;
   this->trajectoryHistory_.push_back(entry);
 

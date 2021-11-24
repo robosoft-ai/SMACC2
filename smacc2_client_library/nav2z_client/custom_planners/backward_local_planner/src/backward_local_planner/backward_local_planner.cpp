@@ -249,7 +249,7 @@ void BackwardLocalPlanner::computeCurrentEuclideanAndAngularErrorsToCarrotGoal(
   const geometry_msgs::msg::Point & carrot_point = carrot_pose.pose.position;
 
   tf2::Quaternion carrot_orientation;
-  tf2::fromMsg(carrot_pose.pose.orientation, carrot_orientation);
+  tf2::convert(carrot_pose.pose.orientation, carrot_orientation);
   geometry_msgs::msg::Pose currentPoseDebugMsg = tfpose.pose;
 
   // take error from the current position to the path point
@@ -556,7 +556,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
 
   // getting carrot goal information
   tf2::Quaternion q;
-  tf2::fromMsg(tfpose.pose.orientation, q);
+  tf2::convert(tfpose.pose.orientation, q);
 
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "[BackwardLocalPlanner] carrot goal: " << currentCarrotPoseIndex_ << "/"
@@ -951,8 +951,8 @@ bool BackwardLocalPlanner::resamplePrecisePlan()
     auto & nextpose = backwardsPlanPath_[i + 1];
 
     tf2::Quaternion qCurrent, qNext;
-    tf2::fromMsg(currpose.pose.orientation, qCurrent);
-    tf2::fromMsg(nextpose.pose.orientation, qNext);
+    tf2::convert(currpose.pose.orientation, qCurrent);
+    tf2::convert(nextpose.pose.orientation, qNext);
 
     double dx = nextpose.pose.position.x - currpose.pose.position.x;
     double dy = nextpose.pose.position.y - currpose.pose.position.y;

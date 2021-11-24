@@ -25,7 +25,7 @@
 
 namespace cl_move_group_interface
 {
-class CbAttachObject : public smacc2::SmaccClientBehavior
+class CbAttachObject : public smacc2::SmaccAsyncClientBehavior
 {
 public:
   CbAttachObject(std::string targetObjectName);

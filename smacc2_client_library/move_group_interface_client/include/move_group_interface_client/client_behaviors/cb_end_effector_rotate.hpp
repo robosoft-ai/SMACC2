@@ -22,13 +22,17 @@
 
 namespace cl_move_group_interface
 {
+// spins the end effector joint (or any other arbitrary joint etting the tipLink parameter)
 class CbEndEffectorRotate : public CbCircularPivotMotion
 {
 public:
-  CbEndEffectorRotate(double deltaRadians, std::string tipLink = "");
+  CbEndEffectorRotate(double deltaRadians, std::optional<std::string> tipLink = std::nullopt);
+
   virtual ~CbEndEffectorRotate();
 
   virtual void onEntry() override;
+
+  std::optional<std::string> tipLink;
 };
 
 }  // namespace cl_move_group_interface

@@ -42,7 +42,7 @@ void CbMoveJoints::onEntry()
   }
   else
   {
-    this->moveJoints(movegroupClient_->moveGroupClientInterface);
+    this->moveJoints(*movegroupClient_->moveGroupClientInterface);
   }
 }
 

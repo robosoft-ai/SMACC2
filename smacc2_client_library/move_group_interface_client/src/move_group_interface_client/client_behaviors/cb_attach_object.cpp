@@ -34,7 +34,7 @@ void CbAttachObject::onEntry()
   cl_move_group_interface::ClMoveGroup * moveGroup;
   this->requiresClient(moveGroup);
 
-  cl_move_group_interface::GraspingComponent * graspingComponent;
+  cl_move_group_interface::CpGraspingComponent * graspingComponent;
   this->requiresComponent(graspingComponent);
 
   // auto cubepos = cubeinfo->pose_->toPoseStampedMsg();
@@ -48,12 +48,23 @@ void CbAttachObject::onEntry()
     targetCollisionObject.operation = moveit_msgs::msg::CollisionObject::ADD;
     targetCollisionObject.header.stamp = getNode()->now();
 
-    moveGroup->planningSceneInterface.applyCollisionObject(targetCollisionObject);
+    moveGroup->planningSceneInterface->applyCollisionObject(targetCollisionObject);
     // collisionObjects.push_back(cubeCollision);
 
     graspingComponent->currentAttachedObjectName = targetObjectName_;
-    moveGroup->moveGroupClientInterface.attachObject(
-      targetObjectName_, "gripper_link", graspingComponent->fingerTipNames);
+    moveGroup->moveGroupClientInterface->attachObject(
+      targetObjectName_, graspingComponent->gripperLink_, graspingComponent->fingerTipNames);
+
+    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Grasping objectfound. attach request.");
+
+    this->postSuccessEvent();
+  }
+  else
+  {
+    RCLCPP_WARN_STREAM(
+      getLogger(), "[" << getName() << "] Grasping object was not found. Ignoring attach request.");
+
+    this->postFailureEvent();
   }
 }
 

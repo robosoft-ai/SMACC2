@@ -18,20 +18,25 @@
  *
  ******************************************************************************************************************/
 
+#include <tf2/impl/utils.h>
+#include <tf2/utils.h>
 #include <move_group_interface_client/cl_movegroup.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 using namespace std::chrono_literals;
 using namespace moveit::planning_interface;
 
 namespace cl_move_group_interface
 {
-ClMoveGroup::ClMoveGroup(std::string groupName)
-: moveGroupClientInterface(getNode(), MoveGroupInterface::Options(groupName))
-{
-  rclcpp::sleep_for(10s);
-}
+ClMoveGroup::ClMoveGroup(std::string groupName) : groupName_(groupName) { rclcpp::sleep_for(10s); }
 
 ClMoveGroup::~ClMoveGroup() {}
+
+void ClMoveGroup::onInitialize()
+{
+  moveGroupClientInterface = std::make_shared<MoveGroupInterface>(getNode(), groupName_);
+  planningSceneInterface = std::make_shared<PlanningSceneInterface>();
+}
 
 void ClMoveGroup::postEventMotionExecutionSucceded()
 {

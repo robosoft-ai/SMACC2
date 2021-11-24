@@ -32,7 +32,12 @@ public:
   CbMoveKnownState(std::string pkg, std::string config_path);
   virtual ~CbMoveKnownState();
 
+  void onEntry() override;
+
 private:
   std::map<std::string, double> loadJointStatesFromFile(std::string pkg, std::string filepath);
+
+  std::string pkg_;
+  std::string config_path_;
 };
 }  // namespace cl_move_group_interface

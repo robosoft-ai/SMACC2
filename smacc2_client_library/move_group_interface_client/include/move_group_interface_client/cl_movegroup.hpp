@@ -26,8 +26,10 @@
 
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
+
 #include <geometry_msgs/msg/transform.hpp>
 #include <geometry_msgs/msg/vector3.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 namespace cl_move_group_interface
 {
@@ -75,26 +77,22 @@ int32 val
 
 class ClMoveGroup : public smacc2::ISmaccClient
 {
-private:
-  std::function<void()> postEventMotionExecutionSucceded_;
-  std::function<void()> postEventMotionExecutionFailed_;
-
-  smacc2::SmaccSignal<void()> onSucceded_;
-  smacc2::SmaccSignal<void()> onFailed_;
-
 public:
   // this structure contains the default move_group configuration for any arm motion through move_group
   // the client behavior will override these default values in a copy of this object so that their changes
   // are not persinstent. In the other hand, if you change this client configuration, the parameters will be persistent.
-  moveit::planning_interface::MoveGroupInterface moveGroupClientInterface;
+  std::shared_ptr<moveit::planning_interface::MoveGroupInterface> moveGroupClientInterface;
 
-  moveit::planning_interface::PlanningSceneInterface planningSceneInterface;
+  std::shared_ptr<moveit::planning_interface::PlanningSceneInterface> planningSceneInterface;
 
   ClMoveGroup(std::string groupName);
 
   virtual ~ClMoveGroup();
 
+  void onInitialize() override;
+
   void postEventMotionExecutionSucceded();
+
   void postEventMotionExecutionFailed();
 
   template <typename TOrthogonal, typename TSourceObject>
@@ -122,5 +120,14 @@ public:
   {
     return this->getStateMachine()->createSignalConnection(onFailed_, callback, object);
   }
+
+private:
+  std::function<void()> postEventMotionExecutionSucceded_;
+  std::function<void()> postEventMotionExecutionFailed_;
+
+  smacc2::SmaccSignal<void()> onSucceded_;
+  smacc2::SmaccSignal<void()> onFailed_;
+
+  std::string groupName_;
 };
 }  // namespace cl_move_group_interface

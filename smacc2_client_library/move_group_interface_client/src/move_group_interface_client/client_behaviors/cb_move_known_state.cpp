@@ -27,11 +27,17 @@
 namespace cl_move_group_interface
 {
 CbMoveKnownState::CbMoveKnownState(std::string pkg, std::string config_path)
-: CbMoveJoints(loadJointStatesFromFile(pkg, config_path))
+: pkg_(pkg), config_path_(config_path)
 {
 }
 
 CbMoveKnownState::~CbMoveKnownState() {}
+
+void CbMoveKnownState::onEntry()
+{
+  jointValueTarget_ = loadJointStatesFromFile(pkg_, config_path_);
+  CbMoveJoints::onEntry();
+}
 
 #define HAVE_NEW_YAMLCPP
 std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(
@@ -45,33 +51,33 @@ std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(
   if (pkgpath == "")
   {
     RCLCPP_ERROR_STREAM(
-      getLogger(),
-      "[CbMoveKnownState] package not found for the known poses file: " << pkg << std::endl
-                                                                        << " [IGNORING BEHAVIOR]");
+      getLogger(), "[" << getName() << "] package not found for the known poses file: " << pkg
+                       << std::endl
+                       << " [IGNORING BEHAVIOR]");
     return jointStates;
   }
 
   filepath = pkgpath + "/" + filepath;
 
-  RCLCPP_INFO(
-    getLogger(), "[CbMoveKnownState] Opening file with joint known state: %s", filepath.c_str());
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[" << getName() << "] Opening file with joint known state: " << filepath);
 
   if (std::filesystem::exists(filepath))
   {
-    RCLCPP_INFO_STREAM(getLogger(), "[CbMoveKnownState] known state file exists: " << filepath);
+    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] known state file exists: " << filepath);
   }
   else
   {
     RCLCPP_ERROR_STREAM(
-      getLogger(), "[CbMoveKnownState] known state file does not exists: " << filepath);
+      getLogger(), "[" << getName() << "] known state file does not exists: " << filepath);
   }
 
   std::ifstream ifs(filepath.c_str(), std::ifstream::in);
   if (ifs.good() == false)
   {
-    RCLCPP_ERROR(
-      getLogger(), "[CbMoveKnownState] Error opening file with joint known states: %s",
-      filepath.c_str());
+    RCLCPP_ERROR_STREAM(
+      getLogger(),
+      "[" << getName() << "] Error opening file with joint known states: " << filepath);
     throw std::string("joint state files not found");
   }
 

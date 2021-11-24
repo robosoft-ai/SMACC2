@@ -27,13 +27,13 @@ CbMoveNamedTarget::CbMoveNamedTarget(std::string namedtarget) : namedTarget_(nam
 void CbMoveNamedTarget::onEntry()
 {
   this->requiresClient(movegroupClient_);
-  movegroupClient_->moveGroupClientInterface.setNamedTarget(this->namedTarget_);
+  movegroupClient_->moveGroupClientInterface->setNamedTarget(this->namedTarget_);
 }
 
 void CbMoveNamedTarget::onExit() {}
 
 std::map<std::string, double> CbMoveNamedTarget::getNamedTargetValues()
 {
-  return movegroupClient_->moveGroupClientInterface.getNamedTargetValues(this->namedTarget_);
+  return movegroupClient_->moveGroupClientInterface->getNamedTargetValues(this->namedTarget_);
 }
 }  // namespace cl_move_group_interface
