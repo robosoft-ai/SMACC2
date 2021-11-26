@@ -71,4 +71,4 @@ struct State1 : smacc2::SmaccState<State1, $SmName$>
 
   void onExit() { RCLCPP_INFO(_node_->get_logger(), "On Exit!"); }
 };
-} 
+}
