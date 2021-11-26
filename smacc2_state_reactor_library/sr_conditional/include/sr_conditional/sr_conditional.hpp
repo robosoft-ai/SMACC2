@@ -46,9 +46,10 @@ public:
     this->createEventCallback(callback);
   }
 
-  ~SrConditional();
-
-  virtual bool triggers() override;
+  bool triggers()
+  {
+    return this->conditionFlag;
+  }
 };
 }  // namespace state_reactors
 }  // namespace smacc2
