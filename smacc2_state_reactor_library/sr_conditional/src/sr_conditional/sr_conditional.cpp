@@ -18,8 +18,8 @@ namespace smacc2
 {
 namespace state_reactors
 {
-Srsr_conditional::~Srsr_conditional() {}
+SrConditional::~SrConditional() {}
 
-bool Srsr_conditional::triggers() { return this->conditionFlag; }
+bool SrConditional::triggers() { return this->conditionFlag; }
 }  // namespace state_reactors
 }  // namespace smacc2
