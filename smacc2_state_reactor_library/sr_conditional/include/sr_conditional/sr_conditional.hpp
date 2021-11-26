@@ -46,10 +46,7 @@ public:
     this->createEventCallback(callback);
   }
 
-  bool triggers()
-  {
-    return this->conditionFlag;
-  }
+  bool triggers() { return this->conditionFlag; }
 };
 }  // namespace state_reactors
 }  // namespace smacc2
