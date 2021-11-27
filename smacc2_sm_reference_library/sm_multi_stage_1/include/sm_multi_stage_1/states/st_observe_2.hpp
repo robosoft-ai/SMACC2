@@ -15,7 +15,7 @@
 namespace sm_multi_stage_1
 {
 // STATE DECLARATION
-struct StObserve2 : smacc2::SmaccState<StObserve2, MsRun2>
+struct StObserve2 : smacc2::SmaccState<StObserve2, MsMode2>
 {
   using SmaccState::SmaccState;
 
@@ -29,7 +29,7 @@ struct StObserve2 : smacc2::SmaccState<StObserve2, MsRun2>
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, CMVCycleLoop2, SUCCESS>,
     // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle1>,
     // Keyboard events
-    // Transition<EvKeyPressF<CbDefaultKeyboardBehavior, OrKeyboard>, MsRun2, SUCCESS>,
+    // Transition<EvKeyPressF<CbDefaultKeyboardBehavior, OrKeyboard>, MsMode2, SUCCESS>,
     Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, ACCycleLoop2, SUCCESS>,
     // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle1, ac_cycle_1>,
     Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, CMVCycleLoop2, SUCCESS>

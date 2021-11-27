@@ -17,7 +17,7 @@ namespace sm_multi_stage_1
 using namespace sm_multi_stage_1::dc_cycle_4;
 
 // STATE DECLARATION
-struct SsDCCycle4 : smacc2::SmaccState<SsDCCycle4, MsRun4, StiDCCycleLoop4>
+struct SsDCCycle4 : smacc2::SmaccState<SsDCCycle4, MsMode4, StiDCCycleLoop4>
 {
 public:
   using SmaccState::SmaccState;

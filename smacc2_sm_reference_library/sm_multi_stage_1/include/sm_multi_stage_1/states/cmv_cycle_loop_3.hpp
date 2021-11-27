@@ -16,7 +16,7 @@ namespace sm_multi_stage_1
 {
 
 // STATE DECLARATION
-struct CMVCycleLoop3 : smacc2::SmaccState<CMVCycleLoop3, MsRun3>
+struct CMVCycleLoop3 : smacc2::SmaccState<CMVCycleLoop3, MsMode3>
 {
 public:
   using SmaccState::SmaccState;
@@ -35,7 +35,7 @@ public:
 
   bool loopWhileCondition()
   {
-    auto & superstate = this->context<MsRun3>();
+    auto & superstate = this->context<MsMode3>();
 
     RCLCPP_INFO(
       getLogger(), "Loop start, current iterations: %d, total iterations: %d",

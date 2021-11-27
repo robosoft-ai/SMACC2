@@ -16,7 +16,7 @@
 namespace sm_multi_stage_1
 {
 // STATE DECLARATION
-class MsRun1 : public smacc2::SmaccState<MsRun1, SmMultiStage1, StObserve1>
+class MsMode4 : public smacc2::SmaccState<MsMode4, SmMultiStage1, StObserve4>
 {
 public:
   using SmaccState::SmaccState;
@@ -24,8 +24,10 @@ public:
 // TRANSITION TABLE
 typedef mpl::list<
 
-  Transition<EvLoopEnd<ACCycleLoop1>, MsRun2>,
-  Transition<EvLoopEnd<CMVCycleLoop1>, MsRun2>
+  Transition<EvLoopEnd<ACCycleLoop4>, MsMode5>,
+  Transition<EvLoopEnd<CMVCycleLoop4>, MsMode5>,
+  Transition<EvLoopEnd<DCCycleLoop4>, MsMode5>,
+  Transition<EvLoopEnd<GCCycleLoop4>, MsMode5>
 
     >reactions;
 
@@ -39,6 +41,14 @@ typedef mpl::list<
   // CMV Cycle Loop
   static constexpr int ytotal_iterations() { return 1; }
   int yiteration_count = 0;
+
+  // DC Cycle Loop
+  static constexpr int dtotal_iterations() { return 1; }
+  int diteration_count = 0;
+
+  // GC Cycle Loop
+  static constexpr int gtotal_iterations() { return 1; }
+  int giteration_count = 0;
 
 };
 }  // namespace sm_multi_stage_1

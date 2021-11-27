@@ -285,16 +285,16 @@ class CMVCycleLoop5;
 
 
 //MODE STATES
-class MsRun1;
+class MsMode1;
 class MsRecovery1;
 
 //MODE STATES
-class MsRun2;
+class MsMode2;
 class MsRecovery2;
 
-class MsRun3;
-class MsRun4;
-class MsRun5;
+class MsMode3;
+class MsMode4;
+class MsMode5;
 
 struct EvToDeep : sc::event<EvToDeep>
 {
@@ -304,7 +304,7 @@ struct EvFail : sc::event<EvFail>
 };
 
 // STATE MACHINE
-struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun1>
+struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsMode1>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -321,11 +321,11 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsRun
 // MODE STATES
 #include <sm_multi_stage_1/mode_states/ms_recovery_1.hpp>
 #include <sm_multi_stage_1/mode_states/ms_recovery_2.hpp>
-#include <sm_multi_stage_1/mode_states/ms_run_1.hpp>
-#include <sm_multi_stage_1/mode_states/ms_run_2.hpp>
-#include <sm_multi_stage_1/mode_states/ms_run_3.hpp>
-#include <sm_multi_stage_1/mode_states/ms_run_4.hpp>
-#include <sm_multi_stage_1/mode_states/ms_run_5.hpp>
+#include <sm_multi_stage_1/mode_states/ms_mode_1.hpp>
+#include <sm_multi_stage_1/mode_states/ms_mode_2.hpp>
+#include <sm_multi_stage_1/mode_states/ms_mode_3.hpp>
+#include <sm_multi_stage_1/mode_states/ms_mode_4.hpp>
+#include <sm_multi_stage_1/mode_states/ms_mode_5.hpp>
 
 //STATES
 #include <sm_multi_stage_1/states/ms_recovery_1/st_recovery_analyze_1.hpp>

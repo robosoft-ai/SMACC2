@@ -17,7 +17,7 @@ namespace sm_multi_stage_1
 using namespace sm_multi_stage_1::cmv_cycle_5;
 
 // STATE DECLARATION
-struct SsCMVCycle5 : smacc2::SmaccState<SsCMVCycle5, MsRun5, StiCMVCycleLoop5>
+struct SsCMVCycle5 : smacc2::SmaccState<SsCMVCycle5, MsMode5, StiCMVCycleLoop5>
 {
 public:
   using SmaccState::SmaccState;

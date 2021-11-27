@@ -15,7 +15,7 @@
 namespace sm_multi_stage_1
 {
 // STATE DECLARATION
-struct StObserve1 : smacc2::SmaccState<StObserve1, MsRun1>
+struct StObserve1 : smacc2::SmaccState<StObserve1, MsMode1>
 {
   using SmaccState::SmaccState;
 
