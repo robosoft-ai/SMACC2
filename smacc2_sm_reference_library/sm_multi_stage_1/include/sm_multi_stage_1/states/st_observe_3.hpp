@@ -20,19 +20,19 @@ struct StObserve3 : smacc2::SmaccState<StObserve3, MsMode3>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct ac_cycle_3 : SUCCESS{};
-  struct cmv_cycle_3 : SUCCESS{};
+  struct a_sequence_3 : SUCCESS{};
+  struct b_sequence_3 : SUCCESS{};
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, CMVCycleLoop3, SUCCESS>,
-    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle1>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, BSequenceLoop3, SUCCESS>,
+    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsASequence1>,
     // Keyboard events
     // Transition<EvKeyPressF<CbDefaultKeyboardBehavior, OrKeyboard>, MsMode2, SUCCESS>,
-    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, ACCycleLoop3, SUCCESS>,
-    // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle1, ac_cycle_1>,
-    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, CMVCycleLoop3, SUCCESS>
+    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, ASequenceLoop3, SUCCESS>,
+    // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsASequence1, a_sequence_1>,
+    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, BSequenceLoop3, SUCCESS>
 
     >reactions;
 

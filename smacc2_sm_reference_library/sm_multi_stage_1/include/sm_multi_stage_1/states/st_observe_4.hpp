@@ -20,19 +20,19 @@ struct StObserve4 : smacc2::SmaccState<StObserve4, MsMode4>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct ac_cycle_4 : SUCCESS{};
-  struct dc_cycle_4 : SUCCESS{};
-  struct gc_cycle_4 : SUCCESS{};
-  struct cmv_cycle_4 : SUCCESS{};
+  struct a_sequence_4 : SUCCESS{};
+  struct c_sequence_4 : SUCCESS{};
+  struct d_sequence_4 : SUCCESS{};
+  struct b_sequence_4 : SUCCESS{};
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, ACCycleLoop4, SUCCESS>,
-    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, CMVCycleLoop4, SUCCESS>,
-    Transition<EvKeyPressD<CbDefaultKeyboardBehavior, OrKeyboard>, DCCycleLoop4, SUCCESS>,
-    Transition<EvKeyPressG<CbDefaultKeyboardBehavior, OrKeyboard>, GCCycleLoop4, SUCCESS>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, GCCycleLoop4, SUCCESS>
+    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, ASequenceLoop4, SUCCESS>,
+    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, BSequenceLoop4, SUCCESS>,
+    Transition<EvKeyPressD<CbDefaultKeyboardBehavior, OrKeyboard>, CSequenceLoop4, SUCCESS>,
+    Transition<EvKeyPressG<CbDefaultKeyboardBehavior, OrKeyboard>, DSequenceLoop4, SUCCESS>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, DSequenceLoop4, SUCCESS>
 
     >reactions;
 
