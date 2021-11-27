@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ![sm_pubsub_1](docs/SmPubsub1_2021-10-18_102523.svg)
+ ![sm_pubsub_1](docs/SmPubsub1_2021-11-26_231452.svg)
 
  <h2>Description</h2> A simple, but complete state machine example. We highly recommend using this example as a starting point for users' state machine projects.<br></br>
 <a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__ferrari.html">Doxygen Namespace & Class Reference</a>
