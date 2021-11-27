@@ -14,32 +14,35 @@
 
 namespace sm_advanced_recovery_1
 {
+namespace a_cycle_inner_states
+{
 // STATE DECLARATION
-struct StObserve : smacc2::SmaccState<StObserve, MsRun>
+struct StiACycleStep7 : smacc2::SmaccState<StiACycleStep7, SsACycle>
 {
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct AC_CYCLE : SUCCESS{};
-  struct CMV_CYCLE : SUCCESS{};
-  struct PC_CYCLE : SUCCESS{};
+  struct TIMEOUT : ABORT{};
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
+  struct RETURN : CANCEL{};
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACycle, TIMEOUT>,
-    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACycle>,
-    // Keyboard events
-    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACycle, AC_CYCLE>,
-    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsBCycle, CMV_CYCLE>,
-    Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsCCycle, PC_CYCLE>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiACycleStep8, TIMEOUT>,
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiACycleStep6, PREVIOUS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiACycleStep8, NEXT>,
+
+    Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve, RETURN>,
+    Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecover, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(40);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
     configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
@@ -51,4 +54,5 @@ struct StObserve : smacc2::SmaccState<StObserve, MsRun>
 
   void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
+}  // namespace a_cycle_inner_states
 }  // namespace sm_advanced_recovery_1

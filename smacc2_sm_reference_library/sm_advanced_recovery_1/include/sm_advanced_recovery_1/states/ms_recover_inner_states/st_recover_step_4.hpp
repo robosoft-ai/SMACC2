@@ -15,31 +15,27 @@
 namespace sm_advanced_recovery_1
 {
 // STATE DECLARATION
-struct StObserve : smacc2::SmaccState<StObserve, MsRun>
+struct StRecoverStep4 : smacc2::SmaccState<StRecoverStep4, MsRecover>
 {
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct AC_CYCLE : SUCCESS{};
-  struct CMV_CYCLE : SUCCESS{};
-  struct PC_CYCLE : SUCCESS{};
+  struct TIMEOUT : ABORT{};
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACycle, TIMEOUT>,
-    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACycle>,
-    // Keyboard events
-    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACycle, AC_CYCLE>,
-    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsBCycle, CMV_CYCLE>,
-    Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsCCycle, PC_CYCLE>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StRecoverStep5, NEXT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, smacc2::deep_history<MsRun::LastDeepState>, SUCCESS>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(50);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
     configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
