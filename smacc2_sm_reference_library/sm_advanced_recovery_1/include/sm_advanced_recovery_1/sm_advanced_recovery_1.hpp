@@ -55,67 +55,67 @@ using namespace smacc2::default_events;
 namespace sm_advanced_recovery_1
 {
 //SUPERSTATES
-class SsACCycle;
-namespace ac_cycle_inner_states
+class SsACycle;
+namespace a_cycle_inner_states
 {
-class StiACCycleLoop;
-class StiACCycleInspire;
-class StiACCyclePlateau;
-class StiACCycleExpire;
-class StiACCycleDwell;
-class StiACCyclePulse;
-class StiACCycleTitrate;
-class StiACCycleRinse;
-class StiACCycleRecycle;
-class StiACCyclePush;
-}  // namespace ac_cycle_inner_states
+class StiACycleLoop;
+class StiACycleStep1;
+class StiACycleStep2;
+class StiACycleStep3;
+class StiACycleStep4;
+class StiACycleStep5;
+class StiACycleStep6;
+class StiACycleStep7;
+class StiACycleStep8;
+class StiACycleStep9;
+}  // namespace a_cycle_inner_states
 
-class SsCMVCycle;
+class SsBCycle;
 
-namespace cmv_cycle_inner_states
-{
-//FORWARD DECLARATIONS OF ALL INNER STATES
-class StiCMVCycleLoop;
-class StiCMVCycleInspire;
-class StiCMVCyclePlateau;
-class StiCMVCycleExpire;
-class StiCMVCycleDwell;
-class StiCMVCyclePulse;
-class StiCMVCycleTitrate;
-class StiCMVCycleRinse;
-class StiCMVCycleRecycle;
-class StiCMVCyclePush;
-}  // namespace cmv_cycle_inner_states
-
-class SsPCCycle;
-namespace pc_cycle_inner_states
+namespace b_cyclenner_states
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiPCCycleLoop;
-class StiPCCycleInspire;
-class StiPCCyclePlateau;
-class StiPCCycleExpire;
-class StiPCCycleDwell;
-class StiPCCyclePulse;
-class StiPCCycleTitrate;
-class StiPCCycleRinse;
-class StiPCCycleRecycle;
-class StiPCCyclePush;
-}  // namespace pc_cycle_inner_states
+class StiBCycleLoop;
+class StiBCycleStep1;
+class StiBCycleStep2;
+class StiBCycleStep3;
+class StiBCycleStep4;
+class StiBCycleStep5;
+class StiBCycleStep6;
+class StiBCycleStep7;
+class StiBCycleStep8;
+class StiBCycleStep9;
+}  // namespace b_cyclenner_states
+
+class SsCCycle;
+namespace c_cycle_inner_states
+{
+//FORWARD DECLARATIONS OF ALL INNER STATES
+class StiCCycleLoop;
+class StiCCycleStep1;
+class StiCCycleStep2;
+class StiCCycleStep3;
+class StiCCycleStep4;
+class StiCCycleStep5;
+class StiCCycleStep6;
+class StiCCycleStep7;
+class StiCCycleStep8;
+class StiCCycleStep9;
+}  // namespace c_cycle_inner_states
 
 //STATES
 class StObserve;
-class StLeakyLungStep1;
-class StLeakyLungStep2;
-class StLeakyLungStep3;
-class StLeakyLungStep4;
-class StLeakyLungStep5;
-class StLeakyLungStep6;
-class StLeakyLungStep7;
+class StRecoverStep1;
+class StRecoverStep2;
+class StRecoverStep3;
+class StRecoverStep4;
+class StRecoverStep5;
+class StRecoverStep6;
+class StRecoverStep7;
 
 //MODE STATES
 class MsRun;
-class MsLeakyLung;
+class MsRecover;
 
 struct EvToDeep : sc::event<EvToDeep>{};
 struct EvFail : sc::event<EvFail>{};
@@ -136,55 +136,55 @@ struct SmAdvancedRecovery1 : public smacc2::SmaccStateMachineBase<SmAdvancedReco
 }  // namespace sm_advanced_recovery_1
 
 // MODE STATES
-#include <sm_advanced_recovery_1/mode_states/ms_leaky_lung.hpp>
+#include <sm_advanced_recovery_1/mode_states/ms_recover.hpp>
 #include <sm_advanced_recovery_1/mode_states/ms_run.hpp>
 
 //STATES
-#include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_1.hpp>
-#include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_2.hpp>
-#include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_3.hpp>
-#include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_4.hpp>
-#include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_5.hpp>
-#include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_6.hpp>
-#include <sm_advanced_recovery_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_7.hpp>
+#include <sm_advanced_recovery_1/states/ms_recover_inner_states/st_recover_step_1.hpp>
+#include <sm_advanced_recovery_1/states/ms_recover_inner_states/st_recover_step_2.hpp>
+#include <sm_advanced_recovery_1/states/ms_recover_inner_states/st_recover_step_3.hpp>
+#include <sm_advanced_recovery_1/states/ms_recover_inner_states/st_recover_step_4.hpp>
+#include <sm_advanced_recovery_1/states/ms_recover_inner_states/st_recover_step_5.hpp>
+#include <sm_advanced_recovery_1/states/ms_recover_inner_states/st_recover_step_6.hpp>
+#include <sm_advanced_recovery_1/states/ms_recover_inner_states/st_recover_step_7.hpp>
 
 #include <sm_advanced_recovery_1/states/st_observe.hpp>
 
-#include <sm_advanced_recovery_1/superstates/ss_ac_cycle.hpp>
-#include <sm_advanced_recovery_1/superstates/ss_cmv_cycle.hpp>
-#include <sm_advanced_recovery_1/superstates/ss_pc_cycle.hpp>
+#include <sm_advanced_recovery_1/superstates/ss_a_cycle.hpp>
+#include <sm_advanced_recovery_1/superstates/ss_b_cycle.hpp>
+#include <sm_advanced_recovery_1/superstates/ss_c_cycle.hpp>
 
 //ss_ac_cycle
-#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_dwell.hpp>
-#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_expire.hpp>
-#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_inspire.hpp>
-#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_loop.hpp>
-#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_plateau.hpp>
-#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_pulse.hpp>
-#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_titrate.hpp>
-#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_rinse.hpp>
-#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_recycle.hpp>
-#include <sm_advanced_recovery_1/states/ac_cycle_inner_states/sti_ac_cycle_push.hpp>
+#include <sm_advanced_recovery_1/states/a_cycle_inner_states/sti_a_cycle_step_4.hpp>
+#include <sm_advanced_recovery_1/states/a_cycle_inner_states/sti_a_cycle_step_3.hpp>
+#include <sm_advanced_recovery_1/states/a_cycle_inner_states/sti_a_cycle_step_1.hpp>
+#include <sm_advanced_recovery_1/states/a_cycle_inner_states/sti_a_cycle_loop.hpp>
+#include <sm_advanced_recovery_1/states/a_cycle_inner_states/sti_a_cycle_step_2.hpp>
+#include <sm_advanced_recovery_1/states/a_cycle_inner_states/sti_a_cycle_step_5.hpp>
+#include <sm_advanced_recovery_1/states/a_cycle_inner_states/sti_a_cycle_step_6.hpp>
+#include <sm_advanced_recovery_1/states/a_cycle_inner_states/sti_a_cycle_step_7.hpp>
+#include <sm_advanced_recovery_1/states/a_cycle_inner_states/sti_a_cycle_step_8.hpp>
+#include <sm_advanced_recovery_1/states/a_cycle_inner_states/sti_a_cycle_step_9.hpp>
 
-//ss_cmv_cycle
-#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_dwell.hpp>
-#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_expire.hpp>
-#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_inspire.hpp>
-#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_loop.hpp>
-#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_plateau.hpp>
-#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_pulse.hpp>
-#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_titrate.hpp>
-#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_rinse.hpp>
-#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_recycle.hpp>
-#include <sm_advanced_recovery_1/states/cmv_cycle_inner_states/sti_cmv_cycle_push.hpp>
-//ss_pc_cycle
-#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_dwell.hpp>
-#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_expire.hpp>
-#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_inspire.hpp>
-#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_loop.hpp>
-#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_plateau.hpp>
-#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_pulse.hpp>
-#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_titrate.hpp>
-#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_rinse.hpp>
-#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_recycle.hpp>
-#include <sm_advanced_recovery_1/states/pc_cycle_inner_states/sti_pc_cycle_push.hpp>
+//ss_b_cycle
+#include <sm_advanced_recovery_1/states/b_cycle_inner_states/sti_b_cycle_step_4.hpp>
+#include <sm_advanced_recovery_1/states/b_cycle_inner_states/sti_b_cycle_step_3.hpp>
+#include <sm_advanced_recovery_1/states/b_cycle_inner_states/sti_b_cycle_step_1.hpp>
+#include <sm_advanced_recovery_1/states/b_cycle_inner_states/sti_b_cycle_loop.hpp>
+#include <sm_advanced_recovery_1/states/b_cycle_inner_states/sti_b_cycle_step_2.hpp>
+#include <sm_advanced_recovery_1/states/b_cycle_inner_states/sti_b_cycle_step_5.hpp>
+#include <sm_advanced_recovery_1/states/b_cycle_inner_states/sti_b_cycle_step_6.hpp>
+#include <sm_advanced_recovery_1/states/b_cycle_inner_states/sti_b_cycle_step_7.hpp>
+#include <sm_advanced_recovery_1/states/b_cycle_inner_states/sti_b_cycle_step_8.hpp>
+#include <sm_advanced_recovery_1/states/b_cycle_inner_states/sti_b_cycle_step_9.hpp>
+//ss_c_cycle
+#include <sm_advanced_recovery_1/states/c_cycle_inner_states/sti_c_cycle_step_4.hpp>
+#include <sm_advanced_recovery_1/states/c_cycle_inner_states/sti_c_cycle_step_3.hpp>
+#include <sm_advanced_recovery_1/states/c_cycle_inner_states/sti_c_cycle_step_1.hpp>
+#include <sm_advanced_recovery_1/states/c_cycle_inner_states/sti_c_cycle_loop.hpp>
+#include <sm_advanced_recovery_1/states/c_cycle_inner_states/sti_c_cycle_step_2.hpp>
+#include <sm_advanced_recovery_1/states/c_cycle_inner_states/sti_c_cycle_step_5.hpp>
+#include <sm_advanced_recovery_1/states/c_cycle_inner_states/sti_c_cycle_step_6.hpp>
+#include <sm_advanced_recovery_1/states/c_cycle_inner_states/sti_c_cycle_step_7.hpp>
+#include <sm_advanced_recovery_1/states/c_cycle_inner_states/sti_c_cycle_step_8.hpp>
+#include <sm_advanced_recovery_1/states/c_cycle_inner_states/sti_c_cycle_step_9.hpp>
