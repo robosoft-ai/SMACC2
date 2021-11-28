@@ -14,9 +14,10 @@
 
 namespace sm_multi_stage_1
 {
+using namespace sm_multi_stage_1::mode_4_sequence_c;
 
 // STATE DECLARATION
-struct CSequenceLoop4 : smacc2::SmaccState<CSequenceLoop4, MsMode4>
+struct SsMode4SequenceC : smacc2::SmaccState<SsMode4SequenceC, MsMode4, StiMode4SequenceCLoop>
 {
 public:
   using SmaccState::SmaccState;
@@ -24,29 +25,18 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-     Transition<EvLoopContinue<CSequenceLoop4>, SsCSequence4, CONTINUELOOP>
+    Transition<EvLoopEnd<StiMode4SequenceCLoop>, Mode4SequenceCLoop>
 
     >reactions;
+
+  // STATE VARIABLES
+  static constexpr int dtotal_iterations() { return 1; }
+  int diteration_count = 0;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
+};  // namespace SS1
 
-  bool loopWhileCondition()
-  {
-    auto & superstate = this->context<MsMode4>();
-
-    RCLCPP_INFO(
-      getLogger(), "Loop start, current iterations: %d, total iterations: %d",
-      superstate.diteration_count, superstate.dtotal_iterations());
-    return superstate.diteration_count++ < superstate.dtotal_iterations();
-  }
-
-  void onEntry()
-  {
-    RCLCPP_INFO(getLogger(), "LOOP START ON ENTRY");
-    checkWhileLoopConditionAndThrowEvent(&CSequenceLoop4::loopWhileCondition);
-  }
-};
 }  // namespace sm_multi_stage_1

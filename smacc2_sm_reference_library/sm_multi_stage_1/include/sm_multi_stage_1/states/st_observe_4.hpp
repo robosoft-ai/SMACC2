@@ -21,7 +21,7 @@ struct StObserve4 : smacc2::SmaccState<StObserve4, MsMode4>
 
   // DECLARE CUSTOM OBJECT TAGS
   struct a_sequence_4 : SUCCESS{};
-  struct c_sequence_4 : SUCCESS{};
+  struct mode_4_sequence_c : SUCCESS{};
   struct mode_4_sequence_d : SUCCESS{};
   struct b_sequence_4 : SUCCESS{};
 
@@ -30,7 +30,7 @@ struct StObserve4 : smacc2::SmaccState<StObserve4, MsMode4>
 
     Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, ASequenceLoop4, SUCCESS>,
     Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, BSequenceLoop4, SUCCESS>,
-    Transition<EvKeyPressD<CbDefaultKeyboardBehavior, OrKeyboard>, CSequenceLoop4, SUCCESS>,
+    Transition<EvKeyPressD<CbDefaultKeyboardBehavior, OrKeyboard>, Mode4SequenceCLoop, SUCCESS>,
     Transition<EvKeyPressG<CbDefaultKeyboardBehavior, OrKeyboard>, Mode4SequenceDLoop, SUCCESS>,
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, Mode4SequenceDLoop, SUCCESS>
 

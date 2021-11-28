@@ -14,10 +14,10 @@
 
 namespace sm_multi_stage_1
 {
-namespace c_sequence_4
+namespace mode_4_sequence_c
 {
 // STATE DECLARATION
-struct StiCSequenceStep74 : smacc2::SmaccState<StiCSequenceStep74, SsCSequence4>
+struct StiCSequenceStep3 : smacc2::SmaccState<StiCSequenceStep3, SsMode4SequenceC>
 {
   using SmaccState::SmaccState;
 
@@ -30,13 +30,12 @@ struct StiCSequenceStep74 : smacc2::SmaccState<StiCSequenceStep74, SsCSequence4>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiCSequenceStep94, TIMEOUT>,
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiCSequenceStep64, PREVIOUS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiCSequenceStep94, NEXT>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiCSequenceStep4, TIMEOUT>,
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiCSequenceStep2, PREVIOUS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiCSequenceStep4, NEXT>
 
     //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve2, RETURN>,
-   //Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery2, ABORT>
-
+    //Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery2, ABORT>
     >reactions;
 
   // STATE FUNCTIONS
@@ -54,5 +53,5 @@ struct StiCSequenceStep74 : smacc2::SmaccState<StiCSequenceStep74, SsCSequence4>
 
   void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-}  // namespace c_sequence_1
+}  // namespace mode_4_sequence_c_1
 }  // namespace sm_multi_stage_1

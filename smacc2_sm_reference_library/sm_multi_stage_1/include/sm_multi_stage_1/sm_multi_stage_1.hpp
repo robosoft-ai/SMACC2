@@ -115,20 +115,20 @@ class StiASequenceStep84;
 class StiASequenceStep94;
 }  // namespace a_sequence_4
 
-class SsCSequence4;
-namespace c_sequence_4
+class SsMode4SequenceC;
+namespace mode_4_sequence_c
 {
-class StiCSequenceLoop4;
-class StiCSequenceStep14;
-class StiCSequenceStep24;
-class StiCSequenceStep34;
-class StiCSequenceStep44;
-class StiCSequenceStep54;
-class StiCSequenceStep64;
-class StiCSequenceStep74;
-class StiCSequenceStep84;
-class StiCSequenceStep94;
-}  // namespace c_sequence_4
+class StiMode4SequenceCLoop;
+class StiCSequenceStep1;
+class StiCSequenceStep2;
+class StiCSequenceStep3;
+class StiCSequenceStep4;
+class StiCSequenceStep5;
+class StiCSequenceStep6;
+class StiCSequenceStep7;
+class StiCSequenceStep8;
+class StiCSequenceStep9;
+}  // namespace mode_4_sequence_c
 
 class SsMode4SequenceD;
 namespace mode_4_sequence_d
@@ -277,7 +277,7 @@ class BSequenceLoop2;
 class ASequenceLoop3;
 class BSequenceLoop3;
 class ASequenceLoop4;
-class CSequenceLoop4;
+class Mode4SequenceCLoop;
 class Mode4SequenceDLoop;
 class BSequenceLoop4;
 class ASequenceLoop5;
@@ -350,7 +350,7 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsMod
 #include <sm_multi_stage_1/states/a_sequence_loop_4.hpp>
 #include <sm_multi_stage_1/states/a_sequence_loop_5.hpp>
 
-#include <sm_multi_stage_1/states/c_sequence_loop_4.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c_loop.hpp>
 #include <sm_multi_stage_1/states/mode_4_sequence_d_loop.hpp>
 
 #include <sm_multi_stage_1/states/b_sequence_loop_1.hpp>
@@ -371,7 +371,7 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsMod
 #include <sm_multi_stage_1/superstates/ss_a_sequence_4.hpp>
 #include <sm_multi_stage_1/superstates/ss_a_sequence_5.hpp>
 
-#include <sm_multi_stage_1/superstates/ss_c_sequence_4.hpp>
+#include <sm_multi_stage_1/superstates/ss_mode_4_sequence_c.hpp>
 #include <sm_multi_stage_1/superstates/ss_mode_4_sequence_d.hpp>
 
 
@@ -430,17 +430,17 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsMod
 #include <sm_multi_stage_1/states/a_sequence_4/sti_a_sequence_step_7_4.hpp>
 #include <sm_multi_stage_1/states/a_sequence_4/sti_a_sequence_step_6_4.hpp>
 
-//ss_c_sequence_4
-#include <sm_multi_stage_1/states/c_sequence_4/sti_c_sequence_step_4_4.hpp>
-#include <sm_multi_stage_1/states/c_sequence_4/sti_c_sequence_step_3_4.hpp>
-#include <sm_multi_stage_1/states/c_sequence_4/sti_c_sequence_step_1_4.hpp>
-#include <sm_multi_stage_1/states/c_sequence_4/sti_c_sequence_loop_4.hpp>
-#include <sm_multi_stage_1/states/c_sequence_4/sti_c_sequence_step_2_4.hpp>
-#include <sm_multi_stage_1/states/c_sequence_4/sti_c_sequence_step_5_4.hpp>
-#include <sm_multi_stage_1/states/c_sequence_4/sti_c_sequence_step_9_4.hpp>
-#include <sm_multi_stage_1/states/c_sequence_4/sti_c_sequence_step_8_4.hpp>
-#include <sm_multi_stage_1/states/c_sequence_4/sti_c_sequence_step_7_4.hpp>
-#include <sm_multi_stage_1/states/c_sequence_4/sti_c_sequence_step_6_4.hpp>
+//ss_mode_4_sequence_c
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_4.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_3.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_1.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_loop.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_2.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_5.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_9.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_8.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_7.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_6.hpp>
 
 //ss_mode_4_sequence_d
 #include <sm_multi_stage_1/states/mode_4_sequence_d/sti_mode_4_sequence_d_step_4.hpp>
