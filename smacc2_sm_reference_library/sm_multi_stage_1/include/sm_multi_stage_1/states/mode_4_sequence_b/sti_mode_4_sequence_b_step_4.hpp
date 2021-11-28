@@ -14,10 +14,10 @@
 
 namespace sm_multi_stage_1
 {
-namespace b_sequence_4
+namespace mode_4_sequence_b
 {
 // STATE DECLARATION
-struct StiBSequenceStep44 : smacc2::SmaccState<StiBSequenceStep44, SsBSequence4>
+struct StiMode4SequenceBStep4 : smacc2::SmaccState<StiMode4SequenceBStep4, SsMode4SequenceB>
 {
   using SmaccState::SmaccState;
 
@@ -30,9 +30,9 @@ struct StiBSequenceStep44 : smacc2::SmaccState<StiBSequenceStep44, SsBSequence4>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiBSequenceStep54, TIMEOUT>,
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiBSequenceStep34, PREVIOUS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiBSequenceStep54, NEXT>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiMode4SequenceBStep5, TIMEOUT>,
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode4SequenceBStep3, PREVIOUS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode4SequenceBStep5, NEXT>
 
     //ransition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve2, RETURN>,
     //Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery2, ABORT>

@@ -212,22 +212,22 @@ class StiBSequenceStep83;
 class StiBSequenceStep93;
 }  // namespace b_sequence_3
 
-class SsBSequence4;
+class SsMode4SequenceB;
 
-namespace b_sequence_4
+namespace mode_4_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiBSequenceLoop4;
-class StiBSequenceStep14;
-class StiBSequenceStep24;
-class StiBSequenceStep34;
-class StiBSequenceStep44;
-class StiBSequenceStep54;
-class StiBSequenceStep64;
-class StiBSequenceStep74;
-class StiBSequenceStep84;
-class StiBSequenceStep94;
-}  // namespace b_sequence_4
+class StiMode4SequenceB;
+class StiMode4SequenceBStep1;
+class StiMode4SequenceBStep2;
+class StiMode4SequenceBStep3;
+class StiMode4SequenceBStep4;
+class StiMode4SequenceBStep5;
+class StiMode4SequenceBStep6;
+class StiMode4SequenceBStep7;
+class StiMode4SequenceBStep8;
+class StiMode4SequenceBStep9;
+}  // namespace mode_4_sequence_b
 
 class SsMode5SequenceB;
 
@@ -279,7 +279,7 @@ class BSequenceLoop3;
 class ASequenceLoop4;
 class Mode4SequenceCLoop;
 class Mode4SequenceDLoop;
-class BSequenceLoop4;
+class Mode4SequenceBLoop;
 class ASequenceLoop5;
 class Mode5SequenceBLoop;
 
@@ -356,7 +356,7 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsMod
 #include <sm_multi_stage_1/states/b_sequence_loop_1.hpp>
 #include <sm_multi_stage_1/states/b_sequence_loop_2.hpp>
 #include <sm_multi_stage_1/states/b_sequence_loop_3.hpp>
-#include <sm_multi_stage_1/states/b_sequence_loop_4.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_b_loop.hpp>
 #include <sm_multi_stage_1/states/mode_5_sequence_b_loop.hpp>
 
 #include <sm_multi_stage_1/states/st_observe_1.hpp>
@@ -378,7 +378,7 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsMod
 #include <sm_multi_stage_1/superstates/ss_b_sequence_1.hpp>
 #include <sm_multi_stage_1/superstates/ss_b_sequence_2.hpp>
 #include <sm_multi_stage_1/superstates/ss_b_sequence_3.hpp>
-#include <sm_multi_stage_1/superstates/ss_b_sequence_4.hpp>
+#include <sm_multi_stage_1/superstates/ss_mode_4_sequence_b.hpp>
 #include <sm_multi_stage_1/superstates/ss_mode_5_sequence_b.hpp>
 
 
@@ -502,17 +502,17 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsMod
 #include <sm_multi_stage_1/states/b_sequence_3/sti_b_sequence_step_7_3.hpp>
 #include <sm_multi_stage_1/states/b_sequence_3/sti_b_sequence_step_6_3.hpp>
 
-//ss_b_sequence_4
-#include <sm_multi_stage_1/states/b_sequence_4/sti_b_sequence_step_4_4.hpp>
-#include <sm_multi_stage_1/states/b_sequence_4/sti_b_sequence_step_3_4.hpp>
-#include <sm_multi_stage_1/states/b_sequence_4/sti_b_sequence_step_1_4.hpp>
-#include <sm_multi_stage_1/states/b_sequence_4/sti_b_sequence_loop_4.hpp>
-#include <sm_multi_stage_1/states/b_sequence_4/sti_b_sequence_step_2_4.hpp>
-#include <sm_multi_stage_1/states/b_sequence_4/sti_b_sequence_step_5_4.hpp>
-#include <sm_multi_stage_1/states/b_sequence_4/sti_b_sequence_step_9_4.hpp>
-#include <sm_multi_stage_1/states/b_sequence_4/sti_b_sequence_step_8_4.hpp>
-#include <sm_multi_stage_1/states/b_sequence_4/sti_b_sequence_step_7_4.hpp>
-#include <sm_multi_stage_1/states/b_sequence_4/sti_b_sequence_step_6_4.hpp>
+//ss_mode_4_sequence_b
+#include <sm_multi_stage_1/states/mode_4_sequence_b/sti_mode_4_sequence_b_step_4.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_b/sti_mode_4_sequence_b_step_3.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_b/sti_mode_4_sequence_b_step_1.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_b/sti_mode_4_sequence_b_loop.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_b/sti_mode_4_sequence_b_step_2.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_b/sti_mode_4_sequence_b_step_5.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_b/sti_mode_4_sequence_b_step_9.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_b/sti_mode_4_sequence_b_step_8.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_b/sti_mode_4_sequence_b_step_7.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_b/sti_mode_4_sequence_b_step_6.hpp>
 
 //ss_mode_5_seqence_b
 #include <sm_multi_stage_1/states/mode_5_sequence_b/sti_mode_5_sequence_b_step_4.hpp>
