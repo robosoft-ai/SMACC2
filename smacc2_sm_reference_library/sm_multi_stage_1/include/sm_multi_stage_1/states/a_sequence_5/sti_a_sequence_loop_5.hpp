@@ -25,7 +25,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopContinue<StiASequenceLoop5>, StiASequenceInspire5, CONTINUELOOP>
+    Transition<EvLoopContinue<StiASequenceLoop5>, StiASequenceStep15, CONTINUELOOP>
 
     >reactions;
 
