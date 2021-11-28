@@ -16,7 +16,7 @@ namespace sm_multi_stage_1
 {
 
 // STATE DECLARATION
-struct BSequenceLoop5 : smacc2::SmaccState<BSequenceLoop5, MsMode5>
+struct Mode5SequenceBLoop : smacc2::SmaccState<Mode5SequenceBLoop, MsMode5>
 {
 public:
   using SmaccState::SmaccState;
@@ -24,7 +24,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopContinue<BSequenceLoop5>, SsBSequence5, CONTINUELOOP>
+    Transition<EvLoopContinue<Mode5SequenceBLoop>, SsMode5SequenceB, CONTINUELOOP>
 
     >reactions;
 
@@ -46,7 +46,7 @@ public:
   void onEntry()
   {
     RCLCPP_INFO(getLogger(), "LOOP START ON ENTRY");
-    checkWhileLoopConditionAndThrowEvent(&BSequenceLoop5::loopWhileCondition);
+    checkWhileLoopConditionAndThrowEvent(&Mode5SequenceBLoop::loopWhileCondition);
   }
 };
 }  // namespace sm_multi_stage_1
