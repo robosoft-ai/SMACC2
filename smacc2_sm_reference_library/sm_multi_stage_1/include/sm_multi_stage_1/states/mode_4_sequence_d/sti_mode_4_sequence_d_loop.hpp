@@ -14,10 +14,10 @@
 
 namespace sm_multi_stage_1
 {
-using namespace sm_multi_stage_1::d_sequence_4;
-
+namespace mode_4_sequence_d
+{
 // STATE DECLARATION
-struct SsDSequence4 : smacc2::SmaccState<SsDSequence4, MsMode4, StiDSequenceLoop4>
+struct StiMode4SequenceDLoop : smacc2::SmaccState<StiMode4SequenceDLoop, SsMode4SequenceD>
 {
 public:
   using SmaccState::SmaccState;
@@ -25,18 +25,30 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiDSequenceLoop4>, DSequenceLoop4>
+    Transition<EvLoopContinue<StiMode4SequenceDLoop>, StiMode4SequenceDStep1, CONTINUELOOP>
 
     >reactions;
-
-  // STATE VARIABLES
-  static constexpr int gtotal_iterations() { return 1; }
-  int giteration_count = 0;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
-};  // namespace SS1
 
+  bool loopWhileCondition()
+  {
+    auto & superstate = this->context<SsMode4SequenceD>();
+
+    RCLCPP_INFO(
+      getLogger(), "Loop start, current iterations: %d, total iterations: %d",
+      superstate.giteration_count, superstate.gtotal_iterations());
+    return superstate.giteration_count++ < superstate.gtotal_iterations();
+  }
+
+  void onEntry()
+  {
+    RCLCPP_INFO(getLogger(), "LOOP START ON ENTRY");
+    checkWhileLoopConditionAndThrowEvent(&StiMode4SequenceDLoop::loopWhileCondition);
+  }
+};
+}  // namespace a_sequence_1
 }  // namespace sm_multi_stage_1

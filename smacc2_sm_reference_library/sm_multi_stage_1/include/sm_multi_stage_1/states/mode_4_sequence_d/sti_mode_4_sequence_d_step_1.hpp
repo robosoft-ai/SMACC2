@@ -14,10 +14,10 @@
 
 namespace sm_multi_stage_1
 {
-namespace d_sequence_4
+namespace mode_4_sequence_d
 {
 // STATE DECLARATION
-struct StiDSequenceStep14 : smacc2::SmaccState<StiDSequenceStep14, SsDSequence4>
+struct StiMode4SequenceDStep1 : smacc2::SmaccState<StiMode4SequenceDStep1, SsMode4SequenceD>
 {
   using SmaccState::SmaccState;
 
@@ -30,8 +30,8 @@ struct StiDSequenceStep14 : smacc2::SmaccState<StiDSequenceStep14, SsDSequence4>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiDSequenceStep24, TIMEOUT>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiDSequenceStep24, NEXT>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiMode4SequenceDStep2, TIMEOUT>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode4SequenceDStep2, NEXT>
     //Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiASequenceLoop2, PREVIOUS>,
 
     //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve2, RETURN>,
@@ -54,5 +54,5 @@ struct StiDSequenceStep14 : smacc2::SmaccState<StiDSequenceStep14, SsDSequence4>
 
   void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-}  // namespace d_sequence_4
+}  // namespace mode_4_sequence_d
 }  // namespace sm_multi_stage_1

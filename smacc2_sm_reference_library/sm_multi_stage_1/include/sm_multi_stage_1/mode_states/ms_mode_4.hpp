@@ -27,7 +27,7 @@ typedef mpl::list<
   Transition<EvLoopEnd<ASequenceLoop4>, MsMode5>,
   Transition<EvLoopEnd<BSequenceLoop4>, MsMode5>,
   Transition<EvLoopEnd<CSequenceLoop4>, MsMode5>,
-  Transition<EvLoopEnd<DSequenceLoop4>, MsMode5>
+  Transition<EvLoopEnd<Mode4SequenceDLoop>, MsMode5>
 
     >reactions;
 
