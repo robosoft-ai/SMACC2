@@ -27,7 +27,7 @@ struct StRecoveryInnervate1 : smacc2::SmaccState<StRecoveryInnervate1, MsRecover
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, smacc2::deep_history<MsRun1::LastDeepState>, SUCCESS>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, smacc2::deep_history<MsMode1::LastDeepState>, SUCCESS>
 
     >reactions;
 
