@@ -1,9 +1,10 @@
  <h2>State Machine Diagram</h2>
 
- ![sm_multi_stage_1](docs/SmMultiStage1_2021-10-18_102635.svg)
+ ![sm_multi_stage_1](docs/SmMultiStage1_2021-11-29_0916.svg)
 
- <h2>Description</h2> A state machine sketch for the RespiraWorks Ventilator<br></br>
-<a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__respira__1.html">Doxygen Namespace & Class Reference</a>
+ <h2>Description</h2> A large multi stage state machine that demonstrates that the NxN problem is not as formidable as some would have you believe.<br></br>
+
+<a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__multi_stage__1.html">Doxygen Namespace & Class Reference</a>
 
  <h2>Build Instructions</h2>
 

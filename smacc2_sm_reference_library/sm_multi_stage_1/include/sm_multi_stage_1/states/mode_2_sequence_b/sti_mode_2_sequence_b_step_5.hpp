@@ -35,7 +35,7 @@ struct StiMode2SequenceBStep5 : smacc2::SmaccState<StiMode2SequenceBStep5, SsMod
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode2SequenceBStep6, NEXT>,
     Transition<EvKeyPressS<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode2SequenceBStep8, SUCCESS>
 
-    //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve2, RETURN>,
+    //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, Mode2StObserve, RETURN>,
     //Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery2, ABORT>
 
     >reactions;

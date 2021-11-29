@@ -246,7 +246,7 @@ class StiMode5SequenceBStep9;
 }  // namespace mode_5_sequence_b
 
 //STATES
-class StObserve1;
+class Mode1StObserve;
 class StRecoveryAnalyze1;
 class StRecoveryBifurcate1;
 class StRecoveryCalculate1;
@@ -255,7 +255,7 @@ class StRecoveryEvaluate1;
 class StRecoveryGenerate1;
 class StRecoveryInnervate1;
 
-class StObserve2;
+class Mode2StObserve;
 class StRecoveryAnalyze2;
 class StRecoveryBifurcate2;
 class StRecoveryCalculate2;
@@ -264,9 +264,9 @@ class StRecoveryEvaluate2;
 class StRecoveryGenerate2;
 class StRecoveryInnervate2;
 
-class StObserve3;
-class StObserve4;
-class StObserve5;
+class Mode3StObserve;
+class Mode4StObserve;
+class Mode5StObserve;
 
 
 class Mode1SequenceALoop;
@@ -358,11 +358,11 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsMod
 #include <sm_multi_stage_1/states/mode_4_sequence_b_loop.hpp>
 #include <sm_multi_stage_1/states/mode_5_sequence_b_loop.hpp>
 
-#include <sm_multi_stage_1/states/st_observe_1.hpp>
-#include <sm_multi_stage_1/states/st_observe_2.hpp>
-#include <sm_multi_stage_1/states/st_observe_3.hpp>
-#include <sm_multi_stage_1/states/st_observe_4.hpp>
-#include <sm_multi_stage_1/states/st_observe_5.hpp>
+#include <sm_multi_stage_1/states/mode_1_st_observe.hpp>
+#include <sm_multi_stage_1/states/mode_2_st_observe.hpp>
+#include <sm_multi_stage_1/states/mode_3_st_observe.hpp>
+#include <sm_multi_stage_1/states/mode_4_st_observe.hpp>
+#include <sm_multi_stage_1/states/mode_5_st_observe.hpp>
 
 #include <sm_multi_stage_1/superstates/ss_mode_1_sequence_a.hpp>
 #include <sm_multi_stage_1/superstates/ss_mode_2_sequence_a.hpp>

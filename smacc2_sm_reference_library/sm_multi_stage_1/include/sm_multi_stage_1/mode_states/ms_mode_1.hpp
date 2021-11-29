@@ -16,7 +16,7 @@
 namespace sm_multi_stage_1
 {
 // STATE DECLARATION
-class MsMode1 : public smacc2::SmaccState<MsMode1, SmMultiStage1, StObserve1>
+class MsMode1 : public smacc2::SmaccState<MsMode1, SmMultiStage1, Mode1StObserve>
 {
 public:
   using SmaccState::SmaccState;
