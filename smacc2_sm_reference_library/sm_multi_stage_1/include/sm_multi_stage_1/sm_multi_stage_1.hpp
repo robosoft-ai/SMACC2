@@ -55,79 +55,79 @@ using namespace smacc2::default_events;
 namespace sm_multi_stage_1
 {
 //SUPERSTATES
-class SsASequence1;
-namespace a_sequence_1
+class SsMode1SequenceA;
+namespace mode_1_sequence_a
 {
-class StiASequenceLoop1;
-class StiASequenceStep11;
-class StiASequenceStep21;
-class StiASequenceStep31;
-class StiASequenceStep41;
-class StiASequenceStep51;
-class StiASequenceStep61;
-class StiASequenceStep71;
-class StiASequenceStep81;
-class StiASequenceStep91;
-}  // namespace a_sequence_1
+class StiMode1SequenceALoop;
+class StiMode1SequenceAStep1;
+class StiMode1SequenceAStep2;
+class StiMode1SequenceAStep3;
+class StiMode1SequenceAStep4;
+class StiMode1SequenceAStep5;
+class StiMode1SequenceAStep6;
+class StiMode1SequenceAStep7;
+class StiMode1SequenceAStep8;
+class StiMode1SequenceAStep9;
+}  // namespace mode_1_sequence_a
 
-class SsASequence2;
-namespace a_sequence_2
+class SsMode2SequenceA;
+namespace mode_2_sequence_a
 {
-class StiASequenceLoop2;
-class StiASequenceStep12;
-class StiASequenceStep22;
-class StiASequenceStep32;
-class StiASequenceStep42;
-class StiASequenceStep52;
-class StiASequenceStep62;
-class StiASequenceStep72;
-class StiASequenceStep82;
-class StiASequenceStep92;
-}  // namespace a_sequence_2
+class StiMode2SequenceALoop;
+class StiMode2SequenceAStep1;
+class StiMode2SequenceAStep2;
+class StiMode2SequenceAStep3;
+class StiMode2SequenceAStep4;
+class StiMode2SequenceAStep5;
+class StiMode2SequenceAStep6;
+class StiMode2SequenceAStep7;
+class StiMode2SequenceAStep8;
+class StiMode2SequenceAStep9;
+}  // namespace mode_2_sequence_a
 
-class SsASequence3;
-namespace a_sequence_3
+class SsMode3SequenceA;
+namespace mode_3_sequence_a
 {
-class StiASequenceLoop3;
-class StiASequenceStep13;
-class StiASequenceStep23;
-class StiASequenceStep33;
-class StiASequenceStep43;
-class StiASequenceStep53;
-class StiASequenceStep63;
-class StiASequenceStep73;
-class StiASequenceStep83;
-class StiASequenceStep93;
-}  // namespace a_sequence_3
+class StiMode3SequenceALoop;
+class StiMode3SequenceAStep1;
+class StiMode3SequenceAStep2;
+class StiMode3SequenceAStep3;
+class StiMode3SequenceAStep4;
+class StiMode3SequenceAStep5;
+class StiMode3SequenceAStep6;
+class StiMode3SequenceAStep7;
+class StiMode3SequenceAStep8;
+class StiMode3SequenceAStep9;
+}  // namespace mode_3_sequence_a
 
-class SsASequence4;
-namespace a_sequence_4
+class SsMode4SequenceA;
+namespace mode_4_sequence_a
 {
-class StiASequenceLoop4;
-class StiASequenceStep14;
-class StiASequenceStep24;
-class StiASequenceStep34;
-class StiASequenceStep44;
-class StiASequenceStep54;
-class StiASequenceStep64;
-class StiASequenceStep74;
-class StiASequenceStep84;
-class StiASequenceStep94;
-}  // namespace a_sequence_4
+class StiMode4SequenceALoop;
+class StiMode4SequenceAStep1;
+class StiMode4SequenceAStep2;
+class StiMode4SequenceAStep3;
+class StiMode4SequenceAStep4;
+class StiMode4SequenceAStep5;
+class StiMode4SequenceAStep6;
+class StiMode4SequenceAStep7;
+class StiMode4SequenceAStep8;
+class StiMode4SequenceAStep9;
+}  // namespace mode_4_sequence_a
 
 class SsMode4SequenceC;
 namespace mode_4_sequence_c
 {
 class StiMode4SequenceCLoop;
-class StiCSequenceStep1;
-class StiCSequenceStep2;
-class StiCSequenceStep3;
-class StiCSequenceStep4;
-class StiCSequenceStep5;
-class StiCSequenceStep6;
-class StiCSequenceStep7;
-class StiCSequenceStep8;
-class StiCSequenceStep9;
+class StiMode4SequenceCStep1;
+class StiMode4SequenceCStep2;
+class StiMode4SequenceCStep3;
+class StiMode4SequenceCStep4;
+class StiMode4SequenceCStep5;
+class StiMode4SequenceCStep6;
+class StiMode4SequenceCStep7;
+class StiMode4SequenceCStep8;
+class StiMode4SequenceCStep9;
 }  // namespace mode_4_sequence_c
 
 class SsMode4SequenceD;
@@ -145,72 +145,71 @@ class StiMode4SequenceDStep8;
 class StiMode4SequenceDStep9;
 }  // namespace mode_4_sequence_d
 
-class SsASequence5;
-namespace a_sequence_5
+class SsMode5SequenceA;
+namespace mode_5_sequence_a
 {
-class StiASequenceLoop5;
-class StiASequenceStep15;
-class StiASequenceStep25;
-class StiASequenceStep35;
-class StiASequenceStep45;
-class StiASequenceStep55;
-class StiASequenceStep65;
-class StiASequenceStep75;
-class StiASequenceStep85;
-class StiASequenceStep95;
-}  // namespace a_sequence_5
+class StiMode5SequenceALoop;
+class StiMode5SequenceAStep1;
+class StiMode5SequenceAStep2;
+class StiMode5SequenceAStep3;
+class StiMode5SequenceAStep4;
+class StiMode5SequenceAStep5;
+class StiMode5SequenceAStep6;
+class StiMode5SequenceAStep7;
+class StiMode5SequenceAStep8;
+class StiMode5SequenceAStep9;
+}  // namespace mode_5_sequence_a
 
 
-class SsBSequence1;
-
-namespace b_sequence_1
-{
-//FORWARD DECLARATIONS OF ALL INNER STATES
-class StiBSequenceLoop1;
-class StiBSequenceStep11;
-class StiBSequenceStep21;
-class StiBSequenceStep31;
-class StiBSequenceStep41;
-class StiBSequenceStep51;
-class StiBSequenceStep61;
-class StiBSequenceStep71;
-class StiBSequenceStep81;
-class StiBSequenceStep91;
-}  // namespace b_sequence_1
-
-class SsBSequence2;
-
-namespace b_sequence_2
+class SsMode1SequenceB;
+namespace mode_1_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiBSequenceLoop2;
-class StiBSequenceStep12;
-class StiBSequenceStep22;
-class StiBSequenceStep32;
-class StiBSequenceStep42;
-class StiBSequenceStep52;
-class StiBSequenceStep62;
-class StiBSequenceStep72;
-class StiBSequenceStep82;
-class StiBSequenceStep92;
-}  // namespace b_sequence_2
+class StiMode1SequenceBLoop;
+class StiMode1SequenceBStep1;
+class StiMode1SequenceBStep2;
+class StiMode1SequenceBStep3;
+class StiMode1SequenceBStep4;
+class StiMode1SequenceBStep5;
+class StiMode1SequenceBStep6;
+class StiMode1SequenceBStep7;
+class StiMode1SequenceBStep8;
+class StiMode1SequenceBStep9;
+}  // namespace mode_1_sequence_b
 
-class SsBSequence3;
+class SsMode2SequenceB;
 
-namespace b_sequence_3
+namespace mode_2_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiBSequenceLoop3;
-class StiBSequenceStep13;
-class StiBSequenceStep23;
-class StiBSequenceStep33;
-class StiBSequenceStep43;
-class StiBSequenceStep53;
-class StiBSequenceStep63;
-class StiBSequenceStep73;
-class StiBSequenceStep83;
-class StiBSequenceStep93;
-}  // namespace b_sequence_3
+class StiMode2SequenceBLoop;
+class StiMode2SequenceBStep1;
+class StiMode2SequenceBStep2;
+class StiMode2SequenceBStep3;
+class StiMode2SequenceBStep4;
+class StiMode2SequenceBStep5;
+class StiMode2SequenceBStep6;
+class StiMode2SequenceBStep7;
+class StiMode2SequenceBStep8;
+class StiMode2SequenceBStep9;
+}  // namespace mode_2_sequence_b
+
+class SsMode3SequenceB;
+
+namespace mode_3_sequence_b
+{
+//FORWARD DECLARATIONS OF ALL INNER STATES
+class StiMode3SequenceBLoop;
+class StiMode3SequenceBStep1;
+class StiMode3SequenceBStep2;
+class StiMode3SequenceBStep3;
+class StiMode3SequenceBStep4;
+class StiMode3SequenceBStep5;
+class StiMode3SequenceBStep6;
+class StiMode3SequenceBStep7;
+class StiMode3SequenceBStep8;
+class StiMode3SequenceBStep9;
+}  // namespace mode_3_sequence_b
 
 class SsMode4SequenceB;
 
@@ -270,17 +269,17 @@ class StObserve4;
 class StObserve5;
 
 
-class ASequenceLoop1;
-class BSequenceLoop1;
-class ASequenceLoop2;
-class BSequenceLoop2;
-class ASequenceLoop3;
-class BSequenceLoop3;
-class ASequenceLoop4;
+class Mode1SequenceALoop;
+class Mode1SequenceBLoop;
+class Mode2SequenceALoop;
+class Mode2SequenceBLoop;
+class Mode3SequenceALoop;
+class Mode3SequenceBLoop;
+class Mode4SequenceALoop;
 class Mode4SequenceCLoop;
 class Mode4SequenceDLoop;
 class Mode4SequenceBLoop;
-class ASequenceLoop5;
+class Mode5SequenceALoop;
 class Mode5SequenceBLoop;
 
 
@@ -344,18 +343,18 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsMod
 #include <sm_multi_stage_1/states/ms_recovery_2/st_recovery_generate_2.hpp>
 #include <sm_multi_stage_1/states/ms_recovery_2/st_recovery_innervate_2.hpp>
 
-#include <sm_multi_stage_1/states/a_sequence_loop_1.hpp>
-#include <sm_multi_stage_1/states/a_sequence_loop_2.hpp>
-#include <sm_multi_stage_1/states/a_sequence_loop_3.hpp>
-#include <sm_multi_stage_1/states/a_sequence_loop_4.hpp>
-#include <sm_multi_stage_1/states/a_sequence_loop_5.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_a_loop.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_a_loop.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_a_loop.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_a_loop.hpp>
+#include <sm_multi_stage_1/states/mode_5_sequence_a_loop.hpp>
 
 #include <sm_multi_stage_1/states/mode_4_sequence_c_loop.hpp>
 #include <sm_multi_stage_1/states/mode_4_sequence_d_loop.hpp>
 
-#include <sm_multi_stage_1/states/b_sequence_loop_1.hpp>
-#include <sm_multi_stage_1/states/b_sequence_loop_2.hpp>
-#include <sm_multi_stage_1/states/b_sequence_loop_3.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_b_loop.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_b_loop.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_b_loop.hpp>
 #include <sm_multi_stage_1/states/mode_4_sequence_b_loop.hpp>
 #include <sm_multi_stage_1/states/mode_5_sequence_b_loop.hpp>
 
@@ -365,82 +364,80 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsMod
 #include <sm_multi_stage_1/states/st_observe_4.hpp>
 #include <sm_multi_stage_1/states/st_observe_5.hpp>
 
-#include <sm_multi_stage_1/superstates/ss_a_sequence_1.hpp>
-#include <sm_multi_stage_1/superstates/ss_a_sequence_2.hpp>
-#include <sm_multi_stage_1/superstates/ss_a_sequence_3.hpp>
-#include <sm_multi_stage_1/superstates/ss_a_sequence_4.hpp>
-#include <sm_multi_stage_1/superstates/ss_a_sequence_5.hpp>
+#include <sm_multi_stage_1/superstates/ss_mode_1_sequence_a.hpp>
+#include <sm_multi_stage_1/superstates/ss_mode_2_sequence_a.hpp>
+#include <sm_multi_stage_1/superstates/ss_mode_3_sequence_a.hpp>
+#include <sm_multi_stage_1/superstates/ss_mode_4_sequence_a.hpp>
+#include <sm_multi_stage_1/superstates/ss_mode_5_sequence_a.hpp>
 
 #include <sm_multi_stage_1/superstates/ss_mode_4_sequence_c.hpp>
 #include <sm_multi_stage_1/superstates/ss_mode_4_sequence_d.hpp>
 
-
-#include <sm_multi_stage_1/superstates/ss_b_sequence_1.hpp>
-#include <sm_multi_stage_1/superstates/ss_b_sequence_2.hpp>
-#include <sm_multi_stage_1/superstates/ss_b_sequence_3.hpp>
+#include <sm_multi_stage_1/superstates/ss_mode_1_sequence_b.hpp>
+#include <sm_multi_stage_1/superstates/ss_mode_2_sequence_b.hpp>
+#include <sm_multi_stage_1/superstates/ss_mode_3_sequence_b.hpp>
 #include <sm_multi_stage_1/superstates/ss_mode_4_sequence_b.hpp>
 #include <sm_multi_stage_1/superstates/ss_mode_5_sequence_b.hpp>
 
+//ss_mode_1_sequence_a
+#include <sm_multi_stage_1/states/mode_1_sequence_a/sti_mode_1_sequence_a_step_4.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_a/sti_mode_1_sequence_a_step_3.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_a/sti_mode_1_sequence_a_step_1.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_a/sti_mode_1_sequence_a_loop.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_a/sti_mode_1_sequence_a_step_2.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_a/sti_mode_1_sequence_a_step_5.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_a/sti_mode_1_sequence_a_step_9.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_a/sti_mode_1_sequence_a_step_8.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_a/sti_mode_1_sequence_a_step_7.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_a/sti_mode_1_sequence_a_step_6.hpp>
 
-//ss_a_sequence_1
-#include <sm_multi_stage_1/states/a_sequence_1/sti_a_sequence_step_4_1.hpp>
-#include <sm_multi_stage_1/states/a_sequence_1/sti_a_sequence_step_3_1.hpp>
-#include <sm_multi_stage_1/states/a_sequence_1/sti_a_sequence_step_1_1.hpp>
-#include <sm_multi_stage_1/states/a_sequence_1/sti_a_sequence_loop_1.hpp>
-#include <sm_multi_stage_1/states/a_sequence_1/sti_a_sequence_step_2_1.hpp>
-#include <sm_multi_stage_1/states/a_sequence_1/sti_a_sequence_step_5_1.hpp>
-#include <sm_multi_stage_1/states/a_sequence_1/sti_a_sequence_step_9_1.hpp>
-#include <sm_multi_stage_1/states/a_sequence_1/sti_a_sequence_step_8_1.hpp>
-#include <sm_multi_stage_1/states/a_sequence_1/sti_a_sequence_step_7_1.hpp>
-#include <sm_multi_stage_1/states/a_sequence_1/sti_a_sequence_step_6_1.hpp>
+//ss_mode_2_sequence_a
+#include <sm_multi_stage_1/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_4.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_3.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_1.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_a/sti_mode_2_sequence_a_loop.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_2.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_5.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_9.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_8.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_7.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_6.hpp>
 
-//ss_a_sequence_2
-#include <sm_multi_stage_1/states/a_sequence_2/sti_a_sequence_step_4_2.hpp>
-#include <sm_multi_stage_1/states/a_sequence_2/sti_a_sequence_step_3_2.hpp>
-#include <sm_multi_stage_1/states/a_sequence_2/sti_a_sequence_step_1_2.hpp>
-#include <sm_multi_stage_1/states/a_sequence_2/sti_a_sequence_loop_2.hpp>
-#include <sm_multi_stage_1/states/a_sequence_2/sti_a_sequence_step_2_2.hpp>
-#include <sm_multi_stage_1/states/a_sequence_2/sti_a_sequence_step_5_2.hpp>
-#include <sm_multi_stage_1/states/a_sequence_2/sti_a_sequence_step_9_2.hpp>
-#include <sm_multi_stage_1/states/a_sequence_2/sti_a_sequence_step_8_2.hpp>
-#include <sm_multi_stage_1/states/a_sequence_2/sti_a_sequence_step_7_2.hpp>
-#include <sm_multi_stage_1/states/a_sequence_2/sti_a_sequence_step_6_2.hpp>
+//ss_mode_3_sequence_a
+#include <sm_multi_stage_1/states/mode_3_sequence_a/sti_mode_3_sequence_a_step_4.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_a/sti_mode_3_sequence_a_step_3.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_a/sti_mode_3_sequence_a_step_1.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_a/sti_mode_3_sequence_a_loop.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_a/sti_mode_3_sequence_a_step_2.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_a/sti_mode_3_sequence_a_step_5.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_a/sti_mode_3_sequence_a_step_9.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_a/sti_mode_3_sequence_a_step_8.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_a/sti_mode_3_sequence_a_step_7.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_a/sti_mode_3_sequence_a_step_6.hpp>
 
-//ss_a_sequence_3
-#include <sm_multi_stage_1/states/a_sequence_3/sti_a_sequence_step_4_3.hpp>
-#include <sm_multi_stage_1/states/a_sequence_3/sti_a_sequence_step_3_3.hpp>
-#include <sm_multi_stage_1/states/a_sequence_3/sti_a_sequence_step_1_3.hpp>
-#include <sm_multi_stage_1/states/a_sequence_3/sti_a_sequence_loop_3.hpp>
-#include <sm_multi_stage_1/states/a_sequence_3/sti_a_sequence_step_2_3.hpp>
-#include <sm_multi_stage_1/states/a_sequence_3/sti_a_sequence_step_5_3.hpp>
-#include <sm_multi_stage_1/states/a_sequence_3/sti_a_sequence_step_9_3.hpp>
-#include <sm_multi_stage_1/states/a_sequence_3/sti_a_sequence_step_8_3.hpp>
-#include <sm_multi_stage_1/states/a_sequence_3/sti_a_sequence_step_7_3.hpp>
-#include <sm_multi_stage_1/states/a_sequence_3/sti_a_sequence_step_6_3.hpp>
-
-//ss_a_sequence_4
-#include <sm_multi_stage_1/states/a_sequence_4/sti_a_sequence_step_4_4.hpp>
-#include <sm_multi_stage_1/states/a_sequence_4/sti_a_sequence_step_3_4.hpp>
-#include <sm_multi_stage_1/states/a_sequence_4/sti_a_sequence_step_1_4.hpp>
-#include <sm_multi_stage_1/states/a_sequence_4/sti_a_sequence_loop_4.hpp>
-#include <sm_multi_stage_1/states/a_sequence_4/sti_a_sequence_step_2_4.hpp>
-#include <sm_multi_stage_1/states/a_sequence_4/sti_a_sequence_step_5_4.hpp>
-#include <sm_multi_stage_1/states/a_sequence_4/sti_a_sequence_step_9_4.hpp>
-#include <sm_multi_stage_1/states/a_sequence_4/sti_a_sequence_step_8_4.hpp>
-#include <sm_multi_stage_1/states/a_sequence_4/sti_a_sequence_step_7_4.hpp>
-#include <sm_multi_stage_1/states/a_sequence_4/sti_a_sequence_step_6_4.hpp>
+//ss_mode_4_sequence_a
+#include <sm_multi_stage_1/states/mode_4_sequence_a/sti_mode_4_sequence_a_step_4.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_a/sti_mode_4_sequence_a_step_3.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_a/sti_mode_4_sequence_a_step_1.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_a/sti_mode_4_sequence_a_loop.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_a/sti_mode_4_sequence_a_step_2.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_a/sti_mode_4_sequence_a_step_5.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_a/sti_mode_4_sequence_a_step_9.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_a/sti_mode_4_sequence_a_step_8.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_a/sti_mode_4_sequence_a_step_7.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_a/sti_mode_4_sequence_a_step_6.hpp>
 
 //ss_mode_4_sequence_c
-#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_4.hpp>
-#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_3.hpp>
-#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_1.hpp>
 #include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_loop.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_1.hpp>
 #include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_2.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_3.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_4.hpp>
 #include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_5.hpp>
-#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_9.hpp>
-#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_8.hpp>
-#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_7.hpp>
 #include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_6.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_7.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_8.hpp>
+#include <sm_multi_stage_1/states/mode_4_sequence_c/sti_mode_4_sequence_c_step_9.hpp>
 
 //ss_mode_4_sequence_d
 #include <sm_multi_stage_1/states/mode_4_sequence_d/sti_mode_4_sequence_d_step_4.hpp>
@@ -454,53 +451,53 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsMod
 #include <sm_multi_stage_1/states/mode_4_sequence_d/sti_mode_4_sequence_d_step_7.hpp>
 #include <sm_multi_stage_1/states/mode_4_sequence_d/sti_mode_4_sequence_d_step_6.hpp>
 
-//ss_a_sequence_5
-#include <sm_multi_stage_1/states/a_sequence_5/sti_a_sequence_step_4_5.hpp>
-#include <sm_multi_stage_1/states/a_sequence_5/sti_a_sequence_step_3_5.hpp>
-#include <sm_multi_stage_1/states/a_sequence_5/sti_a_sequence_step_1_5.hpp>
-#include <sm_multi_stage_1/states/a_sequence_5/sti_a_sequence_loop_5.hpp>
-#include <sm_multi_stage_1/states/a_sequence_5/sti_a_sequence_step_2_5.hpp>
-#include <sm_multi_stage_1/states/a_sequence_5/sti_a_sequence_step_5_5.hpp>
-#include <sm_multi_stage_1/states/a_sequence_5/sti_a_sequence_step_9_5.hpp>
-#include <sm_multi_stage_1/states/a_sequence_5/sti_a_sequence_step_8_5.hpp>
-#include <sm_multi_stage_1/states/a_sequence_5/sti_a_sequence_step_7_5.hpp>
-#include <sm_multi_stage_1/states/a_sequence_5/sti_a_sequence_step_6_5.hpp>
+//ss_mode_5_sequence_a
+#include <sm_multi_stage_1/states/mode_5_sequence_a/sti_mode_5_sequence_a_step_4.hpp>
+#include <sm_multi_stage_1/states/mode_5_sequence_a/sti_mode_5_sequence_a_step_3.hpp>
+#include <sm_multi_stage_1/states/mode_5_sequence_a/sti_mode_5_sequence_a_step_1.hpp>
+#include <sm_multi_stage_1/states/mode_5_sequence_a/sti_mode_5_sequence_a_loop.hpp>
+#include <sm_multi_stage_1/states/mode_5_sequence_a/sti_mode_5_sequence_a_step_2.hpp>
+#include <sm_multi_stage_1/states/mode_5_sequence_a/sti_mode_5_sequence_a_step_5.hpp>
+#include <sm_multi_stage_1/states/mode_5_sequence_a/sti_mode_5_sequence_a_step_9.hpp>
+#include <sm_multi_stage_1/states/mode_5_sequence_a/sti_mode_5_sequence_a_step_8.hpp>
+#include <sm_multi_stage_1/states/mode_5_sequence_a/sti_mode_5_sequence_a_step_7.hpp>
+#include <sm_multi_stage_1/states/mode_5_sequence_a/sti_mode_5_sequence_a_step_6.hpp>
 
-//ss_b_sequence_1
-#include <sm_multi_stage_1/states/b_sequence_1/sti_b_sequence_step_4_1.hpp>
-#include <sm_multi_stage_1/states/b_sequence_1/sti_b_sequence_step_3_1.hpp>
-#include <sm_multi_stage_1/states/b_sequence_1/sti_b_sequence_step_1_1.hpp>
-#include <sm_multi_stage_1/states/b_sequence_1/sti_b_sequence_loop_1.hpp>
-#include <sm_multi_stage_1/states/b_sequence_1/sti_b_sequence_step_2_1.hpp>
-#include <sm_multi_stage_1/states/b_sequence_1/sti_b_sequence_step_5_1.hpp>
-#include <sm_multi_stage_1/states/b_sequence_1/sti_b_sequence_step_9_1.hpp>
-#include <sm_multi_stage_1/states/b_sequence_1/sti_b_sequence_step_8_1.hpp>
-#include <sm_multi_stage_1/states/b_sequence_1/sti_b_sequence_step_7_1.hpp>
-#include <sm_multi_stage_1/states/b_sequence_1/sti_b_sequence_step_6_1.hpp>
+//ss_mode_1_sequence_b
+#include <sm_multi_stage_1/states/mode_1_sequence_b/sti_mode_1_sequence_b_step_4.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_b/sti_mode_1_sequence_b_step_3.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_b/sti_mode_1_sequence_b_step_1.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_b/sti_mode_1_sequence_b_loop.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_b/sti_mode_1_sequence_b_step_2.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_b/sti_mode_1_sequence_b_step_5.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_b/sti_mode_1_sequence_b_step_9.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_b/sti_mode_1_sequence_b_step_8.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_b/sti_mode_1_sequence_b_step_7.hpp>
+#include <sm_multi_stage_1/states/mode_1_sequence_b/sti_mode_1_sequence_b_step_6.hpp>
 
-//ss_b_sequence_2
-#include <sm_multi_stage_1/states/b_sequence_2/sti_b_sequence_step_4_2.hpp>
-#include <sm_multi_stage_1/states/b_sequence_2/sti_b_sequence_step_3_2.hpp>
-#include <sm_multi_stage_1/states/b_sequence_2/sti_b_sequence_step_1_2.hpp>
-#include <sm_multi_stage_1/states/b_sequence_2/sti_b_sequence_loop_2.hpp>
-#include <sm_multi_stage_1/states/b_sequence_2/sti_b_sequence_step_2_2.hpp>
-#include <sm_multi_stage_1/states/b_sequence_2/sti_b_sequence_step_5_2.hpp>
-#include <sm_multi_stage_1/states/b_sequence_2/sti_b_sequence_step_9_2.hpp>
-#include <sm_multi_stage_1/states/b_sequence_2/sti_b_sequence_step_8_2.hpp>
-#include <sm_multi_stage_1/states/b_sequence_2/sti_b_sequence_step_7_2.hpp>
-#include <sm_multi_stage_1/states/b_sequence_2/sti_b_sequence_step_6_2.hpp>
+//ss_mode_2_sequence_b
+#include <sm_multi_stage_1/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_4.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_3.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_1.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_b/sti_mode_2_sequence_b_loop.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_2.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_5.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_9.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_8.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_7.hpp>
+#include <sm_multi_stage_1/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_6.hpp>
 
-//ss_b_sequence_3
-#include <sm_multi_stage_1/states/b_sequence_3/sti_b_sequence_step_4_3.hpp>
-#include <sm_multi_stage_1/states/b_sequence_3/sti_b_sequence_step_3_3.hpp>
-#include <sm_multi_stage_1/states/b_sequence_3/sti_b_sequence_step_1_3.hpp>
-#include <sm_multi_stage_1/states/b_sequence_3/sti_b_sequence_loop_3.hpp>
-#include <sm_multi_stage_1/states/b_sequence_3/sti_b_sequence_step_2_3.hpp>
-#include <sm_multi_stage_1/states/b_sequence_3/sti_b_sequence_step_5_3.hpp>
-#include <sm_multi_stage_1/states/b_sequence_3/sti_b_sequence_step_9_3.hpp>
-#include <sm_multi_stage_1/states/b_sequence_3/sti_b_sequence_step_8_3.hpp>
-#include <sm_multi_stage_1/states/b_sequence_3/sti_b_sequence_step_7_3.hpp>
-#include <sm_multi_stage_1/states/b_sequence_3/sti_b_sequence_step_6_3.hpp>
+//ss_mode_3_sequence_b
+#include <sm_multi_stage_1/states/mode_3_sequence_b/sti_mode_3_sequence_b_step_4.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_b/sti_mode_3_sequence_b_step_3.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_b/sti_mode_3_sequence_b_step_1.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_b/sti_mode_3_sequence_b_loop.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_b/sti_mode_3_sequence_b_step_2.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_b/sti_mode_3_sequence_b_step_5.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_b/sti_mode_3_sequence_b_step_9.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_b/sti_mode_3_sequence_b_step_8.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_b/sti_mode_3_sequence_b_step_7.hpp>
+#include <sm_multi_stage_1/states/mode_3_sequence_b/sti_mode_3_sequence_b_step_6.hpp>
 
 //ss_mode_4_sequence_b
 #include <sm_multi_stage_1/states/mode_4_sequence_b/sti_mode_4_sequence_b_step_4.hpp>

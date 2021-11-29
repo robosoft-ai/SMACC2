@@ -54,5 +54,5 @@ struct StiMode5SequenceBStep1 : smacc2::SmaccState<StiMode5SequenceBStep1, SsMod
 
   void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-}  // namespace b_sequence_1
+}  // namespace mode_1_sequence_b
 }  // namespace sm_multi_stage_1

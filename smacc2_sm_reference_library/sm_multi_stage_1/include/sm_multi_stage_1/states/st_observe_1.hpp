@@ -20,16 +20,16 @@ struct StObserve1 : smacc2::SmaccState<StObserve1, MsMode1>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct a_sequence_1 : SUCCESS{};
-  struct b_sequence_1 : SUCCESS{};
+  struct mode_1_sequence_a : SUCCESS{};
+  struct mode_1_sequence_b : SUCCESS{};
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, ASequenceLoop1, SUCCESS>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, BSequenceLoop1, SUCCESS>,
+    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, Mode1SequenceALoop, SUCCESS>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, Mode1SequenceBLoop, SUCCESS>,
 
-    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, BSequenceLoop1, SUCCESS>
+    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, Mode1SequenceBLoop, SUCCESS>
 
     >reactions;
 

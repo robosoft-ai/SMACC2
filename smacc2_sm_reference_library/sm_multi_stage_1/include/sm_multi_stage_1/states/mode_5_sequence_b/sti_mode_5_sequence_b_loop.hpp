@@ -50,5 +50,5 @@ public:
     checkWhileLoopConditionAndThrowEvent(&StiMode5SequenceBLoop::loopWhileCondition);
   }
 };
-}  // namespace b_sequence_1
+}  // namespace mode_1_sequence_b
 }  // namespace sm_multi_stage_1

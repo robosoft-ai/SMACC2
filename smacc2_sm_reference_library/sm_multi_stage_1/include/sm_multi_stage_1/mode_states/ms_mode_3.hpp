@@ -24,8 +24,8 @@ public:
 // TRANSITION TABLE
 typedef mpl::list<
 
-  Transition<EvLoopEnd<ASequenceLoop3>, MsMode4>,
-  Transition<EvLoopEnd<BSequenceLoop3>, MsMode4>
+  Transition<EvLoopEnd<Mode3SequenceALoop>, MsMode4>,
+  Transition<EvLoopEnd<Mode3SequenceBLoop>, MsMode4>
 
     >reactions;
 
