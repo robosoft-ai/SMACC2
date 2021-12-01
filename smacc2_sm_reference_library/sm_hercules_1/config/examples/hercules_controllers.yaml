@@ -1,0 +1,196 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 500  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    base_velocity_controller:
+      type: diff_drive_controller/DiffDriveController
+
+    port_force_torque_sensor_broadcaster:
+      type: ur_controllers/ForceTorqueStateBroadcaster
+
+    port_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    port_forward_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    starboard_force_torque_sensor_broadcaster:
+      type: ur_controllers/ForceTorqueStateBroadcaster
+
+    starboard_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    starboard_forward_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+
+# Base
+base_velocity_controller:
+  ros__parameters:
+    left_wheel_names: [ "front_left_wheel_joint", "rear_left_wheel_joint" ]
+    right_wheel_names: [ "front_right_wheel_joint", "rear_right_wheel_joint" ]
+
+    wheel_separation: 0.5120  #0.1  # 0.256  # 0.5120
+    wheels_per_side: 2  # actually 2, but both are controlled by 1 signal
+    wheel_radius: 0.1651
+
+    wheel_separation_multiplier: 1.0
+    left_wheel_radius_multiplier: 1.0
+    right_wheel_radius_multiplier: 1.0
+
+    publish_rate: 50.0
+    odom_frame_id: odom
+    base_frame_id: base_link
+    pose_covariance_diagonal : [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+    twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+
+    open_loop: false
+    enable_odom_tf: true
+
+    cmd_vel_timeout: 0.5
+    #publish_limited_velocity: true
+    use_stamped_vel: false
+    #velocity_rolling_window_size: 10
+
+    # Preserve turning radius when limiting speed/acceleration/jerk
+    preserve_turning_radius: true
+
+    # Publish limited velocity
+    publish_cmd: true
+
+    # Publish wheel data
+    publish_wheel_data: true
+
+    # Velocity and acceleration limits
+    # Whenever a min_* is unspecified, default to -max_*
+    linear.x.has_velocity_limits: true
+    linear.x.has_acceleration_limits: true
+    linear.x.has_jerk_limits: false
+    linear.x.max_velocity: 1.0
+    linear.x.min_velocity: -1.0
+    linear.x.max_acceleration: 1.0
+    linear.x.max_jerk: 0.0
+    linear.x.min_jerk: 0.0
+
+    angular.z.has_velocity_limits: true
+    angular.z.has_acceleration_limits: true
+    angular.z.has_jerk_limits: false
+    angular.z.max_velocity: 1.0
+    angular.z.min_velocity: -1.0
+    angular.z.max_acceleration: 1.0
+    angular.z.min_acceleration: -1.0
+    angular.z.max_jerk: 0.0
+    angular.z.min_jerk: 0.0
+
+
+# Port
+port_force_torque_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: port_tcp_fts_sensor
+    state_interface_names:
+      - force.x
+      - force.y
+      - force.z
+      - torque.x
+      - torque.y
+      - torque.z
+    frame_id: tool0
+    topic_name: ft_data
+
+
+port_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - port_shoulder_pan_joint
+      - port_shoulder_lift_joint
+      - port_elbow_joint
+      - port_wrist_1_joint
+      - port_wrist_2_joint
+      - port_wrist_3_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    constraints:
+      stopped_velocity_tolerance: 0.2
+      goal_time: 0.0
+      shoulder_pan_joint: { trajectory: 0.2, goal: 0.1 }
+      shoulder_lift_joint: { trajectory: 0.2, goal: 0.1 }
+      elbow_joint: { trajectory: 0.2, goal: 0.1 }
+      wrist_1_joint: { trajectory: 0.2, goal: 0.1 }
+      wrist_2_joint: { trajectory: 0.2, goal: 0.1 }
+      wrist_3_joint: { trajectory: 0.2, goal: 0.1 }
+
+
+port_forward_velocity_controller:
+  ros__parameters:
+    joints:
+      - port_shoulder_pan_joint
+      - port_shoulder_lift_joint
+      - port_elbow_joint
+      - port_wrist_1_joint
+      - port_wrist_2_joint
+      - port_wrist_3_joint
+    interface_name: velocity
+
+
+# Starboard
+starboard_force_torque_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: starboard_tcp_fts_sensor
+    state_interface_names:
+      - force.x
+      - force.y
+      - force.z
+      - torque.x
+      - torque.y
+      - torque.z
+    frame_id: tool0
+    topic_name: ft_data
+
+
+starboard_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - starboard_shoulder_pan_joint
+      - starboard_shoulder_lift_joint
+      - starboard_elbow_joint
+      - starboard_wrist_1_joint
+      - starboard_wrist_2_joint
+      - starboard_wrist_3_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    constraints:
+      stopped_velocity_tolerance: 0.2
+      goal_time: 0.0
+      shoulder_pan_joint: { trajectory: 0.2, goal: 0.1 }
+      shoulder_lift_joint: { trajectory: 0.2, goal: 0.1 }
+      elbow_joint: { trajectory: 0.2, goal: 0.1 }
+      wrist_1_joint: { trajectory: 0.2, goal: 0.1 }
+      wrist_2_joint: { trajectory: 0.2, goal: 0.1 }
+      wrist_3_joint: { trajectory: 0.2, goal: 0.1 }
+
+
+starboard_forward_velocity_controller:
+  ros__parameters:
+    joints:
+      - starboard_shoulder_pan_joint
+      - starboard_shoulder_lift_joint
+      - starboard_elbow_joint
+      - starboard_wrist_1_joint
+      - starboard_wrist_2_joint
+      - starboard_wrist_3_joint
+    interface_name: velocity

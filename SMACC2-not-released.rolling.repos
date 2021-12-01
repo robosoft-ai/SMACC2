@@ -24,6 +24,19 @@ repositories:
     url: https://github.com/StoglRobotics-forks/robotiq_85_gripper.git
     version: rolling-ros2-control-simulation
 
+  moveit2:
+    type: git
+    url: https://github.com/ros-planning/moveit2.git
+    version: main
+  moveit2_msgs:
+    type: git
+    url: https://github.com/ros-planning/moveit_msgs.git
+    version: ros2
+  launch_param_builder:
+    type: git
+    url: https://github.com/PickNikRobotics/launch_param_builder
+    version: main
+
   ur_msgs:
     type: git
     url: https://github.com/ros-industrial/ur_msgs.git
@@ -56,7 +69,7 @@ repositories:
   ign_ros2_control:
     type: git
     url: https://github.com/StoglRobotics-forks/ign_ros2_control.git
-    version: using-under-namespace
+    version: main
   ros2_controllers:
     type: git
     url: https://github.com/ros-controls/ros2_controllers.git
