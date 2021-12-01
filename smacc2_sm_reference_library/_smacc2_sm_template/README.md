@@ -19,7 +19,7 @@ Then build with colcon build...
 ```
 colcon build
 ```
-  <h2>Operating Instructions</h2>
+ <h2>Operating Instructions</h2>
 After you build, remember to source the proper install folder...
 
 ```

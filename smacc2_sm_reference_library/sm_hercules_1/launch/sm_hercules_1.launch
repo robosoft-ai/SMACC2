@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="sm_hercules_1" exec="sm_hercules_1_node" name="sm_hercules_1" output="screen">
+    <param from="$(find-pkg-share sm_hercules_1)/config/sm_hercules_1_config.yaml" />
+  </node>
+</launch>

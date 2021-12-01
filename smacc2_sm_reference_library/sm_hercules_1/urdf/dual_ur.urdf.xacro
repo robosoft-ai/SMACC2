@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg name)">
+   <!-- robot name parameter -->
+   <xacro:arg name="name" default="ur"/>
+   <!-- import main macro -->
+   <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+
+   <!-- parameters -->
+   <xacro:arg name="prefix" default="" />
+   <xacro:arg name="joint_limit_params" default=""/>
+   <xacro:arg name="kinematics_params" default=""/>
+   <xacro:arg name="physical_params" default=""/>
+   <xacro:arg name="visual_params" default=""/>
+   <xacro:arg name="transmission_hw_interface" default=""/>
+   <xacro:arg name="safety_limits" default="false"/>
+   <xacro:arg name="safety_pos_margin" default="0.15"/>
+   <xacro:arg name="safety_k_position" default="20"/>
+   <!-- ros2_control related parameters -->
+   <xacro:arg name="use_fake_hardware" default="false" />
+   <xacro:arg name="fake_sensor_commands" default="false" />
+   <xacro:arg name="headless_mode" default="false" />
+   <!-- initial position for fake hardware -->
+   <xacro:arg name="initial_positions_file" default="$(find ur_description)/config/initial_positions.yaml"/>
+   <!-- Simulation parameter -->
+   <xacro:arg name="gazebo_sim" default="false" />
+   <xacro:arg name="ignition_sim" default="false" />
+   <xacro:arg name="simulation_controllers" default="$(find ur_bringup)/config/ur_controllers.yaml" />
+
+   <!-- convert to property to use substitution in function -->
+   <xacro:property name="initial_positions_file" default="$(arg initial_positions_file)"/>
+
+   <!-- create link fixed to the "world" -->
+   <link name="world" />
+
+   <xacro:property name="box_base_size" value="0.3" />
+
+   <!-- Add Fixture links for manipulators -->
+   <link name="manipulator_fixture_box">
+     <visual>
+       <origin xyz="0 0 0" rpy="0 0 0"/>
+       <geometry>
+         <box size="${box_base_size} ${box_base_size} ${box_base_size}"/>
+       </geometry>
+       <material name="sr_violet">
+         <color rgba="${102/255} ${46/255} ${145/255} 1.0" />
+       </material>
+     </visual>
+     <collision>
+       <origin xyz="0 0 0" rpy="0 0 0"/>
+       <geometry>
+         <box size="${box_base_size} ${box_base_size} ${box_base_size}"/>
+       </geometry>
+     </collision>
+   </link>
+
+   <joint name="world-manipulator_fixture_box" type="fixed">
+     <parent link="world" />
+     <child link="manipulator_fixture_box" />
+     <origin xyz="0 0 ${ box_base_size/2 }" rpy="0 0 0" />
+   </joint>
+
+   <!-- arm -->
+   <xacro:ur_robot
+     name="port_$(arg name)"
+     prefix="port_"
+     parent="manipulator_fixture_box"
+     joint_limits_parameters_file="$(arg joint_limit_params)"
+     kinematics_parameters_file="$(arg kinematics_params)"
+     physical_parameters_file="$(arg physical_params)"
+     visual_parameters_file="$(arg visual_params)"
+     transmission_hw_interface="$(arg transmission_hw_interface)"
+     safety_limits="$(arg safety_limits)"
+     safety_pos_margin="$(arg safety_pos_margin)"
+     safety_k_position="$(arg safety_k_position)"
+     use_fake_hardware="$(arg use_fake_hardware)"
+     fake_sensor_commands="$(arg fake_sensor_commands)"
+     headless_mode="$(arg headless_mode)"
+     initial_positions="${load_yaml(initial_positions_file)}"
+     gazebo_sim="$(arg gazebo_sim)"
+     ignition_sim="$(arg ignition_sim)" >
+     <origin xyz="0 ${ box_base_size/2 } 0" rpy="${pi/2} 0 ${pi}" />          <!-- position robot in the world -->
+   </xacro:ur_robot>
+
+   <!-- arm -->
+   <xacro:ur_robot
+     name="starboard_$(arg name)"
+     prefix="starboard_"
+     parent="manipulator_fixture_box"
+     joint_limits_parameters_file="$(arg joint_limit_params)"
+     kinematics_parameters_file="$(arg kinematics_params)"
+     physical_parameters_file="$(arg physical_params)"
+     visual_parameters_file="$(arg visual_params)"
+     transmission_hw_interface="$(arg transmission_hw_interface)"
+     safety_limits="$(arg safety_limits)"
+     safety_pos_margin="$(arg safety_pos_margin)"
+     safety_k_position="$(arg safety_k_position)"
+     use_fake_hardware="$(arg use_fake_hardware)"
+     fake_sensor_commands="$(arg fake_sensor_commands)"
+     headless_mode="$(arg headless_mode)"
+     initial_positions="${load_yaml(initial_positions_file)}"
+     gazebo_sim="$(arg gazebo_sim)"
+     ignition_sim="$(arg ignition_sim)" >
+     <origin xyz="0 -${ box_base_size/2 } 0" rpy="${pi/2} 0 0" />          <!-- position robot in the world -->
+   </xacro:ur_robot>
+
+   <xacro:if value="$(arg gazebo_sim)">
+     <!-- Gazebo plugins -->
+     <gazebo reference="world">
+     </gazebo>
+     <gazebo>
+       <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+         <parameters>$(arg simulation_controllers)</parameters>
+       </plugin>
+     </gazebo>
+   </xacro:if>
+
+   <xacro:if value="$(arg ignition_sim)">
+     <!-- Ignition plugins -->
+     <gazebo reference="world">
+     </gazebo>
+     <gazebo>
+       <plugin filename="libignition_ros2_control-system.so" name="ignition_ros2_control::IgnitionROS2ControlPlugin">
+         <parameters>$(arg simulation_controllers)</parameters>
+         <controller_manager_node_name>$(arg prefix)controller_manager</controller_manager_node_name>
+       </plugin>
+     </gazebo>
+   </xacro:if>
+
+</robot>
