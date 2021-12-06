@@ -1,1 +1,20 @@
 repositories:
+
+  husky:
+    type: git
+    url: https://github.com/StoglRobotics-forks/husky.git
+    version: fixes-for-smacc2
+  gazebo_ros2_control:
+    type: git
+    url: https://github.com/ros-simulation/gazebo_ros2_control.git
+    version: master
+  ros2_controllers:
+    type: git
+    url: https://github.com/ros-controls/ros2_controllers.git
+    version: debug-diff-drive-controller-in-sim
+
+  # Husky dependency
+  twist_mux:
+    type: git
+    url: https://github.com/ros-teleop/twist_mux.git
+    version: foxy-devel
