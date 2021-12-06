@@ -28,7 +28,7 @@ struct StRecoveryDeliberate2 : smacc2::SmaccState<StRecoveryDeliberate2, MsRecov
   typedef mpl::list<
 
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StRecoveryEvaluate2, NEXT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, smacc2::deep_history<MsRun2::LastDeepState>, SUCCESS>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, smacc2::deep_history<MsMode2::LastDeepState>, SUCCESS>
 
     >reactions;
 

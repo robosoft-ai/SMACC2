@@ -27,12 +27,12 @@ struct StObserve : smacc2::SmaccState<StObserve, MsRun>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACCycle, TIMEOUT>,
-    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
+    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACycle, TIMEOUT>,
+    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACycle>,
     // Keyboard events
-    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle, AC_CYCLE>,
-    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, CMV_CYCLE>,
-    Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsPCCycle, PC_CYCLE>
+    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACycle, AC_CYCLE>,
+    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsBCycle, CMV_CYCLE>,
+    Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsCCycle, PC_CYCLE>
 
     >reactions;
 
