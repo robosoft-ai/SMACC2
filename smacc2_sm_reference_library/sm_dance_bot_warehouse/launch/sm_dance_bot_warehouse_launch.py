@@ -85,7 +85,9 @@ def generate_launch_description():
 
     declare_params_file_cmd = DeclareLaunchArgument(
         "params_file",
-        default_value=os.path.join(sm_dance_bot_warehouse_dir, "params", "nav2z_client", "nav2_params.yaml"),
+        default_value=os.path.join(
+            sm_dance_bot_warehouse_dir, "params", "nav2z_client", "nav2_params.yaml"
+        ),
         description="Full path to the ROS2 parameters file to use for all launched nodes",
     )
 
@@ -136,7 +138,9 @@ def generate_launch_description():
     )
 
     rviz_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_warehouse_launch_dir, "rviz_launch.py")),
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_dance_bot_warehouse_launch_dir, "rviz_launch.py")
+        ),
         condition=IfCondition(use_rviz),
         launch_arguments={
             "namespace": "",
@@ -146,7 +150,9 @@ def generate_launch_description():
     )
 
     bringup_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_warehouse_launch_dir, "bringup_launch.py")),
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_dance_bot_warehouse_launch_dir, "bringup_launch.py")
+        ),
         launch_arguments={
             "namespace": namespace,
             "use_namespace": use_namespace,
@@ -160,7 +166,9 @@ def generate_launch_description():
     )
 
     bringup_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_warehouse_launch_dir, "bringup_launch.py")),
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_dance_bot_warehouse_launch_dir, "bringup_launch.py")
+        ),
         launch_arguments={
             "namespace": namespace,
             "use_namespace": use_namespace,
@@ -173,14 +181,15 @@ def generate_launch_description():
         }.items(),
     )
 
-
     # gazebo_husky = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_warehouse_launch_dir, "husky_gazebo.launch.py")),
     #     launch_arguments={'world_path': os.path.join(sm_dance_bot_warehouse_dir, "worlds", "ridgeback_race_empty.world")}.items()
     # )
 
     gazebo_simulator = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_warehouse_launch_dir, "gazebo_launch.py")),
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_dance_bot_warehouse_launch_dir, "gazebo_launch.py")
+        ),
         launch_arguments={"show_gz_lidar": show_gz_lidar}.items(),
     )
 
@@ -217,7 +226,7 @@ def generate_launch_description():
         package="sm_dance_bot_warehouse",
         executable="temperature_sensor_node",
         output="screen",
-        prefix=xtermprefix
+        prefix=xtermprefix,
     )
 
     service3_node = Node(
@@ -248,7 +257,7 @@ def generate_launch_description():
     ld.add_action(declare_use_robot_state_pub_cmd)
     ld.add_action(declare_use_rviz_cmd)
     ld.add_action(gazebo_simulator)
-    #ld.add_action(gazebo_husky)
+    # ld.add_action(gazebo_husky)
 
     ld.add_action(sm_dance_bot_warehouse_node)
     ld.add_action(service3_node)

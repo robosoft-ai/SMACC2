@@ -18,7 +18,7 @@
         <falloff>0</falloff>
       </spot>
     </light>
-    
+
     <physics type='ode'>
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1</real_time_factor>
@@ -1221,7 +1221,7 @@
         </include>
         <pose frame="">0.0 0.0 -0.090092 0 0 0</pose>
 	</model>
-    
+
     <model name='aws_robomaker_warehouse_Bucket_01_020'>
       <frame name='aws_robomaker_warehouse_Bucket_01::__model__' attached_to='aws_robomaker_warehouse_Bucket_01::body'>
         <pose relative_to='__model__'>0 0 0 0 -0 0</pose>

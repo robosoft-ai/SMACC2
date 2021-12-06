@@ -43,7 +43,7 @@ struct StiSPatternForward2 : public smacc2::SmaccState<StiSPatternForward2, SS>
     configure_orthogonal<OrLED, CbLEDOn>();
   }
 
-  void runtimeConfigure() 
+  void runtimeConfigure()
   {
     auto & superstate = this->context<SS>();
 

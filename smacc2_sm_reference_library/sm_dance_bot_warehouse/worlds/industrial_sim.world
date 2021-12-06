@@ -18,7 +18,7 @@
         <falloff>0</falloff>
       </spot>
     </light>
-    
+
     <physics type='ode'>
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1</real_time_factor>
@@ -40,7 +40,7 @@
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic'/>
     <wind/>
-    
+
     <model name='aws_robomaker_warehouse_ShelfF_01_001'>
       <frame name='aws_robomaker_warehouse_ShelfF_01::__model__' attached_to='aws_robomaker_warehouse_ShelfF_01::link'>
         <pose relative_to='__model__'>0 0 0 0 -0 0</pose>
@@ -598,7 +598,7 @@
         </include>
         <pose frame="">0.0 0.0 -0.090092 0 0 0</pose>
 	</model>
-    
+
     <model name='aws_robomaker_warehouse_Bucket_01_020'>
       <frame name='aws_robomaker_warehouse_Bucket_01::__model__' attached_to='aws_robomaker_warehouse_Bucket_01::body'>
         <pose relative_to='__model__'>0 0 0 0 -0 0</pose>
@@ -1878,7 +1878,7 @@
         </link>
       </model> -->
 
-     
+
       <light name='Warehouse_CeilingLight_003'>
         <pose>0 0 9 0 -0 0</pose>
       </light>

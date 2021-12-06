@@ -71,7 +71,7 @@ def generate_launch_description():
     )
 
     # Nodes launching commands
-    
+
     # xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' " \
     # "-hold -geometry 1000x600 -sl 10000 -e"
 

@@ -44,7 +44,7 @@ struct StiSPatternForward1 : public smacc2::SmaccState<StiSPatternForward1, SS>
     configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 
-  void runtimeConfigure() 
+  void runtimeConfigure()
   {
 
     double extrasecurityMargin = 0.1;

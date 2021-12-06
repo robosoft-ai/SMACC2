@@ -24,15 +24,16 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 ARGUMENTS = [
-    DeclareLaunchArgument('world_path', default_value='',
-                          description='The world path, by default is empty.world'),
+    DeclareLaunchArgument(
+        "world_path", default_value="", description="The world path, by default is empty.world"
+    ),
 ]
 
 
 def generate_launch_description():
 
     # Launch args
-    world_path = LaunchConfiguration('world_path')
+    world_path = LaunchConfiguration("world_path")
 
     # Get URDF via xacro
     robot_description_content = Command(
@@ -42,37 +43,35 @@ def generate_launch_description():
             PathJoinSubstitution(
                 [FindPackageShare("husky_description"), "urdf", "husky.urdf.xacro"]
             ),
-            " is_sim:=true"
+            " is_sim:=true",
         ]
     )
     robot_description = {"robot_description": robot_description_content}
 
     config_husky_velocity_controller = PathJoinSubstitution(
-        [FindPackageShare("husky_control"),
-        "config",
-        "control.yaml"],
+        [FindPackageShare("husky_control"), "config", "control.yaml"],
     )
 
     spawn_husky_velocity_controller = Node(
-        package='controller_manager',
-        executable='spawner',
+        package="controller_manager",
+        executable="spawner",
         parameters=[config_husky_velocity_controller],
-        arguments=['husky_velocity_controller', '-c', '/controller_manager'],
-        output='screen',
+        arguments=["husky_velocity_controller", "-c", "/controller_manager"],
+        output="screen",
     )
 
     node_robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="screen",
-        parameters=[{'use_sim_time': True}, robot_description],
+        parameters=[{"use_sim_time": True}, robot_description],
     )
 
     spawn_joint_state_broadcaster = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['joint_state_broadcaster', '-c', '/controller_manager'],
-        output='screen',
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster", "-c", "/controller_manager"],
+        output="screen",
     )
 
     # Make sure spawn_husky_velocity_controller starts after spawn_joint_state_broadcaster
@@ -84,32 +83,33 @@ def generate_launch_description():
     )
     # Gazebo server
     gzserver = ExecuteProcess(
-        cmd=['gzserver',
-             '-s', 'libgazebo_ros_init.so',
-             '-s', 'libgazebo_ros_factory.so',
-             world_path],
-        prefix='xterm -e',
-        output='screen',
+        cmd=[
+            "gzserver",
+            "-s",
+            "libgazebo_ros_init.so",
+            "-s",
+            "libgazebo_ros_factory.so",
+            world_path,
+        ],
+        prefix="xterm -e",
+        output="screen",
     )
 
     # Gazebo client
     gzclient = ExecuteProcess(
-        cmd=['gzclient'],
-        output='screen',
-        prefix='xterm -e',
+        cmd=["gzclient"],
+        output="screen",
+        prefix="xterm -e",
         # condition=IfCondition(LaunchConfiguration('gui')),
     )
 
     # Spawn robot
     spawn_robot = Node(
-        package='gazebo_ros',
-        executable='spawn_entity.py',
-        name='spawn_husky',
-        arguments=['-entity',
-                   'husky',
-                   '-topic',
-                   'robot_description'],
-        output='screen',
+        package="gazebo_ros",
+        executable="spawn_entity.py",
+        name="spawn_husky",
+        arguments=["-entity", "husky", "-topic", "robot_description"],
+        output="screen",
     )
 
     ld = LaunchDescription(ARGUMENTS)

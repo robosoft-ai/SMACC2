@@ -44,16 +44,16 @@ struct StiRadialEndPoint : smacc2::SmaccState<StiRadialEndPoint, SS>
     configure_orthogonal<OrLED, CbLEDOn>();
   }
 
-  void runtimeConfigure() 
+  void runtimeConfigure()
   {
     float EXTRA_SECURE_DISTANCE = 0.5;
-    
+
     ClNav2Z* navzclient;
     this->requiresClient(navzclient);
 
     //auto lidarData = lidarClient->getComponent<CpForwardObstacleDetector>();
     auto forwardDistanceComputation = navzclient->getComponent<CpSquareShapeBoundary>();
-    
+
     auto forwardBehavior =
       this->getOrthogonal<OrNavigation>()->getClientBehavior<CbNavigateForward>();
 

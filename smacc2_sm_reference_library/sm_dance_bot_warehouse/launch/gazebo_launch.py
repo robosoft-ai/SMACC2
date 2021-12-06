@@ -67,16 +67,19 @@ def generate_launch_description():
 
     declare_urdf = DeclareLaunchArgument(
         "urdf",
-        default_value=os.path.join(sm_dance_bot_warehouse_dir, "models", "turtlebot3_waffle", "model.sdf"),
+        default_value=os.path.join(
+            sm_dance_bot_warehouse_dir, "models", "turtlebot3_waffle", "model.sdf"
+        ),
         description="",
     )
-
 
     # Create the launch description and populate
     ld = LaunchDescription()
 
-    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' " \
-     "-hold -geometry 1000x600 -sl 10000 -e"
+    xtermprefix = (
+        "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' "
+        "-hold -geometry 1000x600 -sl 10000 -e"
+    )
 
     gzenv = dict(os.environ)
     model_database_uri = os.environ["GAZEBO_MODEL_PATH"]
@@ -85,11 +88,19 @@ def generate_launch_description():
     # Specify the actions
     start_gazebo_server_cmd = ExecuteProcess(
         condition=IfCondition(use_simulator),
-        cmd=["gzserver", "-s", "libgazebo_ros_init.so", '-s', 'libgazebo_ros_factory.so', world, "--verbose"],
+        cmd=[
+            "gzserver",
+            "-s",
+            "libgazebo_ros_init.so",
+            "-s",
+            "libgazebo_ros_factory.so",
+            world,
+            "--verbose",
+        ],
         env=gzenv,
         cwd=[launch_dir],
         output="screen",
-        prefix=xtermprefix
+        prefix=xtermprefix,
     )
 
     start_gazebo_client_cmd = ExecuteProcess(
@@ -100,17 +111,32 @@ def generate_launch_description():
         output="screen",
     )
 
-    spawn_entity_node = Node(package="gazebo_ros",
-                             executable="spawn_entity.py",
-                             name="gazebo_ros",
-                             arguments=["-entity","turtlebot3_waffle", "-file", LaunchConfiguration('urdf'),"-x", "0", "-y", "0", "-z", "0.5", "-Y",  "0"])
+    spawn_entity_node = Node(
+        package="gazebo_ros",
+        executable="spawn_entity.py",
+        name="gazebo_ros",
+        arguments=[
+            "-entity",
+            "turtlebot3_waffle",
+            "-file",
+            LaunchConfiguration("urdf"),
+            "-x",
+            "0",
+            "-y",
+            "0",
+            "-z",
+            "0.5",
+            "-Y",
+            "0",
+        ],
+    )
 
     # Add any conditioned actions
     ld.add_action(declare_simulator_cmd)
     ld.add_action(declare_use_simulator_cmd)
     ld.add_action(declare_world_cmd)
     ld.add_action(declare_world_cmd_2)
-    ld.add_action( declare_urdf)
+    ld.add_action(declare_urdf)
 
     ld.add_action(declare_show_gz_lidar)
 

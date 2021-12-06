@@ -44,7 +44,7 @@ struct StiSPatternForward3 : public smacc2::SmaccState<StiSPatternForward3, SS>
     configure_orthogonal<OrLED, CbLEDOn>();
   }
 
-  void runtimeConfigure() 
+  void runtimeConfigure()
   {
     double extrasecurityMargin = 0.1;
 

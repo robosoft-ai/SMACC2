@@ -17,7 +17,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#pragma once 
+#pragma once
 
 #include <math.h>
 
@@ -61,7 +61,7 @@ public:
 
     float side = squareLenghtMeters_/2.0;
     float maxraysize = sqrt(2*side*side);
-    float radius = maxraysize; 
+    float radius = maxraysize;
 
     float fwdist = -1;
     float x,y;
@@ -78,7 +78,7 @@ public:
       fwdist = sqrt(x*x + y*y);
     }
     else if((currentAngle > M_PI/4 && currentAngle <= 3*M_PI/4)      // top side
-            || (currentAngle > 5*M_PI/4 && currentAngle <= 7*M_PI/4)) // bottom side 
+            || (currentAngle > 5*M_PI/4 && currentAngle <= 7*M_PI/4)) // bottom side
     {
         float cotan = cos(currentAngle)/sin(currentAngle);
         y = side;

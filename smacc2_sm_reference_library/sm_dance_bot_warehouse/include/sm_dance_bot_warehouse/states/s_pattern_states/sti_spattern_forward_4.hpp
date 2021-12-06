@@ -37,7 +37,7 @@ struct StiSPatternForward4 : public smacc2::SmaccState<StiSPatternForward4, SS>
     >reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure() 
+  static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbNavigateForward>();
     configure_orthogonal<OrNavigation, CbPauseSlam>();
