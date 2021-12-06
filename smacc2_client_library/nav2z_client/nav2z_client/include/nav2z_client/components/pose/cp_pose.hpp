@@ -67,6 +67,13 @@ public:
     return this->pose_;
   }
 
+  // get yaw in radians
+  float getYaw();
+
+  float getX();
+  float getY();
+  float getZ();
+
   inline const std::string & getReferenceFrame() const { return referenceFrame_; }
 
   inline const std::string & getFrameId() const { return poseFrameName_; }

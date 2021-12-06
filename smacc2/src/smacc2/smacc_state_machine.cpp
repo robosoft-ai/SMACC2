@@ -41,7 +41,7 @@ ISmaccStateMachine::ISmaccStateMachine(
   // However, best practice would be to declare parameters in the corresponding classes
   // and provide descriptions about expected use
   // TODO(henningkayser): remove once all parameters are declared inside the components
-  node_options.automatically_declare_parameters_from_overrides(true);
+  // node_options.automatically_declare_parameters_from_overrides(true);
 
   nh_ = rclcpp::Node::make_shared(stateMachineName, node_options);  //
   RCLCPP_INFO_STREAM(

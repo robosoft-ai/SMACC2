@@ -33,8 +33,6 @@ namespace cl_nav2z
 class CbNavigateForward : public CbNav2ZClientBehaviorBase
 {
 public:
-  float forwardDistance;
-
   // just a stub to show how to use parameterless constructor
   std::optional<float> forwardSpeed;
 
@@ -59,5 +57,10 @@ public:
   void onEntry() override;
 
   void onExit() override;
+
+  void setForwardDistance(float distance_meters);
+
+private:
+  float forwardDistance;
 };
 }  // namespace cl_nav2z

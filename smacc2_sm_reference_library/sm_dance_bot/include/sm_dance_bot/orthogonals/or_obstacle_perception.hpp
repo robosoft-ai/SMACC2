@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 
 #include <sm_dance_bot/clients/cl_lidar/cl_lidar.hpp>
@@ -19,6 +25,7 @@
 
 namespace sm_dance_bot
 {
+  using namespace std::chrono_literals;
 class OrObstaclePerception : public smacc2::Orthogonal<OrObstaclePerception>
 {
 public:
@@ -27,7 +34,7 @@ public:
     auto lidarClient = this->createClient<ClLidarSensor>();
 
     lidarClient->topicName = "/scan";
-    lidarClient->timeout_ = rclcpp::Duration(std::chrono::seconds(10));
+    lidarClient->timeout_ = rclcpp::Duration(10s);
   }
 };
 }  // namespace sm_dance_bot

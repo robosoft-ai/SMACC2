@@ -229,28 +229,35 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
     }
   }
 
-  if (parameters.size() > 0)
+  if (parameters.size())
   {
-    RCLCPP_INFO(log, "[CbAbsoluteRotate] parameters to update:  ");
+    std::stringstream ss;
+    ss << "Executing asynchronous request. Parameters to update: " << std::endl;
     for (auto & p : parameters)
     {
-      RCLCPP_INFO_STREAM(log, "[CbAbsoluteRotate] - " << p.get_name());
+      ss << p.get_name() << " - " << p.value_to_string() << std::endl;
     }
+
+    RCLCPP_INFO_STREAM(getLogger(), "[CbAbsoluteRotate] " << ss.str());
+
+    auto futureResults = parameters_client->set_parameters(parameters);
+
+    int i = 0;
+    for (auto & res : futureResults.get())
+    {
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[CbAbsoluteRotate] parameter result: " << parameters[i].get_name() << "="
+                                                             << parameters[i].as_string()
+                                                             << ". Result: " << res.successful);
+      i++;
+    }
+
+    RCLCPP_INFO(log, "[CbAbsoluteRotate] parameters updated");
   }
-
-  auto futureResults = parameters_client->set_parameters(parameters);
-
-  int i = 0;
-  for (auto & res : futureResults.get())
+  else
   {
-    RCLCPP_INFO_STREAM(
-      getLogger(), "[CbAbsoluteRotate] parameter result: " << parameters[i].get_name() << "="
-                                                           << parameters[i].as_string()
-                                                           << ". Result: " << res.successful);
-    i++;
+    RCLCPP_INFO(log, "[CbAbsoluteRotate] skipping parameters update");
   }
-
-  RCLCPP_INFO(log, "[CbAbsoluteRotate] parameters updated");
 }
 
 void CbAbsoluteRotate::onExit()

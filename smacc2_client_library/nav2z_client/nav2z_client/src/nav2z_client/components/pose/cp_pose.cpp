@@ -115,6 +115,12 @@ void Pose::waitTransformUpdate(rclcpp::Rate r)
   RCLCPP_INFO(getLogger(), "[Pose Component] waitTransformUpdate -> pose found!");
 }
 
+float Pose::getYaw() { return tf2::getYaw(pose_.pose.orientation); }
+
+float Pose::getX() { return pose_.pose.position.x; }
+float Pose::getY() { return pose_.pose.position.y; }
+float Pose::getZ() { return pose_.pose.position.z; }
+
 void Pose::update()
 {
   tf2::Stamped<tf2::Transform> transform;

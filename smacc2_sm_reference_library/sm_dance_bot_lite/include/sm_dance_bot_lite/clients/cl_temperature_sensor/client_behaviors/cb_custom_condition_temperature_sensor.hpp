@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 #include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>
 #include <sensor_msgs/msg/temperature.hpp>

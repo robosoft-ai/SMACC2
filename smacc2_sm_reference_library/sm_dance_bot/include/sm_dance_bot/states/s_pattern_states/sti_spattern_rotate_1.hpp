@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot
 {
 namespace s_pattern_states
@@ -35,13 +41,6 @@ struct StiSPatternRotate1 : smacc2::SmaccState<StiSPatternRotate1, SS>
   void runtimeConfigure()
   {
     auto & superstate = this->context<SS>();
-
-    // float angle = 0;
-    // if (superstate.direction() == TDirection::LEFT)
-    //     angle = 90;
-    // else
-    //     angle = -90;
-    //this->configure<OrNavigation, CbRotate>(angle);
 
     float offset = 0;
     if (superstate.direction() == TDirection::RIGHT)

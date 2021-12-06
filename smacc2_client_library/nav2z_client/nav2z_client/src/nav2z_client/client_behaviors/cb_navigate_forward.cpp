@@ -27,26 +27,43 @@
 
 namespace cl_nav2z
 {
-using namespace ::cl_nav2z::odom_tracker;
+using ::cl_nav2z::odom_tracker::OdomTracker;
+using ::cl_nav2z::odom_tracker::WorkingMode;
 
-CbNavigateForward::CbNavigateForward(float forwardDistance)
-{
-  this->forwardDistance = forwardDistance;
-}
+using ::cl_nav2z::Pose;
+
+CbNavigateForward::CbNavigateForward(float distance_meters) : forwardDistance(distance_meters) {}
 
 CbNavigateForward::CbNavigateForward() {}
 
 CbNavigateForward::~CbNavigateForward() {}
 
+void CbNavigateForward::setForwardDistance(float distance_meters)
+{
+  if (distance_meters < 0)
+  {
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] negative forward distance: " << distance_meters
+                       << ". Resetting to 0.");
+    distance_meters = 0;
+  }
+  this->forwardDistance = distance_meters;
+
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[" << getName() << "] setting fw motion distance: " << this->forwardDistance);
+}
+
 void CbNavigateForward::onEntry()
 {
+  setForwardDistance(forwardDistance);
+
   // straight motion distance
   double dist = forwardDistance;
 
-  RCLCPP_INFO_STREAM(getLogger(), "[CbNavigateForward] Straight motion distance: " << dist);
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Straight motion distance: " << dist);
 
   // get current pose
-  auto p = moveBaseClient_->getComponent<cl_nav2z::Pose>();
+  auto p = moveBaseClient_->getComponent<Pose>();
   auto referenceFrame = p->getReferenceFrame();
   auto currentPoseMsg = p->toPoseMsg();
   tf2::Transform currentPose;

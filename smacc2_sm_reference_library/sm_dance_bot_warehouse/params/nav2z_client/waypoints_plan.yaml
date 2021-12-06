@@ -1,0 +1,109 @@
+waypoints:
+  # POINT 0
+  - position:
+      x: 2.0
+      y: 1.55 #-0.3
+      z: 0.0
+    orientation:
+      x: 0.5
+      y: 0.5
+      z: 0.5
+      w: 0.5
+  # POINT 1
+  # - position:
+  #     x: 1.0
+  #     y: 6.0
+  #     z: 0.0
+  #   orientation:
+  #     x: 0.0
+  #     y: 0.0
+  #     z: 0.0
+  #     w: 1.0
+  - position:
+      x: -0.87
+      y: -0.85
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 2
+  # - position:
+  #     x: 1
+  #     y: -8
+  #     z: 0.0
+  #   orientation:
+  #     x: 0.0
+  #     y: 0.0
+  #     z: 0.0
+  #     w: 1.0
+  - position:
+      x: -0.87
+      y: -4.3
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # # POINT 3
+  # - position:
+  #     x: -5
+  #     y: -3.5
+  #     z: 0.0
+  #   orientation:
+  #     x: 0.0
+  #     y: 0.0
+  #     z: 0.0
+  #     w: 1.0
+  # POINT 4
+  - position:
+      x: -4.00
+      y: 10.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # # POINT 5
+  - position:
+      x: -4.00
+      y: -6.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+
+  # - position:
+  #     x: -10.0
+  #     y: 14.5
+  #     z: 0.0
+  #   orientation:
+  #     x: 0.0
+  #     y: 0.0
+  #     z: 0.0
+  #     w: 1.0
+  # # POINT 6
+  # - position:
+  #     x: -0.0
+  #     y: 0.0
+  #     z: 0.0
+  #   orientation:
+  #     x: 0.0
+  #     y: 0.0
+  #     z: 0.0
+  #     w: 1.0
+  # #POINT 7
+  # - position:
+  #     x: 6.0
+  #     y: 8.0
+  #     z: 0.0
+  #   orientation:
+  #     x: 0.0
+  #     y: 0.0
+  #     z: 0.0
+  #     w: 1.0

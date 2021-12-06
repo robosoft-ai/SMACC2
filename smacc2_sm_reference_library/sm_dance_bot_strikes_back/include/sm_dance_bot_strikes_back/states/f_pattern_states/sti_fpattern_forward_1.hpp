@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot_strikes_back
 {
 namespace f_pattern_states
@@ -51,10 +57,10 @@ struct StiFPatternForward1 : public smacc2::SmaccState<StiFPatternForward1<SS>, 
     auto forwardBehavior =
       TSti::template getOrthogonal<OrNavigation>()->template getClientBehavior<CbNavigateForward>();
 
-    forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
+    forwardBehavior->setForwardDistance( lidarData->forwardObstacleDistance);
     RCLCPP_INFO(
       this->getLogger(), "Going forward in F pattern, distance to wall: %lf",
-      forwardBehavior->forwardDistance);
+      lidarData->forwardDistance);
   }
 };
 }  // namespace f_pattern_states
