@@ -58,7 +58,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiSPatternLoopStart>, StNavigateReverse3, ENDLOOP>
+    Transition<EvLoopEnd<StiSPatternLoopStart>, StNavigateToWaypoint1, ENDLOOP>
 
     >reactions;
 
