@@ -135,8 +135,8 @@ controller_server:
       stateful: True
     undo_path_backwards_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.015 # 4 cm
-      yaw_goal_tolerance: 0.15
+      xy_goal_tolerance: 0.03 # 4 cm
+      yaw_goal_tolerance: 0.1
       stateful: True
 
     # DWB parameters

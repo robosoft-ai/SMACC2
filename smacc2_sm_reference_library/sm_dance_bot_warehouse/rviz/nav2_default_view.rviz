@@ -5,10 +5,10 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /TF1
         - /TF1/Frames1
         - /TF1/Tree1
-        - /LaserScan1
+        - /Odometry1
+        - /Odometry1/Shape1
         - /BackwardLocalPlan1
       Splitter Ratio: 0.5833333134651184
     Tree Height: 865
@@ -597,8 +597,8 @@ Visualization Manager:
         Color: 255; 25; 0
         Head Length: 0
         Head Radius: 0
-        Shaft Length: 0.02800000086426735
-        Shaft Radius: 0.009999999776482582
+        Shaft Length: 0.05000000074505806
+        Shaft Radius: 0.019999999552965164
         Value: Arrow
       Topic:
         Depth: 5
@@ -783,11 +783,11 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: -123.52355194091797
+      Scale: -159.2300262451172
       Target Frame: base_link
       Value: TopDownOrtho (rviz_default_plugins)
-      X: -0.6155462265014648
-      Y: -0.8152815103530884
+      X: -0.016582487151026726
+      Y: -0.1539730727672577
     Saved: ~
 Window Geometry:
   Displays:
