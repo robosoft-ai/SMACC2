@@ -27,7 +27,7 @@ std::string ISmaccState::getClassName() { return demangleSymbol(typeid(*this).na
 
 void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transitionType)
 {
-  RCLCPP_INFO_STREAM(getLogger(), "NOTIFY TRANSITION: " << transitionType->getFullName());
+  RCLCPP_INFO_STREAM(getLogger(), "TRANSITION RULE TRIGGERED: " << transitionType->getFullName());
 
   //auto currstateinfo = this->getStateMachine().getCurrentStateInfo();
   auto currstateinfo = this->stateInfo_;
