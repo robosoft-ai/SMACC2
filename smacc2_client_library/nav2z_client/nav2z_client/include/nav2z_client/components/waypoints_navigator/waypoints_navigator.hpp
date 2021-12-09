@@ -43,6 +43,8 @@ struct Pose2D
   double yaw_;
 };
 
+// This component contains a list of waypoints. These waypoints can
+// be iterated in the different states using CbNextWaiPoint
 class WaypointNavigator : public smacc2::ISmaccComponent
 {
 public:
@@ -79,6 +81,10 @@ public:
 
   void rewind(int count);
 
+  smacc2::SmaccSignal<void()> onNavigationRequestSucceded;
+  smacc2::SmaccSignal<void()> onNavigationRequestAborted;
+  smacc2::SmaccSignal<void()> onNavigationRequestCancelled;
+
 private:
   void insertWaypoint(int index, geometry_msgs::msg::Pose & newpose);
 
@@ -92,8 +98,8 @@ private:
 
   std::vector<std::string> waypointsNames_;
 
-  boost::signals2::connection succeddedConnection_;
-  boost::signals2::connection abortedConnection_;
-  boost::signals2::connection cancelledConnection_;
+  boost::signals2::connection succeddedNav2ZClientConnection_;
+  boost::signals2::connection abortedNav2ZClientConnection_;
+  boost::signals2::connection cancelledNav2ZClientConnection_;
 };
 }  // namespace cl_nav2z
