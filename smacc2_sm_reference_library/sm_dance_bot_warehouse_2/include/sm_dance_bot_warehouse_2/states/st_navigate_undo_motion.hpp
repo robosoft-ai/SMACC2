@@ -50,7 +50,7 @@ struct StNavigateUndoMotion : smacc2::SmaccState<StNavigateUndoMotion, MsDanceBo
 
   void runtimeConfigure()
   {
-    
+
   }
 
 };
