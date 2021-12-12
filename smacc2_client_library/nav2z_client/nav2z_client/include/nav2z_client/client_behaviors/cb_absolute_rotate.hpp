@@ -34,7 +34,7 @@ public:
   float absoluteGoalAngleDegree;
   std::optional<float> yawGoalTolerance;
   std::optional<float> maxVelTheta;  // if not defined, default parameter server
-  std::optional<SpiningPlanner> spinningPlanner;
+  std::optional<SpinningPlanner> spinningPlanner;
 
   CbAbsoluteRotate();
   CbAbsoluteRotate(float absoluteGoalAngleDegree, float yawGoalTolerance = -1);

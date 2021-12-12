@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <tf2/transform_datatypes.h>
+#include <yaml-cpp/yaml.h>
+
+#include <fstream>
 #include <nav2z_client/common.hpp>
 #include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
 #include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
@@ -19,10 +23,6 @@
 #include <nav2z_client/components/pose/cp_pose.hpp>
 #include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
 #include <nav2z_client/nav2z_client.hpp>
-
-#include <tf2/transform_datatypes.h>
-#include <yaml-cpp/yaml.h>
-#include <fstream>
 #include <rclcpp/rclcpp.hpp>
 
 namespace cl_nav2z
@@ -32,9 +32,19 @@ WaypointNavigator::WaypointNavigator() : currentWaypoint_(0), waypoints_(0) {}
 
 void WaypointNavigator::onInitialize() { client_ = dynamic_cast<ClNav2Z *>(owner_); }
 
-void WaypointNavigator::onGoalCancelled(ClNav2Z::WrappedResult & /*res*/) { stopWaitingResult(); }
+void WaypointNavigator::onGoalCancelled(ClNav2Z::WrappedResult & /*res*/)
+{
+  stopWaitingResult();
 
-void WaypointNavigator::onGoalAborted(ClNav2Z::WrappedResult & /*res*/) { stopWaitingResult(); }
+  this->onNavigationRequestCancelled();
+}
+
+void WaypointNavigator::onGoalAborted(ClNav2Z::WrappedResult & /*res*/)
+{
+  stopWaitingResult();
+
+  this->onNavigationRequestAborted();
+}
 
 void WaypointNavigator::onGoalReached(ClNav2Z::WrappedResult & /*res*/)
 {
@@ -44,6 +54,8 @@ void WaypointNavigator::onGoalReached(ClNav2Z::WrappedResult & /*res*/)
     getLogger(), "[WaypointNavigator] Goal result received, incrementing waypoint index: %ld",
     currentWaypoint_);
   stopWaitingResult();
+
+  onNavigationRequestSucceded();
 }
 
 void WaypointNavigator::rewind(int /*count*/)
@@ -54,11 +66,11 @@ void WaypointNavigator::rewind(int /*count*/)
 
 void WaypointNavigator::stopWaitingResult()
 {
-  if (succeddedConnection_.connected())
+  if (succeddedNav2ZClientConnection_.connected())
   {
-    this->succeddedConnection_.disconnect();
-    this->cancelledConnection_.disconnect();
-    this->abortedConnection_.disconnect();
+    this->succeddedNav2ZClientConnection_.disconnect();
+    this->cancelledNav2ZClientConnection_.disconnect();
+    this->abortedNav2ZClientConnection_.disconnect();
   }
 }
 
@@ -86,24 +98,29 @@ void WaypointNavigator::sendNextGoal()
     goalCheckerSwitcher->setGoalCheckerId("goal_checker");
 
     // publish stuff
-    //rclcpp::sleep_for(5s);
+    // rclcpp::sleep_for(5s);
 
     RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Getting odom tracker");
     auto odomTracker = client_->getComponent<cl_nav2z::odom_tracker::OdomTracker>();
     if (odomTracker != nullptr)
     {
       RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Storing path in odom tracker");
-      odomTracker->pushPath();
+      
+      auto pathname = this->owner_->getStateMachine()->getCurrentState()->getName() + " - "+ getName();
+      odomTracker->pushPath(pathname);
       odomTracker->setStartPoint(pose);
       odomTracker->setWorkingMode(cl_nav2z::odom_tracker::WorkingMode::RECORD_PATH);
     }
 
     // SEND GOAL
-    if (!succeddedConnection_.connected())
+    if (!succeddedNav2ZClientConnection_.connected())
     {
-      this->succeddedConnection_ = client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
-      this->cancelledConnection_ = client_->onAborted(&WaypointNavigator::onGoalCancelled, this);
-      this->abortedConnection_ = client_->onCancelled(&WaypointNavigator::onGoalAborted, this);
+      this->succeddedNav2ZClientConnection_ =
+        client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
+      this->cancelledNav2ZClientConnection_ =
+        client_->onAborted(&WaypointNavigator::onGoalCancelled, this);
+      this->abortedNav2ZClientConnection_ =
+        client_->onCancelled(&WaypointNavigator::onGoalAborted, this);
     }
 
     client_->sendGoal(goal);

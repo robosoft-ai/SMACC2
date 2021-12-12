@@ -101,7 +101,8 @@ void CbNavigateForward::onEntry()
   odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
   if (odomTracker_ != nullptr)
   {
-    odomTracker_->pushPath();
+    auto pathname = this->getCurrentState()->getName() + " - "+ getName();
+    odomTracker_->pushPath(pathname);
     odomTracker_->setStartPoint(currentStampedPoseMsg);
     odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
   }
