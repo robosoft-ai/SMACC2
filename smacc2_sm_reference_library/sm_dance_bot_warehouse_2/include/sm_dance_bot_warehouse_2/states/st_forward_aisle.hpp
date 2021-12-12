@@ -25,22 +25,22 @@
 namespace sm_dance_bot_warehouse_2
 {
 // STATE DECLARATION
-struct StNavigateReverse4 : smacc2::SmaccState<StNavigateReverse4, MsDanceBotRunMode>
+struct StForwardAisle : smacc2::SmaccState<StForwardAisle, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StRotateDegrees5>,
-    Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StNavigateToWaypointsX>
+    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateUndoMotion>,
+    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StForwardAisle>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateBackwards>(0.5);
+    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
     configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();

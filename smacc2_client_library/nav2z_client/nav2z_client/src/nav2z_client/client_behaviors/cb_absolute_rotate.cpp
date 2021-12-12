@@ -51,7 +51,7 @@ void CbAbsoluteRotate::onEntry()
   // this should work better with a coroutine and await
   // this->plannerSwitcher_->setForwardPlanner();
 
-  if (spinningPlanner && *spinningPlanner == SpiningPlanner::PureSpinning)
+  if (spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning)
   {
     plannerSwitcher->setPureSpinningPlanner();
   }
@@ -79,7 +79,8 @@ void CbAbsoluteRotate::onEntry()
   auto odomTracker_ = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
   if (odomTracker_ != nullptr)
   {
-    odomTracker_->pushPath();
+    auto pathname = this->getCurrentState()->getName() + " - "+ getName();
+    odomTracker_->pushPath(pathname);
     odomTracker_->setStartPoint(p->toPoseStampedMsg());
     odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
   }
@@ -119,8 +120,8 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 
   rclcpp::Parameter max_vel_theta, min_vel_theta;
 
-  bool isRosBasePlanner = !spinningPlanner || *spinningPlanner == SpiningPlanner::Default;
-  bool isPureSpinningPlanner = spinningPlanner && *spinningPlanner == SpiningPlanner::PureSpinning;
+  bool isRosBasePlanner = !spinningPlanner || *spinningPlanner == SpinningPlanner::Default;
+  bool isPureSpinningPlanner = spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning;
 
   // SELECTING CONTROLLER AND PARAMETERS NAME
   if (isPureSpinningPlanner)
@@ -262,7 +263,7 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 
 void CbAbsoluteRotate::onExit()
 {
-  if (spinningPlanner && *spinningPlanner == SpiningPlanner::PureSpinning)
+  if (spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning)
   {
   }
   else

@@ -27,6 +27,8 @@ class ISmaccState
 public:
   virtual ISmaccStateMachine & getStateMachine() = 0;
 
+  virtual std::string getName() = 0;
+
   inline ISmaccState * getParentState() { return parentState_; }
 
   inline rclcpp::Node::SharedPtr & getNode() { return node_; }

@@ -32,18 +32,16 @@ struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDance
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, StNavigateUndoMotion>,
-    Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypoint1>
+    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
+    Transition<EvCbFailure<StNavigateToWaypoint1, OrNavigation>, StNavigateToWaypointsX, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(0, 0, 0);
-    configure_orthogonal<OrLED, CbLEDOn>();
-    configure_orthogonal<OrStringPublisher, CbStringPublisher>("All Done!");
-    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+    configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 };
 }  // namespace sm_dance_bot_warehouse_2

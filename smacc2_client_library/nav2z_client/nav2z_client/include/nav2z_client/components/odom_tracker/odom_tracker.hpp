@@ -72,6 +72,9 @@ public:
   void pushPath();
 
   // threadsafe
+  void pushPath(std::string pathname);
+
+  // threadsafe
   void popPath(int pathCount = 1, bool keepPreviousPath = false);
 
   // threadsafe
@@ -142,6 +145,8 @@ protected:
   WorkingMode workingMode_;
 
   std::vector<nav_msgs::msg::Path> pathStack_;
+  std::vector<std::string> pathNames_;
+  
 
   nav_msgs::msg::Path aggregatedStackPathMsg_;
 
