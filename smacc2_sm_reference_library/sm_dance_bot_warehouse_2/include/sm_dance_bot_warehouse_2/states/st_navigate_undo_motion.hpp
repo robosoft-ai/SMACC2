@@ -35,7 +35,7 @@ struct StNavigateUndoMotion : smacc2::SmaccState<StNavigateUndoMotion, MsDanceBo
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
+    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StNavigateUndoMotionLeaf, SUCCESS>,
     Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StNavigateUndoMotion, ABORT>
 
     >reactions;

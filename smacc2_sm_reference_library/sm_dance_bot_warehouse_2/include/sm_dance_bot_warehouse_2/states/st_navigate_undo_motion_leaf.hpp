@@ -20,46 +20,38 @@
 
 #pragma once
 
+#include <nav2z_client/nav2z_client.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot_warehouse_2
 {
+  using ::cl_nav2z::ClNav2Z;
+
 // STATE DECLARATION
-struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDanceBotRunMode>
+struct StNavigateUndoMotionLeaf : smacc2::SmaccState<StNavigateUndoMotionLeaf, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
-
-  // CUSTOM TRANSITION TAGS
-  struct TRANSITION_1 : SUCCESS{};
-  struct TRANSITION_2 : SUCCESS{};
-  struct TRANSITION_3 : SUCCESS{};
-  struct TRANSITION_4 : SUCCESS{};
-  struct TRANSITION_5 : SUCCESS{};
-  struct TRANSITION_6 : SUCCESS{};
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StForwardAisle, TRANSITION_1>,
-    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StForwardAisle, ABORT>
+    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
+    Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StNavigateUndoMotionLeaf, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrLED, CbLEDOn>();
-    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
-    configure_orthogonal<OrNavigation, CbResumeSlam>();
+    configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
+    configure_orthogonal<OrLED, CbLEDOff>();
   }
 
-  void runtimeConfigure() {}
-
-  void onExit(ABORT)
+  void runtimeConfigure()
   {
-    // this->getOrthogonal<OrNavigation>()
-    //     ->getClientBehavior<CbNavigateNextWaypoint>()
-    //     ->waypointsNavigator_->rewind(1);
+
   }
+
 };
 }  // namespace sm_dance_bot_warehouse_2

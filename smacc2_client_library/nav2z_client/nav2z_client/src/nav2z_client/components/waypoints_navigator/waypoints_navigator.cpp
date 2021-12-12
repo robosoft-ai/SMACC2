@@ -105,7 +105,9 @@ void WaypointNavigator::sendNextGoal()
     if (odomTracker != nullptr)
     {
       RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Storing path in odom tracker");
-      odomTracker->pushPath();
+      
+      auto pathname = this->owner_->getStateMachine()->getCurrentState()->getName() + " - "+ getName();
+      odomTracker->pushPath(pathname);
       odomTracker->setStartPoint(pose);
       odomTracker->setWorkingMode(cl_nav2z::odom_tracker::WorkingMode::RECORD_PATH);
     }

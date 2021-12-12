@@ -32,13 +32,16 @@ public:
 
   std::optional<std::string> goalChecker_;
 
-  std::optional<SpiningPlanner> spinningPlanner;
+  std::optional<cl_nav2z::SpinningPlanner> spinningPlanner;
 
   CbRotate(float rotate_degree);
+
+  CbRotate(float rotate_degree, cl_nav2z::SpinningPlanner spinningPlanner);
 
   void onEntry() override;
 
 private:
+  //TODO: replace this with the Pose Component in the same way it is done in the CbAbsoluteRotateBehavior
   std::shared_ptr<tf2_ros::Buffer> listener;
 };
 }  // namespace cl_nav2z
