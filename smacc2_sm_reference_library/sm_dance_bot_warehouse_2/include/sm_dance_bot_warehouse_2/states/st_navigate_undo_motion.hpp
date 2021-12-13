@@ -26,6 +26,7 @@
 namespace sm_dance_bot_warehouse_2
 {
   using ::cl_nav2z::ClNav2Z;
+  using namespace std::chrono_literals;
 
 // STATE DECLARATION
 struct StNavigateUndoMotion : smacc2::SmaccState<StNavigateUndoMotion, MsDanceBotRunMode>
@@ -51,6 +52,12 @@ struct StNavigateUndoMotion : smacc2::SmaccState<StNavigateUndoMotion, MsDanceBo
   void runtimeConfigure()
   {
 
+  }
+
+  void onExit()
+  {
+    RCLCPP_INFO(getLogger(), "Waiting to leave space to the undo planner");
+    rclcpp::sleep_for(10s);
   }
 
 };
