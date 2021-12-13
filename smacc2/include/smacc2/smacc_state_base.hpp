@@ -106,10 +106,7 @@ public:
     }
   }
 
-  std::string getName() override
-  {
-    return getShortName();
-  }
+  std::string getName() override { return getShortName(); }
 
   std::string getFullName() { return demangleSymbol(typeid(MostDerived).name()); }
 

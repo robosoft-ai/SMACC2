@@ -146,7 +146,6 @@ protected:
 
   std::vector<nav_msgs::msg::Path> pathStack_;
   std::vector<std::string> pathNames_;
-  
 
   nav_msgs::msg::Path aggregatedStackPathMsg_;
 

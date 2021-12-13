@@ -26,17 +26,11 @@
 
 namespace cl_nav2z
 {
-CbRotate::CbRotate(float rotate_degree) 
-: rotateDegree (rotate_degree)
-{ 
-  
-}
+CbRotate::CbRotate(float rotate_degree) : rotateDegree(rotate_degree) {}
 
 CbRotate::CbRotate(float rotate_degree, SpinningPlanner spinningPlanner)
-  : rotateDegree (rotate_degree), 
-    spinningPlanner(spinningPlanner)
+: rotateDegree(rotate_degree), spinningPlanner(spinningPlanner)
 {
-
 }
 
 void CbRotate::onEntry()
@@ -79,7 +73,7 @@ void CbRotate::onEntry()
   stampedCurrentPoseMsg.pose = currentPoseMsg;
 
   this->requiresClient(moveBaseClient_);
-  auto pathname = this->getCurrentState()->getName() + " - "+ getName();
+  auto pathname = this->getCurrentState()->getName() + " - " + getName();
   odomTracker->pushPath(pathname);
 
   odomTracker->setStartPoint(stampedCurrentPoseMsg);
