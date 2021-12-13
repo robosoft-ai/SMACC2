@@ -58,7 +58,7 @@ void CbNavigateGlobalPosition::onEntry()
   auto goalCheckerSwitcher = moveBaseClient_->getComponent<GoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("goal_checker");
 
-  auto pathname = this->getCurrentState()->getName() + " - "+ getName();
+  auto pathname = this->getCurrentState()->getName() + " - " + getName();
   odomTracker->pushPath(pathname);
   odomTracker->setStartPoint(pose);
   odomTracker->setWorkingMode(WorkingMode::RECORD_PATH);

@@ -139,10 +139,7 @@ void OdomTracker::setPublishMessages(bool value)
   this->updateAggregatedStackPath();
 }
 
-void OdomTracker::pushPath()
-{
-  this->pushPath(std::string());
-}
+void OdomTracker::pushPath() { this->pushPath(std::string()); }
 
 void OdomTracker::pushPath(std::string pathname)
 {
@@ -153,7 +150,7 @@ void OdomTracker::pushPath(std::string pathname)
 
   pathNames_.push_back(pathname);
   pathStack_.push_back(baseTrajectory_);
-  
+
   // clean the current trajectory to start a new one
   baseTrajectory_.poses.clear();
 
@@ -199,12 +196,13 @@ void OdomTracker::logStateString()
   std::stringstream ss;
   ss << "--- odom tracker state ---" << std::endl;
   ss << " - path stack size:" << pathStack_.size() << std::endl;
-  ss <<" - [STACK-HEAD active path size: " << baseTrajectory_.poses.size() << "]"<<std::endl;
+  ss << " - [STACK-HEAD active path size: " << baseTrajectory_.poses.size() << "]" << std::endl;
   int i = 0;
   for (auto & p : pathStack_ | boost::adaptors::reversed)
   {
     auto pathname = pathNames_[pathNames_.size() - i - 1];
-    ss << " - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size() << " - " << pathname <<std::endl;
+    ss << " - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size() << " - "
+       << pathname << std::endl;
     i++;
   }
   ss << "---";
