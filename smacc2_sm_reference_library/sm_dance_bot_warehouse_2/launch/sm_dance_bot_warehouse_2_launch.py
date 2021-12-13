@@ -65,7 +65,7 @@ def generate_launch_description():
     )
 
     declare_headless_simulator_argument = DeclareLaunchArgument(
-        "headless", default_value="True", description="Whether to execute gzclient)"
+        "headless", default_value="False", description="Whether to execute gzclient)"
     )
 
     declare_use_namespace_cmd = DeclareLaunchArgument(
