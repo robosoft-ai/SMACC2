@@ -84,7 +84,7 @@ public:
     if (getNode()->get_parameter("waypoints_plan", planfilepath))
     {
       std::string package_share_directory =
-        ament_index_cpp::get_package_share_directory("sm_dance_bot_warehouse");
+        ament_index_cpp::get_package_share_directory(ROS_PACKAGE_NAME);
       boost::replace_all(planfilepath, "$(pkg_share)", package_share_directory);
       waypointsNavigator->loadWayPointsFromFile(planfilepath);
       RCLCPP_INFO(getLogger(), "waypoints plan: %s", planfilepath.c_str());

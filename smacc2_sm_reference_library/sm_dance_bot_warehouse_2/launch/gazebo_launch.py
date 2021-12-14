@@ -40,8 +40,8 @@ def generate_launch_description():
         "use_simulator", default_value="True", description="Whether to start the simulator"
     )
 
-    declare_simulator_cmd = DeclareLaunchArgument(
-        "headless", default_value="False", description="Whether to execute gzclient)"
+    declare_headless_simulator_argument = DeclareLaunchArgument(
+        "headless", default_value="True", description="Whether to execute gzclient)"
     )
 
     declare_show_gz_lidar = DeclareLaunchArgument(
@@ -132,7 +132,7 @@ def generate_launch_description():
     )
 
     # Add any conditioned actions
-    ld.add_action(declare_simulator_cmd)
+    ld.add_action(declare_headless_simulator_argument)
     ld.add_action(declare_use_simulator_cmd)
     ld.add_action(declare_world_cmd)
     ld.add_action(declare_world_cmd_2)

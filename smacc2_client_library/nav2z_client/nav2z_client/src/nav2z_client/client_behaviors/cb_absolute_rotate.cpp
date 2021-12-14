@@ -79,7 +79,7 @@ void CbAbsoluteRotate::onEntry()
   auto odomTracker_ = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
   if (odomTracker_ != nullptr)
   {
-    auto pathname = this->getCurrentState()->getName() + " - "+ getName();
+    auto pathname = this->getCurrentState()->getName() + " - " + getName();
     odomTracker_->pushPath(pathname);
     odomTracker_->setStartPoint(p->toPoseStampedMsg());
     odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
