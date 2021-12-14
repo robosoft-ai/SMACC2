@@ -48,6 +48,7 @@ def generate_launch_description():
 
     use_robot_state_pub = LaunchConfiguration("use_robot_state_pub")
     use_rviz = LaunchConfiguration("use_rviz")
+    headless = LaunchConfiguration("headless")
 
     urdf = os.path.join(sm_dance_bot_warehouse_3_dir, "urdf", "turtlebot3_waffle.urdf")
 
