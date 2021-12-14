@@ -1,28 +1,18 @@
 waypoints:
   # POINT 0 - First Starting Point
   - position:
-      x: 0.0 #-2.0
-      y: 5.25 # 0.5
+      x: 1.25 #-2.0
+      y: 7.00 # 0.5
       z: 0.0
     orientation:
       x: 0.5
       y: 0.5
       z: 0.5
       w: 0.5
-  # Mouth 1: x:2.0, y:1.55
-  - position:
-      x: 2.00
-      y: 1.55
-      z: 0.0
-    orientation:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      w: 1.0
   # POINT 1
   - position:
-      x: 5.00
-      y: 1.55
+      x: 5.50
+      y: 1.75
       z: 0.0
     orientation:
       x: 0.0
@@ -31,8 +21,8 @@ waypoints:
       w: 1.0
   # Mouth 2: x:2.0, y: -.35
   - position:
-      x: 2.00
-      y: -0.35
+      x: -4.00
+      y: -8.50
       z: 0.0
     orientation:
       x: 0.0
@@ -41,8 +31,8 @@ waypoints:
       w: 1.0
   # POINT 2
   - position:
-      x: 5.00
-      y: -0.35
+      x: -4.00
+      y: 9.5
       z: 0.0
     orientation:
       x: 0.0
@@ -51,8 +41,8 @@ waypoints:
       w: 1.0
   # Mouth 3: x:2.0, y: -2.25
   - position:
-       x: 2.00
-       y: -2.25
+       x: 1.25
+       y: -8.25
        z: 0.0
     orientation:
        x: 0.0
@@ -61,8 +51,8 @@ waypoints:
        w: 1.0
     # POINT 3
   - position:
-       x: 3.00
-       y: -2.25
+       x: -6.00
+       y: -9.5
        z: 0.0
     orientation:
        x: 0.0
@@ -71,7 +61,7 @@ waypoints:
        w: 1.0
   # Mouth 4: x:2.0, y: -4.15
   - position:
-      x: 2.00
+      x: 5.5
       y: -4.15
       z: 0.0
     orientation:
