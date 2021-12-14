@@ -41,13 +41,13 @@ def generate_launch_description():
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
     autostart = LaunchConfiguration("autostart")
     show_gz_lidar = LaunchConfiguration("show_gz_lidar")
+    headless = LaunchConfiguration("headless")
 
     # Launch configuration variables specific to simulation
     rviz_config_file = LaunchConfiguration("rviz_config_file")
 
     use_robot_state_pub = LaunchConfiguration("use_robot_state_pub")
     use_rviz = LaunchConfiguration("use_rviz")
-    headless = LaunchConfiguration("headless")
 
     urdf = os.path.join(sm_dance_bot_warehouse_3_dir, "urdf", "turtlebot3_waffle.urdf")
 
@@ -203,14 +203,18 @@ def generate_launch_description():
     sm_dance_bot_warehouse_3_node = Node(
         package="sm_dance_bot_warehouse_3",
         executable="sm_dance_bot_warehouse_3_node",
-        name="SmDanceBotWarehouse3",
+        name="SmDanceBotWareHouse3",
         output="screen",
         prefix=xtermprefix,
         parameters=[
             os.path.join(
                 get_package_share_directory("sm_dance_bot_warehouse_3"),
                 "params/sm_dance_bot_warehouse_3_config.yaml",
-            )
+            ),
+            os.path.join(
+                get_package_share_directory("sm_dance_bot_warehouse_3"),
+                "params/nav2z_client/odom_tracker.yaml",
+            ),
         ],
         remappings=[
             # ("/odom", "/odometry/filtered"),

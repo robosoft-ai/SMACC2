@@ -40,12 +40,8 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvWaypoint0<ClNav2Z, OrNavigation>, SS4::SsFPattern1, TRANSITION_1>,
-    Transition<EvWaypoint1<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_2>,
-    Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_3>,
-    Transition<EvWaypoint3<ClNav2Z, OrNavigation>, SS5::SsSPattern1, TRANSITION_5>,
-    Transition<EvWaypoint4<ClNav2Z, OrNavigation>, SS6::SsSPattern2, TRANSITION_6>,
-    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX, ABORT>
+    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StForwardAisle, TRANSITION_1>,
+    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StForwardAisle, ABORT>
 
     >reactions;
 
@@ -55,7 +51,6 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
     configure_orthogonal<OrLED, CbLEDOn>();
     configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
     configure_orthogonal<OrNavigation, CbResumeSlam>();
-    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
   void runtimeConfigure() {}

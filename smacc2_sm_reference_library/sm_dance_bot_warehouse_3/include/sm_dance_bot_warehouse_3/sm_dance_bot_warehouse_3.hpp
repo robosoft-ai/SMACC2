@@ -80,7 +80,7 @@ namespace sm_dance_bot_warehouse_3
 class StAcquireSensors;
 class StEventCountDown;
 
-class StNavigateForward1;
+class StNavigateUndoMotion;
 class StNavigateToWaypoint1;
 class StNavigateToWaypointsX;
 
@@ -94,7 +94,8 @@ class StRotateDegrees6;
 class StNavigateReverse1;
 class StNavigateReverse2;
 class StNavigateReverse3;
-class StNavigateReverse4;
+class StForwardAisle;
+class StNavigateUndoMotionLeaf;
 
 //SUPERSTATE FORWARD DECLARATIONS
 //MODE STATES FORWARD DECLARATIONS
@@ -146,7 +147,7 @@ namespace sm_dance_bot_warehouse_3
 {
 /// \brief Advanced example of state machine with smacc that shows multiple techniques
 ///  for the development of state machines
-struct SmDanceBotWarehouse3 : public smacc2::SmaccStateMachineBase<SmDanceBotWarehouse3, MsDanceBotRunMode>
+struct SmDanceBotWareHouse3 : public smacc2::SmaccStateMachineBase<SmDanceBotWareHouse3, MsDanceBotRunMode>
 {
   int counter_1;
   bool rt_ready_flag;
@@ -194,11 +195,12 @@ struct SmDanceBotWarehouse3 : public smacc2::SmaccStateMachineBase<SmDanceBotWar
 
 #include <sm_dance_bot_warehouse_3/states/st_navigate_to_waypoints_x.hpp>
 
-#include <sm_dance_bot_warehouse_3/states/st_navigate_forward_1.hpp>
+#include <sm_dance_bot_warehouse_3/states/st_navigate_undo_motion.hpp>
+#include <sm_dance_bot_warehouse_3/states/st_navigate_undo_motion_leaf.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_navigate_reverse_1.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_navigate_reverse_2.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_navigate_reverse_3.hpp>
-#include <sm_dance_bot_warehouse_3/states/st_navigate_reverse_4.hpp>
+#include <sm_dance_bot_warehouse_3/states/st_forward_aisle.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_navigate_to_waypoint_1.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_rotate_degrees_1.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_rotate_degrees_2.hpp>
