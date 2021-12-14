@@ -20,30 +20,45 @@
 
 #pragma once
 
+#include <nav2z_client/nav2z_client.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot_warehouse_3
 {
+  using ::cl_nav2z::ClNav2Z;
+  using namespace std::chrono_literals;
+
 // STATE DECLARATION
-struct StNavigateReverse4 : smacc2::SmaccState<StNavigateReverse4, MsDanceBotRunMode>
+struct StNavigateUndoMotion : smacc2::SmaccState<StNavigateUndoMotion, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StRotateDegrees5>,
-    Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StNavigateToWaypointsX>
+    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StNavigateUndoMotionLeaf, SUCCESS>,
+    Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StNavigateUndoMotion, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateBackwards>(0.5);
+    configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
     configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
-    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
+
+  void runtimeConfigure()
+  {
+
+  }
+
+  void onExit()
+  {
+    RCLCPP_INFO(getLogger(), "Waiting to leave space to the undo planner");
+    rclcpp::sleep_for(10s);
+  }
+
 };
 }  // namespace sm_dance_bot_warehouse_3

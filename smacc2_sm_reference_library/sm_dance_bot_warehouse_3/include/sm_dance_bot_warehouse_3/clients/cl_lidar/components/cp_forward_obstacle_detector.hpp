@@ -64,7 +64,7 @@ public:
     //check rays around main ray
     for (int i = 0; i < raysWidthCount; i++)
     {
-      int baseindex = 0;
+      // int baseindex = 0;
       int scanindex =  (- raysWidthCount / 2 + i) % raysWidthCount;
 
       if(scanindex < 0)

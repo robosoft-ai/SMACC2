@@ -22,26 +22,28 @@
 
 #include <smacc2/smacc.hpp>
 
-namespace sm_dance_bot_warehouse_3
+namespace sm_dance_bot_warehouse_2
 {
 // STATE DECLARATION
-struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDanceBotRunMode>
+struct StNavigateReverse4 : smacc2::SmaccState<StNavigateReverse4, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
-    Transition<EvCbFailure<StNavigateToWaypoint1, OrNavigation>, StNavigateToWaypointsX, ABORT>
+    Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StRotateDegrees5>,
+    Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StNavigateToWaypointsX>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
-    configure_orthogonal<OrNavigation, CbResumeSlam>();
+    configure_orthogonal<OrNavigation, CbNavigateBackwards>(0.5);
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
+    configure_orthogonal<OrLED, CbLEDOff>();
+    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 };
-}  // namespace sm_dance_bot_warehouse_3
+}  // namespace sm_dance_bot_warehouse_2
