@@ -106,6 +106,8 @@ public:
     }
   }
 
+  std::string getName() override { return getShortName(); }
+
   std::string getFullName() { return demangleSymbol(typeid(MostDerived).name()); }
 
   std::string getShortName() { return smacc2::utils::cleanShortTypeName(typeid(MostDerived)); }

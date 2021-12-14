@@ -41,6 +41,7 @@ def generate_launch_description():
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
     autostart = LaunchConfiguration("autostart")
     show_gz_lidar = LaunchConfiguration("show_gz_lidar")
+    headless = LaunchConfiguration("headless")
 
     # Launch configuration variables specific to simulation
     rviz_config_file = LaunchConfiguration("rviz_config_file")
@@ -61,6 +62,10 @@ def generate_launch_description():
     # Declare the launch arguments
     declare_namespace_cmd = DeclareLaunchArgument(
         "namespace", default_value="", description="Top-level namespace"
+    )
+
+    declare_headless_simulator_argument = DeclareLaunchArgument(
+        "headless", default_value="False", description="Whether to execute gzclient)"
     )
 
     declare_use_namespace_cmd = DeclareLaunchArgument(
@@ -190,7 +195,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(sm_dance_bot_warehouse_launch_dir, "gazebo_launch.py")
         ),
-        launch_arguments={"show_gz_lidar": show_gz_lidar}.items(),
+        launch_arguments={"show_gz_lidar": show_gz_lidar, "headless": headless}.items(),
     )
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
@@ -252,6 +257,7 @@ def generate_launch_description():
     ld.add_action(declare_autostart_cmd)
     ld.add_action(declare_map_yaml_cmd)
     ld.add_action(declare_show_gz_lidar)
+    ld.add_action(declare_headless_simulator_argument)
 
     ld.add_action(declare_rviz_config_file_cmd)
     ld.add_action(declare_use_robot_state_pub_cmd)

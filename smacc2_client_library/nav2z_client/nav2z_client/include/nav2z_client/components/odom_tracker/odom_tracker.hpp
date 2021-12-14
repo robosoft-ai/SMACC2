@@ -33,10 +33,6 @@
 #include <std_msgs/msg/header.hpp>
 #include <vector>
 
-// #include <realtime_tools/realtime_publisher.h>
-// #include <dynamic_reconfigure/server.h>
-//#include <nav2z_client/OdomTrackerConfig.h>
-
 namespace cl_nav2z
 {
 namespace odom_tracker
@@ -48,7 +44,8 @@ enum class WorkingMode : uint8_t
   IDLE = 2
 };
 
-/// This class track the required distance of the cord based on the external localization system
+/// This object tracks and saves the trajectories performed by the vehicle
+/// so that they can be used later to execute operations such as "undo motions"
 class OdomTracker : public smacc2::ISmaccComponent
 {
 public:
@@ -72,6 +69,9 @@ public:
   void pushPath();
 
   // threadsafe
+  void pushPath(std::string pathname);
+
+  // threadsafe
   void popPath(int pathCount = 1, bool keepPreviousPath = false);
 
   // threadsafe
@@ -92,9 +92,6 @@ protected:
   void onInitialize() override;
 
   void updateConfiguration();
-  //   dynamic_reconfigure::Server<nav2z_client::OdomTrackerConfig> paramServer_;
-  //   dynamic_reconfigure::Server<nav2z_client::OdomTrackerConfig>::CallbackType f;
-  //   void reconfigCB(nav2z_client::OdomTrackerConfig &config, uint32_t level);
 
   virtual void rtPublishPaths(rclcpp::Time timestamp);
 
@@ -142,6 +139,7 @@ protected:
   WorkingMode workingMode_;
 
   std::vector<nav_msgs::msg::Path> pathStack_;
+  std::vector<std::string> pathNames_;
 
   nav_msgs::msg::Path aggregatedStackPathMsg_;
 

@@ -139,17 +139,22 @@ void OdomTracker::setPublishMessages(bool value)
   this->updateAggregatedStackPath();
 }
 
-void OdomTracker::pushPath()
+void OdomTracker::pushPath() { this->pushPath(std::string()); }
+
+void OdomTracker::pushPath(std::string pathname)
 {
   RCLCPP_INFO(getLogger(), "odom_tracker m_mutex acquire");
   std::lock_guard<std::mutex> lock(m_mutex_);
-  RCLCPP_INFO(getLogger(), "PUSH_PATH PATH EXITING");
+  RCLCPP_INFO(getLogger(), "PUSH_PATH PATH EXITTING");
   this->logStateString();
 
+  pathNames_.push_back(pathname);
   pathStack_.push_back(baseTrajectory_);
+
+  // clean the current trajectory to start a new one
   baseTrajectory_.poses.clear();
 
-  RCLCPP_INFO(getLogger(), "PUSH_PATH PATH EXITING");
+  RCLCPP_INFO(getLogger(), "PUSH_PATH PATH EXITTING");
   this->logStateString();
   RCLCPP_INFO(getLogger(), "odom_tracker m_mutex release");
   this->updateAggregatedStackPath();
@@ -173,6 +178,7 @@ void OdomTracker::popPath(int popCount, bool keepPreviousPath)
     auto & stacked = pathStack_.back().poses;
     baseTrajectory_.poses.insert(baseTrajectory_.poses.begin(), stacked.begin(), stacked.end());
     pathStack_.pop_back();
+    pathNames_.pop_back();
     popCount--;
 
     RCLCPP_INFO(getLogger(), "POP PATH Iteration ");
@@ -187,17 +193,20 @@ void OdomTracker::popPath(int popCount, bool keepPreviousPath)
 
 void OdomTracker::logStateString()
 {
-  RCLCPP_INFO(getLogger(), "--- odom tracker state ---");
-  RCLCPP_INFO(getLogger(), " - path stack size: %ld", pathStack_.size());
-  RCLCPP_INFO(getLogger(), " - [STACK-HEAD active path size: %ld]", baseTrajectory_.poses.size());
+  std::stringstream ss;
+  ss << "--- odom tracker state ---" << std::endl;
+  ss << " - path stack size:" << pathStack_.size() << std::endl;
+  ss << " - [STACK-HEAD active path size: " << baseTrajectory_.poses.size() << "]" << std::endl;
   int i = 0;
   for (auto & p : pathStack_ | boost::adaptors::reversed)
   {
-    RCLCPP_INFO_STREAM(
-      getLogger(), " - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size());
+    auto pathname = pathNames_[pathNames_.size() - i - 1];
+    ss << " - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size() << " - "
+       << pathname << std::endl;
     i++;
   }
-  RCLCPP_INFO(getLogger(), "---");
+  ss << "---";
+  RCLCPP_INFO(getLogger(), ss.str().c_str());
 }
 
 void OdomTracker::clearPath()
