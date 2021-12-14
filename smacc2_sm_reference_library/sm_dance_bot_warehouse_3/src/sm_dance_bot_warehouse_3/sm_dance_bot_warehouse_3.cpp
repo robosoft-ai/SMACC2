@@ -23,5 +23,5 @@
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
-  smacc2::run<SmDanceBotWarehouse3>();
+  smacc2::run<SmDanceBotWareHouse3>();
 }

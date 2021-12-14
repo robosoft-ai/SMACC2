@@ -1,8 +1,8 @@
 waypoints:
   # POINT 0
   - position:
-      x: 2.0
-      y: 1.55 #-0.3
+      x: 1.25
+      y: 7.00
       z: 0.0
     orientation:
       x: 0.5
@@ -10,15 +10,256 @@ waypoints:
       z: 0.5
       w: 0.5
   # POINT 1
-  # - position:
-  #     x: 1.0
-  #     y: 6.0
-  #     z: 0.0
-  #   orientation:
-  #     x: 0.0
-  #     y: 0.0
-  #     z: 0.0
-  #     w: 1.0
+  - position:
+      x: 5.50
+      y: 1.75
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 2
+  - position:
+      x: -4.00
+      y: -8.50
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 3
+  - position:
+      x: -4.00
+      y: 9.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 4
+  - position:
+       x: 1.25
+       y: -8.25
+       z: 0.0
+    orientation:
+       x: 0.0
+       y: 0.0
+       z: 0.0
+       w: 1.0
+  # POINT 5
+  - position:
+       x: -6.00
+       y: 9.5
+       z: 0.0
+    orientation:
+       x: 0.0
+       y: 0.0
+       z: 0.0
+       w: 1.0
+  # POINT 6
+  - position:
+      x: 5.5
+      y: -4.15
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 7 //
+  - position:
+      x: -4.00
+      y: -9.00
+      z: 0.0
+    orientation:
+      x: 0.5
+      y: 0.5
+      z: 0.5
+      w: 0.5
+  # POINT 8
+  - position:
+       x: 1.5
+       y: -9.00
+       z: 0.0
+    orientation:
+       x: 0.0
+       y: 0.0
+       z: 0.0
+       w: 1.0
+  # POINT 9
+  - position:
+      x: -4.00
+      y: -9.00
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 10
+  - position:
+      x: -6.0
+      y: 9.25
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 11
+  - position:
+      x: -4.0
+      y: 6.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 12
+  - position:
+      x: 0.5
+      y: 6.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 13
+  - position:
+      x: 0.5
+      y: 3.75
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 14
+  - position:
+      x: -4.0
+      y: 3.75
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 15
+  - position:
+      x: -4.0
+      y: 0.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 16
+  - position:
+      x: 0.5
+      y: 0.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 17
+  - position:
+      x: 0.5
+      y: -2.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 18
+  - position:
+      x: -4.0
+      y: -2.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 19
+  - position:
+      x: -4.0
+      y: -5.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 20
+  - position:
+      x: 0.5
+      y: -5.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 21
+  - position:
+      x: 0.5
+      y: -8.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 22
+  - position:
+      x: -4.0
+      y: -9.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 23
+  - position:
+      x: -6.0
+      y: 9.25
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 24
+  - position:
+      x: 1.5
+      y: -9.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 25
+  - position:
+      x: 1.25
+      y: 7.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 26
   - position:
       x: -0.87
       y: -0.85
@@ -28,49 +269,40 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 2
-  # - position:
-  #     x: 1
-  #     y: -8
-  #     z: 0.0
-  #   orientation:
-  #     x: 0.0
-  #     y: 0.0
-  #     z: 0.0
-  #     w: 1.0
+  # POINT 27
   - position:
       x: -0.87
-      y: -4.3
+      y: 4.3
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
       z: 0.0
       w: 1.0
-  # # POINT 3
-  # - position:
-  #     x: -5
-  #     y: -3.5
-  #     z: 0.0
-  #   orientation:
-  #     x: 0.0
-  #     y: 0.0
-  #     z: 0.0
-  #     w: 1.0
-  # POINT 4
+  # POINT 28
   - position:
-      x: -4.00
-      y: 10.0
+      x: -4.0
+      y: 9.5
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
       z: 0.0
       w: 1.0
-  # # POINT 5
+  # POINT 29
   - position:
-      x: -4.00
-      y: -6.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  # POINT 30
+  - position:
+      x: -4.0
+      y: 6.0
       z: 0.0
     orientation:
       x: 0.0
@@ -78,32 +310,3 @@ waypoints:
       z: 0.0
       w: 1.0
 
-  # - position:
-  #     x: -10.0
-  #     y: 14.5
-  #     z: 0.0
-  #   orientation:
-  #     x: 0.0
-  #     y: 0.0
-  #     z: 0.0
-  #     w: 1.0
-  # # POINT 6
-  # - position:
-  #     x: -0.0
-  #     y: 0.0
-  #     z: 0.0
-  #   orientation:
-  #     x: 0.0
-  #     y: 0.0
-  #     z: 0.0
-  #     w: 1.0
-  # #POINT 7
-  # - position:
-  #     x: 6.0
-  #     y: 8.0
-  #     z: 0.0
-  #   orientation:
-  #     x: 0.0
-  #     y: 0.0
-  #     z: 0.0
-  #     w: 1.0

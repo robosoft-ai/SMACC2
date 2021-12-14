@@ -28,44 +28,30 @@ namespace sm_dance_bot_warehouse_3
   using ::cl_nav2z::ClNav2Z;
 
 // STATE DECLARATION
-struct StNavigateForward1 : smacc2::SmaccState<StNavigateForward1, MsDanceBotRunMode>
+struct StNavigateUndoMotionLeaf : smacc2::SmaccState<StNavigateUndoMotionLeaf, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateDegrees2>,
-    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateForward1, ABORT>
-    //, Transition<EvActionPreempted<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, PREEMPT>
+    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
+    Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StNavigateUndoMotionLeaf, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateForward>(1);
+    configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
     configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
-    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
   void runtimeConfigure()
   {
-    ClNav2Z * move_base_action_client;
-    this->requiresClient(move_base_action_client);
 
-    // we careful with the lifetime of the callbac, us a scoped connection if is not forever
-    move_base_action_client->onSucceeded(&StNavigateForward1::onActionClientSucceeded, this);
   }
 
-  void onActionClientSucceeded(ClNav2Z::WrappedResult & msg)
-  {
-    RCLCPP_INFO_STREAM(
-      getLogger(),
-      " [Callback SmaccSignal] Success Detected from StAquireSensors (connected to client signal), "
-      "result data: "
-        << msg.result);
-  }
 };
 }  // namespace sm_dance_bot_warehouse_3

@@ -32,7 +32,7 @@ struct StEventCountDown : smacc2::SmaccState<StEventCountDown, MsDanceBotRunMode
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCountdownEnd<SrEventCountdown>, StNavigateToWaypointsX>,
+    Transition<EvCountdownEnd<SrEventCountdown>, StNavigateToWaypoint1>,
     Transition<EvGlobalError, MsDanceBotRecoveryMode>
 
     >reactions;
@@ -43,7 +43,7 @@ struct StEventCountDown : smacc2::SmaccState<StEventCountDown, MsDanceBotRunMode
     //   configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     //   configure_orthogonal<OrStringPublisher, CbStringPublisher>("Hello World!");
     //   configure_orthogonal<OrTemperatureSensor, CbConditionTemperatureSensor>();
-    //   configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
+    configure_orthogonal<OrNavigation, CbRotate>(2*M_PI, SpinningPlanner::PureSpinning);
 
     // Create State Reactor
 
@@ -52,7 +52,8 @@ struct StEventCountDown : smacc2::SmaccState<StEventCountDown, MsDanceBotRunMode
     //srCountdown->setOutputEvent<EvCountdownEnd<SrEventCountdown>>();
 
     auto srCountdown = static_createStateReactor<
-      SrEventCountdown, EvCountdownEnd<SrEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(5);
+      SrEventCountdown, EvCountdownEnd<SrEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(10);
+
   }
 };
 }  // namespace sm_dance_bot_warehouse_3
