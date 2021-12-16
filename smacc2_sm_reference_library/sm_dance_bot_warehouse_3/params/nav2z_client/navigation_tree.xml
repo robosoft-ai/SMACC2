@@ -6,7 +6,13 @@
           <RecoveryNode number_of_retries="1" name="ComputePathToPose">
             <PipelineSequence name="ComputePathToPoseSequence">
               <PlannerSelector selected_planner="{selected_planner}" />
-              <ComputePathToPose goal="{goal}" path="{path}" planner_id="{selected_planner}" />
+              <RecoveryNode number_of_retries="20" name="ComputePathToPose">
+                <ComputePathToPose goal="{goal}" path="{path}" planner_id="{selected_planner}" />
+                <ReactiveFallback name="ComputePathToPoseRecoveryFallback">
+                  <GoalUpdated/>
+                  <ClearEntireCostmap name="ClearGlobalCostmap-Context" service_name="global_costmap/clear_entirely_global_costmap"/>
+                </ReactiveFallback>
+              </RecoveryNode>
             </PipelineSequence>
             <ReactiveFallback name="ComputePathToPoseRecoveryFallback">
               <PipelineSequence name="RecoveryGlobalPlan">

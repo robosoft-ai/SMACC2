@@ -42,7 +42,7 @@ struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDance
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI);
+    configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI, 1.0 /*rad_s*/);
     configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 };
