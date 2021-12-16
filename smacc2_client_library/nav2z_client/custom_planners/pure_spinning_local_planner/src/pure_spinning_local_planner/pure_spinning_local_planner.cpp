@@ -70,6 +70,7 @@ void PureSpinningLocalPlanner::configure(
   declareOrSet(nh_, name_ + ".intermediate_goals_yaw_tolerance", intermediate_goal_yaw_tolerance_);
   declareOrSet(nh_, name_ + ".max_angular_z_speed", max_angular_z_speed_);
   declareOrSet(nh_, name_ + ".transform_tolerance", transform_tolerance_);
+  declareOrSet(nh_, name_ + ".use_shortest_angular_distance", use_shortest_angular_distance_);
 
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "[PureSpinningLocalPlanner] pure spinning planner already created");
@@ -81,6 +82,7 @@ void PureSpinningLocalPlanner::updateParameters()
   tryGetOrSet(nh_, name_ + ".intermediate_goals_yaw_tolerance", intermediate_goal_yaw_tolerance_);
   tryGetOrSet(nh_, name_ + ".max_angular_z_speed", max_angular_z_speed_);
   tryGetOrSet(nh_, name_ + ".transform_tolerance", transform_tolerance_);
+  tryGetOrSet(nh_, name_ + ".use_shortest_angular_distance", use_shortest_angular_distance_);
 }
 
 geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityCommands(
@@ -125,7 +127,10 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
     auto & goal = plan_[currentPoseIndex_];
     targetYaw = tf2::getYaw(goal.pose.orientation);
 
-    angular_error = angles::shortest_angular_distance(currentYaw, targetYaw);
+    if (use_shortest_angular_distance_)
+      angular_error = angles::shortest_angular_distance(currentYaw, targetYaw);
+    else
+      angular_error = targetYaw - currentYaw;
 
     // if it is in the following way, sometimes the direction is incorrect
     //angular_error = targetYaw - currentYaw;

@@ -23,6 +23,8 @@
 
 namespace cl_move_group_interface
 {
+using namespace std::chrono_literals;
+
 CbMoveCartesianRelative2::CbMoveCartesianRelative2(std::string referenceFrame, std::string tipLink)
 : CbMoveEndEffectorTrajectory(tipLink)
 {
@@ -93,7 +95,7 @@ void CbMoveCartesianRelative2::generateTrajectory()
     geometry_msgs::msg::PoseStamped pointerPose;
     tf2::toMsg(pose, pointerPose.pose);
     pointerPose.header.frame_id = globalFrame_;
-    pointerPose.header.stamp = startTime + rclcpp::Duration(i * secondsPerSample);
+    pointerPose.header.stamp = startTime + rclcpp::Duration::from_seconds(i * secondsPerSample);
 
     this->endEffectorTrajectory_.push_back(pointerPose);
   }
