@@ -36,7 +36,7 @@ public:
 
   CbRotate(float rotate_degree);
 
-  CbRotate(float rotate_degree, cl_nav2z::SpinningPlanner spinningPlanner);
+  CbRotate(float rotate_degree, cl_nav2z::SpinningPlanner spinning_planner);
 
   void onEntry() override;
 

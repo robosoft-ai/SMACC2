@@ -96,10 +96,6 @@ private:
 
   std::shared_ptr<tf2_ros::Buffer> tf_;
 
-  // void reconfigCB(::pure_spinning_local_planner::PureSpinningLocalPlannerConfig &config, uint32_t level);
-
-  // dynamic_reconfigure::Server<::pure_spinning_local_planner::PureSpinningLocalPlannerConfig> paramServer_;
-
   double k_betta_;
   bool goalReached_;
   int currentPoseIndex_;
@@ -107,6 +103,7 @@ private:
   rad intermediate_goal_yaw_tolerance_;
   rad_s max_angular_z_speed_;
   double transform_tolerance_;
+  bool use_shortest_angular_distance_;
 };
 }  // namespace pure_spinning_local_planner
 }  // namespace cl_nav2z
