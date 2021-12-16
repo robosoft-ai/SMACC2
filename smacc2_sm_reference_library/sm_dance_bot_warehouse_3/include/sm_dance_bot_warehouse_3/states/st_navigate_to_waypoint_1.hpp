@@ -24,6 +24,8 @@
 
 namespace sm_dance_bot_warehouse_3
 {
+using cl_nav2zclient::CbPureSpinning;
+
 // STATE DECLARATION
 struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDanceBotRunMode>
 {
@@ -32,15 +34,15 @@ struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDance
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
-    Transition<EvCbFailure<StNavigateToWaypoint1, OrNavigation>, StNavigateToWaypointsX, ABORT>
+    Transition<EvCbSuccess<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
+    Transition<EvCbFailure<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+    configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI);
     configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 };
