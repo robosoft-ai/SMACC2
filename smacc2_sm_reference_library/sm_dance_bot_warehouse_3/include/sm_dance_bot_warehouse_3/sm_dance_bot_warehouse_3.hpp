@@ -37,6 +37,7 @@ using namespace cl_nav2z;
 
 #include <sm_dance_bot_warehouse_3/clients/cl_lidar/client_behaviors/cb_lidar_sensor.hpp>
 #include <sm_dance_bot_warehouse_3/clients/cl_lidar/components/cp_forward_obstacle_detector.hpp>
+#include <sm_dance_bot_warehouse_3/clients/cl_nav2z/behaviors/cb_pure_spinning.hpp>
 
 #include <sm_dance_bot_warehouse_3/clients/cl_nav2z/components/cp_square_shape_bondary.hpp>
 
@@ -44,6 +45,7 @@ using namespace cl_nav2z;
 
 #include <sm_dance_bot_warehouse_3/clients/cl_service3/client_behaviors/cb_service3.hpp>
 #include <sm_dance_bot_warehouse_3/clients/cl_string_publisher/client_behaviors/cb_string_publisher.hpp>
+
 
 #include <ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp>
 #include <ros_publisher_client/client_behaviors/cb_muted_behavior.hpp>
