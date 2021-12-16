@@ -28,8 +28,8 @@ namespace cl_nav2z
 {
 CbRotate::CbRotate(float rotate_degree) : rotateDegree(rotate_degree) {}
 
-CbRotate::CbRotate(float rotate_degree, SpinningPlanner spinningPlanner)
-: rotateDegree(rotate_degree), spinningPlanner(spinningPlanner)
+CbRotate::CbRotate(float rotate_degree, SpinningPlanner spinning_planner)
+: rotateDegree(rotate_degree), spinningPlanner(spinning_planner)
 {
 }
 

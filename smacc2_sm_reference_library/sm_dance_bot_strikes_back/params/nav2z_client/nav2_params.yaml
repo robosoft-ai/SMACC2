@@ -207,6 +207,7 @@ controller_server:
       transform_tolerance: 0.5
       k_betta: 10.0
       max_angular_z_speed: 0.2
+      use_shortest_angular_distance: true
 
 
 controller_server_rclcpp_node:

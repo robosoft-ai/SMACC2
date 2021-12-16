@@ -93,7 +93,8 @@ void CbMoveCartesianRelative2::generateTrajectory()
     geometry_msgs::msg::PoseStamped pointerPose;
     tf2::toMsg(pose, pointerPose.pose);
     pointerPose.header.frame_id = globalFrame_;
-    pointerPose.header.stamp = startTime + rclcpp::Duration(i * secondsPerSample);
+    pointerPose.header.stamp =
+      startTime + rclcpp::Duration(std::chrono::seconds(i * secondsPerSample));
 
     this->endEffectorTrajectory_.push_back(pointerPose);
   }

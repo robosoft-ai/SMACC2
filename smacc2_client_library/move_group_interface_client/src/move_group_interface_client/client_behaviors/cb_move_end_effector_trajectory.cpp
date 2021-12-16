@@ -406,7 +406,7 @@ void CbMoveEndEffectorTrajectory::createMarkers()
 
     tf2::Transform basetransform;
     tf2::fromMsg(pose.pose, basetransform);
-    tf2::Transform endarrow = localdirection * basetransform;
+    // tf2::Transform endarrow = localdirection * basetransform;
 
     end.x = localdirection.getOrigin().x();
     end.y = localdirection.getOrigin().y();

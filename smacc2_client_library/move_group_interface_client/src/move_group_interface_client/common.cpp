@@ -60,7 +60,7 @@ std::ostream & operator<<(std::ostream & out, const moveit_msgs::srv::GetPositio
              << msg.ik_request.pose_stamped << "]";
 }
 
-std::ostream & operator<<(std::ostream & out, const sensor_msgs::msg::JointState & msg)
+std::ostream & operator<<(std::ostream & out, const sensor_msgs::msg::JointState & /*msg*/)
 {
   return out << "[sensor_msgs::msg::JointState]";
 }
