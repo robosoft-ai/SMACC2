@@ -143,7 +143,7 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
     Transition<EvWaypoint16<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_17>,
     Transition<EvWaypoint17<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_18>,
     Transition<EvWaypoint18<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_19>,
-    Transition<EvWaypoint19<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_20>  //,
+    Transition<EvWaypoint19<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_20>  //,
     //Transition<EvWaypoint20<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_21>//,
     //Transition<EvWaypoint21<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_22>,
     //Transition<EvWaypoint22<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_23>,
