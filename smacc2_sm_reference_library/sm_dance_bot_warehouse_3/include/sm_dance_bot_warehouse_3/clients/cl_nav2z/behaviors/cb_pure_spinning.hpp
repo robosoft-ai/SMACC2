@@ -18,17 +18,17 @@ struct CbPureSpinning : public smacc2::SmaccAsyncClientBehavior
     double targetYaw_;
     bool goalReached_;
     double k_betta_;
-    double max_angular_z_speed_;
+    double max_angular_yaw_speed_;
 
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_pub_;
 
   public:
     double yaw_goal_tolerance_rads_;
 
-  CbPureSpinning(double targetYaw)
+  CbPureSpinning(double targetYaw, double max_angular_yaw_speed= 0.5)
   : targetYaw_(targetYaw),
     k_betta_(1.0),
-    max_angular_z_speed_(0.45),
+    max_angular_yaw_speed_(max_angular_yaw_speed),
     yaw_goal_tolerance_rads_(0.03)
   {
 
@@ -71,7 +71,7 @@ struct CbPureSpinning : public smacc2::SmaccAsyncClientBehavior
         cmd_vel.linear.y = 0;
         cmd_vel.linear.z = 0;
         cmd_vel.angular.z =
-          std::min(std::max(omega, -fabs(max_angular_z_speed_)), fabs(max_angular_z_speed_));
+          std::min(std::max(omega, -fabs(max_angular_yaw_speed_)), fabs(max_angular_yaw_speed_));
 
         RCLCPP_INFO_STREAM(getLogger(), "["<<getName() << "] delta angle: " << deltaAngle);
         RCLCPP_INFO_STREAM(getLogger(), "["<<getName() << "] cummulated angle: " << countAngle);

@@ -273,7 +273,7 @@ planner_server:
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
       tolerance: 10.0 #meters
-      use_astar: false
+      use_astar: true
       allow_unknown: true
     ForwardGlobalPlanner:
       plugin: "forward_global_planner::ForwardGlobalPlanner"
