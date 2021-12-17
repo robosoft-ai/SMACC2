@@ -26,6 +26,8 @@
 
 namespace cl_nav2z
 {
+// stores the state of the last modification of the slam node
+// (blind - open loop solution because the node does not provide that information)
 class CpSlamToolbox : public smacc2::ISmaccComponent
 {
 public:
