@@ -60,8 +60,8 @@ public:
     }
 
     float side = squareLenghtMeters_/2.0;
-    float maxraysize = sqrt(2*side*side);
-    float radius = maxraysize;
+    // float maxraysize = sqrt(2*side*side);
+    // float radius = maxraysize;
 
     float fwdist = -1;
     float x,y;
