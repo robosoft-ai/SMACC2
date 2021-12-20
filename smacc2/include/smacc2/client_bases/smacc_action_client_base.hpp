@@ -126,19 +126,19 @@ public:
   void onOrthogonalAllocation()
   {
     // we create here all the event factory functions capturing the TOrthogonal
-    postSuccessEvent = [=](auto msg) {
+    postSuccessEvent = [=, this](auto msg) {
       this->postResultEvent<EvActionSucceeded<TSourceObject, TOrthogonal>>(msg);
     };
-    postAbortedEvent = [=](auto msg) {
+    postAbortedEvent = [=, this](auto msg) {
       this->postResultEvent<EvActionAborted<TSourceObject, TOrthogonal>>(msg);
     };
     // postPreemptedEvent = [=](auto msg) { this->postResultEvent<EvActionPreempted<TSourceObject, TOrthogonal>>(msg);
     // }; postRejectedEvent = [=](auto msg) { this->postResultEvent<EvActionRejected<TSourceObject, TOrthogonal>>(msg);
     // };
-    postCancelledEvent = [=](auto msg) {
+    postCancelledEvent = [=, this](auto msg) {
       this->postResultEvent<EvActionCancelled<TSourceObject, TOrthogonal>>(msg);
     };
-    postFeedbackEvent = [=](auto msg) {
+    postFeedbackEvent = [=, this](auto msg) {
       auto actionFeedbackEvent = new EvActionFeedback<Feedback, TOrthogonal>();
       actionFeedbackEvent->client = this;
       actionFeedbackEvent->feedbackMessage = msg;
