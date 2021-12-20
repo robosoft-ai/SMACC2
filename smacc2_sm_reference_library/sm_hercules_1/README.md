@@ -73,7 +73,7 @@ Start test script to see arm movement with the following command (wait 6 seconds
 ros2 launch sm_hercules_1 test_dual_joint_trajectory_controller.launch.py
 ```
 
-Send command for the base using:
+Send command for the base:
 
 ```
 ros2 topic pub /base_velocity_controller/cmd_vel_unstamped geometry_msgs/msg/Twist "linear:
@@ -85,6 +85,18 @@ angular:
   y: 0.0
   z: 0.5"
 ```
+
+Send command for grippers:
+```
+ros2 topic pub /port_gripper_controller/commands std_msgs/msg/Float64MultiArray "data:
+- 0.6"
+```
+
+```
+ros2 topic pub /starboard_gripper_controller/commands std_msgs/msg/Float64MultiArray "data:
+- 0.6"
+```
+
 
 
   <h3> Running Ignition simulation </h3>

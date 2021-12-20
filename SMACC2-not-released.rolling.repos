@@ -19,23 +19,21 @@ repositories:
     url: https://github.com/StoglRobotics-forks/husky.git
     version: fixes-for-smacc2
 
-  robotiq_85_gripper:
+  gazebo_ros2_control:
+    type: git
+    url: https://github.com/ros-simulation/gazebo_ros2_control.git
+    version: master
+    url: https://github.com/destogl/gazebo_ros2_control.git
+    version: smacc2-features
+  ign_ros2_control:
     type: git
     url: https://github.com/StoglRobotics-forks/robotiq_85_gripper.git
     version: rolling-ros2-control-simulation
 
-  moveit2:
+  robotiq_85_gripper:
     type: git
-    url: https://github.com/ros-planning/moveit2.git
-    version: main
-  moveit2_msgs:
-    type: git
-    url: https://github.com/ros-planning/moveit_msgs.git
-    version: ros2
-  launch_param_builder:
-    type: git
-    url: https://github.com/PickNikRobotics/launch_param_builder
-    version: main
+    url: https://github.com/StoglRobotics-forks/robotiq_85_gripper.git
+    version: rolling-ros2-control-simulation
 
   ur_msgs:
     type: git
