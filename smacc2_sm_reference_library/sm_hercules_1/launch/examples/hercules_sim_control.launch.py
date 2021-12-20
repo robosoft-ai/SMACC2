@@ -20,8 +20,10 @@ from launch.actions import (
     ExecuteProcess,
     IncludeLaunchDescription,
     OpaqueFunction,
+    RegisterEventHandler,
 )
 from launch.conditions import IfCondition, UnlessCondition
+from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
@@ -32,11 +34,11 @@ from launch_ros.substitutions import FindPackageShare
 
 def launch_setup(context, *args, **kwargs):
 
+    name = LaunchConfiguration("name")
     # Simulation arguments
     gazebo_sim = LaunchConfiguration("gazebo_sim")
     ignition_sim = LaunchConfiguration("ignition_sim")
     # Initialize Arguments
-    name = LaunchConfiguration("name")
     ur_type = LaunchConfiguration("ur_type")
     safety_limits = LaunchConfiguration("safety_limits")
     safety_pos_margin = LaunchConfiguration("safety_pos_margin")
@@ -85,6 +87,20 @@ def launch_setup(context, *args, **kwargs):
             "name:=",
             name,
             " ",
+            "prefix:=",
+            prefix,
+            # Simulation parameters
+            " ",
+            "gazebo_sim:=",
+            gazebo_sim,
+            " ",
+            "ignition_sim:=",
+            ignition_sim,
+            " ",
+            "simulation_controllers:=",
+            initial_joint_controllers,
+            # UR parameters
+            " ",
             "joint_limit_params:=",
             joint_limit_params,
             " ",
@@ -105,22 +121,7 @@ def launch_setup(context, *args, **kwargs):
             " ",
             "safety_k_position:=",
             safety_k_position,
-            " ",
-            "name:=",
-            ur_type,
-            " ",
-            "prefix:=",
-            prefix,
-            " ",
-            "gazebo_sim:=",
-            gazebo_sim,
-            " ",
-            "ignition_sim:=",
-            ignition_sim,
-            " ",
-            "simulation_controllers:=",
-            initial_joint_controllers,
-            # husky parameters
+            # Husky parameters
             " ",
             "is_sim:=true",
         ]
@@ -149,6 +150,14 @@ def launch_setup(context, *args, **kwargs):
         arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
     )
 
+    # Delay rviz start after `joint_state_broadcaster`
+    delay_rviz_after_joint_state_broadcaster_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_spawner,
+            on_exit=[rviz_node],
+        )
+    )
+
     # Base
     spawn_base_controller = Node(
         package="controller_manager",
@@ -172,6 +181,11 @@ def launch_setup(context, *args, **kwargs):
         arguments=[port_initial_joint_controller, "-c", "/controller_manager", "--stopped"],
         condition=UnlessCondition(start_arm_controllers),
     )
+    port_gripper_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["port_gripper_controller", "-c", "/controller_manager"],
+    )
 
     # Starboard
 
@@ -187,6 +201,11 @@ def launch_setup(context, *args, **kwargs):
         executable="spawner",
         arguments=[starboard_initial_joint_controller, "-c", "/controller_manager", "--stopped"],
         condition=UnlessCondition(start_arm_controllers),
+    )
+    starboard_gripper_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["starboard_gripper_controller", "-c", "/controller_manager"],
     )
 
     # Gazebo nodes
@@ -239,13 +258,15 @@ def launch_setup(context, *args, **kwargs):
 
     nodes_to_start = [
         robot_state_publisher_node,
-        rviz_node,
+        delay_rviz_after_joint_state_broadcaster_spawner,
         joint_state_broadcaster_spawner,
         spawn_base_controller,
         port_initial_joint_controller_spawner_stopped,
         port_initial_joint_controller_spawner_started,
+        port_gripper_controller_spawner,
         starboard_initial_joint_controller_spawner_stopped,
         starboard_initial_joint_controller_spawner_started,
+        starboard_gripper_controller_spawner,
         gzserver,
         gzclient,
         gazebo_spawn_robot,
@@ -258,6 +279,13 @@ def launch_setup(context, *args, **kwargs):
 
 def generate_launch_description():
     declared_arguments = []
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "name",
+            description="Robot name",
+            default_value="hercules",
+        )
+    )
     # Simulation specific arguments
     declared_arguments.append(
         DeclareLaunchArgument(
@@ -274,13 +302,6 @@ def generate_launch_description():
         )
     )
     # UR specific arguments
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "name",
-            description="Robot name",
-            default_value="hercules",
-        )
-    )
     declared_arguments.append(
         DeclareLaunchArgument(
             "ur_type",

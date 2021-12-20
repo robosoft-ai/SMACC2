@@ -19,6 +19,7 @@
   <exec_depend>gazebo_ros</exec_depend>
   <exec_depend>husky</exec_depend>
   <exec_depend>ign_ros2_control</exec_depend>
+  <exec_depend>robotiq_85_description</exec_depend>
   <exec_depend>ros_ign_gazebo</exec_depend>
   <exec_depend>ur_description</exec_depend>
 

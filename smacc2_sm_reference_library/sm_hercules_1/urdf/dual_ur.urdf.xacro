@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg name)">
    <!-- robot name parameter -->
-   <xacro:arg name="name" default="ur"/>
-   <!-- import main macro -->
+   <xacro:arg name="name" default="dual_ur"/>
+
+   <!-- import component macros -->
    <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+   <xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85_gripper_macro.urdf.xacro" />
 
    <!-- parameters -->
    <xacro:arg name="prefix" default="" />
@@ -81,6 +83,17 @@
      <origin xyz="0 ${ box_base_size/2 } 0" rpy="${pi/2} 0 ${pi}" />          <!-- position robot in the world -->
    </xacro:ur_robot>
 
+   <xacro:robotiq_85_gripper
+     name="port_gripper_$(arg name)"
+     prefix="port_"
+     parent="port_tool0"
+     use_fake_hardware="$(arg use_fake_hardware)"
+     fake_sensor_commands="$(arg fake_sensor_commands)"
+     gazebo_sim="$(arg gazebo_sim)"
+     ignition_sim="$(arg ignition_sim)" >
+     <origin xyz="0 0 0" rpy="0 -${pi/2} 0"/>
+   </xacro:robotiq_85_gripper>
+
    <!-- arm -->
    <xacro:ur_robot
      name="starboard_$(arg name)"
@@ -102,6 +115,17 @@
      ignition_sim="$(arg ignition_sim)" >
      <origin xyz="0 -${ box_base_size/2 } 0" rpy="${pi/2} 0 0" />          <!-- position robot in the world -->
    </xacro:ur_robot>
+
+   <xacro:robotiq_85_gripper
+     name="starboard_gripper_$(arg name)"
+     prefix="starboard_"
+     parent="starboard_tool0"
+     use_fake_hardware="$(arg use_fake_hardware)"
+     fake_sensor_commands="$(arg fake_sensor_commands)"
+     gazebo_sim="$(arg gazebo_sim)"
+     ignition_sim="$(arg ignition_sim)">
+     <origin xyz="0 0 0" rpy="0 -${pi/2} 0"/>
+   </xacro:robotiq_85_gripper>
 
    <xacro:if value="$(arg gazebo_sim)">
      <!-- Gazebo plugins -->

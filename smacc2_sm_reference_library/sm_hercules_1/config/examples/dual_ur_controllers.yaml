@@ -14,6 +14,9 @@ controller_manager:
     port_forward_velocity_controller:
       type: velocity_controllers/JointGroupVelocityController
 
+    port_gripper_controller:
+      type: forward_command_controller/ForwardCommandController
+
     starboard_force_torque_sensor_broadcaster:
       type: ur_controllers/ForceTorqueStateBroadcaster
 
@@ -22,6 +25,9 @@ controller_manager:
 
     starboard_forward_velocity_controller:
       type: velocity_controllers/JointGroupVelocityController
+
+    starboard_gripper_controller:
+      type: forward_command_controller/ForwardCommandController
 
 
 ## Port
@@ -78,6 +84,12 @@ port_forward_velocity_controller:
       - port_wrist_3_joint
     interface_name: velocity
 
+port_gripper_controller:
+  ros__parameters:
+    joints:
+      - port_robotiq_85_left_knuckle_joint
+    interface_name: position
+
 
 # Starboard
 starboard_force_torque_sensor_broadcaster:
@@ -132,3 +144,9 @@ starboard_forward_velocity_controller:
       - starboard_wrist_2_joint
       - starboard_wrist_3_joint
     interface_name: velocity
+
+starboard_gripper_controller:
+  ros__parameters:
+    joints:
+      - starboard_robotiq_85_left_knuckle_joint
+    interface_name: position
