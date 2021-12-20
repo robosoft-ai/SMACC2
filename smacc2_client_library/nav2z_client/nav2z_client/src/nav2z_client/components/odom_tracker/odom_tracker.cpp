@@ -62,7 +62,7 @@ void OdomTracker::onInitialize()
   clearAngularDistanceThreshold_ = 0.1;   // radi
 
   auto nh = getNode();
-  RCLCPP_WARN(getLogger(), "Initializing Odometry Tracker");
+  RCLCPP_WARN(getLogger(), "[OdomTracker] Initializing Odometry Tracker");
 
   parameterDeclareAndtryGetOrSet(nh, "odom_frame", this->odomFrame_);
   parameterDeclareAndtryGetOrSet(
