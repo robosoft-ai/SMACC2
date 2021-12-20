@@ -46,7 +46,7 @@ struct StiRadialEndPoint : smacc2::SmaccState<StiRadialEndPoint, SS>
 
   void runtimeConfigure()
   {
-    float EXTRA_SECURE_DISTANCE = 0.5;
+    // float EXTRA_SECURE_DISTANCE = 0.5;
 
     ClNav2Z* navzclient;
     this->requiresClient(navzclient);
