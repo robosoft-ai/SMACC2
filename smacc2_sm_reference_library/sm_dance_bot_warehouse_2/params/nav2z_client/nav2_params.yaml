@@ -137,12 +137,12 @@ controller_server:
       plugin: "backward_local_planner::BackwardLocalPlanner"
       transform_tolerance: 0.5
       k_rho: -1.0 # linear distance to the goal gain, default = -1.0 (related with carrot distance)
-      k_alpha: -0.4 #-0.1
-      k_betta: -2.7 # -1.0
-      carrot_distance: 0.15 #meters default 0.5
-      carrot_angular_distance: 0.12 # no constraint, max 3.1416
+      k_alpha: -0.6 #-0.1
+      k_betta: -3.0 # -1.0
+      carrot_distance: 0.3 #meters default 0.5
+      carrot_angular_distance: 0.2 # no constraint, max 3.1416
       pure_spinning_straight_line_mode: true
-      max_linear_x_speed: 0.08
+      max_linear_x_speed: 0.1
     UndoBackwardLocalPlanner:
       plugin: "backward_local_planner::BackwardLocalPlanner"
       transform_tolerance: 0.5
@@ -152,7 +152,7 @@ controller_server:
       carrot_distance: 0.1 #meters default 0.5
       carrot_angular_distance: 0.3 # no constraint, max 3.1416
       pure_spinning_straight_line_mode: false
-      max_linear_x_speed: 0.1
+      max_linear_x_speed: 0.15
     ForwardLocalPlanner:
       plugin: "cl_nav2z::forward_local_planner::ForwardLocalPlanner"
       transform_tolerance: 0.5

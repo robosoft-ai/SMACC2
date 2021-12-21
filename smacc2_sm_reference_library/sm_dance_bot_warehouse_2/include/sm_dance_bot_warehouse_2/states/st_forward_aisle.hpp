@@ -32,7 +32,7 @@ struct StForwardAisle : smacc2::SmaccState<StForwardAisle, MsDanceBotRunMode>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateUndoMotion>,
+    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateUndoMotionLeaf>,
     Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StForwardAisle>
 
     >reactions;
