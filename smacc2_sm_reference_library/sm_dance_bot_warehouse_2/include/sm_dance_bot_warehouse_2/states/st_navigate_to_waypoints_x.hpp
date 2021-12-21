@@ -41,7 +41,7 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StForwardAisle, TRANSITION_1>,
-    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StForwardAisle, ABORT>
+    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX, ABORT>
 
     >reactions;
 
@@ -57,9 +57,9 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
 
   void onExit(ABORT)
   {
-    // this->getOrthogonal<OrNavigation>()
-    //     ->getClientBehavior<CbNavigateNextWaypoint>()
-    //     ->waypointsNavigator_->rewind(1);
+     this->getOrthogonal<OrNavigation>()
+         ->getClientBehavior<CbNavigateNextWaypoint>()
+         ->waypointsNavigator_->rewind(1);
   }
 };
 }  // namespace sm_dance_bot_warehouse_2

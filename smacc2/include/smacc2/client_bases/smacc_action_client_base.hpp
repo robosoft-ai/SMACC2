@@ -118,7 +118,8 @@ public:
     // ev->client = this;
     // ev->resultMessage = *result;
     RCLCPP_INFO(
-      getNode()->get_logger(), "Posting EVENT %s", demangleSymbol(typeid(ev).name()).c_str());
+      getNode()->get_logger(), "Action client Posting EVENT %s",
+      demangleSymbol(typeid(ev).name()).c_str());
     this->postEvent(ev);
   }
 
@@ -126,19 +127,17 @@ public:
   void onOrthogonalAllocation()
   {
     // we create here all the event factory functions capturing the TOrthogonal
-    postSuccessEvent = [=](auto msg) {
+    postSuccessEvent = [=, this](auto msg) {
       this->postResultEvent<EvActionSucceeded<TSourceObject, TOrthogonal>>(msg);
     };
-    postAbortedEvent = [=](auto msg) {
+    postAbortedEvent = [=, this](auto msg) {
       this->postResultEvent<EvActionAborted<TSourceObject, TOrthogonal>>(msg);
     };
-    // postPreemptedEvent = [=](auto msg) { this->postResultEvent<EvActionPreempted<TSourceObject, TOrthogonal>>(msg);
-    // }; postRejectedEvent = [=](auto msg) { this->postResultEvent<EvActionRejected<TSourceObject, TOrthogonal>>(msg);
-    // };
-    postCancelledEvent = [=](auto msg) {
+
+    postCancelledEvent = [=, this](auto msg) {
       this->postResultEvent<EvActionCancelled<TSourceObject, TOrthogonal>>(msg);
     };
-    postFeedbackEvent = [=](auto msg) {
+    postFeedbackEvent = [=, this](auto msg) {
       auto actionFeedbackEvent = new EvActionFeedback<Feedback, TOrthogonal>();
       actionFeedbackEvent->client = this;
       actionFeedbackEvent->feedbackMessage = msg;
@@ -236,7 +235,7 @@ public:
     }
   }
 
-  void sendGoal(Goal & goal)
+  std::shared_future<typename GoalHandle::SharedPtr> sendGoal(Goal & goal)
   {
     RCLCPP_INFO_STREAM(
       getNode()->get_logger(),
@@ -326,6 +325,8 @@ public:
     //     ...", getName().c_str(), getNamespace().c_str());
     //     //client_->waitForServer();
     // }
+
+    return *lastRequest_;
   }
 
 protected:

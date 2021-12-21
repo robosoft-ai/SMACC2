@@ -23,14 +23,16 @@ namespace cl_nav2z
 {
 CbNav2ZClientBehaviorBase::~CbNav2ZClientBehaviorBase() {}
 
-void CbNav2ZClientBehaviorBase::propagateSuccessEvent(ClNav2Z::WrappedResult &)
+void CbNav2ZClientBehaviorBase::propagateSuccessEvent(ClNav2Z::WrappedResult & r)
 {
+  navigationResult_ = r.code;
   auto name = smacc2::demangleType(typeid(*this));
   RCLCPP_INFO(getLogger(), "[%s] Propagating success event from action server", name.c_str());
   this->postSuccessEvent();
 }
-void CbNav2ZClientBehaviorBase::propagateFailureEvent(ClNav2Z::WrappedResult &)
+void CbNav2ZClientBehaviorBase::propagateFailureEvent(ClNav2Z::WrappedResult & r)
 {
+  navigationResult_ = r.code;
   auto name = smacc2::demangleType(typeid(*this));
   RCLCPP_INFO(getLogger(), "[%s] Propagating failure event from action server", name.c_str());
   this->postFailureEvent();
