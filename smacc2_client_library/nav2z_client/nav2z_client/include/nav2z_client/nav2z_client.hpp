@@ -32,7 +32,7 @@ class ClNav2Z
 {
 public:
   using smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>::GoalHandle;
-  
+
   ClNav2Z(std::string navigateToPoseAction = "/navigate_to_pose");
 
   virtual ~ClNav2Z();

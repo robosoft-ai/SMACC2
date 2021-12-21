@@ -55,7 +55,7 @@ struct StNavigateUndoMotionLeaf : smacc2::SmaccState<StNavigateUndoMotionLeaf, M
 
   void onExit(ABORT)
   {
-   
+
   }
 
 };

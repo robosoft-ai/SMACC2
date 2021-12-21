@@ -64,18 +64,20 @@ void CbUndoPathBackwards::onEntry()
 
 void CbUndoPathBackwards::onExit()
 {
-  RCLCPP_INFO_STREAM(getNode()->get_logger(), "["<< getName() << "] Exiting: undo navigation ");
+  RCLCPP_INFO_STREAM(getNode()->get_logger(), "[" << getName() << "] Exiting: undo navigation ");
 
   if (this->navigationResult_ == rclcpp_action::ResultCode::SUCCEEDED)
   {
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << " - Exiting: undo navigation successful, popping odom tracker path");
+    RCLCPP_INFO_STREAM(
+      getNode()->get_logger(),
+      getName() << " - Exiting: undo navigation successful, popping odom tracker path");
     auto * odomTracker = moveBaseClient_->getComponent<OdomTracker>();
     odomTracker->popPath();
   }
   else
   {
     // navigation interrupted or aborted. The path may be not totally undone.
-    // We keep the odom tracker in its current state, probably in the middle of the undoing process. 
+    // We keep the odom tracker in its current state, probably in the middle of the undoing process.
     // Could you try to repeat the behavior?
   }
 }

@@ -118,7 +118,8 @@ public:
     // ev->client = this;
     // ev->resultMessage = *result;
     RCLCPP_INFO(
-      getNode()->get_logger(), "Action client Posting EVENT %s", demangleSymbol(typeid(ev).name()).c_str());
+      getNode()->get_logger(), "Action client Posting EVENT %s",
+      demangleSymbol(typeid(ev).name()).c_str());
     this->postEvent(ev);
   }
 
@@ -324,7 +325,7 @@ public:
     //     ...", getName().c_str(), getNamespace().c_str());
     //     //client_->waitForServer();
     // }
-    
+
     return *lastRequest_;
   }
 

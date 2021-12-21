@@ -36,6 +36,5 @@ public:
 
 private:
   std::shared_ptr<tf2_ros::Buffer> listener;
-
 };
 }  // namespace cl_nav2z
