@@ -26,7 +26,10 @@
 
 namespace cl_nav2z
 {
-using namespace ::cl_nav2z::odom_tracker;
+using ::cl_nav2z::odom_tracker::OdomTracker;
+using ::cl_nav2z::odom_tracker::WorkingMode;
+
+using namespace std::chrono_literals;
 
 void CbUndoPathBackwards::onEntry()
 {
@@ -45,6 +48,9 @@ void CbUndoPathBackwards::onEntry()
   auto goalCheckerSwitcher = moveBaseClient_->getComponent<GoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("undo_path_backwards_goal_checker");
 
+  // WARNING: There might be some race condition with the remote undo global planner were the global path was not received yet
+  rclcpp::sleep_for(1s);
+
   // this line is used to flush/reset backward planner in the case it were already there
   // plannerSwitcher->setDefaultPlanners();
   if (forwardpath.poses.size() > 0)
@@ -58,8 +64,20 @@ void CbUndoPathBackwards::onEntry()
 
 void CbUndoPathBackwards::onExit()
 {
-  auto * odomTracker = moveBaseClient_->getComponent<OdomTracker>();
-  odomTracker->popPath();
+  RCLCPP_INFO_STREAM(getNode()->get_logger(), "["<< getName() << "] Exiting: undo navigation ");
+
+  if (this->navigationResult_ == rclcpp_action::ResultCode::SUCCEEDED)
+  {
+    RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << " - Exiting: undo navigation successful, popping odom tracker path");
+    auto * odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+    odomTracker->popPath();
+  }
+  else
+  {
+    // navigation interrupted or aborted. The path may be not totally undone.
+    // We keep the odom tracker in its current state, probably in the middle of the undoing process. 
+    // Could you try to repeat the behavior?
+  }
 }
 
 }  // namespace cl_nav2z

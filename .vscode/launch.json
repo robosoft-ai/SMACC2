@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Python: Current File",
             "type": "python",
@@ -173,6 +174,37 @@
                 "__node:=SmDanceBot",
                 "--params-file",
                 "${workspaceFolder}/../install/sm_dance_bot/share/sm_dance_bot/params/sm_dance_bot_config.yaml"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) SmDanceBotWarehouse2",
+            "type": "cppdbg",
+            "request": "launch",
+
+            "program": "${workspaceFolder}/../install/sm_dance_bot_warehouse_2/lib/sm_dance_bot_warehouse_2/sm_dance_bot_warehouse_2_node",
+            "args": [
+                "--ros-args",
+                "--log-level",
+                "INFO",
+                "--ros-args",
+                "-r",
+                "__node:=SmDanceBotWareHouse2",
+                "--params-file",
+                "${workspaceFolder}/../install/sm_dance_bot_warehouse_2/share/sm_dance_bot_warehouse_2/params/sm_dance_bot_warehouse_2_config.yaml",
+                "--params-file",
+                "${workspaceFolder}/../install/sm_dance_bot_warehouse_2/share/sm_dance_bot_warehouse_2/params/nav2z_client/odom_tracker.yaml"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

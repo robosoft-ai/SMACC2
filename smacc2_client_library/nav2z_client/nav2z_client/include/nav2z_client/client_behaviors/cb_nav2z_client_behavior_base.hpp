@@ -37,10 +37,13 @@ public:
     smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
     moveBaseClient_->onSucceeded(&CbNav2ZClientBehaviorBase::propagateSuccessEvent, this);
     moveBaseClient_->onAborted(&CbNav2ZClientBehaviorBase::propagateFailureEvent, this);
+    moveBaseClient_->onCancelled(&CbNav2ZClientBehaviorBase::propagateFailureEvent, this);
   }
 
 protected:
   cl_nav2z::ClNav2Z * moveBaseClient_;
+
+  rclcpp_action::ResultCode navigationResult_;
 
 private:
   void propagateSuccessEvent(ClNav2Z::WrappedResult &);

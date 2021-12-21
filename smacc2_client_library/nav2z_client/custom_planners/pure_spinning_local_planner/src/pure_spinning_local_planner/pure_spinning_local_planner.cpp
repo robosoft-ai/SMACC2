@@ -157,7 +157,7 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
     "[PureSpinningLocalPlanner] pose index: " << currentPoseIndex_ << "/" << plan_.size());
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[PureSpinningLocalPlanner] k_betta_: " << k_betta_);
   RCLCPP_INFO_STREAM(
-    nh_->get_logger(), "[PureSpinningLocalPlanner] angular error: " << angular_error << "("
+    nh_->get_logger(), "[PureSpinningLocalPlanner] angular error: " << angular_error << "(tol "
                                                                     << yaw_goal_tolerance_ << ")");
   RCLCPP_INFO_STREAM(
     nh_->get_logger(),

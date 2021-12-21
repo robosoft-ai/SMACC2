@@ -35,7 +35,7 @@ struct StNavigateUndoMotionLeaf : smacc2::SmaccState<StNavigateUndoMotionLeaf, M
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
+    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StNavigateUndoMotion, SUCCESS>,
     Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StNavigateUndoMotionLeaf, ABORT>
 
     >reactions;
@@ -51,6 +51,11 @@ struct StNavigateUndoMotionLeaf : smacc2::SmaccState<StNavigateUndoMotionLeaf, M
   void runtimeConfigure()
   {
 
+  }
+
+  void onExit(ABORT)
+  {
+   
   }
 
 };
