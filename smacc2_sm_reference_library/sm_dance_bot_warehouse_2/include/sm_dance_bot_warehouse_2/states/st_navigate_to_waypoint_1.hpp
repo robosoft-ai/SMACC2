@@ -43,5 +43,14 @@ struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDance
     configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
     configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
+
+  void onExit()
+  {
+    WaypointNavigator* waypointsNavigator;
+    this->requiresComponent(waypointsNavigator);
+
+    // waypointsNavigator->currentWaypoint_ = 11;
+
+  }
 };
 }  // namespace sm_dance_bot_warehouse_2

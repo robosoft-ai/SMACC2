@@ -36,12 +36,40 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
   struct TRANSITION_4 : SUCCESS{};
   struct TRANSITION_5 : SUCCESS{};
   struct TRANSITION_6 : SUCCESS{};
+  struct TRANSITION_7 : SUCCESS{};
+  struct TRANSITION_8 : SUCCESS{};
+  struct TRANSITION_9 : SUCCESS{};
+  struct TRANSITION_10 : SUCCESS{};
+  struct TRANSITION_11 : SUCCESS{};
+  struct TRANSITION_12 : SUCCESS{};
+  struct TRANSITION_13 : SUCCESS{};
+  struct TRANSITION_14 : SUCCESS{};
+
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StForwardAisle, TRANSITION_1>,
-    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX, ABORT>
+    // Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StForwardAisle, TRANSITION_1>,
+    // Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX, ABORT>
+
+      Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_1>,
+      Transition<EvWaypoint3<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_2>,
+      Transition<EvWaypoint5<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_3>,
+      Transition<EvWaypoint7<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_5>,
+      Transition<EvWaypoint9<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_6>,
+
+      Transition<EvWaypoint11<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_9>,
+      Transition<EvWaypoint12<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_9>,
+      Transition<EvWaypoint13<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_10>,
+      Transition<EvWaypoint14<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_11>,
+      Transition<EvWaypoint15<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_12>,
+      Transition<EvWaypoint16<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_13>,
+      Transition<EvWaypoint17<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_13>,
+      Transition<EvWaypoint18<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_13>,
+      Transition<EvWaypoint19<ClNav2Z, OrNavigation>, StForwardAisle, TRANSITION_14>,
+
+      //Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StForwardAisle, TRANSITION_1>,
+      Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX, ABORT>
 
     >reactions;
 

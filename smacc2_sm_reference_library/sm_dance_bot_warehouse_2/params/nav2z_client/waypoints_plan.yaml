@@ -117,19 +117,19 @@ waypoints:
     orientation:
       x: 0.0
       y: 0.0
-      z: 0.0
-      w: 1.0
-  #Southern Mouth (before, 8,9,10) x:-2.0, y:1
+      z: 1.0
+      w: 0.0
+  #7-2 Southern Mouth (before, 8,9,10) x:-2.0, y:1
   - position:
       x: -2.0
-      y: 1.0
+      y: 0.0
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
-      z: 0.0
-      w: 1.0
-  #POINT 7
+      z: 1.0
+      w: 0.0
+  #POINT 8
   - position:
       x: -4.0
       y: 6.0
@@ -137,9 +137,19 @@ waypoints:
     orientation:
       x: 0.0
       y: 0.0
+      z: 1.0
+      w: 0.0
+  #7-2 Southern Mouth (before, 8,9,10) x:-2.0, y:1
+  - position:
+      x: -2.0
+      y: 0.0
       z: 0.0
-      w: 1.0
-  #POINT 8
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 1.0
+      w: 0.0
+  #POINT 9
   - position:
       x: -4.0
       y: -7.0
@@ -147,9 +157,19 @@ waypoints:
     orientation:
       x: 0.0
       y: 0.0
+      z: 1.0
+      w: 0.0
+  #7-2 Southern Mouth (before, 8,9,10) x:-2.0, y:1
+  - position:
+      x: -2.0
+      y: 0.0
       z: 0.0
-      w: 1.0
-  #POINT 9
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 1.0
+      w: 0.0
+  #POINT 10
   - position:
       x: -4.0
       y: 1.0
@@ -157,5 +177,25 @@ waypoints:
     orientation:
       x: 0.0
       y: 0.0
+      z: 1.0
+      w: 0.0
+    #7-2 Southern Mouth (before, 8,9,10) x:-2.0, y:1
+  - position:
+      x: -2.0
+      y: 0.0
       z: 0.0
-      w: 1.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 1.0
+      w: 0.0
+    #POINT 10
+  - position:
+      x: -4.0
+      y: 7.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 1.0
+      w: 0.0

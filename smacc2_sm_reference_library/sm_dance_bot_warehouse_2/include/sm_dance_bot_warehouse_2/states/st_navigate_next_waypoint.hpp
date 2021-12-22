@@ -25,7 +25,7 @@
 namespace sm_dance_bot_warehouse_2
 {
 // STATE DECLARATION
-struct StNavigateReverse1 : smacc2::SmaccState<StNavigateReverse1, MsDanceBotRunMode>
+struct StNavigateNextWaypoint : smacc2::SmaccState<StNavigateNextWaypoint, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
@@ -33,15 +33,15 @@ struct StNavigateReverse1 : smacc2::SmaccState<StNavigateReverse1, MsDanceBotRun
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StRotateDegrees3>,
-    Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StNavigateReverse1>
+    Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StNavigateUndoMotion2>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateBackwards>(1);
-    configure_orthogonal<OrNavigation, CbPauseSlam>();
+    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+    configure_orthogonal<OrNavigation, CbResumeSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
