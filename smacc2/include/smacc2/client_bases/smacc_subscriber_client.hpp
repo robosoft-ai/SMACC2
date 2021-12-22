@@ -111,7 +111,7 @@ protected:
         rclcpp::SensorDataQoS qos;
         if (queueSize) qos.keep_last(*queueSize);
 
-        std::function<void(typename MessageType::SharedPtr)> fn = [=](auto msg) {
+        std::function<void(typename MessageType::SharedPtr)> fn = [this](auto msg) {
           this->messageCallback(*msg);
         };
         sub_ = getNode()->create_subscription<MessageType>(*topicName, qos, fn);

@@ -27,7 +27,7 @@ void CostmapSwitch::registerProxyFromDynamicReconfigureServer(
 {
   RCLCPP_INFO(getLogger(), "[CostmapSwitch] registering costmap type: %s", costmapName.c_str());
   auto proxy = std::make_shared<CostmapProxy>(
-    this->moveBaseClient_->name_ + "/" + costmapName, enablePropertyName, getNode());
+    this->moveBaseClient_->getName() + "/" + costmapName, enablePropertyName, getNode());
   costmapProxies[costmapName] = proxy;
 }
 

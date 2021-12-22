@@ -96,6 +96,8 @@ class StNavigateReverse2;
 class StNavigateReverse3;
 class StForwardAisle;
 class StNavigateUndoMotionLeaf;
+class StNavigateNextWaypoint;
+class StNavigateUndoMotion2;
 
 //SUPERSTATE FORWARD DECLARATIONS
 //MODE STATES FORWARD DECLARATIONS
@@ -197,7 +199,9 @@ struct SmDanceBotWareHouse2 : public smacc2::SmaccStateMachineBase<SmDanceBotWar
 
 #include <sm_dance_bot_warehouse_2/states/st_navigate_undo_motion.hpp>
 #include <sm_dance_bot_warehouse_2/states/st_navigate_undo_motion_leaf.hpp>
-#include <sm_dance_bot_warehouse_2/states/st_navigate_reverse_1.hpp>
+#include <sm_dance_bot_warehouse_2/states/st_navigate_next_waypoint.hpp>
+#include <sm_dance_bot_warehouse_2/states/st_navigate_undo_motion_2.hpp>
+
 #include <sm_dance_bot_warehouse_2/states/st_navigate_reverse_2.hpp>
 #include <sm_dance_bot_warehouse_2/states/st_navigate_reverse_3.hpp>
 #include <sm_dance_bot_warehouse_2/states/st_forward_aisle.hpp>

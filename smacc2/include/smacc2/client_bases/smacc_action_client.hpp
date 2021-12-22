@@ -47,6 +47,8 @@ public:
 
   virtual std::shared_ptr<rclcpp_action::ClientBase> getClientBase() = 0;
 
+  virtual std::string getName() const { return name_; }
+
 protected:
   // The ros path where the action server is located
   std::string name_;

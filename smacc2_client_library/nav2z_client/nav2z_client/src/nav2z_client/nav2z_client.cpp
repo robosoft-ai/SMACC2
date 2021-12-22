@@ -33,8 +33,6 @@ ClNav2Z::ClNav2Z(std::string moveBaseName) : Base(moveBaseName)
   // RCLCPP_INFO(getLogger(),"Smacc Move Base Action Client");
 }
 
-std::string ClNav2Z::getName() const { return "MOVE BASE ACTION CLIENT"; }
-
 ClNav2Z::~ClNav2Z() {}
 }  // namespace cl_nav2z
 

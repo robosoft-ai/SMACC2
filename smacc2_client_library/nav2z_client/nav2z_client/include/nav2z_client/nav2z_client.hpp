@@ -36,8 +36,6 @@ public:
   ClNav2Z(std::string navigateToPoseAction = "/navigate_to_pose");
 
   virtual ~ClNav2Z();
-
-  virtual std::string getName() const override;
 };
 
 }  // namespace cl_nav2z
