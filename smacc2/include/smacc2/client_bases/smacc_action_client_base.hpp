@@ -60,12 +60,12 @@ public:
   using CancelResponse = typename ActionType::Impl::CancelGoalService::Response;
   using CancelCallback = std::function<void(typename CancelResponse::SharedPtr)>;
 
-  SmaccActionClientBase(std::string actionServerName)
-  : ISmaccActionClient(), name_(actionServerName)
+  SmaccActionClientBase(std::string actionServerName) : ISmaccActionClient()
   {
+    name_ = actionServerName;
   }
 
-  SmaccActionClientBase() : ISmaccActionClient(), name_("") {}
+  SmaccActionClientBase() : ISmaccActionClient() { name_ = ""; }
 
   virtual ~SmaccActionClientBase() {}
 
@@ -73,6 +73,7 @@ public:
 
   void onInitialize() override
   {
+    if (name_ == "") name_ = smacc2::demangleSymbol(typeid(*this).name());
     this->client_ = rclcpp_action::create_client<ActionType>(getNode(), name_);
     // RCLCPP_INFO_STREAM(
     //   this->getNode()->get_logger(),
@@ -85,9 +86,6 @@ public:
     auto type = TypeInfo::getTypeInfoFromType<ActionType>();
     return type->getNonTemplatedTypeName();
   }
-
-  /// rosnamespace path
-  std::string name_;
 
   std::optional<std::shared_future<typename GoalHandle::SharedPtr>> lastRequest_;
   typename GoalHandle::SharedPtr goalHandle_;
@@ -127,17 +125,17 @@ public:
   void onOrthogonalAllocation()
   {
     // we create here all the event factory functions capturing the TOrthogonal
-    postSuccessEvent = [=, this](auto msg) {
+    postSuccessEvent = [this](auto msg) {
       this->postResultEvent<EvActionSucceeded<TSourceObject, TOrthogonal>>(msg);
     };
-    postAbortedEvent = [=, this](auto msg) {
+    postAbortedEvent = [this](auto msg) {
       this->postResultEvent<EvActionAborted<TSourceObject, TOrthogonal>>(msg);
     };
 
-    postCancelledEvent = [=, this](auto msg) {
+    postCancelledEvent = [this](auto msg) {
       this->postResultEvent<EvActionCancelled<TSourceObject, TOrthogonal>>(msg);
     };
-    postFeedbackEvent = [=, this](auto msg) {
+    postFeedbackEvent = [this](auto msg) {
       auto actionFeedbackEvent = new EvActionFeedback<Feedback, TOrthogonal>();
       actionFeedbackEvent->client = this;
       actionFeedbackEvent->feedbackMessage = msg;
@@ -146,10 +144,10 @@ public:
         getNode()->get_logger(), "[%s] FEEDBACK EVENT", demangleType(typeid(*this)).c_str());
     };
 
-    done_cb = [=](auto r) { this->onResult(r); };
+    done_cb = [this](auto r) { this->onResult(r); };
     // done_cb = boost::bind(&SmaccActionClientBase<ActionType>::onResult, this, _1, _2);
     // active_cb;
-    feedback_cb = [=](auto client, auto feedback) { this->onFeedback(client, feedback); };
+    feedback_cb = [this](auto client, auto feedback) { this->onFeedback(client, feedback); };
   }
 
   template <typename T>
@@ -243,7 +241,7 @@ public:
 
     // if (client_->isServerConnected())
     // {
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": Goal sent.");
+    RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": Goal sent:" << goal);
     // client_->sendGoal(goal, done_cb, active_cb, feedback_cb);
     // std::shared_future<typename GoalHandle::SharedPtr>
 
@@ -368,7 +366,7 @@ protected:
     else if (resultType == rclcpp_action::ResultCode::CANCELED)
     {
       RCLCPP_INFO(
-        getNode()->get_logger(), "[%s] request result: Rejected", this->getName().c_str());
+        getNode()->get_logger(), "[%s] request result: Cancelled", this->getName().c_str());
       onCancelled_(result_msg);
       postCancelledEvent(result_msg);
     }

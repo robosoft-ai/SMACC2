@@ -134,8 +134,8 @@ ComputeJointTrajectoryErrorCode CbMoveEndEffectorTrajectory::computeJointSpaceTr
       double deltajoint;
 
       bool check = k > 0 || !allowInitialTrajectoryStateJointDiscontinuity_ ||
-                   allowInitialTrajectoryStateJointDiscontinuity_ &&
-                     !(*allowInitialTrajectoryStateJointDiscontinuity_);
+                   (allowInitialTrajectoryStateJointDiscontinuity_ &&
+                    !(*allowInitialTrajectoryStateJointDiscontinuity_));
       if (check)
       {
         for (jointindex = 0; jointindex < jointPositions.size(); jointindex++)

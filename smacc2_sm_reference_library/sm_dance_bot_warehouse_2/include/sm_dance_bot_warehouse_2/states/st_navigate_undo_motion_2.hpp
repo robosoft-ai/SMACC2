@@ -20,30 +20,47 @@
 
 #pragma once
 
+#include <nav2z_client/nav2z_client.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot_warehouse_2
 {
+  using ::cl_nav2z::ClNav2Z;
+  using namespace std::chrono_literals;
+
 // STATE DECLARATION
-struct StForwardAisle : smacc2::SmaccState<StForwardAisle, MsDanceBotRunMode>
+struct StNavigateUndoMotion2 : smacc2::SmaccState<StNavigateUndoMotion2, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateUndoMotionLeaf>,
-    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StForwardAisle>
+    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
+    Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StNavigateUndoMotion2, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
-    configure_orthogonal<OrNavigation, CbResumeSlam>();
+    configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
-    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
+
+  void runtimeConfigure()
+  {
+
+  }
+
+  void onExit(ABORT)
+  {
+  }
+
+  void onExit()
+  {
+  }
+
 };
 }  // namespace sm_dance_bot_warehouse_2
