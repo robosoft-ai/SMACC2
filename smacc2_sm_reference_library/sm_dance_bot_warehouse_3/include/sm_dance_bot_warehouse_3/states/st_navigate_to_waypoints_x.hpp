@@ -170,9 +170,6 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
 
   void onExit(ABORT)
   {
-    // this->getOrthogonal<OrNavigation>()
-    //     ->getClientBehavior<CbNavigateNextWaypoint>()
-    //     ->waypointsNavigator_->rewind(1);
   }
 };
 }  // namespace sm_dance_bot_warehouse_3

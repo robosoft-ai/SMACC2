@@ -45,6 +45,7 @@ struct Pose2D
 
 // This component contains a list of waypoints. These waypoints can
 // be iterated in the different states using CbNextWaiPoint
+// waypoint index is only incremented if the current waypoint is successfully reached
 class WaypointNavigator : public smacc2::ISmaccComponent
 {
 public:
