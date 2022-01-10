@@ -215,9 +215,10 @@ void SignalDetector::pollOnce()
   //TRACEPOINT( spinOnce);
   TRACEPOINT(spinOnce);
 
+  std::lock_guard<std::recursive_mutex> lock(smaccStateMachine_->m_mutex_);
   try
   {
-    smaccStateMachine_->lockStateMachine("update behaviors");
+    //smaccStateMachine_->lockStateMachine("update behaviors");
 
     long currentStateIndex = smaccStateMachine_->getCurrentStateCounter();
     auto currentState = smaccStateMachine_->getCurrentState();
@@ -324,7 +325,7 @@ void SignalDetector::pollOnce()
 
   auto nh = this->getNode();
   rclcpp::spin_some(nh);
-  smaccStateMachine_->unlockStateMachine("update behaviors");
+  //smaccStateMachine_->unlockStateMachine("update behaviors");
 }
 
 /**

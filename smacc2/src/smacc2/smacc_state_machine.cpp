@@ -193,21 +193,37 @@ void ISmaccStateMachine::state_machine_visualization()
   stateMachineStatusPub_->publish(status_msg_);
 }
 
-void ISmaccStateMachine::lockStateMachine(std::string msg)
-{
-  RCLCPP_DEBUG(nh_->get_logger(), "-- locking SM: %s", msg.c_str());
-  m_mutex_.lock();
-}
+// void ISmaccStateMachine::lockStateMachine(std::string msg)
+// {
+//   RCLCPP_DEBUG(nh_->get_logger(), "-- locking SM: %s", msg.c_str());
+//   m_mutex_.lock();
+// }
 
-void ISmaccStateMachine::unlockStateMachine(std::string msg)
-{
-  RCLCPP_DEBUG(nh_->get_logger(), "-- unlocking SM: %s", msg.c_str());
-  m_mutex_.unlock();
-}
+// void ISmaccStateMachine::unlockStateMachine(std::string msg)
+// {
+//   RCLCPP_DEBUG(nh_->get_logger(), "-- unlocking SM: %s", msg.c_str());
+//   m_mutex_.unlock();
+// }
 
 std::string ISmaccStateMachine::getStateMachineName()
 {
   return demangleSymbol(typeid(*this).name());
+}
+
+void ISmaccStateMachine::disposeStateAndDisconnectSignals()
+{
+  for (auto & conn : this->stateCallbackConnections)
+  {
+    RCLCPP_WARN_STREAM(
+      getLogger(),
+      "[StateMachine] Disconnecting scoped-lifetime SmaccSignal "
+      "subscription");
+    conn.disconnect();
+  }
+
+  this->stateCallbackConnections.clear();
+
+  currentState_ = nullptr;
 }
 
 void ISmaccStateMachine::checkStateMachineConsistence()

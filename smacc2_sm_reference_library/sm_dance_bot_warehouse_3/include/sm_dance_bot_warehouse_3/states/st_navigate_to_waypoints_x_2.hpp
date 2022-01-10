@@ -25,7 +25,7 @@
 namespace sm_dance_bot_warehouse_3
 {
 // STATE DECLARATION
-struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDanceBotRunMode>
+struct StNavigateToWaypointsX2 : smacc2::SmaccState<StNavigateToWaypointsX2, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
@@ -123,18 +123,18 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
 
   // TRANSITION TABLE
   typedef mpl::list<
-
-    Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_1>,
-    Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_2>,
-    Transition<EvWaypoint2<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_3>,
-    Transition<EvWaypoint3<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_4>,
-    Transition<EvWaypoint4<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_5>,
-    Transition<EvWaypoint5<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_6>,
-    Transition<EvWaypoint6<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_7>,
-    Transition<EvWaypoint7<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_8>,
-    Transition<EvWaypoint8<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_9>,
-    Transition<EvWaypoint9<ClNav2Z, OrNavigation>, StNavigateToWaypointsX2, TRANSITION_10>,
-    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX>
+    Transition<EvWaypoint9<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_10>,
+    Transition<EvWaypoint10<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_11>,
+    Transition<EvWaypoint11<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_12>,
+    Transition<EvWaypoint12<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_13>,
+    Transition<EvWaypoint13<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_14>,
+    Transition<EvWaypoint14<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_15>,
+    Transition<EvWaypoint15<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_16>,
+    Transition<EvWaypoint16<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_17>,
+    Transition<EvWaypoint17<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_18>,
+    Transition<EvWaypoint18<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_19>,
+    Transition<EvWaypoint19<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_20> ,
+    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX2>
     >
     reactions;
 
