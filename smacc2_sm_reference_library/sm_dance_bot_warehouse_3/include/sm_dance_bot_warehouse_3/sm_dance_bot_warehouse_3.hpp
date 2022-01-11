@@ -85,6 +85,7 @@ class StEventCountDown;
 class StNavigateUndoMotion;
 class StNavigateToWaypoint1;
 class StNavigateToWaypointsX;
+class StNavigateToWaypointsX2;
 
 class StRotateDegrees1;
 class StRotateDegrees2;
@@ -196,6 +197,7 @@ struct SmDanceBotWareHouse3 : public smacc2::SmaccStateMachineBase<SmDanceBotWar
 #include <sm_dance_bot_warehouse_3/states/st_event_count_down.hpp>
 
 #include <sm_dance_bot_warehouse_3/states/st_navigate_to_waypoints_x.hpp>
+#include <sm_dance_bot_warehouse_3/states/st_navigate_to_waypoints_x_2.hpp>
 
 #include <sm_dance_bot_warehouse_3/states/st_navigate_undo_motion.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_navigate_undo_motion_leaf.hpp>
@@ -208,5 +210,3 @@ struct SmDanceBotWareHouse3 : public smacc2::SmaccStateMachineBase<SmDanceBotWar
 #include <sm_dance_bot_warehouse_3/states/st_rotate_degrees_2.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_rotate_degrees_3.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_rotate_degrees_4.hpp>
-#include <sm_dance_bot_warehouse_3/states/st_rotate_degrees_5.hpp>
-#include <sm_dance_bot_warehouse_3/states/st_rotate_degrees_6.hpp>

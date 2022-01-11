@@ -134,6 +134,8 @@ public:
   template <typename StateType>
   void notifyOnStateExited(StateType * state);
 
+  void disposeStateAndDisconnectSignals();
+
   template <typename StateType>
   void notifyOnRuntimeConfigurationFinished(StateType * state);
 
@@ -149,6 +151,8 @@ public:
   rclcpp::Node::SharedPtr getNode();
 
   inline rclcpp::Logger getLogger() { return nh_->get_logger(); }
+
+  inline std::recursive_mutex & getMutex() { return this->m_mutex_; }
 
 protected:
   void checkStateMachineConsistence();
@@ -203,9 +207,9 @@ private:
 
   unsigned long stateSeqCounter_;
 
-  void lockStateMachine(std::string msg);
+  // void lockStateMachine(std::string msg);
 
-  void unlockStateMachine(std::string msg);
+  // void unlockStateMachine(std::string msg);
 
   template <typename EventType>
   void propagateEventToStateReactors(ISmaccState * st, EventType * ev);

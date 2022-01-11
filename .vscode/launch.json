@@ -81,6 +81,31 @@
                 }
             ]
         },
+                {
+            "name": "(gdb) sm_aws_warehouse_navigation_node",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../install/sm_aws_warehouse_navigation/lib/sm_aws_warehouse_navigation/sm_aws_warehouse_navigation_node",
+            "args": [
+                "--ros-args",
+                "-r",
+                "__node:=sm_aws_warehouse_navigation",
+                "--params-file",
+                "${workspaceFolder}/../install/sm_aws_warehouse_navigation/share/sm_aws_warehouse_navigation/params/sm_aws_warehouse_navigation_config.yaml"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
         {
             "name": "(gdb) sm_atomic_performance_test",
             "type": "cppdbg",
@@ -205,6 +230,37 @@
                 "${workspaceFolder}/../install/sm_dance_bot_warehouse_2/share/sm_dance_bot_warehouse_2/params/sm_dance_bot_warehouse_2_config.yaml",
                 "--params-file",
                 "${workspaceFolder}/../install/sm_dance_bot_warehouse_2/share/sm_dance_bot_warehouse_2/params/nav2z_client/odom_tracker.yaml"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) SmDanceBotWarehouse3",
+            "type": "cppdbg",
+            "request": "launch",
+
+            "program": "${workspaceFolder}/../install/sm_dance_bot_warehouse_3/lib/sm_dance_bot_warehouse_3/sm_dance_bot_warehouse_3_node",
+            "args": [
+                "--ros-args",
+                "--log-level",
+                "INFO",
+                "--ros-args",
+                "-r",
+                "__node:=SmDanceBotWareHouse3",
+                "--params-file",
+                "${workspaceFolder}/../install/sm_dance_bot_warehouse_3/share/sm_dance_bot_warehouse_3/params/sm_dance_bot_warehouse_3_config.yaml",
+                "--params-file",
+                "${workspaceFolder}/../install/sm_dance_bot_warehouse_3/share/sm_dance_bot_warehouse_3/params/nav2z_client/odom_tracker.yaml"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

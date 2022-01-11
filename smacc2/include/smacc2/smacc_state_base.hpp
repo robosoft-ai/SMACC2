@@ -124,17 +124,21 @@ public:
   {
     auto * derivedThis = static_cast<MostDerived *>(this);
     this->getStateMachine().notifyOnStateExitting(derivedThis);
-    try
     {
-      TRACEPOINT(smacc2_state_onExit_start, STATE_NAME);
-      // static_cast<MostDerived *>(this)->onExit();
-      standardOnExit(*derivedThis);
-      TRACEPOINT(smacc2_state_onExit_end, STATE_NAME);
+      std::lock_guard<std::recursive_mutex> lock(this->getStateMachine().getMutex());
+      this->getStateMachine().disposeStateAndDisconnectSignals();
+      try
+      {
+        TRACEPOINT(smacc2_state_onExit_start, STATE_NAME);
+        // static_cast<MostDerived *>(this)->onExit();
+        standardOnExit(*derivedThis);
+        TRACEPOINT(smacc2_state_onExit_end, STATE_NAME);
+      }
+      catch (...)
+      {
+      }
+      this->getStateMachine().notifyOnStateExited(derivedThis);
     }
-    catch (...)
-    {
-    }
-    this->getStateMachine().notifyOnStateExited(derivedThis);
   }
 
 public:

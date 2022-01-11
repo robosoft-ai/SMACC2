@@ -92,7 +92,8 @@ TOrthogonal * ISmaccStateMachine::getOrthogonal()
 template <typename TOrthogonal>
 void ISmaccStateMachine::createOrthogonal()
 {
-  this->lockStateMachine("create orthogonal");
+  //this->lockStateMachine("create orthogonal");
+  std::lock_guard<std::recursive_mutex> guard();
   std::string orthogonalkey = demangledTypeName<TOrthogonal>();
 
   if (orthogonals_.count(orthogonalkey) == 0)
@@ -117,7 +118,7 @@ void ISmaccStateMachine::createOrthogonal()
     }
     RCLCPP_WARN_STREAM(getLogger(), ss.str());
   }
-  this->unlockStateMachine("create orthogonal");
+  //this->unlockStateMachine("create orthogonal");
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -558,20 +559,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
     }
   }
 
-  this->lockStateMachine("state exit");
-
-  for (auto & conn : this->stateCallbackConnections)
-  {
-    RCLCPP_WARN_STREAM(
-      getLogger(),
-      "[StateMachine] Disconnecting scoped-lifetime SmaccSignal "
-      "subscription");
-    conn.disconnect();
-  }
-
-  this->stateCallbackConnections.clear();
-
-  currentState_ = nullptr;
+  //this->lockStateMachine("state exit");
 }
 
 template <typename StateType>
@@ -583,7 +571,7 @@ void ISmaccStateMachine::notifyOnStateExited(StateType *)
   RCLCPP_WARN_STREAM(getLogger(), "state exit: " << fullname);
 
   stateMachineCurrentAction = StateMachineInternalAction::TRANSITIONING;
-  this->unlockStateMachine("state exit");
+  //this->unlockStateMachine("state exit");
 }
 //------------------------------------------------------------------------------------------------
 template <typename EventType>
