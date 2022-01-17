@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="sm_autoware_avp" exec="sm_autoware_avp_node" name="sm_autoware_avp" output="screen">
+    <param from="$(find-pkg-share sm_autoware_avp)/config/sm_autoware_avp_config.yaml" />
+  </node>
+</launch>
