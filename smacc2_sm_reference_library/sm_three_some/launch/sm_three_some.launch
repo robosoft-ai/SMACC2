@@ -1,0 +1,5 @@
+<launch>
+    <arg name="server_nodes_xterms" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -e" />
+    <node pkg="sm_three_some" exec="sm_three_some_node" name="sm_three_some" launch-prefix="$(var server_nodes_xterms)" />
+    <node pkg="keyboard_client" exec="keyboard_server_node.py" name="keyboard_server_node" launch-prefix="$(var server_nodes_xterms)" />
+</launch>

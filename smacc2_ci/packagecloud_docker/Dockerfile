@@ -67,7 +67,7 @@ RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; catkin buil
 # BUILD DEBIAN FILES
 # ------------------------------------------------------------------------
 
-RUN echo "yaml file:/root/src/SMACC/smacc_ci/rosdep_${ROS_VERSION_NAME}.yaml" > /etc/ros/rosdep/sources.list.d/50-my-packages.list 
+RUN echo "yaml file:/root/src/SMACC/smacc_ci/rosdep_${ROS_VERSION_NAME}.yaml" > /etc/ros/rosdep/sources.list.d/50-my-packages.list
 RUN rosdep update
 
 RUN echo "regen"

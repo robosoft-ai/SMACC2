@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="sm_atomic" exec="sm_atomic_node" name="sm_atomic">
+        <param from="$(find-pkg-share sm_atomic)/config/sm_atomic_config.yaml"/>
+    </node>
+</launch>

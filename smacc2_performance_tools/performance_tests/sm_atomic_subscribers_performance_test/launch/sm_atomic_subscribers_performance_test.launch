@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="sm_atomic_subscribers_performance_test" exec="sm_atomic_subscribers_performance_test_node" name="sm_atomic_performance_test">
+        <param from="$(find-pkg-share sm_atomic_performance_test)/config/sm_atomic_config.yaml"/>
+    </node>
+
+    <node pkg="sm_atomic_subscribers_performance_test" exec="basic_publisher.py"/>
+</launch>
