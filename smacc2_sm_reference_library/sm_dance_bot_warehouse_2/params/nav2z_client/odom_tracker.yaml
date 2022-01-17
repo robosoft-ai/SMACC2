@@ -1,7 +1,0 @@
-SmDanceBotWareHouse2:
-  ros__parameters:
-    record_point_distance_threshold:  0.01 # 1 cm
-    record_angular_distance_threshold: 0.01 # rads
-    clear_point_distance_threshold: 0.15 # 5cm
-    clear_angular_distance_threshold: 0.25 # rads
-  #     odom_tracker:

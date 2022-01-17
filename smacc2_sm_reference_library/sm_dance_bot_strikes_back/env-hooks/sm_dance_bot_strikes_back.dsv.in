@@ -1,2 +1,0 @@
-prepend-non-duplicate;GAZEBO_MODEL_PATH;share/sm_dance_bot_strikes_back/models
-prepend-non-duplicate;GAZEBO_MODEL_PATH;share/sm_dance_bot_strikes_back/worlds

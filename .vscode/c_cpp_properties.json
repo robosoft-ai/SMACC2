@@ -3,18 +3,13 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/../**",
-                "/opt/ros/rolling/include",
-                "/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
-                "/usr/include/x86_64-linux-gnu/qt5",
-                "/usr/include/x86_64-linux-gnu/qt5/QtCore"
+                "${workspaceFolder}/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c11",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "linux-clang-x64",
-
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-clang-x64"
         }
     ],
     "version": 4
