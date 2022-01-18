@@ -44,11 +44,7 @@ struct $SmName$ : public smacc2::SmaccStateMachineBase<$SmName$, State1>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  void onInitialize() override
-  {
-    _node_ = std::make_shared<rclcpp::Node>("$sm_name$");
-    _start_time_ = _node_->now();
-  }
+  void onInitialize() override { _start_time_ = _node_->now(); }
 };
 
 }  // namespace $sm_name$

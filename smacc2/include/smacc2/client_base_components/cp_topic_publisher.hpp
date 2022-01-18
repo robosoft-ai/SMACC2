@@ -45,7 +45,7 @@ public:
 
   CpTopicPublisher(std::string topicname) { this->topicName = topicname; }
 
-  virtual ~CpTopicPublisher() { pub_->shutdown(); }
+  virtual ~CpTopicPublisher() {}
 
   // template <typename TOrthogonal, typename TSourceObject>
   // void onOrthogonalAllocation()
@@ -65,10 +65,7 @@ public:
 
   void publish(const MessageType & msg) { pub_->publish(msg); }
 
-  virtual void initialize();
-
-protected:
-  rclcpp::Node::SharedPtr getNode();
+  void onInitialize() override;
 
 private:
   typename rclcpp::Publisher<MessageType>::SharedPtr pub_;
@@ -79,7 +76,7 @@ private:
 };
 
 template <typename T>
-void CpTopicPublisher<T>::initialize()
+void CpTopicPublisher<T>::onInitialize()
 {
   if (!initialized_)
   {

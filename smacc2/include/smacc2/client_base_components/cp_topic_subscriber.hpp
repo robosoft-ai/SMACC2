@@ -69,20 +69,20 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    this->postMessageEvent = [=](auto msg) {
-      auto event = new EvTopicMessage<TSourceObject, TOrthogonal>();
-      event->msgData = msg;
-      this->postEvent(event);
-    };
+    // this->postMessageEvent = [=](auto msg) {
+    //   auto event = new EvTopicMessage<TSourceObject, TOrthogonal>();
+    //   event->msgData = msg;
+    //   this->postEvent(event);
+    // };
 
-    this->postInitialMessageEvent = [=](auto msg) {
-      auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal>();
-      event->msgData = msg;
-      this->postEvent(event);
-    };
+    // this->postInitialMessageEvent = [=](auto msg) {
+    //   auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal>();
+    //   event->msgData = msg;
+    //   this->postEvent(event);
+    // };
   }
 
-  virtual void initialize()
+  void onInitialize() override
   {
     if (!initialized_)
     {
@@ -93,14 +93,17 @@ public:
       RCLCPP_INFO_STREAM(
         getLogger(), "[" << this->getName() << "] Subscribing to topic: " << topicName_);
 
-      sub_ = this->getNode()->template subscribe(
-        topicName_, *queueSize, &CpTopicSubscriber<TMessageType>::messageCallback, this);
+      rclcpp::SensorDataQoS qos;
+      if (queueSize) qos.keep_last(*queueSize);
+
+      std::function<void(typename MessageType::SharedPtr)> fn = [this](auto msg) {
+        this->messageCallback(*msg);
+      };
+
+      sub_ = this->getNode()->template create_subscription<MessageType>(topicName_, qos, fn);
       this->initialized_ = true;
     }
   }
-
-protected:
-  rclcpp::Node::SharedPtr getNode();
 
 private:
   typename rclcpp::Subscription<MessageType>::SharedPtr sub_;
