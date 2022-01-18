@@ -1,6 +1,0 @@
-<library path="undo_path_global_planner">
-  <class name="undo_path_global_planner::UndoPathGlobalPlanner" type="cl_nav2z::undo_path_global_planner::UndoPathGlobalPlanner" base_class_type="nav2_core::GlobalPlanner">
-    <description>
-    </description>
-  </class>
-</library>
