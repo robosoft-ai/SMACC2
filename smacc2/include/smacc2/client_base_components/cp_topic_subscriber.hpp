@@ -43,7 +43,7 @@ public:
 
   CpTopicSubscriber(std::string topicname) { topicName = topicname; }
 
-  virtual ~CpTopicSubscriber() { sub_.shutdown(); }
+  virtual ~CpTopicSubscriber() {}
 
   smacc2::SmaccSignal<void(const MessageType &)> onFirstMessageReceived_;
   smacc2::SmaccSignal<void(const MessageType &)> onMessageReceived_;
@@ -90,19 +90,12 @@ public:
 
       if (!queueSize) queueSize = 1;
 
-      if (!topicName)
-      {
-        RCLCPP_ERROR(getLogger(), "topic client with no topic name set. Skipping subscribing");
-      }
-      else
-      {
-        RCLCPP_INFO_STREAM(
-          getLogger(), "[" << this->getName() << "] Subscribing to topic: " << topicName);
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << this->getName() << "] Subscribing to topic: " << topicName_);
 
-        sub_ = getNode()->subscribe(
-          *topicName, *queueSize, &CpTopicSubscriber<MessageType>::messageCallback, this);
-        this->initialized_ = true;
-      }
+      sub_ = this->getNode()->template subscribe(
+        topicName_, *queueSize, &CpTopicSubscriber<TMessageType>::messageCallback, this);
+      this->initialized_ = true;
     }
   }
 
@@ -110,7 +103,7 @@ protected:
   rclcpp::Node::SharedPtr getNode();
 
 private:
-  ros::Subscriber sub_;
+  typename rclcpp::Subscription<MessageType>::SharedPtr sub_;
   bool firstMessage_;
   bool initialized_;
   std::string topicName_;

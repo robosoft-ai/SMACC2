@@ -13,10 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-// Author: Denis Štogl (template)
-//
-
 #include <$sm_name$/$sm_name$.hpp>
 
 //--------------------------------------------------------------------
