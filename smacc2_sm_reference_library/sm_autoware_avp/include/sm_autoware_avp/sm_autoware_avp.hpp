@@ -13,10 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-// Author: Denis Štogl (template)
-//
-
 #pragma once
 
 #include <memory>
@@ -25,36 +21,37 @@
 #include "smacc2/smacc.hpp"
 
 // ORTHOGONALS
-#include "sm_autoware_avp/orthogonals/or_timer.hpp"
+#include "orthogonals/or_autoware_auto.hpp"
+
+// CLIENTS
+#include "clients/autoware_client/cl_autoware.hpp"
 
 namespace sm_autoware_avp
 {
 // SMACC2 clases
-using sm_autoware_avp::OrTimer;
+using sm_autoware_avp::OrAutowareAuto;
 
 //STATES
-struct State1;
-struct State2;
-
-//VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
-std::shared_ptr<rclcpp::Node> _node_;
+struct StAcquireSensors;
+struct StNavigateWaypoint1;
+struct StSetupInitialLocationEstimation;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
 struct SmAutowareAvp
-: public smacc2::SmaccStateMachineBase<SmAutowareAvp, State1>
+: public smacc2::SmaccStateMachineBase<SmAutowareAvp, StAcquireSensors>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
   void onInitialize() override
   {
-    this->createOrthogonal<OrTimer>();
-    _node_ = std::make_shared<rclcpp::Node>("sm_autoware_avp");
+    this->createOrthogonal<OrAutowareAuto>();
   }
 };
 
 }  // namespace sm_autoware_avp
 
 // STATES
-#include "states/st_state_1.hpp"
-#include "states/st_state_2.hpp"
+#include "states/st_acquire_sensors.hpp"
+#include "states/st_setup_initial_location_estimation.hpp"
+#include "states/st_navigate_waypoint_1.hpp"

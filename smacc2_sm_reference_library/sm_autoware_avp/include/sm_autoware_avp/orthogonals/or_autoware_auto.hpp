@@ -18,14 +18,20 @@
 
 #include "ros_timer_client/cl_ros_timer.hpp"
 #include "smacc2/smacc.hpp"
+#include "sm_autoware_avp/clients/autoware_client/cl_autoware.hpp"
 
 namespace sm_autoware_avp
 {
 using namespace std::chrono_literals;
 
-class OrTimer : public smacc2::Orthogonal<OrTimer>
+class OrAutowareAuto : public smacc2::Orthogonal<OrAutowareAuto>
 {
 public:
-  void onInitialize() override { auto client = this->createClient<cl_ros_timer::ClRosTimer>(1s); }
+  void onInitialize() override 
+  { 
+      auto client = this->createClient<sm_autoware_avp::clients::ClAutoware>(); 
+      auto cppub = client->createComponent<smacc2::components::CpTopicPublisher<geometry_msgs::msg::PoseStamped>>();
+      auto cppsub = client->createComponent<smacc2::components::CpTopicSubscriber<geometry_msgs::msg::PoseStamped>>();
+  }
 };
 }  // namespace sm_atomic
