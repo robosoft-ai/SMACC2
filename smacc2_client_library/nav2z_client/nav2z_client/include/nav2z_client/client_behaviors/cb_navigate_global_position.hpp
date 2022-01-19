@@ -19,7 +19,6 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <boost/optional.hpp>
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
 
