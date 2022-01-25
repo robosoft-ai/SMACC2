@@ -22,6 +22,7 @@
 
 // ORTHOGONALS
 #include "orthogonals/or_autoware_auto.hpp"
+#include "orthogonals/or_timer.hpp"
 
 // CLIENTS
 #include "clients/autoware_client/cl_autoware.hpp"
@@ -33,8 +34,11 @@ using sm_autoware_avp::OrAutowareAuto;
 
 //STATES
 struct StAcquireSensors;
-struct StNavigateWaypoint1;
 struct StSetupInitialLocationEstimation;
+struct StNavigateWaypoint1;
+struct StNavigateWaypoint2;
+struct StFirstPause;
+struct StSecondPause;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
@@ -46,6 +50,7 @@ struct SmAutowareAvp
   void onInitialize() override
   {
     this->createOrthogonal<OrAutowareAuto>();
+    this->createOrthogonal<OrTimer>();
   }
 };
 
@@ -55,3 +60,6 @@ struct SmAutowareAvp
 #include "states/st_acquire_sensors.hpp"
 #include "states/st_setup_initial_location_estimation.hpp"
 #include "states/st_navigate_waypoint_1.hpp"
+#include "states/st_navigate_waypoint_2.hpp"
+#include "states/st_first_pause.hpp"
+#include "states/st_second_pause.hpp"

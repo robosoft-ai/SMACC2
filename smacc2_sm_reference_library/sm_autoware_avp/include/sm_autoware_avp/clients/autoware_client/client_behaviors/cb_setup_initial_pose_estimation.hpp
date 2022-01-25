@@ -17,35 +17,30 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-
 #pragma once
 
-#include <chrono>
-
-#include "sm_autoware_avp/clients/autoware_client/cl_autoware.hpp"
-#include "smacc2/smacc.hpp"
+#include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
+#include "smacc2/smacc_asynchronous_client_behavior.hpp"
 
 namespace sm_autoware_avp
 {
-
-class OrAutowareAuto : public smacc2::Orthogonal<OrAutowareAuto>
+namespace clients
+{
+namespace autoware_client
+{
+class CbSetupInitialPoseEstimation : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  void onInitialize() override
-  {
-    auto client = this->createClient<sm_autoware_avp::clients::ClAutoware>();
+  CbSetupInitialPoseEstimation(const geometry_msgs::msg::PoseWithCovarianceStamped & initialStatePose);
 
-    auto cppubLocation = client->createNamedComponent<
-      smacc2::components::CpTopicPublisher<geometry_msgs::msg::PoseWithCovarianceStamped>>(
-      "initialPoseEstimation", "/localization/initialpose");
+  virtual void onEntry() override;
 
-    auto cpppubGoalPose = client->createNamedComponent<
-      smacc2::components::CpTopicPublisher<geometry_msgs::msg::PoseStamped>>(
-      "goalPose", "planning/goal_pose");
+  void onExit() override;
 
-    auto subscriberNdtPose = client->createNamedComponent<
-      smacc2::components::CpTopicSubscriber<geometry_msgs::msg::PoseWithCovarianceStamped>>(
-      "ndtPose", "/localization/ndt_pose");
-  }
+private:
+  geometry_msgs::msg::PoseWithCovarianceStamped initialStatePose_;
 };
+}  // namespace autoware_client
+
+}  // namespace clients
 }  // namespace sm_autoware_avp

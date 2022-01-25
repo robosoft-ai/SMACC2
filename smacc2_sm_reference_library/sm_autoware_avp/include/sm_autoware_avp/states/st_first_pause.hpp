@@ -25,31 +25,30 @@
 #include "smacc2/smacc.hpp"
 
 // CLIENTS
+#include "ros_timer_client/cl_ros_timer.hpp"
+#include "ros_timer_client/client_behaviors/cb_timer_countdown_once.hpp"
 
 // ORTHOGONALS
 #include "sm_autoware_avp/orthogonals/or_autoware_auto.hpp"
 
-// CLIENT BEHAVIORS
-#include "smacc2/client_behaviors/cb_wait_node.hpp"
-#include "smacc2/client_behaviors/cb_wait_topic_message.hpp"
-
 namespace sm_autoware_avp
 {
 // SMACC2 clases
-using smacc2::EvStateRequestFinish;
+
 using smacc2::Transition;
-using smacc2::client_behaviors::CbWaitNode;
 using smacc2::default_transition_tags::SUCCESS;
 
+using namespace sm_autoware_avp::clients;
+
 // STATE DECLARATION
-struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAutowareAvp>
+struct StFirstPause : smacc2::SmaccState<StFirstPause, SmAutowareAvp>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
 
-    Transition<smacc2::EvCbSuccess<CbWaitNode, OrAutowareAuto>, StSetupInitialLocationEstimation, SUCCESS>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StNavigateWaypoint2, SUCCESS>
 
     >
     reactions;
@@ -57,10 +56,10 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmAutowareAvp>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrAutowareAuto, CbWaitNode>("/localization/p2d_ndt_localizer_node" /*"/lgsvl/bridge"*/);  // EvTimer triggers each 3 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(12);
   }
 
-  void runtimeConfigure() {}
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StFirstPause"); }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 

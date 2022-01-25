@@ -30,6 +30,8 @@ include_directories(
 
 add_executable(${PROJECT_NAME}_node
   src/${PROJECT_NAME}/${PROJECT_NAME}_node.cpp
+  src/${PROJECT_NAME}/clients/autoware_client/client_behaviors/cb_navigate_global_position.cpp
+  src/${PROJECT_NAME}/clients/autoware_client/client_behaviors/cb_setup_initial_pose_estimation.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}_node

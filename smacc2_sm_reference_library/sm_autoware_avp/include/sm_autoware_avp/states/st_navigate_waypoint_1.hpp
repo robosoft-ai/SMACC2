@@ -13,6 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
 
 #pragma once
 
@@ -30,9 +35,15 @@
 namespace sm_autoware_avp
 {
 // SMACC2 clases
-using smacc2::Transition;
+using sm_autoware_avp::clients::autoware_client::CbNavigateGlobalPosition;
+using namespace sm_autoware_avp::clients;
+
 using smacc2::EvStateRequestFinish;
+using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
+using smacc2::default_transition_tags::DEFAULT;
+
+struct REPLAN:  smacc2::default_transition_tags::CONTINUELOOP { };
 
 // STATE DECLARATION
 struct StNavigateWaypoint1 : smacc2::SmaccState<StNavigateWaypoint1, SmAutowareAvp>
@@ -42,14 +53,28 @@ struct StNavigateWaypoint1 : smacc2::SmaccState<StNavigateWaypoint1, SmAutowareA
   // TRANSITION TABLE
   typedef boost::mpl::list<
 
-    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State1, SUCCESS>
+      // smacc2::EvCbSuccess<CbNavigateGlobalPosition, OrAutowareAuto>, StNavigateWaypoint2, SUCCESS>,
+      Transition<EvGoalReached<ClAutoware, OrAutowareAuto>, StFirstPause, SUCCESS>,
+      Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StNavigateWaypoint1, REPLAN>
 
-    >reactions;
+    >
+    reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);  // EvTimer triggers once at 10 client ticks
+    geometry_msgs::msg::PoseStamped goal;
+
+    goal.header.frame_id = "map";
+    goal.pose.position.x = -45.253597259521484;
+    goal.pose.position.y = 93.64368438720703;
+    goal.pose.position.z = 0;
+
+    goal.pose.orientation.z = 0.34841036522579555;
+    goal.pose.orientation.w = 0.9373421026515494;
+
+    configure_orthogonal<OrAutowareAuto, CbNavigateGlobalPosition>(goal);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StNavigateWaypoint1"); }
@@ -58,4 +83,4 @@ struct StNavigateWaypoint1 : smacc2::SmaccState<StNavigateWaypoint1, SmAutowareA
 
   void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-}  // namespace sm_atomic_performance_test_a_1
+}  // namespace sm_autoware_avp

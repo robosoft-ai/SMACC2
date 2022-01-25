@@ -18,34 +18,44 @@
  *
  ******************************************************************************************************************/
 
-#pragma once
-
-#include <chrono>
-
+#include "sm_autoware_avp/clients/autoware_client/client_behaviors/cb_navigate_global_position.hpp"
 #include "sm_autoware_avp/clients/autoware_client/cl_autoware.hpp"
-#include "smacc2/smacc.hpp"
 
 namespace sm_autoware_avp
 {
-
-class OrAutowareAuto : public smacc2::Orthogonal<OrAutowareAuto>
+namespace clients
 {
-public:
-  void onInitialize() override
-  {
-    auto client = this->createClient<sm_autoware_avp::clients::ClAutoware>();
+namespace autoware_client
+{
 
-    auto cppubLocation = client->createNamedComponent<
-      smacc2::components::CpTopicPublisher<geometry_msgs::msg::PoseWithCovarianceStamped>>(
-      "initialPoseEstimation", "/localization/initialpose");
+CbNavigateGlobalPosition::CbNavigateGlobalPosition(const geometry_msgs::msg::PoseStamped& goalPose)
+: goalPose_(goalPose)
+{
 
-    auto cpppubGoalPose = client->createNamedComponent<
-      smacc2::components::CpTopicPublisher<geometry_msgs::msg::PoseStamped>>(
-      "goalPose", "planning/goal_pose");
+}
 
-    auto subscriberNdtPose = client->createNamedComponent<
-      smacc2::components::CpTopicSubscriber<geometry_msgs::msg::PoseWithCovarianceStamped>>(
-      "ndtPose", "/localization/ndt_pose");
-  }
-};
+// CbNavigateGlobalPosition::CbNavigateGlobalPosition(float x, float y, float z, float yaw /*radians*/)
+// {
+//   goal_.x = x;
+//   goal_.y = y;
+//   goal_.z = z;
+//   yaw_ = yaw;
+// }
+
+void CbNavigateGlobalPosition::onEntry()
+{
+  RCLCPP_INFO(getLogger(), "On Entry!");
+  sm_autoware_avp::clients::ClAutoware * autowareClient_;
+
+  this->requiresClient(autowareClient_);
+
+  this->goalPose_.header.stamp = getNode()->now();
+
+  autowareClient_->publishGoalPose(this->goalPose_);
+}
+
+void CbNavigateGlobalPosition::onExit() {}
+}  // namespace autoware_client
+
+}  // namespace clients
 }  // namespace sm_autoware_avp

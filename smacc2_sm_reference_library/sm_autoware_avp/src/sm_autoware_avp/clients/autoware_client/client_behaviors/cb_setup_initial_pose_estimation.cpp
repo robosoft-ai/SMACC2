@@ -18,34 +18,34 @@
  *
  ******************************************************************************************************************/
 
-#pragma once
-
-#include <chrono>
-
+#include "sm_autoware_avp/clients/autoware_client/client_behaviors/cb_setup_initial_pose_estimation.hpp"
 #include "sm_autoware_avp/clients/autoware_client/cl_autoware.hpp"
-#include "smacc2/smacc.hpp"
 
 namespace sm_autoware_avp
 {
-
-class OrAutowareAuto : public smacc2::Orthogonal<OrAutowareAuto>
+namespace clients
 {
-public:
-  void onInitialize() override
-  {
-    auto client = this->createClient<sm_autoware_avp::clients::ClAutoware>();
+namespace autoware_client
+{
+CbSetupInitialPoseEstimation::CbSetupInitialPoseEstimation(
+  const geometry_msgs::msg::PoseWithCovarianceStamped & initialStatePose)
+: initialStatePose_(initialStatePose)
+{
+}
 
-    auto cppubLocation = client->createNamedComponent<
-      smacc2::components::CpTopicPublisher<geometry_msgs::msg::PoseWithCovarianceStamped>>(
-      "initialPoseEstimation", "/localization/initialpose");
+void CbSetupInitialPoseEstimation::onEntry()
+{
+  sm_autoware_avp::clients::ClAutoware * autowareClient_;
+  initialStatePose_.header.stamp = getNode()->now();
+  initialStatePose_.header.frame_id = "map";
 
-    auto cpppubGoalPose = client->createNamedComponent<
-      smacc2::components::CpTopicPublisher<geometry_msgs::msg::PoseStamped>>(
-      "goalPose", "planning/goal_pose");
+  this->requiresClient(autowareClient_);
 
-    auto subscriberNdtPose = client->createNamedComponent<
-      smacc2::components::CpTopicSubscriber<geometry_msgs::msg::PoseWithCovarianceStamped>>(
-      "ndtPose", "/localization/ndt_pose");
-  }
-};
+  autowareClient_->publishInitialPoseEstimation(initialStatePose_);
+}
+
+void CbSetupInitialPoseEstimation::onExit() {}
+
+}  // namespace autoware_client
+}  // namespace clients
 }  // namespace sm_autoware_avp
