@@ -47,9 +47,4 @@ struct $SmName$
     this->createOrthogonal<OrTimer>();
   }
 };
-
-}  // namespace $sm_name$
-
-// STATES
-#include "states/st_state_1.hpp"
-#include "states/st_state_2.hpp"
+}

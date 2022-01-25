@@ -34,7 +34,7 @@ public:
   CbNavigateGlobalPosition(const geometry_msgs::msg::PoseStamped& goalPose);
 
   virtual void onEntry() override;
-  
+
   void onExit() override;
 
 private:
