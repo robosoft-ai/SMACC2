@@ -37,26 +37,39 @@ class CbWaitTopicMessage : public smacc2::SmaccAsyncClientBehavior
 {
 public:
   CbWaitTopicMessage(
-    const char * topicname, std::function<bool(const TMessage &)> checkfunction = nullptr)
+    const char * topicname, std::function<bool(const TMessage &)> guardFunction = nullptr)
   {
     topicname_ = topicname;
-    checkFn_ = checkfunction;
+    guardFn_ = guardFunction;
   }
+
+  virtual ~CbWaitTopicMessage() {}
 
   void onEntry() override
   {
     rclcpp::SensorDataQoS qos;
-    rclcpp::SubscriptionOptions sub_option;
+    // qos.reliable();
+    // rclcpp::SubscriptionOptions sub_option;
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[CbWaitTopicMessage] waiting message from topic: "
+                     << topicname_ << "[" << demangledTypeName<TMessage>() << "]");
 
-    sub_ = getNode()->create_subscription<TMessage>(
-      topicname_, qos,
-      std::bind(&CbWaitTopicMessage<TMessage>::onMessageReceived, this, std::placeholders::_1),
-      sub_option);
+    // sub_ = getNode()->create_subscription<TMessage>(
+    //   topicname_, qos,
+    //   std::bind(&CbWaitTopicMessage<TMessage>::onMessageReceived, this, std::placeholders::_1),
+    //   sub_option);
+
+    std::function<void(typename TMessage::SharedPtr)> fn = [this](auto msg) {
+      this->onMessageReceived(msg);
+    };
+
+    auto nh = getNode();
+    sub_ = nh->create_subscription<TMessage>(topicname_, qos, fn);
   }
 
   void onMessageReceived(const typename TMessage::SharedPtr msg)
   {
-    if (checkFn_ == nullptr || checkFn_(*msg))
+    if (guardFn_ == nullptr || guardFn_(*msg))
     {
       RCLCPP_INFO(getLogger(), "[CbWaitTopicMessage] message received.");
       success = true;
@@ -67,7 +80,7 @@ public:
 protected:
   bool success = false;
   typename rclcpp::Subscription<TMessage>::SharedPtr sub_;
-  std::function<bool(const TMessage &)> checkFn_;
+  std::function<bool(const TMessage &)> guardFn_;
   std::string topicname_;
 };
 }  // namespace client_behaviors

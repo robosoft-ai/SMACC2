@@ -1,5 +1,4 @@
-// Copyright 2021 MyName/MyCompany Inc.
-// Copyright 2021 RobosoftAI Inc. (template)
+// Copyright 2021 RobosoftAI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,11 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <$sm_name$/$sm_name$.hpp>
+#include <chrono>
+#include <ros_timer_client/cl_ros_timer.hpp>
+#include <smacc2/smacc.hpp>
 
-//--------------------------------------------------------------------
-int main(int argc, char ** argv)
+using namespace std::chrono_literals;
+
+namespace sm_autoware_avp
 {
-  rclcpp::init(argc, argv);
-  smacc2::run<$sm_name$::$SmName$>();
-}
+using namespace std::chrono_literals;
+class OrTimer : public smacc2::Orthogonal<OrTimer>
+{
+public:
+  void onInitialize() override { auto client = this->createClient<cl_ros_timer::ClRosTimer>(1s); }
+};
+}  // namespace sm_atomic

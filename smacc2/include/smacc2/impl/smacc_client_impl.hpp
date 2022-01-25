@@ -44,6 +44,30 @@ TComponent * ISmaccClient::getComponent()
 }
 
 template <typename TComponent>
+TComponent * ISmaccClient::getComponent(int index)
+{
+  int count = 0;
+  for (auto & component : components_)
+  {
+    auto * tcomponent = dynamic_cast<TComponent *>(component.second.get());
+    if (tcomponent != nullptr)
+    {
+      if (count == index)
+      {
+        return tcomponent;
+      }
+      else
+      {
+        count++;
+        continue;
+      }
+    }
+  }
+
+  return nullptr;
+}
+
+template <typename TComponent>
 TComponent * ISmaccClient::getComponent(std::string name)
 {
   for (auto & component : components_)

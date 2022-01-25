@@ -76,6 +76,8 @@ protected:
 
   virtual void dispose() override;
 
+  inline bool isShutdownRequested() { return isShutdownRequested_; }
+
 private:
   void waitFutureIfNotFinished(std::future<int> & threadfut);
   std::future<int> onEntryThread_;
@@ -94,6 +96,8 @@ private:
 
   // executes onExit in a new thread, waits first onEntry thread if it is still running
   void executeOnExit() override;
+
+  bool isShutdownRequested_;
 };
 }  // namespace smacc2
 

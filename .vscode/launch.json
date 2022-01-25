@@ -299,6 +299,32 @@
                     "ignoreFailures": true
                 }
             ]
-        }
+        },
+
+        {
+            "name": "(gdb) SmAutowareAvp",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../install/sm_autoware_avp/lib/sm_autoware_avp/sm_autoware_avp_node",
+            "args": [
+                "--ros-args",
+                "-r",
+                "__node:=sm_autoware_avp_node",
+                "--params-file",
+                "${workspaceFolder}/../install/sm_autoware_avp/share/sm_autoware_avp/config/sm_autoware_avp_config.yaml"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
     ]
 }
