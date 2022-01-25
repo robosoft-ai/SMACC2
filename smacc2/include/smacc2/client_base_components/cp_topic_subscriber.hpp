@@ -34,14 +34,13 @@ template <typename MessageType>
 class CpTopicSubscriber : public smacc2::ISmaccComponent
 {
 public:
-  std::optional<std::string> topicName;
   std::optional<int> queueSize;
 
   typedef MessageType TMessageType;
 
   CpTopicSubscriber() { initialized_ = false; }
 
-  CpTopicSubscriber(std::string topicname) { topicName = topicname; }
+  CpTopicSubscriber(std::string topicname) { topicName_ = topicname; }
 
   virtual ~CpTopicSubscriber() {}
 
@@ -69,17 +68,17 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    // this->postMessageEvent = [=](auto msg) {
-    //   auto event = new EvTopicMessage<TSourceObject, TOrthogonal>();
-    //   event->msgData = msg;
-    //   this->postEvent(event);
-    // };
+    this->postMessageEvent = [=](auto msg) {
+      auto event = new EvTopicMessage<TSourceObject, TOrthogonal, MessageType>();
+      event->msgData = msg;
+      this->postEvent(event);
+    };
 
-    // this->postInitialMessageEvent = [=](auto msg) {
-    //   auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal>();
-    //   event->msgData = msg;
-    //   this->postEvent(event);
-    // };
+    this->postInitialMessageEvent = [=](auto msg) {
+      auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal, MessageType>();
+      event->msgData = msg;
+      this->postEvent(event);
+    };
   }
 
   void onInitialize() override

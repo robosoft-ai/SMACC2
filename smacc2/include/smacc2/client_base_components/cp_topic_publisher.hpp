@@ -34,34 +34,19 @@ template <typename MessageType>
 class CpTopicPublisher : public smacc2::ISmaccComponent
 {
 public:
-  std::optional<std::string> topicName;
   std::optional<int> queueSize;
   std::optional<rmw_qos_durability_policy_t> durability;
   std::optional<rmw_qos_reliability_policy_t> reliability;
 
   typedef MessageType TMessageType;
 
-  CpTopicPublisher() { initialized_ = false; }
-
-  CpTopicPublisher(std::string topicname) { this->topicName = topicname; }
+  CpTopicPublisher(std::string topicname)
+  {
+    this->topicName_ = topicname;
+    initialized_ = false;
+  }
 
   virtual ~CpTopicPublisher() {}
-
-  // template <typename TOrthogonal, typename TSourceObject>
-  // void onOrthogonalAllocation()
-  // {
-  //   // this->postMessageEvent = [=](auto msg) {
-  //   //   auto event = new EvTopicMessage<TSourceObject, TOrthogonal>();
-  //   //   event->msgData = msg;
-  //   //   this->postEvent(event);
-  //   // };
-
-  //   // this->postInitialMessageEvent = [=](auto msg) {
-  //   //   auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal>();
-  //   //   event->msgData = msg;
-  //   //   this->postEvent(event);
-  //   // };
-  // }
 
   void publish(const MessageType & msg) { pub_->publish(msg); }
 
@@ -80,14 +65,6 @@ void CpTopicPublisher<T>::onInitialize()
 {
   if (!initialized_)
   {
-    if (!this->topicName)
-    {
-      RCLCPP_ERROR(
-        getLogger(),
-        "[CpTopicPublisher] topic publisher  with no topic name set. Skipping advertising.");
-      return;
-    }
-
     if (!queueSize) queueSize = 1;
     if (!durability) durability = RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT;
     if (!reliability) reliability = RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT;
@@ -97,7 +74,7 @@ void CpTopicPublisher<T>::onInitialize()
     qos.reliability(*reliability);
 
     RCLCPP_INFO_STREAM(
-      getLogger(), "[" << this->getName() << "] Component Publisher to topic: " << topicName_);
+      getLogger(), "[" << this->getName() << "] Publisher to topic: " << topicName_);
 
     auto nh = this->getNode();
     pub_ = nh->template create_publisher<T>(this->topicName_, qos);

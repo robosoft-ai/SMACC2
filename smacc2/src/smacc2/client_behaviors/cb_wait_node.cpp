@@ -18,36 +18,46 @@
  *
  ******************************************************************************************************************/
 
-#include <smacc2/component.hpp>
-#include <smacc2/impl/smacc_component_impl.hpp>
+#include <smacc2/client_behaviors/cb_wait_node.hpp>
+
 namespace smacc2
 {
-ISmaccComponent::~ISmaccComponent() {}
-
-ISmaccComponent::ISmaccComponent() : owner_(nullptr) {}
-
-void ISmaccComponent::initialize(ISmaccClient * owner)
+namespace client_behaviors
 {
-  owner_ = owner;
-  this->onInitialize();
+CbWaitNode::CbWaitNode(std::string nodeName) : nodeName_(nodeName), rate_(5) {}
+
+void CbWaitNode::onEntry()
+{
+  bool found = false;
+  while (!this->isShutdownRequested() && !found)
+  {
+    std::stringstream ss;
+    auto nodenames = getNode()->get_node_names();
+    for (auto n : nodenames)
+    {
+      ss << " - " << n << std::endl;
+
+      if (n == nodeName_) found = true;
+    }
+
+    auto totalstr = ss.str();
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] on entry, listing nodes (" << nodenames.size() << ")"
+                       << std::endl
+                       << totalstr);
+
+    rate_.sleep();
+  }
+
+  if (found)
+  {
+    this->postSuccessEvent();
+  }
+  else
+  {
+    this->postFailureEvent();
+  }
 }
 
-void ISmaccComponent::onInitialize() {}
-
-void ISmaccComponent::setStateMachine(ISmaccStateMachine * stateMachine)
-{
-  stateMachine_ = stateMachine;
-}
-
-rclcpp::Node::SharedPtr ISmaccComponent::getNode() { return owner_->getNode(); }
-
-rclcpp::Logger ISmaccComponent::getLogger() { return owner_->getLogger(); }
-
-std::string ISmaccComponent::getName() const
-{
-  std::string keyname = demangleSymbol(typeid(*this).name());
-  return keyname;
-}
-
-ISmaccStateMachine * ISmaccComponent::getStateMachine() { return this->stateMachine_; }
+}  // namespace client_behaviors
 }  // namespace smacc2
