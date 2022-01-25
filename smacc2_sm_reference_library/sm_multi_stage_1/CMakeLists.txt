@@ -20,6 +20,7 @@ find_package(sr_all_events_go)
 find_package(ros_timer_client)
 find_package(ros_publisher_client)
 find_package(keyboard_client)
+find_package(Boost COMPONENTS thread REQUIRED)
 
 set(dependencies
   rclcpp
@@ -55,6 +56,7 @@ target_link_libraries(${PROJECT_NAME}_node
   ${ros_publisher_client_LIBRARIES}
   ${std_msgs_LIBRARIES}
   ${sr_all_events_go_LIBRARIES}
+  ${Boost_LIBRARIES}
 )
 
 ament_package()

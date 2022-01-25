@@ -68,6 +68,9 @@ protected:
 
   rclcpp::Logger getLogger();
 
+  //inline
+  ISmaccStateMachine * getStateMachine();
+
   // A reference to the state machine object that owns this resource
   ISmaccStateMachine * stateMachine_;
 

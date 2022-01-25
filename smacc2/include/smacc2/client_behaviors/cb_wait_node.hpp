@@ -18,36 +18,31 @@
  *
  ******************************************************************************************************************/
 
-#include <smacc2/component.hpp>
-#include <smacc2/impl/smacc_component_impl.hpp>
+#pragma once
+
+#include <functional>
+#include <rclcpp/rclcpp.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
+
 namespace smacc2
 {
-ISmaccComponent::~ISmaccComponent() {}
-
-ISmaccComponent::ISmaccComponent() : owner_(nullptr) {}
-
-void ISmaccComponent::initialize(ISmaccClient * owner)
+namespace client_behaviors
 {
-  owner_ = owner;
-  this->onInitialize();
-}
+using namespace std::chrono_literals;
 
-void ISmaccComponent::onInitialize() {}
-
-void ISmaccComponent::setStateMachine(ISmaccStateMachine * stateMachine)
+// Asynchronous behavior that waits to a topic message to send EvCbSuccess event
+// a guard function can be set to use conditions on the contents
+class CbWaitNode : public smacc2::SmaccAsyncClientBehavior
 {
-  stateMachine_ = stateMachine;
-}
+public:
+  CbWaitNode(std::string nodeName);
 
-rclcpp::Node::SharedPtr ISmaccComponent::getNode() { return owner_->getNode(); }
+  void onEntry() override;
 
-rclcpp::Logger ISmaccComponent::getLogger() { return owner_->getLogger(); }
+protected:
+  std::string nodeName_;
 
-std::string ISmaccComponent::getName() const
-{
-  std::string keyname = demangleSymbol(typeid(*this).name());
-  return keyname;
-}
-
-ISmaccStateMachine * ISmaccComponent::getStateMachine() { return this->stateMachine_; }
+  rclcpp::Rate rate_;
+};
+}  // namespace client_behaviors
 }  // namespace smacc2

@@ -13,38 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
-
-#include <memory>
-
-#include "rclcpp/rclcpp.hpp"
-#include "smacc2/smacc.hpp"
-
-// ORTHOGONALS
-#include "$sm_name$/orthogonals/or_timer.hpp"
-
-namespace $sm_name$
-{
-// SMACC2 clases
-using $sm_name$::OrTimer;
-
-//STATES
-struct State1;
-struct State2;
-
-//VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
-std::shared_ptr<rclcpp::Node> _node_;
+#include <sm_autoware_avp/sm_autoware_avp.hpp>
 
 //--------------------------------------------------------------------
-//STATE_MACHINE
-struct $SmName$
-: public smacc2::SmaccStateMachineBase<$SmName$, State1>
+int main(int argc, char ** argv)
 {
-  using SmaccStateMachineBase::SmaccStateMachineBase;
-
-  void onInitialize() override
-  {
-    this->createOrthogonal<OrTimer>();
-  }
-};
+  rclcpp::init(argc, argv);
+  smacc2::run<sm_autoware_avp::SmAutowareAvp>();
 }

@@ -34,16 +34,15 @@ template <typename MessageType>
 class CpTopicSubscriber : public smacc2::ISmaccComponent
 {
 public:
-  std::optional<std::string> topicName;
   std::optional<int> queueSize;
 
   typedef MessageType TMessageType;
 
   CpTopicSubscriber() { initialized_ = false; }
 
-  CpTopicSubscriber(std::string topicname) { topicName = topicname; }
+  CpTopicSubscriber(std::string topicname) { topicName_ = topicname; }
 
-  virtual ~CpTopicSubscriber() { sub_.shutdown(); }
+  virtual ~CpTopicSubscriber() {}
 
   smacc2::SmaccSignal<void(const MessageType &)> onFirstMessageReceived_;
   smacc2::SmaccSignal<void(const MessageType &)> onMessageReceived_;
@@ -70,19 +69,19 @@ public:
   void onOrthogonalAllocation()
   {
     this->postMessageEvent = [=](auto msg) {
-      auto event = new EvTopicMessage<TSourceObject, TOrthogonal>();
+      auto event = new EvTopicMessage<TSourceObject, TOrthogonal, MessageType>();
       event->msgData = msg;
       this->postEvent(event);
     };
 
     this->postInitialMessageEvent = [=](auto msg) {
-      auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal>();
+      auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal, MessageType>();
       event->msgData = msg;
       this->postEvent(event);
     };
   }
 
-  virtual void initialize()
+  void onInitialize() override
   {
     if (!initialized_)
     {
@@ -90,27 +89,23 @@ public:
 
       if (!queueSize) queueSize = 1;
 
-      if (!topicName)
-      {
-        RCLCPP_ERROR(getLogger(), "topic client with no topic name set. Skipping subscribing");
-      }
-      else
-      {
-        RCLCPP_INFO_STREAM(
-          getLogger(), "[" << this->getName() << "] Subscribing to topic: " << topicName);
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << this->getName() << "] Subscribing to topic: " << topicName_);
 
-        sub_ = getNode()->subscribe(
-          *topicName, *queueSize, &CpTopicSubscriber<MessageType>::messageCallback, this);
-        this->initialized_ = true;
-      }
+      rclcpp::SensorDataQoS qos;
+      if (queueSize) qos.keep_last(*queueSize);
+
+      std::function<void(typename MessageType::SharedPtr)> fn = [this](auto msg) {
+        this->messageCallback(*msg);
+      };
+
+      sub_ = this->getNode()->template create_subscription<MessageType>(topicName_, qos, fn);
+      this->initialized_ = true;
     }
   }
 
-protected:
-  rclcpp::Node::SharedPtr getNode();
-
 private:
-  ros::Subscriber sub_;
+  typename rclcpp::Subscription<MessageType>::SharedPtr sub_;
   bool firstMessage_;
   bool initialized_;
   std::string topicName_;

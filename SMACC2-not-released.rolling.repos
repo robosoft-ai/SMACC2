@@ -45,3 +45,7 @@ repositories:
     type: git
     url: https://github.com/UniversalRobots/Universal_Robots_Client_Library.git
     version: master
+  Universal_Robots_Description:
+    type: git
+    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git
+    version: master

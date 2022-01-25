@@ -18,36 +18,34 @@
  *
  ******************************************************************************************************************/
 
-#include <smacc2/component.hpp>
-#include <smacc2/impl/smacc_component_impl.hpp>
-namespace smacc2
-{
-ISmaccComponent::~ISmaccComponent() {}
+#include "sm_autoware_avp/clients/autoware_client/client_behaviors/cb_setup_initial_pose_estimation.hpp"
+#include "sm_autoware_avp/clients/autoware_client/cl_autoware.hpp"
 
-ISmaccComponent::ISmaccComponent() : owner_(nullptr) {}
-
-void ISmaccComponent::initialize(ISmaccClient * owner)
+namespace sm_autoware_avp
 {
-  owner_ = owner;
-  this->onInitialize();
+namespace clients
+{
+namespace autoware_client
+{
+CbSetupInitialPoseEstimation::CbSetupInitialPoseEstimation(
+  const geometry_msgs::msg::PoseWithCovarianceStamped & initialStatePose)
+: initialStatePose_(initialStatePose)
+{
 }
 
-void ISmaccComponent::onInitialize() {}
-
-void ISmaccComponent::setStateMachine(ISmaccStateMachine * stateMachine)
+void CbSetupInitialPoseEstimation::onEntry()
 {
-  stateMachine_ = stateMachine;
+  sm_autoware_avp::clients::ClAutoware * autowareClient_;
+  initialStatePose_.header.stamp = getNode()->now();
+  initialStatePose_.header.frame_id = "map";
+
+  this->requiresClient(autowareClient_);
+
+  autowareClient_->publishInitialPoseEstimation(initialStatePose_);
 }
 
-rclcpp::Node::SharedPtr ISmaccComponent::getNode() { return owner_->getNode(); }
+void CbSetupInitialPoseEstimation::onExit() {}
 
-rclcpp::Logger ISmaccComponent::getLogger() { return owner_->getLogger(); }
-
-std::string ISmaccComponent::getName() const
-{
-  std::string keyname = demangleSymbol(typeid(*this).name());
-  return keyname;
-}
-
-ISmaccStateMachine * ISmaccComponent::getStateMachine() { return this->stateMachine_; }
-}  // namespace smacc2
+}  // namespace autoware_client
+}  // namespace clients
+}  // namespace sm_autoware_avp

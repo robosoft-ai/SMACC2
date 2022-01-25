@@ -17,37 +17,30 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+#pragma once
 
-#include <smacc2/component.hpp>
-#include <smacc2/impl/smacc_component_impl.hpp>
-namespace smacc2
+#include "smacc2/smacc_asynchronous_client_behavior.hpp"
+#include <geometry_msgs/msg/pose_stamped.hpp>
+
+namespace sm_autoware_avp
 {
-ISmaccComponent::~ISmaccComponent() {}
-
-ISmaccComponent::ISmaccComponent() : owner_(nullptr) {}
-
-void ISmaccComponent::initialize(ISmaccClient * owner)
+namespace clients
 {
-  owner_ = owner;
-  this->onInitialize();
-}
-
-void ISmaccComponent::onInitialize() {}
-
-void ISmaccComponent::setStateMachine(ISmaccStateMachine * stateMachine)
+namespace autoware_client
 {
-  stateMachine_ = stateMachine;
-}
-
-rclcpp::Node::SharedPtr ISmaccComponent::getNode() { return owner_->getNode(); }
-
-rclcpp::Logger ISmaccComponent::getLogger() { return owner_->getLogger(); }
-
-std::string ISmaccComponent::getName() const
+class CbNavigateGlobalPosition : public smacc2::SmaccAsyncClientBehavior
 {
-  std::string keyname = demangleSymbol(typeid(*this).name());
-  return keyname;
-}
+public:
+  CbNavigateGlobalPosition(const geometry_msgs::msg::PoseStamped& goalPose);
 
-ISmaccStateMachine * ISmaccComponent::getStateMachine() { return this->stateMachine_; }
-}  // namespace smacc2
+  virtual void onEntry() override;
+
+  void onExit() override;
+
+private:
+  geometry_msgs::msg::PoseStamped goalPose_;
+};
+}  // namespace autoware_client
+
+}  // namespace clients
+}  // namespace sm_autoware_avp

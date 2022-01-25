@@ -344,7 +344,9 @@ void SignalDetector::pollingLoop()
     r0.sleep();
   }
 
-  if (!getNode()->get_parameter("signal_detector_loop_freq", this->loop_rate_hz))
+  auto nh = getNode();
+
+  if (!nh->get_parameter("signal_detector_loop_freq", this->loop_rate_hz))
   {
     RCLCPP_WARN(
       getLogger(),
@@ -360,15 +362,16 @@ void SignalDetector::pollingLoop()
       this->loop_rate_hz);
   }
 
-  getNode()->set_parameter(rclcpp::Parameter("signal_detector_loop_freq", this->loop_rate_hz));
+  nh->set_parameter(rclcpp::Parameter("signal_detector_loop_freq", this->loop_rate_hz));
 
   RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] loop rate hz:" << loop_rate_hz);
 
   rclcpp::Rate r(loop_rate_hz);
+
   while (rclcpp::ok() && !end_)
   {
     pollOnce();
-    rclcpp::spin_some(getNode());
+    rclcpp::spin_some(nh);
     r.sleep();
   }
 }

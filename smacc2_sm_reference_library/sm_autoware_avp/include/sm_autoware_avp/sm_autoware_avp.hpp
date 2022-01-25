@@ -21,30 +21,45 @@
 #include "smacc2/smacc.hpp"
 
 // ORTHOGONALS
-#include "$sm_name$/orthogonals/or_timer.hpp"
+#include "orthogonals/or_autoware_auto.hpp"
+#include "orthogonals/or_timer.hpp"
 
-namespace $sm_name$
+// CLIENTS
+#include "clients/autoware_client/cl_autoware.hpp"
+
+namespace sm_autoware_avp
 {
 // SMACC2 clases
-using $sm_name$::OrTimer;
+using sm_autoware_avp::OrAutowareAuto;
 
 //STATES
-struct State1;
-struct State2;
-
-//VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
-std::shared_ptr<rclcpp::Node> _node_;
+struct StAcquireSensors;
+struct StSetupInitialLocationEstimation;
+struct StNavigateWaypoint1;
+struct StNavigateWaypoint2;
+struct StFirstPause;
+struct StSecondPause;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
-struct $SmName$
-: public smacc2::SmaccStateMachineBase<$SmName$, State1>
+struct SmAutowareAvp
+: public smacc2::SmaccStateMachineBase<SmAutowareAvp, StAcquireSensors>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
   void onInitialize() override
   {
+    this->createOrthogonal<OrAutowareAuto>();
     this->createOrthogonal<OrTimer>();
   }
 };
-}
+
+}  // namespace sm_autoware_avp
+
+// STATES
+#include "states/st_acquire_sensors.hpp"
+#include "states/st_setup_initial_location_estimation.hpp"
+#include "states/st_navigate_waypoint_1.hpp"
+#include "states/st_navigate_waypoint_2.hpp"
+#include "states/st_first_pause.hpp"
+#include "states/st_second_pause.hpp"
