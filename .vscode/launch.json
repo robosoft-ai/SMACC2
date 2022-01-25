@@ -302,14 +302,14 @@
         },
 
         {
-            "name": "(gdb) SmAtomicSubscribersPerformanceTest",
+            "name": "(gdb) SmAutowareAvp",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/../install/sm_autoware_avp/lib/sm_autoware_avp/sm_autoware_avp_node",
             "args": [
                 "--ros-args",
                 "-r",
-                "__node:=sm_atomic_performance_test",
+                "__node:=sm_autoware_avp_node",
                 "--params-file",
                 "${workspaceFolder}/../install/sm_autoware_avp/share/sm_autoware_avp/config/sm_autoware_avp_config.yaml"
             ],
