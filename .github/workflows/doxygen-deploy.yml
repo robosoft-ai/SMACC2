@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - galactic
+      - foxy
 
 jobs:
   deploy-doc:
