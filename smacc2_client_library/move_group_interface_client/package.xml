@@ -11,7 +11,6 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>smacc2</depend>
-  <depend>moveit</depend>
   <depend>tf2</depend>
   <depend>tf2_ros</depend>
   <depend>moveit_ros_planning_interface</depend>
