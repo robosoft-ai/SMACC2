@@ -8,7 +8,7 @@ on:
       - foxy
   schedule:
     # Run every day to detect flakiness and broken dependencies
-    - cron: '33 4 * * *'
+    - cron: '03 1 * * *'
 
 jobs:
   foxy_binary:
@@ -46,7 +46,7 @@ jobs:
             ccache-${{ env.CACHE_PREFIX }}
       - uses: 'ros-industrial/industrial_ci@master'
         with:
-          config: ${{ toJSON(matrix.env) }}
+          config: ${{toJSON(matrix.env)}}
       - name: prepare target_ws for cache
         if: ${{ always() && ! matrix.env.CCOV }}
         run: |
