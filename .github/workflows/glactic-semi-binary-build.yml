@@ -8,7 +8,11 @@ on:
       - galactic
   schedule:
     # Run every day to detect flakiness and broken dependencies
+<<<<<<< HEAD:.github/workflows/glactic-semi-binary-build.yml
     - cron: '33 3 * * *'
+=======
+    - cron: '03 1 * * *'
+>>>>>>> 9fd82db (Try fixing CI for rolling. (#209)):.github/workflows/foxy-binary-build.yml
 
 jobs:
   galactic_semi_binary:
@@ -46,7 +50,7 @@ jobs:
             ccache-${{ env.CACHE_PREFIX }}
       - uses: 'ros-industrial/industrial_ci@master'
         with:
-          config: ${{ toJSON(matrix.env) }}
+          config: ${{toJSON(matrix.env)}}
       - name: prepare target_ws for cache
         if: ${{ always() && ! matrix.env.CCOV }}
         run: |

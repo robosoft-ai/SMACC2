@@ -7,8 +7,6 @@ repositories:
     type: git
     url: https://github.com/SteveMacenski/slam_toolbox.git
     version: ros2
-<<<<<<< HEAD
-=======
   husky:
     type: git
     url: https://github.com/StoglRobotics-forks/husky.git
@@ -17,6 +15,23 @@ repositories:
     type: git
     url: https://github.com/ros-simulation/gazebo_ros2_control.git
     version: master
+  ros2_controllers:
+    type: git
+    url: https://github.com/ros-controls/ros2_controllers.git
+    version: debug-diff-drive-controller-in-sim
+
+  moveit2:
+    type: git
+    url: https://github.com/ros-planning/moveit2.git
+    version: main
+  moveit2_msgs:
+    type: git
+    url: https://github.com/ros-planning/moveit_msgs.git
+    version: ros2
+  launch_param_builder:
+    type: git
+    url: https://github.com/PickNikRobotics/launch_param_builder
+    version: main
 
   ros2_control_demos:
     type: git
@@ -38,4 +53,3 @@ repositories:
     type: git
     url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git
     version: ros2
->>>>>>> 9fd82db (Try fixing CI for rolling. (#209))

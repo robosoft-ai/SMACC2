@@ -10,7 +10,18 @@
   <license>Apache-2.0</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+<<<<<<< HEAD:smacc2_client_library/move_base_z_client/custom_planners/pure_spinning_local_planner/package.xml
   <build_depend>pluginlib</build_depend>
+=======
+  <depend>smacc2</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>moveit_ros_planning_interface</depend>
+  <depend>yaml_cpp_vendor</depend>
+  <depend>ament_index_cpp</depend>
+  <depend>yaml-cpp</depend>
+  <depend>tf2_geometry_msgs</depend>
+>>>>>>> 9fd82db (Try fixing CI for rolling. (#209)):smacc2_client_library/move_group_interface_client/package.xml
 
   <depend>geometry_msgs</depend>
   <depend>move_base_z_planners_common</depend>

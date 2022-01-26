@@ -1,3 +1,9 @@
+
+
+
+
+
+
 # SMACC2
 
 SMACC2 is a state-machine framework for ROS2-based applications written in C++.
@@ -120,4 +126,72 @@ Operating instructions can be found in each reference state machines readme file
 Happy Coding.
 
 ## Support
+<<<<<<< HEAD
 If you are interested in getting involved or need a little support, feel free to contact us by emailing brett@robosoft.ai
+=======
+If you are interested in getting involved or need a little support, feel free to contact us by emailing techsupport@robosoft.ai
+
+## Build status
+
+
+
+
+ROS2 Distro | Branch | Build status | Documentation | Released packages
+:---------: | :----: | :----------: | :-----------: | :---------------:
+**Rolling** | [`rolling`](https://github.com/robosoft-ai/SMACC2/tree/rolling) | [![Rolling Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-binary-build.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-binary-build.yml?branch=master) <br /> [![Rolling Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-semi-binary-build.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-semi-binary-build.yml?branch=master) <br /> [![Rolling Source Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-source-build.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-source-build.yml?branch=master) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/rolling/html/index.html) | [SMACC2](https://index.ros.org/p/SMACC2/#rolling)
+
+
+ROS2 Distro | Branch | Build status | Documentation | Released packages
+:---------: | :----: | :----------: | :-----------: | :---------------:
+**Galactic** | [`galactic`](https://github.com/robosoft-ai/SMACC2/tree/galactic) | [![Galactic Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-binary-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-binary-build.yml?branch=galactic) <br /> [![Galactic Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-semi-binary-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-semi-binary-build.yml?branch=galactic) <br /> [![Galactic Source Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-source-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-source-build.yml?branch=galactic) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/galactic/html/index.html) | [SMACC2](https://index.ros.org/p/SMACC2/#galactic)
+
+
+ROS2 Distro | Branch | Build status | Documentation | Released packages
+:---------: | :----: | :----------: | :-----------: | :---------------:
+**Foxy** | [`foxy`](https://github.com/robosoft-ai/SMACC2/tree/foxy) | [![Foxy Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-binary-build.yml/badge.svg?branch=foxy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-binary-build.yml?branch=foxy) <br /> [![Foxy Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-semi-binary-build.yml/badge.svg?branch=foxy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-semi-binary-build.yml?branch=foxy) <br /> [![Foxy Source Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-source-build.yml/badge.svg?branch=foxy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-source-build.yml?branch=foxy) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/foxy/html/index.html) | [SMACC2](https://index.ros.org/p/SMACC2/#foxy)
+
+
+ROS2 Distro | Branch | Build status | Documentation | Released packages
+:---------: | :----: | :----------: | :-----------: | :---------------:
+**Rolling** | [`rolling`](https://github.com/robosoft-ai/SMACC2/tree/rolling) | [![Rolling Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-binary-build.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-binary-build.yml?branch=master) <br /> [![Rolling Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-semi-binary-build.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-semi-binary-build.yml?branch=master) <br /> [![Rolling Source Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-source-build.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-source-build.yml?branch=master) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/rolling/html/index.html) | [SMACC2](https://index.ros.org/p/SMACC2/#rolling)
+
+
+ROS2 Distro | Branch | Build status | Documentation | Released packages
+:---------: | :----: | :----------: | :-----------: | :---------------:
+**Galactic** | [`galactic`](https://github.com/robosoft-ai/SMACC2/tree/galactic) | [![Galactic Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-binary-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-binary-build.yml?branch=galactic) <br /> [![Galactic Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-semi-binary-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-semi-binary-build.yml?branch=galactic) <br /> [![Galactic Source Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-source-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-source-build.yml?branch=galactic) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/galactic/html/index.html) | [SMACC2](https://index.ros.org/p/SMACC2/#galactic)
+
+
+ROS2 Distro | Branch | Build status | Documentation | Released packages
+:---------: | :----: | :----------: | :-----------: | :---------------:
+**Foxy** | [`foxy`](https://github.com/robosoft-ai/SMACC2/tree/foxy) | [![Foxy Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-binary-build.yml/badge.svg?branch=foxy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-binary-build.yml?branch=foxy) <br /> [![Foxy Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-semi-binary-build.yml/badge.svg?branch=foxy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-semi-binary-build.yml?branch=foxy) <br /> [![Foxy Source Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-source-build.yml/badge.svg?branch=foxy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-source-build.yml?branch=foxy) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/foxy/html/index.html) | [SMACC2](https://index.ros.org/p/SMACC2/#foxy)
+
+
+ROS2 Distro | Branch | Build status | Documentation | Released packages
+:---------: | :----: | :----------: | :-----------: | :---------------:
+**Rolling** | [`rolling`](https://github.com/robosoft-ai/SMACC2/tree/rolling) | [![Rolling Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-binary-build.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-binary-build.yml?branch=master) <br /> [![Rolling Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-semi-binary-build.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-semi-binary-build.yml?branch=master) <br /> [![Rolling Source Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-source-build.yml/badge.svg?branch=master)](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-source-build.yml?branch=master) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/rolling/html/index.html) | [SMACC2](https://index.ros.org/p/SMACC2/#rolling)
+
+
+ROS2 Distro | Branch | Build status | Documentation | Released packages
+:---------: | :----: | :----------: | :-----------: | :---------------:
+**Galactic** | [`galactic`](https://github.com/robosoft-ai/SMACC2/tree/galactic) | [![Galactic Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-binary-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-binary-build.yml?branch=galactic) <br /> [![Galactic Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-semi-binary-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-semi-binary-build.yml?branch=galactic) <br /> [![Galactic Source Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-source-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-source-build.yml?branch=galactic) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/galactic/html/index.html) | [SMACC2](https://index.ros.org/p/SMACC2/#galactic)
+
+
+ROS2 Distro | Branch | Build status | Documentation | Released packages
+:---------: | :----: | :----------: | :-----------: | :---------------:
+**Foxy** | [`foxy`](https://github.com/robosoft-ai/SMACC2/tree/foxy) | [![Foxy Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-binary-build.yml/badge.svg?branch=foxy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-binary-build.yml?branch=foxy) <br /> [![Foxy Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-semi-binary-build.yml/badge.svg?branch=foxy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-semi-binary-build.yml?branch=foxy) <br /> [![Foxy Source Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-source-build.yml/badge.svg?branch=foxy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-source-build.yml?branch=foxy) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/SMACC2_Documentation/foxy/html/index.html) | [SMACC2](https://index.ros.org/p/SMACC2/#foxy)
+
+### Explanation of different build types
+
+**NOTE**: There are three build stages checking current and future compatibility of the package.
+
+1. Binary builds - against released packages (main and testing) in ROS distributions. Shows that direct local build is possible.
+
+   Uses repos file: `src/$NAME$/$NAME$-not-released.<ros-distro>.repos`
+
+1. Semi-binary builds - against released core ROS packages (main and testing), but the immediate dependencies are pulled from source.
+   Shows that local build with dependencies is possible and if fails there we can expect that after the next package sync we will not be able to build.
+
+   Uses repos file: `src/$NAME$/$NAME$.repos`
+
+1. Source build - also core ROS packages are build from source. It shows potential issues in the mid future.
+>>>>>>> 9fd82db (Try fixing CI for rolling. (#209))
