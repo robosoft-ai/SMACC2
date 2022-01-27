@@ -8,22 +8,23 @@ on:
       - master
   schedule:
     # Run every day to detect flakiness and broken dependencies
-    - cron: '23 3 * * *'
+    - cron: '33 1 * * *'
 
 jobs:
   rolling_semi_binary:
     name: rolling semi-binary build
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         env:
           - {ROS_DISTRO: rolling, ROS_REPO: main}
           - {ROS_DISTRO: rolling, ROS_REPO: testing}
     env:
-      UPSTREAM_WORKSPACE: SMACC2.repos
+      UPSTREAM_WORKSPACE: SMACC2.${{ matrix.env.ROS_DISTRO }}.repos
       CCACHE_DIR: ${{ github.workspace }}/.ccache
       BASEDIR: ${{ github.workspace }}/.work
-      CACHE_PREFIX: ${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}-semi_binary
+      CACHE_PREFIX: ${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}-semi-binary
     steps:
       - uses: actions/checkout@v1
       # The target directory cache doesn't include the source directory because
@@ -46,7 +47,7 @@ jobs:
             ccache-${{ env.CACHE_PREFIX }}
       - uses: 'ros-industrial/industrial_ci@master'
         with:
-          config: ${{ toJSON(matrix.env) }}
+          config: ${{toJSON(matrix.env)}}
       - name: prepare target_ws for cache
         if: ${{ always() && ! matrix.env.CCOV }}
         run: |
