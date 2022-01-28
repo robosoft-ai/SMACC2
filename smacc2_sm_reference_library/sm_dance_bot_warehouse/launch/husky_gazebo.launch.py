@@ -1,10 +1,17 @@
-import os
+# Copyright (c) 2021 RoboSoft.ai
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-from ament_index_python.packages import get_package_share_directory
-
-from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 # def generate_launch_description():
 #     launchfilepath = os.path.join(get_package_share_directory('husky_gazebo'), 'launch', 'gazebo_launch.py')
@@ -17,9 +24,14 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    RegisterEventHandler,
+)
 from launch.event_handlers import OnProcessExit
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
@@ -33,7 +45,7 @@ ARGUMENTS = [
 def generate_launch_description():
 
     # Launch args
-    world_path = LaunchConfiguration("world_path")
+    # world_path = LaunchConfiguration("world_path")
 
     # Get URDF via xacro
     robot_description_content = Command(
@@ -81,26 +93,11 @@ def generate_launch_description():
             on_exit=[spawn_husky_velocity_controller],
         )
     )
-    # Gazebo server
-    gzserver = ExecuteProcess(
-        cmd=[
-            "gzserver",
-            "-s",
-            "libgazebo_ros_init.so",
-            "-s",
-            "libgazebo_ros_factory.so",
-            world_path,
-        ],
-        prefix="xterm -e",
-        output="screen",
-    )
-
-    # Gazebo client
-    gzclient = ExecuteProcess(
-        cmd=["gzclient"],
-        output="screen",
-        prefix="xterm -e",
-        # condition=IfCondition(LaunchConfiguration('gui')),
+    # Gazebo nodes
+    gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [FindPackageShare("gazebo_ros"), "/launch", "/gazebo.launch.py"]
+        ),
     )
 
     # Spawn robot
@@ -116,8 +113,7 @@ def generate_launch_description():
     ld.add_action(node_robot_state_publisher)
     ld.add_action(spawn_joint_state_broadcaster)
     ld.add_action(diffdrive_controller_spawn_callback)
-    ld.add_action(gzserver)
-    ld.add_action(gzclient)
+    ld.add_action(gazebo)
     ld.add_action(spawn_robot)
 
     return ld
