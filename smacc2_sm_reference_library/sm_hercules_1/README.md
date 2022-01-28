@@ -104,7 +104,7 @@ ros2 topic pub /starboard_gripper_controller/commands std_msgs/msg/Float64MultiA
 To run simulation in Ignition add the following arguments to launch files:
 
 ```
-gazebo_sim:=false ignition_sim:=true
+sim_gazebo:=false sim_ignition:=true
 ```
 
 **NOTE:** Hercules is currently not working in Ignition, but only in Gazebo.

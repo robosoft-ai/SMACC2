@@ -22,14 +22,16 @@
    <xacro:arg name="fake_sensor_commands" default="false" />
    <xacro:arg name="headless_mode" default="false" />
    <!-- initial position for fake hardware -->
-   <xacro:arg name="initial_positions_file" default="$(find ur_description)/config/initial_positions.yaml"/>
+   <xacro:arg name="initial_positions_port_file" default="$(find sm_hercules_1)/config/examples/initial_positions_port_arm.yaml"/>
+   <xacro:arg name="initial_positions_starboard_file" default="$(find sm_hercules_1)/config/examples/initial_positions_starboard_arm.yaml"/>
    <!-- Simulation parameter -->
-   <xacro:arg name="gazebo_sim" default="false" />
-   <xacro:arg name="ignition_sim" default="false" />
+   <xacro:arg name="sim_gazebo" default="false" />
+   <xacro:arg name="sim_ignition" default="false" />
    <xacro:arg name="simulation_controllers" default="$(find ur_bringup)/config/ur_controllers.yaml" />
 
    <!-- convert to property to use substitution in function -->
-   <xacro:property name="initial_positions_file" default="$(arg initial_positions_file)"/>
+   <xacro:property name="initial_positions_port_file" default="$(arg initial_positions_port_file)"/>
+   <xacro:property name="initial_positions_starboard_file" default="$(arg initial_positions_starboard_file)"/>
 
    <!-- create link fixed to the "world" -->
    <link name="world" />
@@ -77,9 +79,9 @@
      use_fake_hardware="$(arg use_fake_hardware)"
      fake_sensor_commands="$(arg fake_sensor_commands)"
      headless_mode="$(arg headless_mode)"
-     initial_positions="${load_yaml(initial_positions_file)}"
-     gazebo_sim="$(arg gazebo_sim)"
-     ignition_sim="$(arg ignition_sim)" >
+     initial_positions="${load_yaml(initial_positions_port_file)}"
+     sim_gazebo="$(arg sim_gazebo)"
+     sim_ignition="$(arg sim_ignition)" >
      <origin xyz="0 ${ box_base_size/2 } 0" rpy="${pi/2} 0 ${pi}" />          <!-- position robot in the world -->
    </xacro:ur_robot>
 
@@ -89,8 +91,8 @@
      parent="port_tool0"
      use_fake_hardware="$(arg use_fake_hardware)"
      fake_sensor_commands="$(arg fake_sensor_commands)"
-     gazebo_sim="$(arg gazebo_sim)"
-     ignition_sim="$(arg ignition_sim)" >
+     sim_gazebo="$(arg sim_gazebo)"
+     sim_ignition="$(arg sim_ignition)" >
      <origin xyz="0 0 0" rpy="0 -${pi/2} 0"/>
    </xacro:robotiq_85_gripper>
 
@@ -110,9 +112,9 @@
      use_fake_hardware="$(arg use_fake_hardware)"
      fake_sensor_commands="$(arg fake_sensor_commands)"
      headless_mode="$(arg headless_mode)"
-     initial_positions="${load_yaml(initial_positions_file)}"
-     gazebo_sim="$(arg gazebo_sim)"
-     ignition_sim="$(arg ignition_sim)" >
+     initial_positions="${load_yaml(initial_positions_starboard_file)}"
+     sim_gazebo="$(arg sim_gazebo)"
+     sim_ignition="$(arg sim_ignition)" >
      <origin xyz="0 -${ box_base_size/2 } 0" rpy="${pi/2} 0 0" />          <!-- position robot in the world -->
    </xacro:ur_robot>
 
@@ -122,12 +124,12 @@
      parent="starboard_tool0"
      use_fake_hardware="$(arg use_fake_hardware)"
      fake_sensor_commands="$(arg fake_sensor_commands)"
-     gazebo_sim="$(arg gazebo_sim)"
-     ignition_sim="$(arg ignition_sim)">
+     sim_gazebo="$(arg sim_gazebo)"
+     sim_ignition="$(arg sim_ignition)">
      <origin xyz="0 0 0" rpy="0 -${pi/2} 0"/>
    </xacro:robotiq_85_gripper>
 
-   <xacro:if value="$(arg gazebo_sim)">
+   <xacro:if value="$(arg sim_gazebo)">
      <!-- Gazebo plugins -->
      <gazebo reference="world">
      </gazebo>
@@ -138,7 +140,7 @@
      </gazebo>
    </xacro:if>
 
-   <xacro:if value="$(arg ignition_sim)">
+   <xacro:if value="$(arg sim_ignition)">
      <!-- Ignition plugins -->
      <gazebo reference="world">
      </gazebo>
