@@ -45,6 +45,12 @@ struct $SmName$
   void onInitialize() override
   {
     this->createOrthogonal<OrTimer>();
+    _node_ = std::make_shared<rclcpp::Node>("$sm_name$");
   }
 };
-}
+
+}  // namespace $sm_name$
+
+//STATES
+#include "states/st_state_1.hpp"
+#include "states/st_state_2.hpp"
