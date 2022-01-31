@@ -1,4 +1,10 @@
 repositories:
+
+  autoware_auto_msgs:
+    type: git
+    url: https://github.com/tier4/autoware_auto_msgs
+    version: tier4/main
+
   navigation2:
     type: git
     url: https://github.com/ros-planning/navigation2.git
