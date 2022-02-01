@@ -69,7 +69,8 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "shared_mutex": "cpp",
-        "bit": "cpp"
+        "bit": "cpp",
+        "forward_list": "cpp"
     },
     "python.autoComplete.extraPaths": [
         "/opt/ros/galactic/lib/python3.8/site-packages"

@@ -17,35 +17,40 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+
 #pragma once
 
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
-#include <optional>
-#include "cb_nav2z_client_behavior_base.hpp"
+#include <smacc2/smacc.hpp>
 
-namespace cl_nav2z
+namespace sm_dance_bot_warehouse_3
 {
-using odom_tracker::OdomTracker;
+using cl_nav2zclient::CbPureSpinning;
 
-template <typename TCbRelativeMotion>
-class CbRetry : public TCbRelativeMotion
+// STATE DECLARATION
+struct StNavigateToWaypoint1Recovery : smacc2::SmaccState<StNavigateToWaypoint1Recovery, MsDanceBotRunMode>
 {
-public:
-  CbRetry() {}
-  void onEntry() override
+  using SmaccState::SmaccState;
+
+  // TRANSITION TABLE
+  typedef mpl::list<
+
+    Transition<EvCbSuccess<CbRetry<CbNavigateForward>, OrNavigation>, StNavigateToWaypointsX, SUCCESS>
+    
+    >reactions;
+
+  // STATE FUNCTIONS
+  static void staticConfigure()
   {
-    odomTracker_ = this->moveBaseClient_->template getComponent<OdomTracker>();
-    auto goal = odomTracker_->getCurrentMotionGoal();
+    //configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI, 1.0 /*rad_s*/);
+    // configure_orthogonal<OrNavigation, CbNavigateForward>(2.0);
+    configure_orthogonal<OrNavigation, CbRetry<CbNavigateForward>>();
 
-    if (goal)
-    {
-      this->goalPose_ = *goal;
-    }
-
-    TCbRelativeMotion::onEntry();
+    configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 
-private:
-  OdomTracker * odomTracker_;
+  void onExit()
+  {
+
+  }
 };
-}  // namespace cl_nav2z
+}  // namespace sm_dance_bot_warehouse_3

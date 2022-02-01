@@ -148,8 +148,10 @@ void OdomTracker::pushPath(std::string pathname)
   RCLCPP_INFO(getLogger(), "PUSH_PATH PATH EXITTING");
   this->logStateString();
 
-  pathNames_.push_back(pathname);
+  pathInfos_.push_back({currentPathName_, this->currentMotionGoal_});
   pathStack_.push_back(baseTrajectory_);
+
+  currentPathName_ = pathname;
 
   // clean the current trajectory to start a new one
   baseTrajectory_.poses.clear();
@@ -177,10 +179,14 @@ void OdomTracker::popPath(int popCount, bool keepPreviousPath)
 
   while (popCount > 0 && !pathStack_.empty())
   {
-    auto & stacked = pathStack_.back().poses;
-    baseTrajectory_.poses.insert(baseTrajectory_.poses.begin(), stacked.begin(), stacked.end());
+    auto & stackedPath = pathStack_.back().poses;
+    auto & stackedPathInfo = pathInfos_.back();
+
+    baseTrajectory_.poses.insert(
+      baseTrajectory_.poses.begin(), stackedPath.begin(), stackedPath.end());
+    this->currentMotionGoal_ = stackedPathInfo.goalPose;
     pathStack_.pop_back();
-    pathNames_.pop_back();
+    pathInfos_.pop_back();
     popCount--;
 
     RCLCPP_INFO(getLogger(), "POP PATH Iteration ");
@@ -199,14 +205,23 @@ void OdomTracker::logStateString()
 {
   std::stringstream ss;
   ss << "--- odom tracker state ---" << std::endl;
-  ss << " - path stack size:" << pathStack_.size() << std::endl;
+  ss << " - path stack -" << currentPathName_ << " -  size:" << pathStack_.size()
+     << "goal: " << std::endl;
   ss << " - [STACK-HEAD active path size: " << baseTrajectory_.poses.size() << "]" << std::endl;
   int i = 0;
   for (auto & p : pathStack_ | boost::adaptors::reversed)
   {
-    auto pathname = pathNames_[pathNames_.size() - i - 1];
+    auto & pathinfo = pathInfos_[pathInfos_.size() - i - 1];
+    std::string goalstr = "[]";
+    if (pathinfo.goalPose)
+    {
+      std::stringstream ss;
+      ss << *(pathinfo.goalPose);
+      goalstr = ss.str();
+    }
+
     ss << " - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size() << " - "
-       << pathname << std::endl;
+       << pathinfo.name << " - goal: " << goalstr << std::endl;
     i++;
   }
   ss << "---";
@@ -223,6 +238,11 @@ void OdomTracker::clearPath()
   this->updateAggregatedStackPath();
 
   this->currentMotionGoal_.reset();
+}
+
+void OdomTracker::setCurrentPathName(const std::string & currentPathName)
+{
+  currentPathName_ = currentPathName;
 }
 
 void OdomTracker::setStartPoint(const geometry_msgs::msg::PoseStamped & pose)

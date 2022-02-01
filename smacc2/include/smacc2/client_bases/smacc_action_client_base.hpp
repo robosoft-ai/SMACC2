@@ -211,23 +211,28 @@ public:
   }
   */
 
-  virtual void cancelGoal() override
+  virtual bool cancelGoal() override
   {
     if (lastRequest_ && lastRequest_->valid())
     {
-      RCLCPP_INFO(getLogger(), "Cancelling goal of %s", this->getName().c_str());
-      std::shared_future<typename CancelResponse::SharedPtr> cancelresult =
-        client_->async_cancel_goal(lastRequest_->get());
+      rclcpp::spin_until_future_complete(getNode(), *lastRequest_);
+      auto req = lastRequest_->get();
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << getName() << "] Cancelling goal. req id: "
+                         << rclcpp_action::to_string(req->get_goal_id()));
+      auto cancelresult = client_->async_cancel_goal(req);
 
       // wait actively
-      cancelresult.get();
-      lastRequest_.reset();
+      rclcpp::spin_until_future_complete(getNode(), cancelresult);
+      //lastRequest_.reset();
+      return true;
     }
     else
     {
       RCLCPP_ERROR(
         getLogger(), "%s [at %s]: not connected with actionserver, skipping cancel goal ...",
         getName().c_str(), getNamespace().c_str());
+      return false;
     }
   }
 

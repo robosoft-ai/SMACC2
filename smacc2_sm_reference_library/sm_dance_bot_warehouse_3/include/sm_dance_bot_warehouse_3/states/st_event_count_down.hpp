@@ -52,7 +52,7 @@ struct StEventCountDown : smacc2::SmaccState<StEventCountDown, MsDanceBotRunMode
     //srCountdown->setOutputEvent<EvCountdownEnd<SrEventCountdown>>();
 
     auto srCountdown = static_createStateReactor<
-      SrEventCountdown, EvCountdownEnd<SrEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(50);
+      SrEventCountdown, EvCountdownEnd<SrEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(10);
 
   }
 };

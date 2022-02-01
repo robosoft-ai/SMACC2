@@ -34,10 +34,11 @@ bool CpTrajectoryHistory::getLastTrajectory(
   }
 
   if (backIndex < 0)
+
   {
     backIndex = 0;
   }
-  else if (backIndex >= this->trajectoryHistory_.size())
+  else if ((size_t)backIndex >= this->trajectoryHistory_.size())
   {
     RCLCPP_WARN_STREAM(
       getLogger(), "[" << getName() << "] requested index: " << backIndex

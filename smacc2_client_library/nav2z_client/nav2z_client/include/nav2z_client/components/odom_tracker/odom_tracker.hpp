@@ -87,8 +87,10 @@ public:
   // threadsafe
   void setStartPoint(const geometry_msgs::msg::Pose & pose);
 
-  // threadsafe - use only for recording mode, it is reset always a new path is pushed, poped or cleared
+  // threadsafe - use only for recording mode, it is reset always a new path is pushed, popped or cleared
   void setCurrentMotionGoal(const geometry_msgs::msg::PoseStamped & pose);
+
+  void setCurrentPathName(const std::string & currentPathName);
 
   // threadsafe
   std::optional<geometry_msgs::msg::PoseStamped> getCurrentMotionGoal();
@@ -149,7 +151,14 @@ protected:
   WorkingMode workingMode_;
 
   std::vector<nav_msgs::msg::Path> pathStack_;
-  std::vector<std::string> pathNames_;
+
+  struct PathInfo
+  {
+    std::string name;
+    std::optional<geometry_msgs::msg::PoseStamped> goalPose;
+  };
+
+  std::vector<PathInfo> pathInfos_;
 
   nav_msgs::msg::Path aggregatedStackPathMsg_;
 
@@ -157,6 +166,7 @@ protected:
   bool subscribeToOdometryTopic_;
 
   std::optional<geometry_msgs::msg::PoseStamped> currentMotionGoal_;
+  std::string currentPathName_;
 
   std::mutex m_mutex_;
 };

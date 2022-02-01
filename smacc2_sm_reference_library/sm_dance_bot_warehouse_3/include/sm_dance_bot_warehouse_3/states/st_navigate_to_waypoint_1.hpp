@@ -27,33 +27,44 @@ namespace sm_dance_bot_warehouse_3
 using cl_nav2zclient::CbPureSpinning;
 
 // STATE DECLARATION
-struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDanceBotRunMode>
+struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDanceBotRunMode>,
+                               public smacc2::ISmaccUpdatable
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
-    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateToWaypoint1, ABORT>
-
-    >reactions;
+      Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
+      Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateToWaypoint1Recovery, ABORT>
+      >
+      reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    //configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI, 1.0 /*rad_s*/);
-    configure_orthogonal<OrNavigation, CbNavigateForward>(2.0);
+    // configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI, 1.0 /*rad_s*/);
+    configure_orthogonal<OrNavigation, CbNavigateForward>(1.0);
     configure_orthogonal<OrNavigation, CbResumeSlam>();
+  }
+
+  bool firstUpdate = true;
+
+  void update() override
+  {
+    if (firstUpdate)
+    {
+      rclcpp::sleep_for(std::chrono::milliseconds(1000));
+      ClNav2Z* move_base_action_client;
+      this->requiresClient(move_base_action_client);
+
+      firstUpdate = !move_base_action_client->cancelGoal();
+      // ROS_INFO("StNavigateToWaypoint1::onUpdate");
+    }
   }
 
   void onExit()
   {
-    rclcpp::sleep_for(std::chrono::milliseconds(1000));
-    ClNav2Z * move_base_action_client;
-    this->requiresClient(move_base_action_client);
-
-    move_base_action_client->cancelGoal();
   }
 };
 }  // namespace sm_dance_bot_warehouse_3
