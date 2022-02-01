@@ -20,6 +20,7 @@
 #include <nav2z_client/client_behaviors/cb_navigate_next_waypoint.hpp>
 #include <nav2z_client/client_behaviors/cb_pause_slam.hpp>
 #include <nav2z_client/client_behaviors/cb_resume_slam.hpp>
+#include <nav2z_client/client_behaviors/cb_retry_behavior.hpp>
 #include <nav2z_client/client_behaviors/cb_rotate.hpp>
 #include <nav2z_client/client_behaviors/cb_undo_path_backwards.hpp>
 #include <nav2z_client/client_behaviors/cb_wait_nav2_nodes.hpp>

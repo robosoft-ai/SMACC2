@@ -4,7 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/ros/foxy/include"
+                "${workspaceFolder}/../install/**",
+                "/opt/ros/rolling/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

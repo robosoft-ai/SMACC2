@@ -18,42 +18,37 @@
  *
  ******************************************************************************************************************/
 #pragma once
-#include <ros_publisher_client/cl_ros_publisher.hpp>
-#include <smacc2/smacc_client_behavior.hpp>
 
-namespace cl_ros_publisher
-{
-class CbDefaultPublishLoop : public smacc2::SmaccClientBehavior, public smacc2::ISmaccUpdatable
-{
-private:
-  std::function<void()> deferedPublishFn_;
-  ClRosPublisher * client_;
+#include <optional>
+#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include "cb_nav2z_client_behavior_base.hpp"
 
+namespace cl_nav2z
+{
+
+using odom_tracker::OdomTracker;
+
+template< typename TCbRelativeMotion>
+class CbRetry : public TCbRelativeMotion
+{
 public:
-  CbDefaultPublishLoop() : deferedPublishFn_(nullptr) {}
 
-  template <typename TMessage>
-  CbDefaultPublishLoop(const TMessage & data)
+  void onEntry() override
   {
-    this->setMessage(data);
+      odomTracker_ = this->moveBaseClient_->template getComponent<OdomTracker>();
+      auto goal = odomTracker_->getCurrentMotionGoal();
+
+      if(goal)
+      {
+        this->goalPose_ = *goal;
+      }
+
+      TCbRelativeMotion::onEntry();
   }
 
-  template <typename TMessage>
-  void setMessage(const TMessage & data)
-  {
-    deferedPublishFn_ = [this, data]() { this->client_->publish(data); };
-  }
+private:
 
-  void onEntry() override { this->requiresClient(client_); }
+  OdomTracker * odomTracker_;
 
-  virtual void update()
-  {
-    if (deferedPublishFn_ != nullptr)
-    {
-      deferedPublishFn_();
-    }
-  }
-
-  void onExit() override {}
 };
-}  // namespace cl_ros_publisher
+}  // namespace cl_nav2z

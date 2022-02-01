@@ -158,6 +158,8 @@ void OdomTracker::pushPath(std::string pathname)
   this->logStateString();
   RCLCPP_INFO(getLogger(), "odom_tracker m_mutex release");
   this->updateAggregatedStackPath();
+
+  this->currentMotionGoal_.reset();
 }
 
 void OdomTracker::popPath(int popCount, bool keepPreviousPath)
@@ -189,6 +191,8 @@ void OdomTracker::popPath(int popCount, bool keepPreviousPath)
   this->logStateString();
   RCLCPP_INFO(getLogger(), "odom_tracker m_mutex release");
   this->updateAggregatedStackPath();
+
+  this->currentMotionGoal_.reset();
 }
 
 void OdomTracker::logStateString()
@@ -217,6 +221,8 @@ void OdomTracker::clearPath()
   rtPublishPaths(getNode()->now());
   this->logStateString();
   this->updateAggregatedStackPath();
+
+  this->currentMotionGoal_.reset();
 }
 
 void OdomTracker::setStartPoint(const geometry_msgs::msg::PoseStamped & pose)
@@ -252,6 +258,18 @@ void OdomTracker::setStartPoint(const geometry_msgs::msg::Pose & pose)
     baseTrajectory_.poses.push_back(posestamped);
   }
   this->updateAggregatedStackPath();
+}
+
+void OdomTracker::setCurrentMotionGoal(const geometry_msgs::msg::PoseStamped & pose)
+{
+  std::lock_guard<std::mutex> lock(m_mutex_);
+  this->currentMotionGoal_ = pose;
+}
+
+std::optional<geometry_msgs::msg::PoseStamped> OdomTracker::getCurrentMotionGoal()
+{
+  std::lock_guard<std::mutex> lock(m_mutex_);
+  return this->currentMotionGoal_;
 }
 
 nav_msgs::msg::Path OdomTracker::getPath()
@@ -346,8 +364,8 @@ bool OdomTracker::updateClearPath(const nav_msgs::msg::Odometry & odom)
     if (
       acceptBackward &&
       baseTrajectory_.poses.size() > 1) /* we always leave at least one item, specially interesting
-                                           for the backward local planner reach the backwards goal
-                                           with enough precision*/
+                                                               for the backward local planner reach the backwards goal
+                                                               with enough precision*/
     {
       baseTrajectory_.poses.pop_back();
     }

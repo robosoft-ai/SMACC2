@@ -124,7 +124,7 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_1>,
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateDegrees1, TRANSITION_1>,
     Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_2>,
     Transition<EvWaypoint2<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_3>,
     Transition<EvWaypoint3<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_4>,
@@ -142,7 +142,7 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
   static void staticConfigure()
   {
     configure_orthogonal<OrLED, CbLEDOn>();
-    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+    configure_orthogonal<OrNavigation, CbRetry<CbNavigateForward>>();
     configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 
