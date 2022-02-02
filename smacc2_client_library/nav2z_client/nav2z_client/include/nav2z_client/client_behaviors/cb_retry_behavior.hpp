@@ -17,39 +17,35 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+#pragma once
 
-namespace sm_dance_bot_warehouse_3
+#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <optional>
+#include "cb_nav2z_client_behavior_base.hpp"
+
+namespace cl_nav2z
 {
-namespace f_pattern_states
+using odom_tracker::OdomTracker;
+
+template <typename TCbRelativeMotion>
+class CbRetry : public TCbRelativeMotion
 {
-// STATE DECLARATION
-template <typename SS>
-struct StiFPatternStartLoop : smacc2::SmaccState<StiFPatternStartLoop<SS>, SS>
-{
-  typedef SmaccState<StiFPatternStartLoop<SS>, SS> TSti;
-  using TSti::context_type;
-  using TSti::SmaccState;
-
-  // TRANSITION TABLE
-  typedef mpl::list<
-
-    Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternRotate1<SS>, CONTINUELOOP>
-
-    >reactions;
-
-  // STATE FUNCTIONS
-  static void staticConfigure() {}
-
-  bool loopCondition()
+public:
+  CbRetry() {}
+  void onEntry() override
   {
-    auto & superstate = TSti::template context<SS>();
-    return superstate.iteration_count++ < superstate.total_iterations();
+    odomTracker_ = this->moveBaseClient_->template getComponent<OdomTracker>();
+    auto goal = odomTracker_->getCurrentMotionGoal();
+
+    if (goal)
+    {
+      this->goalPose_ = *goal;
+    }
+
+    TCbRelativeMotion::onEntry();
   }
 
-  void onEntry()
-  {
-    TSti::checkWhileLoopConditionAndThrowEvent(&StiFPatternStartLoop<SS>::loopCondition);
-  }
+private:
+  OdomTracker * odomTracker_;
 };
-}  // namespace f_pattern_states
-}  // namespace sm_dance_bot_warehouse_3
+}  // namespace cl_nav2z

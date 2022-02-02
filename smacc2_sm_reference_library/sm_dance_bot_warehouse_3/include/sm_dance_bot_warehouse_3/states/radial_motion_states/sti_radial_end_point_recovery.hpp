@@ -20,42 +20,33 @@
 
 namespace sm_dance_bot_warehouse_3
 {
-namespace s_pattern_states
+namespace radial_motion_states
 {
 // STATE DECLARATION
-struct StiSPatternRotate4 : smacc2::SmaccState<StiSPatternRotate4, SS>
+struct StiRadialEndPointRecovery : smacc2::SmaccState<StiRadialEndPointRecovery, SS>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward4> ,
-    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternRotate4>
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiRadialReturn, SUCCESS>,
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiRadialEndPointRecovery, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure() {}
+  static void staticConfigure()
+  {
+    //RCLCPP_INFO(getLogger(),"ssr radial end point, distance in meters: %lf", SS::ray_length_meters());
+    configure_orthogonal<OrNavigation, CbRetry<CbNavigateForward>>();
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
+    configure_orthogonal<OrLED, CbLEDOn>();
+  }
 
   void runtimeConfigure()
   {
-    auto & superstate = this->context<SS>();
-    RCLCPP_INFO(
-      getLogger(), "[SsrSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
-      superstate.iteration_count, SS::total_iterations());
-
-    float offset = 90;
-    float angle = 0;
-    if (superstate.direction() == TDirection::LEFT)
-      angle = -90 - offset;
-    else
-      angle = 90 + offset;
-
-    this->configure<OrNavigation, CbAbsoluteRotate>(angle);
-    this->configure<OrNavigation, CbResumeSlam>();
-    this->configure<OrLED, CbLEDOff>();
   }
 };
-}  // namespace s_pattern_states
+}  // namespace radial_motion_states
 }  // namespace sm_dance_bot_warehouse_3

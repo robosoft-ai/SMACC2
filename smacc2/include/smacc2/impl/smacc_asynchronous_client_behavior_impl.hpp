@@ -27,17 +27,17 @@ namespace smacc2
 template <typename TOrthogonal, typename TSourceObject>
 void SmaccAsyncClientBehavior::onOrthogonalAllocation()
 {
-  postFinishEventFn_ = [=] {
+  postFinishEventFn_ = [this] {
     this->onFinished_();
     this->postEvent<EvCbFinished<TSourceObject, TOrthogonal>>();
   };
 
-  postSuccessEventFn_ = [=] {
+  postSuccessEventFn_ = [this] {
     this->onSuccess_();
     this->postEvent<EvCbSuccess<TSourceObject, TOrthogonal>>();
   };
 
-  postFailureEventFn_ = [=] {
+  postFailureEventFn_ = [this] {
     this->onFailure_();
     this->postEvent<EvCbFailure<TSourceObject, TOrthogonal>>();
   };
