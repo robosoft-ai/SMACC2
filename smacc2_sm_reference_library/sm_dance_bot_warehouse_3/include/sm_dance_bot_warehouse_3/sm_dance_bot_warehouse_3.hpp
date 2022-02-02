@@ -111,36 +111,12 @@ namespace SS1
 class SsRadialPattern1;
 }
 
-namespace SS2
-{
-class SsRadialPattern2;
-}
 
-namespace SS3
-{
-class SsRadialPattern3;
-}
-
-namespace SS4
-{
-class SsFPattern1;
-}
-
-namespace SS5
-{
-class SsSPattern1;
-}
-
-namespace SS6
-{
-class SsSPattern2;
-}
 
 // custom smd_dance_bot event
 struct EvGlobalError : sc::event<EvGlobalError>
 {
 };
-
 }  // namespace sm_dance_bot_warehouse_3
 
 using namespace sm_dance_bot_warehouse_3;
@@ -186,12 +162,7 @@ struct SmDanceBotWareHouse3 : public smacc2::SmaccStateMachineBase<SmDanceBotWar
 #include <sm_dance_bot_warehouse_3/modestates/ms_dance_bot_recovery_mode.hpp>
 
 //SUPERSTATES
-#include <sm_dance_bot_warehouse_3/superstates/ss_f_pattern_1.hpp>
 #include <sm_dance_bot_warehouse_3/superstates/ss_radial_pattern_1.hpp>
-#include <sm_dance_bot_warehouse_3/superstates/ss_radial_pattern_2.hpp>
-#include <sm_dance_bot_warehouse_3/superstates/ss_radial_pattern_3.hpp>
-#include <sm_dance_bot_warehouse_3/superstates/ss_s_pattern_1.hpp>
-#include <sm_dance_bot_warehouse_3/superstates/ss_s_pattern_2.hpp>
 
 //STATES
 #include <sm_dance_bot_warehouse_3/states/st_acquire_sensors.hpp>

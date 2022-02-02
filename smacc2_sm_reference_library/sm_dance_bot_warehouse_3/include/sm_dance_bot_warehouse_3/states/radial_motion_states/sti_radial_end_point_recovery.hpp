@@ -20,42 +20,33 @@
 
 namespace sm_dance_bot_warehouse_3
 {
-namespace s_pattern_states
+namespace radial_motion_states
 {
 // STATE DECLARATION
-struct StiSPatternRotate1 : smacc2::SmaccState<StiSPatternRotate1, SS>
+struct StiRadialEndPointRecovery : smacc2::SmaccState<StiRadialEndPointRecovery, SS>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward1>,
-    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternRotate1>
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiRadialReturn, SUCCESS>,
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiRadialEndPointRecovery, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure() {}
+  static void staticConfigure()
+  {
+    //RCLCPP_INFO(getLogger(),"ssr radial end point, distance in meters: %lf", SS::ray_length_meters());
+    configure_orthogonal<OrNavigation, CbRetry<CbNavigateForward>>();
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
+    configure_orthogonal<OrLED, CbLEDOn>();
+  }
 
   void runtimeConfigure()
   {
-    auto & superstate = this->context<SS>();
-
-    float offset = 90;
-    if (superstate.direction() == TDirection::RIGHT)
-    {
-      // - offset because we are looking to the north and we have to turn clockwise
-      this->configure<OrNavigation, CbAbsoluteRotate>(0 - offset);
-    }
-    else
-    {
-      // - offset because we are looking to the south and we have to turn counter-clockwise
-      this->configure<OrNavigation, CbAbsoluteRotate>(180 + offset);
-    }
-
-    this->configure<OrLED, CbLEDOff>();
   }
 };
-}  // namespace s_pattern_states
+}  // namespace radial_motion_states
 }  // namespace sm_dance_bot_warehouse_3

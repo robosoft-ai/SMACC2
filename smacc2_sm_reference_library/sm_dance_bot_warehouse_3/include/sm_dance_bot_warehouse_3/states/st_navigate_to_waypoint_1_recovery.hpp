@@ -35,7 +35,7 @@ struct StNavigateToWaypoint1Recovery : smacc2::SmaccState<StNavigateToWaypoint1R
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbRetry<CbNavigateForward>, OrNavigation>, StNavigateToWaypointsX, SUCCESS>
-    
+
     >reactions;
 
   // STATE FUNCTIONS
