@@ -36,9 +36,6 @@ using cl_ros_timer::CbTimerCountdownOnce;
 
 using $sm_name$::OrTimer;
 
-// STATE MACHINE SHARED VARIABLES (used in this state)
-extern std::shared_ptr<std::string> _output_message_prefix_;    // This is example variable - feel free to delete it.
-
 // STATE DECLARATION
 struct State2 : smacc2::SmaccState<State2, $SmName$>
 {
@@ -62,20 +59,23 @@ struct State2 : smacc2::SmaccState<State2, $SmName$>
   void runtimeConfigure()
   {
     // START: Example code - change or delete as needed
-    RCLCPP_INFO(getLogger(), (*_output_message_prefix_ + " Entering State2").c_str());
+    RCLCPP_INFO(getLogger(), " Entering State2");
     // END: Example code - change or delete as needed
   }
 
   void onEntry() {
     // START: Example code - change or delete as needed
-    RCLCPP_INFO(getLogger(), (*_output_message_prefix_ + " On Entry!").c_str());
+    // Use Blackboard to get global state-machine data - example - feel free to delete it.
+    std::string output_message_note;
+    getGlobalSMData("output_message_note", output_message_note);
+    RCLCPP_INFO(getLogger(), (output_message_note + " On Entry!").c_str());
     // END: Example code - change or delete as needed
   }
 
   void onExit()
   {
     // START: Example code - change or delete as needed
-    RCLCPP_INFO(getLogger(), (*_output_message_prefix_ + " On Exit!").c_str());
+    RCLCPP_INFO(getLogger(), " On Exit!");
     // END: Example code - change or delete as needed
   }
 };

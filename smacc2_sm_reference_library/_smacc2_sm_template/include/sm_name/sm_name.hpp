@@ -32,9 +32,6 @@ using $sm_name$::OrTimer;  // This is example variable - feel free to delete it.
 struct State1;
 struct State2;
 
-//VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious), e.g.:
-std::shared_ptr<std::string> _output_message_prefix_;  // This is example variable - feel free to delete it.
-
 //--------------------------------------------------------------------
 //STATE_MACHINE
 struct $SmName$
@@ -46,7 +43,8 @@ struct $SmName$
   {
     // START: Example code - change or delete as needed
     this->createOrthogonal<OrTimer>();
-    _output_message_prefix_ = std::make_shared<std::string>("$sm_name$");
+    // Use Blackboard to store global state-machine data - example - feel free to delete it.
+    setGlobalSMData("output_message_note", "{I am very cool smacc2 SM called '$sm_name$'}");
     // END: Example code - change or delete as needed
   }
 };

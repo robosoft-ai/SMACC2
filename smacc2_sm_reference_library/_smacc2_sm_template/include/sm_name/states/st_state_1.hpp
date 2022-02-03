@@ -24,7 +24,7 @@
 #include "ros_timer_client/client_behaviors/cb_timer_countdown_once.hpp"
 
 // ORTHOGONALS
-using $sm_name$::OrTimer;  // This is example variable - feel free to delete it.
+using $sm_name$::OrTimer;  // This is an example variable - feel free to delete it.
 
 namespace $sm_name$
 {
@@ -38,9 +38,6 @@ using cl_ros_timer::CbTimerCountdownLoop;
 using cl_ros_timer::CbTimerCountdownOnce;
 
 using $sm_name$::OrTimer;
-
-// STATE MACHINE SHARED VARIABLES (used in this state)
-extern std::shared_ptr<std::string> _output_message_prefix_;    // This is example variable - feel free to delete it.
 
 // STATE DECLARATION
 struct State1 : smacc2::SmaccState<State1, $SmName$>
@@ -68,14 +65,17 @@ struct State1 : smacc2::SmaccState<State1, $SmName$>
   void onEntry()
   {
     // START: Example code - change or delete as needed
-    RCLCPP_INFO(getLogger(), (*_output_message_prefix_ + " On Entry!").c_str());
+    RCLCPP_INFO(getLogger(), " On Entry!");
     // END: Example code - change or delete as needed
   }
 
   void onExit()
   {
     // START: Example code - change or delete as needed
-    RCLCPP_INFO(getLogger(), (*_output_message_prefix_ + " On Exit!").c_str());
+    // Use Blackboard to get global state-machine data - example - feel free to delete it.
+    std::string output_message_note;
+    getGlobalSMData("output_message_note", output_message_note);
+    RCLCPP_INFO(getLogger(), (output_message_note + " On Exit!").c_str());
     // END: Example code - change or delete as needed
   }
 };
