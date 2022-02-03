@@ -21,6 +21,7 @@
 
 #include <tf2/utils.h>
 #include <tf2_ros/buffer.h>
+#include <geometry_msgs/msg/pose_stamped.hpp>
 #include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
@@ -36,21 +37,23 @@ public:
   // just a stub to show how to use parameterless constructor
   std::optional<float> forwardSpeed;
 
-  // this may be useful in the case you want to do a stright line with some orientation
-  // relative to some global reference (trying to solve the initial orientation error
-  // of the current orientation). If it is not set, the orientation of the straight line is
-  // the orientation of the initial state.
+  // this may be useful in the case you want to do a straight line with some known direction
+  // and the robot may not have that specific initial orientation at that moment.
+  // If it is not set, the orientation of the straight line is the orientation of the initial (current) state.
   std::optional<geometry_msgs::msg::Quaternion> forceInitialOrientation;
 
+  // the name of the goal checker selected in the navigation2 stack
   std::optional<std::string> goalChecker_;
 
-  std::shared_ptr<tf2_ros::Buffer> listener;
-
-  odom_tracker::OdomTracker * odomTracker_;
+  CbNavigateForward();
 
   CbNavigateForward(float forwardDistance);
 
-  CbNavigateForward();
+  // alternative forward motion using an absolute goal position instead a relative linear distance.
+  // It is specially to retry a previous relative incorrect motions based on distance.
+  // The developer user is in charge of setting a valid goal position that is located forward
+  // from the current position and orientation.
+  CbNavigateForward(geometry_msgs::msg::PoseStamped goalPosition);
 
   virtual ~CbNavigateForward();
 
@@ -60,7 +63,12 @@ public:
 
   void setForwardDistance(float distance_meters);
 
-private:
-  float forwardDistance;
+protected:
+  // required component
+  odom_tracker::OdomTracker * odomTracker_;
+
+  std::optional<geometry_msgs::msg::PoseStamped> goalPose_;
+
+  std::optional<float> forwardDistance_;
 };
 }  // namespace cl_nav2z

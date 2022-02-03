@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
 #pragma once
 #include <ros_publisher_client/cl_ros_publisher.hpp>
 #include <smacc2/smacc_client_behavior.hpp>
@@ -21,11 +26,11 @@ namespace cl_ros_publisher
 class CbDefaultPublishLoop : public smacc2::SmaccClientBehavior, public smacc2::ISmaccUpdatable
 {
 private:
-  std::function<void()> deferedPublishFn;
+  std::function<void()> deferedPublishFn_;
   ClRosPublisher * client_;
 
 public:
-  CbDefaultPublishLoop() : deferedPublishFn(nullptr) {}
+  CbDefaultPublishLoop() : deferedPublishFn_(nullptr) {}
 
   template <typename TMessage>
   CbDefaultPublishLoop(const TMessage & data)
@@ -36,14 +41,17 @@ public:
   template <typename TMessage>
   void setMessage(const TMessage & data)
   {
-    deferedPublishFn = [this, data]() { client_->publish(data); };
+    deferedPublishFn_ = [this, data]() { this->client_->publish(data); };
   }
 
   void onEntry() override { this->requiresClient(client_); }
 
   virtual void update()
   {
-    if (deferedPublishFn != nullptr) deferedPublishFn();
+    if (deferedPublishFn_ != nullptr)
+    {
+      deferedPublishFn_();
+    }
   }
 
   void onExit() override {}

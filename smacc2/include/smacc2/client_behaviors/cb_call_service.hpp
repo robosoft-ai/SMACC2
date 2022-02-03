@@ -39,8 +39,7 @@ public:
   void onEntry() override
   {
     RCLCPP_INFO_STREAM(
-      getNode()->get_logger(),
-      "[" << this->getName() << "] creating service client: " << serviceName_);
+      getLogger(), "[" << this->getName() << "] creating service client: " << serviceName_);
 
     client_ = getNode()->create_client<ServiceType>(serviceName_);
 

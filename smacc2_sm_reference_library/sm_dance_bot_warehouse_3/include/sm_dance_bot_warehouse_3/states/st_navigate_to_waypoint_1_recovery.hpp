@@ -18,44 +18,39 @@
  *
  ******************************************************************************************************************/
 
+#pragma once
+
+#include <smacc2/smacc.hpp>
+
 namespace sm_dance_bot_warehouse_3
 {
-namespace s_pattern_states
-{
+using cl_nav2zclient::CbPureSpinning;
+
 // STATE DECLARATION
-struct StiSPatternRotate1 : smacc2::SmaccState<StiSPatternRotate1, SS>
+struct StNavigateToWaypoint1Recovery : smacc2::SmaccState<StNavigateToWaypoint1Recovery, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward1>,
-    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternRotate1>
+    Transition<EvCbSuccess<CbRetry<CbNavigateForward>, OrNavigation>, StNavigateToWaypointsX, SUCCESS>
 
     >reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure() {}
-
-  void runtimeConfigure()
+  static void staticConfigure()
   {
-    auto & superstate = this->context<SS>();
+    //configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI, 1.0 /*rad_s*/);
+    // configure_orthogonal<OrNavigation, CbNavigateForward>(2.0);
+    configure_orthogonal<OrNavigation, CbRetry<CbNavigateForward>>();
 
-    float offset = 90;
-    if (superstate.direction() == TDirection::RIGHT)
-    {
-      // - offset because we are looking to the north and we have to turn clockwise
-      this->configure<OrNavigation, CbAbsoluteRotate>(0 - offset);
-    }
-    else
-    {
-      // - offset because we are looking to the south and we have to turn counter-clockwise
-      this->configure<OrNavigation, CbAbsoluteRotate>(180 + offset);
-    }
+    configure_orthogonal<OrNavigation, CbResumeSlam>();
+  }
 
-    this->configure<OrLED, CbLEDOff>();
+  void onExit()
+  {
+
   }
 };
-}  // namespace s_pattern_states
 }  // namespace sm_dance_bot_warehouse_3

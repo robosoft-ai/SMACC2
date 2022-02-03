@@ -148,8 +148,10 @@ void OdomTracker::pushPath(std::string pathname)
   RCLCPP_INFO(getLogger(), "PUSH_PATH PATH EXITTING");
   this->logStateString();
 
-  pathNames_.push_back(pathname);
+  pathInfos_.push_back({currentPathName_, this->currentMotionGoal_});
   pathStack_.push_back(baseTrajectory_);
+
+  currentPathName_ = pathname;
 
   // clean the current trajectory to start a new one
   baseTrajectory_.poses.clear();
@@ -158,6 +160,8 @@ void OdomTracker::pushPath(std::string pathname)
   this->logStateString();
   RCLCPP_INFO(getLogger(), "odom_tracker m_mutex release");
   this->updateAggregatedStackPath();
+
+  this->currentMotionGoal_.reset();
 }
 
 void OdomTracker::popPath(int popCount, bool keepPreviousPath)
@@ -175,10 +179,14 @@ void OdomTracker::popPath(int popCount, bool keepPreviousPath)
 
   while (popCount > 0 && !pathStack_.empty())
   {
-    auto & stacked = pathStack_.back().poses;
-    baseTrajectory_.poses.insert(baseTrajectory_.poses.begin(), stacked.begin(), stacked.end());
+    auto & stackedPath = pathStack_.back().poses;
+    auto & stackedPathInfo = pathInfos_.back();
+
+    baseTrajectory_.poses.insert(
+      baseTrajectory_.poses.begin(), stackedPath.begin(), stackedPath.end());
+    this->currentMotionGoal_ = stackedPathInfo.goalPose;
     pathStack_.pop_back();
-    pathNames_.pop_back();
+    pathInfos_.pop_back();
     popCount--;
 
     RCLCPP_INFO(getLogger(), "POP PATH Iteration ");
@@ -189,20 +197,31 @@ void OdomTracker::popPath(int popCount, bool keepPreviousPath)
   this->logStateString();
   RCLCPP_INFO(getLogger(), "odom_tracker m_mutex release");
   this->updateAggregatedStackPath();
+
+  this->currentMotionGoal_.reset();
 }
 
 void OdomTracker::logStateString()
 {
   std::stringstream ss;
   ss << "--- odom tracker state ---" << std::endl;
-  ss << " - path stack size:" << pathStack_.size() << std::endl;
+  ss << " - path stack -" << currentPathName_ << " -  size:" << pathStack_.size()
+     << "goal: " << std::endl;
   ss << " - [STACK-HEAD active path size: " << baseTrajectory_.poses.size() << "]" << std::endl;
   int i = 0;
   for (auto & p : pathStack_ | boost::adaptors::reversed)
   {
-    auto pathname = pathNames_[pathNames_.size() - i - 1];
+    auto & pathinfo = pathInfos_[pathInfos_.size() - i - 1];
+    std::string goalstr = "[]";
+    if (pathinfo.goalPose)
+    {
+      std::stringstream ss;
+      ss << *(pathinfo.goalPose);
+      goalstr = ss.str();
+    }
+
     ss << " - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size() << " - "
-       << pathname << std::endl;
+       << pathinfo.name << " - goal: " << goalstr << std::endl;
     i++;
   }
   ss << "---";
@@ -217,6 +236,13 @@ void OdomTracker::clearPath()
   rtPublishPaths(getNode()->now());
   this->logStateString();
   this->updateAggregatedStackPath();
+
+  this->currentMotionGoal_.reset();
+}
+
+void OdomTracker::setCurrentPathName(const std::string & currentPathName)
+{
+  currentPathName_ = currentPathName;
 }
 
 void OdomTracker::setStartPoint(const geometry_msgs::msg::PoseStamped & pose)
@@ -252,6 +278,18 @@ void OdomTracker::setStartPoint(const geometry_msgs::msg::Pose & pose)
     baseTrajectory_.poses.push_back(posestamped);
   }
   this->updateAggregatedStackPath();
+}
+
+void OdomTracker::setCurrentMotionGoal(const geometry_msgs::msg::PoseStamped & pose)
+{
+  std::lock_guard<std::mutex> lock(m_mutex_);
+  this->currentMotionGoal_ = pose;
+}
+
+std::optional<geometry_msgs::msg::PoseStamped> OdomTracker::getCurrentMotionGoal()
+{
+  std::lock_guard<std::mutex> lock(m_mutex_);
+  return this->currentMotionGoal_;
 }
 
 nav_msgs::msg::Path OdomTracker::getPath()
@@ -346,8 +384,8 @@ bool OdomTracker::updateClearPath(const nav_msgs::msg::Odometry & odom)
     if (
       acceptBackward &&
       baseTrajectory_.poses.size() > 1) /* we always leave at least one item, specially interesting
-                                           for the backward local planner reach the backwards goal
-                                           with enough precision*/
+                                                               for the backward local planner reach the backwards goal
+                                                               with enough precision*/
     {
       baseTrajectory_.poses.pop_back();
     }

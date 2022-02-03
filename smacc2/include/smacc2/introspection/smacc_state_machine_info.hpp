@@ -506,8 +506,7 @@ std::shared_ptr<SmaccStateInfo> SmaccStateInfo::createChildState()
   auto childState = this->stateMachine_->createState<StateType>(realparentState);
 
   RCLCPP_WARN_STREAM(
-    getNode()->get_logger(),
-    "Real parent state> " << demangleSymbol<typename StateType::TContext>());
+    getLogger(), "Real parent state> " << demangleSymbol<typename StateType::TContext>());
 
   /*auto contextInfo = TypeInfo::getTypeInfoFromType<InitialStateType>();
     auto parentState2= getState<InitialStateType::TContext>();

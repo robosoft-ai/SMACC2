@@ -23,15 +23,19 @@
 #include <smacc2/common.hpp>
 #include <smacc2/component.hpp>
 
-#include <geometry_msgs/msg/point.hpp>
+#include <rclcpp/rclcpp.hpp>
+
 #include <memory>
 #include <mutex>
+#include <vector>
+
+#include <geometry_msgs/msg/point.hpp>
+#include <geometry_msgs/msg/pose.hpp>
 #include <nav2_msgs/action/navigate_to_pose.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <nav_msgs/msg/path.hpp>
-#include <rclcpp/rclcpp.hpp>
+
 #include <std_msgs/msg/header.hpp>
-#include <vector>
 
 namespace cl_nav2z
 {
@@ -82,6 +86,14 @@ public:
 
   // threadsafe
   void setStartPoint(const geometry_msgs::msg::Pose & pose);
+
+  // threadsafe - use only for recording mode, it is reset always a new path is pushed, popped or cleared
+  void setCurrentMotionGoal(const geometry_msgs::msg::PoseStamped & pose);
+
+  void setCurrentPathName(const std::string & currentPathName);
+
+  // threadsafe
+  std::optional<geometry_msgs::msg::PoseStamped> getCurrentMotionGoal();
 
   // threadsafe
   nav_msgs::msg::Path getPath();
@@ -139,12 +151,22 @@ protected:
   WorkingMode workingMode_;
 
   std::vector<nav_msgs::msg::Path> pathStack_;
-  std::vector<std::string> pathNames_;
+
+  struct PathInfo
+  {
+    std::string name;
+    std::optional<geometry_msgs::msg::PoseStamped> goalPose;
+  };
+
+  std::vector<PathInfo> pathInfos_;
 
   nav_msgs::msg::Path aggregatedStackPathMsg_;
 
   // subscribes to topic on init if true
   bool subscribeToOdometryTopic_;
+
+  std::optional<geometry_msgs::msg::PoseStamped> currentMotionGoal_;
+  std::string currentPathName_;
 
   std::mutex m_mutex_;
 };

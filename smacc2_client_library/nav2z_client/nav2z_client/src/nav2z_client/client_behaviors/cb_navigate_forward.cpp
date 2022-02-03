@@ -32,9 +32,10 @@ using ::cl_nav2z::odom_tracker::WorkingMode;
 
 using ::cl_nav2z::Pose;
 
-CbNavigateForward::CbNavigateForward(float distance_meters) : forwardDistance(distance_meters) {}
-
+CbNavigateForward::CbNavigateForward(float distance_meters) : forwardDistance_(distance_meters) {}
 CbNavigateForward::CbNavigateForward() {}
+
+CbNavigateForward::CbNavigateForward(geometry_msgs::msg::PoseStamped goal) : goalPose_(goal) {}
 
 CbNavigateForward::~CbNavigateForward() {}
 
@@ -47,20 +48,21 @@ void CbNavigateForward::setForwardDistance(float distance_meters)
                        << ". Resetting to 0.");
     distance_meters = 0;
   }
-  this->forwardDistance = distance_meters;
+  forwardDistance_ = distance_meters;
 
   RCLCPP_INFO_STREAM(
-    getLogger(), "[" << getName() << "] setting fw motion distance: " << this->forwardDistance);
+    getLogger(), "[" << getName() << "] setting fw motion distance: " << *forwardDistance_);
 }
 
 void CbNavigateForward::onEntry()
 {
-  setForwardDistance(forwardDistance);
+  if (forwardDistance_)
+  {
+    setForwardDistance(*forwardDistance_);
 
-  // straight motion distance
-  double dist = forwardDistance;
-
-  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Straight motion distance: " << dist);
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] Straight motion distance: " << *forwardDistance_);
+  }
 
   // get current pose
   auto p = moveBaseClient_->getComponent<Pose>();
@@ -69,30 +71,55 @@ void CbNavigateForward::onEntry()
   tf2::Transform currentPose;
   tf2::fromMsg(currentPoseMsg, currentPose);
 
-  RCLCPP_INFO_STREAM(getLogger(), "[CbNavigateForward] current pose: " << currentPoseMsg);
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[" << getName() << "]"
+                     << "current pose: " << currentPoseMsg);
 
   // force global orientation if it is requested
   if (this->forceInitialOrientation)
   {
     currentPoseMsg.orientation = *forceInitialOrientation;
     RCLCPP_WARN_STREAM(
-      getLogger(), "[CbNavigateForward] Forcing initial straight motion orientation: "
-                     << currentPoseMsg.orientation);
+      getLogger(),
+      "[" << getName() << "]"
+          << "Forcing initial straight motion orientation: " << currentPoseMsg.orientation);
   }
 
-  // compute forward goal pose
-  tf2::Transform forwardDeltaTransform;
-  forwardDeltaTransform.setIdentity();
-  forwardDeltaTransform.setOrigin(tf2::Vector3(dist, 0, 0));
+  tf2::Transform targetPose;
+  if (goalPose_)
+  {
+    tf2::fromMsg(goalPose_->pose, targetPose);
+  }
+  else if (forwardDistance_)
+  {
+    // compute forward goal pose
+    tf2::Transform forwardDeltaTransform;
+    forwardDeltaTransform.setIdentity();
+    forwardDeltaTransform.setOrigin(tf2::Vector3(*forwardDistance_, 0, 0));
 
-  tf2::Transform targetPose = currentPose * forwardDeltaTransform;
+    targetPose = currentPose * forwardDeltaTransform;
+  }
+  else
+  {
+    RCLCPP_WARN_STREAM(
+      getLogger(),
+      "[" << getName() << "]"
+          << "No goal Pose or Distance is specified. Aborting. No action request is sent."
+          << currentPoseMsg.orientation);
 
+    return;
+  }
+
+  // action goal
   ClNav2Z::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
   goal.pose.header.stamp = getNode()->now();
   tf2::toMsg(targetPose, goal.pose.pose);
-  RCLCPP_INFO_STREAM(getLogger(), "[CbNavigateForward] TARGET POSE FORWARD: " << goal.pose.pose);
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[" << getName() << "]"
+                     << " TARGET POSE FORWARD: " << goal.pose.pose);
 
+  // current pose
   geometry_msgs::msg::PoseStamped currentStampedPoseMsg;
   currentStampedPoseMsg.header.frame_id = referenceFrame;
   currentStampedPoseMsg.header.stamp = getNode()->now();
@@ -104,6 +131,7 @@ void CbNavigateForward::onEntry()
     auto pathname = this->getCurrentState()->getName() + " - " + getName();
     odomTracker_->pushPath(pathname);
     odomTracker_->setStartPoint(currentStampedPoseMsg);
+    odomTracker_->setCurrentMotionGoal(goal.pose);
     odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
   }
 

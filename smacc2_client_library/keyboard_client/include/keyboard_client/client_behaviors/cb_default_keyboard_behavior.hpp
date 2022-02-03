@@ -94,7 +94,7 @@ public:
   void postKeyEvent()
   {
     RCLCPP_WARN(
-      getNode()->get_logger(), "CbDefaultKeyboardBehavior %ld ev: %s", (long)(void *)this,
+      getLogger(), "CbDefaultKeyboardBehavior %ld ev: %s", (long)(void *)this,
       smacc2::demangleSymbol(typeid(TEv).name()).c_str());
     auto event = new TEv();
     this->postEvent(event);

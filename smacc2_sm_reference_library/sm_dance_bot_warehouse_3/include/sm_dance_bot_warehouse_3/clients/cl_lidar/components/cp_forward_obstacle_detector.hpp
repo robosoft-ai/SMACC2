@@ -58,8 +58,6 @@ public:
     //auto fwdist = scanmsg.ranges[scanmsg.ranges.size() / 2] /*meter*/;
     auto fwdist = lastScanMessage_.ranges[0] /*meter*/;
 
-//     RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] ranges[0]" << ss.str());
-
     std::stringstream ss;
     //check rays around main ray
     for (int i = 0; i < raysWidthCount; i++)

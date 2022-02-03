@@ -33,9 +33,7 @@ void ISmaccUpdatable::executeUpdate(rclcpp::Node::SharedPtr node)
   bool triggerUpdateMethod = true;
   if (periodDuration_)
   {
-    // bool use_simtime = node->get_parameter("use_sim_time").as_bool();
     auto now = node->get_clock()->now();
-    // RCLCPP_INFO(node->get_logger(), "update time: %lf", now.seconds());
 
     if (!lastUpdate_)
     {

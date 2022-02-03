@@ -33,6 +33,7 @@ class StiRadialRotate;
 class StiRadialReturn;
 class StiRadialEndPoint;
 class StiRadialLoopStart;
+class StiRadialEndPointRecovery;
 
 }  // namespace radial_motion_states
 }  // namespace sm_dance_bot_warehouse_3
@@ -71,8 +72,10 @@ public:
 // FORWARD DECLARATION FOR THE SUPERSTATE
 using SS = SsRadialPattern1;
 #include <sm_dance_bot_warehouse_3/states/radial_motion_states/sti_radial_end_point.hpp>
+#include <sm_dance_bot_warehouse_3/states/radial_motion_states/sti_radial_end_point_recovery.hpp>
 #include <sm_dance_bot_warehouse_3/states/radial_motion_states/sti_radial_loop_start.hpp>
 #include <sm_dance_bot_warehouse_3/states/radial_motion_states/sti_radial_return.hpp>
 #include <sm_dance_bot_warehouse_3/states/radial_motion_states/sti_radial_rotate.hpp>
+
 }  // namespace SS1
 }  // namespace sm_dance_bot_warehouse_3
