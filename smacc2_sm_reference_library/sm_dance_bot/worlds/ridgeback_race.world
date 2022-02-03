@@ -1156,12 +1156,6 @@
           <acceleration>-0.001696 0.001569 -0.002879 -0.058616 -0.009069 -0.001539</acceleration>
           <wrench>-0.001696 0.001569 -0.002879 0 -0 0</wrench>
         </link>
-        <link name='camera_rgb_frame'>
-          <pose>0.196289 -0.059815 0.115167 -5.7e-05 0.003458 -0.002962</pose>
-          <velocity>0.001535 -0.001423 -0.061086 -0.007193 -0.005937 0.000309</velocity>
-          <acceleration>-0.003549 0.013582 0.00361 -0.058136 -0.009259 -0.001821</acceleration>
-          <wrench>-0.000124 0.000475 0.000126 0 -0 0</wrench>
-        </link>
         <link name='caster_back_left_link'>
           <pose>-0.049765 0.051908 0.005015 -0.045565 -1.47685 -1.24358</pose>
           <velocity>0.002355 -0.002164 -0.063759 1.02255 1.31025 -0</velocity>
@@ -4839,18 +4833,7 @@
           </limit>
         </axis>
       </joint>
-      <joint name='camera_rgb_joint' type='fixed'>
-        <parent>camera_link</parent>
-        <child>camera_rgb_frame</child>
-        <pose>0.005 0.018 0.013 0 -0 0</pose>
-        <axis>
-          <xyz>0 0 1</xyz>
-          <limit>
-            <lower>-1e+16</lower>
-            <upper>1e+16</upper>
-          </limit>
-        </axis>
-      </joint>
+ 
       <plugin name='turtlebot3_diff_drive' filename='libgazebo_ros_diff_drive.so'>
         <ros/>
         <update_rate>30</update_rate>

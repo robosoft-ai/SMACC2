@@ -36,7 +36,7 @@ public:
   template <typename TMessage>
   void setMessage(const TMessage & data)
   {
-    deferedPublishFn = [=]() { client_->publish(data); };
+    deferedPublishFn = [this, data]() { client_->publish(data); };
   }
 
   void onEntry() override { this->requiresClient(client_); }
