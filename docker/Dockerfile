@@ -1,7 +1,11 @@
 ARG ROS_DISTRO
+ARG GITBRANCH
+
 
 FROM osrf/ros:$ROS_DISTRO-desktop
-# Make sure everything is up to date before building from source
+
+ENV GITBRANCH=$GITBRANCH
+
 RUN apt-get update \
   && apt-get upgrade -y \
   && apt-get clean
@@ -19,18 +23,24 @@ RUN mkdir -p /home/ros2_ws/src
 WORKDIR "/home/ros2_ws/src"
 RUN echo "git clone"
 RUN git clone https://github.com/robosoft-ai/SMACC2.git /home/ros2_ws/src/SMACC2
-#ADD . "/home/ros2_ws/src"
 
-WORKDIR "/home/ros2_ws"
+WORKDIR "/home/ros2_ws/src/SMACC2"
+RUN echo $GITBRANCH
+RUN git checkout origin $GITBRANCH
+
+WORKDIR "/home/ros2_ws/src/SMACC2"
+RUN ls smacc2_client_library
+
+# WORKDIR "/home/ros2_ws"
 
 
-RUN apt-get update && apt upgrade -y && apt install -q -y --no-install-recommends xterm
+# RUN apt-get update && apt upgrade -y && apt install -q -y --no-install-recommends xterm
 
-RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && rosdep update"
-WORKDIR "/home/ros2_ws/src"
-RUN vcs import < SMACC2/SMACC2-not-released.$ROS_DISTRO.repos
+# RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && rosdep update"
+# WORKDIR "/home/ros2_ws/src"
+# RUN vcs import < SMACC2/SMACC2-not-released.$ROS_DISTRO.repos
 
-WORKDIR "/home/ros2_ws/"
-RUN rosdep install --ignore-src --from-paths src -y -r
+# WORKDIR "/home/ros2_ws/"
+# RUN rosdep install --ignore-src --from-paths src -y -r
 
-RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && colcon build"
+# RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && colcon build"

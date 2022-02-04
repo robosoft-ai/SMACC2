@@ -43,10 +43,10 @@ CbCircularPivotMotion::CbCircularPivotMotion(
   const geometry_msgs::msg::PoseStamped & planePivotPose,
   const geometry_msgs::msg::Pose & relativeInitialPose, double deltaRadians,
   std::optional<std::string> tipLink)
-: CbMoveEndEffectorTrajectory(tipLink) planePivotPose_(planePivotPose),
-  deltaRadians_(deltaRadians),
+: CbMoveEndEffectorTrajectory(tipLink),
   relativeInitialPose_(relativeInitialPose),
-  CbMoveEndEffectorTrajectory(tipLink)
+  planePivotPose_(planePivotPose),
+  deltaRadians_(deltaRadians)
 {
 }
 
