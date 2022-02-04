@@ -33,7 +33,10 @@ namespace cl_move_group_interface
 {
 CbMoveEndEffectorRelative::CbMoveEndEffectorRelative() { transform_.rotation.w = 1; }
 
-CbMoveEndEffectorRelative::CbMoveEndEffectorRelative(geometry_msgs::msg::Transform transform) {}
+CbMoveEndEffectorRelative::CbMoveEndEffectorRelative(geometry_msgs::msg::Transform transform)
+: transform_(transform)
+{
+}
 
 void CbMoveEndEffectorRelative::onEntry()
 {
