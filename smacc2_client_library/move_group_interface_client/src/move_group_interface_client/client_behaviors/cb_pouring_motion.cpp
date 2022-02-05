@@ -28,10 +28,10 @@ namespace cl_move_group_interface
 CbCircularPouringMotion::CbCircularPouringMotion(
   const geometry_msgs::msg::Point & relativePivotPoint, double deltaHeight, std::string tipLink,
   std::string globalFrame)
-: relativePivotPoint_(relativePivotPoint),
+: CbMoveEndEffectorTrajectory(tipLink),
+  relativePivotPoint_(relativePivotPoint),
   deltaHeight_(deltaHeight),
-  globalFrame_(globalFrame),
-  CbMoveEndEffectorTrajectory(tipLink)
+  globalFrame_(globalFrame)
 
 {
 }

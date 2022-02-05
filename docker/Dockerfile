@@ -1,6 +1,11 @@
-FROM osrf/ros:rolling-desktop
+ARG ROS_DISTRO
+ARG GITBRANCH
 
-# Make sure everything is up to date before building from source
+
+FROM osrf/ros:$ROS_DISTRO-desktop
+
+ENV GITBRANCH=$GITBRANCH
+
 RUN apt-get update \
   && apt-get upgrade -y \
   && apt-get clean
@@ -10,22 +15,32 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     gnupg2 \
     lsb-release \
     python3-colcon-ros \
-    && apt-get clean
+    && apt-get clean \
+    && apt upgrade -y --with-new-pkgs
 
 RUN mkdir -p /home/ros2_ws/src
 
 WORKDIR "/home/ros2_ws/src"
+RUN echo "git clone"
+RUN git clone https://github.com/robosoft-ai/SMACC2.git /home/ros2_ws/src/SMACC2
 
-#RUN git clone https://github.com/robosoft-ai/SMACC2.git
-ADD . "/home/ros2_ws/src"
+WORKDIR "/home/ros2_ws/src/SMACC2"
+RUN echo $GITBRANCH
+RUN git checkout origin $GITBRANCH
 
-WORKDIR "/home/ros2_ws"
+WORKDIR "/home/ros2_ws/src/SMACC2"
+RUN ls smacc2_client_library
 
-# install dependencies and build
-RUN ls src && vcs import  src --skip-existing --input src/SMACC2-not-released.rolling.repos \
-  && ls src
+# WORKDIR "/home/ros2_ws"
 
-RUN rosdep install --from-paths src -r -y
-RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
 
-RUN bash -c "source /opt/ros/rolling/setup.sh && colcon build --merge-install"
+# RUN apt-get update && apt upgrade -y && apt install -q -y --no-install-recommends xterm
+
+# RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && rosdep update"
+# WORKDIR "/home/ros2_ws/src"
+# RUN vcs import < SMACC2/SMACC2-not-released.$ROS_DISTRO.repos
+
+# WORKDIR "/home/ros2_ws/"
+# RUN rosdep install --ignore-src --from-paths src -y -r
+
+# RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && colcon build"
