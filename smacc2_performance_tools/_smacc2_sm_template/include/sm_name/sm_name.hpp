@@ -28,7 +28,6 @@ struct State2;
 
 //VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
 static unsigned int _counter_ = 0;
-std::shared_ptr<rclcpp::Node> _node_;
 rclcpp::Time _start_time_;
 
 unsigned int _sum_of_iterations_ = 0.0;
@@ -40,7 +39,7 @@ struct $SmName$ : public smacc2::SmaccStateMachineBase<$SmName$, State1>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  void onInitialize() override { _start_time_ = _node_->now(); }
+  void onInitialize() override { _start_time_ = getNode()->now(); }
 };
 
 }  // namespace $sm_name$
