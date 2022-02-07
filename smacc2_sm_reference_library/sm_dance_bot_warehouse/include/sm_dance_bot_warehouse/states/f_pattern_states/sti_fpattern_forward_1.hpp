@@ -36,7 +36,7 @@ struct StiFPatternForward1 : public smacc2::SmaccState<StiFPatternForward1<SS>, 
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternReturn1<SS>>,
-    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiFPatternReturn1<SS>, ABORT>
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiFPatternRetryRelativeForward1<SS>, ABORT>
 
 
     >reactions;

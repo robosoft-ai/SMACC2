@@ -37,6 +37,7 @@ template <typename SS>class StiFPatternReturn1;
 template <typename SS>class StiFPatternRotate2;
 template <typename SS>class StiFPatternForward2;
 template <typename SS>class StiFPatternStartLoop;
+template <typename SS>class StiFPatternRetryRelativeForward1;
 
 }  // namespace f_pattern_states
 }  // namespace sm_dance_bot_warehouse
@@ -84,6 +85,7 @@ public:
 }  // namespace SS4
 }  // namespace sm_dance_bot_warehouse
 
+#include <sm_dance_bot_warehouse/states/f_pattern_states/sti_fpattern_retry_relative_forward_1.hpp>
 #include <sm_dance_bot_warehouse/states/f_pattern_states/sti_fpattern_forward_1.hpp>
 #include <sm_dance_bot_warehouse/states/f_pattern_states/sti_fpattern_forward_2.hpp>
 #include <sm_dance_bot_warehouse/states/f_pattern_states/sti_fpattern_loop_start.hpp>
