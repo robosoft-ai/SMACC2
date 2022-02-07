@@ -16,8 +16,8 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
-#include "rclcpp/rclcpp.hpp"
 #include "smacc2/smacc.hpp"
 
 // ORTHOGONALS
@@ -26,14 +26,11 @@
 namespace $sm_name$
 {
 // SMACC2 clases
-using $sm_name$::OrTimer;
+using $sm_name$::OrTimer;  // This is example variable - feel free to delete it.
 
 //STATES
 struct State1;
 struct State2;
-
-//VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
-std::shared_ptr<rclcpp::Node> _node_;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
@@ -44,7 +41,17 @@ struct $SmName$
 
   void onInitialize() override
   {
+    // START: Example code - change or delete as needed
     this->createOrthogonal<OrTimer>();
+    // Use Blackboard to store global state-machine data - example - feel free to delete it.
+    setGlobalSMData(
+      "output_message_note", std::string("{I am very cool smacc2 SM called '$sm_name$'}"));
+    // END: Example code - change or delete as needed
   }
 };
-}
+
+}  // namespace $sm_name$
+
+//STATES
+#include "states/st_state_1.hpp"
+#include "states/st_state_2.hpp"
