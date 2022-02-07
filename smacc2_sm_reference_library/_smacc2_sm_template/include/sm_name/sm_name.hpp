@@ -44,7 +44,8 @@ struct $SmName$
     // START: Example code - change or delete as needed
     this->createOrthogonal<OrTimer>();
     // Use Blackboard to store global state-machine data - example - feel free to delete it.
-    setGlobalSMData("output_message_note", "{I am very cool smacc2 SM called '$sm_name$'}");
+    setGlobalSMData(
+      "output_message_note", std::string("{I am very cool smacc2 SM called '$sm_name$'}"));
     // END: Example code - change or delete as needed
   }
 };
