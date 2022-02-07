@@ -49,7 +49,7 @@ struct StiFPatternRetryRelativeForward1 : public smacc2::SmaccState<StiFPatternR
 
   void runtimeConfigure()
   {
-    
+
   }
 };
 }  // namespace f_pattern_states
