@@ -1,10 +1,10 @@
-ARG ROS_DISTRO
-ARG GITBRANCH
-
+ARG ROS_DISTRO=rolling
+ARG GIT_BRANCH=master
 
 FROM osrf/ros:$ROS_DISTRO-desktop
 
-ENV GITBRANCH=$GITBRANCH
+ARG ROS_DISTRO
+ARG GIT_BRANCH
 
 RUN apt-get update \
   && apt-get upgrade -y \
@@ -18,18 +18,10 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     && apt-get clean \
     && apt upgrade -y --with-new-pkgs
 
-RUN mkdir -p /home/ros2_ws/src
 
 WORKDIR "/home/ros2_ws/src"
-RUN echo "git clone"
-RUN git clone https://github.com/robosoft-ai/SMACC2.git /home/ros2_ws/src/SMACC2
-
-WORKDIR "/home/ros2_ws/src/SMACC2"
-RUN echo $GITBRANCH
-RUN git checkout origin $GITBRANCH
-
-WORKDIR "/home/ros2_ws/src/SMACC2"
-RUN ls smacc2_client_library
+RUN echo "git clone -b $GIT_BRANCH"
+RUN git clone -b $GIT_BRANCH https://github.com/robosoft-ai/SMACC2.git /home/ros2_ws/src/SMACC2
 
 # WORKDIR "/home/ros2_ws"
 
