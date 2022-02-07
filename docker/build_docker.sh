@@ -5,8 +5,8 @@ cd $DIR/..
 echo `pwd`
 
 ROS_DISTRO=$1
-GITBRANCH=$2
-#ROS_VERSION_NAME="rolling"
+GIT_BRANCH=$2
 
+echo "ros distro: $ROS_DISTRO"
 echo "git branch: $GITBRANCH"
-sudo docker build --build-arg ROS_DISTRO=$ROS_DISTRO --build-arg GITBRANCH=$GITBRANCH -t smacc2 -f docker/Dockerfile .
+sudo docker build --build-arg ROS_DISTRO=$ROS_DISTRO --build-arg GIT_BRANCH=$GIT_BRANCH -t smacc2:$ROS_DISTRO -f docker/Dockerfile .
