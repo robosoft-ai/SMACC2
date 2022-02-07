@@ -25,14 +25,13 @@ RUN git clone -b $GIT_BRANCH https://github.com/robosoft-ai/SMACC2.git /home/ros
 
 # WORKDIR "/home/ros2_ws"
 
+WORKDIR "/home/ros2_ws"
 
-# RUN apt-get update && apt upgrade -y && apt install -q -y --no-install-recommends xterm
+# install dependencies and build
+RUN ls src && vcs import  src --skip-existing --input src/SMACC2-not-released.rolling.repos \
+  && ls src
 
-# RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && rosdep update"
-# WORKDIR "/home/ros2_ws/src"
-# RUN vcs import < SMACC2/SMACC2-not-released.$ROS_DISTRO.repos
+RUN rosdep install --from-paths src -r -y
+RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
 
-# WORKDIR "/home/ros2_ws/"
-# RUN rosdep install --ignore-src --from-paths src -y -r
-
-# RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && colcon build"
+RUN bash -c "source /opt/ros/rolling/setup.sh && colcon build --merge-install"
