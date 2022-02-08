@@ -21,32 +21,21 @@
 #pragma once
 
 #include <smacc2/smacc.hpp>
-
 namespace sm_husky_barrel_search_1
 {
-
-  using cl_nav2zclient::CbPureSpinning;
-
 // STATE DECLARATION
-struct StRotateDegrees1 : smacc2::SmaccState<StRotateDegrees1, MsDanceBotRunMode>
+struct StDetectItems : smacc2::SmaccState<StDetectItems, SmHuskyBarrelSearch1>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
-  typedef mpl::list<
-
-    Transition<EvCbSuccess<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX>,
-    Transition<EvCbFailure<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX>
-
-    >reactions;
+  typedef mpl::list<smacc2::Transition<EvTopicMessage<cl_opencv_perception::ClOpenCVPerception, OrPerception>, StNavigateToWaypointX>>
+      reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbPureSpinning>(2*M_PI, 1.0 /*rad_s*/);
-    configure_orthogonal<OrNavigation, CbResumeSlam>();
-    configure_orthogonal<OrLED, CbLEDOff>();
-    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+    //   configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 };
 }  // namespace sm_husky_barrel_search_1

@@ -20,33 +20,18 @@
 
 #pragma once
 
-#include <smacc2/smacc.hpp>
+#include <sm_husky_barrel_search_1/clients/opencv_perception_client/cl_opencv_perception_client.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_husky_barrel_search_1
 {
-
-  using cl_nav2zclient::CbPureSpinning;
-
-// STATE DECLARATION
-struct StRotateDegrees1 : smacc2::SmaccState<StRotateDegrees1, MsDanceBotRunMode>
+class OrPerception : public smacc2::Orthogonal<OrPerception>
 {
-  using SmaccState::SmaccState;
-
-  // TRANSITION TABLE
-  typedef mpl::list<
-
-    Transition<EvCbSuccess<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX>,
-    Transition<EvCbFailure<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX>
-
-    >reactions;
-
-  // STATE FUNCTIONS
-  static void staticConfigure()
+public:
+  virtual void onInitialize() override
   {
-    configure_orthogonal<OrNavigation, CbPureSpinning>(2*M_PI, 1.0 /*rad_s*/);
-    configure_orthogonal<OrNavigation, CbResumeSlam>();
-    configure_orthogonal<OrLED, CbLEDOff>();
-    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+    auto opencvPerceptionClient = this->createClient<cl_opencv_perception::ClOpenCVPerception>();
+    opencvPerceptionClient->initialize();
   }
 };
 }  // namespace sm_husky_barrel_search_1

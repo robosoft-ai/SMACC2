@@ -21,32 +21,33 @@
 #pragma once
 
 #include <smacc2/smacc.hpp>
-
 namespace sm_husky_barrel_search_1
 {
+    using namespace smacc2::default_events;
+    // STATE DECLARATION
+    struct StNavigateToWaypointX : smacc2::SmaccState<StNavigateToWaypointX, SmHuskyBarrelSearch1>
+    {
+        using SmaccState::SmaccState;
 
-  using cl_nav2zclient::CbPureSpinning;
+        // TRANSITION TABLE
+        typedef mpl::list<
+            
+            Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StDetectItems>,
+            Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointX>
+            
+            >
+            reactions;
 
-// STATE DECLARATION
-struct StRotateDegrees1 : smacc2::SmaccState<StRotateDegrees1, MsDanceBotRunMode>
-{
-  using SmaccState::SmaccState;
+        // STATE FUNCTIONS
+        static void staticConfigure()
+        {
+            // configure_orthogonal<OrLED, CbLEDOn>();
+            // configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+        }
 
-  // TRANSITION TABLE
-  typedef mpl::list<
-
-    Transition<EvCbSuccess<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX>,
-    Transition<EvCbFailure<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX>
-
-    >reactions;
-
-  // STATE FUNCTIONS
-  static void staticConfigure()
-  {
-    configure_orthogonal<OrNavigation, CbPureSpinning>(2*M_PI, 1.0 /*rad_s*/);
-    configure_orthogonal<OrNavigation, CbResumeSlam>();
-    configure_orthogonal<OrLED, CbLEDOff>();
-    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
-  }
-};
-}  // namespace sm_husky_barrel_search_1
+        void runtimeConfigure()
+        {
+        }
+    };
+} // namespace sm_husky_barrel_search_1
