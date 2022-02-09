@@ -30,15 +30,10 @@
 
 namespace sm_husky_barrel_search_1
 {
-// SMACC2 clases
-using sm_husky_barrel_search_1::OrTimer;
 
 //STATES
 struct StDetectItems;
 struct StNavigateToWaypointX;
-
-//VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
-std::shared_ptr<rclcpp::Node> _node_;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE

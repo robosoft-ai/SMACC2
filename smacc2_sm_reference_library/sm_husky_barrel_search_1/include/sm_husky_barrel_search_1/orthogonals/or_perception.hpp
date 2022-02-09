@@ -31,7 +31,6 @@ public:
   virtual void onInitialize() override
   {
     auto opencvPerceptionClient = this->createClient<cl_opencv_perception::ClOpenCVPerception>();
-    opencvPerceptionClient->initialize();
   }
 };
 }  // namespace sm_husky_barrel_search_1

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(sm_husky_barrel_search_1)
+project(sm_dance_bot_warehouse_3)
 
 # Default to C++20
 if(NOT CMAKE_CXX_STANDARD)
@@ -13,7 +13,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
-find_package(Boost COMPONENTS thread REQUIRED)
+find_package(Boost COMPONENTS thread system REQUIRED)
 
 find_package(smacc2 REQUIRED)
 find_package(std_msgs REQUIRED)
@@ -53,7 +53,7 @@ include_directories(include
                     ${CMAKE_BINARY_DIR}/rosidl_generator_cpp)
 
 add_executable(${PROJECT_NAME}_node
-  src/${PROJECT_NAME}/sm_husky_barrel_search_1.cpp
+  src/${PROJECT_NAME}/sm_dance_bot_warehouse_3.cpp
   src/${PROJECT_NAME}/clients/cl_led/cl_led.cpp
 )
 
@@ -74,7 +74,7 @@ ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(${dependencies})
 
-ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sm_husky_barrel_search_1.dsv.in")
+ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sm_dance_bot_warehouse_3.dsv.in")
 
 if(BUILD_TESTING)
 endif()

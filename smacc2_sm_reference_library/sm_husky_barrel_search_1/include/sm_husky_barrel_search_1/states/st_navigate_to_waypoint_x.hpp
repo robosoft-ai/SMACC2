@@ -24,6 +24,9 @@
 namespace sm_husky_barrel_search_1
 {
     using namespace smacc2::default_events;
+    using namespace cl_nav2z;
+    using namespace smacc2;
+
     // STATE DECLARATION
     struct StNavigateToWaypointX : smacc2::SmaccState<StNavigateToWaypointX, SmHuskyBarrelSearch1>
     {
@@ -32,8 +35,8 @@ namespace sm_husky_barrel_search_1
         // TRANSITION TABLE
         typedef mpl::list<
             
-            Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StDetectItems>,
-            Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointX>
+            Transition<EvCbSuccess<cl_nav2z::CbNavigateNextWaypoint, OrNavigation>, StDetectItems>,
+            Transition<EvCbFailure<cl_nav2z::CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointX>
             
             >
             reactions;
