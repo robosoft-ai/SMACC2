@@ -22,7 +22,7 @@
 
 #include <smacc2/smacc.hpp>
 
-namespace sm_warehouse_3
+namespace sm_dance_bot_warehouse_3
 {
 using cl_nav2zclient::CbPureSpinning;
 
