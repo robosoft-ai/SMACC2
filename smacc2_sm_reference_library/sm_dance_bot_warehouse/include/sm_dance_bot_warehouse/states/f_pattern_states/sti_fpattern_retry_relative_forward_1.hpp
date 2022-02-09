@@ -22,13 +22,11 @@ namespace sm_dance_bot_warehouse
 {
 namespace f_pattern_states
 {
-  using sm_dance_bot_warehouse::cl_lidar::CpForwardObstacleDetector;
-
 // STATE DECLARATION
 template <typename SS>
-struct StiFPatternForward1 : public smacc2::SmaccState<StiFPatternForward1<SS>, SS>
+struct StiFPatternRetryRelativeForward1 : public smacc2::SmaccState<StiFPatternRetryRelativeForward1<SS>, SS>
 {
-  typedef SmaccState<StiFPatternForward1<SS>, SS> TSti;
+  typedef SmaccState<StiFPatternRetryRelativeForward1<SS>, SS> TSti;
   using TSti::context_type;
   using TSti::SmaccState;
 
@@ -51,18 +49,7 @@ struct StiFPatternForward1 : public smacc2::SmaccState<StiFPatternForward1<SS>, 
 
   void runtimeConfigure()
   {
-      cl_lidar::ClLidarSensor * lidarClient;
-      this->requiresClient(lidarClient);
 
-      auto lidarData = lidarClient->getComponent<CpForwardObstacleDetector>();
-
-      auto forwardBehavior =
-        TSti::template getOrthogonal<OrNavigation>()->template getClientBehavior<CbNavigateForward>();
-
-      forwardBehavior->setForwardDistance( lidarData->getForwardDistance());
-      RCLCPP_INFO(
-        this->getLogger(), "Going forward in F pattern, distance to wall: %lf",
-        lidarData->getForwardDistance());
   }
 };
 }  // namespace f_pattern_states

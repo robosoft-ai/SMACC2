@@ -24,7 +24,7 @@ jobs:
           target-ros2-distro: ${{ env.ROS_DISTRO }}
           # build all packages listed in the meta package
           package-name:
-            smacc2
+             smacc2
 
             keyboard_client
 
@@ -37,11 +37,21 @@ jobs:
 
             smacc2_msgs
 
+            sm_advanced_recovery_1
             sm_atomic
-            sm_atomic_performance_test
+            sm_atomic_performance_trace_1
             sm_atomic_subscribers_performance_test
+            sm_aws_warehouse_navigation
+            sm_branching
+            sm_dance_bot
+            sm_dance_bot_lite
+            sm_dance_bot_strikes_back
+            sm_dance_bot_warehouse
+            sm_dance_bot_warehouse_2
+            sm_dance_bot_warehouse_3
 
-            sm_ferrari
+            sm_multi_stage_1
+            sm_respira_1
             sm_three_some
 
             sr_all_events_go
@@ -52,14 +62,11 @@ jobs:
             backward_local_planner
             forward_global_planner
             forward_local_planner
-            move_base_z_planners_common
+            nav2z_planners_common
             pure_spinning_local_planner
             undo_path_global_planner
-            move_base_z_client_plugin
+            nav2z_client
 
-            sm_dance_bot
-            sm_dance_bot_msgs
-            sm_dance_bot_strikes_back
 
           vcs-repo-file-url: |
             https://raw.githubusercontent.com/ros2/ros2/master/ros2.repos
