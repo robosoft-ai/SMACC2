@@ -21,6 +21,7 @@
 #pragma once
 
 #include <smacc2/smacc.hpp>
+// #include <nav2z_client/client_behavior>
 
 namespace sm_dance_bot_warehouse_3
 {
@@ -34,15 +35,18 @@ struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDance
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
-    Transition<EvCbFailure<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX, ABORT>
+    Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypointsX, SUCCESS>,
+    Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypointsX, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI, 1.0 /*rad_s*/);
+
+    // x: 0.0 #-2.0
+    // y: 5.25 # 0.5
+    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(1.0,0.0,0.0);
     configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 };

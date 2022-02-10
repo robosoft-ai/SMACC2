@@ -13,11 +13,11 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
-find_package(Boost COMPONENTS thread REQUIRED)
 
 find_package(smacc2 REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(nav2z_client REQUIRED)
+find_package(Boost COMPONENTS thread system REQUIRED)
 
 # find_package(ros_publisher_client REQUIRED)
 # find_package(multirole_sensor_client REQUIRED)
@@ -43,7 +43,6 @@ set(dependencies
   visualization_msgs
 )
 
-
 include_directories(include
                     ${Boost_INCLUDE_DIRS}
                     ${CMAKE_BINARY_DIR}/rosidl_generator_cpp)
@@ -53,7 +52,7 @@ add_executable(${PROJECT_NAME}_node
 )
 
 ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
-target_link_libraries(${PROJECT_NAME}_node ${Boost_LIBS} ${PROJECT_NAME}__rosidl_typesupport_cpp)
+target_link_libraries(${PROJECT_NAME}_node boost_thread boost_system ${Boost_LIBS})
 
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})

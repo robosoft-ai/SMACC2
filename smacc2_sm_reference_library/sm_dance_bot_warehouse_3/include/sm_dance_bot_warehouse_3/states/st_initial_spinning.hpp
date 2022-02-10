@@ -20,17 +20,30 @@
 
 #pragma once
 
-#include <sm_husky_barrel_search_1/clients/opencv_perception_client/cl_opencv_perception_client.hpp>
-#include <smacc2/smacc_orthogonal.hpp>
+#include <smacc2/smacc.hpp>
 
-namespace sm_husky_barrel_search_1
+namespace sm_dance_bot_warehouse_3
 {
-class OrPerception : public smacc2::Orthogonal<OrPerception>
+using cl_nav2zclient::CbPureSpinning;
+
+// STATE DECLARATION
+struct StInitialSpinning : smacc2::SmaccState<StInitialSpinning, MsDanceBotRunMode>
 {
-public:
-  virtual void onInitialize() override
+  using SmaccState::SmaccState;
+
+  // TRANSITION TABLE
+  typedef mpl::list<
+
+    Transition<EvCbSuccess<CbPureSpinning, OrNavigation>, StNavigateToWaypoint1, SUCCESS>,
+    Transition<EvCbFailure<CbPureSpinning, OrNavigation>, StNavigateToWaypoint1, ABORT>
+
+    >reactions;
+
+  // STATE FUNCTIONS
+  static void staticConfigure()
   {
-    auto opencvPerceptionClient = this->createClient<cl_opencv_perception::ClOpenCVPerception>();
+    configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI, 1.0 /*rad_s*/);
+    configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 };
-}  // namespace sm_husky_barrel_search_1
+}  // namespace sm_dance_bot_warehouse_3
