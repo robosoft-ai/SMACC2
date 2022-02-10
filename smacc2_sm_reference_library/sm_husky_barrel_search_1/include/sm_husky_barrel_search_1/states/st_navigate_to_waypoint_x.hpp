@@ -21,6 +21,8 @@
 #pragma once
 
 #include <smacc2/smacc.hpp>
+#include <nav2z_client/nav2z_client.hpp>
+#include <nav2z_client/client_behaviors.hpp>
 namespace sm_husky_barrel_search_1
 {
     using namespace smacc2::default_events;
