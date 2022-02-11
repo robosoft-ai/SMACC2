@@ -13,56 +13,54 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
-find_package(Boost COMPONENTS thread REQUIRED)
 
 find_package(smacc2 REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(nav2z_client REQUIRED)
+find_package(Boost COMPONENTS thread system REQUIRED)
+find_package(OpenCV REQUIRED)
 
-# find_package(ros_publisher_client REQUIRED)
-# find_package(multirole_sensor_client REQUIRED)
-
-# find_package(sr_all_events_go REQUIRED)
-# find_package(sr_event_countdown REQUIRED)
-# find_package(sr_conditional REQUIRED)
-# find_package(ros_timer_client REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
+find_package(image_tools REQUIRED)
 
 set(dependencies
   smacc2
   std_msgs
   sensor_msgs
   nav2z_client
-  # ros_publisher_client
-  # multirole_sensor_client
-  # sr_all_events_go
-  # sr_event_countdown
-  # sr_conditional
-  # ros_timer_client
   visualization_msgs
+  image_tools
 )
-
 
 include_directories(include
                     ${Boost_INCLUDE_DIRS}
+                    ${OpenCV_INCLUDE_DIRS}
                     ${CMAKE_BINARY_DIR}/rosidl_generator_cpp)
 
 add_executable(${PROJECT_NAME}_node
   src/${PROJECT_NAME}/sm_husky_barrel_search_1_node.cpp
 )
 
-# add_executable(temperature_sensor_node_${PROJECT_NAME} servers/temperature_sensor_node/src/temperature_sensor_node.cpp)
-# add_executable(led_action_server_node_${PROJECT_NAME} servers/led_action_server/src/led_action_server_node.cpp)
-
 ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
-target_link_libraries(${PROJECT_NAME}_node ${Boost_LIBS} ${PROJECT_NAME}__rosidl_typesupport_cpp)
+target_link_libraries(${PROJECT_NAME}_node boost_thread boost_system ${Boost_LIBS})
 
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(${dependencies})
 
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sm_husky_barrel_search_1.dsv.in")
+
+
+add_executable(opencv_perception_node
+  servers/opencv_perception_node/opencv_perception_node.cpp
+)
+ament_target_dependencies(opencv_perception_node ${dependencies})
+
+target_link_libraries(opencv_perception_node 
+                        boost_thread 
+                        boost_system 
+                        ${Boost_LIBS} ${OpenCV_LIBS})
 
 if(BUILD_TESTING)
 endif()
@@ -76,12 +74,6 @@ install(TARGETS
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
-
-#ament_python_install_package(${PROJECT_NAME}
-#  PACKAGE_DIR servers/service_node_3
-#  )
-
-
 
 install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY worlds DESTINATION share/${PROJECT_NAME})

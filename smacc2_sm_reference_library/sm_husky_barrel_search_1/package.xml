@@ -16,6 +16,7 @@
   <depend>nav2z_client</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
+  <depend>image_tools</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
