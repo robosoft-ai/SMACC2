@@ -87,6 +87,7 @@ class StNavigateToWaypoint1;
 class StNavigateToWaypoint1Recovery;
 class StNavigateToWaypointsX;
 class StNavigateToWaypointsX2;
+class StInitialSpinning;
 
 class StRotateDegrees1;
 class StRotateDegrees2;
@@ -178,6 +179,8 @@ struct SmDanceBotWareHouse3 : public smacc2::SmaccStateMachineBase<SmDanceBotWar
 #include <sm_dance_bot_warehouse_3/states/st_navigate_reverse_3.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_forward_aisle.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_navigate_to_waypoint_1.hpp>
+#include <sm_dance_bot_warehouse_3/states/st_initial_spinning.hpp>
+
 #include <sm_dance_bot_warehouse_3/states/st_rotate_degrees_1.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_rotate_degrees_2.hpp>
 #include <sm_dance_bot_warehouse_3/states/st_rotate_degrees_3.hpp>

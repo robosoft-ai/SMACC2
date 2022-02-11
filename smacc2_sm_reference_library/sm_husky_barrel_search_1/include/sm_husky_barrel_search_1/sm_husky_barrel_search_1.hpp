@@ -1,5 +1,4 @@
-// Copyright 2021 MyName/MyCompany Inc.
-// Copyright 2021 RobosoftAI Inc. (template)
+// Copyright 2021 RobosoftAI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,15 +29,10 @@
 
 namespace sm_husky_barrel_search_1
 {
-// SMACC2 clases
-using sm_husky_barrel_search_1::OrTimer;
 
 //STATES
 struct StDetectItems;
 struct StNavigateToWaypointX;
-
-//VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
-std::shared_ptr<rclcpp::Node> _node_;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE

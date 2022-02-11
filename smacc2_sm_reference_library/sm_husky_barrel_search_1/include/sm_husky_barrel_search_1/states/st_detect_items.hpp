@@ -29,7 +29,9 @@ struct StDetectItems : smacc2::SmaccState<StDetectItems, SmHuskyBarrelSearch1>
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
-  typedef mpl::list<smacc2::Transition<EvTopicMessage<cl_opencv_perception::ClOpenCVPerception, OrPerception>, StNavigateToWaypointX>>
+  typedef boost::mpl::list<
+            smacc2::Transition<smacc2::EvTopicMessage<cl_opencv_perception::ClOpenCVPerception, OrPerception>, StNavigateToWaypointX>
+          >
       reactions;
 
   // STATE FUNCTIONS
