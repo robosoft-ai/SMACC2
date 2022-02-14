@@ -37,6 +37,7 @@ repositories:
     type: git
     url: https://github.com/ros-controls/ros2_control_demos.git
     version: master
+
   ur_msgs:
     type: git
     url: https://github.com/destogl/ur_msgs.git
@@ -52,4 +53,8 @@ repositories:
   Universal_Robots_Description:
     type: git
     url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git
+    version: ros2
+  Universal_Robots_ROS2_Ignition_Simulation:
+    type: git
+    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Ignition_Simulation
     version: ros2
