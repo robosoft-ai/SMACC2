@@ -82,7 +82,7 @@ public:
     if (getNode()->get_parameter("waypoints_plan", planfilepath))
     {
       std::string package_share_directory =
-        ament_index_cpp::get_package_share_directory("sm_dance_bot_warehouse_3");
+        ament_index_cpp::get_package_share_directory("sm_husky_barrel_search_1");
       boost::replace_all(planfilepath, "$(pkg_share)", package_share_directory);
       waypointsNavigator->loadWayPointsFromFile(planfilepath);
       RCLCPP_INFO(getLogger(), "waypoints plan: %s", planfilepath.c_str());
@@ -93,4 +93,4 @@ public:
     }
   }
 };
-}  // namespace sm_dance_bot_warehouse_3
+}  // namespace sm_husky_barrel_search_1
