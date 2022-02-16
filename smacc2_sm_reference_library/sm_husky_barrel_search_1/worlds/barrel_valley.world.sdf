@@ -88,10 +88,10 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <state world_name='default'>
-      <sim_time>8952 83000000</sim_time>
-      <real_time>260 482059118</real_time>
-      <wall_time>1644960839 680793856</wall_time>
-      <iterations>236112</iterations>
+      <sim_time>9066 346000000</sim_time>
+      <real_time>115 624519784</real_time>
+      <wall_time>1645035093 316826545</wall_time>
+      <iterations>114263</iterations>
       <model name='BlueBarrel'>
         <pose>14.243 -1.60021 0.499991 0 -0 -0.035996</pose>
         <scale>1 1 1</scale>
@@ -138,7 +138,7 @@
         <link name='link_1'>
           <pose>-26.6074 -28.1343 0.499999 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 -9.8 -0 -0 -0</acceleration>
+          <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
@@ -198,7 +198,7 @@
         <link name='link_0'>
           <pose>-4.56456 -2.64972 0.499999 0 -0 0.002242</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 -9.8 0 -0 0</acceleration>
+          <acceleration>0 0 -9.8 -0 -0 -0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
@@ -1529,72 +1529,42 @@
         </link>
       </model>
       <model name='white_box'>
-        <pose>1.44272 -27.4257 0.099991 2e-06 -2e-06 -7e-06</pose>
+        <pose>1.44272 -27.4257 0.099999 -2e-06 -2e-06 -6e-06</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>1.44272 -27.4257 0.099991 2e-06 -2e-06 -7e-06</pose>
+          <pose>1.44272 -27.4257 0.099999 -2e-06 -2e-06 -6e-06</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 -9.8 0 -0 0</acceleration>
+          <wrench>0 0 -9.8 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='white_box_clone'>
+        <pose>7.35703 -13.2642 0.099991 2e-06 -2e-06 -7e-06</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>7.35703 -13.2642 0.099991 2e-06 -2e-06 -7e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 -0 -0 -0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
-      <model name='white_box_clone'>
-        <pose>7.35703 -13.2642 0.1 -2e-06 2e-06 -7e-06</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose>7.35703 -13.2642 0.1 -2e-06 2e-06 -7e-06</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 -9.8 0 -0 0</acceleration>
-          <wrench>0 0 -9.8 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='white_box_clone_0'>
-        <pose>16.0512 -26.8718 0.099991 -2e-06 2e-06 -7e-06</pose>
+        <pose>16.0512 -26.8718 0.099999 2e-06 -2e-06 -7e-06</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>16.0512 -26.8718 0.099991 -2e-06 2e-06 -7e-06</pose>
+          <pose>16.0512 -26.8718 0.099999 2e-06 -2e-06 -7e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 -9.8 0 -0 0</acceleration>
+          <acceleration>0 0 -9.8 -0 -0 -0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <light name='sun'>
         <pose>0 0 10 0 -0 0</pose>
       </light>
-      <light name='user_point_light_0'>
-        <pose>-16.8472 -0.68818 2.02228 0 -0 0</pose>
-      </light>
-      <light name='user_point_light_2'>
-        <pose>186.367 105.992 11.1502 0 -0 0</pose>
-      </light>
-      <light name='user_point_light_2_clone'>
-        <pose>171.032 103.019 14.841 0 -0 0</pose>
-      </light>
-      <light name='user_point_light_2_clone_0'>
-        <pose>195.219 87.638 14.841 0 -0 0</pose>
-      </light>
-      <light name='user_point_light_2_clone_1'>
-        <pose>188.893 124.198 14.841 0 -0 0</pose>
-      </light>
-      <light name='user_point_light_2_clone_2'>
-        <pose>164.684 112.382 14.841 0 -0 0</pose>
-      </light>
-      <light name='user_point_light_2_clone_3'>
-        <pose>51.7794 42.5592 14.841 0 -0 0</pose>
-      </light>
-      <light name='user_point_light_2_clone_4'>
-        <pose>-22.0383 24.3767 14.841 0 -0 0</pose>
-      </light>
-      <light name='user_point_light_2_clone_5'>
-        <pose>-32.1233 10.2457 14.841 0 -0 0</pose>
-      </light>
-      <light name='user_point_light_2_clone_6'>
-        <pose>49.5509 -3.81518 14.841 0 -0 0</pose>
-      </light>
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>-86.5086 -48.3008 41.3511 0 0.521797 0.523886</pose>
+        <pose>-86.3477 -54.4723 53.3994 0 0.473797 0.511886</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -2089,24 +2059,6 @@
       <allow_auto_disable>1</allow_auto_disable>
       <pose>2.72763 3.3635 0 0 -0 0</pose>
     </model>
-    <light name='user_point_light_0' type='point'>
-      <pose>-15.9446 0.086762 1 0 -0 0</pose>
-      <diffuse>0.5 0.5 0.5 1</diffuse>
-      <specular>0.1 0.1 0.1 1</specular>
-      <attenuation>
-        <range>20</range>
-        <constant>0.5</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <direction>0 0 -1</direction>
-      <spot>
-        <inner_angle>0</inner_angle>
-        <outer_angle>0</outer_angle>
-        <falloff>0</falloff>
-      </spot>
-    </light>
     <audio>
       <device>default</device>
     </audio>
@@ -7087,7 +7039,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -7229,7 +7181,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -7371,7 +7323,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -7513,7 +7465,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -7655,7 +7607,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -7797,7 +7749,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -7939,7 +7891,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -8081,7 +8033,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -8223,7 +8175,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -8365,7 +8317,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -8507,7 +8459,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -8649,7 +8601,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -8791,7 +8743,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -8933,7 +8885,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -10826,7 +10778,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -10968,7 +10920,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -11110,7 +11062,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -11252,7 +11204,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -11394,7 +11346,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -11536,7 +11488,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -11678,7 +11630,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -11820,7 +11772,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -11962,7 +11914,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -12734,7 +12686,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -12876,7 +12828,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -13018,7 +12970,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -13160,7 +13112,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -13302,7 +13254,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -13444,7 +13396,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/home/geus/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models/jersey barrier/5/meshes/jersey_barrier.dae</uri>
+              <uri>model://jersey barrier/meshes/jersey_barrier.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -13605,7 +13557,7 @@
           <pose>0 0 0 0 0 -1.5708</pose>
           <geometry>
             <mesh>
-              <uri>/home/geus/.gazebo/models/pickup/meshes/pickup.dae</uri>
+              <uri>model://pickup/meshes/pickup.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -13685,7 +13637,7 @@
           <pose>0 0 0 0 0 -1.5708</pose>
           <geometry>
             <mesh>
-              <uri>/home/geus/.gazebo/models/pickup/meshes/pickup.dae</uri>
+              <uri>model://pickup/meshes/pickup.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -13765,7 +13717,7 @@
           <pose>0 0 0 0 0 -1.5708</pose>
           <geometry>
             <mesh>
-              <uri>/home/geus/.gazebo/models/pickup/meshes/pickup.dae</uri>
+              <uri>model://pickup/meshes/pickup.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -13820,168 +13772,6 @@
       <allow_auto_disable>1</allow_auto_disable>
       <pose>178.517 112.27 0 0 0 -1.39997</pose>
     </model>
-    <light name='user_point_light_2' type='point'>
-      <pose>186.367 105.992 1 0 -0 0</pose>
-      <diffuse>0.5 0.5 0.5 1</diffuse>
-      <specular>0.1 0.1 0.1 1</specular>
-      <attenuation>
-        <range>20</range>
-        <constant>0.5</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <direction>0 0 -1</direction>
-      <spot>
-        <inner_angle>0</inner_angle>
-        <outer_angle>0</outer_angle>
-        <falloff>0</falloff>
-      </spot>
-    </light>
-    <light name='user_point_light_2_clone' type='point'>
-      <pose>171.032 103.019 14.841 0 -0 0</pose>
-      <diffuse>0.498039 0.498039 0.498039 1</diffuse>
-      <specular>0.0980392 0.0980392 0.0980392 1</specular>
-      <direction>0 0 -1</direction>
-      <attenuation>
-        <range>105</range>
-        <constant>0.1</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <spot>
-        <inner_angle>0</inner_angle>
-        <outer_angle>0</outer_angle>
-        <falloff>0</falloff>
-      </spot>
-    </light>
-    <light name='user_point_light_2_clone_0' type='point'>
-      <pose>195.219 87.638 14.841 0 -0 0</pose>
-      <diffuse>0.498039 0.498039 0.498039 1</diffuse>
-      <specular>0.0980392 0.0980392 0.0980392 1</specular>
-      <direction>0 0 -1</direction>
-      <attenuation>
-        <range>105</range>
-        <constant>0.1</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <spot>
-        <inner_angle>0</inner_angle>
-        <outer_angle>0</outer_angle>
-        <falloff>0</falloff>
-      </spot>
-    </light>
-    <light name='user_point_light_2_clone_1' type='point'>
-      <pose>188.893 124.198 14.841 0 -0 0</pose>
-      <diffuse>0.498039 0.498039 0.498039 1</diffuse>
-      <specular>0.0980392 0.0980392 0.0980392 1</specular>
-      <direction>0 0 -1</direction>
-      <attenuation>
-        <range>105</range>
-        <constant>0.1</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <spot>
-        <inner_angle>0</inner_angle>
-        <outer_angle>0</outer_angle>
-        <falloff>0</falloff>
-      </spot>
-    </light>
-    <light name='user_point_light_2_clone_2' type='point'>
-      <pose>164.684 112.382 14.841 0 -0 0</pose>
-      <diffuse>0.498039 0.498039 0.498039 1</diffuse>
-      <specular>0.0980392 0.0980392 0.0980392 1</specular>
-      <direction>0 0 -1</direction>
-      <attenuation>
-        <range>105</range>
-        <constant>0.1</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <spot>
-        <inner_angle>0</inner_angle>
-        <outer_angle>0</outer_angle>
-        <falloff>0</falloff>
-      </spot>
-    </light>
-    <light name='user_point_light_2_clone_3' type='point'>
-      <pose>51.7794 42.5592 14.841 0 -0 0</pose>
-      <diffuse>0.498039 0.498039 0.498039 1</diffuse>
-      <specular>0.0980392 0.0980392 0.0980392 1</specular>
-      <direction>0 0 -1</direction>
-      <attenuation>
-        <range>105</range>
-        <constant>0.1</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <spot>
-        <inner_angle>0</inner_angle>
-        <outer_angle>0</outer_angle>
-        <falloff>0</falloff>
-      </spot>
-    </light>
-    <light name='user_point_light_2_clone_4' type='point'>
-      <pose>-22.0383 24.3767 14.841 0 -0 0</pose>
-      <diffuse>0.498039 0.498039 0.498039 1</diffuse>
-      <specular>0.0980392 0.0980392 0.0980392 1</specular>
-      <direction>0 0 -1</direction>
-      <attenuation>
-        <range>105</range>
-        <constant>0.1</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <spot>
-        <inner_angle>0</inner_angle>
-        <outer_angle>0</outer_angle>
-        <falloff>0</falloff>
-      </spot>
-    </light>
-    <light name='user_point_light_2_clone_5' type='point'>
-      <pose>-32.1233 10.2457 14.841 0 -0 0</pose>
-      <diffuse>0.498039 0.498039 0.498039 1</diffuse>
-      <specular>0.0980392 0.0980392 0.0980392 1</specular>
-      <direction>0 0 -1</direction>
-      <attenuation>
-        <range>105</range>
-        <constant>0.1</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <spot>
-        <inner_angle>0</inner_angle>
-        <outer_angle>0</outer_angle>
-        <falloff>0</falloff>
-      </spot>
-    </light>
-    <light name='user_point_light_2_clone_6' type='point'>
-      <pose>49.5509 -3.81518 14.841 0 -0 0</pose>
-      <diffuse>0.498039 0.498039 0.498039 1</diffuse>
-      <specular>0.0980392 0.0980392 0.0980392 1</specular>
-      <direction>0 0 -1</direction>
-      <attenuation>
-        <range>105</range>
-        <constant>0.1</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <spot>
-        <inner_angle>0</inner_angle>
-        <outer_angle>0</outer_angle>
-        <falloff>0</falloff>
-      </spot>
-    </light>
     <model name='MilitaryPickup_clone_clone_0_clone'>
       <link name='link'>
         <self_collide>0</self_collide>
@@ -14007,7 +13797,7 @@
           <pose>0 0 0 0 0 -1.5708</pose>
           <geometry>
             <mesh>
-              <uri>/home/geus/.gazebo/models/pickup/meshes/pickup.dae</uri>
+              <uri>model://pickup/meshes/pickup.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>

@@ -209,7 +209,7 @@
   </library_lights>
   <library_images>
     <image id="Pickup_Diffuse_tga">
-      <init_from>pickup_diffuse_green.jpg</init_from>
+      <init_from>pickup_diffuse.jpg</init_from>
     </image>
     <image id="Wheels2_tga">
       <init_from>wheels2.jpg</init_from>
