@@ -1,4 +1,4 @@
-name: Rolling Semi-Binary Build
+name: Rolling Semi-Binary Build - last Focal
 on:
   pull_request:
     branches:
