@@ -43,19 +43,18 @@ def generate_launch_description():
         "headless", default_value="False", description="Whether to execute gzclient)"
     )
 
-
     declare_world_cmd = DeclareLaunchArgument(
         "world",
         default_value=os.path.join(sm_husky_barrel_search_1, "worlds", "industrial_sim.world"),
-        description="Full path to world model file to load"
+        description="Full path to world model file to load",
     )
 
     # nolidar world
     declare_world_cmd_2 = DeclareLaunchArgument(
         "world",
         default_value=os.path.join(sm_husky_barrel_search_1, "worlds", "industrial_sim.world"),
-        description="Full path to world model file to load"
-        )
+        description="Full path to world model file to load",
+    )
 
     declare_urdf = DeclareLaunchArgument(
         "urdf",

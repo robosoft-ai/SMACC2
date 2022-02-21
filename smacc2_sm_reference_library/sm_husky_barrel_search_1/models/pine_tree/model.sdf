@@ -26,7 +26,7 @@
             <uri>model://pine_tree/materials/textures/</uri>
             <name>PineTree/Branch</name>
           </script>
-          
+
           <pbr>
             <metal>
               <albedo_map>model://pine_tree/materials/textures/branch_2_diffuse.png</albedo_map>
@@ -50,7 +50,7 @@
             <uri>model://pine_tree/materials/textures/</uri>
             <name>PineTree/Bark</name>
           </script>
-          
+
           <pbr>
             <metal>
               <albedo_map>model://pine_tree/materials/textures/bark_diffuse.png</albedo_map>

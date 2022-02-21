@@ -13,4 +13,3 @@ void main()
 
   uv = gl_MultiTexCoord0.xy;
 }
-
