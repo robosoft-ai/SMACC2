@@ -25,7 +25,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>100 100</size>
+              <size>500 500</size>
             </plane>
           </geometry>
           <surface>
@@ -45,6 +45,7 @@
           </surface>
           <max_contacts>10</max_contacts>
         </collision>
+        <!--
         <visual name='visual'>
           <cast_shadows>0</cast_shadows>
           <geometry>
@@ -60,6 +61,7 @@
             </script>
           </material>
         </visual>
+        -->
         <velocity_decay>
           <linear>0</linear>
           <angular>0</angular>
@@ -3017,6 +3019,8 @@
         <kinematic>0</kinematic>
       </link>
       <link name='grass_plane'>
+
+      <!-- dd -->
         <collision name='collision'>
           <geometry>
             <plane>

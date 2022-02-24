@@ -1,19 +1,23 @@
-/*
- * Copyright (C) 2018 Open Source Robotics Foundation
+// Copyright 2021 RobosoftAI Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/*****************************************************************************************************************
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
-*/
+ ******************************************************************************************************************/
+
 
 #include <memory>
 #include <string>
@@ -287,7 +291,7 @@ FlashLightSetting::FlashLightSetting(
   // If link is not nullptr, the light exists.
   if (this->dataPtr->link)
   {
-   
+
 
   // void LightCmd(const std_msgs::msg::Int8::SharedPtr msg)
   // {
@@ -696,8 +700,8 @@ void FlashLightPlugin::Load(gazebo::physics::ModelPtr _parent, sdf::ElementPtr _
     auto topicname = "/"+ this->dataPtr->model->GetName() +  "/cmdled";
     gzmsg << "topicname: " << topicname <<"\n";
 
-    cmdledsubscription = 
-    node->create_subscription<std_msgs::msg::Int8>(topicname, qos, 
+    cmdledsubscription =
+    node->create_subscription<std_msgs::msg::Int8>(topicname, qos,
     [this, node]
     (const std_msgs::msg::Int8::SharedPtr msg)
     {

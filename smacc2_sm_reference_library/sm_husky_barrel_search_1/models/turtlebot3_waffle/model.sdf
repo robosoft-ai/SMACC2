@@ -113,6 +113,7 @@
           </linear_acceleration>
         </imu>
         <plugin name='turtlebot3_imu' filename='libgazebo_ros_imu_sensor.so'>
+          <initial_orientation_as_reference>false</initial_orientation_as_reference>
           <ros>
             <remapping>~/out:=imu</remapping>
           </ros>
@@ -615,6 +616,7 @@
       <odometry_frame>odom</odometry_frame>
       <robot_base_frame>base_footprint</robot_base_frame>
     </plugin>
+
     <plugin name='turtlebot3_joint_state' filename='libgazebo_ros_joint_state_publisher.so'>
       <ros>
         <remapping>~/out:=joint_states</remapping>
@@ -623,7 +625,6 @@
       <joint_name>wheel_left_joint</joint_name>
       <joint_name>wheel_right_joint</joint_name>
     </plugin>
-
 
     <pose>-1.99992 -0.499987 0.008722 -1.1e-05 0.001564 0.007895</pose>
     <scale>1 1 1</scale>
@@ -681,6 +682,16 @@
       <acceleration>0.079134 -0.076051 -0.43328 -0.837183 0.744163 3.13292</acceleration>
       <wrench>0.007913 -0.007605 -0.043328 0 -0 0</wrench>
     </link>
+
+    <include>
+      <uri>model://led_array</uri>
+      <pose>-0.02 0 0 -1.17075 0 1.57075</pose>
+    </include>
+
+    <joint name="led_array_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>led_array::led_array_base</child>
+    </joint>
 
   </model>
 </sdf>

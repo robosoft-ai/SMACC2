@@ -65,17 +65,11 @@ link_directories(${gazebo_dev_LIBRARY_DIRS})
 add_library(controllable_led_plugin SHARED
   src/sm_husky_barrel_search_1/gz_plugins/controllable_led_plugin.cpp
   src/sm_husky_barrel_search_1/gz_plugins/FlashLightPlugin.cc
-  src/sm_husky_barrel_search_1/gz_plugins/LedPlugin.cc
-  )
+  src/sm_husky_barrel_search_1/gz_plugins/LedPlugin.cc)
 
 target_include_directories(controllable_led_plugin PUBLIC include ${gazebo_ros_INCLUDE_DIRS})
 ament_target_dependencies(controllable_led_plugin
-#   "gazebo_ros"
-#   "gazebo_dev"
-#   "rclcpp"
-   "std_msgs"
-#   "rviz_ogre_vendor"
-)
+  "std_msgs")
 
 target_link_libraries(controllable_led_plugin
 #/usr/lib/x86_64-linux-gnu/gazebo-11/plugins/libFlashLightPlugin.so

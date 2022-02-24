@@ -26,6 +26,7 @@
 // ORTHOGONALS
 #include "orthogonals/or_navigation.hpp"
 #include "orthogonals/or_perception.hpp"
+#include "orthogonals/or_led_array.hpp"
 
 namespace sm_husky_barrel_search_1
 {
@@ -45,6 +46,7 @@ struct SmHuskyBarrelSearch1
   {
     this->createOrthogonal<OrNavigation>();
     this->createOrthogonal<OrPerception>();
+    this->createOrthogonal<OrLedArray>();
   }
 };
 }  // namespace sm_husky_barrel_search_1
