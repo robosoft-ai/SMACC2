@@ -23,10 +23,13 @@ from launch.actions import (
     IncludeLaunchDescription,
     SetEnvironmentVariable,
 )
-from launch.conditions import IfCondition
+
+# from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, PythonExpression
-from launch_ros.actions import PushRosNamespace
+
+from launch.substitutions import LaunchConfiguration
+
+# from launch_ros.actions import PushRosNamespace
 
 
 def generate_launch_description():
@@ -36,9 +39,9 @@ def generate_launch_description():
 
     # Create the launch configuration variables
     namespace = LaunchConfiguration("namespace")
-    use_namespace = LaunchConfiguration("use_namespace")
-    slam = LaunchConfiguration("slam")
-    map_yaml_file = LaunchConfiguration("map")
+    # use_namespace = LaunchConfiguration("use_namespace")
+    # slam = LaunchConfiguration("slam")
+    # map_yaml_file = LaunchConfiguration("map")
     use_sim_time = LaunchConfiguration("use_sim_time")
     params_file = LaunchConfiguration("params_file")
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
@@ -91,29 +94,6 @@ def generate_launch_description():
     # Specify the actions
     bringup_cmd_group = GroupAction(
         [
-            PushRosNamespace(condition=IfCondition(use_namespace), namespace=namespace),
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(os.path.join(launch_dir, "slam_launch.py")),
-                condition=IfCondition(slam),
-                launch_arguments={
-                    "namespace": namespace,
-                    "use_sim_time": use_sim_time,
-                    "autostart": autostart,
-                    "params_file": params_file,
-                }.items(),
-            ),
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(os.path.join(launch_dir, "localization_launch.py")),
-                condition=IfCondition(PythonExpression(["not ", slam])),
-                launch_arguments={
-                    "namespace": namespace,
-                    "map": map_yaml_file,
-                    "use_sim_time": use_sim_time,
-                    "autostart": autostart,
-                    "params_file": params_file,
-                    "use_lifecycle_mgr": "false",
-                }.items(),
-            ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(os.path.join(launch_dir, "navigation_launch.py")),
                 launch_arguments={

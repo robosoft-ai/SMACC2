@@ -1518,7 +1518,7 @@
         <pose>-12.9319 3.93559 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='grass_plane'>
-          <pose>-12.9319 3.93559 0.1 0 -0 0</pose>
+          <pose>-12.9319 3.93559 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -2956,7 +2956,7 @@
             <heightmap>
               <uri>model://vrc_driving_terrain/materials/textures/heightmap.png</uri>
               <size>500 500 118</size>
-              <pos>0 0 -15</pos>
+              <pos>0 0 -14.9</pos>
               <texture>
                 <size>10</size>
                 <diffuse>__default__</diffuse>
@@ -3010,7 +3010,7 @@
               </blend>
               <uri>model://vrc_driving_terrain/materials/textures/heightmap.png</uri>
               <size>500 500 118</size>
-              <pos>0 0 -15</pos>
+              <pos>0 0 -14.9</pos>
             </heightmap>
           </geometry>
         </visual>

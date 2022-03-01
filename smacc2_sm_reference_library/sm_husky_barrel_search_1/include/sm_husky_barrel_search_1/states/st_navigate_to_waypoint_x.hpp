@@ -37,7 +37,8 @@ namespace sm_husky_barrel_search_1
         // TRANSITION TABLE
         typedef mpl::list<
 
-            Transition<EvCbSuccess<cl_nav2z::CbNavigateNextWaypoint, OrNavigation>, StDetectItems>,
+            Transition<EvCbSuccess<cl_nav2z::CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointX>,
+            // ,
             Transition<EvCbFailure<cl_nav2z::CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointX>
 
             >
@@ -49,6 +50,7 @@ namespace sm_husky_barrel_search_1
             // configure_orthogonal<OrLED, CbLEDOn>();
             // configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
             configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+
         }
 
         void runtimeConfigure()

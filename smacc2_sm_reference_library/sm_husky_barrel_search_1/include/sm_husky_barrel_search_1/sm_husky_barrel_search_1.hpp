@@ -32,13 +32,14 @@ namespace sm_husky_barrel_search_1
 {
 
 //STATES
+struct StAcquireSensors;
 struct StDetectItems;
 struct StNavigateToWaypointX;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
 struct SmHuskyBarrelSearch1
-: public smacc2::SmaccStateMachineBase<SmHuskyBarrelSearch1, StDetectItems>
+: public smacc2::SmaccStateMachineBase<SmHuskyBarrelSearch1, StAcquireSensors>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -52,5 +53,6 @@ struct SmHuskyBarrelSearch1
 }  // namespace sm_husky_barrel_search_1
 
 //STATES
+#include "states/st_acquire_sensors.hpp"
 #include "states/st_detect_items.hpp"
 #include "states/st_navigate_to_waypoint_x.hpp"

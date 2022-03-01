@@ -74,7 +74,7 @@
         <parent>led_array_base</parent>
         <child>head</child>
       </joint>
-      <plugin name='light_control' filename='libcontrollable_led_plugin.so'>
+      <plugin name='light_control_green' filename='libcontrollable_led_plugin.so'>
         <enable>1</enable>
         <light>
           <id>light_source/lamp</id>
@@ -151,7 +151,7 @@
         <child>head</child>
       </joint>
 
-      <plugin name='light_control' filename='libcontrollable_led_plugin.so'>
+      <plugin name='light_control_red' filename='libcontrollable_led_plugin.so'>
         <enable>1</enable>
         <light>
           <id>light_source/lamp</id>
@@ -226,7 +226,7 @@
         <parent>led_array_base</parent>
         <child>head</child>
       </joint>
-      <plugin name='light_control' filename='libcontrollable_led_plugin.so'>
+      <plugin name='light_control_yellow' filename='libcontrollable_led_plugin.so'>
         <enable>1</enable>
         <light>
           <id>light_source/lamp</id>

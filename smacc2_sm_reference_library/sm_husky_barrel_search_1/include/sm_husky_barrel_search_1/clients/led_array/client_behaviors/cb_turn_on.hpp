@@ -17,3 +17,29 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+
+#pragma once
+
+#include <sm_husky_barrel_search/clientas/led_array/cl_led_array.hpp>
+#include <smacc2/smacc.hpp>
+
+namespace sm_husky_barrel_search_1
+{
+namespace cl_led_array
+{
+class CbLEDOn : public smacc2::SmaccClientBehavior
+{
+public:
+
+  void onEntry() override
+  {
+    cl_led_array::ClLedArray * ledarray;
+    this->requiresClient(ledarray);
+  }
+
+  void onExit() override
+  {
+  }
+};
+}  // namespace cl_led_array
+}  // namespace sm_husky_barrel_search_1

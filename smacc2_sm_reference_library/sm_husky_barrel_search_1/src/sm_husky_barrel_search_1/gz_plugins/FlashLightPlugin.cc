@@ -30,6 +30,7 @@
 #include <gazebo/physics/physics.hh>
 #include <gazebo/transport/transport.hh>
 #include "FlashLightPlugin.hh"
+#include <boost/algorithm/string.hpp>
 
 namespace smacc2
 {
@@ -564,7 +565,7 @@ void FlashLightSetting::Flash()
   // Send the message.
   if (this->dataPtr->lightExists)
   {
-    this->dataPtr->pubLight->Publish(this->dataPtr->msg);
+    //this->dataPtr->pubLight->Publish(this->dataPtr->msg);
   }
   // Update the state.
   this->dataPtr->flashing = true;
@@ -599,10 +600,10 @@ FlashLightPlugin::FlashLightPlugin() : gazebo::ModelPlugin(),
   this->dataPtr->node->Init();
 
   // advertise the topic to update lights
-  this->dataPtr->pubLight
-    = this->dataPtr->node->Advertise<gazebo::msgs::Light>("~/light/modify");
+  // this->dataPtr->pubLight
+  //    = this->dataPtr->node->Advertise<gazebo::msgs::Light>("~/light/modify");
 
-  this->dataPtr->pubLight->WaitForConnection();
+  // this->dataPtr->pubLight->WaitForConnection();
 }
 
 //////////////////////////////////////////////////
@@ -697,7 +698,10 @@ void FlashLightPlugin::Load(gazebo::physics::ModelPtr _parent, sdf::ElementPtr _
 
     rclcpp::SensorDataQoS qos;
 
-    auto topicname = "/"+ this->dataPtr->model->GetName() +  "/cmdled";
+    auto topicname = "/"+ this->dataPtr->model->GetName()+  "/cmdled";
+
+    boost::replace_all(topicname, "::","/");
+
     gzmsg << "topicname: " << topicname <<"\n";
 
     cmdledsubscription =

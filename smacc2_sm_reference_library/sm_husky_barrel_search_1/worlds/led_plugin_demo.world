@@ -10,7 +10,7 @@
     </include> -->
 
     <include>
-      <uri>model://turtlebot3_waffle</uri>
+      <uri>model://husky_turtlebot3_waffle</uri>
     </include>
 
 

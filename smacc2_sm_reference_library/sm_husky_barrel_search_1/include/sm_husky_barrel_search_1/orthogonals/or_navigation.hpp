@@ -76,6 +76,7 @@ public:
 
   void loadWaypointsFromYaml(WaypointNavigator * waypointsNavigator)
   {
+    RCLCPP_INFO(getLogger(), "OrNavigation loading parameters file");
     // if it is the first time and the waypoints navigator is not configured
     std::string planfilepath;
     getNode()->declare_parameter("waypoints_plan", planfilepath);
