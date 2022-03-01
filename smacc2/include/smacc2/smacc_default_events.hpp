@@ -27,6 +27,9 @@
 
 namespace smacc2
 {
+// template <typename T>
+// using  event=sc::event<T>;
+
 namespace default_events
 {
 using namespace smacc2::introspection;

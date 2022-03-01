@@ -29,15 +29,8 @@ CbWaitNav2Nodes::CbWaitNav2Nodes(std::vector<Nav2Nodes> waitNodes)
 }
 
 CbWaitNav2Nodes::CbWaitNav2Nodes(std::string topic, std::vector<Nav2Nodes> waitNodes)
-: topicname_(topic)
+: topicname_(topic), waitNodes_(waitNodes)
 {
-  std::stringstream ss;
-  for (auto v : waitNodes)
-  {
-    receivedAliveMsg_[v] = false;
-    ss << "[CbWaitNav2Nodes] - " << toString(v) << ": false" << std::endl;
-  }
-  RCLCPP_INFO(getLogger(), ss.str().c_str());
 }
 
 void CbWaitNav2Nodes::onMessageReceived(const bond::msg::Status & msg)
@@ -63,10 +56,13 @@ void CbWaitNav2Nodes::onMessageReceived(const bond::msg::Status & msg)
       {
         success = false;
       }
-      ss << "[CbWaitNav2Nodes] - " << toString(pair.first) << ":" << pair.second << std::endl;
+      ss << "- " << toString(pair.first) << ": " << (pair.second ? "ALIVE" : "WAITING")
+         << std::endl;
     }
 
-    RCLCPP_INFO(getLogger(), ss.str().c_str());
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[CbWaitNav2Nodes] waiting nodes status:" << std::endl
+                                                             << ss.str().c_str());
 
     if (success)
     {
@@ -83,6 +79,14 @@ void CbWaitNav2Nodes::onMessageReceived(const bond::msg::Status & msg)
 
 void CbWaitNav2Nodes::onEntry()
 {
+  std::stringstream ss;
+  for (auto v : waitNodes_)
+  {
+    receivedAliveMsg_[v] = false;
+    ss << "[CbWaitNav2Nodes] - " << toString(v) << ": waiting" << std::endl;
+  }
+  RCLCPP_INFO(getLogger(), ss.str().c_str());
+
   //rclcpp::SensorDataQoS qos;
   rclcpp::SubscriptionOptions sub_option;
 

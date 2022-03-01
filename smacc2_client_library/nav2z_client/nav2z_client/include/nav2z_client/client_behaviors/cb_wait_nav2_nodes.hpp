@@ -61,5 +61,7 @@ private:
 
   rclcpp::Subscription<bond::msg::Status>::SharedPtr sub_;
   std::map<Nav2Nodes, bool> receivedAliveMsg_;
+
+  std::vector<Nav2Nodes> waitNodes_;
 };
 }  // namespace cl_nav2z

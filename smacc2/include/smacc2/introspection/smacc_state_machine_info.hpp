@@ -184,6 +184,9 @@ void processTransition(
   smacc2::Transition<Ev, Dst, Tag> * t, std::shared_ptr<SmaccStateInfo> & sourceState)
 {
   auto transitionTypeInfo = TypeInfo::getTypeInfoFromType<smacc2::Transition<Ev, Dst, Tag>>();
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "State %s Walker transition: %s", sourceState->toShortName().c_str(),
+    demangleSymbol(typeid(Ev).name()).c_str());
   processTransitionAux(t, sourceState, false, transitionTypeInfo);
 }
 
