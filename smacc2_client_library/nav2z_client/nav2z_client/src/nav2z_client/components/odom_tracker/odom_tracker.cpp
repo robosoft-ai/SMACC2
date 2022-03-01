@@ -205,8 +205,11 @@ void OdomTracker::logStateString()
 {
   std::stringstream ss;
   ss << "--- odom tracker state ---" << std::endl;
-  ss << " - path stack -" << currentPathName_ << " -  size:" << pathStack_.size()
-     << "goal: " << std::endl;
+  ss
+    << " - path stack -" << currentPathName_ << " -  size:"
+    << pathStack_.size()
+    //<< " goal: " << (getCurrentMotionGoal()? getCurrentMotionGoal()->pose: geometry_msgs::msg::Pose())
+    << std::endl;
   ss << " - [STACK-HEAD active path size: " << baseTrajectory_.poses.size() << "]" << std::endl;
   int i = 0;
   for (auto & p : pathStack_ | boost::adaptors::reversed)

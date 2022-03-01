@@ -30,7 +30,7 @@ struct StDetectItems : smacc2::SmaccState<StDetectItems, SmHuskyBarrelSearch1>
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-            smacc2::Transition<smacc2::EvTopicMessage<cl_opencv_perception::ClOpenCVPerception, OrPerception>, StNavigateToWaypointX>
+            // smacc2::Transition<smacc2::EvTopicMessage<cl_opencv_perception::ClOpenCVPerception, OrPerception>, StNavigateToWaypointX>
           >
       reactions;
 

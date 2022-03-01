@@ -27,24 +27,26 @@ namespace sm_husky_barrel_search_1
 {
 namespace cl_opencv_perception
 {
+struct EvDetectedBarrelColor : sc::event<EvDetectedBarrelColor>
+{
+};
+
 class ClOpenCVPerception : public smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>
 {
 public:
-
   ClOpenCVPerception(std::string topicname = "/detected_color")
-    : smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>(topicname)
+  : smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>(topicname)
   {
   }
 
-  virtual ~ClOpenCVPerception()
-  {
-  }
+  virtual ~ClOpenCVPerception() {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>::onOrthogonalAllocation<
+      TOrthogonal, TSourceObject>();
   }
 };
-}
-}
+}  // namespace cl_opencv_perception
+}  // namespace sm_husky_barrel_search_1

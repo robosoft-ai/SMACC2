@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <sdf version="1.7">
-  <model name='turtlebot3_waffle'>
+  <model name='husky_turtlebot3_waffle'>
     <pose>-2 -0.5 0.01 0 -0 0</pose>
     <link name='base_footprint'>
       <self_collide>0</self_collide>
@@ -57,7 +57,7 @@
         <pose>-0.064 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://turtlebot3_waffle/meshes/waffle_base.dae</uri>
+            <uri>model://husky_turtlebot3_waffle/meshes/waffle_base.dae</uri>
             <scale>0.001 0.001 0.001</scale>
           </mesh>
         </geometry>
@@ -113,11 +113,25 @@
           </linear_acceleration>
         </imu>
         <plugin name='turtlebot3_imu' filename='libgazebo_ros_imu_sensor.so'>
+          <initial_orientation_as_reference>false</initial_orientation_as_reference>
           <ros>
             <remapping>~/out:=imu</remapping>
           </ros>
         </plugin>
+
       </sensor>
+
+      <sensor name="my_gps" type="gps">
+          <always_on>true</always_on>
+          <update_rate>30</update_rate>
+          <plugin name="my_gps_plugin" filename="libgazebo_ros_gps_sensor.so">
+            <ros>
+              <namespace>/gps</namespace>
+              <remapping>~/out:=data</remapping>
+            </ros>
+          </plugin>
+      </sensor>
+
       <self_collide>0</self_collide>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
@@ -136,7 +150,7 @@
     </link>
     <link name='base_scan'>
       <inertial>
-        <pose>-0.052 0 0.111 0 -0 0</pose>
+        <pose>-0.052 0 0.31 0 -0 0</pose>
         <inertia>
           <ixx>0.001</ixx>
           <ixy>0</ixy>
@@ -148,7 +162,7 @@
         <mass>0.125</mass>
       </inertial>
       <collision name='lidar_sensor_collision'>
-        <pose>-0.052 0 0.111 0 -0 0</pose>
+        <pose>-0.052 0 0.311 0 -0 0</pose>
         <geometry>
           <cylinder>
             <radius>0.0508</radius>
@@ -170,10 +184,10 @@
         <max_contacts>10</max_contacts>
       </collision>
       <visual name='lidar_sensor_visual'>
-        <pose>-0.064 0 0.121 0 -0 0</pose>
+        <pose>-0.064 0 0.321 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://turtlebot3_waffle/meshes/lds.dae</uri>
+            <uri>model://husky_turtlebot3_waffle/meshes/lds.dae</uri>
             <scale>0.001 0.001 0.001</scale>
           </mesh>
         </geometry>
@@ -181,7 +195,7 @@
       <sensor name='hls_lfcd_lds' type='ray'>
         <always_on>1</always_on>
         <visualize>1</visualize>
-        <pose>-0.064 0 0.121 0 -0 0</pose>
+        <pose>-0.064 0 0.321 0 -0 0</pose>
         <update_rate>5</update_rate>
         <ray>
           <scan>
@@ -272,7 +286,7 @@
         <pose>0 0.144 0.023 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://turtlebot3_waffle/meshes/left_tire.dae</uri>
+            <uri>model://husky_turtlebot3_waffle/meshes/left_tire.dae</uri>
             <scale>0.001 0.001 0.001</scale>
           </mesh>
         </geometry>
@@ -333,7 +347,7 @@
         <pose>0 -0.144 0.023 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://turtlebot3_waffle/meshes/right_tire.dae</uri>
+            <uri>model://husky_turtlebot3_waffle/meshes/right_tire.dae</uri>
             <scale>0.001 0.001 0.001</scale>
           </mesh>
         </geometry>
@@ -565,7 +579,7 @@
     <joint name='lidar_joint' type='fixed'>
       <parent>base_link</parent>
       <child>base_scan</child>
-      <pose>-0.064 0 0.121 0 -0 0</pose>
+      <pose>-0.064 0 1.21 0 -0 0</pose>
       <axis>
         <xyz>0 0 1</xyz>
         <limit>
@@ -586,7 +600,7 @@
         </limit>
       </axis>
     </joint>
-    <joint name='camera_rgb_joint' type='fixed'>
+    <!-- <joint name='camera_rgb_joint' type='fixed'>
       <parent>camera_link</parent>
       <child>camera_rgb_frame</child>
       <pose>0.005 0.018 0.013 0 -0 0</pose>
@@ -597,7 +611,7 @@
           <upper>1e+16</upper>
         </limit>
       </axis>
-    </joint>
+    </joint> -->
     <plugin name='turtlebot3_diff_drive' filename='libgazebo_ros_diff_drive.so'>
       <ros />
       <update_rate>30</update_rate>
@@ -615,6 +629,7 @@
       <odometry_frame>odom</odometry_frame>
       <robot_base_frame>base_footprint</robot_base_frame>
     </plugin>
+
     <plugin name='turtlebot3_joint_state' filename='libgazebo_ros_joint_state_publisher.so'>
       <ros>
         <remapping>~/out:=joint_states</remapping>
@@ -623,7 +638,6 @@
       <joint_name>wheel_left_joint</joint_name>
       <joint_name>wheel_right_joint</joint_name>
     </plugin>
-
 
     <pose>-1.99992 -0.499987 0.008722 -1.1e-05 0.001564 0.007895</pose>
     <scale>1 1 1</scale>
@@ -640,7 +654,7 @@
       <wrench>0.140542 -0.126014 0.015921 0 -0 0</wrench>
     </link>
     <link name='base_scan'>
-      <pose>-1.99992 -0.499985 0.008722 -1.2e-05 0.001563 0.007901</pose>
+      <pose>-1.99992 -0.499985 1.21722 -1.2e-05 0.001563 0.007901</pose>
       <velocity>0.000255 -0.000846 -0.039778 -0.000589 0.000798 -0.001039</velocity>
       <acceleration>0.054436 -0.100857 0.024621 -0.407769 -1.3636 -0.000906</acceleration>
       <wrench>0.006804 -0.012607 0.003078 0 -0 0</wrench>
@@ -681,6 +695,16 @@
       <acceleration>0.079134 -0.076051 -0.43328 -0.837183 0.744163 3.13292</acceleration>
       <wrench>0.007913 -0.007605 -0.043328 0 -0 0</wrench>
     </link>
+
+    <include>
+      <uri>model://led_array</uri>
+      <pose>-0.02 0 0 -1.17075 0 1.57075</pose>
+    </include>
+
+    <joint name="led_array_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>led_array::led_array_base</child>
+    </joint>
 
   </model>
 </sdf>

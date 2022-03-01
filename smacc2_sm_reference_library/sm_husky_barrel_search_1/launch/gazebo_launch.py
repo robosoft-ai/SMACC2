@@ -59,7 +59,7 @@ def generate_launch_description():
     declare_urdf = DeclareLaunchArgument(
         "urdf",
         default_value=os.path.join(
-            sm_husky_barrel_search_1, "models", "turtlebot3_waffle", "model.sdf"
+            sm_husky_barrel_search_1, "models", "husky_turtlebot3_waffle", "model.sdf"
         ),
         description="",
     )
@@ -116,7 +116,7 @@ def generate_launch_description():
             "-y",
             "0",
             "-z",
-            "0.5",
+            "0.1",
             "-Y",
             "0",
         ],

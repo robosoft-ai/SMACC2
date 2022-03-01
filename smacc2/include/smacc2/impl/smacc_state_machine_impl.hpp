@@ -212,6 +212,8 @@ void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
 template <typename EventType>
 void ISmaccStateMachine::postEvent(EventLifeTime evlifetime)
 {
+  auto evname = smacc2::introspection::demangleSymbol<EventType>();
+  RCLCPP_INFO_STREAM(getLogger(), "Event " << evname);
   auto * ev = new EventType();
   this->postEvent(ev, evlifetime);
 }

@@ -26,18 +26,20 @@
 // ORTHOGONALS
 #include "orthogonals/or_navigation.hpp"
 #include "orthogonals/or_perception.hpp"
+#include "orthogonals/or_led_array.hpp"
 
 namespace sm_husky_barrel_search_1
 {
 
 //STATES
+struct StAcquireSensors;
 struct StDetectItems;
 struct StNavigateToWaypointX;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
 struct SmHuskyBarrelSearch1
-: public smacc2::SmaccStateMachineBase<SmHuskyBarrelSearch1, StDetectItems>
+: public smacc2::SmaccStateMachineBase<SmHuskyBarrelSearch1, StAcquireSensors>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -45,10 +47,12 @@ struct SmHuskyBarrelSearch1
   {
     this->createOrthogonal<OrNavigation>();
     this->createOrthogonal<OrPerception>();
+    this->createOrthogonal<OrLedArray>();
   }
 };
 }  // namespace sm_husky_barrel_search_1
 
 //STATES
+#include "states/st_acquire_sensors.hpp"
 #include "states/st_detect_items.hpp"
 #include "states/st_navigate_to_waypoint_x.hpp"

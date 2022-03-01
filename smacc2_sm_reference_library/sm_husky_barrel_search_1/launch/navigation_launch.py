@@ -14,6 +14,8 @@
 
 import os
 
+# from cv2 import remap
+
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
@@ -143,14 +145,14 @@ def generate_launch_description():
                 remappings=remappings,
                 arguments=["--ros-args", "--log-level", "INFO"],
             ),
-            Node(
-                package="nav2_waypoint_follower",
-                executable="waypoint_follower",
-                name="waypoint_follower",
-                output="screen",
-                parameters=[configured_params],
-                remappings=remappings,
-            ),
+            # Node(
+            #     package="nav2_waypoint_follower",
+            #     executable="waypoint_follower",
+            #     name="waypoint_follower",
+            #     output="screen",
+            #     parameters=[configured_params],
+            #     remappings=remappings,
+            # ),
             Node(
                 package="nav2_lifecycle_manager",
                 executable="lifecycle_manager",
