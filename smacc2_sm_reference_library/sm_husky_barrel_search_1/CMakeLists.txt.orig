@@ -60,9 +60,9 @@ add_executable(opencv_perception_node
 )
 ament_target_dependencies(opencv_perception_node ${dependencies})
 
-target_link_libraries(opencv_perception_node 
-                        boost_thread 
-                        boost_system 
+target_link_libraries(opencv_perception_node
+                        boost_thread
+                        boost_system
                         ${Boost_LIBS} ${OpenCV_LIBS})
 
 if(BUILD_TESTING)

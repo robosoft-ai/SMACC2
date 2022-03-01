@@ -947,7 +947,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      
+
       <model name='stone_10_2_5_1cm'>
         <pose frame=''>-10.7066 3.01548 -0.001001 0 -0 0</pose>
         <scale>1 1 1</scale>
@@ -6971,7 +6971,7 @@
       </link>
       <pose frame=''>153.75 97.1902 0 0 -0 0</pose>
     </model>
-    
+
     <light name='user_point_light_1' type='point'>
       <pose frame=''>173.03 98.1241 1 0 -0 0</pose>
       <diffuse>0.5 0.5 0.5 1</diffuse>

@@ -18,7 +18,7 @@ from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess
-from launch.conditions import IfCondition, UnlessCondition
+from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions.node import Node
 
@@ -43,19 +43,18 @@ def generate_launch_description():
         "headless", default_value="False", description="Whether to execute gzclient)"
     )
 
-
     declare_world_cmd = DeclareLaunchArgument(
         "world",
         default_value=os.path.join(sm_husky_barrel_search_1, "worlds", "industrial_sim.world"),
-        description="Full path to world model file to load"
+        description="Full path to world model file to load",
     )
 
     # nolidar world
     declare_world_cmd_2 = DeclareLaunchArgument(
         "world",
         default_value=os.path.join(sm_husky_barrel_search_1, "worlds", "industrial_sim.world"),
-        description="Full path to world model file to load"
-        )
+        description="Full path to world model file to load",
+    )
 
     declare_urdf = DeclareLaunchArgument(
         "urdf",

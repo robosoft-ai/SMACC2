@@ -53,7 +53,7 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hu
   }
 
   if(!blobs.empty())
-  { 
+  {
     for(auto& b: blobs)
     {
       cv::Rect r;
@@ -122,12 +122,12 @@ void callback(const image_tools::ROSCvMatContainer& img)
   {
     detectedColor = 1;
   }
-  
+
   if (testGreen(image, outmat) > 0)
   {
     detectedColor = 2;
   }
-  
+
   if (testBlue(image, outmat) > 0)
   {
     detectedColor = 3;
@@ -136,8 +136,8 @@ void callback(const image_tools::ROSCvMatContainer& img)
   std_msgs::msg::Int32 detectedColorMsg;
   detectedColorMsg.data = detectedColor;
   detectionPub->publish(detectedColorMsg);
-  
-    
+
+
   outimg.header() = img.header();
   debugImagePub->publish(outimg);
 }
