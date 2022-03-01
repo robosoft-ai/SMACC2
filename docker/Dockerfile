@@ -5,6 +5,7 @@ FROM osrf/ros:$ROS_DISTRO-desktop
 
 ARG ROS_DISTRO
 ARG GIT_BRANCH
+ARG LOCAL_FOLDER_SOURCE=0
 
 RUN apt-get update \
   && apt-get upgrade -y \
@@ -18,20 +19,18 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     && apt-get clean \
     && apt upgrade -y --with-new-pkgs
 
-
 WORKDIR "/home/ros2_ws/src"
-RUN echo "git clone -b $GIT_BRANCH"
-RUN git clone -b $GIT_BRANCH https://github.com/robosoft-ai/SMACC2.git /home/ros2_ws/src/SMACC2
 
-# WORKDIR "/home/ros2_ws"
+ADD . /home/ros2_ws/src/SMACC2
+RUN if [ -n "$LOCAL_FOLDER_SOURCE" ] ; then (echo "downloading repo" && rm -R /home/ros2_ws/src/SMACC2  && git clone -b $GIT_BRANCH https://github.com/robosoft-ai/SMACC2.git /home/ros2_ws/src/SMACC2); else  (echo "using local copy" &&  rm -R /home/ros2_ws/src/SMACC2/.git); fi
 
 WORKDIR "/home/ros2_ws"
 
 # install dependencies and build
-RUN ls src && vcs import  src --skip-existing --input src/SMACC2-not-released.rolling.repos \
+RUN ls src && vcs import  src --skip-existing --input src/SMACC2/SMACC2-not-released.$GIT_BRANCH.repos \
   && ls src
 
 RUN rosdep install --from-paths src -r -y
 RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
 
-RUN bash -c "source /opt/ros/rolling/setup.sh && colcon build --merge-install"
+RUN bash -c "source /opt/ros/$GIT_BRANCH/setup.sh && colcon build --merge-install"
