@@ -1,18 +1,4 @@
 repositories:
-
-  autoware_auto_msgs:
-    type: git
-    url: https://github.com/tier4/autoware_auto_msgs
-    version: tier4/main
-
-  navigation2:
-    type: git
-    url: https://github.com/ros-planning/navigation2.git
-    version: main
-  slam_toolbox:
-    type: git
-    url: https://github.com/SteveMacenski/slam_toolbox.git
-    version: ros2
   husky:
     type: git
     url: https://github.com/StoglRobotics-forks/husky.git
