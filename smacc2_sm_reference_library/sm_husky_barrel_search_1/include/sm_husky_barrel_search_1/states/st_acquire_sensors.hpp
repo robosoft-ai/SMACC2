@@ -44,7 +44,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmHuskyBarrelSear
     // Transition<EvGlobalError, MsDanceBotRecoveryMode>
     // smacc2::Transition<
     //   smacc2::EvCbSuccess<cl_nav2z::CbWaitPose, OrNavigation>, StNavigateToWaypointX>,
-    
+
     smacc2::Transition<smacc2::EvCbSuccess<cl_nav2z::CbWaitNav2Nodes, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
 
     smacc2::Transition<

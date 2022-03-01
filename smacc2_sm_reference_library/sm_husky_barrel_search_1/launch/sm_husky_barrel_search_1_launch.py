@@ -25,13 +25,14 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
+
 def generate_launch_description():
     # Get the launch directory
     sm_husky_barrel_search_1_dir = get_package_share_directory("sm_husky_barrel_search_1")
     sm_husky_barrel_search_1_launch_dir = os.path.join(sm_husky_barrel_search_1_dir, "launch")
 
     # Create the launch configuration variables
-    #slam = LaunchConfiguration("slam")
+    # slam = LaunchConfiguration("slam")
     namespace = LaunchConfiguration("namespace")
     use_namespace = LaunchConfiguration("use_namespace")
     map_yaml_file = LaunchConfiguration("map")
@@ -39,15 +40,14 @@ def generate_launch_description():
     params_file = LaunchConfiguration("params_file")
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
     autostart = LaunchConfiguration("autostart")
-    show_gz_lidar = LaunchConfiguration("show_gz_lidar")
-    headless = LaunchConfiguration("headless")
+    # show_gz_lidar = LaunchConfiguration("show_gz_lidar")
 
     # Launch configuration variables specific to simulation
     rviz_config_file = LaunchConfiguration("rviz_config_file")
 
     use_robot_state_pub = LaunchConfiguration("use_robot_state_pub")
     use_rviz = LaunchConfiguration("use_rviz")
-    headless = LaunchConfiguration("headless")
+    # headless = LaunchConfiguration("headless")
 
     urdf = os.path.join(sm_husky_barrel_search_1_dir, "urdf", "turtlebot3_waffle.urdf")
 
@@ -163,7 +163,7 @@ def generate_launch_description():
             "use_namespace": use_namespace,
             "autostart": autostart,
             "params_file": params_file,
-            #"slam": slam,
+            # "slam": slam,
             "map": map_yaml_file,
             "use_sim_time": use_sim_time,
             "default_nav_to_pose_bt_xml": default_nav_to_pose_bt_xml,
@@ -179,18 +179,22 @@ def generate_launch_description():
             "use_namespace": use_namespace,
             "autostart": autostart,
             "params_file": params_file,
-            #"slam": slam,
+            # "slam": slam,
             "map": map_yaml_file,
             "use_sim_time": use_sim_time,
             "default_nav_to_pose_bt_xml": default_nav_to_pose_bt_xml,
         }.items(),
     )
 
-    
-
     gazebo_simulator = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_husky_barrel_search_1_launch_dir, "gazebo_launch.py")),
-        launch_arguments={'world': os.path.join(sm_husky_barrel_search_1_dir, "worlds", "barrel_valley.world.sdf")}.items()
+        PythonLaunchDescriptionSource(
+            os.path.join(sm_husky_barrel_search_1_launch_dir, "gazebo_launch.py")
+        ),
+        launch_arguments={
+            "world": os.path.join(
+                sm_husky_barrel_search_1_dir, "worlds", "barrel_valley.world.sdf"
+            )
+        }.items(),
     )
 
     # gazebo_simulator = IncludeLaunchDescription(
@@ -256,7 +260,7 @@ def generate_launch_description():
     # Declare the launch options
     ld.add_action(declare_namespace_cmd)
     ld.add_action(declare_use_namespace_cmd)
-    #ld.add_action(declare_slam_cmd)
+    # ld.add_action(declare_slam_cmd)
     ld.add_action(declare_use_sim_time_cmd)
     ld.add_action(declare_params_file_cmd)
     ld.add_action(declare_bt_xml_cmd)
@@ -273,9 +277,9 @@ def generate_launch_description():
     # ld.add_action(gazebo_husky)
 
     ld.add_action(sm_husky_barrel_search_1_node)
-    #ld.add_action(service3_node)
-    #ld.add_action(temperature_action_server)
-    #ld.add_action(led_action_server_node)
+    # ld.add_action(service3_node)
+    # ld.add_action(temperature_action_server)
+    # ld.add_action(led_action_server_node)
 
     # # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)

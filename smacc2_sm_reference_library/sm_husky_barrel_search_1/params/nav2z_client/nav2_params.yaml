@@ -239,7 +239,7 @@ global_costmap:
       robot_radius: 0.22
       resolution: 0.1
       track_unknown_space: true
-      plugins: 
+      plugins:
         #- "static_layer"
         - "obstacle_layer"
         - "inflation_layer"
