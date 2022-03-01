@@ -1,0 +1,88 @@
+cmake_minimum_required(VERSION 3.5)
+project(sm_husky_barrel_search_1)
+
+# Default to C++20
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 20)
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_python REQUIRED)
+
+find_package(smacc2 REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(nav2z_client REQUIRED)
+find_package(Boost COMPONENTS thread system REQUIRED)
+<<<<<<< HEAD
+find_package(OpenCV REQUIRED)
+=======
+>>>>>>> c045612b48b0f65a3606c4ea2d939aae8d287e7e
+
+find_package(sensor_msgs REQUIRED)
+find_package(visualization_msgs REQUIRED)
+find_package(image_tools REQUIRED)
+
+set(dependencies
+  smacc2
+  std_msgs
+  sensor_msgs
+  nav2z_client
+  visualization_msgs
+  image_tools
+)
+
+include_directories(include
+                    ${Boost_INCLUDE_DIRS}
+                    ${OpenCV_INCLUDE_DIRS}
+                    ${CMAKE_BINARY_DIR}/rosidl_generator_cpp)
+
+add_executable(${PROJECT_NAME}_node
+  src/${PROJECT_NAME}/sm_husky_barrel_search_1_node.cpp
+)
+
+ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
+target_link_libraries(${PROJECT_NAME}_node boost_thread boost_system ${Boost_LIBS})
+
+ament_export_include_directories(include)
+ament_export_libraries(${PROJECT_NAME})
+ament_export_dependencies(${dependencies})
+
+ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sm_husky_barrel_search_1.dsv.in")
+
+
+add_executable(opencv_perception_node
+  servers/opencv_perception_node/opencv_perception_node.cpp
+)
+ament_target_dependencies(opencv_perception_node ${dependencies})
+
+target_link_libraries(opencv_perception_node
+                        boost_thread
+                        boost_system
+                        ${Boost_LIBS} ${OpenCV_LIBS})
+
+if(BUILD_TESTING)
+endif()
+
+install(TARGETS
+  ${PROJECT_NAME}_node
+  # temperature_sensor_node_${PROJECT_NAME}
+  # led_action_server_node_${PROJECT_NAME}
+
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY worlds DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY rviz DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY params DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY urdf DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY models DESTINATION share/${PROJECT_NAME})
+
+ament_package()

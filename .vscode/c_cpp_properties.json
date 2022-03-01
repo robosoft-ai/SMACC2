@@ -5,7 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/../install/**",
-                "/opt/ros/rolling/include"
+                "/opt/ros/rolling/include",
+                "/usr/include",
+                "/usr/include/opencv4"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

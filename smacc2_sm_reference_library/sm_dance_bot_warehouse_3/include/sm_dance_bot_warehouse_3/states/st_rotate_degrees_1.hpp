@@ -24,8 +24,7 @@
 
 namespace sm_dance_bot_warehouse_3
 {
-
-  using cl_nav2zclient::CbPureSpinning;
+using cl_nav2zclient::CbPureSpinning;
 
 // STATE DECLARATION
 struct StRotateDegrees1 : smacc2::SmaccState<StRotateDegrees1, MsDanceBotRunMode>
@@ -35,18 +34,19 @@ struct StRotateDegrees1 : smacc2::SmaccState<StRotateDegrees1, MsDanceBotRunMode
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX>,
-    Transition<EvCbFailure<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX>
+      Transition<EvCbSuccess<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX>,
+      Transition<EvCbFailure<CbPureSpinning, OrNavigation>, StNavigateToWaypointsX>
 
-    >reactions;
+      >
+      reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbPureSpinning>(2*M_PI, 1.0 /*rad_s*/);
+    configure_orthogonal<OrNavigation, CbPureSpinning>(2 * M_PI, 1.0 /*rad_s*/);
     configure_orthogonal<OrNavigation, CbResumeSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 };
-}  // namespace sm_dance_bot_warehouse_3
+}  // namespace sm_warehouse_3

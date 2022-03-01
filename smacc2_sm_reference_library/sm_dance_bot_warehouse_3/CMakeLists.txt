@@ -13,7 +13,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
-find_package(Boost COMPONENTS thread REQUIRED)
+find_package(Boost COMPONENTS thread system REQUIRED)
 
 find_package(smacc2 REQUIRED)
 find_package(std_msgs REQUIRED)
