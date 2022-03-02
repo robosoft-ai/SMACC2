@@ -23,7 +23,7 @@
 #include <move_group_interface_client/client_behaviors/cb_end_effector_rotate.hpp>
 #include <move_group_interface_client/common.hpp>
 
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
 

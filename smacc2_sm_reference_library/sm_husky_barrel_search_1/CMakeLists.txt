@@ -84,22 +84,23 @@ ament_export_libraries(controllable_led_plugin)
 
 
 #---------------------------------------------------------
-add_executable(opencv_perception_node
-  servers/opencv_perception_node/opencv_perception_node.cpp
-)
-ament_target_dependencies(opencv_perception_node ${dependencies})
+# add_executable(opencv_perception_node
+#   servers/opencv_perception_node/opencv_perception_node.cpp
+#   servers/opencv_perception_node/cv_mat_sensor_msgs_image_type_adapter.cpp
+# )
+# ament_target_dependencies(opencv_perception_node ${dependencies})
 
-target_link_libraries(opencv_perception_node
-                        boost_thread
-                        boost_system
-                        ${Boost_LIBS} ${OpenCV_LIBS})
+# target_link_libraries(opencv_perception_node
+#                         boost_thread
+#                         boost_system
+#                         ${Boost_LIBS} ${OpenCV_LIBS})
 
 if(BUILD_TESTING)
 endif()
 
 install(TARGETS
   ${PROJECT_NAME}_node
-  opencv_perception_node
+  #opencv_perception_node
   controllable_led_plugin
   # temperature_sensor_node_${PROJECT_NAME}
   # led_action_server_node_${PROJECT_NAME}

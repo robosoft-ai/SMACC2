@@ -20,8 +20,8 @@
 
 #include <nav2z_client/common.hpp>
 
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <rclcpp/rclcpp.hpp>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 #include <tf2/utils.h>
 

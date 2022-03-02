@@ -27,9 +27,9 @@
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <geometry_msgs/msg/transform.hpp>
 #include <geometry_msgs/msg/vector3.hpp>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 namespace cl_move_group_interface
 {
