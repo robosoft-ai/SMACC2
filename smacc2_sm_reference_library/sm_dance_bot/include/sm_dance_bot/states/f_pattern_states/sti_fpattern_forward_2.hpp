@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot
 {
 namespace f_pattern_states
@@ -27,7 +33,8 @@ struct StiFPatternForward2 : smacc2::SmaccState<StiFPatternForward2<SS>, SS>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternStartLoop<SS>>
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternStartLoop<SS>>,
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiFPatternStartLoop<SS>>
 
     >reactions;
 
@@ -35,6 +42,7 @@ struct StiFPatternForward2 : smacc2::SmaccState<StiFPatternForward2<SS>, SS>
   static void staticConfigure()
   {
     TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>(SS::pitch_lenght_meters());
+    TSti::template configure_orthogonal<OrNavigation, CbPauseSlam>();
     TSti::template configure_orthogonal<OrLED, CbLEDOff>();
   }
 

@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <smacc2/smacc.hpp>
 
 #include <sensor_msgs/msg/laser_scan.hpp>
@@ -21,10 +27,10 @@
 
 #include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>
 
-#include <move_base_z_client_plugin/client_behaviors.hpp>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+#include <nav2z_client/client_behaviors.hpp>
+#include <nav2z_client/nav2z_client.hpp>
 
-using namespace cl_move_base_z;
+using namespace cl_nav2z;
 
 #include <sm_dance_bot/clients/cl_led/client_behaviors/cb_led_off.hpp>
 #include <sm_dance_bot/clients/cl_led/client_behaviors/cb_led_on.hpp>
@@ -46,8 +52,6 @@ using namespace sm_dance_bot::cl_service3;
 using namespace sm_dance_bot::cl_string_publisher;
 using namespace sm_dance_bot::cl_temperature_sensor;
 using namespace sm_dance_bot::cl_led;
-//using namespace sm_dance_bot::cl_move_base_z;
-//using namespace sm_dance_bot::cl_updatable_publisher;
 
 //STATE REACTORS
 #include <sr_all_events_go/sr_all_events_go.hpp>
@@ -71,23 +75,24 @@ namespace sm_dance_bot
 //STATE FORWARD DECLARATIONS
 class StAcquireSensors;
 class StEventCountDown;
-class StRotateDegrees4;
+
 class StNavigateForward1;
 class StNavigateToWaypoint1;
 class StNavigateToWaypointsX;
-class StRotateDegrees2;
+
 class StRotateDegrees1;
-class StNavigateReverse2;
+class StRotateDegrees2;
 class StRotateDegrees3;
-class StNavigateReverse1;
-class StNavigateForward2;
+class StRotateDegrees4;
 class StRotateDegrees5;
-class StNavigateReverse3;
 class StRotateDegrees6;
+
+class StNavigateReverse1;
+class StNavigateReverse2;
 class StNavigateReverse3;
+class StNavigateReverse4;
 
 //SUPERSTATE FORWARD DECLARATIONS
-
 //MODE STATES FORWARD DECLARATIONS
 class MsDanceBotRunMode;
 class MsDanceBotRecoveryMode;
@@ -180,10 +185,10 @@ struct SmDanceBot : public smacc2::SmaccStateMachineBase<SmDanceBot, MsDanceBotR
 #include <sm_dance_bot/states/st_navigate_to_waypoints_x.hpp>
 
 #include <sm_dance_bot/states/st_navigate_forward_1.hpp>
-#include <sm_dance_bot/states/st_navigate_forward_2.hpp>
 #include <sm_dance_bot/states/st_navigate_reverse_1.hpp>
 #include <sm_dance_bot/states/st_navigate_reverse_2.hpp>
 #include <sm_dance_bot/states/st_navigate_reverse_3.hpp>
+#include <sm_dance_bot/states/st_navigate_reverse_4.hpp>
 #include <sm_dance_bot/states/st_navigate_to_waypoint_1.hpp>
 #include <sm_dance_bot/states/st_rotate_degrees_1.hpp>
 #include <sm_dance_bot/states/st_rotate_degrees_2.hpp>

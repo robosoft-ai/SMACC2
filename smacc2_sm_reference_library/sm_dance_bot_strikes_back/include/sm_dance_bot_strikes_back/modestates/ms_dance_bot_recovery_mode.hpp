@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <smacc2/smacc.hpp>
 namespace sm_dance_bot_strikes_back
 {
@@ -25,7 +31,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvGlobalError, sc::deep_history<typename MsDanceBotRunMode::LastDeepState>>
+    Transition<EvGlobalError, smacc2::deep_history<typename MsDanceBotRunMode::LastDeepState>>
 
     >reactions;
 

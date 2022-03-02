@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot_strikes_back
 {
 namespace s_pattern_states
@@ -33,6 +39,7 @@ struct StiSPatternForward2 : public smacc2::SmaccState<StiSPatternForward2, SS>
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbNavigateForward>();
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOn>();
   }
 
@@ -50,12 +57,12 @@ struct StiSPatternForward2 : public smacc2::SmaccState<StiSPatternForward2, SS>
     auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
 
     if (!std::isnan(lidarData->forwardObstacleDistance))
-      forwardBehavior->forwardDistance =
+      forwardBehavior->setForwardDistance(
         lidarData->forwardObstacleDistance -
-        extrasecurityMargin; /*extra security margin for easy dynamic implementation of dynamic-smotion*/
+        extrasecurityMargin); /*extra security margin for easy dynamic implementation of dynamic-smotion*/
 
     else
-      forwardBehavior->forwardDistance = superstate.pitch2_lenght_meters();
+      forwardBehavior->setForwardDistance( superstate.pitch2_lenght_meters());
   }
 };
 }  // namespace s_pattern_states

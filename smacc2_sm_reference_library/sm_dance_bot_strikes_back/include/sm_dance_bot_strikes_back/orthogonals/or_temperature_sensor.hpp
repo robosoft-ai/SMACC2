@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 
 #include <multirole_sensor_client/cl_multirole_sensor.hpp>
@@ -31,10 +37,7 @@ public:
     auto clTemperatureSensor = this->createClient<ClTemperatureSensor>();
 
     clTemperatureSensor->topicName = "/temperature";
-    // ClTemperatureSensor->queueSize = "/front/scan";
     clTemperatureSensor->timeout_ = rclcpp::Duration(10s);
-
-    // clTemperatureSensor->initialize();
   }
 };
 }  // namespace sm_dance_bot_strikes_back

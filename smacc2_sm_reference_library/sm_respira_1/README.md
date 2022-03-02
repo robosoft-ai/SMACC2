@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ! New Image required
+ ![sm_respira](docs/SmRespira1_2021-10-18_102726.svg)
 
  <h2>Description</h2> A state machine sketch for the RespiraWorks Ventilator<br></br>
 <a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__respira__1.html">Doxygen Namespace & Class Reference</a>
@@ -34,10 +34,9 @@ source ~/colcon_ws/install/setup.bash
 ```
 
 And then run the launch file...
-! refactor state machine name
 
 ```
-ros2 launch sm_respira sm_respira.launch
+ros2 launch sm_respira_1 sm_respira_1.launch
 ```
 
  <h2>Viewer Instructions</h2>

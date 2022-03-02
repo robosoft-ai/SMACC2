@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>backward_local_planner</name>
+  <version>0.0.0</version>
+  <description>The backward_local_planner package.</description>
+  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+  <author email="pablo@ibrobotics.com">Pablo Inigo Blasco</author>
+
+   <license>BSDv3</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>nav2_costmap_2d</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav2z_planners_common</depend>
+  <depend>nav2_core</depend>
+  <depend>nav_msgs</depend>
+  <depend>nav_2d_utils</depend>
+  <depend>std_msgs</depend>
+  <depend>tf2</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

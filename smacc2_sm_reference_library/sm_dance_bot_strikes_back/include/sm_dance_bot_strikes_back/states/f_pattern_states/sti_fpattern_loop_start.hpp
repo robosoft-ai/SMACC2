@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot_strikes_back
 {
 namespace f_pattern_states
@@ -27,7 +33,7 @@ struct StiFPatternStartLoop : smacc2::SmaccState<StiFPatternStartLoop<SS>, SS>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternForward2<SS>, CONTINUELOOP>
+    Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternRotate1<SS>, CONTINUELOOP>
 
     >reactions;
 
@@ -36,14 +42,8 @@ struct StiFPatternStartLoop : smacc2::SmaccState<StiFPatternStartLoop<SS>, SS>
 
   bool loopCondition()
   {
-    cl_lidar::ClLidarSensor * lidarClient;
-    this->requiresClient(lidarClient);
-
-    auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
-
-    auto horizontalDistance = lidarData->forwardObstacleDistance;
-
-    return horizontalDistance > 0.5 /*meters*/;  // go ahead until 1.5m before the wall
+    auto & superstate = TSti::template context<SS>();
+    return superstate.iteration_count++ < superstate.total_iterations();
   }
 
   void onEntry()

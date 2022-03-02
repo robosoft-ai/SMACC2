@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot
 {
 namespace s_pattern_states
@@ -25,7 +31,7 @@ struct StiSPatternRotate2 : smacc2::SmaccState<StiSPatternRotate2, SS>
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward2>,
-    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternForward1>
+    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternForward2>
 
     >reactions;
 
@@ -40,6 +46,7 @@ struct StiSPatternRotate2 : smacc2::SmaccState<StiSPatternRotate2, SS>
       angle = -90 - offset;
 
     configure_orthogonal<OrNavigation, CbAbsoluteRotate>(angle);
+    configure_orthogonal<OrNavigation, CbResumeSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
   }
 

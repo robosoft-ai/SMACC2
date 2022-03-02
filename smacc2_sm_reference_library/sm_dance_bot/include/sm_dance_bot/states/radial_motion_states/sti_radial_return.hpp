@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot
 {
 namespace radial_motion_states
@@ -33,15 +39,16 @@ struct StiRadialReturn : smacc2::SmaccState<StiRadialReturn, SS>
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
   }
 
   void onExit()
   {
-    ClMoveBaseZ * moveBase;
+    ClNav2Z * moveBase;
     this->requiresClient(moveBase);
 
-    auto odomTracker = moveBase->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
+    auto odomTracker = moveBase->getComponent<cl_nav2z::odom_tracker::OdomTracker>();
     odomTracker->clearPath();
   }
 };

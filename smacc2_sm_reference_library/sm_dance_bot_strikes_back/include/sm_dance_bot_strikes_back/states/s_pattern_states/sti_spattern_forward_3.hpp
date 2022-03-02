@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot_strikes_back
 {
 namespace s_pattern_states
@@ -33,6 +39,7 @@ struct StiSPatternForward3 : public smacc2::SmaccState<StiSPatternForward3, SS>
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbNavigateForward>(SS::pitch1_lenght_meters());
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOn>();
   }
 

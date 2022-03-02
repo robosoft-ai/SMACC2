@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>move_group_interface_client</name>
+  <version>0.0.0</version>
+
+  <description>The move_group_interface_client package</description>
+  <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
+  <license>BSD-3</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>smacc2</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>moveit_ros_planning_interface</depend>
+  <depend>yaml_cpp_vendor</depend>
+  <depend>ament_index_cpp</depend>
+  <depend>yaml-cpp</depend>
+  <depend>tf2_geometry_msgs</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

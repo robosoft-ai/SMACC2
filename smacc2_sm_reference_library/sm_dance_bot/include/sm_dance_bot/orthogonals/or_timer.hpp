@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 #include <ros_timer_client/cl_ros_timer.hpp>
 #include <smacc2/smacc_orthogonal.hpp>

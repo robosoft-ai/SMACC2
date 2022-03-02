@@ -1,4 +1,4 @@
-name: "Doxygen Doc Deployment"
+name: "Doxygen Deployment"
 on:
   workflow_dispatch:
   push:

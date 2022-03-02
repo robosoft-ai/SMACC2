@@ -71,16 +71,12 @@ public:
   boost::signals2::connection onFailure(TCallback callback, T * object);
 
 protected:
-  // executes onExit in a new thread
-  void executeOnEntry() override;
-
-  // executes onExit in a new thread, waits first onEntry thread if it is still running
-  void executeOnExit() override;
-
   void postSuccessEvent();
   void postFailureEvent();
 
   virtual void dispose() override;
+
+  inline bool isShutdownRequested() { return isShutdownRequested_; }
 
 private:
   void waitFutureIfNotFinished(std::future<int> & threadfut);
@@ -94,6 +90,14 @@ private:
   SmaccSignal<void()> onFinished_;
   SmaccSignal<void()> onSuccess_;
   SmaccSignal<void()> onFailure_;
+
+  // executes onExit in a new thread
+  void executeOnEntry() override;
+
+  // executes onExit in a new thread, waits first onEntry thread if it is still running
+  void executeOnExit() override;
+
+  bool isShutdownRequested_;
 };
 }  // namespace smacc2
 

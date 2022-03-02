@@ -6,7 +6,7 @@ smacc_navigation_plugin:
   ubuntu: [ros-kinetic-smacc-navigation-plugin]
 smacc_sensors:
   ubuntu: [ros-kinetic-smacc-sensors]
-move_base_z_client_plugin:
+nav2z_client:
   ubuntu: [ros-kinetic-move-base-z-client-plugin]
 move_group_interface_client:
   ubuntu: [ros-kinetic-moveit-z-client]

@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <smacc2/introspection/introspection.hpp>
 #include "rclcpp/rclcpp.hpp"
 
@@ -25,15 +31,23 @@ void transitionInfoToMsg(
   const SmaccTransitionInfo & transition, smacc2_msgs::msg::SmaccTransition & transitionMsg)
 {
   transitionMsg.index = transition.index;
-  transitionMsg.event.event_type = transition.eventInfo->getEventTypeName();
 
-  transitionMsg.source_state_name = transition.sourceState->demangledStateName;
+  if (transition.sourceState != nullptr)
+  {
+    transitionMsg.source_state_name = transition.sourceState->demangledStateName;
+  }
 
   transitionMsg.transition_name = transition.transitionTag;
   transitionMsg.transition_type = transition.transitionType;
-  transitionMsg.event.event_source = transition.eventInfo->getEventSourceName();
-  transitionMsg.event.event_object_tag = transition.eventInfo->getOrthogonalName();
-  transitionMsg.event.label = transition.eventInfo->label;
+
+  if (transition.eventInfo != nullptr)
+  {
+    transitionMsg.event.event_type = transition.eventInfo->getEventTypeName();
+    transitionMsg.event.event_source = transition.eventInfo->getEventSourceName();
+    transitionMsg.event.event_object_tag = transition.eventInfo->getOrthogonalName();
+    transitionMsg.event.label = transition.eventInfo->label;
+  }
+
   transitionMsg.history_node = transition.historyNode;
 
   if (transition.historyNode)

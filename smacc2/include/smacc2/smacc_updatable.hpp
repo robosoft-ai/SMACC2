@@ -43,6 +43,6 @@ protected:
 
 private:
   std::optional<rclcpp::Duration> periodDuration_;
-  rclcpp::Time lastUpdate_;
+  std::optional<rclcpp::Time> lastUpdate_;
 };
 }  // namespace smacc2

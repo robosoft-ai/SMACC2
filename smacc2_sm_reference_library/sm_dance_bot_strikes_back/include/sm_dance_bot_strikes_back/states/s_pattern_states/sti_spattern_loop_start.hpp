@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot_strikes_back
 {
 namespace s_pattern_states
@@ -36,20 +42,7 @@ struct StiSPatternLoopStart : smacc2::SmaccState<StiSPatternLoopStart, SS>
   bool loopCondition()
   {
     auto & superstate = this->context<SS>();
-    if (superstate.iteration_count++ < superstate.total_iterations())
-    {
-      RCLCPP_INFO(
-        getLogger(), "Spattern iteration finished, going to next iteration (%d)",
-        superstate.iteration_count);
-      return true;
-    }
-    else
-    {
-      RCLCPP_INFO(
-        getLogger(), "Spattern iteration finished, All iterations finished (%d)",
-        superstate.iteration_count - 1);
-      return false;
-    }
+    return superstate.iteration_count++ < superstate.total_iterations();
   }
 
   void onEntry() { checkWhileLoopConditionAndThrowEvent(&StiSPatternLoopStart::loopCondition); }

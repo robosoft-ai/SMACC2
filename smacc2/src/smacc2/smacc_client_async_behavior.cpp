@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 using namespace std::chrono_literals;
@@ -24,6 +30,8 @@ void SmaccAsyncClientBehavior::executeOnEntry()
   this->onEntryThread_ = std::async(std::launch::async, [=] {
     this->onEntry();
     this->postFinishEventFn_();
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] onEntry asynchronous thread was finished.");
     return 0;
   });
 }
@@ -46,7 +54,8 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::future<int> & thread
         }
       }
 
-      r.sleep();
+      //r.sleep();
+      rclcpp::sleep_for(100ms);
       // rclcpp::spin_some(getNode());
       RCLCPP_WARN_THROTTLE(
         getLogger(), *(getNode()->get_clock()), 1000,

@@ -85,7 +85,7 @@ def build_deb_package(
     print(already_visited)
 
     debianfilename = [
-        f for f in debianfiles if re.search(regexstr, f) and f not in already_visited
+        f for f in debianfiles if re.search(regexstr, f) and not (f in already_visited)
     ][0]
 
     print("Debian file found: ")
@@ -186,7 +186,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
         "multirole_sensor_client",
         "ros_publisher_client",
         "ros_timer_client",
-        "move_base_z_client_plugin",
+        "nav2z_client",
         "forward_global_planner",
         "forward_local_planner",
         "backward_global_planner",

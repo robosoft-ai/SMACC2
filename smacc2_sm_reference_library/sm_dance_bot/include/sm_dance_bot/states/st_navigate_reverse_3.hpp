@@ -12,7 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
+#pragma once
+
 #include <smacc2/smacc.hpp>
+
 namespace sm_dance_bot
 {
 // STATE DECLARATION
@@ -31,7 +40,8 @@ struct StNavigateReverse3 : smacc2::SmaccState<StNavigateReverse3, MsDanceBotRun
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateBackwards>(2);
+    configure_orthogonal<OrNavigation, CbNavigateBackwards>(1);
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }

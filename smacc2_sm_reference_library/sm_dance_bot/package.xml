@@ -5,11 +5,12 @@
   <version>0.0.0</version>
   <description>The dance_bot package</description>
   <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>move_base_z_client_plugin</depend>
+  <depend>nav2z_client</depend>
   <depend>multirole_sensor_client</depend>
   <depend>navigation2</depend>
   <depend>robot_state_publisher</depend>
@@ -17,13 +18,17 @@
   <depend>ros_timer_client</depend>
   <depend>slam_toolbox</depend>
   <depend>smacc2</depend>
-  <depend>sm_dance_bot_msgs</depend>
+  <depend>std_msgs</depend>
   <depend>sr_all_events_go</depend>
   <depend>sr_event_countdown</depend>
   <depend>sr_conditional</depend>
-  <depend>std_msgs</depend>
   <depend>visualization_msgs</depend>
   <depend>tf2</depend>
+
+
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>gazebo</exec_depend>
+  <exec_depend>gazebo_plugins</exec_depend>
 
   <buildtool_depend>rosidl_default_generators</buildtool_depend>
   <depend>action_msgs</depend>
@@ -32,5 +37,6 @@
 
   <export>
     <build_type>ament_cmake</build_type>
+    <gazebo_ros gazebo_media_path="${prefix}/models" gazebo_model_path="${prefix}/models"/>
   </export>
 </package>

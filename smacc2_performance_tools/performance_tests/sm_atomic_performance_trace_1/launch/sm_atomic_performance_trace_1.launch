@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="sm_atomic_performance_trace_1" exec="sm_atomic_performance_trace_1_node" name="sm_atomic_performance_trace_1">
+        <param from="$(find-pkg-share sm_atomic_performance_trace_1)/config/sm_atomic_performance_trace_1_config.yaml"/>
+    </node>
+</launch>

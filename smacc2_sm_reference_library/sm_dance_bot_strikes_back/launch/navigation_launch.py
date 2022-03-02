@@ -49,7 +49,7 @@ def generate_launch_description():
         "use_sim_time": use_sim_time,
         # 'default_nav_to_pose_bt_xml': default_nav_to_pose_bt_xml,
         "default_nav_to_pose_bt_xml": os.path.join(
-            sm_dance_bot_strikes_back_dir, "params", "move_base_client", "navigation_tree.xml"
+            sm_dance_bot_strikes_back_dir, "params", "nav2z_client", "navigation_tree.xml"
         ),
         "autostart": autostart,
         "map_subscribe_transient_local": map_subscribe_transient_local,
@@ -62,10 +62,7 @@ def generate_launch_description():
         convert_types=True,
     )
 
-    xtermprefix = (
-        "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' "
-        "-hold -geometry 1000x600 -sl 10000 -e"
-    )
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
 
     print("+********************************")
     print(str(param_substitutions))
@@ -91,7 +88,7 @@ def generate_launch_description():
             DeclareLaunchArgument(
                 "params_file",
                 default_value=os.path.join(
-                    sm_dance_bot_strikes_back_dir, "params", "move_base_client", "nav2_params.yaml"
+                    sm_dance_bot_strikes_back_dir, "params", "nav2z_client", "nav2_params.yaml"
                 ),
                 description="Full path to the ROS2 parameters file to use",
             ),
@@ -102,7 +99,7 @@ def generate_launch_description():
                 default_value=os.path.join(
                     sm_dance_bot_strikes_back_dir,
                     "params",
-                    "move_base_client",
+                    "nav2z_client",
                     "navigation_tree.xml",
                 ),
                 description="Full path to the behavior tree xml file to use",

@@ -79,7 +79,7 @@ template <typename TEv>
 void StateReactorHandler::addInputEvent()
 {
   StateReactorCallbackFunctor functor;
-  functor.fn = [=](std::shared_ptr<smacc2::StateReactor> sr) {
+  functor.fn = [this](std::shared_ptr<smacc2::StateReactor> sr) {
     RCLCPP_INFO(
       nh_->get_logger(), "[%s] State Reactor adding input event: %s",
       srInfo_->stateReactorType->getFullName().c_str(), demangledTypeName<TEv>().c_str());
@@ -99,7 +99,7 @@ template <typename TEv>
 void StateReactorHandler::setOutputEvent()
 {
   StateReactorCallbackFunctor functor;
-  functor.fn = [=](std::shared_ptr<smacc2::StateReactor> sr) {
+  functor.fn = [this](std::shared_ptr<smacc2::StateReactor> sr) {
     RCLCPP_INFO(
       nh_->get_logger(), "[%s] State Reactor setting output event: %s",
       srInfo_->stateReactorType->getFullName().c_str(), demangledTypeName<TEv>().c_str());

@@ -12,9 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
+#pragma once
 #include <smacc2/smacc.hpp>
 namespace sm_dance_bot_strikes_back
 {
+using namespace smacc2::default_events;
+
 // STATE DECLARATION
 struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 {
@@ -43,19 +52,12 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, MsDanceBotRunMode
     configure_orthogonal<OrNavigation, CbWaitPose>();
 
     // Create State Reactor
-    //auto srAllSensorsReady = static_createStateReactor<SrAllEventsGo>();
-
     auto srAllSensorsReady = static_createStateReactor<
-      SrAllEventsGo, EvAllGo<SrAllEventsGo, SrAcquireSensors>,
+      SrAllEventsGo, smacc2::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>,
       mpl::list<
         EvTopicMessage<CbLidarSensor, OrObstaclePerception>,
         EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>,
         EvCbSuccess<CbWaitPose, OrNavigation>>>();
-
-    // Alternative syntax:
-    //srAllSensorsReady->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
-    //srAllSensorsReady->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
-    //srAllSensorsReady->setOutputEvent<EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
   }
 };
 }  // namespace sm_dance_bot_strikes_back

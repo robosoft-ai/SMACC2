@@ -74,14 +74,14 @@ public:
   void onOrthogonalAllocation()
   {
     // ros topic message received smacc event callback
-    this->postMessageEvent = [=](auto msg) {
+    this->postMessageEvent = [this](auto msg) {
       auto event = new EvTopicMessage<TSourceObject, TOrthogonal>();
       event->msgData = msg;
       this->postEvent(event);
     };
 
     // initial ros topic message received smacc event callback
-    this->postInitialMessageEvent = [=](auto msg) {
+    this->postInitialMessageEvent = [this](auto msg) {
       auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal>();
       event->msgData = msg;
       this->postEvent(event);
@@ -99,19 +99,17 @@ protected:
 
       if (!topicName)
       {
-        RCLCPP_ERROR(
-          getNode()->get_logger(), "topic client with no topic name set. Skipping subscribing");
+        RCLCPP_ERROR(getLogger(), "topic client with no topic name set. Skipping subscribing");
       }
       else
       {
         RCLCPP_INFO_STREAM(
-          getNode()->get_logger(),
-          "[" << this->getName() << "] Subscribing to topic: " << *topicName);
+          getLogger(), "[" << this->getName() << "] Subscribing to topic: " << *topicName);
 
         rclcpp::SensorDataQoS qos;
         if (queueSize) qos.keep_last(*queueSize);
 
-        std::function<void(typename MessageType::SharedPtr)> fn = [=](auto msg) {
+        std::function<void(typename MessageType::SharedPtr)> fn = [this](auto msg) {
           this->messageCallback(*msg);
         };
         sub_ = getNode()->create_subscription<MessageType>(*topicName, qos, fn);

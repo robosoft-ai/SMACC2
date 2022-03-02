@@ -31,6 +31,7 @@ class ISmaccUpdatable;
 class ISmaccComponent;
 class ISmaccClientBehavior;
 class SmaccClientBehavior;
+class SmaccAsyncClientBehavior;
 class SignalDetector;
 
 class StateReactor;

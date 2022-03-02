@@ -1,12 +1,4 @@
 repositories:
-  navigation2:
-    type: git
-    url: https://github.com/ros-planning/navigation2.git
-    version: galactic
-  slam_toolbox:
-    type: git
-    url: https://github.com/SteveMacenski/slam_toolbox.git
-    version: galactic
   husky:
     type: git
     url: https://github.com/StoglRobotics-forks/husky.git
@@ -15,7 +7,6 @@ repositories:
     type: git
     url: https://github.com/ros-simulation/gazebo_ros2_control.git
     version: master
-
   ros2_control_demos:
     type: git
     url: https://github.com/ros-controls/ros2_control_demos.git

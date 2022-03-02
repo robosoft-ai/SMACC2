@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <sm_dance_bot_strikes_back/clients/cl_service3/cl_service3.hpp>
 #include <smacc2/smacc_client_behavior.hpp>
 

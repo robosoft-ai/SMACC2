@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot_strikes_back
@@ -42,7 +48,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateToWaypointsX, ENDLOOP>
+    Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees4, ENDLOOP>
 
     >reactions;
 
@@ -54,7 +60,7 @@ public:
 
   int iteration_count;
 
-  static constexpr int total_iterations() { return 32; }
+  static constexpr int total_iterations() { return 16; }
   static constexpr float ray_angle_increment_degree() { return 360.0 / total_iterations(); }
   static constexpr float ray_length_meters() { return 4; }
 

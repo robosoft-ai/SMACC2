@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot_strikes_back
 {
 namespace s_pattern_states
@@ -25,47 +31,37 @@ struct StiSPatternRotate1 : smacc2::SmaccState<StiSPatternRotate1, SS>
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward1>,
-    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternLoopStart>
+    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternRotate1>
 
     >reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure()
-  {
-    configure_orthogonal<OrNavigation, CbAbsoluteRotate>();
-    configure_orthogonal<OrLED, CbLEDOff>();
-  }
+  static void staticConfigure() {}
 
   void runtimeConfigure()
   {
     auto & superstate = this->context<SS>();
-    RCLCPP_INFO(
-      getLogger(), "[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
-      superstate.iteration_count, SS::total_iterations());
 
-    double offset;
-    // if (superstate.iteration_count == 1)
-    // {
-    offset = 0;
-    // }
+    // float angle = 0;
+    // if (superstate.direction() == TDirection::LEFT)
+    //     angle = 90;
     // else
-    // {
-    //     offset = 13.5;
-    // }
+    //     angle = -90;
+    //this->configure<OrNavigation, CbRotate>(angle);
 
-    auto absoluteRotateBehavior =
-      this->getOrthogonal<OrNavigation>()->getClientBehavior<CbAbsoluteRotate>();
-
+    float offset = 0;
     if (superstate.direction() == TDirection::RIGHT)
     {
       // - offset because we are looking to the north and we have to turn clockwise
-      absoluteRotateBehavior->absoluteGoalAngleDegree = superstate.initialStateAngle - offset;
+      this->configure<OrNavigation, CbAbsoluteRotate>(0 - offset);
     }
     else
     {
       // - offset because we are looking to the south and we have to turn counter-clockwise
-      absoluteRotateBehavior->absoluteGoalAngleDegree = superstate.initialStateAngle + offset;
+      this->configure<OrNavigation, CbAbsoluteRotate>(180 + offset);
     }
+
+    this->configure<OrLED, CbLEDOff>();
   }
 };
 }  // namespace s_pattern_states

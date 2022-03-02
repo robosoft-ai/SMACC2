@@ -92,7 +92,8 @@ TOrthogonal * ISmaccStateMachine::getOrthogonal()
 template <typename TOrthogonal>
 void ISmaccStateMachine::createOrthogonal()
 {
-  this->lockStateMachine("create orthogonal");
+  //this->lockStateMachine("create orthogonal");
+  std::lock_guard<std::recursive_mutex> guard();
   std::string orthogonalkey = demangledTypeName<TOrthogonal>();
 
   if (orthogonals_.count(orthogonalkey) == 0)
@@ -117,7 +118,7 @@ void ISmaccStateMachine::createOrthogonal()
     }
     RCLCPP_WARN_STREAM(getLogger(), ss.str());
   }
-  this->unlockStateMachine("create orthogonal");
+  //this->unlockStateMachine("create orthogonal");
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -185,7 +186,8 @@ void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
   {
     RCLCPP_WARN_STREAM(
       getLogger(),
-      "CURRENT STATE SCOPED EVENT SKIPPED, state is exiting/transitioning " << eventtypename);
+      "[ISmaccStateMachine] CURRENT STATE SCOPED EVENT DISCARDED, state is exiting/transitioning "
+        << eventtypename);
     return;
     // in this case we may lose/skip events, if this is not right for some cases we should create a
     // queue to lock the events during the transitions. This issues appeared when a client
@@ -210,6 +212,8 @@ void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
 template <typename EventType>
 void ISmaccStateMachine::postEvent(EventLifeTime evlifetime)
 {
+  auto evname = smacc2::introspection::demangleSymbol<EventType>();
+  RCLCPP_INFO_STREAM(getLogger(), "Event " << evname);
   auto * ev = new EventType();
   this->postEvent(ev, evlifetime);
 }
@@ -394,34 +398,6 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(
   return connection;
 }
 
-// template <typename TSmaccSignal, typename TMemberFunctionPrototype>
-// boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal,
-// TMemberFunctionPrototype callback)
-// {
-//     return signal.connect(callback);
-//     // return signal;
-// }
-
-template <typename T>
-bool ISmaccStateMachine::getParam(std::string param_name, T & param_storage)
-{
-  return getNode()->get_parameter(param_name, param_storage);
-}
-
-// Delegates to ROS param access with the current NodeHandle
-template <typename T>
-void ISmaccStateMachine::setParam(std::string param_name, T param_val)
-{
-  getNode()->set_parameter(rclcpp::Parameter(param_name, param_val));
-}
-
-// Delegates to ROS param access with the current NodeHandle
-template <typename T>
-bool ISmaccStateMachine::param(std::string param_name, T & param_val, const T & default_val)
-{
-  return getNode()->declare_parameter(param_name, param_val, default_val);
-}
-
 template <typename StateType>
 void ISmaccStateMachine::notifyOnStateEntryStart(StateType * state)
 {
@@ -532,7 +508,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
   RCLCPP_WARN_STREAM(getLogger(), "exiting state: " << fullname);
   // this->set_parameter("destroyed", true);
 
-  RCLCPP_INFO_STREAM(getLogger(), "Notification State Exit: leaving state" << state);
+  RCLCPP_INFO_STREAM(getLogger(), "Notification State Exit: leaving state " << state);
   for (auto pair : this->orthogonals_)
   {
     auto & orthogonal = pair.second;
@@ -585,20 +561,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
     }
   }
 
-  this->lockStateMachine("state exit");
-
-  for (auto & conn : this->stateCallbackConnections)
-  {
-    RCLCPP_WARN_STREAM(
-      getLogger(),
-      "[StateMachine] Disconnecting scoped-lifetime SmaccSignal "
-      "subscription");
-    conn.disconnect();
-  }
-
-  this->stateCallbackConnections.clear();
-
-  currentState_ = nullptr;
+  //this->lockStateMachine("state exit");
 }
 
 template <typename StateType>
@@ -610,7 +573,7 @@ void ISmaccStateMachine::notifyOnStateExited(StateType *)
   RCLCPP_WARN_STREAM(getLogger(), "state exit: " << fullname);
 
   stateMachineCurrentAction = StateMachineInternalAction::TRANSITIONING;
-  this->unlockStateMachine("state exit");
+  //this->unlockStateMachine("state exit");
 }
 //------------------------------------------------------------------------------------------------
 template <typename EventType>

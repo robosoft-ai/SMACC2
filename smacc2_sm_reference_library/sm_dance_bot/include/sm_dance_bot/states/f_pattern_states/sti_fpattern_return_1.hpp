@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot
 {
 namespace f_pattern_states
@@ -35,6 +41,7 @@ struct StiFPatternReturn1 : smacc2::SmaccState<StiFPatternReturn1<SS>, SS>
   static void staticConfigure()
   {
     TSti::template configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+    TSti::template configure_orthogonal<OrNavigation, CbPauseSlam>();
     TSti::template configure_orthogonal<OrLED, CbLEDOn>();
   }
 
