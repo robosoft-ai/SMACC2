@@ -87,9 +87,11 @@ public:
   template <typename EventType>
   void postEvent(EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
 
+  // gets data from the state machine blackboard
   template <typename T>
   bool getGlobalSMData(std::string name, T & ret);
 
+  // sets data in the state machine blackboard
   template <typename T>
   void setGlobalSMData(std::string name, T value);
 
@@ -184,6 +186,7 @@ protected:
   // orthogonals
   std::map<std::string, std::shared_ptr<smacc2::ISmaccOrthogonal>> orthogonals_;
 
+protected:
   std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo_;
 
 private:

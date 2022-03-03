@@ -32,10 +32,6 @@
 namespace smacc2
 {
 using namespace smacc2::introspection;
-//-------------------------------------------------------------------------------------------------------
-// Delegates to ROS param access with the current NodeHandle
-
-//-------------------------------------------------------------------------------------------------------
 #define THIS_STATE_NAME ((demangleSymbol(typeid(*this).name()).c_str()))
 template <typename TOrthogonal, typename TBehavior, typename... Args>
 std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
