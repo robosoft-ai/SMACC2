@@ -217,7 +217,6 @@ private:
   template <typename EventType>
   void propagateEventToStateReactors(ISmaccState * st, EventType * ev);
 
-
   void updateStatusMessage();
 
   friend class ISmaccState;

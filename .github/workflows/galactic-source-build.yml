@@ -8,7 +8,7 @@ on:
     - cron: '03 3 * * *'
 
 jobs:
-  rolling_source:
+  galactic_source:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -28,6 +28,15 @@ jobs:
 
             keyboard_client
 
+            backward_global_planner
+            backward_local_planner
+            forward_global_planner
+            forward_local_planner
+            nav2z_planners_common
+            pure_spinning_local_planner
+            undo_path_global_planner
+            nav2z_client
+
             multirole_sensor_client
             ros_publisher_client
             ros_timer_client
@@ -36,14 +45,15 @@ jobs:
             eg_random_generator
 
             smacc2_msgs
-
             sm_atomic
             sm_atomic_24hr
-            sm_atomic_performance_test
-            sm_atomic_performance_trace_1
-            sm_atomic_subscribers_performance_test
+
             sm_branching
 
+            sm_atomic_subscribers_performance_test
+            sm_dance_bot
+            sm_dance_bot_lite
+            sm_dance_bot_strikes_back
             sm_ferrari
             sm_respira_1
             sm_three_some
@@ -51,17 +61,6 @@ jobs:
             sr_all_events_go
             sr_conditional
             sr_event_countdown
-
-            backward_global_planner
-            backward_local_planner
-            forward_global_planner
-            forward_local_planner
-            move_base_z_planners_common
-            pure_spinning_local_planner
-            undo_path_global_planner
-            move_base_z_client_plugin
-
-            sm_dance_bot_msgs
 
           vcs-repo-file-url: |
             https://raw.githubusercontent.com/ros2/ros2/master/ros2.repos
