@@ -26,10 +26,10 @@ jobs:
           backward_local_planner
           forward_global_planner
           forward_local_planner
-          move_base_z_planners_common
+          nav2z_planners_common
           pure_spinning_local_planner
           undo_path_global_planner
-          move_base_z_client_plugin
+          nav2z_client
 
           multirole_sensor_client
           ros_publisher_client
@@ -44,7 +44,7 @@ jobs:
           sm_atomic_performance_test
           sm_atomic_subscribers_performance_test
           sm_dance_bot
-          sm_dance_bot_msgs
+          sm_dance_bot_lite
           sm_dance_bot_strikes_back
           sm_ferrari
           sm_three_some
@@ -77,10 +77,10 @@ jobs:
           #backward_local_planner
           #forward_global_planner
           #forward_local_planner
-          #move_base_z_planners_common
+          #nav2z_planners_common
           #pure_spinning_local_planner
           #undo_path_global_planner
-          #move_base_z_client_plugin
+          #nav2z_client
 
           #multirole_sensor_client
           #ros_publisher_client
@@ -95,7 +95,6 @@ jobs:
           #sm_atomic_performance_test
           #sm_atomic_subscribers_performance_test
           #sm_dance_bot
-          #sm_dance_bot_msgs
           #sm_dance_bot_strikes_back
           #sm_ferrari
           #sm_three_some

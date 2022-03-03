@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <smacc2/smacc_state.hpp>
 #include <smacc2/smacc_state_machine.hpp>
 
@@ -19,11 +25,9 @@ namespace smacc2
 {
 std::string ISmaccState::getClassName() { return demangleSymbol(typeid(*this).name()); }
 
-void ISmaccState::param(std::string param_name) { getNode()->declare_parameter(param_name); }
-
 void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transitionType)
 {
-  RCLCPP_INFO_STREAM(getLogger(), "NOTIFY TRANSITION: " << transitionType->getFullName());
+  RCLCPP_INFO_STREAM(getLogger(), "TRANSITION RULE TRIGGERED: " << transitionType->getFullName());
 
   //auto currstateinfo = this->getStateMachine().getCurrentStateInfo();
   auto currstateinfo = this->stateInfo_;

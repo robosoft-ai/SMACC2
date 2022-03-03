@@ -58,6 +58,10 @@ public:
   template <typename TComponent>
   TComponent * getComponent(std::string name);
 
+  // Gets the i-th component of type TComponent
+  template <typename TComponent>
+  TComponent * getComponent(int index);
+
   virtual smacc2::introspection::TypeInfo::Ptr getType();
 
   inline ISmaccStateMachine * getStateMachine();

@@ -1,0 +1,255 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='led_array'>
+    <link name='led_array_base'>
+      <pose>0 0 0 0 0 0</pose>
+    </link>
+
+
+    <model name='light_model_green'>
+      <!-- <static>1</static> -->
+      <pose>-0.07 0 0 0 -0 0</pose>
+      <link name='head'>
+        <pose>0 0 0.175 0 -0 0</pose>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.05</size>
+            </box>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name='light_source'>
+        <pose>0 0 0.2 0 -0 0</pose>
+        <light name='lamp' type='spot'>
+          <pose>0 0 0 3.14159 3e-06 3.14159</pose>
+          <attenuation>
+            <range>30</range>
+            <linear>0.05</linear>
+          </attenuation>
+          <diffuse>0 1 0 1</diffuse>
+          <specular>1 1 1 1</specular>
+          <spot>
+            <inner_angle>0.3</inner_angle>
+            <outer_angle>0.35</outer_angle>
+            <falloff>1</falloff>
+          </spot>
+          <direction>0 0 -1</direction>
+        </light>
+        <visual name='lamp'>
+          <geometry>
+            <sphere>
+              <radius>0.025</radius>
+            </sphere>
+          </geometry>
+          <transparency>0.4</transparency>
+          <material>
+            <ambient>0 1 0 1</ambient>
+            <diffuse>0 1 0 1</diffuse>
+            <specular>0 1 0 1</specular>
+            <emissive>0 1 0 1</emissive>
+          </material>
+        </visual>
+        <!-- <collision name='lamp_collision'>
+          <geometry>
+            <sphere>
+              <radius>0.025</radius>
+            </sphere>
+          </geometry>
+        </collision> -->
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint2' type='fixed'>
+        <parent>head</parent>
+        <child>light_source</child>
+      </joint>
+
+      <joint name="green_joint" type="fixed">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>led_array_base</parent>
+        <child>head</child>
+      </joint>
+      <plugin name='light_control_green' filename='libcontrollable_led_plugin.so'>
+        <enable>1</enable>
+        <light>
+          <id>light_source/lamp</id>
+          <enable>1</enable>
+        </light>
+      </plugin>
+    </model>
+    <model name='light_model_red'>
+      <!-- <static>1</static> -->
+      <pose>0 0 0 0 -0 0</pose>
+      <link name='head'>
+        <pose>0 0 0.175 0 -0 0</pose>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.05</size>
+            </box>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name='light_source'>
+        <pose>0 0 0.2 0 -0 0</pose>
+        <light name='lamp' type='spot'>
+          <pose>0 0 0 3.14159 3e-06 3.14159</pose>
+          <attenuation>
+            <range>30</range>
+            <linear>0.05</linear>
+          </attenuation>
+          <diffuse>1 0 0 1</diffuse>
+          <specular>1 1 1 1</specular>
+          <spot>
+            <inner_angle>0.3</inner_angle>
+            <outer_angle>0.35</outer_angle>
+            <falloff>1</falloff>
+          </spot>
+          <direction>0 0 -1</direction>
+        </light>
+        <visual name='lamp'>
+          <geometry>
+            <sphere>
+              <radius>0.025</radius>
+            </sphere>
+          </geometry>
+          <transparency>0.4</transparency>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+            <specular>1 0 0 1</specular>
+            <emissive>1 0 0 1</emissive>
+          </material>
+        </visual>
+        <!-- <collision name='lamp_collision'>
+          <geometry>
+            <sphere>
+              <radius>0.025</radius>
+            </sphere>
+          </geometry>
+        </collision> -->
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint2' type='fixed'>
+        <parent>head</parent>
+        <child>light_source</child>
+      </joint>
+
+      <joint name="red_joint" type="fixed">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>led_array_base</parent>
+        <child>head</child>
+      </joint>
+
+      <plugin name='light_control_red' filename='libcontrollable_led_plugin.so'>
+        <enable>1</enable>
+        <light>
+          <id>light_source/lamp</id>
+          <enable>1</enable>
+        </light>
+      </plugin>
+    </model>
+    <model name='light_model_yellow'>
+      <!-- <static>1</static> -->
+      <pose>0.07 0 0 0 -0 0</pose>
+      <link name='head'>
+        <pose>0 0 0.175 0 -0 0</pose>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.05</size>
+            </box>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name='light_source'>
+        <pose>0 0 0.2 0 -0 0</pose>
+        <light name='lamp' type='spot'>
+          <pose>0 0 0 3.14159 3e-06 3.14159</pose>
+          <attenuation>
+            <range>30</range>
+            <linear>0.05</linear>
+          </attenuation>
+          <diffuse>1 1 0 1</diffuse>
+          <specular>1 1 1 1</specular>
+          <spot>
+            <inner_angle>0.3</inner_angle>
+            <outer_angle>0.35</outer_angle>
+            <falloff>1</falloff>
+          </spot>
+          <direction>0 0 -1</direction>
+        </light>
+        <visual name='lamp'>
+          <geometry>
+            <sphere>
+              <radius>0.025</radius>
+            </sphere>
+          </geometry>
+          <transparency>0.4</transparency>
+          <material>
+            <ambient>1 1 0 1</ambient>
+            <diffuse>1 1 0 1</diffuse>
+            <specular>1 1 0 1</specular>
+            <emissive>1 1 0 1</emissive>
+          </material>
+        </visual>
+        <!-- <collision name='lamp_collision'>
+          <geometry>
+            <sphere>
+              <radius>0.025</radius>
+            </sphere>
+          </geometry>
+        </collision> -->
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint2' type='fixed'>
+        <parent>head</parent>
+        <child>light_source</child>
+      </joint>
+      <joint name="yellow_joint" type="fixed">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>led_array_base</parent>
+        <child>head</child>
+      </joint>
+      <plugin name='light_control_yellow' filename='libcontrollable_led_plugin.so'>
+        <enable>1</enable>
+        <light>
+          <id>light_source/lamp</id>
+          <enable>1</enable>
+        </light>
+      </plugin>
+    </model>
+    <!-- <static>1</static> -->
+    <allow_auto_disable>1</allow_auto_disable>
+
+
+
+      <!--
+    <joint name="yellow_joint" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>light_model_yellow::head</child>
+      <parent>led_array::led_array_base</parent>
+    </joint>
+
+    <joint name="red_joint" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>light_model_red::head</child>
+      <parent>led_array::led_array_base</parent>
+    </joint> -->
+  </model>
+</sdf>

@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot
 {
 namespace s_pattern_states
@@ -37,6 +43,7 @@ struct StiSPatternForward4 : public smacc2::SmaccState<StiSPatternForward4, SS>
     //auto &superstate = this->context<SS>();
 
     this->configure<OrNavigation, CbNavigateForward>(SS::pitch2_lenght_meters());
+    this->configure<OrNavigation, CbPauseSlam>();
     this->configure<OrLED, CbLEDOn>();
   }
 };

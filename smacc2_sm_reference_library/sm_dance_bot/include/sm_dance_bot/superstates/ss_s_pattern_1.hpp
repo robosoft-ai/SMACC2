@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot
@@ -52,7 +58,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiSPatternLoopStart>, StRotateDegrees6, ENDLOOP>
+    Transition<EvLoopEnd<StiSPatternLoopStart>, StNavigateReverse3, ENDLOOP>
 
     >reactions;
 

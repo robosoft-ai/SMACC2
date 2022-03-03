@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot_strikes_back
 {
 namespace s_pattern_states
@@ -25,39 +31,30 @@ struct StiSPatternRotate4 : smacc2::SmaccState<StiSPatternRotate4, SS>
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward4>,
-    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternForward3>
+    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternRotate4>
 
     >reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure()
-  {
-    configure_orthogonal<OrNavigation, CbAbsoluteRotate>();
-    configure_orthogonal<OrLED, CbLEDOff>();
-  }
+  static void staticConfigure() {}
 
   void runtimeConfigure()
   {
     auto & superstate = this->context<SS>();
     RCLCPP_INFO(
-      getLogger(), "[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
+      getLogger(), "[SsrSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
       superstate.iteration_count, SS::total_iterations());
 
     float offset = 0;
-
-    auto absoluteRotateBehavior =
-      this->getOrthogonal<OrNavigation>()->template getClientBehavior<CbAbsoluteRotate>();
-
-    if (superstate.direction() == TDirection::RIGHT)
-    {
-      // - offset because we are looking to the south and we have to turn counter-clockwise
-      absoluteRotateBehavior->absoluteGoalAngleDegree = superstate.initialStateAngle + 90 + offset;
-    }
+    float angle = 0;
+    if (superstate.direction() == TDirection::LEFT)
+      angle = -90 - offset;
     else
-    {
-      // - offset because we are looking to the north and we have to turn clockwise
-      absoluteRotateBehavior->absoluteGoalAngleDegree = superstate.initialStateAngle - 90 - offset;
-    }
+      angle = 90 + offset;
+
+    this->configure<OrNavigation, CbAbsoluteRotate>(angle);
+    this->configure<OrNavigation, CbResumeSlam>();
+    this->configure<OrLED, CbLEDOff>();
   }
 };
 }  // namespace s_pattern_states

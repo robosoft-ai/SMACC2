@@ -1,0 +1,2 @@
+prepend-non-duplicate;GAZEBO_MODEL_PATH;share/sm_dance_bot_warehouse/models
+prepend-non-duplicate;GAZEBO_MODEL_PATH;share/sm_dance_bot_warehouse/worlds

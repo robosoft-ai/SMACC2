@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot
 {
 namespace radial_motion_states
@@ -25,7 +31,7 @@ struct StiRadialRotate : smacc2::SmaccState<StiRadialRotate, SS>
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiRadialEndPoint, SUCCESS>,
-    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiRadialLoopStart, ABORT>
+    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiRadialRotate, ABORT>
 
     >reactions;
 
@@ -33,6 +39,7 @@ struct StiRadialRotate : smacc2::SmaccState<StiRadialRotate, SS>
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbAbsoluteRotate>();
+    configure_orthogonal<OrNavigation, CbResumeSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
   }
 
@@ -40,7 +47,7 @@ struct StiRadialRotate : smacc2::SmaccState<StiRadialRotate, SS>
   {
     auto cbAbsRotate = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbAbsoluteRotate>();
 
-    cbAbsRotate->spinningPlanner = SpiningPlanner::PureSpinning;
+    cbAbsRotate->spinningPlanner = SpinningPlanner::PureSpinning;
 
     auto & superstate = this->context<SS>();
     cbAbsRotate->absoluteGoalAngleDegree =

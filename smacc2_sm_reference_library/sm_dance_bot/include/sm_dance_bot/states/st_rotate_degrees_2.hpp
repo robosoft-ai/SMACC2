@@ -12,6 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
+#pragma once
+
 #include <smacc2/smacc.hpp>
 namespace sm_dance_bot
 {
@@ -32,6 +40,7 @@ struct StRotateDegrees2 : smacc2::SmaccState<StRotateDegrees2, MsDanceBotRunMode
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbRotate>(/*30*/ -90);
+    configure_orthogonal<OrNavigation, CbResumeSlam>();
     configure_orthogonal<OrLED, CbLEDOff>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }

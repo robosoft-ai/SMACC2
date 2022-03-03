@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ! New Image required
+ ![sm_dance_bot](docs/SmDanceBot_2021-10-18_94410.svg)
 
  <h2>Description</h2> A full-featured state machine example, that highlights the capabilities of SMACC2 & the ROS2 Navigation Stack via the MoveBaseZ Client.
 .<br></br>
@@ -36,10 +36,8 @@ source ~/colcon_ws/install/setup.bash
 
 And then run the launch file...
 
-! .launch vs .launch.py
-
 ```
-ros2 launch sm_dance_bot sm_dance_bot.launch
+ros2 launch sm_dance_bot sm_dance_bot_launch.py
 ```
 
  <h2>Viewer Instructions</h2>

@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <angles/angles.h>
 namespace sm_dance_bot_strikes_back
 {
@@ -22,50 +28,37 @@ template <typename SS>
 struct StiFPatternRotate2 : smacc2::SmaccState<StiFPatternRotate2<SS>, SS>
 {
   typedef SmaccState<StiFPatternRotate2<SS>, SS> TSti;
-  using TSti::context;
-  using TSti::getOrthogonal;
-
   using TSti::context_type;
   using TSti::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiFPatternForward1<SS>>
+    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiFPatternForward2<SS>>,
+    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiFPatternRotate2<SS>, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
+    double offset = 1.5;  // for a better behaving
+    // float angle = 0;
+
+    // if (SS::direction() == TDirection::LEFT)
+    //   angle = -90 - offset;
+    // else
+    //   angle = 90 + offset;
+
     //TSti::template configure_orthogonal<OrNavigation, CbRotate>(angle);
-    TSti::template configure_orthogonal<OrNavigation, CbAbsoluteRotate>();  // absolute horizontal
+    TSti::template configure_orthogonal<OrNavigation, CbAbsoluteRotate>(
+      0 + offset);  // absolute horizontal
     TSti::template configure_orthogonal<OrLED, CbLEDOff>();
+
+    TSti::template configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 
-  void runtimeConfigure()
-  {
-    auto & superstate = TSti::template context<SS>();
-
-    auto initialStateAngle = 0;         //superstate.initialStateAngle;
-    double offset = superstate.offset;  // for a better behaving
-    float angle = 0;
-    if (SS::direction() == TDirection::LEFT)
-      angle = 90 + offset;
-    else
-      angle = -90 - offset;
-
-    auto absoluteRotateBehavior =
-      TSti::template getOrthogonal<OrNavigation>()->template getClientBehavior<CbAbsoluteRotate>();
-
-    auto targetAngle =
-      angles::to_degrees(angles::normalize_angle(angles::from_degrees(initialStateAngle + angle)));
-
-    absoluteRotateBehavior->absoluteGoalAngleDegree = targetAngle;
-    RCLCPP_INFO(
-      this->getLogger(), "Fpattern, rotate to: %lf",
-      *(absoluteRotateBehavior->absoluteGoalAngleDegree));
-  }
+  void runtimeConfigure() {}
 };
 }  // namespace f_pattern_states
 }  // namespace sm_dance_bot_strikes_back

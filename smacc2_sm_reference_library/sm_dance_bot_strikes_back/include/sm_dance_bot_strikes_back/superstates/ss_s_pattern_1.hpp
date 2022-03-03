@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <smacc2/smacc.hpp>
 
 namespace sm_dance_bot_strikes_back
@@ -53,7 +59,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiSPatternLoopStart>, StNavigateToWaypointsX, ENDLOOP>
+    Transition<EvLoopEnd<StiSPatternLoopStart>, StNavigateReverse3, ENDLOOP>
 
     >reactions;
 
@@ -63,33 +69,14 @@ public:
     //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
-  static constexpr float pitch1_lenght_meters() { return 0.6; }
-  static constexpr float pitch2_lenght_meters() { return 1.75; }
-  static constexpr int total_iterations() { return 12; }
+  static constexpr float pitch1_lenght_meters() { return 0.75; }
+  static constexpr float pitch2_lenght_meters() { return 1.45; }
+  static constexpr int total_iterations() { return 9; }
   static constexpr TDirection direction() { return TDirection::RIGHT; }
-  double initialStateAngle;
 
   int iteration_count;
 
-  void runtimeConfigure()
-  {
-    this->iteration_count = 0;
-
-    cl_move_base_z::ClMoveBaseZ * robot;
-    this->requiresClient(robot);
-
-    if (robot != nullptr)
-    {
-      auto pose = robot->getComponent<cl_move_base_z::Pose>()->toPoseMsg();
-      this->initialStateAngle =
-        angles::to_degrees(angles::normalize_angle(tf2::getYaw(pose.orientation)));
-      RCLCPP_INFO(getLogger(), "Initial angle for F pattern: %lf", initialStateAngle);
-    }
-    else
-    {
-      RCLCPP_ERROR(getLogger(), "robot pose not found to plan the FPattern motion");
-    }
-  }
+  void runtimeConfigure() { this->iteration_count = 0; }
 };
 
 // FORWARD DECLARATION FOR THE SUPERSTATE

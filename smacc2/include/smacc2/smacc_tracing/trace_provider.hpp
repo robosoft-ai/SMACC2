@@ -15,6 +15,12 @@
 // the pragma once does not work here
 // #pragma once
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #undef TRACEPOINT_PROVIDER
 #define TRACEPOINT_PROVIDER ros2
 

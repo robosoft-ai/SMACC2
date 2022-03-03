@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot
 {
 namespace f_pattern_states
@@ -27,7 +33,8 @@ struct StiFPatternRotate1 : smacc2::SmaccState<StiFPatternRotate1<SS>, SS>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiFPatternForward1<SS>>
+    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiFPatternForward1<SS>>,
+    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiFPatternRotate1<SS>>
 
     >reactions;
 
@@ -35,7 +42,7 @@ struct StiFPatternRotate1 : smacc2::SmaccState<StiFPatternRotate1<SS>, SS>
   static void staticConfigure()
   {
     float angle = 0;
-    double offset = 0;  // for a better behaving
+    double offset = -1.5;  // for a better behaving
 
     if (SS::direction() == TDirection::LEFT)
       angle = 90 + offset;

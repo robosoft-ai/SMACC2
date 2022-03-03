@@ -17,6 +17,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+
 #pragma once
 
 #include <smacc2/smacc_client_behavior.hpp>

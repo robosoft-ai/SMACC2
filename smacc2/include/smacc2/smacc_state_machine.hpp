@@ -87,9 +87,11 @@ public:
   template <typename EventType>
   void postEvent(EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
 
+  // gets data from the state machine blackboard
   template <typename T>
   bool getGlobalSMData(std::string name, T & ret);
 
+  // sets data in the state machine blackboard
   template <typename T>
   void setGlobalSMData(std::string name, T value);
 
@@ -134,6 +136,8 @@ public:
   template <typename StateType>
   void notifyOnStateExited(StateType * state);
 
+  void disposeStateAndDisconnectSignals();
+
   template <typename StateType>
   void notifyOnRuntimeConfigurationFinished(StateType * state);
 
@@ -150,6 +154,8 @@ public:
 
   inline rclcpp::Logger getLogger() { return nh_->get_logger(); }
 
+  inline std::recursive_mutex & getMutex() { return this->m_mutex_; }
+
 protected:
   void checkStateMachineConsistence();
 
@@ -159,18 +165,6 @@ protected:
 
   template <typename TOrthogonal>
   void createOrthogonal();
-
-  // Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  bool getParam(std::string param_name, T & param_storage);
-
-  // Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  void setParam(std::string param_name, T param_val);
-
-  // Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  bool param(std::string param_name, T & param_val, const T & default_val);
 
   // The node handle for this state
   rclcpp::Node::SharedPtr nh_;
@@ -192,6 +186,9 @@ protected:
   // orthogonals
   std::map<std::string, std::shared_ptr<smacc2::ISmaccOrthogonal>> orthogonals_;
 
+protected:
+  std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo_;
+
 private:
   std::recursive_mutex m_mutex_;
   std::recursive_mutex eventQueueMutex_;
@@ -203,6 +200,7 @@ private:
   // shared variables
   std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;
 
+  // contains the whole history of transitions of the state machine
   std::vector<smacc2_msgs::msg::SmaccTransitionLogEntry> transitionLogHistory_;
 
   smacc2::SMRunMode runMode_;
@@ -212,14 +210,12 @@ private:
 
   unsigned long stateSeqCounter_;
 
-  void lockStateMachine(std::string msg);
+  // void lockStateMachine(std::string msg);
 
-  void unlockStateMachine(std::string msg);
+  // void unlockStateMachine(std::string msg);
 
   template <typename EventType>
   void propagateEventToStateReactors(ISmaccState * st, EventType * ev);
-
-  std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo_;
 
   void updateStatusMessage();
 

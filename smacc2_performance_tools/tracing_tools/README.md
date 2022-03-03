@@ -35,7 +35,7 @@ In your SMACC2 workspace, install the following tracing repos.
 wget https://gitlab.com/ros-tracing/ros2_tracing/raw/master/tracing.repos
 vcs import src < tracing.repos
 ```
-Finnaly build your workspace
+Finally build your workspace
 
 ```
 colcon build

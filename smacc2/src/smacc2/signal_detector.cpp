@@ -17,6 +17,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+
 #include <limits>
 #include <memory>
 #include <thread>
@@ -214,9 +215,10 @@ void SignalDetector::pollOnce()
   //TRACEPOINT( spinOnce);
   TRACEPOINT(spinOnce);
 
+  std::lock_guard<std::recursive_mutex> lock(smaccStateMachine_->m_mutex_);
   try
   {
-    smaccStateMachine_->lockStateMachine("update behaviors");
+    //smaccStateMachine_->lockStateMachine("update behaviors");
 
     long currentStateIndex = smaccStateMachine_->getCurrentStateCounter();
     auto currentState = smaccStateMachine_->getCurrentState();
@@ -245,7 +247,7 @@ void SignalDetector::pollOnce()
             "[PollOnce] update client call:  " << demangleType(typeid(*updatableClient)));
 
           TRACEPOINT(smacc2_state_update_start, updatableElementName);
-          updatableClient->executeUpdate(node);
+          updatableClient->executeUpdate(smaccStateMachine_->getNode());
           TRACEPOINT(smacc2_state_update_start, updatableElementName);
         }
         catch (const std::exception & e)
@@ -272,18 +274,19 @@ void SignalDetector::pollOnce()
       if (currentState != nullptr)
       {
         RCLCPP_DEBUG_STREAM(getLogger(), "[SignalDetector] current state: " << currentStateIndex);
-        RCLCPP_DEBUG_STREAM(getLogger(), "[SignalDetector] last state: " << this->lastState_);
+        RCLCPP_DEBUG_STREAM(
+          getLogger(), "[SignalDetector] last state: " << this->lastState_.load());
 
         if (currentStateIndex != 0)
         {
-          if (currentStateIndex != (long)this->lastState_)
+          if (currentStateIndex != (long)this->lastState_.load())
           {
             RCLCPP_DEBUG_STREAM(
               getLogger(),
               "[PollOnce] detected new state, refreshing updatable client "
               "behavior table");
             // we are in a new state, refresh the updatable client behaviors table
-            this->lastState_ = currentStateIndex;
+            this->lastState_.store(currentStateIndex);
             this->findUpdatableStateElements(currentState);
           }
 
@@ -301,7 +304,7 @@ void SignalDetector::pollOnce()
                 "[SignalDetector] update client behavior call: " << updatableElementName);
 
               TRACEPOINT(smacc2_state_update_start, updatableElementName);
-              udpatableStateElement->executeUpdate(node);
+              udpatableStateElement->executeUpdate(smaccStateMachine_->getNode());
               TRACEPOINT(smacc2_state_update_start, updatableElementName);
             }
             catch (const std::exception & e)
@@ -322,7 +325,7 @@ void SignalDetector::pollOnce()
 
   auto nh = this->getNode();
   rclcpp::spin_some(nh);
-  smaccStateMachine_->unlockStateMachine("update behaviors");
+  //smaccStateMachine_->unlockStateMachine("update behaviors");
 }
 
 /**
@@ -341,7 +344,9 @@ void SignalDetector::pollingLoop()
     r0.sleep();
   }
 
-  if (!getNode()->get_parameter("signal_detector_loop_freq", this->loop_rate_hz))
+  auto nh = getNode();
+
+  if (!nh->get_parameter("signal_detector_loop_freq", this->loop_rate_hz))
   {
     RCLCPP_WARN(
       getLogger(),
@@ -357,15 +362,16 @@ void SignalDetector::pollingLoop()
       this->loop_rate_hz);
   }
 
-  getNode()->set_parameter(rclcpp::Parameter("signal_detector_loop_freq", this->loop_rate_hz));
+  nh->set_parameter(rclcpp::Parameter("signal_detector_loop_freq", this->loop_rate_hz));
 
   RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] loop rate hz:" << loop_rate_hz);
 
   rclcpp::Rate r(loop_rate_hz);
+
   while (rclcpp::ok() && !end_)
   {
     pollOnce();
-    rclcpp::spin_some(getNode());
+    rclcpp::spin_some(nh);
     r.sleep();
   }
 }

@@ -40,6 +40,7 @@ def generate_launch_description():
     params_file = LaunchConfiguration("params_file")
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
     autostart = LaunchConfiguration("autostart")
+    show_gz_lidar = LaunchConfiguration("show_gz_lidar")
 
     # Launch configuration variables specific to simulation
     rviz_config_file = LaunchConfiguration("rviz_config_file")
@@ -68,6 +69,12 @@ def generate_launch_description():
         description="Whether to apply a namespace to the navigation stack",
     )
 
+    declare_show_gz_lidar = DeclareLaunchArgument(
+        "show_gz_lidar",
+        default_value="true",
+        description="Whether to apply a namespace to the navigation stack",
+    )
+
     declare_slam_cmd = DeclareLaunchArgument(
         "slam", default_value="True", description="Whether run a SLAM"
     )
@@ -78,16 +85,14 @@ def generate_launch_description():
 
     declare_params_file_cmd = DeclareLaunchArgument(
         "params_file",
-        default_value=os.path.join(
-            sm_dance_bot_dir, "params", "move_base_client", "nav2_params.yaml"
-        ),
+        default_value=os.path.join(sm_dance_bot_dir, "params", "nav2z_client", "nav2_params.yaml"),
         description="Full path to the ROS2 parameters file to use for all launched nodes",
     )
 
     declare_bt_xml_cmd = DeclareLaunchArgument(
         "default_nav_to_pose_bt_xml",
         default_value=os.path.join(
-            sm_dance_bot_dir, "params", "move_base_client", "navigation_tree.xml"
+            sm_dance_bot_dir, "params", "nav2z_client", "navigation_tree.xml"
         ),
         description="Full path to the behavior tree xml file to use",
     )
@@ -155,24 +160,11 @@ def generate_launch_description():
     )
 
     gazebo_simulator = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, "gazebo_launch.py"))
+        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, "gazebo_launch.py")),
+        launch_arguments={"show_gz_lidar": show_gz_lidar}.items(),
     )
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
-
-    # <group ns="sm_dance_bot_2">
-    #     <!-- set run mode -->
-    #     <param name="run_mode" value="debug" />
-    #     <!-- load flight plan -->
-    #     <param name="waypoints_plan" value="$(find sm_dance_bot_2)/config/move_base_client/waypoints_plan.yaml" />
-    # </group>
-
-    # <!-- state machine node -->
-    # <node pkg="sm_dance_bot_2" type="sm_dance_bot_2" name="sm_dance_bot_2" launch-prefix="$(arg sm_xterm)" unless="$(arg debug)">
-    #     <remap from="/odom" to="/odometry/filtered" />
-    #     <remap from="/sm_dance_bot_2/odom_tracker/odom_tracker_path" to="/odom_tracker_path"/>
-    #     <remap from="/sm_dance_bot_2/odom_tracker/odom_tracker_stacked_path" to="/odom_tracker_path_stacked"/>
-    # </node>
 
     sm_dance_bot_node = Node(
         package="sm_dance_bot",
@@ -183,7 +175,7 @@ def generate_launch_description():
         parameters=[
             os.path.join(
                 get_package_share_directory("sm_dance_bot"),
-                "params/move_base_client/waypoints_plan.yaml",
+                "params/sm_dance_bot_config.yaml",
             )
         ],
         remappings=[
@@ -231,6 +223,7 @@ def generate_launch_description():
     ld.add_action(declare_bt_xml_cmd)
     ld.add_action(declare_autostart_cmd)
     ld.add_action(declare_map_yaml_cmd)
+    ld.add_action(declare_show_gz_lidar)
 
     ld.add_action(declare_rviz_config_file_cmd)
     ld.add_action(declare_use_robot_state_pub_cmd)

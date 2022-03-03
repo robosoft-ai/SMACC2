@@ -41,14 +41,13 @@ public:
     {
       if (!serviceName_)
       {
-        RCLCPP_ERROR(getNode()->get_logger(), "service client with no service name set. Skipping.");
+        RCLCPP_ERROR(getLogger(), "service client with no service name set. Skipping.");
       }
       else
       {
         RCLCPP_INFO_STREAM(
-          getNode()->get_logger(), "[" << this->getName() << "] Client Service: " << *serviceName_);
+          getLogger(), "[" << this->getName() << "] Client Service: " << *serviceName_);
         this->initialized_ = true;
-
         client_ = getNode()->create_client<ServiceType>(*serviceName_);
       }
     }

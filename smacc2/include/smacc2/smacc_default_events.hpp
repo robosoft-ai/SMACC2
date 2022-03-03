@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 
 #include <smacc2/smacc_types.hpp>
@@ -21,6 +27,9 @@
 
 namespace smacc2
 {
+// template <typename T>
+// using  event=sc::event<T>;
+
 namespace default_events
 {
 using namespace smacc2::introspection;
@@ -124,33 +133,35 @@ struct EvLoopEnd : sc::event<EvLoopEnd<TSource>>
 };
 
 //---------- CONTROL FLOW EVENTS ----------------------------------------------------------
-template <typename TSource, typename TOrthogonal>
-struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource, TOrthogonal>>
+template <
+  typename TSource, typename TOrthogonal, typename TMessageType = typename TSource::TMessageType>
+struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource, TOrthogonal, TMessageType>>
 {
   // typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
   static std::string getEventLabel()
   {
-    auto typeinfo = TypeInfo::getTypeInfoFromType<typename TSource::TMessageType>();
+    auto typeinfo = TypeInfo::getTypeInfoFromType<TMessageType>();
 
     std::string label = typeinfo->getNonTemplatedTypeName();
     return label;
   }
 
-  typename TSource::TMessageType msgData;
+  TMessageType msgData;
 };
 
-template <typename TSource, typename TOrthogonal>
-struct EvTopicMessage : sc::event<EvTopicMessage<TSource, TOrthogonal>>
+template <
+  typename TSource, typename TOrthogonal, typename TMessageType = typename TSource::TMessageType>
+struct EvTopicMessage : sc::event<EvTopicMessage<TSource, TOrthogonal, TMessageType>>
 {
   static std::string getEventLabel()
   {
-    auto typeinfo = TypeInfo::getTypeInfoFromType<typename TSource::TMessageType>();
+    auto typeinfo = TypeInfo::getTypeInfoFromType<TMessageType>();
 
     std::string label = typeinfo->getNonTemplatedTypeName();
     return label;
   }
 
-  typename TSource::TMessageType msgData;
+  TMessageType msgData;
 };
 }  // namespace default_events
 }  // namespace smacc2

@@ -12,35 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <smacc2/smacc_updatable.hpp>
 
 namespace smacc2
 {
-ISmaccUpdatable::ISmaccUpdatable() : lastUpdate_(0) {}
+ISmaccUpdatable::ISmaccUpdatable() {}
 
-ISmaccUpdatable::ISmaccUpdatable(rclcpp::Duration duration)
-: periodDuration_(duration), lastUpdate_(0)
-
-{
-}
+ISmaccUpdatable::ISmaccUpdatable(rclcpp::Duration duration) : periodDuration_(duration) {}
 
 void ISmaccUpdatable::setUpdatePeriod(rclcpp::Duration duration) { periodDuration_ = duration; }
 
 void ISmaccUpdatable::executeUpdate(rclcpp::Node::SharedPtr node)
 {
-  bool update = true;
+  bool triggerUpdateMethod = true;
   if (periodDuration_)
   {
-    auto now = node->now();
-    auto elapsed = now - this->lastUpdate_;
-    update = elapsed > *periodDuration_;
-    if (update)
+    auto now = node->get_clock()->now();
+
+    if (!lastUpdate_)
+    {
+      lastUpdate_ = now;
+    }
+
+    auto elapsed = now - *lastUpdate_;
+    triggerUpdateMethod = elapsed > *periodDuration_;
+    if (triggerUpdateMethod)
     {
       this->lastUpdate_ = now;
     }
   }
 
-  if (update)
+  if (triggerUpdateMethod)
   {
     this->update();
   }

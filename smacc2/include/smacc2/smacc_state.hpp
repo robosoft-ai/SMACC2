@@ -27,11 +27,13 @@ class ISmaccState
 public:
   virtual ISmaccStateMachine & getStateMachine() = 0;
 
+  virtual std::string getName() = 0;
+
   inline ISmaccState * getParentState() { return parentState_; }
 
-  inline rclcpp::Node::SharedPtr & getNode() { return stateNode_; }
+  inline rclcpp::Node::SharedPtr & getNode() { return node_; }
 
-  inline rclcpp::Logger getLogger() { return stateNode_->get_logger(); }
+  inline rclcpp::Logger getLogger() { return *logger_; }
 
   virtual std::string getClassName();
 
@@ -82,21 +84,6 @@ public:
     return eventGenerators_;
   }
 
-  // Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  bool getParam(std::string param_name, T & param_storage);
-
-  // Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  void setParam(std::string param_name, T param_val);
-
-  //Delegates to ROS param access with the current NodeHandle
-  void param(std::string param_name);
-
-  //Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  void param(std::string param_name, T default_value);
-
   template <typename TOrthogonal>
   TOrthogonal * getOrthogonal();
 
@@ -106,13 +93,11 @@ public:
   template <typename TStateReactor>
   TStateReactor * getStateReactor();
 
-  rclcpp::Node::SharedPtr stateNode_;
-
 protected:
+  rclcpp::Node::SharedPtr node_;
+  std::shared_ptr<rclcpp::Logger> logger_;
   std::vector<std::shared_ptr<StateReactor>> stateReactors_;
   std::vector<std::shared_ptr<smacc2::SmaccEventGenerator>> eventGenerators_;
-
-  rclcpp::Node::SharedPtr contextNh;
 
   ISmaccState * parentState_;
 

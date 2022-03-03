@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>sm_dance_bot_strikes_back</name>
   <version>0.0.0</version>
@@ -10,20 +11,27 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>move_base_z_client_plugin</depend>
+  <depend>nav2z_client</depend>
   <depend>multirole_sensor_client</depend>
   <depend>navigation2</depend>
+   <depend>nav2_bringup</depend>
+
+  <depend>robot_state_publisher</depend>
   <depend>ros_publisher_client</depend>
   <depend>ros_timer_client</depend>
   <depend>slam_toolbox</depend>
   <depend>smacc2</depend>
-  <depend>sm_dance_bot_msgs</depend>
   <depend>std_msgs</depend>
   <depend>sr_all_events_go</depend>
   <depend>sr_event_countdown</depend>
   <depend>sr_conditional</depend>
   <depend>visualization_msgs</depend>
   <depend>tf2</depend>
+
+
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>gazebo</exec_depend>
+  <exec_depend>gazebo_plugins</exec_depend>
 
   <buildtool_depend>rosidl_default_generators</buildtool_depend>
   <depend>action_msgs</depend>
@@ -32,5 +40,6 @@
 
   <export>
     <build_type>ament_cmake</build_type>
+    <gazebo_ros gazebo_media_path="${prefix}/models" gazebo_model_path="${prefix}/models"/>
   </export>
 </package>

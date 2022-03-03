@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 namespace sm_dance_bot_strikes_back
 {
 namespace radial_motion_states
@@ -25,14 +31,16 @@ struct StiRadialEndPoint : smacc2::SmaccState<StiRadialEndPoint, SS>
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiRadialReturn, SUCCESS>,
-    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiRadialLoopStart, ABORT>
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiRadialReturn, ABORT>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateForward>();
+    //RCLCPP_INFO(getLogger(),"ssr radial end point, distance in meters: %lf", SS::ray_length_meters());
+    configure_orthogonal<OrNavigation, CbNavigateForward>(SS::ray_length_meters());
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
     configure_orthogonal<OrLED, CbLEDOn>();
   }
 
@@ -46,7 +54,7 @@ struct StiRadialEndPoint : smacc2::SmaccState<StiRadialEndPoint, SS>
     auto forwardBehavior =
       this->getOrthogonal<OrNavigation>()->getClientBehavior<CbNavigateForward>();
 
-    forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
+    forwardBehavior->setForwardDistance(std::min(lidarData->forwardObstacleDistance, 6.0f)); // at most 15 meters
   }
 };
 }  // namespace radial_motion_states

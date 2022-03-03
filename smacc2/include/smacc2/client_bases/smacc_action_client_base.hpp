@@ -60,12 +60,13 @@ public:
   using CancelResponse = typename ActionType::Impl::CancelGoalService::Response;
   using CancelCallback = std::function<void(typename CancelResponse::SharedPtr)>;
 
-  SmaccActionClientBase(std::string actionServerName)
-  : ISmaccActionClient(), name_(actionServerName)
+  std::string action_endpoint_;
+  SmaccActionClientBase(std::string actionServerName) : ISmaccActionClient()
   {
+    action_endpoint_ = actionServerName;
   }
 
-  SmaccActionClientBase() : ISmaccActionClient(), name_("") {}
+  SmaccActionClientBase() : ISmaccActionClient() { name_ = ""; }
 
   virtual ~SmaccActionClientBase() {}
 
@@ -73,11 +74,12 @@ public:
 
   void onInitialize() override
   {
-    this->client_ = rclcpp_action::create_client<ActionType>(getNode(), name_);
-    RCLCPP_INFO_STREAM(
-      this->getNode()->get_logger(),
-      "Waiting for action server '" << name_ << "' of type: " << demangledTypeName<ActionType>());
-    client_->wait_for_action_server();
+    if (name_ == "") name_ = smacc2::demangleSymbol(typeid(*this).name());
+    this->client_ = rclcpp_action::create_client<ActionType>(getNode(), action_endpoint_);
+    // RCLCPP_INFO_STREAM(
+    //   this->getLogger(),
+    //   "Waiting for action server '" << name_ << "' of type: " << demangledTypeName<ActionType>());
+    //client_->wait_for_action_server();
   }
 
   static std::string getEventLabel()
@@ -85,9 +87,6 @@ public:
     auto type = TypeInfo::getTypeInfoFromType<ActionType>();
     return type->getNonTemplatedTypeName();
   }
-
-  /// rosnamespace path
-  std::string name_;
 
   std::optional<std::shared_future<typename GoalHandle::SharedPtr>> lastRequest_;
   typename GoalHandle::SharedPtr goalHandle_;
@@ -118,7 +117,7 @@ public:
     // ev->client = this;
     // ev->resultMessage = *result;
     RCLCPP_INFO(
-      getNode()->get_logger(), "Posting EVENT %s", demangleSymbol(typeid(ev).name()).c_str());
+      getLogger(), "Action client Posting EVENT %s", demangleSymbol(typeid(ev).name()).c_str());
     this->postEvent(ev);
   }
 
@@ -126,31 +125,28 @@ public:
   void onOrthogonalAllocation()
   {
     // we create here all the event factory functions capturing the TOrthogonal
-    postSuccessEvent = [=](auto msg) {
+    postSuccessEvent = [this](auto msg) {
       this->postResultEvent<EvActionSucceeded<TSourceObject, TOrthogonal>>(msg);
     };
-    postAbortedEvent = [=](auto msg) {
+    postAbortedEvent = [this](auto msg) {
       this->postResultEvent<EvActionAborted<TSourceObject, TOrthogonal>>(msg);
     };
-    // postPreemptedEvent = [=](auto msg) { this->postResultEvent<EvActionPreempted<TSourceObject, TOrthogonal>>(msg);
-    // }; postRejectedEvent = [=](auto msg) { this->postResultEvent<EvActionRejected<TSourceObject, TOrthogonal>>(msg);
-    // };
-    postCancelledEvent = [=](auto msg) {
+
+    postCancelledEvent = [this](auto msg) {
       this->postResultEvent<EvActionCancelled<TSourceObject, TOrthogonal>>(msg);
     };
-    postFeedbackEvent = [=](auto msg) {
+    postFeedbackEvent = [this](auto msg) {
       auto actionFeedbackEvent = new EvActionFeedback<Feedback, TOrthogonal>();
       actionFeedbackEvent->client = this;
       actionFeedbackEvent->feedbackMessage = msg;
       this->postEvent(actionFeedbackEvent);
-      RCLCPP_DEBUG(
-        getNode()->get_logger(), "[%s] FEEDBACK EVENT", demangleType(typeid(*this)).c_str());
+      RCLCPP_DEBUG(getLogger(), "[%s] FEEDBACK EVENT", demangleType(typeid(*this)).c_str());
     };
 
-    done_cb = [=](auto r) { this->onResult(r); };
+    done_cb = [this](auto r) { this->onResult(r); };
     // done_cb = boost::bind(&SmaccActionClientBase<ActionType>::onResult, this, _1, _2);
     // active_cb;
-    feedback_cb = [=](auto client, auto feedback) { this->onFeedback(client, feedback); };
+    feedback_cb = [this](auto client, auto feedback) { this->onFeedback(client, feedback); };
   }
 
   template <typename T>
@@ -215,42 +211,33 @@ public:
   }
   */
 
-  virtual void cancelGoal() override
+  virtual bool cancelGoal() override
   {
     if (lastRequest_ && lastRequest_->valid())
     {
-      RCLCPP_INFO(getNode()->get_logger(), "Cancelling goal of %s", this->getName().c_str());
-      std::shared_future<typename CancelResponse::SharedPtr> cancelresult =
-        client_->async_cancel_goal(lastRequest_->get());
+      rclcpp::spin_until_future_complete(getNode(), *lastRequest_);
+      auto req = lastRequest_->get();
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << getName() << "] Cancelling goal. req id: "
+                         << rclcpp_action::to_string(req->get_goal_id()));
+      auto cancelresult = client_->async_cancel_goal(req);
 
       // wait actively
-      cancelresult.get();
-      lastRequest_.reset();
+      rclcpp::spin_until_future_complete(getNode(), cancelresult);
+      //lastRequest_.reset();
+      return true;
     }
     else
     {
       RCLCPP_ERROR(
-        getNode()->get_logger(),
-        "%s [at %s]: not connected with actionserver, skipping cancel goal ...", getName().c_str(),
-        getNamespace().c_str());
+        getLogger(), "%s [at %s]: not connected with actionserver, skipping cancel goal ...",
+        getName().c_str(), getNamespace().c_str());
+      return false;
     }
   }
 
-  /*
-      virtual SimpleClientGoalState getState() override
-      {
-          return client_->getState();
-      }*/
-
-  void sendGoal(Goal & goal)
+  std::shared_future<typename GoalHandle::SharedPtr> sendGoal(Goal & goal)
   {
-    RCLCPP_INFO_STREAM(
-      getNode()->get_logger(),
-      "Sending goal with guid to actionserver located in " << this->name_ << "\"");
-
-    // if (client_->isServerConnected())
-    // {
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": Goal sent.");
     // client_->sendGoal(goal, done_cb, active_cb, feedback_cb);
     // std::shared_future<typename GoalHandle::SharedPtr>
 
@@ -272,48 +259,61 @@ public:
         // TODO(#1652): a work around until rcl_action interface is updated
         // if goal ids are not matched, the older goal call this callback so ignore the result
         // if matched, it must be processed (including aborted)
-        RCLCPP_INFO_STREAM(
-          getNode()->get_logger(), getName() << ": Result callback, getting shared future");
+        RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result callback, getting shared future");
         goalHandle_ = lastRequest_->get();
-        RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": Result CB Check goal id");
+        RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result CB Check goal id");
         if (this->goalHandle_->get_goal_id() == result.goal_id)
         {
           // goal_result_available_ = true;
           // result_ = result;
-          RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": Result CB Goal id matches");
+          RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result CB Goal id matches");
           done_cb(result);
         }
         else
         {
-          RCLCPP_INFO_STREAM(
-            getNode()->get_logger(), getName() << ": Result CB Goal id DOES NOT match");
+          RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result CB Goal id DOES NOT match");
         }
       };
 
     // if (lastRequest_ && lastRequest_->valid())
     // {
-    //   RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": checking previous request is really finished.");
+    //   RCLCPP_INFO_STREAM(getLogger(), getName() << ": checking previous request is really finished.");
     //   auto res = this->lastRequest_->get();
-    //   RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": okay");
+    //   RCLCPP_INFO_STREAM(getLogger(), getName() << ": okay");
     // }
     // else
     // {
-    //   RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": no previous request.");
+    //   RCLCPP_INFO_STREAM(getLogger(), getName() << ": no previous request.");
     // }
 
-    RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": async send goal.");
+    RCLCPP_INFO_STREAM(getLogger(), getName() << ": async send goal.");
     this->lastRequest_ = this->client_->async_send_goal(goal, options);
 
-    // RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": Goal Id: "  <<
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] Action goal sent to " << this->action_endpoint_
+                       << "\": " << std::endl
+                       << goal);
+
+    // if (client_->isServerConnected())
+    // {
+    // RCLCPP_INFO_STREAM(getLogger(), getName() << ": Goal sent:" << goal);
+
+    // RCLCPP_INFO_STREAM(getLogger(), getName() << ": Goal Id: "  <<
     // rclcpp_action::to_string(lastRequest_->get()->get_goal_id()));
 
     RCLCPP_INFO_STREAM(
-      getNode()->get_logger(),
-      getName() << ": client ready clients: " << this->client_->get_number_of_ready_clients());
+      getLogger(), "[" << getName() << "] client ready clients: "
+                       << this->client_->get_number_of_ready_clients());
     RCLCPP_INFO_STREAM(
-      getNode()->get_logger(), getName()
-                                 << ": Waiting it is ready? " << client_->action_server_is_ready());
-    // RCLCPP_INFO_STREAM(getNode()->get_logger(), getName() << ": spinning until completed");
+      getLogger(),
+      "[" << getName() << "] Waiting it is ready? " << client_->action_server_is_ready());
+
+    // for (auto& gh: this->goal_handles_)
+    // {
+
+    // }
+
+    // RCLCPP_INFO_STREAM(getLogger(), getName() << ": spinning until completed");
     // if (rclcpp::spin_until_future_complete(this->getNode(), lastRequest_, std::chrono::seconds(2))
     // !=rclcpp::executor::FutureReturnCode::SUCCESS)
     // {
@@ -328,10 +328,12 @@ public:
     // }
     // else
     // {
-    //     RCLCPP_ERROR(getNode()->get_logger(),"%s [at %s]: not connected with actionserver, skipping goal request
+    //     RCLCPP_ERROR(getLogger(),"%s [at %s]: not connected with actionserver, skipping goal request
     //     ...", getName().c_str(), getNamespace().c_str());
     //     //client_->waitForServer();
     // }
+
+    return *lastRequest_;
   }
 
 protected:
@@ -354,47 +356,45 @@ protected:
     const auto & resultType = result_msg.code;
 
     RCLCPP_INFO_STREAM(
-      getNode()->get_logger(), "[" << this->getName() << "] request result of request ["
-                                   << rclcpp_action::to_string(result_msg.goal_id)
-                                   << "]: " << (int)resultType);
+      getLogger(), "[" << this->getName() << "] request result of request ["
+                       << rclcpp_action::to_string(result_msg.goal_id) << "]: " << (int)resultType);
 
     if (resultType == rclcpp_action::ResultCode::SUCCEEDED)
     {
-      RCLCPP_INFO(getNode()->get_logger(), "[%s] request result: Success", this->getName().c_str());
+      RCLCPP_INFO(getLogger(), "[%s] request result: Success", this->getName().c_str());
       onSucceeded_(result_msg);
       postSuccessEvent(result_msg);
     }
     else if (resultType == rclcpp_action::ResultCode::ABORTED)
     {
-      RCLCPP_INFO(getNode()->get_logger(), "[%s] request result: Aborted", this->getName().c_str());
+      RCLCPP_INFO(getLogger(), "[%s] request result: Aborted", this->getName().c_str());
       onAborted_(result_msg);
       postAbortedEvent(result_msg);
     }
     else if (resultType == rclcpp_action::ResultCode::CANCELED)
     {
-      RCLCPP_INFO(
-        getNode()->get_logger(), "[%s] request result: Rejected", this->getName().c_str());
+      RCLCPP_INFO(getLogger(), "[%s] request result: Cancelled", this->getName().c_str());
       onCancelled_(result_msg);
       postCancelledEvent(result_msg);
     }
     /*
     else if (resultType == actionlib::SimpleClientGoalState::REJECTED)
     {
-        RCLCPP_INFO(getNode()->get_logger(),"[%s] request result: Rejected", this->getName().c_str());
+        RCLCPP_INFO(getLogger(),"[%s] request result: Rejected", this->getName().c_str());
         onRejected_(result_msg);
         postRejectedEvent(result_msg);
     }
     else if (resultType == actionlib::SimpleClientGoalState::PREEMPTED)
     {
-        RCLCPP_INFO(getNode()->get_logger(),"[%s] request result: Preempted", this->getName().c_str());
+        RCLCPP_INFO(getLogger(),"[%s] request result: Preempted", this->getName().c_str());
         onPreempted_(result_msg);
         postPreemptedEvent(result_msg);
     }*/
     else
     {
       RCLCPP_INFO(
-        getNode()->get_logger(), "[%s] request result: NOT HANDLED TYPE: %d",
-        this->getName().c_str(), (int)resultType);
+        getLogger(), "[%s] request result: NOT HANDLED TYPE: %d", this->getName().c_str(),
+        (int)resultType);
     }
   }
 };

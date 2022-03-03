@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <smacc2/smacc.hpp>
 
 #include <sensor_msgs/msg/laser_scan.hpp>
@@ -21,10 +27,10 @@
 
 #include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>
 
-#include <move_base_z_client_plugin/client_behaviors.hpp>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.hpp>
+#include <nav2z_client/client_behaviors.hpp>
+#include <nav2z_client/nav2z_client.hpp>
 
-using namespace cl_move_base_z;
+using namespace cl_nav2z;
 
 #include <sm_dance_bot_strikes_back/clients/cl_led/client_behaviors/cb_led_off.hpp>
 #include <sm_dance_bot_strikes_back/clients/cl_led/client_behaviors/cb_led_on.hpp>
@@ -46,8 +52,6 @@ using namespace sm_dance_bot_strikes_back::cl_service3;
 using namespace sm_dance_bot_strikes_back::cl_string_publisher;
 using namespace sm_dance_bot_strikes_back::cl_temperature_sensor;
 using namespace sm_dance_bot_strikes_back::cl_led;
-//using namespace sm_dance_bot_strikes_back::cl_move_base_z;
-//using namespace sm_dance_bot_strikes_back::cl_updatable_publisher;
 
 //STATE REACTORS
 #include <sr_all_events_go/sr_all_events_go.hpp>
@@ -69,17 +73,30 @@ using namespace smacc2::state_reactors;
 namespace sm_dance_bot_strikes_back
 {
 //STATE FORWARD DECLARATIONS
-class StAcquireSensors;
-class StEventCountDown;
-class StNavigateToWaypointsX;
-class StFpatternPrealignment;
-class StSpatternPrealignment;
+struct StAcquireSensors;
+struct StEventCountDown;
+
+struct StNavigateForward1;
+struct StNavigateToWaypoint1;
+struct StNavigateToWaypointsX;
+
+struct StRotateDegrees1;
+struct StRotateDegrees2;
+struct StRotateDegrees3;
+struct StRotateDegrees4;
+struct StRotateDegrees5;
+struct StRotateDegrees6;
+
+struct StNavigateReverse1;
+struct StNavigateReverse2;
+struct StNavigateReverse3;
+struct StNavigateReverse4;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
 // MODE STATES FORWARD DECLARATIONS
-class MsDanceBotRunMode;
-class MsDanceBotRecoveryMode;
+struct MsDanceBotRunMode;
+struct MsDanceBotRecoveryMode;
 
 namespace SS1
 {
@@ -166,7 +183,17 @@ struct SmDanceBotStrikesBack
 //STATES
 #include <sm_dance_bot_strikes_back/states/st_acquire_sensors.hpp>
 #include <sm_dance_bot_strikes_back/states/st_event_count_down.hpp>
-#include <sm_dance_bot_strikes_back/states/st_fpattern_prealignment.hpp>
-#include <sm_dance_bot_strikes_back/states/st_spattern_prealignment.hpp>
-
 #include <sm_dance_bot_strikes_back/states/st_navigate_to_waypoints_x.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_1.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_forward_1.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_1.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_2.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_3.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_4.hpp>
+#include <sm_dance_bot_strikes_back/states/st_navigate_to_waypoint_1.hpp>
+#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_1.hpp>
+#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_2.hpp>
+#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_3.hpp>
+#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_4.hpp>
+#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_5.hpp>
+#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_6.hpp>
