@@ -186,7 +186,7 @@ public:
 
     postEventKeyPress = [=](auto unicode_keychar) {
       char character = (char)unicode_keychar.data;
-      RCLCPP_WARN(getNode()->get_logger(), "detected keyboard: %c", character);
+      RCLCPP_WARN(getLogger(), "detected keyboard: %c", character);
 
       if (character == 'a')
         this->postKeyEvent<EvKeyPressA<ClKeyboard, TOrthogonal>>();
@@ -250,8 +250,7 @@ public:
   void postKeyEvent()
   {
     RCLCPP_WARN(
-      getNode()->get_logger(), "ClKeyboard ev: %s",
-      smacc2::demangleSymbol(typeid(TEv).name()).c_str());
+      getLogger(), "ClKeyboard ev: %s", smacc2::demangleSymbol(typeid(TEv).name()).c_str());
     this->postEvent<TEv>();
   }
 

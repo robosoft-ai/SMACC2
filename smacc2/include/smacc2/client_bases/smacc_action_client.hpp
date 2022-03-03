@@ -43,7 +43,7 @@ public:
   // Gets the ros path of the action...
   inline std::string getNamespace() const { return name_; }
 
-  virtual void cancelGoal() = 0;
+  virtual bool cancelGoal() = 0;
 
   virtual std::shared_ptr<rclcpp_action::ClientBase> getClientBase() = 0;
 

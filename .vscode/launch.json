@@ -276,6 +276,37 @@
             ]
         },
         {
+            "name": "(gdb) SmHuskyBarrelSearch1",
+            "type": "cppdbg",
+            "request": "launch",
+
+            "program": "${workspaceFolder}/../install/sm_husky_barrel_search_1/lib/sm_husky_barrel_search_1/sm_husky_barrel_search_1_node",
+            "args": [
+                "--ros-args",
+                "--log-level",
+                "INFO",
+                "--ros-args",
+                "-r",
+                "__node:=SmHuskyBarrelSearch1",
+                "--params-file",
+                "${workspaceFolder}/../install/sm_husky_barrel_search_1/share/sm_husky_barrel_search_1/params/sm_husky_barrel_search_1_config.yaml",
+                "--params-file",
+                "${workspaceFolder}/../install/sm_husky_barrel_search_1/share/sm_husky_barrel_search_1/params/nav2z_client/odom_tracker.yaml"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "name": "(gdb) SmAtomicSubscribersPerformanceTest",
             "type": "cppdbg",
             "request": "launch",

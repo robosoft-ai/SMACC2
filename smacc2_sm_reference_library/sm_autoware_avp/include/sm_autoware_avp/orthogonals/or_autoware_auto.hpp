@@ -35,15 +35,15 @@ public:
   {
     auto client = this->createClient<sm_autoware_avp::clients::ClAutoware>();
 
-    auto cppubLocation = client->createNamedComponent<
+    client->createNamedComponent<
       smacc2::components::CpTopicPublisher<geometry_msgs::msg::PoseWithCovarianceStamped>>(
       "initialPoseEstimation", "/localization/initialpose");
 
-    auto cpppubGoalPose = client->createNamedComponent<
+    client->createNamedComponent<
       smacc2::components::CpTopicPublisher<geometry_msgs::msg::PoseStamped>>(
       "goalPose", "planning/goal_pose");
 
-    auto subscriberNdtPose = client->createNamedComponent<
+    client->createNamedComponent<
       smacc2::components::CpTopicSubscriber<geometry_msgs::msg::PoseWithCovarianceStamped>>(
       "ndtPose", "/localization/ndt_pose");
   }

@@ -44,7 +44,8 @@ std::future<std::string> ClRosLaunch::executeRosLaunch(
 {
   return std::async(std::launch::async, [=]() {
     RCLCPP_WARN_STREAM(
-      rclcpp::get_logger("smacc2"), "[ClRosLaunch] starting ros launch thread " << ss.str());
+      rclcpp::get_logger("smacc2"), "[ClRosLaunch static] starting ros launch thread ");
+
     std::stringstream cmd;
     cmd << "ros2 launch " << packageName << " " << launchFileName;
 
@@ -65,7 +66,8 @@ std::future<std::string> ClRosLaunch::executeRosLaunch(
     }
 
     result = ss.str();
-    RCLCPP_WARN_STREAM(rclcpp::get_logger("smacc2"), "[ClRosLaunch] RESULT = \n " << ss.str());
+    RCLCPP_WARN_STREAM(
+      rclcpp::get_logger("smacc2"), "[ClRosLaunch static]] RESULT = \n " << ss.str());
     return result;
   });
 }
