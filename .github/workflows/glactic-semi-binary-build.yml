@@ -1,24 +1,24 @@
-name: Foxy Binary Build
+name: Galactic Binary Build
 on:
   pull_request:
     branches:
-      - foxy
+      - galactic
   push:
     branches:
-      - foxy
+      - galactic
   schedule:
     # Run every day to detect flakiness and broken dependencies
     - cron: '03 1 * * *'
 
 jobs:
-  foxy_binary:
-    name: foxy binary build
+  galactic_binary:
+    name: galactic binary build
     runs-on: ubuntu-latest
     strategy:
       matrix:
         env:
-          - {ROS_DISTRO: foxy, ROS_REPO: main}
-          - {ROS_DISTRO: foxy, ROS_REPO: testing}
+          - {ROS_DISTRO: galactic, ROS_REPO: main}
+          - {ROS_DISTRO: galactic, ROS_REPO: testing}
     env:
       UPSTREAM_WORKSPACE: SMACC2-not-released.${{ matrix.env.ROS_DISTRO }}.repos
       CCACHE_DIR: ${{ github.workspace }}/.ccache
