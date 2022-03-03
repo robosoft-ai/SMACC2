@@ -47,3 +47,7 @@ repositories:
     type: git
     url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Gazebo_Simulation
     version: ros2
+  Universal_Robots_ROS2_Ignition_Simulation:
+    type: git
+    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Ignition_Simulation
+    version: ros2
