@@ -13,6 +13,8 @@
   <depend>nav2z_client</depend>
   <depend>multirole_sensor_client</depend>
   <depend>navigation2</depend>
+   <depend>nav2_bringup</depend>
+
   <depend>robot_state_publisher</depend>
   <depend>ros_publisher_client</depend>
   <depend>ros_timer_client</depend>
