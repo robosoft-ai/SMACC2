@@ -46,8 +46,7 @@ public:
     {
       if (!this->topicName)
       {
-        RCLCPP_ERROR(
-          getNode()->get_logger(), "topic publisher with no topic name set. Skipping advertising.");
+        RCLCPP_ERROR(getLogger(), "topic publisher with no topic name set. Skipping advertising.");
         return;
       }
 
@@ -60,8 +59,7 @@ public:
       qos.reliability(*reliability);
 
       RCLCPP_INFO_STREAM(
-        getNode()->get_logger(),
-        "[" << this->getName() << "] Client Publisher to topic: " << topicName);
+        getLogger(), "[" << this->getName() << "] Client Publisher to topic: " << topicName);
       pub_ = getNode()->create_publisher<MessageType>(*(this->topicName), qos);
 
       this->initialized_ = true;

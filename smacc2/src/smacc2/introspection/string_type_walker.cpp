@@ -347,6 +347,33 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
   }
 
   typeInfoDatabase[originalinputtext] = roottype;
+
+  if (roottype == nullptr)
+  {
+    std::stringstream ss;
+    ss << "---------------" << std::endl;
+    ss << "TYPE STRING WALKER, type was not properly interpreted: " << std::endl
+       << " - " << inputtext.c_str() << std::endl
+       << " - " << originalinputtext << std::endl;
+
+    ss << "----typeinfo database" << std::endl;
+
+    for (auto & en : typeInfoDatabase)
+    {
+      ss << "- " << en.first << ": " << en.second << std::endl;
+    }
+
+    ss << "---- ordered types" << std::endl;
+
+    for (auto & en : orderedTypedict)
+    {
+      ss << "- " << en.first << ": " << en.second << std::endl;
+    }
+    ss << "---------------" << std::endl;
+
+    RCLCPP_WARN_STREAM(globalNh_->get_logger(), ss.str());
+  }
+
   return roottype;
 }
 

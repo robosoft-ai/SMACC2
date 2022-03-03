@@ -59,8 +59,8 @@ public:
     SmaccSubscriberClient<MessageType>::template onOrthogonalAllocation<
       TOrthogonal, TSourceObject>();
 
-    this->postTimeoutMessageEvent = [=]() {
-      onMessageTimeout_();
+    this->postTimeoutMessageEvent = [this]() {
+      this->onMessageTimeout_();
 
       auto event = new EvTopicMessageTimeout<TSourceObject, TOrthogonal>();
       this->postEvent(event);
@@ -87,7 +87,7 @@ public:
       else
       {
         RCLCPP_WARN(
-          this->getNode()->get_logger(),
+          this->getLogger(),
           "Timeout sensor client not set, skipping timeout watchdog funcionality");
       }
 

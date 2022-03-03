@@ -15,12 +15,10 @@
 
 #pragma once
 
-#include "rclcpp/rclcpp.hpp"
 #include "smacc2/smacc.hpp"
 
 // CLIENTS
 #include "ros_timer_client/cl_ros_timer.hpp"
-#include "ros_timer_client/client_behaviors/cb_timer_countdown_loop.hpp"
 #include "ros_timer_client/client_behaviors/cb_timer_countdown_once.hpp"
 
 // ORTHOGONALS
@@ -34,7 +32,6 @@ using smacc2::EvStateRequestFinish;
 using smacc2::default_transition_tags::SUCCESS;
 
 using cl_ros_timer::EvTimer;
-using cl_ros_timer::CbTimerCountdownLoop;
 using cl_ros_timer::CbTimerCountdownOnce;
 
 using $sm_name$::OrTimer;
@@ -44,7 +41,7 @@ struct State2 : smacc2::SmaccState<State2, $SmName$>
 {
   using SmaccState::SmaccState;
 
-  // TRANSITION TABLE
+  // TRANSITION TABLE - adjust as needed
   typedef boost::mpl::list<
 
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State1, SUCCESS>
@@ -54,13 +51,32 @@ struct State2 : smacc2::SmaccState<State2, $SmName$>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
+    // START: Example code - change needed
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);  // EvTimer triggers once at 10 client ticks
+    // END: Example code - change or delete as needed
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State2"); }
+  void runtimeConfigure()
+  {
+    // START: Example code - change or delete as needed
+    RCLCPP_INFO(getLogger(), " Entering State2");
+    // END: Example code - change or delete as needed
+  }
 
-  void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
+  void onEntry() {
+    // START: Example code - change or delete as needed
+    // Use Blackboard to get global state-machine data - example - feel free to delete it.
+    std::string output_message_note;
+    getGlobalSMData("output_message_note", output_message_note);
+    RCLCPP_INFO(getLogger(), (output_message_note + " On Entry!").c_str());
+    // END: Example code - change or delete as needed
+  }
 
-  void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
+  void onExit()
+  {
+    // START: Example code - change or delete as needed
+    RCLCPP_INFO(getLogger(), " On Exit!");
+    // END: Example code - change or delete as needed
+  }
 };
 }  // namespace sm_atomic_performance_test_a_1
