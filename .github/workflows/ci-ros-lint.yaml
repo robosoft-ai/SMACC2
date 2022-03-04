@@ -44,7 +44,6 @@ jobs:
           sm_atomic_performance_test
           sm_atomic_subscribers_performance_test
           sm_dance_bot
-          sm_dance_bot_lite
           sm_dance_bot_strikes_back
           sm_ferrari
           sm_three_some
