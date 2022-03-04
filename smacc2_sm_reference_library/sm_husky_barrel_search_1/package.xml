@@ -22,7 +22,7 @@
   <depend>gazebo_ros</depend>
   <depend>rviz_ogre_vendor</depend>
   <depend>robot_localization</depend>
-  <depend>libassimp-dev</depend>
+  <depend>assimp-dev</depend>
 
 
   <export>
