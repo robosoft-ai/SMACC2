@@ -28,12 +28,10 @@ WORKDIR "/home/ros2_ws"
 
 
 # install dependencies and build
-RUN ls src && vcs import  src --skip-existing --input src/SMACC2/SMACC2-not-released.$GIT_BRANCH.repos \
+RUN ls src && vcs import  src --skip-existing --input src/SMACC2/SMACC2-not-released.$ROS_DISTRO.repos \
   && ls src
 
 RUN rosdep install --from-paths src --ignore-src -r -y
 RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
 
-#RUN apt remove -y ros-$GIT_BRANCH-smacc2
-
-RUN bash -c "source /opt/ros/$GIT_BRANCH/setup.sh && colcon build --merge-install"
+RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && colcon build --merge-install"
