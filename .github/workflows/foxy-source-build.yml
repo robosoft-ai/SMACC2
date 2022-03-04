@@ -11,7 +11,7 @@ on:
     - cron: '03 3 * * *'
 
 jobs:
-  rolling_source:
+  foxy_source:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -49,7 +49,6 @@ jobs:
             sm_multi_stage_1
             sm_pubsub_1
             sm_respira_1
-
 
             sm_three_some
 
