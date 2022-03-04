@@ -12,7 +12,7 @@ on:
 
 jobs:
   rolling_binary:
-    name: rolling binary build
+    name: rolling binary build - last focal
     runs-on: ubuntu-20.04 # ubuntu-latest
     strategy:
       fail-fast: false
