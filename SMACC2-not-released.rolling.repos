@@ -17,10 +17,6 @@ repositories:
     type: git
     url: https://github.com/StoglRobotics-forks/husky.git
     version: fixes-for-smacc2
-  gazebo_ros2_control:
-    type: git
-    url: https://github.com/ros-simulation/gazebo_ros2_control.git
-    version: master
 
   ros2_control_demos:
     type: git

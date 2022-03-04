@@ -5,7 +5,7 @@ FROM osrf/ros:$ROS_DISTRO-desktop
 
 ARG ROS_DISTRO
 ARG GIT_BRANCH
-ARG LOCAL_FOLDER_SOURCE=0
+ARG LOCAL_FOLDER_SOURCE=1
 
 RUN apt-get update \
   && apt-get upgrade -y \
