@@ -18,7 +18,7 @@ jobs:
     env:
       ROS_DISTRO: foxy
     steps:
-      - uses: ros-tooling/setup-ros@v0.2
+      - uses: ros-tooling/setup-ros@v0.3
         with:
           required-ros-distributions: ${{ env.ROS_DISTRO }}
       - uses: actions/checkout@v2
