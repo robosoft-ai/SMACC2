@@ -1,19 +1,19 @@
-name: Galactic Source Build
+name: Foxy Source Build
 on:
   push:
     branches:
-      - galactic
+      - foxy
   schedule:
     # Run every day to detect flakiness and broken dependencies
     - cron: '03 3 * * *'
 
 jobs:
-  galactic_source:
+  rolling_source:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
     env:
-      ROS_DISTRO: galactic
+      ROS_DISTRO: foxy
     steps:
       - uses: ros-tooling/setup-ros@v0.2
         with:
@@ -28,15 +28,6 @@ jobs:
 
             keyboard_client
 
-            backward_global_planner
-            backward_local_planner
-            forward_global_planner
-            forward_local_planner
-            nav2z_planners_common
-            pure_spinning_local_planner
-            undo_path_global_planner
-            nav2z_client
-
             multirole_sensor_client
             ros_publisher_client
             ros_timer_client
@@ -45,22 +36,25 @@ jobs:
             eg_random_generator
 
             smacc2_msgs
+
             sm_atomic
-            sm_atomic_24hr
-
-            sm_branching
-
+            sm_atomic_performance_trace_1
             sm_atomic_subscribers_performance_test
-            sm_dance_bot
-
-            sm_dance_bot_strikes_back
-            sm_ferrari
+            sm_advanced_recovery_1
+            sm_branching
+            sm_coretest_transition_speed_1
+            sm_multi_stage_1
+            sm_pubsub_1
             sm_respira_1
+
+
             sm_three_some
 
             sr_all_events_go
             sr_conditional
             sr_event_countdown
+
+            sm_autoware_avp
 
           vcs-repo-file-url: |
             https://raw.githubusercontent.com/ros2/ros2/${{ env.ROS_DISTRO }}/ros2.repos
