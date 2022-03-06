@@ -15,7 +15,7 @@ jobs:
     env:
       ROS_DISTRO: galactic
     steps:
-      - uses: ros-tooling/setup-ros@v0.2
+      - uses: ros-tooling/setup-ros@v0.3
         with:
           required-ros-distributions: ${{ env.ROS_DISTRO }}
       - uses: actions/checkout@v2
@@ -62,7 +62,7 @@ jobs:
             sr_event_countdown
 
           vcs-repo-file-url: |
-            https://raw.githubusercontent.com/ros2/ros2/master/ros2.repos
+            https://raw.githubusercontent.com/ros2/ros2/${{ env.ROS_DISTRO }}/ros2.repos
             https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/SMACC2.${{ env.ROS_DISTRO }}.repos?token=${{ secrets.GITHUB_TOKEN }}
           colcon-mixin-repository: https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
       - uses: actions/upload-artifact@v1
