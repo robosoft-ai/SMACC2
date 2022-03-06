@@ -27,7 +27,7 @@ find_package(rclcpp REQUIRED)
 
 #find_package(gazebo_dev REQUIRED)
 find_package(gazebo_msgs REQUIRED)
-find_package(gazebo_ros REQUIRED)
+#find_package(gazebo_ros REQUIRED)
 find_package(rviz_ogre_vendor REQUIRED)
 find_package(OGRE REQUIRED)
 
@@ -52,18 +52,18 @@ include_directories(include
                     ${CMAKE_BINARY_DIR}/rosidl_generator_cpp)
 
 #---------------------------------------------------------
-# add_executable(${PROJECT_NAME}_node
-#   src/${PROJECT_NAME}/sm_husky_barrel_search_1_node.cpp
-# )
+add_executable(${PROJECT_NAME}_node
+  src/${PROJECT_NAME}/sm_husky_barrel_search_1_node.cpp
+)
 
-# ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
-# target_link_libraries(${PROJECT_NAME}_node boost_thread boost_system ${Boost_LIBS})
+ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
+target_link_libraries(${PROJECT_NAME}_node boost_thread boost_system ${Boost_LIBS})
 
-# ament_export_include_directories(include)
-# ament_export_libraries(${PROJECT_NAME})
-# ament_export_dependencies(${dependencies})
+ament_export_include_directories(include)
+ament_export_libraries(${PROJECT_NAME})
+ament_export_dependencies(${dependencies})
 
-# ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sm_husky_barrel_search_1.dsv.in")
+ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sm_husky_barrel_search_1.dsv.in")
 # #---------------------------------------------------------
 # link_directories(${gazebo_dev_LIBRARY_DIRS})
 
@@ -90,22 +90,22 @@ include_directories(include
 
 
 #---------------------------------------------------------
-# add_executable(opencv_perception_node
-#   servers/opencv_perception_node/opencv_perception_node.cpp
-# )
-# ament_target_dependencies(opencv_perception_node ${dependencies})
+add_executable(opencv_perception_node
+  servers/opencv_perception_node/opencv_perception_node.cpp
+)
+ament_target_dependencies(opencv_perception_node ${dependencies})
 
-# target_link_libraries(opencv_perception_node
-#                         boost_thread
-#                         boost_system
-#                         ${Boost_LIBS} ${OpenCV_LIBS})
+target_link_libraries(opencv_perception_node
+                        boost_thread
+                        boost_system
+                        ${Boost_LIBS} ${OpenCV_LIBS})
 
 if(BUILD_TESTING)
 endif()
 
-# install(TARGETS
-#   ${PROJECT_NAME}_node
-#   opencv_perception_node
+ install(TARGETS
+   ${PROJECT_NAME}_node
+   opencv_perception_node
 #   controllable_led_plugin
 #   # temperature_sensor_node_${PROJECT_NAME}
 #   # led_action_server_node_${PROJECT_NAME}
@@ -113,7 +113,7 @@ endif()
 #   ARCHIVE DESTINATION lib
 #   LIBRARY DESTINATION lib
 #   RUNTIME DESTINATION lib/${PROJECT_NAME}
-# )
+ )
 
 install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY worlds DESTINATION share/${PROJECT_NAME})
