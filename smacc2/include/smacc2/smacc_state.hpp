@@ -93,11 +93,9 @@ public:
   template <typename TStateReactor>
   TStateReactor * getStateReactor();
 
-  rclcpp::Node::SharedPtr node_;
-
-  std::shared_ptr<rclcpp::Logger> logger_;
-
 protected:
+  rclcpp::Node::SharedPtr node_;
+  std::shared_ptr<rclcpp::Logger> logger_;
   std::vector<std::shared_ptr<StateReactor>> stateReactors_;
   std::vector<std::shared_ptr<smacc2::SmaccEventGenerator>> eventGenerators_;
 

@@ -12,6 +12,7 @@
   <depend>libboost-thread-dev</depend>
 
   <depend>ros_timer_client</depend>
+  <depend>rclcpp</depend>
   <depend>smacc2</depend>
   <depend>nav2z_client</depend>
   <depend>sensor_msgs</depend>
@@ -22,6 +23,8 @@
   <depend>gazebo_ros</depend>
   <depend>rviz_ogre_vendor</depend>
   <depend>robot_localization</depend>
+  <depend>rviz_assimp_vendor</depend>
+  <depend>assimp</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
