@@ -8,14 +8,14 @@ on:
     - cron: '03 3 * * *'
 
 jobs:
-  rolling_source:
+  foxy_source:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
     env:
       ROS_DISTRO: foxy
     steps:
-      - uses: ros-tooling/setup-ros@v0.2
+      - uses: ros-tooling/setup-ros@v0.3
         with:
           required-ros-distributions: ${{ env.ROS_DISTRO }}
       - uses: actions/checkout@v2
@@ -46,7 +46,6 @@ jobs:
             sm_multi_stage_1
             sm_pubsub_1
             sm_respira_1
-
 
             sm_three_some
 
