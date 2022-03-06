@@ -15,7 +15,7 @@ jobs:
     env:
       ROS_DISTRO: galactic
     steps:
-      - uses: ros-tooling/setup-ros@v0.2
+      - uses: ros-tooling/setup-ros@v0.3
         with:
           required-ros-distributions: ${{ env.ROS_DISTRO }}
       - uses: actions/checkout@v2
@@ -44,7 +44,10 @@ jobs:
             sm_atomic_subscribers_performance_test
             sm_branching
 
-            sm_ferrari
+            sm_atomic_subscribers_performance_test
+            sm_dance_bot
+
+            sm_dance_bot_strikes_back
             sm_respira_1
             sm_three_some
 
