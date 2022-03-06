@@ -15,7 +15,7 @@ jobs:
     env:
       ROS_DISTRO: galactic
     steps:
-      - uses: ros-tooling/setup-ros@v0.2
+      - uses: ros-tooling/setup-ros@v0.3
         with:
           required-ros-distributions: ${{ env.ROS_DISTRO }}
       - uses: actions/checkout@v2
@@ -44,7 +44,14 @@ jobs:
             sm_atomic_subscribers_performance_test
             sm_branching
 
+<<<<<<< HEAD
             sm_ferrari
+=======
+            sm_atomic_subscribers_performance_test
+            sm_dance_bot
+
+            sm_dance_bot_strikes_back
+>>>>>>> 9a2dda5 (Galactic source build: update .repos file, bump action version and use correct version of upstream packages (#241))
             sm_respira_1
             sm_three_some
 
