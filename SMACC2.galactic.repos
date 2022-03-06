@@ -2,19 +2,11 @@ repositories:
   navigation2:
     type: git
     url: https://github.com/ros-planning/navigation2.git
-<<<<<<< HEAD
-    version: main
-  slam_toolbox:
-    type: git
-    url: https://github.com/SteveMacenski/slam_toolbox.git
-    version: ros2
-=======
     version: galactic
   slam_toolbox:
     type: git
     url: https://github.com/SteveMacenski/slam_toolbox.git
     version: galactic
->>>>>>> 9a2dda5 (Galactic source build: update .repos file, bump action version and use correct version of upstream packages (#241))
   husky:
     type: git
     url: https://github.com/StoglRobotics-forks/husky.git
