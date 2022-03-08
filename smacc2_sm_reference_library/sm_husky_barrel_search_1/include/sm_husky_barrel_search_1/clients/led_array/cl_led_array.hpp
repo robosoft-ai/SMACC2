@@ -20,8 +20,10 @@
 
 #pragma once
 
+#include <smacc2/client_base_components/cp_topic_publisher.hpp>
 #include <smacc2/client_bases/smacc_subscriber_client.hpp>
 #include <std_msgs/msg/int32.hpp>
+#include <std_msgs/msg/int8.hpp>
 
 namespace sm_husky_barrel_search_1
 {
@@ -30,13 +32,21 @@ namespace cl_led_array
 class ClLedArray : public smacc2::ISmaccClient
 {
 public:
+  smacc2::components::CpTopicPublisher<std_msgs::msg::Int8> * greenLed_;
+  smacc2::components::CpTopicPublisher<std_msgs::msg::Int8> * yellowLed_;
+  smacc2::components::CpTopicPublisher<std_msgs::msg::Int8> * redLed_;
 
-  ClLedArray()
-  {
-  }
+  ClLedArray() {}
 
-  virtual ~ClLedArray()
+  virtual ~ClLedArray() {}
+
+  void onInitialize() override
   {
+    greenLed_ =
+      getComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>("greenLed");
+    yellowLed_ =
+      getComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>("yellowLed");
+    redLed_ = getComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>("redLed");
   }
 
   template <typename TOrthogonal, typename TSourceObject>
@@ -44,5 +54,5 @@ public:
   {
   }
 };
-}
-}
+}  // namespace cl_led_array
+}  // namespace sm_husky_barrel_search_1
