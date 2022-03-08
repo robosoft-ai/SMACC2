@@ -70,7 +70,12 @@
         "variant": "cpp",
         "shared_mutex": "cpp",
         "bit": "cpp",
-        "forward_list": "cpp"
+        "forward_list": "cpp",
+        "any": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "regex": "cpp",
+        "valarray": "cpp"
     },
     "python.autoComplete.extraPaths": [
         "/opt/ros/galactic/lib/python3.8/site-packages"
