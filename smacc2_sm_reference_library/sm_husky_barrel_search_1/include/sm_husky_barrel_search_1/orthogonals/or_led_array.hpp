@@ -20,10 +20,8 @@
 
 #pragma once
 
-#include <sm_husky_barrel_search_1/clients/led_array/cl_led_array.hpp>
-#include <smacc2/client_base_components/cp_topic_publisher.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
-#include <std_msgs/msg/int8.hpp>
+#include <sm_husky_barrel_search_1/clients/led_array/cl_led_array.hpp>
 
 namespace sm_husky_barrel_search_1
 {
