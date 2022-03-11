@@ -16,6 +16,7 @@
   <depend>smacc2</depend>
   <depend>move_group_interface_client</depend>
   <depend>controller_manager</depend>
+  <depend>warehouse_ros_mongo</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
