@@ -16,6 +16,7 @@
   <depend>smacc2</depend>
   <depend>sr_all_events_go</depend>
   <depend>std_msgs</depend>
+  <depend>rclcpp</depend>
 
   <exec_depend>xterm</exec_depend>
 
