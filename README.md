@@ -34,7 +34,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
 1. Source build - also core ROS packages are build from source. It shows potential issues in the mid future.
 
 
-## Getting started
+## Getting started - ROS Rolling + Ubuntu 20.04 (Focal)
 
 1. [Install ROS2 Rolling](https://index.ros.org/doc/ros2/Installation/Rolling/Linux-Install-Debians/).
 
@@ -54,6 +54,57 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
    cd $COLCON_WS
    git clone https://github.com/robosoft-ai/SMACC2.git src/SMACC2
    vcs import src --skip-existing --input src/SMACC2/SMACC2-not-released.rolling.repos
+   rosdep install --ignore-src --from-paths src -y -r
+   colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
+   source install/setup.bash
+   ```
+   
+## Getting started - ROS Galactic
+
+1. [Install ROS2 Rolling](https://index.ros.org/doc/ros2/Installation/Galactic/Linux-Install-Debians/).
+
+2. Make sure that `colcon`, its extensions and `vcs` are installed:
+   ```
+   sudo apt install python3-colcon-common-extensions python3-vcstool
+   ```
+
+3. Create a new ROS2 workspace:
+   ```
+   export COLCON_WS=~/workspace/galactic_ws
+   mkdir -p $COLCON_WS/src
+   ```
+
+4. Pull relevant packages, install dependencies, compile, and source the workspace by using:
+   ```
+   cd $COLCON_WS
+   git clone https://github.com/robosoft-ai/SMACC2.git src/SMACC2
+   git checkout galactic
+   vcs import src --skip-existing --input src/SMACC2/SMACC2.galactic.repos
+   rosdep install --ignore-src --from-paths src -y -r
+   colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
+   source install/setup.bash
+   ```
+## Getting started - ROS Foxy
+
+1. [Install ROS2 Rolling](https://index.ros.org/doc/ros2/Installation/Foxy/Linux-Install-Debians/).
+
+2. Make sure that `colcon`, its extensions and `vcs` are installed:
+   ```
+   sudo apt install python3-colcon-common-extensions python3-vcstool
+   ```
+
+3. Create a new ROS2 workspace:
+   ```
+   export COLCON_WS=~/workspace/foxy_ws
+   mkdir -p $COLCON_WS/src
+   ```
+
+4. Pull relevant packages, install dependencies, compile, and source the workspace by using:
+   ```
+   cd $COLCON_WS
+   git clone https://github.com/robosoft-ai/SMACC2.git src/SMACC2
+   git checkout foxy
+   vcs import src --skip-existing --input src/SMACC2/SMACC2.foxy.repos
    rosdep install --ignore-src --from-paths src -y -r
    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
    source install/setup.bash
