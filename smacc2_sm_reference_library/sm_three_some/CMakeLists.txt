@@ -19,6 +19,7 @@ find_package(multirole_sensor_client REQUIRED)
 find_package(sr_all_events_go REQUIRED)
 find_package(ros_timer_client REQUIRED)
 find_package(keyboard_client REQUIRED)
+find_package(rclcpp REQUIRED)
 find_package(ros_publisher_client REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
@@ -31,6 +32,7 @@ set(dependencies
   ros_timer_client
   keyboard_client
   ros_publisher_client
+  rclcpp
 )
 
 add_executable(${PROJECT_NAME}_node src/sm_three_some_node.cpp)
