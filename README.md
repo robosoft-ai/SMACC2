@@ -61,7 +61,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
    
 ## Getting started - ROS Galactic
 
-1. [Install ROS2 Rolling](https://index.ros.org/doc/ros2/Installation/Galactic/Linux-Install-Debians/).
+1. [Install ROS2 Galactic](https://docs.ros.org/en/galactic/Installation/Ubuntu-Install-Debians.html).
 
 2. Make sure that `colcon`, its extensions and `vcs` are installed:
    ```
@@ -86,7 +86,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
    ```
 ## Getting started - ROS Foxy
 
-1. [Install ROS2 Rolling](https://index.ros.org/doc/ros2/Installation/Foxy/Linux-Install-Debians/).
+1. [Install ROS2 Foxy](https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html).
 
 2. Make sure that `colcon`, its extensions and `vcs` are installed:
    ```
