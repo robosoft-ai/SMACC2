@@ -333,12 +333,12 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
   //RCLCPP_DEBUG_STREAM(nh_->get_logger(),"Current Database");
   for (auto & en : typeInfoDatabase)
   {
-    RCLCPP_DEBUG_STREAM(globalNh_->get_logger(), "- " << en.first);
+    if (globalNh_ != nullptr) RCLCPP_DEBUG_STREAM(globalNh_->get_logger(), "- " << en.first);
   }
 
   typeInfoDatabase[originalinputtext] = roottype;
 
-  if (roottype == nullptr)
+  if (roottype == nullptr && globalNh_ != nullptr)
   {
     std::stringstream ss;
     ss << "---------------" << std::endl;
