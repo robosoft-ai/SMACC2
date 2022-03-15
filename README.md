@@ -50,7 +50,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
 4. Or just navigate to your workspace source folder:
    ```
    cd ~/workspace/rolling_ws/src
-   ``` 
+   ```
 5. Clone the repo:
    ```
    git clone https://github.com/robosoft-ai/SMACC2.git
@@ -58,7 +58,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
 6. Navigate to the workspace:
    ```
    cd ~/workspace/rolling_ws
-   ``` 
+   ```
 7. Update System:
    ```
    sudo apt update
@@ -81,7 +81,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
    ```
    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
    ```
-   
+
 ## Getting started - ROS Galactic
 
 1. [Install ROS2 Galactic](https://docs.ros.org/en/galactic/Installation/Ubuntu-Install-Debians.html).
@@ -98,7 +98,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
 4. Or just navigate to your workspace source folder:
    ```
    cd ~/workspace/galactic_ws/src
-   ``` 
+   ```
 5. Clone the repo:
    ```
    git clone https://github.com/robosoft-ai/SMACC2.git
@@ -111,7 +111,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
 7. Navigate to the workspace:
    ```
    cd ~/workspace/galactic_ws
-   ``` 
+   ```
 8. Update System:
    ```
    sudo apt update
@@ -134,7 +134,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
    ```
    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
    ```
-   
+
 ## Getting started - ROS Foxy
 
 1. [Install ROS2 Foxy](https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html).
@@ -151,7 +151,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
 4. Or just navigate to your workspace source folder:
    ```
    cd ~/workspace/foxy_ws/src
-   ``` 
+   ```
 5. Clone the repo:
    ```
    git clone https://github.com/robosoft-ai/SMACC2.git
@@ -164,7 +164,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
 7. Navigate to the workspace:
    ```
    cd ~/workspace/foxy_ws
-   ``` 
+   ```
 8. Update System:
    ```
    sudo apt update
