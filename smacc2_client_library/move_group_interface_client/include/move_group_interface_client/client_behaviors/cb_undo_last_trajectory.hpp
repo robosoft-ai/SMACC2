@@ -36,6 +36,8 @@ public:
 
   virtual void onEntry() override;
 
+  virtual void generateTrajectory();
+
 private:
   int backIndex_ = -1;
 

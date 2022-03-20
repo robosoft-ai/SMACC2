@@ -29,6 +29,8 @@ CbUndoLastTrajectory::CbUndoLastTrajectory(int backIndex) : backIndex_(backIndex
 
 CbUndoLastTrajectory::~CbUndoLastTrajectory() {}
 
+void CbUndoLastTrajectory::generateTrajectory() {}
+
 void CbUndoLastTrajectory::onEntry()
 {
   CpTrajectoryHistory * trajectoryHistory;

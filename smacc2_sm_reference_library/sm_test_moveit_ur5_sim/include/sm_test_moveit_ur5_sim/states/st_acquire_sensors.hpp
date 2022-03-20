@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <sensor_msgs/msg/joint_state.h>
+
 namespace sm_test_moveit_ur5_sim
 {
 // SMACC2 classes
@@ -29,37 +31,25 @@ using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
 using namespace cl_move_group_interface;
+using smacc2::client_behaviors::CbWaitTopicMessage;
 
 // STATE DECLARATION
-struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmTestMoveitUr5Sim>
+struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmTestMoveitUr5Sim>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbMoveJoints, OrArm>, StMoveEndEffector, SUCCESS>
+    Transition<EvCbSuccess<CbWaitTopicMessage<sensor_msgs::msg::JointState>, OrArm>, StMoveJoints, SUCCESS>
 
-    >
-    reactions;
+    > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    std::map<std::string, double> jointValues{
-      {"shoulder_lift_joint", 0.0},
-      {"shoulder_pan_joint", 0.0},
-      {"wrist_1_joint", M_PI / 4},
-      {"wrist_2_joint", 0.0},
-      {"wrist_3_joint", 0.0}};
-
-    configure_orthogonal<OrArm, CbMoveJoints>(jointValues);
+    configure_orthogonal<OrArm, CbWaitTopicMessage<sensor_msgs::msg::JointState>>("/joint_states");
   };
 
-  void runtimeConfigure()
-  {
-    ClMoveGroup * moveGroupClient;
-    this->requiresClient(moveGroupClient);
-    this->getOrthogonal<OrArm>()->getClientBehavior<CbMoveJoints>()->scalingFactor_ = 1;
-  }
+  void runtimeConfigure() {}
 };
 }  // namespace sm_test_moveit_ur5_sim

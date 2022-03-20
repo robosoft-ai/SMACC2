@@ -140,6 +140,7 @@ void CbCircularPouringMotion::generateTrajectory()
     RCLCPP_INFO_STREAM(
       getLogger(), "[" << getName() << "] " << i << " - " << globalEndEffectorPose);
   }
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "]trajectory generated, size: " << steps);
 }
 
 void CbCircularPouringMotion::createMarkers()

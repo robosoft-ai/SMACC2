@@ -47,7 +47,7 @@ CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory(
 
 void CbMoveEndEffectorTrajectory::initializeROS()
 {
-  RCLCPP_INFO(getLogger(), "[CbMoveEndEffectorTrajectory] initializing ros");
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] initializing ros");
 
   auto nh = this->getNode();
   markersPub_ = nh->create_publisher<visualization_msgs::msg::MarkerArray>("trajectory_markers", 1);
@@ -57,11 +57,15 @@ void CbMoveEndEffectorTrajectory::initializeROS()
 ComputeJointTrajectoryErrorCode CbMoveEndEffectorTrajectory::computeJointSpaceTrajectory(
   moveit_msgs::msg::RobotTrajectory & computedJointTrajectory)
 {
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] getting current state.. waiting");
+
   // get current robot state
-  auto currentState = movegroupClient_->moveGroupClientInterface->getCurrentState();
+  auto currentState = movegroupClient_->moveGroupClientInterface->getCurrentState(100);
 
   // get the IK client
   auto groupname = movegroupClient_->moveGroupClientInterface->getName();
+
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] getting joint names");
   auto currentjointnames = currentState->getJointModelGroup(groupname)->getActiveJointModelNames();
 
   if (!tipLink_ || *tipLink_ == "")
@@ -100,8 +104,7 @@ ComputeJointTrajectoryErrorCode CbMoveEndEffectorTrajectory::computeJointSpaceTr
     //pose.header.stamp = getNode()->now();
     req->ik_request.pose_stamped = pose;
 
-    RCLCPP_INFO_STREAM(
-      getLogger(), "[ComputeJointTrajectoryErrorCode] IK request: " << k << " " << *req);
+    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] IK request: " << k << " " << *req);
 
     auto resfut = iksrv_->async_send_request(req);
 
@@ -217,7 +220,7 @@ ComputeJointTrajectoryErrorCode CbMoveEndEffectorTrajectory::computeJointSpaceTr
     }
     else
     {
-      RCLCPP_ERROR(getLogger(), "[CbMoveEndEffectorTrajectory] wrong IK call");
+      RCLCPP_ERROR_STREAM(getLogger(), "[" << getName() << "] wrong IK call");
     }
   }
 
@@ -286,6 +289,8 @@ void CbMoveEndEffectorTrajectory::onEntry()
 {
   this->requiresClient(movegroupClient_);
 
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Generating end effector trajectory");
+
   this->generateTrajectory();
 
   if (this->endEffectorTrajectory_.size() == 0)
@@ -296,12 +301,13 @@ void CbMoveEndEffectorTrajectory::onEntry()
     return;
   }
 
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Creating markers.");
+
   this->createMarkers();
   markersInitialized_ = true;
-
   moveit_msgs::msg::RobotTrajectory computedTrajectory;
 
-  RCLCPP_WARN_STREAM(getLogger(), "[" << getName() << "] Computing joint space trajectory.");
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Computing joint space trajectory.");
 
   auto errorcode = computeJointSpaceTrajectory(computedTrajectory);
 

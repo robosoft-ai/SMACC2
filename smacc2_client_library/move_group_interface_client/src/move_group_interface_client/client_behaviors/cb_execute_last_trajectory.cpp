@@ -27,6 +27,8 @@ CbExecuteLastTrajectory::CbExecuteLastTrajectory() {}
 
 CbExecuteLastTrajectory::~CbExecuteLastTrajectory() {}
 
+void CbExecuteLastTrajectory::generateTrajectory() {}
+
 void CbExecuteLastTrajectory::onEntry()
 {
   this->requiresClient(movegroupClient_);
