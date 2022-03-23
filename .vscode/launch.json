@@ -18,11 +18,20 @@
             "request": "launch",
             "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
             "args": [
+                // "--ros-args",
+                // "-r",
+                // "__node:=sm_test_moveit_ur5_sim_node",
+                // // "--params-file",
+                // // "${workspaceFolder}/../install/sm_moveit_ur5_sim/share/sm_moveit_ur5_sim/params/sm_aws_warehouse_navigation_config.yaml"
                 "--ros-args",
-                "-r",
-                "__node:=sm_test_moveit_ur5_sim_node",
-                // "--params-file",
-                // "${workspaceFolder}/../install/sm_moveit_ur5_sim/share/sm_moveit_ur5_sim/params/sm_aws_warehouse_navigation_config.yaml"
+                "--params-file",
+                "/tmp/launch_params_iw9ydu1_",
+                "--params-file",
+                "/tmp/launch_params_t32qpc19",
+                "--params-file",
+                "/tmp/launch_params__9jy9bhe",
+                "--params-file",
+                "/home/geus/Desktop/smacc_ws/install/sm_test_moveit_ur5_sim/share/sm_test_moveit_ur5_sim/config/sm_test_moveit_ur5_sim_config.yaml"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -33,6 +42,43 @@
                 {
                     "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+
+            {
+                "name": "C++ Debugger sm_test_moveit_ur5_sim",
+                "request": "launch",
+                "type": "cppdbg",
+                "miDebuggerServerAddress": "localhost:3000",
+                "cwd": "/",
+                "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    }
+                ]
+            }
+
+        {
+            "name": "(gdb) Attach sm_test_moveit_ur5_sim_node",
+            "type": "cppdbg",
+            "request": "attach",
+            "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
+            "processId": "${command:pickProcess}",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description":  "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
                 }
             ]
