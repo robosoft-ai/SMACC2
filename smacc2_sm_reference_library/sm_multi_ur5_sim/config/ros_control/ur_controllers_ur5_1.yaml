@@ -1,9 +1,9 @@
-controller_manager:
+ur5_1_controller_manager:
   ros__parameters:
 
     update_rate: 100 # Hz
 
-    joint_state_broadcaster:
+    joint_state_broadcaster_ur5_1:
       type: joint_state_broadcaster/JointStateBroadcaster
 
     io_and_status_controller:
@@ -15,7 +15,7 @@ controller_manager:
     force_torque_sensor_broadcaster:
       type: ur_controllers/ForceTorqueStateBroadcaster
 
-    joint_trajectory_controller:
+    joint_trajectory_controller_ur5_1:
       type: joint_trajectory_controller/JointTrajectoryController
 
     # scaled_joint_trajectory_controller:
@@ -26,6 +26,11 @@ controller_manager:
 
     forward_position_controller:
       type: position_controllers/JointGroupPositionController
+
+
+joint_state_broadcaster_ur5_1:
+  ros__parameters:
+    use_local_topics: True
 
 
 speed_scaling_state_broadcaster:
@@ -47,7 +52,7 @@ force_torque_sensor_broadcaster:
     topic_name: ft_data
 
 
-joint_trajectory_controller:
+joint_trajectory_controller_ur5_1:
   ros__parameters:
     joints:
       - ur5_1shoulder_pan_joint

@@ -87,6 +87,8 @@ public:
 
   ClMoveGroup(std::string groupName);
 
+  ClMoveGroup(const moveit::planning_interface::MoveGroupInterface::Options& options);
+
   virtual ~ClMoveGroup();
 
   void onInitialize() override;
@@ -128,6 +130,7 @@ private:
   smacc2::SmaccSignal<void()> onSucceded_;
   smacc2::SmaccSignal<void()> onFailed_;
 
-  std::string groupName_;
+  // std::string groupName_;
+  moveit::planning_interface::MoveGroupInterface::Options options_;
 };
 }  // namespace cl_move_group_interface

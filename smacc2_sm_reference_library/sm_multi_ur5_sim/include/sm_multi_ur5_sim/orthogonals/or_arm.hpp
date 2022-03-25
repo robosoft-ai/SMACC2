@@ -32,7 +32,11 @@ class OrArm : public smacc2::Orthogonal<OrArm>
 public:
   void onInitialize() override
   {
-    auto move_group_client = this->createClient<cl_move_group_interface::ClMoveGroup>("ur5_1ur_manipulator"); //ur_manipulator
+    //moveit::planning_interface::MoveGroupInterface::Options options ("ur5_1ur_manipulator", moveit::planning_interface::MoveGroupInterface::ROBOT_DESCRIPTION, "ur5_1");
+
+    moveit::planning_interface::MoveGroupInterface::Options options ("ur5_1ur_manipulator");
+
+    auto move_group_client = this->createClient<cl_move_group_interface::ClMoveGroup>(options); //ur_manipulator
     move_group_client->createComponent<cl_move_group_interface::CpTrajectoryHistory>();
     auto graspingComponent = move_group_client->createComponent<cl_move_group_interface::CpGraspingComponent>();
 

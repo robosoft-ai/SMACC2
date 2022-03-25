@@ -1,9 +1,9 @@
 controller_names:
   #- scaled_joint_trajectory_controller
-  - joint_trajectory_controller
+  - joint_trajectory_controller_ur5_1
 
 
-scaled_joint_trajectory_controller:
+scaled_joint_trajectory_controller_ur5_1:
   #action_ns: follow_joint_trajectory_ur5_1
   action_ns: follow_joint_trajectory
   type: FollowJointTrajectory
@@ -17,7 +17,7 @@ scaled_joint_trajectory_controller:
     - ur5_1wrist_3_joint
 
 
-joint_trajectory_controller:
+joint_trajectory_controller_ur5_1:
   #action_ns: follow_joint_trajectory_ur5_1
   action_ns: follow_joint_trajectory
   type: FollowJointTrajectory

@@ -45,6 +45,8 @@ def launch_setup(context, *args, **kwargs):
     moveit_config_file = LaunchConfiguration("moveit_config_file")
     prefix = LaunchConfiguration("prefix")
 
+    prefixvalue = prefix.perform(context)
+
     use_sim_time = LaunchConfiguration("use_sim_time")
     launch_servo = LaunchConfiguration("launch_servo")
 
@@ -193,6 +195,8 @@ def launch_setup(context, *args, **kwargs):
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
+        #namespace= "ur5_1",
+        name="move_group" + "_" + prefixvalue,
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -204,6 +208,9 @@ def launch_setup(context, *args, **kwargs):
             planning_scene_monitor_parameters,
             {"use_sim_time": use_sim_time},
         ],
+        remappings=[("joint_states", "/joint_state_broadcaster_ur5_1/joint_states"),
+                    #("/ur5_1/joint_trajectory_controller_ur5_1/", "/joint_trajectory_controller_ur5_1")
+                    ]
     )
 
     # Warehouse mongodb server

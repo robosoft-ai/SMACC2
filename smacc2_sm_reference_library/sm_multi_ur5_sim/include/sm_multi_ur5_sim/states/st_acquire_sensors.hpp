@@ -47,7 +47,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmTestMoveitUr5Si
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrArm, CbWaitTopicMessage<sensor_msgs::msg::JointState>>("/joint_states");
+    configure_orthogonal<OrArm, CbWaitTopicMessage<sensor_msgs::msg::JointState>>("/joint_state_broadcaster_ur5_1/joint_states");
   };
 
   void runtimeConfigure() {}
