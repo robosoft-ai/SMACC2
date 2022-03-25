@@ -14,7 +14,7 @@
 
 #
 # Author: Denis Štogl
-# Mantainer: Pablo Iñigo Blasco
+# Maintainer: Pablo Iñigo Blasco
 
 
 from launch import LaunchDescription
@@ -65,12 +65,14 @@ def launch_setup(context, *args, **kwargs):
     ur_type = "ur5e"
 
     # General arguments
-    #runtime_config_package = LaunchConfiguration("runtime_config_package")
-    
+    # runtime_config_package = LaunchConfiguration("runtime_config_package")
+
     runtime_config_package = LaunchConfiguration("runtime_config_package")
-    
-    #controllers_file = LaunchConfiguration("controllers_file")
-    controllers_file = PathJoinSubstitution([FindPackageShare("sm_multi_ur5_sim"), "/config", "/ros_control", "/ur_controllers.yaml"])
+
+    # controllers_file = LaunchConfiguration("controllers_file")
+    controllers_file = PathJoinSubstitution(
+        [FindPackageShare("sm_multi_ur5_sim"), "/config", "/ros_control", "/ur_controllers.yaml"]
+    )
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
     moveit_config_package = LaunchConfiguration("moveit_config_package")
@@ -80,7 +82,7 @@ def launch_setup(context, *args, **kwargs):
     x = LaunchConfiguration("x")
     y = LaunchConfiguration("y")
     z = LaunchConfiguration("z")
-    
+
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -97,9 +99,12 @@ def launch_setup(context, *args, **kwargs):
             " ",
             "prefix:=",
             prefix,
-            " x:=", x,
-            " y:=", y,
-            " z:=", z,
+            " x:=",
+            x,
+            " y:=",
+            y,
+            " z:=",
+            z,
             " ",
         ]
     )
@@ -182,7 +187,14 @@ def launch_setup(context, *args, **kwargs):
         launch_arguments={
             "ur_type": ur_type,
             "runtime_config_package": runtime_config_package,
-            "controllers_file": PathJoinSubstitution([FindPackageShare("sm_multi_ur5_sim"), "/config", "/ros_control", "/ur_controllers.yaml"]),
+            "controllers_file": PathJoinSubstitution(
+                [
+                    FindPackageShare("sm_multi_ur5_sim"),
+                    "/config",
+                    "/ros_control",
+                    "/ur_controllers.yaml",
+                ]
+            ),
             "description_package": description_package,
             "description_file": description_file,
             "prefix": prefix,
@@ -290,7 +302,7 @@ def generate_launch_description():
             description="",
         )
     ),
-    
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "y",
@@ -298,12 +310,13 @@ def generate_launch_description():
             description="",
         )
     ),
-    
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "z",
-            default_value= "0.0",
+            default_value="0.0",
             description="",
-        ))
+        )
+    )
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

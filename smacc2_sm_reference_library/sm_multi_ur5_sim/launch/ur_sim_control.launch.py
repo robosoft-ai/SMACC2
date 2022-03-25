@@ -39,7 +39,14 @@ from launch.actions import (
 from launch.conditions import IfCondition, UnlessCondition
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution, PythonExpression, TextSubstitution
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+    PythonExpression,
+    TextSubstitution,
+)
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler
 
@@ -60,7 +67,7 @@ def launch_setup(context, *args, **kwargs):
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
     prefix = LaunchConfiguration("prefix")
-    
+
     start_joint_controller = LaunchConfiguration("start_joint_controller")
     initial_joint_controller = LaunchConfiguration("initial_joint_controller")
 
@@ -71,7 +78,14 @@ def launch_setup(context, *args, **kwargs):
     from ament_index_python.packages import get_package_share_directory
     import os
 
-    initial_joint_controllers = PathJoinSubstitution([FindPackageShare("sm_multi_ur5_sim"), "config", "ros_control", PythonExpression(["'ur_controllers_' + '", prefix ,"' + '.yaml'"])])
+    initial_joint_controllers = PathJoinSubstitution(
+        [
+            FindPackageShare("sm_multi_ur5_sim"),
+            "config",
+            "ros_control",
+            PythonExpression(["'ur_controllers_' + '", prefix, "' + '.yaml'"]),
+        ]
+    )
 
     robot_description_content = Command(
         [
@@ -103,9 +117,12 @@ def launch_setup(context, *args, **kwargs):
             " ",
             "simulation_controllers:=",
             initial_joint_controllers,
-            " x:=", x,
-            " y:=", y,
-            " z:=", z,
+            " x:=",
+            x,
+            " y:=",
+            y,
+            " z:=",
+            z,
         ]
     )
     robot_description = {"robot_description": robot_description_content}
@@ -113,7 +130,7 @@ def launch_setup(context, *args, **kwargs):
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        name= "robot_state_publisher" , #+ "_" + prefix.perform(context),
+        name="robot_state_publisher",  # + "_" + prefix.perform(context),
         output="both",
         parameters=[{"use_sim_time": True}, robot_description],
         prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e",
@@ -122,8 +139,8 @@ def launch_setup(context, *args, **kwargs):
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        #arguments=["joint_state_broadcaster", "--controller-manager", "/"+prefix.perform(context)+"controller_manager"],
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"]
+        # arguments=["joint_state_broadcaster", "--controller-manager", "/"+prefix.perform(context)+"controller_manager"],
+        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
     )
 
     # There may be other controllers of the joints, but this is the initially-started one
@@ -145,7 +162,18 @@ def launch_setup(context, *args, **kwargs):
         package="gazebo_ros",
         executable="spawn_entity.py",
         name="spawn_ur",
-        arguments=["-entity", "ur", "-topic", "robot_description", "-x", "10.0", "-y", "0", "-z", "0"],
+        arguments=[
+            "-entity",
+            "ur",
+            "-topic",
+            "robot_description",
+            "-x",
+            "10.0",
+            "-y",
+            "0",
+            "-z",
+            "0",
+        ],
         output="screen",
     )
 
@@ -245,7 +273,7 @@ def generate_launch_description():
             description="Robot controller to start.",
         )
     )
-    
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "x",
@@ -253,7 +281,7 @@ def generate_launch_description():
             description="",
         )
     ),
-    
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "y",
@@ -261,13 +289,13 @@ def generate_launch_description():
             description="",
         )
     ),
-    
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "z",
-            default_value= "0.0",
+            default_value="0.0",
             description="",
         )
     )
-   
+
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

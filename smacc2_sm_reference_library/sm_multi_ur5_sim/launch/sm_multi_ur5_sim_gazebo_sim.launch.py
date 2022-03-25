@@ -14,64 +14,63 @@
 
 #
 # Author: Denis Štogl
-# Mantainer: Pablo Iñigo Blasco
+# Maintainer: Pablo Iñigo Blasco
 
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction, ExecuteProcess
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    OpaqueFunction,
+    ExecuteProcess,
+)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
+
 def launch_setup(context, *args, **kwargs):
 
     # Gazebo server
-    xterm_prefix="xterm -e",
+    xterm_prefix = ("xterm -e",)
 
     gzserver = ExecuteProcess(
-    cmd=['gzserver',
-    '-s', 'libgazebo_ros_init.so',
-    '-s', 'libgazebo_ros_factory.so'],
-    output='screen',
-    prefix=xterm_prefix
-        )
+        cmd=["gzserver", "-s", "libgazebo_ros_init.so", "-s", "libgazebo_ros_factory.so"],
+        output="screen",
+        prefix=xterm_prefix,
+    )
 
     # Gazebo client
     gzclient = ExecuteProcess(
-    cmd=['gzclient'],
-    output='screen',
+        cmd=["gzclient"],
+        output="screen",
     )
 
     single_ur_launch_1 = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            [FindPackageShare("sm_multi_ur5_sim"), "/launch", "/sm_single_ur5_sim_gazebo_sim.launch.py"]
+            [
+                FindPackageShare("sm_multi_ur5_sim"),
+                "/launch",
+                "/sm_single_ur5_sim_gazebo_sim.launch.py",
+            ]
         ),
-        launch_arguments={
-            "prefix": "ur5_1",
-            "x": "0.5",
-            "y": "0.0",
-            "z": "0.0"
-        }.items(),
+        launch_arguments={"prefix": "ur5_1", "x": "0.5", "y": "0.0", "z": "0.0"}.items(),
     )
 
     single_ur_launch_2 = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            [FindPackageShare("sm_multi_ur5_sim"), "/launch", "/sm_single_ur5_sim_gazebo_sim.launch.py"]
+            [
+                FindPackageShare("sm_multi_ur5_sim"),
+                "/launch",
+                "/sm_single_ur5_sim_gazebo_sim.launch.py",
+            ]
         ),
-        launch_arguments={
-            "prefix": "ur5_2",
-            "x": "0.0",
-            "y": "0.0",
-            "z": "0.0"
-        }.items(),
+        launch_arguments={"prefix": "ur5_2", "x": "0.0", "y": "0.0", "z": "0.0"}.items(),
     )
 
-
-    nodes_to_launch = [
-        single_ur_launch_1 ,  gzserver, gzclient
-    ]
+    nodes_to_launch = [single_ur_launch_1, gzserver, gzclient]
 
     return nodes_to_launch
 

@@ -18,7 +18,13 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import OpaqueFunction
 from launch.conditions import IfCondition
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution, PythonExpression
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+    PythonExpression,
+)
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -38,7 +44,7 @@ def launch_setup(context, *args, **kwargs):
     moveit_config_package = LaunchConfiguration("moveit_config_package")
     moveit_config_file = LaunchConfiguration("moveit_config_file")
     prefix = LaunchConfiguration("prefix")
-    
+
     use_sim_time = LaunchConfiguration("use_sim_time")
     launch_servo = LaunchConfiguration("launch_servo")
 
@@ -63,7 +69,9 @@ def launch_setup(context, *args, **kwargs):
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution([FindPackageShare(description_package), "urdf", description_file]),
+            PathJoinSubstitution(
+                [FindPackageShare(description_package), "urdf", description_file]
+            ),
             " ",
             "robot_ip:=xxx.yyy.zzz.www",
             " ",
@@ -93,9 +101,12 @@ def launch_setup(context, *args, **kwargs):
             " ",
             "ur_type:=",
             ur_type,
-            " x:=", x,
-            " y:=", y,
-            " z:=", z,
+            " x:=",
+            x,
+            " y:=",
+            y,
+            " z:=",
+            z,
             " ",
             "script_filename:=ros_control.urscript",
             " ",
@@ -105,7 +116,6 @@ def launch_setup(context, *args, **kwargs):
             " ",
             "prefix:=",
             prefix,
-            
         ]
     )
     robot_description = {"robot_description": robot_description_content}
@@ -150,12 +160,15 @@ def launch_setup(context, *args, **kwargs):
     ompl_planning_yaml = load_yaml("ur_moveit_config", "config/ompl_planning.yaml")
     ompl_planning_pipeline_config["move_group"].update(ompl_planning_yaml)
 
-    #SMACC2/smacc2_sm_reference_library/sm_multi_ur5_sim/config/moveit/moveit_ur_controllers.yaml
-    
+    # SMACC2/smacc2_sm_reference_library/sm_multi_ur5_sim/config/moveit/moveit_ur_controllers.yaml
+
     # Trajectory Execution Configuration
 
-    controllers_yaml = load_yaml("sm_multi_ur5_sim",  "config/moveit/moveit_ur_controllers_" + prefix.perform(context)  + ".yaml")
-    
+    controllers_yaml = load_yaml(
+        "sm_multi_ur5_sim",
+        "config/moveit/moveit_ur_controllers_" + prefix.perform(context) + ".yaml",
+    )
+
     moveit_controllers = {
         "moveit_simple_controller_manager": controllers_yaml,
         "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
@@ -319,7 +332,7 @@ def generate_launch_description():
             description="",
         )
     ),
-    
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "y",
@@ -327,12 +340,13 @@ def generate_launch_description():
             description="",
         )
     ),
-    
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "z",
-            default_value= "0.0",
+            default_value="0.0",
             description="",
-        ))
+        )
+    )
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
