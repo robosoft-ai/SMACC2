@@ -129,7 +129,7 @@ def launch_setup(context, *args, **kwargs):
     )
     robot_description = {"robot_description": robot_description_content}
 
-    xterm_prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e"
+    xterm_prefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e"
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
@@ -138,8 +138,11 @@ def launch_setup(context, *args, **kwargs):
         name="robot_state_publisher" + "_" + prefix.perform(context),
         output="both",
         parameters=[{"use_sim_time": True}, robot_description],
-        prefix= xterm_prefix,
-        remappings=[("joint_states", "/joint_state_broadcaster_ur5_1/joint_states")],
+        prefix=xterm_prefix,
+        remappings=[
+            ("joint_states", "/joint_state_broadcaster_ur5_1/joint_states"),
+            ("robot_description", "robot_description" + "_" + prefix.perform(context)),
+        ],
     )
 
     controller_manager_name = "/" + prefix.perform(context) + "_controller_manager"
@@ -147,8 +150,8 @@ def launch_setup(context, *args, **kwargs):
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        #name="spawn_joint_state_broadcaster",
-        prefix= xterm_prefix,
+        # name="spawn_joint_state_broadcaster",
+        prefix=xterm_prefix,
         arguments=[
             "joint_state_broadcaster" + "_" + prefix.perform(context),
             "--controller-manager",
@@ -161,16 +164,16 @@ def launch_setup(context, *args, **kwargs):
     initial_joint_controller_spawner_started = Node(
         package="controller_manager",
         executable="spawner",
-        #name="spawn_trajectory_controller",
-        prefix= xterm_prefix,
+        # name="spawn_trajectory_controller",
+        prefix=xterm_prefix,
         arguments=[initial_joint_controller, "-c", controller_manager_name],
         condition=IfCondition(start_joint_controller),
     )
     initial_joint_controller_spawner_stopped = Node(
         package="controller_manager",
         executable="spawner",
-        #name="spawn_trajectory_controller",
-        prefix= xterm_prefix,
+        # name="spawn_trajectory_controller",
+        prefix=xterm_prefix,
         arguments=[initial_joint_controller, "-c", controller_manager_name, "--stopped"],
         condition=UnlessCondition(start_joint_controller),
     )
@@ -184,7 +187,7 @@ def launch_setup(context, *args, **kwargs):
             "-entity",
             "ur",
             "-topic",
-            "robot_description",
+            "robot_description" + "_" + prefix.perform(context),
             "-x",
             "10.0",
             "-y",

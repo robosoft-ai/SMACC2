@@ -41,7 +41,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmTestMoveitUr5Si
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition< 
+    Transition<
           EvCbSuccess<CbWaitTopicMessage<sensor_msgs::msg::JointState>, OrArm>, StMoveJoints, SUCCESS>
     > reactions;
 

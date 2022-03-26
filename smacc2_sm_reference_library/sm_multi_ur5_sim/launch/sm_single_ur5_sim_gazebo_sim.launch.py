@@ -73,9 +73,9 @@ def launch_setup(context, *args, **kwargs):
     controllers_file = PathJoinSubstitution(
         [FindPackageShare("sm_multi_ur5_sim"), "/config", "/ros_control", "/ur_controllers.yaml"]
     )
-    #description_package = LaunchConfiguration("description_package")
+    # description_package = LaunchConfiguration("description_package")
     description_package = "sm_multi_ur5_sim"
-     
+
     description_file = LaunchConfiguration("description_file")
     moveit_config_package = LaunchConfiguration("moveit_config_package")
     moveit_config_file = LaunchConfiguration("moveit_config_file")
