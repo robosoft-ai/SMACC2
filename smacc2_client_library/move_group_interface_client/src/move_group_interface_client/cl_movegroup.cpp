@@ -40,7 +40,7 @@ ClMoveGroup::~ClMoveGroup() {}
 void ClMoveGroup::onInitialize()
 {
   moveGroupClientInterface = std::make_shared<MoveGroupInterface>(getNode(), options_);
-  planningSceneInterface = std::make_shared<PlanningSceneInterface>();
+  planningSceneInterface = std::make_shared<PlanningSceneInterface>(options_.move_group_namespace_);
 }
 
 void ClMoveGroup::postEventMotionExecutionSucceded()
