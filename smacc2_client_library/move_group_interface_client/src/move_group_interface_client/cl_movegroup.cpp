@@ -28,16 +28,12 @@ using namespace moveit::planning_interface;
 
 namespace cl_move_group_interface
 {
-  ClMoveGroup::ClMoveGroup(const moveit::planning_interface::MoveGroupInterface::Options& options)
-    : options_(options)
-  {
+ClMoveGroup::ClMoveGroup(const moveit::planning_interface::MoveGroupInterface::Options & options)
+: options_(options)
+{
+}
 
-  }
-
-ClMoveGroup::ClMoveGroup(std::string groupName)
-  :options_(groupName) 
-    { 
-    }
+ClMoveGroup::ClMoveGroup(std::string groupName) : options_(groupName) {}
 
 ClMoveGroup::~ClMoveGroup() {}
 

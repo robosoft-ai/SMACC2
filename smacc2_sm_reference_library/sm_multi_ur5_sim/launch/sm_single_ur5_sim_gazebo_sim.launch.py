@@ -155,11 +155,11 @@ def launch_setup(context, *args, **kwargs):
             robot_description_kinematics,
             smacc2_sm_config,
         ],
-        #namespace= "ur5_1",
+        # namespace= "ur5_1",
         remappings=[
-                    ("/joint_states", "/joint_state_broadcaster_ur5_1/joint_states"),
-                    #("/move_action", "/ur5_1/move_action"),
-                    ]
+            ("/joint_states", "/joint_state_broadcaster_ur5_1/joint_states"),
+            # ("/move_action", "/ur5_1/move_action"),
+        ],
     )
 
     smacc2_sm_rviz = PathJoinSubstitution(

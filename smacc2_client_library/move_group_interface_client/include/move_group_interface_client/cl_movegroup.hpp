@@ -87,7 +87,7 @@ public:
 
   ClMoveGroup(std::string groupName);
 
-  ClMoveGroup(const moveit::planning_interface::MoveGroupInterface::Options& options);
+  ClMoveGroup(const moveit::planning_interface::MoveGroupInterface::Options & options);
 
   virtual ~ClMoveGroup();
 

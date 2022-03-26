@@ -69,9 +69,9 @@ def launch_setup(context, *args, **kwargs):
     prefix = LaunchConfiguration("prefix")
 
     start_joint_controller = LaunchConfiguration("start_joint_controller")
-    #initial_joint_controller = LaunchConfiguration("initial_joint_controller")
-    
-    initial_joint_controller = "joint_trajectory_controller"+"_" + prefix.perform(context)
+    # initial_joint_controller = LaunchConfiguration("initial_joint_controller")
+
+    initial_joint_controller = "joint_trajectory_controller" + "_" + prefix.perform(context)
 
     x = LaunchConfiguration("x")
     y = LaunchConfiguration("y")
@@ -132,21 +132,25 @@ def launch_setup(context, *args, **kwargs):
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        #name="robot_state_publisher",  # + "_" + prefix.perform(context),
+        # name="robot_state_publisher",  # + "_" + prefix.perform(context),
         name="robot_state_publisher" + "_" + prefix.perform(context),
         output="both",
         parameters=[{"use_sim_time": True}, robot_description],
         prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e",
-        remappings=[("joint_states", "/joint_state_broadcaster_ur5_1/joint_states")]
+        remappings=[("joint_states", "/joint_state_broadcaster_ur5_1/joint_states")],
     )
 
-    controller_manager_name = "/"+prefix.perform(context)+"_controller_manager"
+    controller_manager_name = "/" + prefix.perform(context) + "_controller_manager"
 
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster"+"_"+prefix.perform(context), "--controller-manager", controller_manager_name],
-        #arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+        arguments=[
+            "joint_state_broadcaster" + "_" + prefix.perform(context),
+            "--controller-manager",
+            controller_manager_name,
+        ],
+        # arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
     )
 
     # There may be other controllers of the joints, but this is the initially-started one

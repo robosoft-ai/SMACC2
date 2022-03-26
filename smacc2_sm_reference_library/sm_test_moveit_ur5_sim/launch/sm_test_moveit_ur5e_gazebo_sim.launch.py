@@ -135,7 +135,7 @@ def launch_setup(context, *args, **kwargs):
         package="sm_test_moveit_ur5_sim",
         executable="sm_test_moveit_ur5_sim_node",
         prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e gdbserver localhost:3000",
-        #prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e",
+        # prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e",
         parameters=[
             {"use_sim_time": True},
             robot_description,
