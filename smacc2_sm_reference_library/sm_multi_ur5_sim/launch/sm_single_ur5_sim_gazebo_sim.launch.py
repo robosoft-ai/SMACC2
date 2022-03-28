@@ -14,7 +14,7 @@
 
 #
 # Author: Denis Štogl
-# Maintainer: Pablo Iñigo Blasco
+# Author: Pablo Iñigo Blasco
 
 
 from launch import LaunchDescription
@@ -23,6 +23,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from launch.conditions import IfCondition, UnlessCondition
 
 import os
 from ament_index_python.packages import get_package_share_directory
@@ -81,6 +82,9 @@ def launch_setup(context, *args, **kwargs):
     moveit_config_file = LaunchConfiguration("moveit_config_file")
     prefix = LaunchConfiguration("prefix")
     prefixvalue = prefix.perform(context)
+    use_moveit = LaunchConfiguration("use_moveit")
+
+    use_state_machine = LaunchConfiguration("use_state_machine")
 
     x = LaunchConfiguration("x")
     y = LaunchConfiguration("y")
@@ -95,7 +99,7 @@ def launch_setup(context, *args, **kwargs):
             ),
             " ",
             "name:=",
-            "ur",
+            prefix,
             " ",
             "ur_type:=",
             ur_type,
@@ -123,7 +127,7 @@ def launch_setup(context, *args, **kwargs):
             ),
             " ",
             "name:=",
-            "ur",
+            prefixvalue,
             " ",
             "ur_type:=",
             ur_type,
@@ -135,8 +139,15 @@ def launch_setup(context, *args, **kwargs):
     )
     robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
 
-    kinematics_yaml = load_yaml("ur_moveit_config", "config/kinematics.yaml")
+    kinematics_yaml = load_yaml(
+        moveit_config_package.perform(context), "config/moveit/kinematics_" + prefixvalue + ".yaml"
+    )
     robot_description_kinematics = {"robot_description_kinematics": kinematics_yaml}
+
+    print("-------------------------")
+    print(robot_description_semantic_content.perform(context))
+    print("--------------------------------")
+    print(kinematics_yaml)
 
     smacc2_sm_config = PathJoinSubstitution(
         [
@@ -145,12 +156,14 @@ def launch_setup(context, *args, **kwargs):
             "sm_multi_ur5_sim_config.yaml",
         ]
     )
-
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e"
     sm_test_moveit_ur5_sim_node = Node(
         package="sm_multi_ur5_sim",
         executable="sm_multi_ur5_sim_node",
+        # namespace = prefixvalue,
         # prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e gdbserver localhost:3000",
-        prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e",
+        prefix=xtermprefix,
+        condition=IfCondition(use_state_machine),
         parameters=[
             {"use_sim_time": True},
             robot_description,
@@ -162,6 +175,7 @@ def launch_setup(context, *args, **kwargs):
         remappings=[
             ("/joint_states", "/joint_state_broadcaster_" + prefixvalue + "/joint_states"),
             # ("/move_action", "/ur5_1/move_action"),
+            # ("/move_group_interface_node", "/" + prefixvalue + "/move_group_interface_node")
         ],
     )
 
@@ -217,6 +231,7 @@ def launch_setup(context, *args, **kwargs):
         PythonLaunchDescriptionSource(
             [FindPackageShare("sm_multi_ur5_sim"), "/launch", "/ur_moveit.launch.py"]
         ),
+        condition=IfCondition(use_moveit),
         launch_arguments={
             "ur_type": ur_type,
             "description_package": description_package,
@@ -263,7 +278,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "description_package",
-            default_value="ur_description",
+            # default_value="ur_description",
             description="Description package with robot URDF/XACRO files. Usually the argument \
         is not set, it enables use of a custom description.",
         )
@@ -278,7 +293,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "moveit_config_package",
-            default_value="ur_moveit_config",
+            default_value="sm_multi_ur5_sim",
             description="MoveIt config package with robot SRDF/XACRO files. Usually the argument \
         is not set, it enables use of a custom moveit config.",
         )
@@ -330,6 +345,21 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "ros_control",
+            default_value="False",
+            description="",
+        )
+    ),
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_state_machine",
+            default_value="False",
+            description="",
+        )
+    ),
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_moveit",
             default_value="False",
             description="",
         )

@@ -52,6 +52,7 @@ install(DIRECTORY
   launch
   rviz
   urdf
+  srdf
   DESTINATION share/${PROJECT_NAME}
 )
 

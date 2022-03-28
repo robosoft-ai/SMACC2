@@ -13,6 +13,7 @@
 # limitations under the License.
 #
 # Author: Denis Stogl
+# Author: Pablo Iñigo Blasco
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
@@ -48,7 +49,7 @@ def launch_setup(context, *args, **kwargs):
     prefixvalue = prefix.perform(context)
 
     use_sim_time = LaunchConfiguration("use_sim_time")
-    launch_servo = LaunchConfiguration("launch_servo")
+    # launch_servo = LaunchConfiguration("launch_servo")
 
     x = LaunchConfiguration("x")
     y = LaunchConfiguration("y")
@@ -99,7 +100,7 @@ def launch_setup(context, *args, **kwargs):
             safety_k_position,
             " ",
             "name:=",
-            "ur",
+            prefixvalue,
             " ",
             "ur_type:=",
             ur_type,
@@ -134,7 +135,7 @@ def launch_setup(context, *args, **kwargs):
             "name:=",
             # Also ur_type parameter could be used but then the planning group names in yaml
             # configs has to be updated!
-            "ur",
+            prefixvalue,
             " ",
             "prefix:=",
             prefix,
@@ -144,7 +145,12 @@ def launch_setup(context, *args, **kwargs):
     robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
 
     robot_description_kinematics = PathJoinSubstitution(
-        [FindPackageShare(moveit_config_package), "config", "kinematics.yaml"]
+        [
+            FindPackageShare(moveit_config_package),
+            "config",
+            "moveit",
+            "kinematics_" + prefixvalue + ".yaml",
+        ]
     )
 
     # robot_description_planning = {
@@ -159,7 +165,10 @@ def launch_setup(context, *args, **kwargs):
             "start_state_max_bounds_error": 0.1,
         }
     }
-    ompl_planning_yaml = load_yaml("ur_moveit_config", "config/ompl_planning.yaml")
+    ompl_planning_yaml = load_yaml(
+        moveit_config_package.perform(context),
+        "config/moveit/ompl_planning_" + prefixvalue + ".yaml",
+    )
     ompl_planning_pipeline_config["move_group"].update(ompl_planning_yaml)
 
     # SMACC2/smacc2_sm_reference_library/sm_multi_ur5_sim/config/moveit/moveit_ur_controllers.yaml
@@ -190,13 +199,16 @@ def launch_setup(context, *args, **kwargs):
         "publish_transforms_updates": True,
     }
 
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e"
+
     # Start the actual move_group node/action server
     move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
-        # namespace= "ur5_1",
+        # namespace= prefixvalue,
         name="move_group" + "_" + prefixvalue,
+        prefix=xtermprefix,
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -210,8 +222,17 @@ def launch_setup(context, *args, **kwargs):
         ],
         remappings=[
             ("joint_states", "/joint_state_broadcaster_" + prefixvalue + "/joint_states"),
-            # ("/ur5_1/joint_trajectory_controller_ur5_1/", "/joint_trajectory_controller_ur5_1")
+            (
+                "/"
+                + prefixvalue
+                + "/joint_trajectory_controller_"
+                + prefixvalue
+                + "/follow_joint_trajectory",
+                "/joint_trajectory_controller_" + prefixvalue + "/follow_joint_trajectory",
+            ),
+            ("move_action", "move_action_2"),
         ],
+        arguments=["--log-level", "moveit_ros_move_group:=DEBUG"],
     )
 
     # Warehouse mongodb server
@@ -227,24 +248,27 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Servo node for realtime control
-    servo_yaml = load_yaml("ur_moveit_config", "config/ur_servo.yaml")
-    servo_params = {"moveit_servo": servo_yaml}
-    servo_node = Node(
-        package="moveit_servo",
-        condition=IfCondition(launch_servo),
-        executable="servo_node_main",
-        parameters=[
-            servo_params,
-            robot_description,
-            robot_description_semantic,
-        ],
-        output={
-            "stdout": "screen",
-            "stderr": "screen",
-        },
-    )
+    # servo_yaml = load_yaml(
+    #     moveit_config_package.perform(context), "config/moveit/ur_servo_" + prefixvalue + ".yaml"
+    # )
+    # servo_params = {"moveit_servo": servo_yaml}
+    # servo_node = Node(
+    #     package="moveit_servo",
+    #     condition=IfCondition(launch_servo),
+    #     executable="servo_node_main",
+    #     prefix=xtermprefix,
+    #     parameters=[
+    #         servo_params,
+    #         robot_description,
+    #         robot_description_semantic,
+    #     ],
+    #     output={
+    #         "stdout": "screen",
+    #         "stderr": "screen",
+    #     },
+    # )
 
-    nodes_to_start = [move_group_node, mongodb_server_node, servo_node]
+    nodes_to_start = [move_group_node, mongodb_server_node]  # servo_node
 
     return nodes_to_start
 
@@ -285,7 +309,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "description_package",
-            default_value="ur_description",
+            # default_value="ur_description",
             description="Description package with robot URDF/XACRO files. Usually the argument \
         is not set, it enables use of a custom description.",
         )
@@ -329,9 +353,9 @@ def generate_launch_description():
         )
     )
 
-    declared_arguments.append(
-        DeclareLaunchArgument("launch_servo", default_value="true", description="Launch Servo?")
-    )
+    # declared_arguments.append(
+    #     DeclareLaunchArgument("launch_servo", default_value="true", description="Launch Servo?")
+    # )
 
     declared_arguments.append(
         DeclareLaunchArgument(

@@ -14,7 +14,7 @@
 
 #
 # Author: Denis Štogl
-# Maintainer: Pablo Iñigo Blasco
+# Author: Pablo Iñigo Blasco
 
 
 from launch import LaunchDescription
@@ -60,10 +60,14 @@ def launch_setup(context, *args, **kwargs):
         ),
         launch_arguments={
             "prefix": "ur5_1",
-            "ros_control": "True",
-            "x": "0.5",
+            "x": "2.5",
             "y": "0.0",
             "z": "0.0",
+            "description_package": "sm_multi_ur5_sim",
+            "moveit_config_package": "sm_multi_ur5_sim",
+            "use_state_machine": "False",
+            "ros_control": "True",
+            "use_moveit": "False",
         }.items(),
     )
 
@@ -77,10 +81,14 @@ def launch_setup(context, *args, **kwargs):
         ),
         launch_arguments={
             "prefix": "ur5_2",
-            "ros_control": "True",
             "x": "0.0",
             "y": "0.0",
             "z": "0.0",
+            "description_package": "sm_multi_ur5_sim",
+            "moveit_config_package": "sm_multi_ur5_sim",
+            "use_state_machine": "True",
+            "ros_control": "True",
+            "use_moveit": "True",
         }.items(),
     )
 

@@ -27,6 +27,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 # Author: Denis Stogl
+# Author: Pablo Iñigo Blasco
 
 import imp
 from launch import LaunchDescription
@@ -67,6 +68,7 @@ def launch_setup(context, *args, **kwargs):
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
     prefix = LaunchConfiguration("prefix")
+    prefixvalue = prefix.perform(context)
 
     start_joint_controller = LaunchConfiguration("start_joint_controller")
     # initial_joint_controller = LaunchConfiguration("initial_joint_controller")
@@ -107,7 +109,7 @@ def launch_setup(context, *args, **kwargs):
             safety_k_position,
             " ",
             "name:=",
-            "ur",
+            prefixvalue,
             " ",
             "ur_type:=",
             ur_type,
@@ -127,7 +129,6 @@ def launch_setup(context, *args, **kwargs):
             z,
         ]
     )
-    prefixvalue = prefix.perform(context)
     robot_description = {"robot_description": robot_description_content}
 
     xterm_prefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e"
@@ -186,11 +187,11 @@ def launch_setup(context, *args, **kwargs):
         name="spawn_ur",
         arguments=[
             "-entity",
-            "ur",
+            prefixvalue,
             "-topic",
             "robot_description" + "_" + prefix.perform(context),
             "-x",
-            "10.0",
+            "0.0",
             "-y",
             "0",
             "-z",
@@ -260,7 +261,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "description_package",
-            default_value="ur_description",
+            # default_value="ur_description",
             description="Description package with robot URDF/XACRO files. Usually the argument \
         is not set, it enables use of a custom description.",
         )

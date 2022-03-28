@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg name)">
-   <!-- robot name parameter -->
-   <xacro:arg name="name" default="ur"/>
    <!-- import main macro -->
    <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
 
@@ -57,6 +55,9 @@
    <!-- create link fixed to the "world" -->
    <link name="world" />
 
+   <!-- robot name parameter -->
+  <xacro:arg name="name" default=""/>
+
    <!-- arm -->
    <xacro:ur_robot
      name="$(arg name)"
@@ -107,6 +108,19 @@
         <robot_param_node>robot_state_publisher_$(arg prefix)</robot_param_node>
         <controller_manager_prefix_node_name>$(arg prefix)</controller_manager_prefix_node_name>
       </plugin>
+
+
+      <!-- <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control_ur5_1">
+        <parameters>$(arg simulation_controllers)</parameters>
+        <robot_param_node>robot_state_publisher_ur5_1</robot_param_node>
+        <controller_manager_prefix_node_name>ur5_1</controller_manager_prefix_node_name>
+      </plugin>
+
+      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control_ur5_2">
+        <parameters>$(arg simulation_controllers)</parameters>
+        <robot_param_node>robot_state_publisher_ur5_2</robot_param_node>
+        <controller_manager_prefix_node_name>ur5_2</controller_manager_prefix_node_name>
+      </plugin>-->
     </gazebo>
   </xacro:if>
 
