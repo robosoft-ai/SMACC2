@@ -323,7 +323,13 @@ def generate_launch_description():
             "z",
             default_value="0.0",
             description="",
-        )
-    )
+        )),
+    
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "ros_control",
+            default_value="False",
+            description="",
+        ))
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

@@ -58,7 +58,12 @@ def launch_setup(context, *args, **kwargs):
                 "/sm_single_ur5_sim_gazebo_sim.launch.py",
             ]
         ),
-        launch_arguments={"prefix": "ur5_1", "x": "0.5", "y": "0.0", "z": "0.0"}.items(),
+        launch_arguments={
+                          "prefix": "ur5_1",
+                          "ros_control": "True", 
+                          "x": "0.5", 
+                          "y": "0.0", 
+                          "z": "0.0"}.items(),
     )
 
     single_ur_launch_2 = IncludeLaunchDescription(
@@ -69,10 +74,19 @@ def launch_setup(context, *args, **kwargs):
                 "/sm_single_ur5_sim_gazebo_sim.launch.py",
             ]
         ),
-        launch_arguments={"prefix": "ur5_2", "x": "0.0", "y": "0.0", "z": "0.0"}.items(),
+        launch_arguments={
+            "prefix": "ur5_2",
+            "ros_control": "False", 
+            "x": "0.0", 
+            "y": "0.0", 
+            "z": "0.0"
+            }.items(),
     )
 
-    nodes_to_launch = [single_ur_launch_1, gzserver, gzclient]
+    nodes_to_launch = [single_ur_launch_1, 
+                       single_ur_launch_2, 
+                       gzserver, 
+                       gzclient]
 
     return nodes_to_launch
 
