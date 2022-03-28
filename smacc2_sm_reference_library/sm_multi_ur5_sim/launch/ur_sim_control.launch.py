@@ -127,6 +127,7 @@ def launch_setup(context, *args, **kwargs):
             z,
         ]
     )
+    prefixvalue = prefix.perform(context)
     robot_description = {"robot_description": robot_description_content}
 
     xterm_prefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e"
@@ -135,12 +136,12 @@ def launch_setup(context, *args, **kwargs):
         package="robot_state_publisher",
         executable="robot_state_publisher",
         # name="robot_state_publisher",  # + "_" + prefix.perform(context),
-        name="robot_state_publisher" + "_" + prefix.perform(context),
+        name="robot_state_publisher" + "_" + prefixvalue,
         output="both",
         parameters=[{"use_sim_time": True}, robot_description],
         prefix=xterm_prefix,
         remappings=[
-            ("joint_states", "/joint_state_broadcaster_ur5_1/joint_states"),
+            ("joint_states", "/joint_state_broadcaster_" + prefixvalue + "/joint_states"),
             ("robot_description", "robot_description" + "_" + prefix.perform(context)),
         ],
     )

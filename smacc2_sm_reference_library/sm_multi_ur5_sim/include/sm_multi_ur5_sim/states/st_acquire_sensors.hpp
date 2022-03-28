@@ -22,6 +22,7 @@
 #pragma once
 
 #include <sensor_msgs/msg/joint_state.h>
+#define UR5PREFIX "ur5_2"
 
 namespace sm_multi_ur5_sim
 {
@@ -48,7 +49,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmTestMoveitUr5Si
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrArm, CbWaitTopicMessage<sensor_msgs::msg::JointState>>("/joint_state_broadcaster_ur5_1/joint_states");
+    configure_orthogonal<OrArm, CbWaitTopicMessage<sensor_msgs::msg::JointState>>("/joint_state_broadcaster_"UR5PREFIX"/joint_states");
   };
 
   void onEntry()

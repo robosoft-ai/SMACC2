@@ -209,7 +209,7 @@ def launch_setup(context, *args, **kwargs):
             {"use_sim_time": use_sim_time},
         ],
         remappings=[
-            ("joint_states", "/joint_state_broadcaster_ur5_1/joint_states"),
+            ("joint_states", "/joint_state_broadcaster_" + prefixvalue + "/joint_states"),
             # ("/ur5_1/joint_trajectory_controller_ur5_1/", "/joint_trajectory_controller_ur5_1")
         ],
     )

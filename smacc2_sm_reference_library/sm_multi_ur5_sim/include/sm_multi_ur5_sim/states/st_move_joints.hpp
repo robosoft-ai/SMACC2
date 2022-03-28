@@ -21,6 +21,7 @@
 
 #pragma once
 
+#define UR5_PREFIX "ur5_2"
 namespace sm_multi_ur5_sim
 {
 // SMACC2 classes
@@ -29,6 +30,7 @@ using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
 using namespace cl_move_group_interface;
+
 
 // STATE DECLARATION
 struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmTestMoveitUr5Sim>
@@ -46,11 +48,11 @@ struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmTestMoveitUr5Sim>
   static void staticConfigure()
   {
     std::map<std::string, double> jointValues{
-      {"ur5_1shoulder_lift_joint", 0.0},
-      {"ur5_1shoulder_pan_joint", 0.0},
-      {"ur5_1wrist_1_joint", M_PI / 4},
-      {"ur5_1wrist_2_joint", 0.0},
-      {"ur5_1wrist_3_joint", 0.0}};
+      {UR5_PREFIX"shoulder_lift_joint", 0.0},
+      {UR5_PREFIX"shoulder_pan_joint", 0.0},
+      {UR5_PREFIX"wrist_1_joint", M_PI / 4},
+      {UR5_PREFIX"wrist_2_joint", 0.0},
+      {UR5_PREFIX"wrist_3_joint", 0.0}};
 
     configure_orthogonal<OrArm, CbMoveJoints>(jointValues);
   };

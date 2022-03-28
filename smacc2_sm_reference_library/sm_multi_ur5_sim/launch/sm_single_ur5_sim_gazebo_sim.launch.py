@@ -80,6 +80,7 @@ def launch_setup(context, *args, **kwargs):
     moveit_config_package = LaunchConfiguration("moveit_config_package")
     moveit_config_file = LaunchConfiguration("moveit_config_file")
     prefix = LaunchConfiguration("prefix")
+    prefixvalue = prefix.perform(context)
 
     x = LaunchConfiguration("x")
     y = LaunchConfiguration("y")
@@ -159,7 +160,7 @@ def launch_setup(context, *args, **kwargs):
         ],
         # namespace= "ur5_1",
         remappings=[
-            ("/joint_states", "/joint_state_broadcaster_ur5_1/joint_states"),
+            ("/joint_states", "/joint_state_broadcaster_" + prefixvalue + "/joint_states"),
             # ("/move_action", "/ur5_1/move_action"),
         ],
     )
@@ -323,13 +324,15 @@ def generate_launch_description():
             "z",
             default_value="0.0",
             description="",
-        )),
-    
+        )
+    ),
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "ros_control",
             default_value="False",
             description="",
-        ))
+        )
+    )
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

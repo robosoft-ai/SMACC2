@@ -34,7 +34,10 @@ public:
   {
     //moveit::planning_interface::MoveGroupInterface::Options options ("ur5_1ur_manipulator", moveit::planning_interface::MoveGroupInterface::ROBOT_DESCRIPTION, "ur5_1");
 
-    moveit::planning_interface::MoveGroupInterface::Options options ("ur5_1ur_manipulator");
+    //getNode()->declare_parameter("manipulator_id"); // ur5_1
+    //auto prefix = getNode()->get_parameter("manipulator_id").value_to_string(); // ur5_1
+    std::string prefix = "ur5_2";
+    moveit::planning_interface::MoveGroupInterface::Options options (prefix + "ur_manipulator");
 
     auto move_group_client = this->createClient<cl_move_group_interface::ClMoveGroup>(options); //ur_manipulator
     move_group_client->createComponent<cl_move_group_interface::CpTrajectoryHistory>();
