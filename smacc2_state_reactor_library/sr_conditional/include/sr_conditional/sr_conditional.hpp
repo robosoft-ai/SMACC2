@@ -33,7 +33,7 @@ class SrConditional : public StateReactor
 {
 private:
   std::map<const std::type_info *, bool> triggeredEvents;
-  bool conditionFlag;
+  bool conditionFlag = false;
 
 public:
   SrConditional(std::function<bool(TEv *)> sr_conditionalFunction)
