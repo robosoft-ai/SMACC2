@@ -107,6 +107,7 @@
         <parameters>$(arg simulation_controllers)</parameters>
         <robot_param_node>robot_state_publisher_$(arg prefix)</robot_param_node>
         <controller_manager_prefix_node_name>$(arg prefix)</controller_manager_prefix_node_name>
+        <controller_manager_namespace></controller_manager_namespace>
       </plugin>
 
 
