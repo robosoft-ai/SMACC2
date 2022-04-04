@@ -2,8 +2,8 @@
 Changelog for package smacc2_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.0 (2022-04-04)
+------------------
 * Backporting features from rolling and galactic
 * Contributors: Pablo Iñigo Blasco
 

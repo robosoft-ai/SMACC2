@@ -2,8 +2,8 @@
 Changelog for package smacc2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.0 (2022-04-04)
+------------------
 * improvements in smacc core adding more components mostly developed for autoware demo
 * Foxy backport (`#206 <https://github.com/StoglRobotics-forks/SMACC2/issues/206>`_)
 * Feature/testing moveit behaviors (`#167 <https://github.com/StoglRobotics-forks/SMACC2/issues/167>`_)
