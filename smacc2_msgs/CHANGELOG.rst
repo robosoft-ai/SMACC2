@@ -2,8 +2,8 @@
 Changelog for package smacc2_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.0 (2022-04-04)
+------------------
 * Contributors: Pablo Iñigo Blasco
 
 0.1.0 (2021-08-31)

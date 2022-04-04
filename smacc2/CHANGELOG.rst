@@ -2,8 +2,8 @@
 Changelog for package smacc2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.0 (2022-04-04)
+------------------
 * Feature/fixing type string walker (`#263 <https://github.com/StoglRobotics-forks/SMACC2/issues/263>`_)
 * Feature/fixing husky build rolling (`#258 <https://github.com/StoglRobotics-forks/SMACC2/issues/258>`_)
 * Merging code from backport foxy and updates about autoware (`#208 <https://github.com/StoglRobotics-forks/SMACC2/issues/208>`_)
