@@ -34,6 +34,8 @@ find_package(gazebo_msgs REQUIRED)
 find_package(gazebo_ros REQUIRED)
 find_package(rviz_ogre_vendor REQUIRED)
 find_package(OGRE REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(sr_all_events_go REQUIRED)
 
 set(dependencies
   smacc2
@@ -43,6 +45,8 @@ set(dependencies
   visualization_msgs
   image_tools
   rclcpp
+  geometry_msgs
+  sr_all_events_go
   #gazebo_dev
   #gazebo_ros
 )
@@ -60,6 +64,7 @@ include_directories(include
 #---------------------------------------------------------
 add_executable(${PROJECT_NAME}_node
   src/${PROJECT_NAME}/sm_husky_barrel_search_1_node.cpp
+  src/${PROJECT_NAME}/nav2z_client/cp_waypoints_visualizer.cpp
 )
 
 ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
@@ -77,7 +82,27 @@ ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(${dependencies})
 
+#---------------------------------------------------------
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sm_husky_barrel_search_1.dsv.in")
+
+add_executable(odom_to_tf
+  src/${PROJECT_NAME}/odom_to_tf.cpp
+)
+
+ament_target_dependencies(odom_to_tf ${dependencies})
+target_link_libraries(${PROJECT_NAME}_node
+  boost_thread
+  boost_system
+  ${Boost_LIBS}
+  ${std_msgs_LIBRARIES}
+  #${OGRE_LIBRARIES}
+  #${gazebo_LIBRARIES}
+  #${gazebo_ros_LIBRARIES}
+)
+
+ament_export_include_directories(include)
+ament_export_libraries(odom_to_tf)
+ament_export_dependencies(${dependencies})
 
 #---------------------------------------------------------
 
@@ -122,6 +147,7 @@ endif()
 
  install(TARGETS
    ${PROJECT_NAME}_node
+   odom_to_tf
    opencv_perception_node
    controllable_led_plugin
 #   # temperature_sensor_node_${PROJECT_NAME}

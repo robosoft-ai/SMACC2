@@ -22,6 +22,7 @@
 // CLIENT BEHAVIORS
 #include <nav2z_client/nav2z_client.hpp>
 #include <nav2z_client/client_behaviors.hpp>
+#include <sm_husky_barrel_search_1/clients/cb_sleep_for.hpp>
 
 // ORTHOGONALS
 #include "orthogonals/or_navigation.hpp"
@@ -35,6 +36,22 @@ namespace sm_husky_barrel_search_1
 struct StAcquireSensors;
 struct StDetectItems;
 struct StNavigateToWaypointX;
+struct StDeactivateMine;
+struct StSatelliteCommunications;
+struct StSelfDestruction;
+struct StExploreAndRetreat;
+struct StUndoRetreat;
+
+namespace SS5
+{
+class SsSPattern1;
+}
+
+struct xt
+{
+ int b;
+ int dd;
+};
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
@@ -56,3 +73,10 @@ struct SmHuskyBarrelSearch1
 #include "states/st_acquire_sensors.hpp"
 #include "states/st_detect_items.hpp"
 #include "states/st_navigate_to_waypoint_x.hpp"
+#include "states/st_deactivate_mine.hpp"
+#include "states/st_self_destruction.hpp"
+#include "states/st_satellite_communications.hpp"
+#include "states/st_evasion_motion.hpp"
+#include "superstates/ss_s_pattern_1.hpp"
+#include "states/st_explore_and_retreat.hpp"
+#include "states/st_undo_retreat.hpp"

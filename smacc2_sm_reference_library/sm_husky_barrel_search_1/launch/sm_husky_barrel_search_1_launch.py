@@ -175,14 +175,7 @@ def generate_launch_description():
             os.path.join(sm_husky_barrel_search_1_launch_dir, "ekf_gps_launch.py")
         ),
         launch_arguments={
-            "namespace": namespace,
-            "use_namespace": use_namespace,
-            "autostart": autostart,
-            "params_file": params_file,
-            # "slam": slam,
-            "map": map_yaml_file,
             "use_sim_time": use_sim_time,
-            "default_nav_to_pose_bt_xml": default_nav_to_pose_bt_xml,
         }.items(),
     )
 
@@ -223,11 +216,51 @@ def generate_launch_description():
             ),
         ],
         remappings=[
-            # ("/odom", "/odometry/filtered"),
+            ("/odom", "/odometry/local"),
             # ("/sm_husky_barrel_search_1_2/odom_tracker/odom_tracker_path", "/odom_tracker_path"),
             # ("/sm_husky_barrel_search_1_2/odom_tracker/odom_tracker_stacked_path", "/odom_tracker_path_stacked")
         ],
         arguments=["--ros-args", "--log-level", "INFO"],
+    )
+
+    static_map_transform = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}],
+        output="screen",
+        arguments=["0", "0", "0", "0", "0", "0", "map", "odom"],
+    )
+
+    static_map_transform_2 = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}],
+        output="screen",
+        arguments=["0", "0", "0", "0", "0", "0", "base_link", "base_footprint"],
+    )
+
+    odom_to_tf = Node(
+        package="sm_husky_barrel_search_1",
+        executable="odom_to_tf",
+        name="odom_to_tf",
+        output="screen",
+        prefix=xtermprefix,
+        parameters=[{"use_sim_time": use_sim_time}],
+        remappings=[
+            ("odom", "odom_gt"),
+            ("odom_out", "odom")
+            #     # ("/sm_husky_barrel_search_1_2/odom_tracker/odom_tracker_path", "/odom_tracker_path"),
+            #     # ("/sm_husky_barrel_search_1_2/odom_tracker/odom_tracker_stacked_path", "/odom_tracker_path_stacked")
+        ],
+        # arguments=["--ros-args", "--log-level", "INFO"],
+    )
+
+    opencv_perception_node = Node(
+        package="sm_husky_barrel_search_1",
+        executable="opencv_perception_node",
+        output="screen",
+        remappings=[("/image_raw", "/intel_realsense_r200_depth/image_raw")],
+        prefix=xtermprefix,
     )
 
     # led_action_server_node = Node(
@@ -277,6 +310,7 @@ def generate_launch_description():
     # ld.add_action(gazebo_husky)
 
     ld.add_action(sm_husky_barrel_search_1_node)
+    ld.add_action(opencv_perception_node)
     # ld.add_action(service3_node)
     # ld.add_action(temperature_action_server)
     # ld.add_action(led_action_server_node)
@@ -285,6 +319,11 @@ def generate_launch_description():
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)
-    ld.add_action(ekf_gps_localization)
+    ld.add_action(odom_to_tf)
+
+    ld.add_action(static_map_transform)
+    ld.add_action(static_map_transform_2)
+
+    # ld.add_action(ekf_gps_localization)
 
     return ld

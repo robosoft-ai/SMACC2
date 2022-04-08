@@ -31,6 +31,7 @@
 #include <nav2z_client/components/slam_toolbox/cp_slam_toolbox.hpp>
 #include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
 
+#include <sm_husky_barrel_search_1/clients/nav2z_client/components/cp_waypoints_visualizer.hpp>
 
 namespace sm_husky_barrel_search_1
 {
@@ -43,35 +44,38 @@ using ::cl_nav2z::CpSlamToolbox;
 using ::cl_nav2z::WaypointNavigator;
 using ::cl_nav2z::ClNav2Z;
 using ::cl_nav2z::PlannerSwitcher;
+using ::cl_nav2z::CpWaypointsVisualizer;
 
 class OrNavigation : public smacc2::Orthogonal<OrNavigation>
 {
 public:
   void onInitialize() override
   {
-    auto movebaseClient = this->createClient<ClNav2Z>();
+    auto nav2zClient = this->createClient<ClNav2Z>();
 
     // create pose component
-    movebaseClient->createComponent<Pose>();
+    nav2zClient->createComponent<Pose>();
 
     // create planner switcher
-    movebaseClient->createComponent<PlannerSwitcher>();
+    nav2zClient->createComponent<PlannerSwitcher>();
 
     // create goal checker switcher
-    movebaseClient->createComponent<GoalCheckerSwitcher>();
+    nav2zClient->createComponent<GoalCheckerSwitcher>();
 
     // create odom tracker
-    movebaseClient->createComponent<OdomTracker>();
+    nav2zClient->createComponent<OdomTracker>();
 
     // create odom tracker
-    movebaseClient->createComponent<CpSlamToolbox>();
+    nav2zClient->createComponent<CpSlamToolbox>();
 
     // create waypoints navigator component
-    auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();
+    auto waypointsNavigator = nav2zClient->createComponent<WaypointNavigator>();
     loadWaypointsFromYaml(waypointsNavigator);
 
     // change this to skip some points of the yaml file, default = 0
     waypointsNavigator->currentWaypoint_ = 0;
+
+    nav2zClient->createComponent<CpWaypointsVisualizer>(rclcpp::Duration(0.25s));
   }
 
   void loadWaypointsFromYaml(WaypointNavigator * waypointsNavigator)
