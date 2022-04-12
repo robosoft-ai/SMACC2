@@ -24,5 +24,3 @@ pull_request_rules:
       backport:
         branches:
           - foxy
-
-
