@@ -48,15 +48,28 @@ struct StMoveEndEffector : smacc2::SmaccState<StMoveEndEffector, SmTestMoveitUr5
   {
     geometry_msgs::msg::PoseStamped target_pose;
     target_pose.header.frame_id = "world";
-    target_pose.pose.position.x = 0.4;
-    target_pose.pose.position.y = 0.3;
-    target_pose.pose.position.z = 0.3;
+    target_pose.pose.position.x = 0.137;
+    target_pose.pose.position.y = -0.630;
+    target_pose.pose.position.z = 0.467;
+
+    target_pose.pose.orientation.x = 0.498;
+    target_pose.pose.orientation.y = 0.470;
+    target_pose.pose.orientation.z = 0.715;
+
+    target_pose.pose.orientation.w = 0.141;
+
+    //target_pose.pose.position.z = 0.579;
+
+  // random valid
+  // - Translation: [0.137, -0.730, 0.267]
+  // - Rotation: in Quaternion [0.498, 0.470, 0.715, 0.141]
+
 
     //0.8939967, 0, 0, -0.4480736 ]
-    target_pose.pose.orientation.x = 0.8939967;
-    target_pose.pose.orientation.y = 0;
-    target_pose.pose.orientation.z = 0;
-    target_pose.pose.orientation.w = -0.4480736 ;
+    // target_pose.pose.orientation.x = 0.8939967;
+    // target_pose.pose.orientation.y = 0;
+    // target_pose.pose.orientation.z = 0;
+    // target_pose.pose.orientation.w = -0.4480736 ;
 
     configure_orthogonal<OrArm, CbMoveEndEffector>(target_pose, "tool0");
   }

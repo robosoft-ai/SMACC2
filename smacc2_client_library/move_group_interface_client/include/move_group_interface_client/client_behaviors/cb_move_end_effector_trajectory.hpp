@@ -104,7 +104,7 @@ protected:
   void executeJointSpaceTrajectory(
     const moveit_msgs::msg::RobotTrajectory & computedJointTrajectory);
 
-  virtual void generateTrajectory();
+  virtual void generateTrajectory() = 0;
 
   virtual void createMarkers();
 

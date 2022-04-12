@@ -31,6 +31,8 @@ public:
 
   virtual ~CbExecuteLastTrajectory();
 
+  virtual void generateTrajectory();
+
   virtual void onEntry() override;
 };
 

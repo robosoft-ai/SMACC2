@@ -35,6 +35,8 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/features2d.hpp>
 
+#include "image_tools/cv_mat_sensor_msgs_image_type_adapter.hpp"
+
 RCLCPP_USING_CUSTOM_TYPE_AS_ROS_MESSAGE_TYPE(
   image_tools::ROSCvMatContainer,
   sensor_msgs::msg::Image);

@@ -11,7 +11,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+<<<<<<< HEAD
         distro: [galactic]
+=======
+        distro: [rolling]
+>>>>>>> master
 
     env:
       ROS_DISTRO: ${{ matrix.distro }}

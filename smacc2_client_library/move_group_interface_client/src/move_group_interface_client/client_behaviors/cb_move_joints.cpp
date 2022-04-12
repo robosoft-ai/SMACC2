@@ -51,6 +51,9 @@ std::string currentJointStatesToString(
   std::map<std::string, double> & targetJoints)
 {
   auto state = moveGroupInterface.getCurrentState();
+
+  if (state == nullptr) return std::string();
+
   auto vnames = state->getVariableNames();
 
   std::stringstream ss;
