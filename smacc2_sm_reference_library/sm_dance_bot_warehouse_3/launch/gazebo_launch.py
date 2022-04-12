@@ -128,6 +128,8 @@ def generate_launch_description():
             "0.5",
             "-Y",
             "0",
+            "-spawn_service_timeout",
+            "20"
         ],
     )
 
