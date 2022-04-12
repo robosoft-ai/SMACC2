@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import os
-from sys import prefix
 
 from ament_index_python.packages import get_package_share_directory
 
@@ -113,11 +112,10 @@ def generate_launch_description():
     )
 
     spawn_entity_node = Node(
-        
         package="gazebo_ros",
         executable="spawn_entity.py",
         name="gazebo_ros",
-        prefix = xtermprefix,
+        prefix=xtermprefix,
         arguments=[
             "-entity",
             "turtlebot3_waffle",
@@ -132,7 +130,7 @@ def generate_launch_description():
             "-Y",
             "0",
             "-spawn_service_timeout",
-            "20"
+            "20",
         ],
     )
 
