@@ -115,6 +115,7 @@ def generate_launch_description():
         package="gazebo_ros",
         executable="spawn_entity.py",
         name="gazebo_ros",
+        prefix=xtermprefix,
         arguments=[
             "-entity",
             "turtlebot3_waffle",
@@ -128,6 +129,8 @@ def generate_launch_description():
             "0.5",
             "-Y",
             "0",
+            "-spawn_service_timeout",
+            "20",
         ],
     )
 

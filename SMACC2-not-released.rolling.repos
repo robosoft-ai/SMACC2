@@ -1,0 +1,60 @@
+repositories:
+
+  autoware_auto_msgs:
+    type: git
+    url: https://github.com/tier4/autoware_auto_msgs
+    version: tier4/main
+
+  navigation2:
+    type: git
+    url: https://github.com/ros-planning/navigation2.git
+    version: main
+  slam_toolbox:
+    type: git
+    url: https://github.com/SteveMacenski/slam_toolbox.git
+    version: ros2
+  husky:
+    type: git
+    url: https://github.com/StoglRobotics-forks/husky.git
+    version: fixes-for-smacc2
+
+  ros2_control_demos:
+    type: git
+    url: https://github.com/ros-controls/ros2_control_demos.git
+    version: master
+  gazebo_ros2_control:
+    type: git
+    url: https://github.com/ros-simulation/gazebo_ros2_control.git
+    version: master
+  ur_msgs:
+    type: git
+    url: https://github.com/destogl/ur_msgs.git
+    version: ros2
+  Universal_Robots_ROS2_Driver:
+    type: git
+    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
+    version: main
+  Universal_Robots_Client_Library:
+    type: git
+    url: https://github.com/UniversalRobots/Universal_Robots_Client_Library.git
+    version: master
+  Universal_Robots_Description:
+    type: git
+    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git
+    version: ros2
+  Universal_Robots_ROS2_Gazebo_Simulation:
+    type: git
+    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Gazebo_Simulation
+    version: ros2
+  Universal_Robots_ROS2_Ignition_Simulation:
+    type: git
+    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Ignition_Simulation
+    version: ros2
+  ign_ros2_control:
+    type: git
+    url: https://github.com/ignitionrobotics/ign_ros2_control.git
+    version: main
+  ros_ign:
+    type: git
+    url: https://github.com/ignitionrobotics/ros_ign.git
+    version: ros2

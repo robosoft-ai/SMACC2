@@ -32,12 +32,16 @@
 #include <move_group_interface_client/cl_movegroup.hpp>
 #include <move_group_interface_client/client_behaviors.hpp>
 
+#include <smacc2/client_behaviors/cb_wait_topic_message.hpp>
+
+
 namespace sm_test_moveit_ur5_sim
 {
 
 using namespace cl_move_group_interface;
 
 //STATES
+struct StAcquireSensors;
 struct StMoveJoints;
 struct StMoveEndEffector;
 struct StMoveCartesianRelative;
@@ -53,7 +57,7 @@ struct StUndoLastTrajectory;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
-struct SmTestMoveitUr5Sim : public smacc2::SmaccStateMachineBase<SmTestMoveitUr5Sim, StMoveJoints>
+struct SmTestMoveitUr5Sim : public smacc2::SmaccStateMachineBase<SmTestMoveitUr5Sim, StAcquireSensors>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -63,6 +67,7 @@ struct SmTestMoveitUr5Sim : public smacc2::SmaccStateMachineBase<SmTestMoveitUr5
 }  // namespace sm_test_moveit_ur5_sim
 
 // STATES
+#include "states/st_acquire_sensors.hpp"
 #include "states/st_attach_object.hpp"
 #include "states/st_move_end_effector.hpp"
 #include "states/st_circular_pivot_motion.hpp"

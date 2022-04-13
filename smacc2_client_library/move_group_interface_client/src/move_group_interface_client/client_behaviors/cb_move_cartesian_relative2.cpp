@@ -43,7 +43,7 @@ CbMoveCartesianRelative2::~CbMoveCartesianRelative2() {}
 
 void CbMoveCartesianRelative2::generateTrajectory()
 {
-  RCLCPP_INFO(getLogger(), "[CbMoveCartesianRelative2] generating trajectory");
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] generating trajectory");
   // at least 1 sample per centimeter (average)
   const double METERS_PER_SAMPLE = 0.001;
 
@@ -68,7 +68,7 @@ void CbMoveCartesianRelative2::generateTrajectory()
   secondsPerSample = METERS_PER_SAMPLE / (*linearSpeed_m_s_);
 
   tf2::Stamped<tf2::Transform> currentEndEffectorTransform;
-  RCLCPP_INFO(getLogger(), "[CbMoveCartesianRelative2] getting current end effector pose");
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] getting current end effector pose");
   this->getCurrentEndEffectorPose(globalFrame_, currentEndEffectorTransform);
 
   tf2::Transform finalEndEffectorTransform = currentEndEffectorTransform;
@@ -78,7 +78,7 @@ void CbMoveCartesianRelative2::generateTrajectory()
   float interpolation_factor = 0;
 
   rclcpp::Time startTime = getNode()->now();
-  RCLCPP_INFO(getLogger(), "[CbMoveCartesianRelative2] trajectory steps: %d", steps);
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] trajectory steps: " << steps);
 
   for (float i = 0; i < steps; i++)
   {
@@ -101,7 +101,7 @@ void CbMoveCartesianRelative2::generateTrajectory()
   }
 
   RCLCPP_INFO_STREAM(
-    getLogger(), "[CbMoveEndEffectorRelative2] Target End efector Pose: "
-                   << this->endEffectorTrajectory_.back());
+    getLogger(),
+    "[" << getName() << "] Target End efector Pose: " << this->endEffectorTrajectory_.back());
 }
 }  // namespace cl_move_group_interface

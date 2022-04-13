@@ -153,7 +153,6 @@ void CbCircularPouringMotion::generateTrajectory()
 
     geometry_msgs::msg::PoseStamped pointerPose;
     tf2::toMsg(pose, pointerPose.pose);
-
     pointerPose.header.frame_id = globalFrame_;
     pointerPose.header.stamp = startTime + rclcpp::Duration::from_seconds(i * secondsPerSample);
     this->pointerTrajectory_.push_back(pointerPose);
@@ -161,9 +160,7 @@ void CbCircularPouringMotion::generateTrajectory()
     tf2::Transform poseEndEffector = pose * invertedLidTransform;
 
     geometry_msgs::msg::PoseStamped globalEndEffectorPose;
-
     tf2::toMsg(poseEndEffector, globalEndEffectorPose.pose);
-
     globalEndEffectorPose.header.frame_id = globalFrame_;
     globalEndEffectorPose.header.stamp =
       startTime + rclcpp::Duration::from_seconds(i * secondsPerSample);
@@ -172,6 +169,7 @@ void CbCircularPouringMotion::generateTrajectory()
     RCLCPP_INFO_STREAM(
       getLogger(), "[" << getName() << "] " << i << " - " << globalEndEffectorPose);
   }
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "]trajectory generated, size: " << steps);
 }
 
 void CbCircularPouringMotion::createMarkers()

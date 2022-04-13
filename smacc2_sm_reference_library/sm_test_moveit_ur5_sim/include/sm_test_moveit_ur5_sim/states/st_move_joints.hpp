@@ -37,7 +37,9 @@ struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmTestMoveitUr5Sim>
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbMoveJoints, OrArm>, StMoveEndEffector, SUCCESS> >
+    Transition<EvCbSuccess<CbMoveJoints, OrArm>, StMoveEndEffector, SUCCESS>
+
+    >
     reactions;
 
   // STATE FUNCTIONS
