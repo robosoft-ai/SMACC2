@@ -23,7 +23,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-from launch.conditions import IfCondition, UnlessCondition
+from launch.conditions import IfCondition
 
 import os
 from ament_index_python.packages import get_package_share_directory
@@ -71,9 +71,9 @@ def launch_setup(context, *args, **kwargs):
     runtime_config_package = LaunchConfiguration("runtime_config_package")
 
     # controllers_file = LaunchConfiguration("controllers_file")
-    controllers_file = PathJoinSubstitution(
-        [FindPackageShare("sm_multi_ur5_sim"), "/config", "/ros_control", "/ur_controllers.yaml"]
-    )
+    # controllers_file = PathJoinSubstitution(
+    #     [FindPackageShare("sm_multi_ur5_sim"), "/config", "/ros_control", "/ur_controllers.yaml"]
+    # )
     # description_package = LaunchConfiguration("description_package")
     description_package = "sm_multi_ur5_sim"
 

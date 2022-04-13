@@ -19,15 +19,12 @@
 
 from launch import LaunchDescription
 from launch.actions import (
-    DeclareLaunchArgument,
     IncludeLaunchDescription,
     OpaqueFunction,
     ExecuteProcess,
 )
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 
-from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -50,26 +47,26 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
     )
 
-    single_ur_launch_1 = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [
-                FindPackageShare("sm_multi_ur5_sim"),
-                "/launch",
-                "/sm_single_ur5_sim_gazebo_sim.launch.py",
-            ]
-        ),
-        launch_arguments={
-            "prefix": "ur5_1",
-            "x": "2.5",
-            "y": "0.0",
-            "z": "0.0",
-            "description_package": "sm_multi_ur5_sim",
-            "moveit_config_package": "sm_multi_ur5_sim",
-            "use_state_machine": "False",
-            "ros_control": "True",
-            "use_moveit": "False",
-        }.items(),
-    )
+    # single_ur_launch_1 = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         [
+    #             FindPackageShare("sm_multi_ur5_sim"),
+    #             "/launch",
+    #             "/sm_single_ur5_sim_gazebo_sim.launch.py",
+    #         ]
+    #     ),
+    #     launch_arguments={
+    #         "prefix": "ur5_1",
+    #         "x": "2.5",
+    #         "y": "0.0",
+    #         "z": "0.0",
+    #         "description_package": "sm_multi_ur5_sim",
+    #         "moveit_config_package": "sm_multi_ur5_sim",
+    #         "use_state_machine": "False",
+    #         "ros_control": "True",
+    #         "use_moveit": "False",
+    #     }.items(),
+    # )
 
     single_ur_launch_2 = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(

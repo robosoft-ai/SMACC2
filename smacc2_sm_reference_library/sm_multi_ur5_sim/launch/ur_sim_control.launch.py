@@ -29,27 +29,20 @@
 # Author: Denis Stogl
 # Author: Pablo Iñigo Blasco
 
-import imp
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
-    IncludeLaunchDescription,
     OpaqueFunction,
-    RegisterEventHandler,
 )
 from launch.conditions import IfCondition, UnlessCondition
-from launch.event_handlers import OnProcessExit
-from launch.launch_description_sources import PythonLaunchDescriptionSource
+
 from launch.substitutions import (
     Command,
     FindExecutable,
     LaunchConfiguration,
     PathJoinSubstitution,
     PythonExpression,
-    TextSubstitution,
 )
-from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -63,8 +56,8 @@ def launch_setup(context, *args, **kwargs):
     safety_pos_margin = LaunchConfiguration("safety_pos_margin")
     safety_k_position = LaunchConfiguration("safety_k_position")
     # General arguments
-    runtime_config_package = LaunchConfiguration("runtime_config_package")
-    controllers_file = LaunchConfiguration("controllers_file")
+    # runtime_config_package = LaunchConfiguration("runtime_config_package")
+    # controllers_file = LaunchConfiguration("controllers_file")
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
     prefix = LaunchConfiguration("prefix")
@@ -78,9 +71,6 @@ def launch_setup(context, *args, **kwargs):
     x = LaunchConfiguration("x")
     y = LaunchConfiguration("y")
     z = LaunchConfiguration("z")
-
-    from ament_index_python.packages import get_package_share_directory
-    import os
 
     initial_joint_controllers = PathJoinSubstitution(
         [
