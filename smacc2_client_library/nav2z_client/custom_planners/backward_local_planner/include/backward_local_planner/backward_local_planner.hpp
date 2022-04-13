@@ -24,7 +24,7 @@
 #include <tf2_ros/buffer.h>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <nav2_core/controller.hpp>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <visualization_msgs/msg/marker_array.hpp>
 
 #include <tf2/utils.h>

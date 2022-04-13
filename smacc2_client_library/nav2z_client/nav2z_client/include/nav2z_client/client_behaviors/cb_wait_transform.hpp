@@ -22,7 +22,7 @@
 #include <nav2z_client/nav2z_client.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 #include <tf2/transform_datatypes.h>
 #include <tf2/utils.h>

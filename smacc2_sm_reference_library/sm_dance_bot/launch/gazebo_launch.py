@@ -66,8 +66,7 @@ def generate_launch_description():
     # Create the launch description and populate
     ld = LaunchDescription()
 
-    # xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' " \
-    # "-hold -geometry 1000x600 -sl 10000 -e"
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
 
     gzenv = dict(os.environ)
     model_database_uri = os.environ["GAZEBO_MODEL_PATH"]
@@ -80,6 +79,7 @@ def generate_launch_description():
         env=gzenv,
         cwd=[launch_dir],
         output="screen",
+        prefix=xtermprefix,
     )
 
     start_gazebo_client_cmd = ExecuteProcess(
@@ -88,6 +88,7 @@ def generate_launch_description():
         cwd=[launch_dir],
         env=gzenv,
         output="screen",
+        prefix=xtermprefix,
     )
 
     # Add any conditioned actions

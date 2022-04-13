@@ -24,7 +24,7 @@
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/quaternion_stamped.hpp>
 #include <nav2_msgs/action/navigate_to_pose.hpp>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg);
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & msg);
