@@ -35,6 +35,8 @@ find_package(gazebo_ros REQUIRED)
 find_package(rviz_ogre_vendor REQUIRED)
 find_package(OGRE REQUIRED)
 
+find_package(rosidl_runtime_cpp)
+
 set(dependencies
   smacc2
   std_msgs
@@ -43,6 +45,7 @@ set(dependencies
   visualization_msgs
   image_tools
   rclcpp
+  rosidl_runtime_cpp
   #gazebo_dev
   #gazebo_ros
 )
@@ -106,6 +109,7 @@ ament_export_libraries(controllable_led_plugin)
 #---------------------------------------------------------
 add_executable(opencv_perception_node
   servers/opencv_perception_node/opencv_perception_node.cpp
+  servers/opencv_perception_node/cv_mat_sensor_msgs_image_type_adapter.cpp
 )
 ament_target_dependencies(opencv_perception_node ${dependencies})
 
