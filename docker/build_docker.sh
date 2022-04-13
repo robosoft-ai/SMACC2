@@ -6,7 +6,9 @@ echo `pwd`
 
 ROS_DISTRO=$1
 GIT_BRANCH=$2
+UBUNTU_VERSION=$3
 NOCACHE="--no-cache"
+NOCACHE=
 
 echo "ros distro: $ROS_DISTRO"
 echo "git branch: $GITBRANCH"

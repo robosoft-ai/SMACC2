@@ -438,6 +438,8 @@ void FlashLightSetting::SwitchOn()
 //////////////////////////////////////////////////
 void FlashLightSetting::SwitchOff()
 {
+  gzmsg <<  "switch off" << std::endl;
+
   this->dataPtr->switchOn = false;
 }
 
@@ -579,7 +581,7 @@ void FlashLightSetting::Dim()
   // Send the message.
   if (this->dataPtr->lightExists)
   {
-    this->dataPtr->pubLight->Publish(this->dataPtr->msg);
+    //this->dataPtr->pubLight->Publish(this->dataPtr->msg);
   }
   // Update the state.
   this->dataPtr->flashing = false;
@@ -799,11 +801,14 @@ bool FlashLightPlugin::TurnOff(const std::string &_lightName,
 //////////////////////////////////////////////////
 bool FlashLightPlugin::TurnOffAll()
 {
+  gzmsg << "msg TurnOffAll"  << std::endl;
   if (this->dataPtr->listFlashLight.empty())
   {
     gzerr << "no flash lights exist to turn off." << std::endl;
     return false;
   }
+
+  gzmsg <<  "switch off" << std::endl;
 
   for (auto &setting: this->dataPtr->listFlashLight)
   {

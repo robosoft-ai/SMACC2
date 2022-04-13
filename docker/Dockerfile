@@ -1,7 +1,8 @@
 ARG ROS_DISTRO=rolling
 ARG GIT_BRANCH=master
+ARG UBUNTU_VERSION=focal
 
-FROM osrf/ros:$ROS_DISTRO-desktop
+FROM ros:$ROS_DISTRO-ros-base-$UBUNTU_VERSION
 
 ARG ROS_DISTRO
 ARG GIT_BRANCH
@@ -28,12 +29,10 @@ WORKDIR "/home/ros2_ws"
 
 
 # install dependencies and build
-RUN ls src && vcs import  src --skip-existing --input src/SMACC2/SMACC2-not-released.$GIT_BRANCH.repos \
+RUN ls src && vcs import  src --skip-existing --input src/SMACC2/SMACC2-not-released.$ROS_DISTRO.repos \
   && ls src
 
 RUN rosdep install --from-paths src --ignore-src -r -y
 RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
 
-#RUN apt remove -y ros-$GIT_BRANCH-smacc2
-
-RUN bash -c "source /opt/ros/$GIT_BRANCH/setup.sh && colcon build --merge-install"
+RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && colcon build --merge-install"

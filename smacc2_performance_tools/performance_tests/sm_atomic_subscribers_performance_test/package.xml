@@ -12,6 +12,8 @@
   <depend>ros_timer_client</depend>
   <depend>smacc2</depend>
 
+  <exec_depend>xterm</exec_depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>

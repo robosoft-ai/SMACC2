@@ -134,14 +134,38 @@ def launch_setup(context, *args, **kwargs):
     sm_test_moveit_ur5_sim_node = Node(
         package="sm_test_moveit_ur5_sim",
         executable="sm_test_moveit_ur5_sim_node",
+        # prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e gdbserver localhost:3000",
         prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e",
         parameters=[
+            {"use_sim_time": True},
             robot_description,
             robot_description_semantic,
             robot_description_kinematics,
             smacc2_sm_config,
         ],
-        arguments=["--log-level", "smacc2:=DEBUG"],
+    )
+
+    smacc2_sm_rviz = PathJoinSubstitution(
+        [
+            FindPackageShare("sm_test_moveit_ur5_sim"),
+            "rviz",
+            "rviz.rviz",
+        ]
+    )
+
+    # Launch rviz
+    start_rviz_cmd = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        arguments=["-d", smacc2_sm_rviz],
+        output="screen",
+        parameters=[
+            {"use_sim_time": True},
+            robot_description,
+            robot_description_semantic,
+            robot_description_kinematics,
+        ],
     )
 
     ur_control_launch = IncludeLaunchDescription(
@@ -169,9 +193,9 @@ def launch_setup(context, *args, **kwargs):
             "description_file": description_file,
             "moveit_config_package": moveit_config_package,
             "moveit_config_file": moveit_config_file,
-            "use_sim_time": "false",
+            "use_sim_time": "true",
             "prefix": prefix,
-            "launch_rviz": "true",
+            "launch_rviz": "false",
         }.items(),
     )
 
@@ -179,6 +203,7 @@ def launch_setup(context, *args, **kwargs):
         ur_control_launch,
         ur_moveit_launch,
         sm_test_moveit_ur5_sim_node,
+        start_rviz_cmd,
     ]
 
     return nodes_to_launch

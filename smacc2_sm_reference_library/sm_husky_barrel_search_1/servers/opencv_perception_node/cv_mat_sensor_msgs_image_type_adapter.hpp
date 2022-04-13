@@ -21,16 +21,18 @@
 
 #include "opencv2/core/mat.hpp"
 
-#ifdef ROS_ROLLING
-#include "rclcpp/type_adapter.hpp"
-#include "image_tools/visibility_control.h"
 
+// #include "opencv_perception_node/type_adapter.hpp"
+
+#ifdef ROS_ROLLING
+#include "image_tools/visibility_control.h"
 #else
 #include "type_adapter.hpp"
 #include "visibility_control.h"
 
 #endif
 
+#include "rosidl_runtime_cpp/message_type_support_decl.hpp"
 #include "sensor_msgs/msg/image.hpp"
 
 
