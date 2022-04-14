@@ -2,7 +2,7 @@ repositories:
   navigation2:
     type: git
     url: https://github.com/ros-planning/navigation2.git
-    version: main
+    version: 3ecb4d0c76d7986f1b666b0e96ace739d466169c  # Rpp interpolation (#2872)
   slam_toolbox:
     type: git
     url: https://github.com/SteveMacenski/slam_toolbox.git
