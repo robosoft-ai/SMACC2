@@ -29,11 +29,16 @@ repositories:
     url: https://github.com/PickNikRobotics/launch_param_builder
     version: main
 
-  ## This is needed only because of `ros2_controllers_test_nodes` package that is not released to focal
+  ## BEGIN: This is needed only because of `ros2_controllers_test_nodes` package that is not released to focal
+  ros2_control:
+    type: git
+    url: https://github.com/ros-controls/ros2_control.git
+    version: master
   ros2_controllers:
     type: git
     url: https://github.com/ros-controls/ros2_controllers.git
     version: master
+  ## BEGIN: This is needed only because of `ros2_controllers_test_nodes` package that is not released to focal
   gazebo_ros2_control:
     type: git
     url: https://github.com/ros-simulation/gazebo_ros2_control.git
