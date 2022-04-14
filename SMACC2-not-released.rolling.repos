@@ -18,7 +18,7 @@ repositories:
     url: https://github.com/StoglRobotics-forks/husky.git
     version: fixes-for-smacc2
 
-  ## This is needed only because of `ros2_controllers_test_nodes` package that is not released to focal
+  ## BEGIN: This is needed only because of `ros2_controllers_test_nodes` package that is not released to focal
   ros2_control:
     type: git
     url: https://github.com/ros-controls/ros2_control.git
@@ -27,6 +27,7 @@ repositories:
     type: git
     url: https://github.com/ros-controls/ros2_controllers.git
     version: master
+  ## END: This is needed only because of `ros2_controllers_test_nodes` package that is not released to focal
   gazebo_ros2_control:
     type: git
     url: https://github.com/ros-simulation/gazebo_ros2_control.git
@@ -59,7 +60,3 @@ repositories:
     type: git
     url: https://github.com/ignitionrobotics/ign_ros2_control.git
     version: main
-  ros_ign:
-    type: git
-    url: https://github.com/ignitionrobotics/ros_ign.git
-    version: ros2
