@@ -33,7 +33,7 @@ namespace cl_nav2z
   void CpWaypointsVisualizer::onInitialize()
   {
     markersPub_ = getNode()->create_publisher<visualization_msgs::msg::MarkerArray>("cp_waypoints_visualizer/visualization_markers", rclcpp::QoS(rclcpp::KeepLast(1)));
-    
+
     this->requiresComponent(waypointsNavigator_);
     auto& waypoints = waypointsNavigator_->getWaypoints();
     auto& waypointsNames = waypointsNavigator_->getWaypointNames();
@@ -44,13 +44,13 @@ namespace cl_nav2z
       auto name = waypointsNames[i];
       visualization_msgs::msg::Marker marker;
       createMarker(waypoint, marker);
-      markers_.markers.push_back(marker);     
+      markers_.markers.push_back(marker);
 
       visualization_msgs::msg::Marker markerlabel;
       createMarkerLabel(waypoint, name, markerlabel);
-      markerLabels_.markers.push_back(markerlabel); 
+      markerLabels_.markers.push_back(markerlabel);
 
-      i++;    
+      i++;
     }
   }
 
@@ -68,7 +68,7 @@ namespace cl_nav2z
       marker.scale.z = 0.3;
       marker.text = label;
 
-      marker.color.a = 1.0;    
+      marker.color.a = 1.0;
       marker.pose = waypoint;
       marker.pose.position.z+= 0.3;
   }
@@ -86,12 +86,12 @@ namespace cl_nav2z
       marker.scale.y = 0.1;
       marker.scale.z = 0.1;
 
-      marker.color.a = 1.0;    
+      marker.color.a = 1.0;
       marker.pose = waypoint;
   }
 
   void CpWaypointsVisualizer::update()
-  {  
+  {
     std::lock_guard<std::mutex> guard(m_mutex_);
 
 
@@ -140,7 +140,7 @@ namespace cl_nav2z
 
     //markers_.header.stamp = getNode()->now();
     markersPub_->publish(markers_);
-    markersPub_->publish(markerLabels_);    
+    markersPub_->publish(markerLabels_);
   }
 
 

@@ -170,14 +170,14 @@ def generate_launch_description():
         }.items(),
     )
 
-    ekf_gps_localization = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(sm_husky_barrel_search_1_launch_dir, "ekf_gps_launch.py")
-        ),
-        launch_arguments={
-            "use_sim_time": use_sim_time,
-        }.items(),
-    )
+    # ekf_gps_localization = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(sm_husky_barrel_search_1_launch_dir, "ekf_gps_launch.py")
+    #     ),
+    #     launch_arguments={
+    #         "use_sim_time": use_sim_time,
+    #     }.items(),
+    # )
 
     gazebo_simulator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(

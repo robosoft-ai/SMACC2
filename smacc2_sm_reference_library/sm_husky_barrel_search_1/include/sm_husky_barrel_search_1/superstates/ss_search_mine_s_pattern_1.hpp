@@ -50,7 +50,7 @@ enum class TDirection
 using namespace sm_husky_barrel_search_1::s_pattern_states;
 
 // STATE DECLARATION
-struct SsSPattern1 : smacc2::SmaccState<SsSPattern1, SmHuskyBarrelSearch1, StiSPatternLoopStart>
+struct SsSearchMineSPattern1 : smacc2::SmaccState<SsSearchMineSPattern1, SmHuskyBarrelSearch1, StiSPatternLoopStart>
 {
 public:
   using SmaccState::SmaccState;
@@ -79,7 +79,7 @@ public:
 };
 
 // FORWARD DECLARATION FOR THE SUPERSTATE
-using SS = SsSPattern1;
+using SS = SsSearchMineSPattern1;
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_1.hpp>
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_2.hpp>
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_3.hpp>

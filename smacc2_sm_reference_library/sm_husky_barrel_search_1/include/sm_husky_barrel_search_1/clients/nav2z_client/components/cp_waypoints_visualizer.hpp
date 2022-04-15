@@ -31,10 +31,10 @@ namespace cl_nav2z
 {
 class ClNav2Z;
 
-class CpWaypointsVisualizer : public smacc2::ISmaccComponent, 
-                              public smacc2::ISmaccUpdatable 
+class CpWaypointsVisualizer : public smacc2::ISmaccComponent,
+                              public smacc2::ISmaccUpdatable
 {
-public:  
+public:
   cl_nav2z::WaypointNavigator* waypointsNavigator_;
 
   CpWaypointsVisualizer(rclcpp::Duration duration);
@@ -50,7 +50,7 @@ public:
     rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr markersPub_;
     visualization_msgs::msg::MarkerArray markers_;
     visualization_msgs::msg::MarkerArray markerLabels_;
-    
+
     void createMarker(const geometry_msgs::msg::Pose& waypoint, visualization_msgs::msg::Marker& m);
     void createMarkerLabel(const geometry_msgs::msg::Pose& waypoint, std::string label, visualization_msgs::msg::Marker& m);
 };
