@@ -19,7 +19,13 @@
  ******************************************************************************************************************/
 
 // #include <cv_bridge/cv_bridge.h>
+
+#ifdef ROS_ROLLING
 #include <image_tools/cv_mat_sensor_msgs_image_type_adapter.hpp>
+#else
+#include "cv_mat_sensor_msgs_image_type_adapter.hpp"
+
+#endif
 #include <rclcpp/rclcpp.hpp>
 
 #include <sensor_msgs/msg/image.hpp>
@@ -29,15 +35,15 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/features2d.hpp>
 
-#include "image_tools/cv_mat_sensor_msgs_image_type_adapter.hpp"
+#include "cv_mat_sensor_msgs_image_type_adapter.hpp"
 
-RCLCPP_USING_CUSTOM_TYPE_AS_ROS_MESSAGE_TYPE(
-  image_tools::ROSCvMatContainer,
-  sensor_msgs::msg::Image);
+// RCLCPP_USING_CUSTOM_TYPE_AS_ROS_MESSAGE_TYPE(
+//   image_tools::sensor_msgs::msg::Image,
+//   sensor_msgs::msg::Image);
 
 rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr detectionPub;
-rclcpp::Publisher<image_tools::ROSCvMatContainer>::SharedPtr debugImagePub;
-rclcpp::Subscription<image_tools::ROSCvMatContainer>::SharedPtr imageSub;
+rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr debugImagePub;
+rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr imageSub;
 
 void segmentColor(const cv::Mat& inputRGB, int hueMean, int hueWindow, cv::Mat& out, int minSaturation=20, int minValue=20, bool imgShow = false)
 {
@@ -91,6 +97,9 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hu
 
     }
   }
+
+  // cv::imshow(colorName + " filter - "+ path, segmented);
+  // cv::waitKey();
 
   return blobs.size();
 }
@@ -154,18 +163,49 @@ void testGreenFile(std::string path, cv::Mat& debugImage)
   testImage(input, debugImage, "green", 50, 10, "");
 }
 
+
+int
+encoding2mat_type(const std::string & encoding)
+{
+  if (encoding == "mono8") {
+    return CV_8UC1;
+  } else if (encoding == "bgr8") {
+    return CV_8UC3;
+  } else if (encoding == "mono16") {
+    return CV_16SC1;
+  } else if (encoding == "rgba8") {
+    return CV_8UC4;
+  } else if (encoding == "bgra8") {
+    return CV_8UC4;
+  } else if (encoding == "32FC1") {
+    return CV_32FC1;
+  } else if (encoding == "rgb8") {
+    return CV_8UC3;
+  } else if (encoding == "yuv422") {
+    return CV_8UC2;
+  } else {
+    throw std::runtime_error("Unsupported encoding type");
+  }
+}
+
+cv::Mat to_cv_mat(const sensor_msgs::msg::Image& img)
+{
+    return cv::Mat(cv::Size(img.height, img.width),
+                    encoding2mat_type(img.encoding),
+                    const_cast<unsigned char *>(img.data.data()));
+}
+
 void update()
 {
 }
 
-void callback(const image_tools::ROSCvMatContainer& img)
+void callback(const sensor_msgs::msg::Image& img)
 {
-  cv::Mat image = img.cv_mat();
+  cv::Mat image = to_cv_mat(img);
+  sensor_msgs::msg::Image outimg = img;
+  auto outmat = to_cv_mat(outimg);
 
-  image_tools::ROSCvMatContainer outimg (img);
-  cv::Mat outmat =outimg.cv_mat();
-
-  cv::cvtColor(outimg.cv_mat(), outimg.cv_mat(), cv::COLOR_RGB2BGR);
+  cv::cvtColor(image, outmat, cv::COLOR_RGB2BGR);
 
 
   int detectedColor = 0;
@@ -194,7 +234,7 @@ void callback(const image_tools::ROSCvMatContainer& img)
   detectionPub->publish(detectedColorMsg);
 
 
-  outimg.header() = img.header();
+  outimg.header = img.header;
   debugImagePub->publish(outimg);
 }
 
@@ -206,8 +246,8 @@ void main_ros_loop(int argc, char** argv)
 
   RCLCPP_INFO(nh->get_logger(), "opencv perception node started");
   detectionPub = nh->create_publisher<std_msgs::msg::Int32>("detected_color", 1);
-  imageSub = nh->create_subscription<image_tools::ROSCvMatContainer>("/image_raw", rclcpp::QoS(1).best_effort(), callback);
-  debugImagePub = nh->create_publisher<image_tools::ROSCvMatContainer>("/opencv_debug_image", rclcpp::QoS(1).best_effort());
+  imageSub = nh->create_subscription<sensor_msgs::msg::Image>("/image_raw", 1, callback);
+  debugImagePub = nh->create_publisher<sensor_msgs::msg::Image>("/opencv_debug_image", 1);
 
   rclcpp::Rate r(10);
 

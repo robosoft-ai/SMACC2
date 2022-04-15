@@ -34,8 +34,9 @@ find_package(gazebo_msgs REQUIRED)
 find_package(gazebo_ros REQUIRED)
 find_package(rviz_ogre_vendor REQUIRED)
 find_package(OGRE REQUIRED)
-find_package(geometry_msgs REQUIRED)
 find_package(sr_all_events_go REQUIRED)
+
+find_package(rosidl_runtime_cpp)
 
 set(dependencies
   smacc2
@@ -45,7 +46,7 @@ set(dependencies
   visualization_msgs
   image_tools
   rclcpp
-  geometry_msgs
+  rosidl_runtime_cpp
   sr_all_events_go
   #gazebo_dev
   #gazebo_ros
@@ -64,8 +65,7 @@ include_directories(include
 #---------------------------------------------------------
 add_executable(${PROJECT_NAME}_node
   src/${PROJECT_NAME}/sm_husky_barrel_search_1_node.cpp
-  src/${PROJECT_NAME}/nav2z_client/cp_waypoints_visualizer.cpp
-)
+  src/sm_husky_barrel_search_1/nav2z_client/cp_waypoints_visualizer.cpp)
 
 ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
 target_link_libraries(${PROJECT_NAME}_node
@@ -82,56 +82,36 @@ ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(${dependencies})
 
-#---------------------------------------------------------
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sm_husky_barrel_search_1.dsv.in")
 
-add_executable(odom_to_tf
-  src/${PROJECT_NAME}/odom_to_tf.cpp
-)
+#---------------------------------------------------------
 
-ament_target_dependencies(odom_to_tf ${dependencies})
-target_link_libraries(${PROJECT_NAME}_node
-  boost_thread
-  boost_system
-  ${Boost_LIBS}
+add_library(controllable_led_plugin SHARED
+  src/sm_husky_barrel_search_1/gz_plugins/controllable_led_plugin.cpp
+  src/sm_husky_barrel_search_1/gz_plugins/FlashLightPlugin.cc
+  src/sm_husky_barrel_search_1/gz_plugins/LedPlugin.cc)
+
+target_include_directories(controllable_led_plugin PUBLIC include ${gazebo_ros_INCLUDE_DIRS})
+
+ament_target_dependencies(controllable_led_plugin
+  "std_msgs" ${dependencies})
+
+target_link_libraries(controllable_led_plugin
+  #/usr/lib/x86_64-linux-gnu/gazebo-11/plugins/libFlashLightPlugin.so
+  #/usr/lib/x86_64-linux-gnu/gazebo-11/plugins/libLedPlugin.so
+  #FlashLightPlugin
+  #LedPlugin
   ${std_msgs_LIBRARIES}
   #${OGRE_LIBRARIES}
   #${gazebo_LIBRARIES}
   #${gazebo_ros_LIBRARIES}
 )
 
-ament_export_include_directories(include)
-ament_export_libraries(odom_to_tf)
-ament_export_dependencies(${dependencies})
-
-#---------------------------------------------------------
-
-add_library(controllable_led_plugin SHARED
-   src/sm_husky_barrel_search_1/gz_plugins/controllable_led_plugin.cpp
-   src/sm_husky_barrel_search_1/gz_plugins/FlashLightPlugin.cc
-   src/sm_husky_barrel_search_1/gz_plugins/LedPlugin.cc)
-
- target_include_directories(controllable_led_plugin PUBLIC include ${gazebo_ros_INCLUDE_DIRS})
-
- ament_target_dependencies(controllable_led_plugin
-   "std_msgs" ${dependencies})
-
- target_link_libraries(controllable_led_plugin
- #/usr/lib/x86_64-linux-gnu/gazebo-11/plugins/libFlashLightPlugin.so
- #/usr/lib/x86_64-linux-gnu/gazebo-11/plugins/libLedPlugin.so
- #FlashLightPlugin
- #LedPlugin
- ${std_msgs_LIBRARIES}
- #${OGRE_LIBRARIES}
- #${gazebo_LIBRARIES}
- #${gazebo_ros_LIBRARIES}
-
- )
-
- ament_export_libraries(controllable_led_plugin)
+ament_export_libraries(controllable_led_plugin)
 #---------------------------------------------------------
 add_executable(opencv_perception_node
   servers/opencv_perception_node/opencv_perception_node.cpp
+  servers/opencv_perception_node/cv_mat_sensor_msgs_image_type_adapter.cpp
 )
 ament_target_dependencies(opencv_perception_node ${dependencies})
 
@@ -145,18 +125,17 @@ target_link_libraries(opencv_perception_node
 if(BUILD_TESTING)
 endif()
 
- install(TARGETS
-   ${PROJECT_NAME}_node
-   odom_to_tf
-   opencv_perception_node
-   controllable_led_plugin
+install(TARGETS
+  ${PROJECT_NAME}_node
+  opencv_perception_node
+  controllable_led_plugin
 #   # temperature_sensor_node_${PROJECT_NAME}
 #   # led_action_server_node_${PROJECT_NAME}
 
-   ARCHIVE DESTINATION lib
-   LIBRARY DESTINATION lib
-   RUNTIME DESTINATION lib/${PROJECT_NAME}
- )
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
+)
 
 install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY worlds DESTINATION share/${PROJECT_NAME})

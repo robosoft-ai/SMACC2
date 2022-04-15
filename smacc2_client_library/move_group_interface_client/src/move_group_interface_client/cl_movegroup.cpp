@@ -21,7 +21,7 @@
 #include <tf2/impl/utils.h>
 #include <tf2/utils.h>
 #include <move_group_interface_client/cl_movegroup.hpp>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 using namespace std::chrono_literals;
 using namespace moveit::planning_interface;

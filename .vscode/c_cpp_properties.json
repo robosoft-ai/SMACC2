@@ -3,10 +3,10 @@
         {
             "name": "Linux",
             "includePath": [
-                //"/opt/ros/foxy/include",
                 "/usr/include",
                 "${workspaceFolder}/../**",
-                "/opt/ros/rolling/include",
+                "${workspaceFolder}/../build/smacc_viewer22/ogdf_install/include/",
+                "/opt/ros/galactic/include",
                 "/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
                 "/usr/include/x86_64-linux-gnu/qt5",
                 "/usr/include/x86_64-linux-gnu/qt5/QtCore",

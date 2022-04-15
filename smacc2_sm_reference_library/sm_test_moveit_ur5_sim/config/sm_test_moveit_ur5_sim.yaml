@@ -1,0 +1,7 @@
+state_machine_rosparam_ws: /SmTestMoveitUr5Sim
+success_switch:
+   - type: state_reached
+     state_name: "sm_test_moveit_ur5_sim::State2"
+failure_switch:
+   - type: timeout
+     duration: 10.0 # sec

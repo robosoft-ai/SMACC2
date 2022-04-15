@@ -35,7 +35,6 @@ public:
   {
     this->requiresClient(moveBaseClient_);
     smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
-
     moveBaseClient_->onSucceeded(&CbNav2ZClientBehaviorBase::propagateSuccessEvent, this);
     moveBaseClient_->onAborted(&CbNav2ZClientBehaviorBase::propagateFailureEvent, this);
     moveBaseClient_->onCancelled(&CbNav2ZClientBehaviorBase::propagateFailureEvent, this);
