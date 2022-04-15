@@ -19,17 +19,6 @@ repositories:
     url: https://github.com/StoglRobotics-forks/husky.git
     version: fixes-for-smacc2
 
-  gazebo_ros2_control:
-    type: git
-    url: https://github.com/ros-simulation/gazebo_ros2_control.git
-    version: master
-    url: https://github.com/destogl/gazebo_ros2_control.git
-    version: smacc2-features
-  ign_ros2_control:
-    type: git
-    url: https://github.com/StoglRobotics-forks/robotiq_85_gripper.git
-    version: rolling-ros2-control-simulation
-
   robotiq_85_gripper:
     type: git
     url: https://github.com/StoglRobotics-forks/robotiq_85_gripper.git
