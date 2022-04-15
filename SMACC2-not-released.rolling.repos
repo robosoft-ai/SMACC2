@@ -19,21 +19,6 @@ repositories:
     url: https://github.com/StoglRobotics-forks/husky.git
     version: fixes-for-smacc2
 
-  gazebo_ros2_control:
-    type: git
-    url: https://github.com/ros-simulation/gazebo_ros2_control.git
-    version: master
-    url: https://github.com/destogl/gazebo_ros2_control.git
-    version: smacc2-features
-  ign_ros2_control:
-    type: git
-    url: https://github.com/ignitionrobotics/ign_ros2_control.git
-    version: main
-  ros2_controllers:
-    type: git
-    url: https://github.com/ros-controls/ros2_controllers.git
-    version: debug-diff-drive-controller-in-sim
-
   robotiq_85_gripper:
     type: git
     url: https://github.com/StoglRobotics-forks/robotiq_85_gripper.git
@@ -41,8 +26,8 @@ repositories:
 
   ur_msgs:
     type: git
-    url: https://github.com/destogl/ur_msgs.git
-    version: ros2
+    url: https://github.com/ros-industrial/ur_msgs.git
+    version: foxy-devel
   Universal_Robots_ROS2_Driver:
     type: git
     url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
@@ -57,9 +42,22 @@ repositories:
     version: ros2
   Universal_Robots_ROS2_Gazebo_Simulation:
     type: git
-    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Gazebo_Simulation
+    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Gazebo_Simulation.git
     version: ros2
   Universal_Robots_ROS2_Ignition_Simulation:
     type: git
-    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Ignition_Simulation
+    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Ignition_Simulation.git
     version: ros2
+
+  gazebo_ros2_control:
+    type: git
+    url: https://github.com/ros-simulation/gazebo_ros2_control.git
+    version: master
+  ign_ros2_control:
+    type: git
+    url: https://github.com/StoglRobotics-forks/ign_ros2_control.git
+    version: using-under-namespace
+  ros2_controllers:
+    type: git
+    url: https://github.com/ros-controls/ros2_controllers.git
+    version: master
