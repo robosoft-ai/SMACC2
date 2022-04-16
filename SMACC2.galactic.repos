@@ -1,4 +1,5 @@
 repositories:
+
   navigation2:
     type: git
     url: https://github.com/ros-planning/navigation2.git
@@ -7,23 +8,42 @@ repositories:
     type: git
     url: https://github.com/SteveMacenski/slam_toolbox.git
     version: galactic
+
+  ###### Robot Packages
+
+  # Mobile robots
   husky:
     type: git
     url: https://github.com/StoglRobotics-forks/husky.git
-    version: fixes-for-smacc2
+    version: fixup-missing-using
+
+  # Manipulators
   ur_msgs:
     type: git
     url: https://github.com/ros-industrial/ur_msgs.git
     version: foxy
   Universal_Robots_ROS2_Driver:
     type: git
-    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
-    version: main
-  Universal_Robots_Client_Library:
-    type: git
-    url: https://github.com/UniversalRobots/Universal_Robots_Client_Library.git
-    version: master
+    url: https://github.com/StoglRobotics-forks/Universal_Robots_ROS2_Driver.git
+    version: rolling-to-galactic-backport-smacc2
   Universal_Robots_Description:
     type: git
     url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git
     version: ros2
+
+  # ros2_control backports
+  ros2_control:
+    type: git
+    url: https://github.com/ros-controls/ros2_control.git
+    version: master
+  ros2_controllers:
+    type: git
+    url: https://github.com/StoglRobotics-forks/ros2_controllers.git
+    version: galactic-backports-smacc2
+
+
+  ####### Tracing tools (uncomment if needed)
+#  ros2_tracing:
+#    type: git
+#    url: https://gitlab.com/ros-tracing/ros2_tracing.git
+#    version: galactic
