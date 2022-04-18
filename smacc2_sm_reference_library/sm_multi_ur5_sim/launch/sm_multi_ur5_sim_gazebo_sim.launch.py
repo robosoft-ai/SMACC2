@@ -57,7 +57,7 @@ def launch_setup(context, *args, **kwargs):
         ),
         launch_arguments={
             "prefix": "ur5_1",
-            "x": "2.5",
+            "x": "1.5",
             "y": "0.0",
             "z": "0.0",
             "description_package": "sm_multi_ur5_sim",
