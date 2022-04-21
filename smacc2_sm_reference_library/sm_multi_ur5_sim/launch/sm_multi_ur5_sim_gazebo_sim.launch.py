@@ -13,7 +13,6 @@
 # limitations under the License.
 
 #
-# Author: Denis Štogl
 # Author: Pablo Iñigo Blasco
 
 
@@ -85,7 +84,7 @@ def launch_setup(context, *args, **kwargs):
             "moveit_config_package": "sm_multi_ur5_sim",
             "use_state_machine": "True",
             "ros_control": "True",
-            "use_moveit": "True",
+            "use_moveit": "False",
         }.items(),
     )
 
