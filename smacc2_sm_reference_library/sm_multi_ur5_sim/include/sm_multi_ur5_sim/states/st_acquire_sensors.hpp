@@ -34,6 +34,7 @@ using namespace smacc2;
 using namespace cl_move_group_interface;
 using smacc2::client_behaviors::CbWaitTopicMessage;
 using namespace std::chrono_literals;
+using cl_move_group_interface::CbWaitJointState;
 
 // STATE DECLARATION
 struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmTestMoveitUr5Sim>
@@ -43,13 +44,13 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmTestMoveitUr5Si
   // TRANSITION TABLE
   typedef boost::mpl::list<
     Transition<
-          EvCbSuccess<CbWaitTopicMessage<sensor_msgs::msg::JointState>, OrArm>, StMoveJoints, SUCCESS>
+          EvCbSuccess<CbWaitJointState, OrArm>, StMoveJoints, SUCCESS>
     > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrArm, CbWaitTopicMessage<sensor_msgs::msg::JointState>>("/joint_state_broadcaster_"UR5PREFIX"/joint_states");
+    configure_orthogonal<OrArm, CbWaitJointState>();
   };
 
   void onEntry()

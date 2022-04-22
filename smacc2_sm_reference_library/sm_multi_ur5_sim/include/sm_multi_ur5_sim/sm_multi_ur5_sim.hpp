@@ -27,13 +27,15 @@
 #include "smacc2/smacc.hpp"
 
 // ORTHOGONALS
-#include "sm_multi_ur5_sim/orthogonals/or_arm.hpp"
+#include "orthogonals/or_arm.hpp"
 
+// CLIENTS
 #include <move_group_interface_client/cl_movegroup.hpp>
 #include <move_group_interface_client/client_behaviors.hpp>
 
+// CLIENT BEHAVIORS
 #include <smacc2/client_behaviors/cb_wait_topic_message.hpp>
-
+#include "clients/move_group/client_behaviors/cb_wait_joint_states.hpp"
 
 namespace sm_multi_ur5_sim
 {

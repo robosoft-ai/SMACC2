@@ -55,4 +55,9 @@ void ClMoveGroup::postEventMotionExecutionFailed()
   postEventMotionExecutionFailed_();
 }
 
+const moveit::planning_interface::MoveGroupInterface::Options & ClMoveGroup::getOptions() const
+{
+  return options_;
+}
+
 }  // namespace cl_move_group_interface

@@ -123,6 +123,8 @@ public:
     return this->getStateMachine()->createSignalConnection(onFailed_, callback, object);
   }
 
+  const moveit::planning_interface::MoveGroupInterface::Options & getOptions() const;
+
 private:
   std::function<void()> postEventMotionExecutionSucceded_;
   std::function<void()> postEventMotionExecutionFailed_;
