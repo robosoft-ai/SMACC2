@@ -70,11 +70,14 @@ def launch_setup(context, *args, **kwargs):
 
     # General arguments
     runtime_config_package = LaunchConfiguration("runtime_config_package")
-    controllers_file = LaunchConfiguration("controllers_file")
+    #controllers_file = LaunchConfiguration("controllers_file")
+
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
     moveit_config_file = LaunchConfiguration("moveit_config_file")
     prefix = LaunchConfiguration("prefix")
+
+    controllers_file =  PathJoinSubstitution([FindPackageShare("sm_multi_ur5_sim"), "config", "ros_control", "ur_controllers.yaml"])
 
     robot_description_content = Command(
         [
@@ -146,7 +149,7 @@ def launch_setup(context, *args, **kwargs):
 
     ur_control_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            [FindPackageShare("ur_bringup"), "/launch", "/ur_control.launch.py"]
+            [FindPackageShare("sm_multi_ur5_sim"), "/launch", "/single_ur_control_fake.launch.py"]
         ),
         launch_arguments={
             "robot_ip": "xxx.yyy.zzz.www",
@@ -199,13 +202,13 @@ def generate_launch_description():
         Usually the argument is not set, it enables use of a custom setup.',
         )
     )
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "controllers_file",
-            default_value="ur_controllers.yaml",
-            description="YAML file with the controllers configuration.",
-        )
-    )
+    # declared_arguments.append(
+    #     DeclareLaunchArgument(
+    #         "controllers_file",
+    #         default_value="ur_controllers.yaml",
+    #         description="YAML file with the controllers configuration.",
+    #     )
+    # )
     declared_arguments.append(
         DeclareLaunchArgument(
             "description_package",
