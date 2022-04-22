@@ -73,7 +73,6 @@ def launch_setup(context, *args, **kwargs):
     controllers_file = LaunchConfiguration("controllers_file")
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
-    moveit_config_package = LaunchConfiguration("moveit_config_package")
     moveit_config_file = LaunchConfiguration("moveit_config_file")
     prefix = LaunchConfiguration("prefix")
 
@@ -104,7 +103,7 @@ def launch_setup(context, *args, **kwargs):
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare(moveit_config_package), "srdf", moveit_config_file]
+                [FindPackageShare("ur_moveit_config"), "srdf", moveit_config_file]
             ),
             " ",
             "name:=",
@@ -120,8 +119,9 @@ def launch_setup(context, *args, **kwargs):
     )
     robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
 
-    kinematics_yaml = load_yaml("ur_moveit_config", "config/kinematics.yaml")
-    robot_description_kinematics = {"robot_description_kinematics": kinematics_yaml}
+    robot_description_kinematics = PathJoinSubstitution(
+        [FindPackageShare("sm_test_moveit_ur5_sim"), "config", "moveit", "kinematics.yaml"]
+    )
 
     smacc2_sm_config = PathJoinSubstitution(
         [
@@ -155,27 +155,27 @@ def launch_setup(context, *args, **kwargs):
             "controllers_file": controllers_file,
             "description_package": description_package,
             "description_file": description_file,
-            "robot_controller": "scaled_joint_trajectory_controller",
             "use_fake_hardware": "true",
             "prefix": prefix,
             "launch_rviz": "false",
-            "initial_joint_controller": "joint_trajectory_controller",  # TODO(destogl): remove this when PR #288 in UR-Driver is merged
+            "initial_joint_controller": "joint_trajectory_controller",
         }.items(),
     )
 
     ur_moveit_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            [FindPackageShare("ur_moveit_config"), "/launch", "/ur_moveit.launch.py"]
+            [FindPackageShare("sm_test_moveit_ur5_sim"), "/launch", "/ur_moveit.launch.py"]
         ),
         launch_arguments={
             "ur_type": ur_type,
             "description_package": description_package,
             "description_file": description_file,
-            "moveit_config_package": moveit_config_package,
+            "moveit_config_package": "ur_moveit_config",
             "moveit_config_file": moveit_config_file,
             "use_sim_time": "false",
             "prefix": prefix,
             "launch_rviz": "true",
+            "launch_servo": "false",
         }.items(),
     )
 
@@ -223,14 +223,6 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "moveit_config_package",
-            default_value="ur_moveit_config",
-            description="MoveIt config package with robot SRDF/XACRO files. Usually the argument \
-        is not set, it enables use of a custom moveit config.",
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
             "moveit_config_file",
             default_value="ur.srdf.xacro",
             description="MoveIt SRDF/XACRO description file with the robot.",
@@ -244,9 +236,6 @@ def generate_launch_description():
         multi-robot setup. If changed than also joint names in the controllers' configuration \
         have to be updated.",
         )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument("launch_rviz", default_value="true", description="Launch RViz?")
     )
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
