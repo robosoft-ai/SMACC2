@@ -110,26 +110,6 @@ ament_export_libraries(odom_to_tf)
 ament_export_dependencies(${dependencies})
 
 #---------------------------------------------------------
-add_executable(odom_to_tf
-  src/${PROJECT_NAME}/odom_to_tf.cpp
-)
-
-ament_target_dependencies(odom_to_tf ${dependencies})
-target_link_libraries(${PROJECT_NAME}_node
-  boost_thread
-  boost_system
-  ${Boost_LIBS}
-  ${std_msgs_LIBRARIES}
-  #${OGRE_LIBRARIES}
-  #${gazebo_LIBRARIES}
-  #${gazebo_ros_LIBRARIES}
-)
-
-ament_export_include_directories(include)
-ament_export_libraries(odom_to_tf)
-ament_export_dependencies(${dependencies})
-
-#---------------------------------------------------------
 
 add_library(controllable_led_plugin SHARED
   src/sm_husky_barrel_search_1/gz_plugins/controllable_led_plugin.cpp

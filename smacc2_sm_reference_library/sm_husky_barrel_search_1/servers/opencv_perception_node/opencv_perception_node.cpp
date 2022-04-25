@@ -103,18 +103,18 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hu
 
 int testRed(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
 {
-  return testImage(input, debugImage, "red", 130, 20, imShow, "enemy");
+  return testImage(input, debugImage, "red", 130, 20,  "enemy");
 }
 
 int testBlue(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
 {
 
-  return testImage(input, debugImage, "blue", 10, 10, imShow, "blue-barrel");
+  return testImage(input, debugImage, "blue", 10, 10,  "blue-barrel");
 }
 
 int testGreen(cv::Mat& input, cv::Mat& debugImage,  bool imShow = false)
 {
-  return testImage(input, debugImage, "green", 50, 10, imShow, "ally");
+  return testImage(input, debugImage, "green", 50, 10, "ally");
 }
 
 int testYellow(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
@@ -123,7 +123,7 @@ int testYellow(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
   //return testImage(input, debugImage, "yellow", 31, 10, "mine", 40, 200, 100, imShow);
 
   //return testImage(input, debugImage, "yellow", 195, 40, "mine", 40, 20, 100, imShow);
-  return testImage(input, debugImage, "yellow", 90, 10, imShow, "mine", 40, 200, 100);
+  return testImage(input, debugImage, "yellow", 90, 10, "mine", 40, 200, 100);
 }
 
 void testYellowFile(std::string path)
@@ -256,7 +256,6 @@ void main_ros_loop(int argc, char** argv)
 
   while (rclcpp::ok())
   {
-    update();
     rclcpp::spin_some(nh);
     r.sleep();
   }
