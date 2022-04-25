@@ -101,19 +101,20 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hu
   return blobs.size();
 }
 
-int testRed(cv::Mat& input, cv::Mat& debugImage)
+int testRed(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
 {
-  return testImage(input, debugImage, "red", 130, 20, "enemy");
+  return testImage(input, debugImage, "red", 130, 20, imShow, "enemy");
 }
 
-int testBlue(cv::Mat& input, cv::Mat& debugImage)
+int testBlue(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
 {
-  return testImage(input, debugImage, "blue", 10, 10, "blue-barrel");
+
+  return testImage(input, debugImage, "blue", 10, 10, imShow, "blue-barrel");
 }
 
-int testGreen(cv::Mat& input, cv::Mat& debugImage)
+int testGreen(cv::Mat& input, cv::Mat& debugImage,  bool imShow = false)
 {
-  return testImage(input, debugImage, "green", 50, 10, "ally");
+  return testImage(input, debugImage, "green", 50, 10, imShow, "ally");
 }
 
 int testYellow(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
@@ -122,7 +123,7 @@ int testYellow(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
   //return testImage(input, debugImage, "yellow", 31, 10, "mine", 40, 200, 100, imShow);
 
   //return testImage(input, debugImage, "yellow", 195, 40, "mine", 40, 20, 100, imShow);
-  return testImage(input, debugImage, "yellow", 90, 10, "mine", 40, 200, 100, imShow);
+  return testImage(input, debugImage, "yellow", 90, 10, imShow, "mine", 40, 200, 100);
 }
 
 void testYellowFile(std::string path)
@@ -143,9 +144,16 @@ void testYellowFile(std::string path)
 void testRedFile(std::string path)
 {
   cv::Mat input = cv::imread(path);
-    cv::Mat debugImage = input.clone();
+  cv::cvtColor(input, input, cv::COLOR_RGB2BGR);
 
-  testRed(input, debugImage);
+  cv::Mat debugImage= input.clone();
+
+
+  testRed(input, debugImage, true);
+
+  cv::imshow("yellow filter - "+ path, debugImage);
+  cv::waitKey();
+
 }
 
 void testBlueFile(std::string path, cv::Mat& debugImage)
@@ -158,10 +166,6 @@ void testGreenFile(std::string path, cv::Mat& debugImage)
 {
   cv::Mat input = cv::imread(path);
   testImage(input, debugImage, "green", 50, 10, "");
-}
-
-void update()
-{
 }
 
 
@@ -191,7 +195,7 @@ encoding2mat_type(const std::string & encoding)
 
 cv::Mat to_cv_mat(const sensor_msgs::msg::Image& img)
 {
-    return cv::Mat(cv::Size(img.height, img.width),
+    return cv::Mat(cv::Size(img.width, img.height),
                     encoding2mat_type(img.encoding),
                     const_cast<unsigned char *>(img.data.data()));
 }
@@ -201,6 +205,9 @@ void callback(const sensor_msgs::msg::Image& img)
 {
   cv::Mat image = to_cv_mat(img);
   sensor_msgs::msg::Image outimg = img;
+
+  // cv::cvtColor(image, outmat, cv::COLOR_RGB2BGR);
+  // cv::cvtColor(image, image, cv::COLOR_RGB2BGR);
   auto outmat = to_cv_mat(outimg);
 
 
@@ -242,8 +249,8 @@ void main_ros_loop(int argc, char** argv)
 
   RCLCPP_INFO(nh->get_logger(), "opencv perception node started");
   detectionPub = nh->create_publisher<std_msgs::msg::Int32>("detected_color", 1);
-  imageSub = nh->create_subscription<sensor_msgs::msg::Image>("/image_raw", 1, callback);
-  debugImagePub = nh->create_publisher<sensor_msgs::msg::Image>("/opencv_debug_image", 1);
+  imageSub = nh->create_subscription<sensor_msgs::msg::Image>("/image_raw", rclcpp::QoS(1).best_effort(), callback);
+  debugImagePub = nh->create_publisher<sensor_msgs::msg::Image>("/opencv_debug_image", rclcpp::QoS(1).best_effort());
 
   rclcpp::Rate r(10);
 
@@ -259,8 +266,6 @@ void main_ros_loop(int argc, char** argv)
 int main(int argc, char** argv)
 {
   main_ros_loop(argc, argv);
-
-  //testYellowFile("/home/geus/Desktop/smacc_ws/src/SMACC2/smacc2_sm_reference_library/sm_husky_barrel_search_1/servers/yellow.png");
 
   /*
   testRed("../../red1.png");

@@ -525,6 +525,7 @@ Visualization Manager:
           Topic:
             Depth: 5
             Durability Policy: Volatile
+            Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /intel_realsense_r200_depth/image_raw
@@ -712,7 +713,7 @@ Visualization Manager:
       Enabled: true
       Name: ForwardCarrot
       Namespaces:
-        {}
+        my_namespace2: true
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -863,6 +864,7 @@ Visualization Manager:
         X: 1.2338628768920898
         Y: -5.712062358856201
         Z: -0.6100907325744629
+
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false

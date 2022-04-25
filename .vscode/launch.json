@@ -353,12 +353,11 @@
             ]
         },
         {
-            "name": "(gdb) SmHuskyBarrelSearch1 - opencv-perception-node",
+            "name": "(gdb) SmHuskyBarrelSearch1-opencv",
             "type": "cppdbg",
             "request": "launch",
 
             "program": "${workspaceFolder}/../install/sm_husky_barrel_search_1/lib/sm_husky_barrel_search_1/opencv_perception_node",
-
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
