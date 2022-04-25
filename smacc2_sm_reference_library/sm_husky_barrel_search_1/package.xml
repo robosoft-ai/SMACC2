@@ -15,6 +15,8 @@
   <depend>rclcpp</depend>
   <depend>smacc2</depend>
   <depend>nav2z_client</depend>
+  <depend>sr_all_events_go</depend>
+
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
   <depend>image_tools</depend>
@@ -25,6 +27,7 @@
   <depend>robot_localization</depend>
   <depend>rviz_assimp_vendor</depend>
   <depend>assimp</depend>
+  <depend>geometry_msgs</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

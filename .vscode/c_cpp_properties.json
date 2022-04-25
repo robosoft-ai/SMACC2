@@ -3,6 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
+
                 "/usr/include",
                 "${workspaceFolder}/../**",
                 "/opt/ros/galactic/include",
@@ -15,8 +16,7 @@
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c11",
             "cppStandard": "c++17",
-            "intelliSenseMode": "linux-clang-x64",
-
+            "intelliSenseMode": "linux-clang-x64"
         }
     ],
     "version": 4

@@ -75,6 +75,7 @@ public:
   void stopWaitingResult();
 
   const std::vector<geometry_msgs::msg::Pose> & getWaypoints() const;
+  const std::vector<std::string> & getWaypointNames() const;
 
   long getCurrentWaypointIndex() const;
 

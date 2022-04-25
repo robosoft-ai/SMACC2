@@ -186,6 +186,11 @@ const std::vector<geometry_msgs::msg::Pose> & WaypointNavigator::getWaypoints() 
   return waypoints_;
 }
 
+const std::vector<std::string> & WaypointNavigator::getWaypointNames() const
+{
+  return waypointsNames_;
+}
+
 long WaypointNavigator::getCurrentWaypointIndex() const { return currentWaypoint_; }
 
 #define HAVE_NEW_YAMLCPP
@@ -226,13 +231,20 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
         {
           // (*wp_node)[i]["name"] >> wp.name;
           // (*wp_node)[i]["frame_id"] >> wp.header.frame_id;
-          wp.position.x = (*wp_node)[i]["position"]["x"].as<double>();
-          wp.position.y = (*wp_node)[i]["position"]["y"].as<double>();
-          wp.position.z = (*wp_node)[i]["position"]["z"].as<double>();
-          wp.orientation.x = (*wp_node)[i]["orientation"]["x"].as<double>();
-          wp.orientation.y = (*wp_node)[i]["orientation"]["y"].as<double>();
-          wp.orientation.z = (*wp_node)[i]["orientation"]["z"].as<double>();
-          wp.orientation.w = (*wp_node)[i]["orientation"]["w"].as<double>();
+
+          auto wpnodei = (*wp_node)[i];
+          wp.position.x = wpnodei["position"]["x"].as<double>();
+          wp.position.y = wpnodei["position"]["y"].as<double>();
+          wp.position.z = wpnodei["position"]["z"].as<double>();
+          wp.orientation.x = wpnodei["orientation"]["x"].as<double>();
+          wp.orientation.y = wpnodei["orientation"]["y"].as<double>();
+          wp.orientation.z = wpnodei["orientation"]["z"].as<double>();
+          wp.orientation.w = wpnodei["orientation"]["w"].as<double>();
+
+          if (wpnodei["name"].IsDefined())
+          {
+            this->waypointsNames_.push_back(wpnodei["name"].as<std::string>());
+          }
 
           this->waypoints_.push_back(wp);
         }

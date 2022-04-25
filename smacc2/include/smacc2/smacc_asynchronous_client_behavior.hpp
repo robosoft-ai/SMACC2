@@ -19,12 +19,9 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <condition_variable>
 #include <future>
-#include <mutex>
 #include <smacc2/smacc_client_behavior_base.hpp>
 #include <smacc2/smacc_signal.hpp>
-#include <thread>
 
 namespace smacc2
 {

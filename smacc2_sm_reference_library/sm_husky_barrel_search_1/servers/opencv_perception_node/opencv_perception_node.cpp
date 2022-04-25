@@ -45,25 +45,28 @@ rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr detectionPub;
 rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr debugImagePub;
 rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr imageSub;
 
-void segmentColor(const cv::Mat& inputRGB, int hueMean, int hueWindow, cv::Mat& out)
+void segmentColor(const cv::Mat& inputRGB, int hueMean, int hueWindow, cv::Mat& out, int minSaturation=20, int minValue=20, bool imgShow = false)
 {
   cv::Mat hsvInput;
   cv::cvtColor(inputRGB, hsvInput, cv::COLOR_BGR2HSV);
-  cv::inRange(hsvInput, cv::Scalar(hueMean - hueWindow, 20, 20), cv::Scalar(hueMean + hueWindow, 255, 255), out);
+  cv::inRange(hsvInput, cv::Scalar(hueMean - hueWindow, minSaturation, minValue), cv::Scalar(hueMean + hueWindow, 255, 255), out);
   cv::threshold(out, out, 100, 255, cv::THRESH_BINARY);
+
+  if(imgShow)
+    cv::imshow("segment", out);
 }
 
-int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hueMean, int hueWindow)
+int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hueMean, int hueWindow,  std::string message ="", int minSaturation=20, int minValue=20, int minBlobArea=100, bool imgShow= false)
 {
   cv::Mat segmented;
 
-  segmentColor(input, hueMean, hueWindow, segmented);
+  segmentColor(input, hueMean, hueWindow, segmented,minSaturation, minValue, imgShow);
 
   cv::SimpleBlobDetector::Params params;
   // params.filterByArea= true;
   // params.minArea = 10;
   params.filterByArea = true;
-  params.minArea = 100;
+  params.minArea = minBlobArea;
   params.maxArea = 100000;
   params.filterByColor = true;
   params.blobColor = 255;
@@ -90,46 +93,71 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hu
       r.width = diameter;
       r.height = diameter;
       cv::rectangle(debugImage,r, cv::Scalar(255,0,0),1 );
+      cv::putText(debugImage, message, cv::Point(r.x,r.y),cv::FONT_HERSHEY_SIMPLEX,0.3,cv::Vec3b(255,255, 255));
+
     }
   }
-
-  // cv::imshow(colorName + " filter - "+ path, segmented);
-  // cv::waitKey();
 
   return blobs.size();
 }
 
 int testRed(cv::Mat& input, cv::Mat& debugImage)
 {
-  return testImage(input, debugImage, "red", 130, 20);
+  return testImage(input, debugImage, "red", 130, 20, "enemy");
 }
 
 int testBlue(cv::Mat& input, cv::Mat& debugImage)
 {
-  return testImage(input, debugImage, "blue", 10, 10);
+  return testImage(input, debugImage, "blue", 10, 10, "blue-barrel");
 }
 
 int testGreen(cv::Mat& input, cv::Mat& debugImage)
 {
-  return testImage(input, debugImage, "green", 50, 10);
+  return testImage(input, debugImage, "green", 50, 10, "ally");
 }
 
-int testRed(std::string path, cv::Mat& debugImage)
+int testYellow(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
 {
-  cv::Mat input = cv::imread(path);
-  return testImage(input, debugImage, "red", 130, 20);
+  // hue: 31 , minvalue: 200, minsat: 40, in rgb
+  //return testImage(input, debugImage, "yellow", 31, 10, "mine", 40, 200, 100, imShow);
+
+  //return testImage(input, debugImage, "yellow", 195, 40, "mine", 40, 20, 100, imShow);
+  return testImage(input, debugImage, "yellow", 90, 10, "mine", 40, 200, 100, imShow);
 }
 
-int testBlue(std::string path, cv::Mat& debugImage)
+void testYellowFile(std::string path)
 {
-  cv::Mat input = cv::imread(path);
-  return testImage(input, debugImage, "blue", 10, 10);
+  cv::Mat input;
+    cv::cvtColor(cv::imread(path), input, cv::COLOR_RGB2BGR);
+
+  cv::Mat debugImage= input.clone();
+
+
+  testYellow(input, debugImage, true);
+
+  cv::imshow("yellow filter - "+ path, debugImage);
+  cv::waitKey();
+
 }
 
-int testGreen(std::string path, cv::Mat& debugImage)
+void testRedFile(std::string path)
 {
   cv::Mat input = cv::imread(path);
-  return testImage(input, debugImage, "green", 50, 10);
+    cv::Mat debugImage = input.clone();
+
+  testRed(input, debugImage);
+}
+
+void testBlueFile(std::string path, cv::Mat& debugImage)
+{
+  cv::Mat input = cv::imread(path);
+  testImage(input, debugImage, "blue", 10, 10, "");
+}
+
+void testGreenFile(std::string path, cv::Mat& debugImage)
+{
+  cv::Mat input = cv::imread(path);
+  testImage(input, debugImage, "green", 50, 10, "");
 }
 
 void update()
@@ -168,11 +196,13 @@ cv::Mat to_cv_mat(const sensor_msgs::msg::Image& img)
                     const_cast<unsigned char *>(img.data.data()));
 }
 
+
 void callback(const sensor_msgs::msg::Image& img)
 {
   cv::Mat image = to_cv_mat(img);
   sensor_msgs::msg::Image outimg = img;
   auto outmat = to_cv_mat(outimg);
+
 
   int detectedColor = 0;
   if (testRed(image, outmat) > 0)
@@ -190,6 +220,11 @@ void callback(const sensor_msgs::msg::Image& img)
     detectedColor = 3;
   }
 
+  if (testYellow(image, outmat) > 0)
+  {
+    detectedColor = 4;
+  }
+
   std_msgs::msg::Int32 detectedColorMsg;
   detectedColorMsg.data = detectedColor;
   detectionPub->publish(detectedColorMsg);
@@ -199,23 +234,33 @@ void callback(const sensor_msgs::msg::Image& img)
   debugImagePub->publish(outimg);
 }
 
-int main(int argc, char** argv)
+
+void main_ros_loop(int argc, char** argv)
 {
   rclcpp::init(argc, argv);
-  rclcpp::Node::SharedPtr nh;
+  rclcpp::Node::SharedPtr nh = rclcpp::Node::make_shared("opencv_perception_node");
 
+  RCLCPP_INFO(nh->get_logger(), "opencv perception node started");
   detectionPub = nh->create_publisher<std_msgs::msg::Int32>("detected_color", 1);
   imageSub = nh->create_subscription<sensor_msgs::msg::Image>("/image_raw", 1, callback);
   debugImagePub = nh->create_publisher<sensor_msgs::msg::Image>("/opencv_debug_image", 1);
 
   rclcpp::Rate r(10);
 
-  while (!rclcpp::shutdown())
+  while (rclcpp::ok())
   {
     update();
     rclcpp::spin_some(nh);
     r.sleep();
   }
+
+}
+
+int main(int argc, char** argv)
+{
+  main_ros_loop(argc, argv);
+
+  //testYellowFile("/home/geus/Desktop/smacc_ws/src/SMACC2/smacc2_sm_reference_library/sm_husky_barrel_search_1/servers/yellow.png");
 
   /*
   testRed("../../red1.png");

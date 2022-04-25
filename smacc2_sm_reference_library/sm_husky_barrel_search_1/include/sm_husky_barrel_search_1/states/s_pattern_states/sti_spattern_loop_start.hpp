@@ -18,37 +18,43 @@
  *
  ******************************************************************************************************************/
 
-#pragma once
-
-#include <sm_husky_barrel_search_1/clients/led_array/cl_led_array.hpp>
-#include <smacc2/smacc.hpp>
-
 namespace sm_husky_barrel_search_1
 {
-namespace cl_led_array
+namespace s_pattern_states
 {
-class CbLEDOff : public smacc2::SmaccClientBehavior
+template <class TDerived, typename TContext>
+struct B : smacc2::SmaccState<TDerived, TContext>
 {
 public:
- LedColor color_;
-
-  CbLEDOff(LedColor color):
-    color_(color)
-  {
-
-  }
-
-  void onEntry() override
-  {
-    cl_led_array::ClLedArray * ledarray;
-    this->requiresClient(ledarray);
-
-    ledarray->turnOff(color_);
-  }
-
-  void onExit() override
-  {
-  }
+  using SmaccState<TDerived, TContext>::SmaccState;
+  //typedef typename TDerived::reactions reactions;
 };
-}  // namespace cl_led_array
+
+// STATE DECLARATION
+struct StiSPatternLoopStart : public B<StiSPatternLoopStart, SS>
+{
+  using B::B;
+
+  // TRANSITION TABLE
+  typedef mpl::list<
+
+    Transition<EvLoopContinue<StiSPatternLoopStart>, StiSPatternRotate1, CONTINUELOOP>
+
+    >reactions;
+
+  // STATE FUNCTIONS
+  static void staticConfigure() {}
+
+  void runtimeConfigure() {}
+
+  bool loopCondition()
+  {
+    auto & superstate = this->context<SS>();
+    return superstate.iteration_count++ < superstate.total_iterations();
+  }
+
+  void onEntry() { checkWhileLoopConditionAndThrowEvent(&StiSPatternLoopStart::loopCondition); }
+};
+
+}  // namespace s_pattern_states
 }  // namespace sm_husky_barrel_search_1
