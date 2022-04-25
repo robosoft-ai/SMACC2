@@ -36,7 +36,8 @@ namespace sm_husky_barrel_search_1
 
         // TRANSITION TABLE
         typedef mpl::list<
-                Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointX>,
+
+                Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, SS5::SsSearchMineSPattern1>,
                 Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StEvasionMotion>
             >
             reactions;

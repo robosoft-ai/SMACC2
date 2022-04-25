@@ -44,7 +44,8 @@ struct StUndoRetreat;
 
 namespace SS5
 {
-class SsSPattern1;
+
+class SsSearchMineSPattern1;
 }
 
 struct xt
@@ -77,6 +78,6 @@ struct SmHuskyBarrelSearch1
 #include "states/st_self_destruction.hpp"
 #include "states/st_satellite_communications.hpp"
 #include "states/st_evasion_motion.hpp"
-#include "superstates/ss_s_pattern_1.hpp"
+#include "superstates/ss_search_mine_s_pattern_1.hpp"
 #include "states/st_explore_and_retreat.hpp"
 #include "states/st_undo_retreat.hpp"
