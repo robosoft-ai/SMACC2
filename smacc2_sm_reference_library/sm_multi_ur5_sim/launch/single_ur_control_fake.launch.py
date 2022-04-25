@@ -95,7 +95,9 @@ def launch_setup(context, *args, **kwargs):
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution([FindPackageShare(description_package), "urdf", description_file]),
+            PathJoinSubstitution(
+                [FindPackageShare(description_package), "urdf", description_file]
+            ),
             " ",
             "robot_ip:=",
             robot_ip,
@@ -194,7 +196,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
-    
+
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
@@ -205,7 +207,7 @@ def launch_setup(context, *args, **kwargs):
             "stderr": "screen",
         },
         condition=IfCondition(use_fake_hardware),
-        prefix = xtermprefix,
+        prefix=xtermprefix,
         # arguments=["--ros-args", "--log-level", "DEBUG"],
     )
 
