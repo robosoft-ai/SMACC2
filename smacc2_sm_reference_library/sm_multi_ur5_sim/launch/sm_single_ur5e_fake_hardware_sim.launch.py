@@ -161,7 +161,7 @@ def launch_setup(context, *args, **kwargs):
             "use_fake_hardware": "true",
             "prefix": prefix,
             "launch_rviz": "false",
-            "initial_joint_controller": "joint_trajectory_controller",
+            "initial_joint_controller": "/ur5_1/joint_trajectory_controller",
         }.items(),
     )
 

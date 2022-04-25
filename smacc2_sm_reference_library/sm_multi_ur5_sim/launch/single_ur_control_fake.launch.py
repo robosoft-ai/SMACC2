@@ -193,20 +193,26 @@ def launch_setup(context, *args, **kwargs):
         ]
     )
 
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
+    
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
+        namespace="/ur5_1",
         parameters=[robot_description, update_rate_config_file, initial_joint_controllers],
         output={
             "stdout": "screen",
             "stderr": "screen",
         },
         condition=IfCondition(use_fake_hardware),
+        prefix = xtermprefix,
+        # arguments=["--ros-args", "--log-level", "DEBUG"],
     )
 
     ur_control_node = Node(
         package="ur_robot_driver",
         executable="ur_ros2_control_node",
+        namespace="/ur5_1",
         parameters=[robot_description, update_rate_config_file, initial_joint_controllers],
         output={
             "stdout": "screen",
@@ -219,6 +225,7 @@ def launch_setup(context, *args, **kwargs):
         package="ur_robot_driver",
         condition=IfCondition(launch_dashboard_client) and UnlessCondition(use_fake_hardware),
         executable="dashboard_client",
+        namespace="/ur5_1",
         name="dashboard_client",
         output="screen",
         emulate_tty=True,
@@ -229,6 +236,7 @@ def launch_setup(context, *args, **kwargs):
         package="ur_robot_driver",
         condition=IfCondition(use_tool_communication),
         executable="tool_communication.py",
+        namespace="/ur5_1",
         name="ur_tool_comm",
         output="screen",
         parameters=[
@@ -242,6 +250,7 @@ def launch_setup(context, *args, **kwargs):
 
     controller_stopper_node = Node(
         package="ur_robot_driver",
+        namespace="/ur5_1",
         executable="controller_stopper_node",
         name="controller_stopper",
         output="screen",
@@ -252,10 +261,10 @@ def launch_setup(context, *args, **kwargs):
             {"joint_controller_active": activate_joint_controller},
             {
                 "consistent_controllers": [
-                    "io_and_status_controller",
-                    "force_torque_sensor_broadcaster",
-                    "joint_state_broadcaster",
-                    "speed_scaling_state_broadcaster",
+                    "/ur5_1/io_and_status_controller",
+                    "/ur5_1/force_torque_sensor_broadcaster",
+                    "/ur5_1/joint_state_broadcaster",
+                    "/ur5_1/speed_scaling_state_broadcaster",
                 ]
             },
         ],
@@ -280,13 +289,13 @@ def launch_setup(context, *args, **kwargs):
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+        arguments=["joint_state_broadcaster", "--controller-manager", "/ur5_1/controller_manager"],
     )
 
     io_and_status_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["io_and_status_controller", "-c", "/controller_manager"],
+        arguments=["io_and_status_controller", "-c", "/ur5_1/controller_manager"],
     )
 
     speed_scaling_state_broadcaster_spawner = Node(
@@ -295,7 +304,7 @@ def launch_setup(context, *args, **kwargs):
         arguments=[
             "speed_scaling_state_broadcaster",
             "--controller-manager",
-            "/controller_manager",
+            "/ur5_1/controller_manager",
         ],
     )
 
@@ -305,27 +314,27 @@ def launch_setup(context, *args, **kwargs):
         arguments=[
             "force_torque_sensor_broadcaster",
             "--controller-manager",
-            "/controller_manager",
+            "/ur5_1/controller_manager",
         ],
     )
 
     forward_position_controller_spawner_stopped = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["forward_position_controller", "-c", "/controller_manager", "--stopped"],
+        arguments=["forward_position_controller", "-c", "/ur5_1/controller_manager", "--stopped"],
     )
 
     # There may be other controllers of the joints, but this is the initially-started one
     initial_joint_controller_spawner_started = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=[initial_joint_controller, "-c", "/controller_manager"],
+        arguments=[initial_joint_controller, "-c", "/ur5_1/controller_manager"],
         condition=IfCondition(activate_joint_controller),
     )
     initial_joint_controller_spawner_stopped = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=[initial_joint_controller, "-c", "/controller_manager", "--stopped"],
+        arguments=[initial_joint_controller, "-c", "/ur5_1/controller_manager", "--stopped"],
         condition=UnlessCondition(activate_joint_controller),
     )
 
@@ -397,7 +406,6 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "controllers_file",
-            default_value="ur_controllers.yaml",
             description="YAML file with the controllers configuration.",
         )
     )
@@ -457,7 +465,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "activate_joint_controller",
-            default_value="true",
+            default_value="false",
             description="Activate loaded joint controller.",
         )
     )

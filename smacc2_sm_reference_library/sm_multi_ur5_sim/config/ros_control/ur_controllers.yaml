@@ -1,4 +1,4 @@
-controller_manager:
+/ur5_1/controller_manager:
   ros__parameters:
     update_rate: 500  # Hz
 
@@ -27,12 +27,12 @@ controller_manager:
       type: position_controllers/JointGroupPositionController
 
 
-speed_scaling_state_broadcaster:
+/ur5_1/speed_scaling_state_broadcaster:
   ros__parameters:
     state_publish_rate: 100.0
 
 
-force_torque_sensor_broadcaster:
+/ur5_1/force_torque_sensor_broadcaster:
   ros__parameters:
     sensor_name: tcp_fts_sensor
     state_interface_names:
@@ -46,7 +46,7 @@ force_torque_sensor_broadcaster:
     topic_name: ft_data
 
 
-joint_trajectory_controller:
+/ur5_1/joint_trajectory_controller:
   ros__parameters:
     joints:
       - shoulder_pan_joint
@@ -74,7 +74,7 @@ joint_trajectory_controller:
       wrist_3_joint: { trajectory: 0.2, goal: 0.1 }
 
 
-scaled_joint_trajectory_controller:
+/ur5_1/scaled_joint_trajectory_controller:
   ros__parameters:
     joints:
       - shoulder_pan_joint
@@ -101,7 +101,7 @@ scaled_joint_trajectory_controller:
       wrist_2_joint: { trajectory: 0.2, goal: 0.1 }
       wrist_3_joint: { trajectory: 0.2, goal: 0.1 }
 
-forward_velocity_controller:
+/ur5_1/forward_velocity_controller:
   ros__parameters:
     joints:
       - shoulder_pan_joint
@@ -112,7 +112,7 @@ forward_velocity_controller:
       - wrist_3_joint
     interface_name: velocity
 
-forward_position_controller:
+/ur5_1/forward_position_controller:
   ros__parameters:
     joints:
       - shoulder_pan_joint
