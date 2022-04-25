@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <sm_husky_barrel_search/clientas/led_array/cl_led_array.hpp>
+#include <sm_husky_barrel_search_1/clients/led_array/cl_led_array.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace sm_husky_barrel_search_1
@@ -31,10 +31,19 @@ class CbLEDOn : public smacc2::SmaccClientBehavior
 {
 public:
 
+  LedColor color_;
+  CbLEDOn(LedColor color):
+    color_(color)
+  {
+
+  }
+
   void onEntry() override
   {
     cl_led_array::ClLedArray * ledarray;
     this->requiresClient(ledarray);
+
+    ledarray->turnOn(color_);
   }
 
   void onExit() override

@@ -21,10 +21,16 @@
 #pragma once
 
 #include <smacc2/smacc.hpp>
+#include <sr_all_events_go/sr_all_events_go.hpp>
+#include <sm_husky_barrel_search_1/clients/led_array/client_behaviors.hpp>
 
 namespace sm_husky_barrel_search_1
 {
 using namespace smacc2::default_events;
+using namespace smacc2::state_reactors;
+using sm_husky_barrel_search_1::cl_led_array::CbLEDOff;
+using sm_husky_barrel_search_1::cl_led_array::CbLEDOn;
+using sm_husky_barrel_search_1::cl_led_array::LedColor;
 
 // STATE DECLARATION
 struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmHuskyBarrelSearch1>
@@ -40,15 +46,15 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmHuskyBarrelSear
   // TRANSITION TABLE
   typedef mpl::list<
 
-    // Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StNavigateWaypointsX>,
+    smacc2::Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StNavigateToWaypointX>
     // Transition<EvGlobalError, MsDanceBotRecoveryMode>
     // smacc2::Transition<
     //   smacc2::EvCbSuccess<cl_nav2z::CbWaitPose, OrNavigation>, StNavigateToWaypointX>,
 
-    smacc2::Transition<smacc2::EvCbSuccess<cl_nav2z::CbWaitNav2Nodes, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
+    //smacc2::Transition<smacc2::EvCbSuccess<cl_nav2z::CbWaitNav2Nodes, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
 
-    smacc2::Transition<
-      smacc2::EvCbFailure<cl_nav2z::CbWaitPose, OrNavigation>, StNavigateToWaypointX>
+    //smacc2::Transition<
+    //  smacc2::EvCbFailure<cl_nav2z::CbWaitPose, OrNavigation>, StNavigateToWaypointX>
     >
     reactions;
 
@@ -59,13 +65,17 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmHuskyBarrelSear
     configure_orthogonal<OrNavigation, cl_nav2z::CbWaitPose>();
     configure_orthogonal<OrNavigation, cl_nav2z::CbWaitNav2Nodes>();
 
+    configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::GREEN);
+    configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::RED);
+    configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::YELLOW);
+
     // Create State Reactor
-    // auto srAllSensorsReady = static_createStateReactor<
-    //   SrAllEventsGo, smacc2::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>,
-    //   mpl::list<
-    //     EvTopicMessage<CbLidarSensor, OrNavigation>,
-    //     // EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>,
-    //     EvCbSuccess<CbWaitPose, OrNavigation>>>();
+    static_createStateReactor<
+      SrAllEventsGo, smacc2::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>,
+      mpl::list<
+        smacc2::EvCbSuccess<cl_nav2z::CbWaitNav2Nodes, OrNavigation>,
+        smacc2::EvCbSuccess<cl_nav2z::CbWaitPose, OrNavigation>
+        >>();
   }
 };
 }  // namespace sm_husky_barrel_search_1

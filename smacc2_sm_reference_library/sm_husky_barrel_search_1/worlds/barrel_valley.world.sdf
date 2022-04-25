@@ -1676,7 +1676,7 @@
             <ambient>0.3 0.3 0.3 1</ambient>
             <diffuse>0 0 1 1</diffuse>
             <specular>0.01 0.01 0.01 1</specular>
-            <emissive>0 0 0 1</emissive>
+            <emissive>0 0 0.3 1</emissive>
             <shader type='vertex'>
               <normal_map>__default__</normal_map>
             </shader>
@@ -1781,7 +1781,7 @@
             <ambient>0.3 0.3 0.3 1</ambient>
             <diffuse>1 0 0 1</diffuse>
             <specular>0.01 0.01 0.01 1</specular>
-            <emissive>0 0 0 1</emissive>
+            <emissive>0.3 0 0 1</emissive>
             <shader type='vertex'>
               <normal_map>__default__</normal_map>
             </shader>
@@ -1886,7 +1886,7 @@
             <ambient>0.3 0.3 0.3 1</ambient>
             <diffuse>0 1 0 1</diffuse>
             <specular>0.01 0.01 0.01 1</specular>
-            <emissive>0 0 0 1</emissive>
+            <emissive>0 0.3 0 1</emissive>
             <shader type='vertex'>
               <normal_map>__default__</normal_map>
             </shader>
@@ -1991,7 +1991,7 @@
             <ambient>0.3 0.3 0.3 1</ambient>
             <diffuse>1 0 0 1</diffuse>
             <specular>0.01 0.01 0.01 1</specular>
-            <emissive>0 0 0 1</emissive>
+            <emissive>0.3 0 0 1</emissive>
             <shader type='vertex'>
               <normal_map>__default__</normal_map>
             </shader>
@@ -4111,7 +4111,7 @@
             <ambient>0.3 0.3 0.3 1</ambient>
             <diffuse>0 0 1 1</diffuse>
             <specular>0.01 0.01 0.01 1</specular>
-            <emissive>0 0 0 1</emissive>
+            <emissive>0 0 0.3 1</emissive>
             <shader type='vertex'>
               <normal_map>__default__</normal_map>
             </shader>
@@ -4216,7 +4216,7 @@
             <ambient>0.3 0.3 0.3 1</ambient>
             <diffuse>0 0 1 1</diffuse>
             <specular>0.01 0.01 0.01 1</specular>
-            <emissive>0 0 0 1</emissive>
+            <emissive>0 0 0.3 1</emissive>
             <shader type='vertex'>
               <normal_map>__default__</normal_map>
             </shader>
@@ -4321,7 +4321,7 @@
             <ambient>0.3 0.3 0.3 1</ambient>
             <diffuse>0 0 1 1</diffuse>
             <specular>0.01 0.01 0.01 1</specular>
-            <emissive>0 0 0 1</emissive>
+            <emissive>0 0 0.3 1</emissive>
             <shader type='vertex'>
               <normal_map>__default__</normal_map>
             </shader>
@@ -13536,6 +13536,9 @@
       </link>
       <pose>-32.5058 0.321745 0 0 -0 0.106437</pose>
     </model>
+
+
+
     <model name='MilitaryPickup'>
       <link name='link'>
         <self_collide>0</self_collide>

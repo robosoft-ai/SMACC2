@@ -20,35 +20,17 @@
 
 #pragma once
 
-#include <sm_husky_barrel_search_1/clients/led_array/cl_led_array.hpp>
-#include <smacc2/smacc.hpp>
+#include <sm_husky_barrel_search_1/clients/opencv_perception_client/cl_opencv_perception_client.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_husky_barrel_search_1
 {
-namespace cl_led_array
-{
-class CbLEDOff : public smacc2::SmaccClientBehavior
+class OrPerception : public smacc2::Orthogonal<OrPerception>
 {
 public:
- LedColor color_;
-
-  CbLEDOff(LedColor color):
-    color_(color)
+  virtual void onInitialize() override
   {
-
-  }
-
-  void onEntry() override
-  {
-    cl_led_array::ClLedArray * ledarray;
-    this->requiresClient(ledarray);
-
-    ledarray->turnOff(color_);
-  }
-
-  void onExit() override
-  {
+    auto opencvPerceptionClient = this->createClient<cl_opencv_perception::ClOpenCVPerception>();
   }
 };
-}  // namespace cl_led_array
 }  // namespace sm_husky_barrel_search_1
