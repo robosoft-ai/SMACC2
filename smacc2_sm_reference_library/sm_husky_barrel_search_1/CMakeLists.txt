@@ -147,13 +147,11 @@ target_link_libraries(opencv_perception_node
 if(BUILD_TESTING)
 endif()
 
- install(TARGETS
-   ${PROJECT_NAME}_node
-   odom_to_tf
-   opencv_perception_node
-   controllable_led_plugin
-#   # temperature_sensor_node_${PROJECT_NAME}
-#   # led_action_server_node_${PROJECT_NAME}
+install(TARGETS
+  ${PROJECT_NAME}_node
+  odom_to_tf
+  opencv_perception_node
+  controllable_led_plugin
 
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
