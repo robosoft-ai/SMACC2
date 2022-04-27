@@ -28,12 +28,33 @@ namespace smacc2
 {
 namespace client_behaviors
 {
-class CbSequence : public smacc2::SmaccAsyncClientBehavior
+class CbSequenceNode : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbSequence();
+  CbSequenceNode();
+
+  template <typename TOrthogonal, typename TBehavior>
+  static void configure_orthogonal_runtime(
+    std::function<void(TBehavior & bh, MostDerived &)> initializationFunction)
+  {
+    configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState * state) {
+      // auto bh = std::make_shared<TBehavior>(args...);
+      // auto bh = state->configure<TOrthogonal, TBehavior>();
+      initializationFunction(*bh, *(static_cast<MostDerived *>(state)));
+    });
+  }
 
   void onEntry() override;
+
+  template <typename TBehavior, typename... Args>
+  CbSequenceNode * then(Args &&... args)
+  {
+    sequenceNodes_.push_back(new TBehavior(args...));
+    return this;
+  }
+
+private:
+  std::vector<smacc2::SmaccAsyncClientBehavior> sequenceNodes_;
 };
 }  // namespace client_behaviors
 }  // namespace smacc2

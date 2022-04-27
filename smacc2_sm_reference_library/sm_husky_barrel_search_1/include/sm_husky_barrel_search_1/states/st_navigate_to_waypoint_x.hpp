@@ -38,12 +38,14 @@ namespace sm_husky_barrel_search_1
         typedef mpl::list<
 
             //Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StDeactivateMine, SUCCESS>,
-            Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StExploreAndRetreat, SUCCESS>,
-            Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-            Transition<EvWaypoint2<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
+            Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>, // entrance to station
+            Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StMoveBackwardsBlinking, SUCCESS>,
+            Transition<EvWaypoint2<ClNav2Z, OrNavigation>, StExploreAndRetreat, SUCCESS>,
             Transition<EvWaypoint3<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
             Transition<EvWaypoint4<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
             Transition<EvWaypoint5<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
+            Transition<EvWaypoint6<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
+            Transition<EvWaypoint7<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
 
             // Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS5::SsSPattern1, SUCCESS>,
             // Transition<EvCbSuccess<cl_nav2z::CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointX>
@@ -57,13 +59,10 @@ namespace sm_husky_barrel_search_1
             // configure_orthogonal<OrLED, CbLEDOn>();
             // configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
             configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
-
         }
 
         void runtimeConfigure()
         {
         }
-
-
     };
 } // namespace sm_husky_barrel_search_1

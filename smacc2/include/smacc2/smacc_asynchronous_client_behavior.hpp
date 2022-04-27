@@ -69,6 +69,8 @@ public:
   template <typename TCallback, typename T>
   boost::signals2::connection onFailure(TCallback callback, T * object);
 
+  void requestForceFinish();
+
 protected:
   void postSuccessEvent();
   void postFailureEvent();

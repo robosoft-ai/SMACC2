@@ -20,28 +20,23 @@
 
 #pragma once
 
-#include <smacc2/smacc_orthogonal.hpp>
-#include <sm_husky_barrel_search_1/clients/led_array/cl_led_array.hpp>
+#include <functional>
+#include <rclcpp/rclcpp.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
+#include <smacc2/client_behaviors/sequence.hpp>
 
-namespace sm_husky_barrel_search_1
-{
-using namespace std::chrono_literals;
 
-class OrLedArray : public smacc2::Orthogonal<OrLedArray>
+namespace smacc2
 {
-public:
-  void onInitialize() override
+namespace client_behaviors
+{
+  void CbSequenceNode::onEntry()
   {
-    auto client = this->createClient<cl_led_array::ClLedArray>();
-
-    client->createNamedComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>(
-      "greenLed", "/led_array/light_model_green/cmdled");
-
-    client->createNamedComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>(
-      "yellowLed", "/led_array/light_model_yellow/cmdled");
-
-    client->createNamedComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>(
-      "redLed", "/led_array/light_model_red/cmdled");
+    for (auto& cb: sequenceNodes_)
+    {
+      cb.onEntry(); 
+    }
   }
 };
-}  // namespace sm_husky_barrel_search_1
+}  // namespace client_behaviors
+}  // namespace smacc2
