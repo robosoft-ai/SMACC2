@@ -102,8 +102,8 @@ public:
     // ros_node_ = gazebo_ros::Node::Get(_sdf);
 
     // subscription_ = ros_node_->create_subscription<std_msgs::msg::Int8>(
-    //   "led_cmd", rclcpp::SystemDefaultsQoS(),
-    //   std::bind(&ControllableLed::LightCmd, this, std::placeholders::_1));
+    // "led_cmd", rclcpp::SystemDefaultsQoS(),
+    // std::bind(&ControllableLed::LightCmd, this, std::placeholders::_1));
 
     // // Make a publisher for the light topic
     // this->lightPub = this->gzNode->Advertise<msgs::Light>("~/light/modify");

@@ -26,17 +26,24 @@
 
 namespace cl_nav2z
 {
+struct CbNavigateGlobalPositionOptions
+{
+  // std::optional<float> yawTolerance;
+  // std::optional<float> yawToleranceX;
+  // std::optional<float> yawToleranceY;
+
+  std::optional<std::string> goalChecker_;
+
+  std::optional<std::string> controllerName_;
+};
+
 class CbNavigateGlobalPosition : public CbNav2ZClientBehaviorBase
 {
 public:
-  geometry_msgs::msg::Point goalPosition;
   float goalYaw;
 
-  std::optional<float> yawTolerance;
-  std::optional<float> yawToleranceX;
-  std::optional<float> yawToleranceY;
-
-  std::optional<std::string> goalChecker_;
+  CbNavigateGlobalPositionOptions options;
+  geometry_msgs::msg::Point goalPosition;
 
   CbNavigateGlobalPosition();
 

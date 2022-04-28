@@ -60,8 +60,10 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::future<int> & thread
       RCLCPP_WARN_THROTTLE(
         getLogger(), *(getNode()->get_clock()), 1000,
         "[%s] waiting for finishing client behavior, before leaving the state. Is the client "
-        "behavior stuck?",
+        "behavior stuck? requesting force finish",
         demangleType(typeid(*this)).c_str());
+
+      requestForceFinish();
     }
   }
   catch (const std::exception & e)
@@ -114,5 +116,7 @@ SmaccAsyncClientBehavior::~SmaccAsyncClientBehavior() {}
 void SmaccAsyncClientBehavior::postSuccessEvent() { postSuccessEventFn_(); }
 
 void SmaccAsyncClientBehavior::postFailureEvent() { postFailureEventFn_(); }
+
+void SmaccAsyncClientBehavior::requestForceFinish() { isShutdownRequested_ = true; }
 
 }  // namespace smacc2
