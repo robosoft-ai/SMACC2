@@ -22,21 +22,19 @@
 
 #include <functional>
 #include <rclcpp/rclcpp.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <smacc2/client_behaviors/sequence.hpp>
-
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace smacc2
 {
 namespace client_behaviors
 {
-  void CbSequenceNode::onEntry()
+void CbSequenceNode::onEntry()
+{
+  for (auto & cb : sequenceNodes_)
   {
-    for (auto& cb: sequenceNodes_)
-    {
-      cb.onEntry(); 
-    }
+    cb.onEntry();
   }
-};
-}  // namespace client_behaviors
+}
+};  // namespace client_behaviors
 }  // namespace smacc2
