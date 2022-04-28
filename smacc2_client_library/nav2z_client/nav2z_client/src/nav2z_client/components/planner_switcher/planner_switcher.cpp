@@ -54,7 +54,7 @@ void PlannerSwitcher::setUndoPathBackwardPlanner(bool commit)
   desired_planner_ = "UndoPathGlobalPlanner";
   desired_controller_ = "BackwardLocalPlanner";
 
-  commitPublish();
+  if (commit) commitPublish();
 }
 
 void PlannerSwitcher::setBackwardPlanner(bool commit)
