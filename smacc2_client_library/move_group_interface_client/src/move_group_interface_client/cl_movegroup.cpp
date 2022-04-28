@@ -28,14 +28,19 @@ using namespace moveit::planning_interface;
 
 namespace cl_move_group_interface
 {
-ClMoveGroup::ClMoveGroup(std::string groupName) : groupName_(groupName) { rclcpp::sleep_for(10s); }
+ClMoveGroup::ClMoveGroup(const moveit::planning_interface::MoveGroupInterface::Options & options)
+: options_(options)
+{
+}
+
+ClMoveGroup::ClMoveGroup(std::string groupName) : options_(groupName) {}
 
 ClMoveGroup::~ClMoveGroup() {}
 
 void ClMoveGroup::onInitialize()
 {
-  moveGroupClientInterface = std::make_shared<MoveGroupInterface>(getNode(), groupName_);
-  planningSceneInterface = std::make_shared<PlanningSceneInterface>();
+  moveGroupClientInterface = std::make_shared<MoveGroupInterface>(getNode(), options_);
+  planningSceneInterface = std::make_shared<PlanningSceneInterface>(options_.move_group_namespace_);
 }
 
 void ClMoveGroup::postEventMotionExecutionSucceded()
@@ -48,6 +53,11 @@ void ClMoveGroup::postEventMotionExecutionFailed()
 {
   RCLCPP_INFO(getLogger(), "[ClMoveGroup] Post Motion Failure Event");
   postEventMotionExecutionFailed_();
+}
+
+const moveit::planning_interface::MoveGroupInterface::Options & ClMoveGroup::getOptions() const
+{
+  return options_;
 }
 
 }  // namespace cl_move_group_interface

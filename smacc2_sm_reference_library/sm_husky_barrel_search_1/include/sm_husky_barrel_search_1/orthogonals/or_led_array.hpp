@@ -35,13 +35,13 @@ public:
     auto client = this->createClient<cl_led_array::ClLedArray>();
 
     client->createNamedComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>(
-      "greenLed", "/light_model_green/cmdled");
+      "greenLed", "/led_array/light_model_green/cmdled");
 
     client->createNamedComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>(
-      "yellowLed", "/light_model_yellow/cmdled");
+      "yellowLed", "/led_array/light_model_yellow/cmdled");
 
     client->createNamedComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>(
-      "redLed", "/light_model_red/cmdled");
+      "redLed", "/led_array/light_model_red/cmdled");
   }
 };
 }  // namespace sm_husky_barrel_search_1

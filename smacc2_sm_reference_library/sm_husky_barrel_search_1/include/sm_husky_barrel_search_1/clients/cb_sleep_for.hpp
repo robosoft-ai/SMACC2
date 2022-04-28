@@ -39,7 +39,6 @@ public:
 
   void onEntry() override
   {
-    //getNode()->get_clock()->sleep_for(sleeptime_);
     rclcpp::sleep_for(std::chrono::nanoseconds(sleeptime_.nanoseconds()));
     this->postSuccessEvent();
   }
