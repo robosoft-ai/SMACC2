@@ -47,7 +47,7 @@ void PlannerSwitcher::setDesiredController(std::string controllerName)
   desired_controller_ = controllerName;
 }
 
-void PlannerSwitcher::setUndoPathBackwardPlanner()
+void PlannerSwitcher::setUndoPathBackwardPlanner(bool commit)
 {
   RCLCPP_INFO(getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
 
@@ -57,39 +57,42 @@ void PlannerSwitcher::setUndoPathBackwardPlanner()
   commitPublish();
 }
 
-void PlannerSwitcher::setBackwardPlanner()
+void PlannerSwitcher::setBackwardPlanner(bool commit)
 {
   RCLCPP_INFO(getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
 
   desired_planner_ = "BackwardGlobalPlanner";
   desired_controller_ = "BackwardLocalPlanner";
-  commitPublish();
+
+  if (commit) commitPublish();
 }
 
-void PlannerSwitcher::setForwardPlanner()
+void PlannerSwitcher::setForwardPlanner(bool commit)
 {
   RCLCPP_INFO(getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set ForwardPlanner");
 
   desired_planner_ = "ForwardGlobalPlanner";
   desired_controller_ = "ForwardLocalPlanner";
-  commitPublish();
+
+  if (commit) commitPublish();
 }
 
-void PlannerSwitcher::setPureSpinningPlanner()
+void PlannerSwitcher::setPureSpinningPlanner(bool commit)
 {
   RCLCPP_INFO(getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set PureSpinningPlanner");
 
   desired_planner_ = "ForwardGlobalPlanner";
   desired_controller_ = "PureSpinningLocalPlanner";
-  commitPublish();
+
+  if (commit) commitPublish();
 }
 
-void PlannerSwitcher::setDefaultPlanners()
+void PlannerSwitcher::setDefaultPlanners(bool commit)
 {
   desired_planner_ = "GridBased";
   desired_controller_ = "FollowPath";
 
-  commitPublish();
+  if (commit) commitPublish();
 }
 
 void PlannerSwitcher::commitPublish()

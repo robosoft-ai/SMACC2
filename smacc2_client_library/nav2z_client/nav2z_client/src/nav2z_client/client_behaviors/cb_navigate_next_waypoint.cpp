@@ -22,14 +22,18 @@
 
 namespace cl_nav2z
 {
-CbNavigateNextWaypoint::CbNavigateNextWaypoint() {}
+CbNavigateNextWaypoint::CbNavigateNextWaypoint(std::optional<NavigateNextWaypointOptions> options)
+{
+  if (options) options_ = *options;
+}
 
 CbNavigateNextWaypoint::~CbNavigateNextWaypoint() {}
 
 void CbNavigateNextWaypoint::onEntry()
 {
   waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
-  waypointsNavigator_->sendNextGoal();
+  waypointsNavigator_->sendNextGoal(options_);
+
   RCLCPP_INFO(
     getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints i: %ld",
     waypointsNavigator_->getCurrentWaypointIndex());

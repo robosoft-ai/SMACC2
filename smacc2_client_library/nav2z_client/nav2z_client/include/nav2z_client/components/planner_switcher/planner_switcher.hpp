@@ -43,16 +43,16 @@ public:
 
   // STANDARD PLANNERS
 
-  void setBackwardPlanner();
+  void setBackwardPlanner(bool commit = true);
 
-  void setUndoPathBackwardPlanner();
+  void setUndoPathBackwardPlanner(bool commit = true);
 
-  void setForwardPlanner();
+  void setForwardPlanner(bool commit = true);
 
-  void setPureSpinningPlanner();
+  void setPureSpinningPlanner(bool commit = true);
 
   // sets ROS defaults local and global planners
-  void setDefaultPlanners();
+  void setDefaultPlanners(bool commit = true);
 
 private:
   std::string desired_planner_;

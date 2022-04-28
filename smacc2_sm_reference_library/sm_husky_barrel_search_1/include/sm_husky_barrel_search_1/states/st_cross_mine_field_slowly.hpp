@@ -44,14 +44,15 @@ namespace sm_husky_barrel_search_1
 
         // TRANSITION TABLE
         typedef mpl::list<
-                Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StNavigateToWaypointX>
+                Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StNavigateToWaypointX>,
+                Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StCrossMineFieldSlowly>
             >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>(NavigateNextWaypointOptions{.controllerName_="FollowPathSlow"});
         }
 
         void runtimeConfigure()

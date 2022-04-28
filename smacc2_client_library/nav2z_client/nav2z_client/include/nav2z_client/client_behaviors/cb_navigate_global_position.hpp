@@ -47,7 +47,9 @@ public:
 
   CbNavigateGlobalPosition();
 
-  CbNavigateGlobalPosition(float x, float y, float yaw /*radians*/);
+  CbNavigateGlobalPosition(
+    float x, float y, float yaw /*radians*/,
+    std::optional<CbNavigateGlobalPositionOptions> options = std::nullopt);
 
   void setGoal(const geometry_msgs::msg::Pose & pose);
 
