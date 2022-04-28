@@ -22,7 +22,7 @@
 
 #include <functional>
 #include <rclcpp/rclcpp.hpp>
-#include <smacc2/client_behaviors/sequence.hpp>
+#include <smacc2/client_behaviors/cb_sequence.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace smacc2

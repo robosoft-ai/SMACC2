@@ -23,22 +23,28 @@
 #include <smacc2/smacc.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include <nav2z_client/client_behaviors.hpp>
+#include <sm_husky_barrel_search_1/clients/cb_sleep_for.hpp>
+#include <sm_husky_barrel_search_1/clients/led_array/client_behaviors.hpp>
+
+
 namespace sm_husky_barrel_search_1
 {
     using namespace smacc2::default_events;
     using namespace cl_nav2z;
     using namespace smacc2;
+    using namespace std::chrono_literals;
+    using sm_husky_barrel_search_1::cl_led_array::CbLEDOff;
+    using sm_husky_barrel_search_1::cl_led_array::CbLEDOn;
+    using sm_husky_barrel_search_1::cl_led_array::LedColor;
 
     // STATE DECLARATION
-    struct StEvasionMotion : smacc2::SmaccState<StEvasionMotion, SmHuskyBarrelSearch1>
+    struct StCrossMineFieldSlowly : smacc2::SmaccState<StCrossMineFieldSlowly, SmHuskyBarrelSearch1>
     {
         using SmaccState::SmaccState;
 
         // TRANSITION TABLE
         typedef mpl::list<
-
-                Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, SS5::SsSearchMineSPattern1>,
-                Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StEvasionMotion>
+                Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StNavigateToWaypointX>
             >
             reactions;
 

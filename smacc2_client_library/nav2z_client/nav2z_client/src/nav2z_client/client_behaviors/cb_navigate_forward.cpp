@@ -76,9 +76,9 @@ void CbNavigateForward::onEntry()
                      << "current pose: " << currentPoseMsg);
 
   // force global orientation if it is requested
-  if (this->forceInitialOrientation)
+  if (options.forwardSpeed)
   {
-    currentPoseMsg.orientation = *forceInitialOrientation;
+    currentPoseMsg.orientation = *(options.forceInitialOrientation);
     RCLCPP_WARN_STREAM(
       getLogger(),
       "[" << getName() << "]"

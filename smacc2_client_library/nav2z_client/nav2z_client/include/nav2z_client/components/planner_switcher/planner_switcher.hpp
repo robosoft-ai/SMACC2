@@ -33,6 +33,16 @@ class PlannerSwitcher : public smacc2::ISmaccComponent
 public:
   PlannerSwitcher();
 
+  void onInitialize() override;
+
+  void setDesiredGlobalPlanner(std::string);
+
+  void setDesiredController(std::string);
+
+  void commitPublish();
+
+  // STANDARD PLANNERS
+
   void setBackwardPlanner();
 
   void setUndoPathBackwardPlanner();
@@ -41,19 +51,15 @@ public:
 
   void setPureSpinningPlanner();
 
-  void onInitialize() override;
-
   // sets ROS defaults local and global planners
   void setDefaultPlanners();
 
 private:
-  std::string desired_global_planner_;
+  std::string desired_planner_;
 
-  std::string desired_local_planner_;
+  std::string desired_controller_;
 
   bool set_planners_mode_flag_;
-
-  void updatePlanners();
 
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr planner_selector_pub_;
 
