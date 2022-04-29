@@ -1,4 +1,14 @@
 repositories:
+
+  navigation2:
+    type: git
+    url: https://github.com/ros-planning/navigation2.git
+    version: galactic
+  slam_toolbox:
+    type: git
+    url: https://github.com/SteveMacenski/slam_toolbox.git
+    version: galactic
+
   ###### Robot Packages
 
   # Mobile robots
@@ -20,10 +30,6 @@ repositories:
     type: git
     url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git
     version: ros2
-  Universal_Robots_ROS2_Gazebo_Simulation:
-    type: git
-    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Gazebo_Simulation.git
-    version: ros2
 
   # ros2_control backports
   ros2_control:
@@ -35,10 +41,6 @@ repositories:
     url: https://github.com/StoglRobotics-forks/ros2_controllers.git
     version: galactic-backports-smacc2
 
-  GazeboRosControl_Namespaces:
-    type: git
-    url: https://github.com/pabloinigoblasco/gazebo_ros2_control.git
-    version: feature/controller_prefixes_and_namespaces_galactic
 
   ####### Tracing tools (uncomment if needed)
 #  ros2_tracing:
