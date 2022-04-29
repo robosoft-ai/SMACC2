@@ -33,16 +33,16 @@ class CbSequenceNode : public smacc2::SmaccAsyncClientBehavior
 public:
   CbSequenceNode();
 
-  template <typename TOrthogonal, typename TBehavior>
-  static void configure_orthogonal_runtime(
-    std::function<void(TBehavior & bh, MostDerived &)> initializationFunction)
-  {
-    configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState * state) {
-      // auto bh = std::make_shared<TBehavior>(args...);
-      // auto bh = state->configure<TOrthogonal, TBehavior>();
-      initializationFunction(*bh, *(static_cast<MostDerived *>(state)));
-    });
-  }
+  // template <typename TOrthogonal, typename TBehavior>
+  // static void configure_orthogonal_runtime(
+  //   std::function<void(TBehavior & bh, MostDerived &)> initializationFunction)
+  // {
+  //   configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState * state) {
+  //     // auto bh = std::make_shared<TBehavior>(args...);
+  //     // auto bh = state->configure<TOrthogonal, TBehavior>();
+  //     initializationFunction(*bh, *(static_cast<MostDerived *>(state)));
+  //   });
+  // }
 
   void onEntry() override;
 
@@ -54,7 +54,7 @@ public:
   }
 
 private:
-  std::vector<smacc2::SmaccAsyncClientBehavior> sequenceNodes_;
+  std::vector<smacc2::SmaccAsyncClientBehavior *> sequenceNodes_;
 };
 }  // namespace client_behaviors
 }  // namespace smacc2
