@@ -18,37 +18,32 @@
  *
  ******************************************************************************************************************/
 
-#pragma once
-
-#include <sm_husky_barrel_search_1/clients/led_array/cl_led_array.hpp>
-#include <smacc2/smacc.hpp>
-
 namespace sm_husky_barrel_search_1
 {
-namespace cl_led_array
+namespace s_pattern_states
 {
-class CbLEDOff : public smacc2::SmaccClientBehavior
+// STATE DECLARATION
+struct StiSPatternForward2 : public smacc2::SmaccState<StiSPatternForward2, SS>
 {
-public:
- LedColor color_;
+  using SmaccState::SmaccState;
 
-  CbLEDOff(LedColor color):
-    color_(color)
+  // TRANSITION TABLE
+  typedef mpl::list<
+
+    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiSPatternRotate3>,
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiSPatternRotate2>
+
+    >reactions;
+
+  // STATE FUNCTIONS
+  static void staticConfigure()
   {
-
+    configure_orthogonal<OrNavigation, CbNavigateForward>(SS::pitch2_lenght_meters());
+    // configure_orthogonal<OrNavigation, CbPauseSlam>();
+    // configure_orthogonal<OrLED, CbLEDOn>();
   }
 
-  void onEntry() override
-  {
-    cl_led_array::ClLedArray * ledarray;
-    this->requiresClient(ledarray);
-
-    ledarray->turnOff(color_);
-  }
-
-  void onExit() override
-  {
-  }
+  void runtimeConfigure() {}
 };
-}  // namespace cl_led_array
+}  // namespace s_pattern_states
 }  // namespace sm_husky_barrel_search_1

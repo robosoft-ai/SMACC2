@@ -20,35 +20,36 @@
 
 #pragma once
 
-#include <sm_husky_barrel_search_1/clients/led_array/cl_led_array.hpp>
 #include <smacc2/smacc.hpp>
-
+#include <nav2z_client/nav2z_client.hpp>
+#include <nav2z_client/client_behaviors.hpp>
 namespace sm_husky_barrel_search_1
 {
-namespace cl_led_array
-{
-class CbLEDOff : public smacc2::SmaccClientBehavior
-{
-public:
- LedColor color_;
+    using namespace smacc2::default_events;
+    using namespace cl_nav2z;
+    using namespace smacc2;
 
-  CbLEDOff(LedColor color):
-    color_(color)
-  {
+    // STATE DECLARATION
+    struct StEvasionMotion : smacc2::SmaccState<StEvasionMotion, SmHuskyBarrelSearch1>
+    {
+        using SmaccState::SmaccState;
 
-  }
+        // TRANSITION TABLE
+        typedef mpl::list<
+                Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, SS5::SsSearchMineSPattern1>,
+                Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StEvasionMotion>
+            >
+            reactions;
 
-  void onEntry() override
-  {
-    cl_led_array::ClLedArray * ledarray;
-    this->requiresClient(ledarray);
+        // STATE FUNCTIONS
+        static void staticConfigure()
+        {
+            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
 
-    ledarray->turnOff(color_);
-  }
+        }
 
-  void onExit() override
-  {
-  }
-};
-}  // namespace cl_led_array
-}  // namespace sm_husky_barrel_search_1
+        void runtimeConfigure()
+        {
+        }
+    };
+} // namespace sm_husky_barrel_search_1

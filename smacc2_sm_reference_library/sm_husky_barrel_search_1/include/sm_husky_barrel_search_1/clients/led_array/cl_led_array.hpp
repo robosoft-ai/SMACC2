@@ -29,12 +29,17 @@ namespace sm_husky_barrel_search_1
 {
 namespace cl_led_array
 {
+
+  enum class LedColor{GREEN, YELLOW, RED};
+
 class ClLedArray : public smacc2::ISmaccClient
 {
 public:
   smacc2::components::CpTopicPublisher<std_msgs::msg::Int8> * greenLed_;
   smacc2::components::CpTopicPublisher<std_msgs::msg::Int8> * yellowLed_;
   smacc2::components::CpTopicPublisher<std_msgs::msg::Int8> * redLed_;
+
+  std::map <LedColor, smacc2::components::CpTopicPublisher<std_msgs::msg::Int8> *> ledComponentByKey_;
 
   ClLedArray() {}
 
@@ -47,6 +52,25 @@ public:
     yellowLed_ =
       getComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>("yellowLed");
     redLed_ = getComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>("redLed");
+
+    ledComponentByKey_ = {{LedColor::GREEN, greenLed_},
+                          {LedColor::YELLOW, yellowLed_},
+                          {LedColor::RED, redLed_}
+    };
+  }
+
+  void turnOff(LedColor color)
+  {
+    std_msgs::msg::Int8 msg;
+    msg.data = 0;
+    ledComponentByKey_[color]->publish(msg);
+  }
+
+  void turnOn(LedColor color)
+  {
+    std_msgs::msg::Int8 msg;
+    msg.data = 1;
+    ledComponentByKey_[color]->publish(msg);
   }
 
   template <typename TOrthogonal, typename TSourceObject>

@@ -20,35 +20,35 @@
 
 #pragma once
 
-#include <sm_husky_barrel_search_1/clients/led_array/cl_led_array.hpp>
-#include <smacc2/smacc.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/duration.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace sm_husky_barrel_search_1
 {
-namespace cl_led_array
-{
-class CbLEDOff : public smacc2::SmaccClientBehavior
+  using namespace std::chrono_literals;
+
+class CbSleepFor : public smacc2::SmaccAsyncClientBehavior
 {
 public:
- LedColor color_;
 
-  CbLEDOff(LedColor color):
-    color_(color)
+  CbSleepFor(rclcpp::Duration sleeptime)
+    : sleeptime_(sleeptime)
   {
-
   }
 
   void onEntry() override
   {
-    cl_led_array::ClLedArray * ledarray;
-    this->requiresClient(ledarray);
-
-    ledarray->turnOff(color_);
+    //getNode()->get_clock()->sleep_for(sleeptime_);
+    rclcpp::sleep_for(std::chrono::nanoseconds(sleeptime_.nanoseconds()));
+    this->postSuccessEvent();
   }
 
   void onExit() override
   {
   }
+
+private:
+  rclcpp::Duration sleeptime_;
 };
-}  // namespace cl_led_array
 }  // namespace sm_husky_barrel_search_1

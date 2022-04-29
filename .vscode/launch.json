@@ -353,6 +353,26 @@
             ]
         },
         {
+            "name": "(gdb) SmHuskyBarrelSearch1-opencv",
+            "type": "cppdbg",
+            "request": "launch",
+
+            "program": "${workspaceFolder}/../install/sm_husky_barrel_search_1/lib/sm_husky_barrel_search_1/opencv_perception_node",
+            "args": [      ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "name": "(gdb) SmAtomicSubscribersPerformanceTest",
             "type": "cppdbg",
             "request": "launch",

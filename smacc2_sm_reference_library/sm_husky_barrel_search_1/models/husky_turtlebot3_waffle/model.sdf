@@ -1,6 +1,20 @@
 <?xml version="1.0"?>
 <sdf version="1.7">
   <model name='husky_turtlebot3_waffle'>
+        <plugin name="gazebo_ros_p3d" filename="libgazebo_ros_p3d.so">
+        <ros>
+          <namespace>/</namespace>
+          <argument>odom:=odom_gt</argument>
+        </ros>
+
+        <body_name>base_link</body_name>
+        <frame_name>odom</frame_name>
+        <update_rate>15</update_rate>
+        <xyz_offset>0 0 0</xyz_offset>
+        <rpy_offset>0 0 0</rpy_offset>
+        <gaussian_noise>0.01</gaussian_noise>
+    </plugin>
+
     <pose>-2 -0.5 0.01 0 -0 0</pose>
     <link name='base_footprint'>
       <self_collide>0</self_collide>
@@ -65,11 +79,11 @@
       <self_collide>0</self_collide>
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
-    </link>
-    <link name='imu_link'>
+
       <sensor name='tb3_imu' type='imu'>
         <always_on>1</always_on>
         <update_rate>200</update_rate>
+
         <imu>
           <angular_velocity>
             <x>
@@ -112,16 +126,16 @@
             </z>
           </linear_acceleration>
         </imu>
+
         <plugin name='turtlebot3_imu' filename='libgazebo_ros_imu_sensor.so'>
           <initial_orientation_as_reference>false</initial_orientation_as_reference>
           <ros>
             <remapping>~/out:=imu</remapping>
           </ros>
         </plugin>
-
       </sensor>
 
-      <sensor name="my_gps" type="gps">
+       <sensor name="my_gps" type="gps">
           <always_on>true</always_on>
           <update_rate>30</update_rate>
           <plugin name="my_gps_plugin" filename="libgazebo_ros_gps_sensor.so">
@@ -131,6 +145,12 @@
             </ros>
           </plugin>
       </sensor>
+
+
+    </link>
+
+    <!-- <link name='imu_link'>
+
 
       <self_collide>0</self_collide>
       <inertial>
@@ -147,7 +167,27 @@
       </inertial>
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
-    </link>
+    </link> -->
+
+   <!-- <link name='gps_link'>
+
+      <self_collide>0</self_collide>
+      <inertial>
+        <pose>0 0 0 0 -0 0</pose>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1</iyy>
+          <iyz>0</iyz>
+          <izz>1</izz>
+        </inertia>
+        <mass>1</mass>
+      </inertial>
+      <enable_wind>0</enable_wind>
+      <kinematic>0</kinematic>
+    </link> -->
+
     <link name='base_scan'>
       <inertial>
         <pose>-0.052 0 0.31 0 -0 0</pose>
@@ -483,10 +523,12 @@
       <pose>0.069 -0.047 0.107 0 -0 0</pose>
       <sensor name='intel_realsense_r200_depth' type='depth'>
         <always_on>1</always_on>
-        <update_rate>5</update_rate>
+        <update_rate>10</update_rate>
         <pose>0.064 -0.047 0.107 0 -0 0</pose>
         <camera name='realsense_depth_camera'>
-          <horizontal_fov>1.047</horizontal_fov>
+          <!-- <horizontal_fov>1.047</horizontal_fov> -->
+          <horizontal_fov>2.047</horizontal_fov>
+
           <image>
             <width>320</width>
             <height>240</height>
@@ -600,6 +642,35 @@
         </limit>
       </axis>
     </joint>
+
+    <!-- <joint name='imu_joint' type='fixed'>
+      <parent>base_link</parent>
+      <child>imu_link</child>
+      <pose>0.064 -0.065 0.094 0 -0 0</pose>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+    </joint>
+
+    <joint name='gps_joint' type='fixed'>
+      <parent>base_link</parent>
+      <child>gps_link</child>
+      <pose>0.064 -0.065 0.094 0 -0 0</pose>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+      </axis>
+    </joint>
+
+     -->
+
     <!-- <joint name='camera_rgb_joint' type='fixed'>
       <parent>camera_link</parent>
       <child>camera_rgb_frame</child>
@@ -613,7 +684,9 @@
       </axis>
     </joint> -->
     <plugin name='turtlebot3_diff_drive' filename='libgazebo_ros_diff_drive.so'>
-      <ros />
+      <ros >
+        <!-- <remapping>odom:=odom_wheels</remapping> -->
+      </ros >
       <update_rate>30</update_rate>
       <left_joint>wheel_left_joint</left_joint>
       <right_joint>wheel_right_joint</right_joint>
@@ -622,11 +695,11 @@
       <max_wheel_torque>20</max_wheel_torque>
       <max_wheel_acceleration>1.0</max_wheel_acceleration>
       <command_topic>cmd_vel</command_topic>
-      <publish_odom>1</publish_odom>
-      <publish_odom_tf>1</publish_odom_tf>
+      <publish_odom>0</publish_odom>
+      <publish_odom_tf>0</publish_odom_tf>
       <publish_wheel_tf>0</publish_wheel_tf>
-      <odometry_topic>odom</odometry_topic>
-      <odometry_frame>odom</odometry_frame>
+      <odometry_topic>/odom_wheels</odometry_topic>
+      <odometry_frame>odom_wheels</odometry_frame>
       <robot_base_frame>base_footprint</robot_base_frame>
     </plugin>
 
@@ -677,12 +750,27 @@
       <acceleration>-0.046155 0.027458 0.077654 0 -0 0</acceleration>
       <wrench>-4.6e-05 2.7e-05 7.8e-05 0 -0 0</wrench>
     </link>
-    <link name='imu_link'>
-      <pose>-2 -0.5 -43974.7 0 -0 0</pose>
+
+  <!-- <link name='imu_link'>
+      <pose>-2 -0.5 -43974.7 0 -0 2</pose>
       <velocity>0 0 -928.383 0 -0 0</velocity>
       <acceleration>0 0 -9.8 0 -0 0</acceleration>
       <wrench>0 0 -9.8 0 -0 0</wrench>
-    </link>
+    </link> -->
+
+  <!-- <joint name="imu_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="imu_link" />
+  </joint> -->
+
+  <!-- <link name='gps_link'>
+    <pose>-2 -0.5 -43974.7 0 -0 0</pose>
+    <velocity>0 0 -928.383 0 -0 0</velocity>
+    <acceleration>0 0 -9.8 0 -0 0</acceleration>
+    <wrench>0 0 -9.8 0 -0 0</wrench>
+  </link> -->
+
+
     <link name='wheel_left_link'>
       <pose>-1.99919 -0.499984 0.008735 -3.1e-05 -0.030628 0.007851</pose>
       <velocity>0.000311 -4.3e-05 -0.040244 0.004673 0.004285 0.001885</velocity>
