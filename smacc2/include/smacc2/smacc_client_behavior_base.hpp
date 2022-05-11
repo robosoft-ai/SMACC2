@@ -84,7 +84,5 @@ private:
   friend class ISmaccState;
   friend class ISmaccOrthogonal;
   friend class ISmaccAsynchronousClientBehavior;
-
-  friend class ISmaccClientBehavior;
 };
 }  // namespace smacc2
