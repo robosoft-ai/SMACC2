@@ -35,7 +35,7 @@ void CbSequenceNode::onEntry()
   {
     // cb->onEntry();
   }
-};  // namespace client_behaviors
-}
-}  
+}  // namespace client_behaviors
+}  // namespace client_behaviors
+}  // namespace smacc2
 // namespace client_behaviors
