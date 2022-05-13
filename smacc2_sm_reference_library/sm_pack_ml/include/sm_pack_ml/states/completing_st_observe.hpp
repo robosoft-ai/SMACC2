@@ -14,35 +14,32 @@
 
 namespace sm_pack_ml
 {
-namespace mode_3_sequence_a
-{
 // STATE DECLARATION
-struct StiMode3SequenceAStep1 : smacc2::SmaccState<StiMode3SequenceAStep1, SsMode3SequenceA>
+struct CompletingStObserve : smacc2::SmaccState<CompletingStObserve, MsMode3>
 {
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : ABORT{};
-  struct NEXT : SUCCESS{};
-  struct PREVIOUS : ABORT{};
-  struct RETURN : CANCEL{};
+  struct completing_sequence_a : SUCCESS{};
+  struct completing_sequence_b : SUCCESS{};
 
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiMode3SequenceAStep2, SUCCESS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode3SequenceAStep3, NEXT>
-    //Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiStartSequenceALoop, PREVIOUS>,
-
-    //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StartStObserve, RETURN>,
-    //Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery2, ABORT>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, Completing3SequenceBLoop, SUCCESS>,
+    // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsExecuteSequenceA>,
+    // Keyboard events
+    // Transition<EvKeyPressF<CbDefaultKeyboardBehavior, OrKeyboard>, MsStarting, SUCCESS>,
+    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, Completing3SequenceALoop, SUCCESS>,
+    // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsExecuteSequenceA, execute_sequence_a>,
+    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, Completing3SequenceBLoop, SUCCESS>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(20);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
     configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
@@ -54,5 +51,4 @@ struct StiMode3SequenceAStep1 : smacc2::SmaccState<StiMode3SequenceAStep1, SsMod
 
   void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-}  // namespace execute_sequence_a
 }  // namespace sm_pack_ml

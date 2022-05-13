@@ -14,10 +14,10 @@
 
 namespace sm_pack_ml
 {
-namespace mode_3_sequence_b
+namespace completing_sequence_b
 {
 // STATE DECLARATION
-struct StiMode3SequenceBStep3 : smacc2::SmaccState<StiMode3SequenceBStep3, SsMode3SequenceB>
+struct StiCompletingSequenceBStep1 : smacc2::SmaccState<StiCompletingSequenceBStep1, SsCompletingSequenceB>
 {
   using SmaccState::SmaccState;
 
@@ -30,9 +30,9 @@ struct StiMode3SequenceBStep3 : smacc2::SmaccState<StiMode3SequenceBStep3, SsMod
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode3SequenceBStep4, SUCCESS>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiMode3SequenceBStep5, SUCCESS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode3SequenceBStep6, SUCCESS>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiCompletingSequenceBStep2, TIMEOUT>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiCompletingSequenceBStep2, NEXT>,
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiCompletingSequenceBLoop, PREVIOUS>
 
     //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StartStObserve, RETURN>,
     //Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery2, ABORT>

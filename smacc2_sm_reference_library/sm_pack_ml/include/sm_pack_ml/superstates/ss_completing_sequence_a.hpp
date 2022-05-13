@@ -14,10 +14,10 @@
 
 namespace sm_pack_ml
 {
-namespace mode_3_sequence_b
-{
+using namespace sm_pack_ml::completing_sequence_a;
+
 // STATE DECLARATION
-struct StiMode3SequenceBLoop : smacc2::SmaccState<StiMode3SequenceBLoop, SsMode3SequenceB>
+struct SsCompletingSequenceA : smacc2::SmaccState<SsCompletingSequenceA, MsMode3, StiCompletingSequenceALoop>
 {
 public:
   using SmaccState::SmaccState;
@@ -25,30 +25,18 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopContinue<StiMode3SequenceBLoop>, StiMode3SequenceBStep1, CONTINUELOOP>
+    Transition<EvLoopEnd<StiCompletingSequenceALoop>, Completing3SequenceALoop>
 
     >reactions;
+
+  // STATE VARIABLES
+  static constexpr int total_iterations() { return 1; }
+  int iteration_count = 0;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
+};  // namespace SS1
 
-  bool loopWhileCondition()
-  {
-    auto & superstate = this->context<SsMode3SequenceB>();
-
-    RCLCPP_INFO(
-      getLogger(), "Loop start, current iterations: %d, total iterations: %d",
-      superstate.iteration_count, superstate.total_iterations());
-    return superstate.iteration_count++ < superstate.total_iterations();
-  }
-
-  void onEntry()
-  {
-    RCLCPP_INFO(getLogger(), "LOOP START ON ENTRY");
-    checkWhileLoopConditionAndThrowEvent(&StiMode3SequenceBLoop::loopWhileCondition);
-  }
-};
-}  // namespace execute_sequence_b
 }  // namespace sm_pack_ml

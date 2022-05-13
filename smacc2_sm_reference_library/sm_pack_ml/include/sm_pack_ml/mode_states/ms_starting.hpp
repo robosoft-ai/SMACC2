@@ -15,7 +15,7 @@
 namespace sm_pack_ml
 {
 // STATE DECLARATION
-struct MsStarting : smacc2::SmaccState<MsStarting, DsRun, SsStartSequenceB>
+struct MsStarting : smacc2::SmaccState<MsStarting, DsRun, StartStObserve>
 {
 public:
   using SmaccState::SmaccState;

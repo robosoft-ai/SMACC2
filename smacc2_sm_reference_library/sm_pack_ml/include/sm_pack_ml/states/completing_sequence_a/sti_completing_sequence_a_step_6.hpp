@@ -14,10 +14,10 @@
 
 namespace sm_pack_ml
 {
-namespace mode_3_sequence_b
+namespace completing_sequence_a
 {
 // STATE DECLARATION
-struct StiMode3SequenceBStep2 : smacc2::SmaccState<StiMode3SequenceBStep2, SsMode3SequenceB>
+struct StiCompletingSequenceAStep6 : smacc2::SmaccState<StiCompletingSequenceAStep6, SsCompletingSequenceA>
 {
   using SmaccState::SmaccState;
 
@@ -30,9 +30,9 @@ struct StiMode3SequenceBStep2 : smacc2::SmaccState<StiMode3SequenceBStep2, SsMod
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiMode3SequenceBStep3, TIMEOUT>,
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode3SequenceBStep1, PREVIOUS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode3SequenceBStep3, NEXT>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiCompletingSequenceAStep7, SUCCESS>,
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiCompletingSequenceAStep8, PREVIOUS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiCompletingSequenceAStep7, NEXT>
 
     //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StartStObserve, RETURN>,
     //Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery2, ABORT>
@@ -54,5 +54,5 @@ struct StiMode3SequenceBStep2 : smacc2::SmaccState<StiMode3SequenceBStep2, SsMod
 
   void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
-}  // namespace execute_sequence_b
+}  // namespace execute_sequence_a
 }  // namespace sm_pack_ml
