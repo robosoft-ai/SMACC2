@@ -15,7 +15,7 @@
 namespace sm_pack_ml
 {
 // STATE DECLARATION
-struct MsSuspending : smacc2::SmaccState<MsSuspending, DsRun>
+struct MsSuspending : smacc2::SmaccState<MsSuspending, DsRun, SuspendingStObserve>
 {
 public:
   using SmaccState::SmaccState;
@@ -30,6 +30,21 @@ public:
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
+
+
+  static constexpr int ztotal_iterations() { return 1; }
+  int ziteration_count = 0;
+
+
+  static constexpr int ytotal_iterations() { return 1; }
+  int yiteration_count = 0;
+
+
+  static constexpr int dtotal_iterations() { return 1; }
+  int diteration_count = 0;
+
+  static constexpr int gtotal_iterations() { return 1; }
+  int giteration_count = 0;
 };
 
 }  // namespace sm_pack_ml

@@ -15,7 +15,7 @@
 namespace sm_pack_ml
 {
 // STATE DECLARATION
-struct MsHolding : smacc2::SmaccState<MsHolding, DsRun>
+struct MsHolding : smacc2::SmaccState<MsHolding, DsRun, HoldingStObserve>
 {
 public:
   using SmaccState::SmaccState;
@@ -31,6 +31,14 @@ public:
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
+
+
+  static constexpr int ztotal_iterations() { return 1; }
+  int ziteration_count = 0;
+
+
+  static constexpr int ytotal_iterations() { return 1; }
+  int yiteration_count = 0;
 };
 
 }  // namespace sm_pack_ml

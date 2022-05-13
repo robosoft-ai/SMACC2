@@ -15,7 +15,7 @@
 namespace sm_pack_ml
 {
 // STATE DECLARATION
-struct CompletingStObserve : smacc2::SmaccState<CompletingStObserve, MsMode3>
+struct CompletingStObserve : smacc2::SmaccState<CompletingStObserve, MsCompleting>
 {
   using SmaccState::SmaccState;
 
@@ -26,13 +26,13 @@ struct CompletingStObserve : smacc2::SmaccState<CompletingStObserve, MsMode3>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, Completing3SequenceBLoop, SUCCESS>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, CompletingSequenceBLoop, SUCCESS>,
     // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsExecuteSequenceA>,
     // Keyboard events
     // Transition<EvKeyPressF<CbDefaultKeyboardBehavior, OrKeyboard>, MsStarting, SUCCESS>,
-    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, Completing3SequenceALoop, SUCCESS>,
+    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, CompletingSequenceALoop, SUCCESS>,
     // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsExecuteSequenceA, execute_sequence_a>,
-    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, Completing3SequenceBLoop, SUCCESS>
+    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, CompletingSequenceBLoop, SUCCESS>
 
     >reactions;
 

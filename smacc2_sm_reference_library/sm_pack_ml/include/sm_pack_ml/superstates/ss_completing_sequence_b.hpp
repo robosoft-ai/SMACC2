@@ -17,7 +17,7 @@ namespace sm_pack_ml
 using namespace sm_pack_ml::completing_sequence_b;
 
 // STATE DECLARATION
-struct SsCompletingSequenceB : smacc2::SmaccState<SsCompletingSequenceB, MsMode3, StiCompletingSequenceBLoop>
+struct SsCompletingSequenceB : smacc2::SmaccState<SsCompletingSequenceB, MsCompleting, StiCompletingSequenceBLoop>
 {
 public:
   using SmaccState::SmaccState;

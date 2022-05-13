@@ -16,7 +16,7 @@ namespace sm_pack_ml
 {
 
 // STATE DECLARATION
-struct Completing3SequenceBLoop : smacc2::SmaccState<Completing3SequenceBLoop, MsMode3>
+struct CompletingSequenceBLoop : smacc2::SmaccState<CompletingSequenceBLoop, MsCompleting>
 {
 public:
   using SmaccState::SmaccState;
@@ -24,7 +24,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopContinue<Completing3SequenceBLoop>, SsCompletingSequenceB, CONTINUELOOP>
+    Transition<EvLoopContinue<CompletingSequenceBLoop>, SsCompletingSequenceB, CONTINUELOOP>
 
     >reactions;
 
@@ -35,7 +35,7 @@ public:
 
   bool loopWhileCondition()
   {
-    auto & superstate = this->context<MsMode3>();
+    auto & superstate = this->context<MsCompleting>();
 
     RCLCPP_INFO(
       getLogger(), "Loop start, current iterations: %d, total iterations: %d",
@@ -46,7 +46,7 @@ public:
   void onEntry()
   {
     RCLCPP_INFO(getLogger(), "LOOP START ON ENTRY");
-    checkWhileLoopConditionAndThrowEvent(&Completing3SequenceBLoop::loopWhileCondition);
+    checkWhileLoopConditionAndThrowEvent(&CompletingSequenceBLoop::loopWhileCondition);
   }
 };
 }  // namespace sm_pack_ml

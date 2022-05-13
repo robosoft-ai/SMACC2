@@ -17,7 +17,7 @@ namespace sm_pack_ml
 using namespace sm_pack_ml::completing_sequence_a;
 
 // STATE DECLARATION
-struct SsCompletingSequenceA : smacc2::SmaccState<SsCompletingSequenceA, MsMode3, StiCompletingSequenceALoop>
+struct SsCompletingSequenceA : smacc2::SmaccState<SsCompletingSequenceA, MsCompleting, StiCompletingSequenceALoop>
 {
 public:
   using SmaccState::SmaccState;
@@ -25,7 +25,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiCompletingSequenceALoop>, Completing3SequenceALoop>
+    Transition<EvLoopEnd<StiCompletingSequenceALoop>, CompletingSequenceALoop>
 
     >reactions;
 

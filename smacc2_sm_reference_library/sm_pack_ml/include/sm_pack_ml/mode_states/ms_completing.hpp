@@ -15,7 +15,7 @@
 namespace sm_pack_ml
 {
 // STATE DECLARATION
-struct MsCompleting : smacc2::SmaccState<MsCompleting, DsRun>
+struct MsCompleting : smacc2::SmaccState<MsCompleting, DsRun, CompletingStObserve>
 {
 public:
   using SmaccState::SmaccState;
@@ -30,6 +30,14 @@ public:
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
+
+
+  static constexpr int ztotal_iterations() { return 1; }
+  int ziteration_count = 0;
+
+
+  static constexpr int ytotal_iterations() { return 1; }
+  int yiteration_count = 0;
 };
 
 }  // namespace sm_pack_ml
