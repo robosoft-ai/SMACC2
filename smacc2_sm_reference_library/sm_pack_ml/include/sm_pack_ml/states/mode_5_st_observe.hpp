@@ -29,7 +29,7 @@ struct Mode5StObserve : smacc2::SmaccState<Mode5StObserve, MsMode5>
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, Mode5SequenceBLoop, SUCCESS>,
     // Transition<smacc2::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsExecuteSequenceA>,
     // Keyboard events
-    // Transition<EvKeyPressF<CbDefaultKeyboardBehavior, OrKeyboard>, MsMode2, SUCCESS>,
+    // Transition<EvKeyPressF<CbDefaultKeyboardBehavior, OrKeyboard>, MsStarting, SUCCESS>,
     Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, Mode5SequenceALoop, SUCCESS>,
     // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsExecuteSequenceA, execute_sequence_a>,
     Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, Mode5SequenceBLoop, SUCCESS>

@@ -92,20 +92,20 @@ class StiExecuteSequenceAStep8;
 class StiExecuteSequenceAStep9;
 }  // namespace execute_sequence_a
 
-class SsMode2SequenceA;
-namespace mode_2_sequence_a
+class SsStartSequenceA;
+namespace start_sequence_a
 {
-class StiMode2SequenceALoop;
-class StiMode2SequenceAStep1;
-class StiMode2SequenceAStep2;
-class StiMode2SequenceAStep3;
-class StiMode2SequenceAStep4;
-class StiMode2SequenceAStep5;
-class StiMode2SequenceAStep6;
-class StiMode2SequenceAStep7;
-class StiMode2SequenceAStep8;
-class StiMode2SequenceAStep9;
-}  // namespace mode_2_sequence_a
+class StiStartSequenceALoop;
+class StiStartSequenceAStep1;
+class StiStartSequenceAStep2;
+class StiStartSequenceAStep3;
+class StiStartSequenceAStep4;
+class StiStartSequenceAStep5;
+class StiStartSequenceAStep6;
+class StiStartSequenceAStep7;
+class StiStartSequenceAStep8;
+class StiStartSequenceAStep9;
+}  // namespace start_sequence_a
 
 class SsMode3SequenceA;
 namespace mode_3_sequence_a
@@ -199,22 +199,22 @@ class StiExecuteSequenceBStep8;
 class StiExecuteSequenceBStep9;
 }  // namespace execute_sequence_b
 
-class SsMode2SequenceB;
+class SsStartSequenceB;
 
-namespace mode_2_sequence_b
+namespace start_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiMode2SequenceBLoop;
-class StiMode2SequenceBStep1;
-class StiMode2SequenceBStep2;
-class StiMode2SequenceBStep3;
-class StiMode2SequenceBStep4;
-class StiMode2SequenceBStep5;
-class StiMode2SequenceBStep6;
-class StiMode2SequenceBStep7;
-class StiMode2SequenceBStep8;
-class StiMode2SequenceBStep9;
-}  // namespace mode_2_sequence_b
+class StiStartSequenceBLoop;
+class StiStartSequenceBStep1;
+class StiStartSequenceBStep2;
+class StiStartSequenceBStep3;
+class StiStartSequenceBStep4;
+class StiStartSequenceBStep5;
+class StiStartSequenceBStep6;
+class StiStartSequenceBStep7;
+class StiStartSequenceBStep8;
+class StiStartSequenceBStep9;
+}  // namespace start_sequence_b
 
 class SsMode3SequenceB;
 
@@ -277,7 +277,7 @@ class StRecoveryEvaluate1;
 class StRecoveryGenerate1;
 class StRecoveryInnervate1;
 
-class Mode2StObserve;
+class StartStObserve;
 class StRecoveryAnalyze2;
 class StRecoveryBifurcate2;
 class StRecoveryCalculate2;
@@ -293,8 +293,8 @@ class Mode5StObserve;
 
 class ExecuteSequenceALoop;
 class ExecuteSequenceBLoop;
-class Mode2SequenceALoop;
-class Mode2SequenceBLoop;
+class StartSequenceALoop;
+class StartSequenceBLoop;
 class Mode3SequenceALoop;
 class Mode3SequenceBLoop;
 class Mode4SequenceALoop;
@@ -310,7 +310,7 @@ class MsExecute;
 class MsRecovery1;
 
 //MODE STATES
-class MsMode2;
+class MsStarting;
 class MsRecovery2;
 
 class MsMode3;
@@ -351,11 +351,15 @@ struct EvHold : sc::event<EvHold>
 
 struct EvUnhold:sc::event<EvUnhold>
 {
-}; 
+};
 
 struct EvStop:sc::event<EvStop>
 {
-}; 
+};
+
+struct EvClear:sc::event<EvClear>
+{
+};
 
 // STATE MACHINE
 struct SmPackMl1 : public smacc2::SmaccStateMachineBase<SmPackMl1, JsActive>
@@ -421,7 +425,8 @@ struct SmPackMl1 : public smacc2::SmaccStateMachineBase<SmPackMl1, JsActive>
 // #include <sm_pack_ml/states/ms_recovery_2/st_recovery_innervate_2.hpp>
 
 #include "states/execute_sequence_a_loop.hpp"
-// #include <sm_pack_ml/states/mode_2_sequence_a_loop.hpp>
+#include "states/start_sequence_a_loop.hpp"
+
 // #include <sm_pack_ml/states/mode_3_sequence_a_loop.hpp>
 // #include <sm_pack_ml/states/mode_4_sequence_a_loop.hpp>
 // #include <sm_pack_ml/states/mode_5_sequence_a_loop.hpp>
@@ -430,19 +435,19 @@ struct SmPackMl1 : public smacc2::SmaccStateMachineBase<SmPackMl1, JsActive>
 // #include <sm_pack_ml/states/mode_4_sequence_d_loop.hpp>
 
 #include <sm_pack_ml/states/execute_sequence_b_loop.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_b_loop.hpp>
+#include <sm_pack_ml/states/start_sequence_b_loop.hpp>
 // #include <sm_pack_ml/states/mode_3_sequence_b_loop.hpp>
 // #include <sm_pack_ml/states/mode_4_sequence_b_loop.hpp>
 // #include <sm_pack_ml/states/mode_5_sequence_b_loop.hpp>
 
 #include <sm_pack_ml/states/execute_st_observe.hpp>
-// #include <sm_pack_ml/states/mode_2_st_observe.hpp>
+#include <sm_pack_ml/states/start_st_observe.hpp>
 // #include <sm_pack_ml/states/mode_3_st_observe.hpp>
 // #include <sm_pack_ml/states/mode_4_st_observe.hpp>
 // #include <sm_pack_ml/states/mode_5_st_observe.hpp>
 
 #include <sm_pack_ml/superstates/ss_execute_sequence_a.hpp>
-// #include <sm_pack_ml/superstates/ss_mode_2_sequence_a.hpp>
+#include <sm_pack_ml/superstates/ss_start_sequence_a.hpp>
 // #include <sm_pack_ml/superstates/ss_mode_3_sequence_a.hpp>
 // #include <sm_pack_ml/superstates/ss_mode_4_sequence_a.hpp>
 // #include <sm_pack_ml/superstates/ss_mode_5_sequence_a.hpp>
@@ -451,7 +456,7 @@ struct SmPackMl1 : public smacc2::SmaccStateMachineBase<SmPackMl1, JsActive>
 // #include <sm_pack_ml/superstates/ss_mode_4_sequence_d.hpp>
 
 #include <sm_pack_ml/superstates/ss_execute_sequence_b.hpp>
-// #include <sm_pack_ml/superstates/ss_mode_2_sequence_b.hpp>
+#include <sm_pack_ml/superstates/ss_start_sequence_b.hpp>
 // #include <sm_pack_ml/superstates/ss_mode_3_sequence_b.hpp>
 // #include <sm_pack_ml/superstates/ss_mode_4_sequence_b.hpp>
 // #include <sm_pack_ml/superstates/ss_mode_5_sequence_b.hpp>
@@ -468,17 +473,17 @@ struct SmPackMl1 : public smacc2::SmaccStateMachineBase<SmPackMl1, JsActive>
 #include "states/execute_sequence_a/sti_execute_sequence_a_step_7.hpp"
 #include "states/execute_sequence_a/sti_execute_sequence_a_step_6.hpp"
 
-// //ss_mode_2_sequence_a
-// #include <sm_pack_ml/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_4.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_3.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_1.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_a/sti_mode_2_sequence_a_loop.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_2.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_5.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_9.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_8.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_7.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_a/sti_mode_2_sequence_a_step_6.hpp>
+// //ss_start_sequence_a
+#include "states/start_sequence_a/sti_start_sequence_a_step_4.hpp"
+#include "states/start_sequence_a/sti_start_sequence_a_step_3.hpp"
+#include "states/start_sequence_a/sti_start_sequence_a_step_1.hpp"
+#include "states/start_sequence_a/sti_start_sequence_a_loop.hpp"
+#include "states/start_sequence_a/sti_start_sequence_a_step_2.hpp"
+#include "states/start_sequence_a/sti_start_sequence_a_step_5.hpp"
+#include "states/start_sequence_a/sti_start_sequence_a_step_9.hpp"
+#include "states/start_sequence_a/sti_start_sequence_a_step_8.hpp"
+#include "states/start_sequence_a/sti_start_sequence_a_step_7.hpp"
+#include "states/start_sequence_a/sti_start_sequence_a_step_6.hpp"
 
 // //ss_mode_3_sequence_a
 // #include <sm_pack_ml/states/mode_3_sequence_a/sti_mode_3_sequence_a_step_4.hpp>
@@ -553,16 +558,16 @@ struct SmPackMl1 : public smacc2::SmaccStateMachineBase<SmPackMl1, JsActive>
 #include "states/execute_sequence_b/sti_execute_sequence_b_step_6.hpp"
 
 // //ss_mode_2_sequence_b
-// #include <sm_pack_ml/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_4.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_3.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_1.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_b/sti_mode_2_sequence_b_loop.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_2.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_5.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_9.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_8.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_7.hpp>
-// #include <sm_pack_ml/states/mode_2_sequence_b/sti_mode_2_sequence_b_step_6.hpp>
+#include "states/start_sequence_b/sti_start_sequence_b_step_4.hpp"
+#include "states/start_sequence_b/sti_start_sequence_b_step_3.hpp"
+#include "states/start_sequence_b/sti_start_sequence_b_step_1.hpp"
+#include "states/start_sequence_b/sti_start_sequence_b_loop.hpp"
+#include "states/start_sequence_b/sti_start_sequence_b_step_2.hpp"
+#include "states/start_sequence_b/sti_start_sequence_b_step_5.hpp"
+#include "states/start_sequence_b/sti_start_sequence_b_step_9.hpp"
+#include "states/start_sequence_b/sti_start_sequence_b_step_8.hpp"
+#include "states/start_sequence_b/sti_start_sequence_b_step_7.hpp"
+#include "states/start_sequence_b/sti_start_sequence_b_step_6.hpp"
 
 // //ss_mode_3_sequence_b
 // #include <sm_pack_ml/states/mode_3_sequence_b/sti_mode_3_sequence_b_step_4.hpp>

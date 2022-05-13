@@ -34,7 +34,7 @@ struct StiExecuteSequenceAStep9 : smacc2::SmaccState<StiExecuteSequenceAStep9, S
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiExecuteSequenceAStep8, PREVIOUS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiExecuteSequenceALoop, NEXT>
 
-    // Transition<EvKeyPressF<CbDefaultKeyboardBehavior, OrKeyboard>, MsMode2, SUCCESS>,
+    // Transition<EvKeyPressF<CbDefaultKeyboardBehavior, OrKeyboard>, MsStarting, SUCCESS>,
     // Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, ExecuteStObserve, RETURN>,
     // Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery1, ABORT>
 

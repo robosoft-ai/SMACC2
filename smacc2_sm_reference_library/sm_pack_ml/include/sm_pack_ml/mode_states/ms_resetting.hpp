@@ -30,6 +30,6 @@ public:
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
-};  
+};
 
 }  // namespace sm_pack_ml

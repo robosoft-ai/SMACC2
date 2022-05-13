@@ -15,7 +15,7 @@
 namespace sm_pack_ml
 {
 // STATE DECLARATION
-struct MsStarting : smacc2::SmaccState<MsStarting, DsRun>
+struct MsStarting : smacc2::SmaccState<MsStarting, DsRun, SsStartSequenceB>
 {
 public:
   using SmaccState::SmaccState;
@@ -31,6 +31,14 @@ public:
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
-};  
+
+   // AC Cycle Loop
+  static constexpr int ztotal_iterations() { return 1; }
+  int ziteration_count = 0;
+
+  // CMV Cycle Loop
+  static constexpr int ytotal_iterations() { return 1; }
+  int yiteration_count = 0;
+};
 
 }  // namespace sm_pack_ml

@@ -34,7 +34,7 @@ struct StiMode3SequenceBStep3 : smacc2::SmaccState<StiMode3SequenceBStep3, SsMod
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiMode3SequenceBStep5, SUCCESS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode3SequenceBStep6, SUCCESS>
 
-    //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, Mode2StObserve, RETURN>,
+    //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, StartStObserve, RETURN>,
     //Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery2, ABORT>
 
     >reactions;

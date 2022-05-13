@@ -24,13 +24,12 @@ public:
   typedef mpl::list<
     smacc2::Transition<EvSc, DsStopped, SUCCESS>
 
-
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
-};  
+};
 
 }  // namespace sm_pack_ml

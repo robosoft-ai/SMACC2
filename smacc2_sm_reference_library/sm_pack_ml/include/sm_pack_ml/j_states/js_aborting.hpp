@@ -22,7 +22,7 @@ public:
 
   // TRANSITION TABLE
   typedef mpl::list<
-
+      smacc2::Transition<EvSc, JsAborted, SUCCESS>
 
     >reactions;
 
@@ -30,6 +30,6 @@ public:
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
-};  
+};
 
 }  // namespace sm_pack_ml

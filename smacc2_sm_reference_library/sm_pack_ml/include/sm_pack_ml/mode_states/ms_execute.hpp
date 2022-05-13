@@ -33,7 +33,6 @@ public:
 
   void runtimeConfigure() {}
 
-
   // AC Cycle Loop
   static constexpr int ztotal_iterations() { return 1; }
   int ziteration_count = 0;
@@ -41,6 +40,6 @@ public:
   // CMV Cycle Loop
   static constexpr int ytotal_iterations() { return 1; }
   int yiteration_count = 0;
-};  
+};
 
 }  // namespace sm_pack_ml

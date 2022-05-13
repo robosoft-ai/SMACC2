@@ -14,10 +14,9 @@
 
 namespace sm_pack_ml
 {
-using namespace sm_pack_ml::mode_2_sequence_a;
 
 // STATE DECLARATION
-struct SsMode2SequenceA : smacc2::SmaccState<SsMode2SequenceA, MsMode2, StiMode2SequenceALoop>
+struct StartSequenceALoop : smacc2::SmaccState<StartSequenceALoop, MsStarting>
 {
 public:
   using SmaccState::SmaccState;
@@ -25,18 +24,29 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiMode2SequenceALoop>, Mode2SequenceALoop>
+     Transition<EvLoopContinue<StartSequenceALoop>, SsStartSequenceA, CONTINUELOOP>
 
     >reactions;
-
-  // STATE VARIABLES
-  static constexpr int total_iterations() { return 1; }
-  int iteration_count = 0;
 
   // STATE FUNCTIONS
   static void staticConfigure() {}
 
   void runtimeConfigure() {}
-};  // namespace SS1
 
+  bool loopWhileCondition()
+  {
+    auto & superstate = this->context<MsStarting>();
+
+    RCLCPP_INFO(
+      getLogger(), "Loop start, current iterations: %d, total iterations: %d",
+      superstate.ziteration_count, superstate.ztotal_iterations());
+    return superstate.ziteration_count++ < superstate.ztotal_iterations();
+  }
+
+  void onEntry()
+  {
+    RCLCPP_INFO(getLogger(), "LOOP START ON ENTRY");
+    checkWhileLoopConditionAndThrowEvent(&StartSequenceALoop::loopWhileCondition);
+  }
+};
 }  // namespace sm_pack_ml
