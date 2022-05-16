@@ -246,7 +246,12 @@ def launch_setup(context, *args, **kwargs):
         },
     )
 
-    nodes_to_start = [move_group_node, mongodb_server_node, rviz_node, servo_node]
+    nodes_to_start = [
+        move_group_node,
+        mongodb_server_node,
+        rviz_node,
+        # servo_node
+    ]
 
     return nodes_to_start
 

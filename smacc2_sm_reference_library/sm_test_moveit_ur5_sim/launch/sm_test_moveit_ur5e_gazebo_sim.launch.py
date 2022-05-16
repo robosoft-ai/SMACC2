@@ -120,8 +120,9 @@ def launch_setup(context, *args, **kwargs):
     )
     robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
 
-    kinematics_yaml = load_yaml("ur_moveit_config", "config/kinematics.yaml")
-    robot_description_kinematics = {"robot_description_kinematics": kinematics_yaml}
+    robot_description_kinematics = PathJoinSubstitution(
+        [FindPackageShare("sm_test_moveit_ur5_sim"), "config", "moveit", "kinematics.yaml"]
+    )
 
     smacc2_sm_config = PathJoinSubstitution(
         [
@@ -134,7 +135,6 @@ def launch_setup(context, *args, **kwargs):
     sm_test_moveit_ur5_sim_node = Node(
         package="sm_test_moveit_ur5_sim",
         executable="sm_test_moveit_ur5_sim_node",
-        # prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e gdbserver localhost:3000",
         prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e",
         parameters=[
             {"use_sim_time": True},
@@ -145,28 +145,28 @@ def launch_setup(context, *args, **kwargs):
         ],
     )
 
-    smacc2_sm_rviz = PathJoinSubstitution(
-        [
-            FindPackageShare("sm_test_moveit_ur5_sim"),
-            "rviz",
-            "rviz.rviz",
-        ]
-    )
+    # smacc2_sm_rviz = PathJoinSubstitution(
+    # [
+    # FindPackageShare("sm_test_moveit_ur5_sim"),
+    # "rviz",
+    # "rviz.rviz",
+    # ]
+    # )
 
-    # Launch rviz
-    start_rviz_cmd = Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2",
-        arguments=["-d", smacc2_sm_rviz],
-        output="screen",
-        parameters=[
-            {"use_sim_time": True},
-            robot_description,
-            robot_description_semantic,
-            robot_description_kinematics,
-        ],
-    )
+    ## Launch rviz
+    # start_rviz_cmd = Node(
+    # package="rviz2",
+    # executable="rviz2",
+    # name="rviz2",
+    # arguments=["-d", smacc2_sm_rviz],
+    # output="screen",
+    # parameters=[
+    # {"use_sim_time": True},
+    # robot_description,
+    # robot_description_semantic,
+    # robot_description_kinematics,
+    # ],
+    # )
 
     ur_control_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -180,12 +180,13 @@ def launch_setup(context, *args, **kwargs):
             "description_file": description_file,
             "prefix": prefix,
             "launch_rviz": "false",
+            "initial_joint_controller": "joint_trajectory_controller",
         }.items(),
     )
 
     ur_moveit_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            [FindPackageShare("ur_moveit_config"), "/launch", "/ur_moveit.launch.py"]
+            [FindPackageShare("sm_test_moveit_ur5_sim"), "/launch", "/ur_moveit.launch.py"]
         ),
         launch_arguments={
             "ur_type": ur_type,
@@ -202,8 +203,7 @@ def launch_setup(context, *args, **kwargs):
     nodes_to_launch = [
         ur_control_launch,
         ur_moveit_launch,
-        sm_test_moveit_ur5_sim_node,
-        start_rviz_cmd,
+        # sm_test_moveit_ur5_sim_node,
     ]
 
     return nodes_to_launch
