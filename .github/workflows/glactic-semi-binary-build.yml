@@ -1,4 +1,4 @@
-name: Galactic Binary Build
+name: Galactic Semi-Binary Build
 on:
   pull_request:
     branches:
