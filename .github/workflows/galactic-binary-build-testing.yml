@@ -3,9 +3,6 @@ name: Galactic Binary Build (testing)
 # description: 'Build & test all dependencies from released (binary) packages.'
 
 on:
-  pull_request:
-    branches:
-      - galactic
   push:
     branches:
       - galactic
