@@ -19,5 +19,5 @@ jobs:
     with:
       ros_repo: main
       ros_distro: rolling
-      upstream_workspace: SMACC"-not-released.rolling.repos
+      upstream_workspace: SMACC2-not-released.rolling.repos
       ref_for_scheduled_build: rolling
