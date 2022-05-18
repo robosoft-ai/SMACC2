@@ -11,7 +11,7 @@ on:
       - rolling
   schedule:
     # Run every morning to detect flakiness and broken dependencies
-    - cron: '03 1 * * *'
+    - cron: '23 1 * * *'
 
 jobs:
   binary:
