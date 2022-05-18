@@ -1,4 +1,4 @@
-name: Rolling Semi-Binary Build (testing)
+name: Rolling Semi-Binary Build (main)
 # author: Denis Štogl <denis@stoglrobotics.de>
 # description: 'Build & test all dependencies from released (binary) packages.'
 
