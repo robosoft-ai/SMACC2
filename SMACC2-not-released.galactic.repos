@@ -6,7 +6,7 @@ repositories:
   husky:
     type: git
     url: https://github.com/StoglRobotics-forks/husky.git
-    version: fixup-missing-using
+    version: humble-devel-updates
 
   # Manipulators
   ur_msgs:
