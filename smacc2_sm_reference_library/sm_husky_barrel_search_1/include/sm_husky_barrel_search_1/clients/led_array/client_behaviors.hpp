@@ -22,3 +22,4 @@
 
 #include "client_behaviors/cb_turn_off.hpp"
 #include "client_behaviors/cb_turn_on.hpp"
+#include "client_behaviors/cb_blinking.hpp"
