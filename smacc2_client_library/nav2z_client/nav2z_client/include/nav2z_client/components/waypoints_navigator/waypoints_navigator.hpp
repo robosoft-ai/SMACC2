@@ -43,6 +43,11 @@ struct Pose2D
   double yaw_;
 };
 
+struct NavigateNextWaypointOptions
+{
+  std::optional<std::string> controllerName_;
+};
+
 // This component contains a list of waypoints. These waypoints can
 // be iterated in the different states using CbNextWaiPoint
 // waypoint index is only incremented if the current waypoint is successfully reached
@@ -71,10 +76,12 @@ public:
 
   void setWaypoints(const std::vector<Pose2D> & waypoints);
 
-  void sendNextGoal();
+  void sendNextGoal(std::optional<NavigateNextWaypointOptions> options = std::nullopt);
+
   void stopWaitingResult();
 
   const std::vector<geometry_msgs::msg::Pose> & getWaypoints() const;
+
   const std::vector<std::string> & getWaypointNames() const;
 
   long getCurrentWaypointIndex() const;

@@ -711,7 +711,7 @@ void FlashLightPlugin::Load(gazebo::physics::ModelPtr _parent, sdf::ElementPtr _
     [this, node]
     (const std_msgs::msg::Int8::SharedPtr msg)
     {
-      RCLCPP_INFO(node->get_logger(), "msg received");
+      RCLCPP_INFO(node->get_logger(), "msg received: %d", (int)msg->data);
       if(msg->data == 0)
       this->TurnOffAll();
       else

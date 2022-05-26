@@ -29,13 +29,16 @@ namespace cl_nav2z
 {
 using namespace ::cl_nav2z::odom_tracker;
 
-CbNavigateGlobalPosition::CbNavigateGlobalPosition(float x, float y, float yaw)
+CbNavigateGlobalPosition::CbNavigateGlobalPosition(
+  float x, float y, float yaw, std::optional<CbNavigateGlobalPositionOptions> options)
 {
   auto p = geometry_msgs::msg::Point();
   p.x = x;
   p.y = y;
   goalPosition = p;
   goalYaw = yaw;
+
+  if (options) this->options = *options;
 }
 
 void CbNavigateGlobalPosition::setGoal(const geometry_msgs::msg::Pose & pose)
@@ -53,7 +56,15 @@ void CbNavigateGlobalPosition::onEntry()
   auto * odomTracker = moveBaseClient_->getComponent<OdomTracker>();
 
   auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
-  plannerSwitcher->setDefaultPlanners();
+
+  plannerSwitcher->setDefaultPlanners(false);
+
+  if (options.controllerName_)
+  {
+    plannerSwitcher->setDesiredController(*(options.controllerName_));
+  }
+
+  plannerSwitcher->commitPublish();
 
   auto goalCheckerSwitcher = moveBaseClient_->getComponent<GoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("goal_checker");

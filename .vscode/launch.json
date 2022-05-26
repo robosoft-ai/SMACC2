@@ -358,10 +358,10 @@
             "request": "launch",
 
             "program": "${workspaceFolder}/../install/sm_husky_barrel_search_1/lib/sm_husky_barrel_search_1/opencv_perception_node",
-            "args": [      ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
+            "args": ["-r", "/image_raw:=/intel_realsense_r200_depth/image_raw"],
             "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [

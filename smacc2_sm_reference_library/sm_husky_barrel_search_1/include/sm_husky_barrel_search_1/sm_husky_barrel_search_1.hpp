@@ -41,17 +41,13 @@ struct StSatelliteCommunications;
 struct StSelfDestruction;
 struct StExploreAndRetreat;
 struct StUndoRetreat;
+struct StMoveBackwardsBlinking;
+struct StCrossMineFieldSlowly;
 
 namespace SS5
 {
 class SsSearchMineSPattern1;
 }
-
-struct xt
-{
- int b;
- int dd;
-};
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
@@ -80,3 +76,5 @@ struct SmHuskyBarrelSearch1
 #include "superstates/ss_search_mine_s_pattern_1.hpp"
 #include "states/st_explore_and_retreat.hpp"
 #include "states/st_undo_retreat.hpp"
+#include "states/st_move_backwards_blinking.hpp"
+#include "states/st_cross_mine_field_slowly.hpp"

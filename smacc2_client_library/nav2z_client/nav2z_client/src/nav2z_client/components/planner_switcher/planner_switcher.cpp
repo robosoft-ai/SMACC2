@@ -37,59 +37,72 @@ void PlannerSwitcher::onInitialize()
     getNode()->create_publisher<std_msgs::msg::String>("controller_selector", qos);
 }
 
-void PlannerSwitcher::setUndoPathBackwardPlanner()
+void PlannerSwitcher::setDesiredGlobalPlanner(std::string plannerName)
+{
+  desired_planner_ = plannerName;
+}
+
+void PlannerSwitcher::setDesiredController(std::string controllerName)
+{
+  desired_controller_ = controllerName;
+}
+
+void PlannerSwitcher::setUndoPathBackwardPlanner(bool commit)
 {
   RCLCPP_INFO(getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
 
-  desired_global_planner_ = "UndoPathGlobalPlanner";
-  desired_local_planner_ = "BackwardLocalPlanner";
+  desired_planner_ = "UndoPathGlobalPlanner";
+  desired_controller_ = "BackwardLocalPlanner";
 
-  updatePlanners();
+  if (commit) commitPublish();
 }
 
-void PlannerSwitcher::setBackwardPlanner()
+void PlannerSwitcher::setBackwardPlanner(bool commit)
 {
   RCLCPP_INFO(getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
 
-  desired_global_planner_ = "BackwardGlobalPlanner";
-  desired_local_planner_ = "BackwardLocalPlanner";
-  updatePlanners();
+  desired_planner_ = "BackwardGlobalPlanner";
+  desired_controller_ = "BackwardLocalPlanner";
+
+  if (commit) commitPublish();
 }
 
-void PlannerSwitcher::setForwardPlanner()
+void PlannerSwitcher::setForwardPlanner(bool commit)
 {
   RCLCPP_INFO(getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set ForwardPlanner");
 
-  desired_global_planner_ = "ForwardGlobalPlanner";
-  desired_local_planner_ = "ForwardLocalPlanner";
-  updatePlanners();
+  desired_planner_ = "ForwardGlobalPlanner";
+  desired_controller_ = "ForwardLocalPlanner";
+
+  if (commit) commitPublish();
 }
 
-void PlannerSwitcher::setPureSpinningPlanner()
+void PlannerSwitcher::setPureSpinningPlanner(bool commit)
 {
   RCLCPP_INFO(getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set PureSpinningPlanner");
 
-  desired_global_planner_ = "ForwardGlobalPlanner";
-  desired_local_planner_ = "PureSpinningLocalPlanner";
-  updatePlanners();
+  desired_planner_ = "ForwardGlobalPlanner";
+  desired_controller_ = "PureSpinningLocalPlanner";
+
+  if (commit) commitPublish();
 }
 
-void PlannerSwitcher::setDefaultPlanners()
+void PlannerSwitcher::setDefaultPlanners(bool commit)
 {
-  desired_global_planner_ = "GridBased";
-  desired_local_planner_ = "FollowPath";
+  desired_planner_ = "GridBased";
+  desired_controller_ = "FollowPath";
 
-  updatePlanners();
+  if (commit) commitPublish();
 }
 
-void PlannerSwitcher::updatePlanners()
+void PlannerSwitcher::commitPublish()
 {
   std_msgs::msg::String planner_msg;
-  planner_msg.data = desired_global_planner_;
+  planner_msg.data = desired_planner_;
   this->planner_selector_pub_->publish(planner_msg);
 
   std_msgs::msg::String controller_msg;
-  controller_msg.data = desired_local_planner_;
+  controller_msg.data = desired_controller_;
   this->controller_selector_pub_->publish(controller_msg);
 }
 }  // namespace cl_nav2z

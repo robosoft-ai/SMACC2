@@ -30,9 +30,8 @@
 
 namespace cl_nav2z
 {
-class CbNavigateForward : public CbNav2ZClientBehaviorBase
+struct CbNavigateForwardOptions
 {
-public:
   // just a stub to show how to use parameterless constructor
   std::optional<float> forwardSpeed;
 
@@ -43,6 +42,13 @@ public:
 
   // the name of the goal checker selected in the navigation2 stack
   std::optional<std::string> goalChecker_;
+};
+
+// Performs a relative motion forwards
+class CbNavigateForward : public CbNav2ZClientBehaviorBase
+{
+public:
+  CbNavigateForwardOptions options;
 
   CbNavigateForward();
 

@@ -29,7 +29,7 @@ namespace cl_nav2z
 class CbNavigateNextWaypoint : public CbNav2ZClientBehaviorBase
 {
 public:
-  CbNavigateNextWaypoint();
+  CbNavigateNextWaypoint(std::optional<NavigateNextWaypointOptions> options = std::nullopt);
 
   virtual ~CbNavigateNextWaypoint();
 
@@ -38,5 +38,7 @@ public:
   void onExit() override;
 
   WaypointNavigator * waypointsNavigator_;
+
+  NavigateNextWaypointOptions options_;
 };
 }  // namespace cl_nav2z
