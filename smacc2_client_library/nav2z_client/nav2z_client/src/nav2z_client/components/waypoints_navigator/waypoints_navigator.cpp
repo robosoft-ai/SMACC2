@@ -80,7 +80,7 @@ void WaypointNavigator::stopWaitingResult()
   }
 }
 
-void WaypointNavigator::sendNextGoal()
+void WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> options)
 {
   if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypoints_.size())
   {
@@ -95,9 +95,22 @@ void WaypointNavigator::sendNextGoal()
     goal.pose.header.stamp = getNode()->now();
     goal.pose.pose = next;
 
-    RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default planners");
     auto plannerSwitcher = client_->getComponent<PlannerSwitcher>();
-    plannerSwitcher->setDefaultPlanners();
+    plannerSwitcher->setDefaultPlanners(false);
+    if (options && options->controllerName_)
+    {
+      RCLCPP_WARN(
+        getLogger(), "[WaypointsNavigator] override controller: %s",
+        options->controllerName_->c_str());
+
+      plannerSwitcher->setDesiredController(*options->controllerName_);
+    }
+    else
+    {
+      RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default planners");
+    }
+
+    plannerSwitcher->commitPublish();
 
     RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default goal planner");
     auto goalCheckerSwitcher = client_->getComponent<GoalCheckerSwitcher>();

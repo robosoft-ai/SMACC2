@@ -43,7 +43,8 @@ std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
   TOrthogonal * orthogonal = this->getOrthogonal<TOrthogonal>();
   if (orthogonal != nullptr)
   {
-    auto clientBehavior = std::shared_ptr<TBehavior>(new TBehavior(args...));
+    auto clientBehavior = std::shared_ptr<TBehavior>(new TBehavior(
+      args...));  // is there an error here? are the behavior constructor parameters right?
     clientBehavior->currentState = this;
     orthogonal->addClientBehavior(clientBehavior);
     clientBehavior->template onOrthogonalAllocation<TOrthogonal, TBehavior>();

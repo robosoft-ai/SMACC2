@@ -46,7 +46,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmHuskyBarrelSear
   // TRANSITION TABLE
   typedef mpl::list<
 
-    smacc2::Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StNavigateToWaypointX>
+    smacc2::Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StCrossMineFieldSlowly>
     // Transition<EvGlobalError, MsDanceBotRecoveryMode>
     // smacc2::Transition<
     //   smacc2::EvCbSuccess<cl_nav2z::CbWaitPose, OrNavigation>, StNavigateToWaypointX>,

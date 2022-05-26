@@ -23,42 +23,31 @@
 #include <smacc2/smacc.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include <nav2z_client/client_behaviors.hpp>
+
 namespace sm_husky_barrel_search_1
 {
     using namespace smacc2::default_events;
     using namespace cl_nav2z;
     using namespace smacc2;
+    using sm_husky_barrel_search_1::cl_led_array::CbBlinking;
 
     // STATE DECLARATION
-    struct StNavigateToWaypointX : smacc2::SmaccState<StNavigateToWaypointX, SmHuskyBarrelSearch1>
+    struct StMoveBackwardsBlinking : smacc2::SmaccState<StMoveBackwardsBlinking, SmHuskyBarrelSearch1>
     {
         using SmaccState::SmaccState;
 
         // TRANSITION TABLE
         typedef mpl::list<
-
-            //Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StDeactivateMine, SUCCESS>,
-            Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>, // entrance to station
-            Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StMoveBackwardsBlinking, SUCCESS>,
-            Transition<EvWaypoint2<ClNav2Z, OrNavigation>, StExploreAndRetreat, SUCCESS>,
-            Transition<EvWaypoint3<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-            Transition<EvWaypoint4<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-            Transition<EvWaypoint5<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-            Transition<EvWaypoint6<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-            Transition<EvWaypoint7<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-
-            // Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS5::SsSPattern1, SUCCESS>,
-            // Transition<EvCbSuccess<cl_nav2z::CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointX>
-            Transition<EvCbFailure<cl_nav2z::CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointX>
+                Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StNavigateToWaypointX>,
+                Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StMoveBackwardsBlinking>
             >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            // configure_orthogonal<OrLED, CbLEDOn>();
-            // configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
-            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+            configure_orthogonal<OrNavigation, CbNavigateBackwards>(10);
+            configure_orthogonal<OrLedArray, CbBlinking>(LedColor::YELLOW);
         }
 
         void runtimeConfigure()
