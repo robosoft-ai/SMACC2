@@ -20,28 +20,45 @@
 
 #pragma once
 
-#include <smacc2/smacc_orthogonal.hpp>
 #include <sm_husky_barrel_search_1/clients/led_array/cl_led_array.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace sm_husky_barrel_search_1
 {
-using namespace std::chrono_literals;
+namespace cl_led_array
+{
+  using namespace std::chrono_literals;
 
-class OrLedArray : public smacc2::Orthogonal<OrLedArray>
+class CbBlinking : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  void onInitialize() override
+
+  LedColor color_;
+
+  CbBlinking(LedColor color)
+  :color_(color)
   {
-    auto client = this->createClient<cl_led_array::ClLedArray>();
 
-    client->createNamedComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>(
-      "greenLed", "/led_array/light_model_green/cmdled");
+  }
 
-    client->createNamedComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>(
-      "yellowLed", "/led_array/light_model_yellow/cmdled");
+  void onEntry() override
+  {
+    cl_led_array::ClLedArray * ledarray;
+    this->requiresClient(ledarray);
 
-    client->createNamedComponent<smacc2::components::CpTopicPublisher<std_msgs::msg::Int8>>(
-      "redLed", "/led_array/light_model_red/cmdled");
+    while(!isShutdownRequested())
+    {
+      ledarray->turnOn(color_);
+      rclcpp::sleep_for(1s);
+
+      ledarray->turnOff(color_);
+      rclcpp::sleep_for(500ms);
+    }
+  }
+
+  void onExit() override
+  {
   }
 };
+}  // namespace cl_led_array
 }  // namespace sm_husky_barrel_search_1

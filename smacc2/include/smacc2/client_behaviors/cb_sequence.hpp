@@ -20,34 +20,41 @@
 
 #pragma once
 
+#include <functional>
 #include <rclcpp/rclcpp.hpp>
-#include <rclcpp/duration.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
-namespace sm_husky_barrel_search_1
+namespace smacc2
 {
-  using namespace std::chrono_literals;
-
-class CbSleepFor : public smacc2::SmaccAsyncClientBehavior
+namespace client_behaviors
+{
+class CbSequenceNode : public smacc2::SmaccAsyncClientBehavior
 {
 public:
+  CbSequenceNode();
 
-  CbSleepFor(rclcpp::Duration sleeptime)
-    : sleeptime_(sleeptime)
-  {
-  }
+  // template <typename TOrthogonal, typename TBehavior>
+  // static void configure_orthogonal_runtime(
+  //   std::function<void(TBehavior & bh, MostDerived &)> initializationFunction)
+  // {
+  //   configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState * state) {
+  //     // auto bh = std::make_shared<TBehavior>(args...);
+  //     // auto bh = state->configure<TOrthogonal, TBehavior>();
+  //     initializationFunction(*bh, *(static_cast<MostDerived *>(state)));
+  //   });
+  // }
 
-  void onEntry() override
-  {
-    rclcpp::sleep_for(std::chrono::nanoseconds(sleeptime_.nanoseconds()));
-    this->postSuccessEvent();
-  }
+  void onEntry() override;
 
-  void onExit() override
+  template <typename TBehavior, typename... Args>
+  CbSequenceNode * then(Args &&... args)
   {
+    sequenceNodes_.push_back(new TBehavior(args...));
+    return this;
   }
 
 private:
-  rclcpp::Duration sleeptime_;
+  std::vector<smacc2::SmaccAsyncClientBehavior *> sequenceNodes_;
 };
-}  // namespace sm_husky_barrel_search_1
+}  // namespace client_behaviors
+}  // namespace smacc2

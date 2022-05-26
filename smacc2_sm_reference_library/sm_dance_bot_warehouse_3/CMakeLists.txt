@@ -89,11 +89,6 @@ install(TARGETS
   RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
-#ament_python_install_package(${PROJECT_NAME}
-#  PACKAGE_DIR servers/service_node_3
-#  )
-
-
 install(FILES
         servers/service_node_3/service_node_3.py
         DESTINATION

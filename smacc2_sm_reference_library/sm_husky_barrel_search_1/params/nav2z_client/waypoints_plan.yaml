@@ -1,4 +1,34 @@
 waypoints:
+  - name: base-entrance
+    position:
+      x: -23.5
+      y: 0.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: base-station
+    position:
+      x: -25.0
+      y: 15.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: start-position
+    position:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
   - name: pre-concrete-barriers
     position:
       x: 35.0

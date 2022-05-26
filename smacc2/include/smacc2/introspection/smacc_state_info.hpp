@@ -79,6 +79,7 @@ struct StateReactorCallbackFunctor
   std::function<void(std::shared_ptr<smacc2::StateReactor>)> fn;
 };
 
+// This object is used in a static context (when the runtime state reactor is not built yet)
 class StateReactorHandler
 {
 private:
@@ -102,7 +103,15 @@ public:
 private:
   rclcpp::Node::SharedPtr nh_;
 };
+//-------------------------------------------------------------
 
+// This object is used in a static context (when the runtime client behavior is not built yet)
+template <class T>
+class ClientBehaviorHandler
+{
+public:
+  ClientBehaviorHandler() {}
+};
 //-------------------------------------------------------------
 // contains metainformation about some specific state reactor in the statechart
 struct SmaccStateReactorInfo
