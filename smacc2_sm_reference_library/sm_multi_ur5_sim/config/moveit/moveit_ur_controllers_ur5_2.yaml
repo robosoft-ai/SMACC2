@@ -1,0 +1,31 @@
+controller_names:
+  #- scaled_joint_trajectory_controller
+  - joint_trajectory_controller_ur5_2
+
+
+scaled_joint_trajectory_controller_ur5_2:
+  #action_ns: follow_joint_trajectory_ur5_2
+  action_ns: follow_joint_trajectory
+  type: FollowJointTrajectory
+  default: true
+  joints:
+    - ur5_2shoulder_pan_joint
+    - ur5_2shoulder_lift_joint
+    - ur5_2elbow_joint
+    - ur5_2wrist_1_joint
+    - ur5_2wrist_2_joint
+    - ur5_2wrist_3_joint
+
+
+joint_trajectory_controller_ur5_2:
+  #action_ns: follow_joint_trajectory_ur5_2
+  action_ns: follow_joint_trajectory
+  type: FollowJointTrajectory
+  default: false
+  joints:
+    - ur5_2shoulder_pan_joint
+    - ur5_2shoulder_lift_joint
+    - ur5_2elbow_joint
+    - ur5_2wrist_1_joint
+    - ur5_2wrist_2_joint
+    - ur5_2wrist_3_joint

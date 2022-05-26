@@ -1,0 +1,4 @@
+sm_multi_ur5_sim:
+  ros__parameters:
+    signal_detector_loop_freq: 2000.0
+    manipulator_id: ur5_2
