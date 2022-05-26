@@ -2,6 +2,13 @@
     "ros.distro": "galactic",
 
     "files.associations": {
+        "iosfwd": "cpp",
+        "string": "cpp",
+        "tp_call.h": "c",
+        "random": "cpp",
+        "typeindex": "cpp",
+        "typeinfo": "cpp",
+        "variant": "cpp",
         "cctype": "cpp",
         "clocale": "cpp",
         "cmath": "cpp",
