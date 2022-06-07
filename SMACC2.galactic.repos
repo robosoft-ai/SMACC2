@@ -8,6 +8,18 @@ repositories:
     version: humble-devel-updates
 
   # Manipulators
+  moveit2:
+    type: git
+    url: https://github.com/ros-planning/moveit2
+    version: main
+  srdfdom:
+    type: git
+    url: https://github.com/ros-planning/srdfdom.git
+    version: ros2
+  launch_param_builder:
+    type: git
+    url: https://github.com/PickNikRobotics/launch_param_builder
+    version: main
   ur_msgs:
     type: git
     url: https://github.com/ros-industrial/ur_msgs.git
