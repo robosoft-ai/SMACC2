@@ -46,44 +46,63 @@ struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmMultiPandaSim>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    std::map<std::string, double> leftJointValues{
-        {"left_panda_joint1", 0.0},
-        {"left_panda_joint2", 0.0},
-        {"left_panda_joint3", 0.0},
-        {"left_panda_joint4", 0.0},
-        {"left_panda_joint5", 0.0},
-        {"left_panda_joint7", 0.0},
-        {"left_panda_joint6", 0.0},
-        // {"left_panda_leftfinger", 0.0},
-        // {"left_panda_rightfinger", 0.0}
-      };
+    // std::map<std::string, double> leftJointValues{
+    //     {"left_panda_joint1", 0.0},
+    //     {"left_panda_joint2", 0.0},
+    //     {"left_panda_joint3", 0.0},
+    //     {"left_panda_joint4", 0.0},
+    //     {"left_panda_joint5", M_PI/2.0},
+    //     {"left_panda_joint7", 0.0},
+    //     {"left_panda_joint6", 0.0},
+    //     {"right_panda_joint1", 0.0},
+    //     {"right_panda_joint2", M_PI/2.0},
+    //     {"right_panda_joint3", 0.0},
+    //     {"right_panda_joint4", 0.0},
+    //     {"right_panda_joint5", 0.0},
+    //     {"right_panda_joint6", 0.0},
+    //     {"right_panda_joint7", 0.0},
 
-    configure_orthogonal<OrArmLeft, CbMoveJoints>(leftJointValues);
+    //   };
 
-    std::map<std::string, double> rightJointValues{
-        {"right_panda_joint1", 0.0},
-        {"right_panda_joint2", 0.0},
-        {"right_panda_joint3", 0.0},
-        {"right_panda_joint4", 0.0},
-        {"right_panda_joint5", 0.0},
-        {"right_panda_joint7", 0.0},
-        {"right_panda_joint6", 0.0},
-        // {"right_panda_leftfinger", 0.0},
-        // {"right_panda_rightfinger", 0.0}
-      };
+    // configure_orthogonal<OrArmLeft, CbMoveJoints>(leftJointValues);
 
-    configure_orthogonal<OrArmRight, CbMoveJoints>(rightJointValues);
+    geometry_msgs::msg::PoseStamped endeffector1pose;
+    endeffector1pose.pose.orientation.w = 1;
+    endeffector1pose.header.frame_id = "left_panda_link8";
+
+    geometry_msgs::msg::PoseStamped endeffector2pose;
+    endeffector2pose.pose.orientation.w = 1;
+    endeffector2pose.header.frame_id = "right_panda_link8";
+
+    //configure_orthogonal<OrArmLeft, CbMoveSynchronizedLinkGoals>(std::vector<geometry_msgs::msg::PoseStamped>{endeffector1pose},std::vector<std::string>{endeffector1pose.header.frame_id});
+    configure_orthogonal<OrArmLeft, CbMoveSynchronizedLinkGoals>(std::vector<geometry_msgs::msg::PoseStamped>{endeffector2pose},std::vector<std::string>{endeffector2pose.header.frame_id});
+
+//    configure_orthogonal<OrArmLeft, CbMoveSynchronizedLinkGoals>(std::vector<geometry_msgs::msg::PoseStamped>{endeffector1pose, endeffector2pose},std::vector<std::string>{endeffector1pose.header.frame_id, endeffector2pose.header.frame_id});
+
+    // std::map<std::string, double> rightJointValues{
+    //     {"right_panda_joint1", 0.0},
+    //     {"right_panda_joint2", 0.0},
+    //     {"right_panda_joint3", 0.0},
+    //     {"right_panda_joint4", 0.0},
+    //     {"right_panda_joint5", 0.0},
+    //     {"right_panda_joint7", 0.0},
+    //     {"right_panda_joint6", 0.0},
+    //     // {"right_panda_leftfinger", 0.0},
+    //     // {"right_panda_rightfinger", 0.0}
+    //   };
+
+    // configure_orthogonal<OrArmRight, CbMoveJoints>(rightJointValues);
   };
 
   void runtimeConfigure()
   {
-    ClMoveGroup * moveGroupClientLeft;
-    this->requiresClient(moveGroupClientLeft);
-    this->getOrthogonal<OrArmLeft>()->getClientBehavior<CbMoveJoints>()->scalingFactor_ = 0.1;
+    // ClMoveGroup * moveGroupClientLeft;
+    // this->requiresClient(moveGroupClientLeft);
+    // this->getOrthogonal<OrArmLeft>()->getClientBehavior<CbMoveJoints>()->scalingFactor_ = 0.1;
 
-    ClMoveGroup * moveGroupClientRight;
-    this->requiresClient(moveGroupClientRight);
-    this->getOrthogonal<OrArmRight>()->getClientBehavior<CbMoveJoints>()->scalingFactor_ = 0.1;
+    // ClMoveGroup * moveGroupClientRight;
+    // this->requiresClient(moveGroupClientRight);
+    // this->getOrthogonal<OrArmRight>()->getClientBehavior<CbMoveJoints>()->scalingFactor_ = 0.1;
   }
 };
 }  // namespace sm_multi_panda_sim

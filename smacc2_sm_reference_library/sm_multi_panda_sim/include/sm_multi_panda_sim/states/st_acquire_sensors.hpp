@@ -36,7 +36,7 @@ using namespace std::chrono_literals;
 using cl_move_group_interface::CbWaitJointState;
 
 // STATE DECLARATION
-struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmMultiPandaSim>
+struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, MsExecute>
 {
   using SmaccState::SmaccState;
 

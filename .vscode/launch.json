@@ -423,5 +423,16 @@
                 }
             ]
         },
+        {
+            "name": "launch file panda",
+            "type": "python",
+            "request": "launch",
+            "program": "/opt/ros/galactic/bin/ros2",
+            "args": ["launch",
+                     "sm_multi_panda_sim",
+                     "sm_multi_panda_sim.launch.py"],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
     ]
 }

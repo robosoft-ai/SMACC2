@@ -26,6 +26,7 @@
 #include "client_behaviors/cb_move_joints.hpp"
 #include "client_behaviors/cb_move_known_state.hpp"
 #include "client_behaviors/cb_move_named_target.hpp"
+#include "client_behaviors/cb_move_synchronized_link_goals.hpp"
 
 // ADVANCED MANIPULATION BEHAVIORS
 #include "client_behaviors/cb_circular_pivot_motion.hpp"

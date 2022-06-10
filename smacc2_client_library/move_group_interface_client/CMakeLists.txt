@@ -51,6 +51,7 @@ add_library(${PROJECT_NAME}
   src/move_group_interface_client/client_behaviors/cb_move_named_target.cpp
   src/move_group_interface_client/client_behaviors/cb_attach_object.cpp
   src/move_group_interface_client/client_behaviors/cb_move_last_trajectory_initial_state.cpp
+  src/move_group_interface_client/client_behaviors/cb_move_synchronized_link_goals.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} ${YAML_CPP_LIBRARIES})

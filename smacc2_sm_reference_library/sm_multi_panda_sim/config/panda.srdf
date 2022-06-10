@@ -13,9 +13,16 @@
   <group name="left_panda_arm">
     <chain base_link="left_panda_link0" tip_link="left_panda_link8"/>
   </group>
+
   <group name="right_panda_arm">
     <chain base_link="right_panda_link0" tip_link="right_panda_link8"/>
   </group>
+
+  <group name="both_panda_arms">
+    <group name="left_panda_arm"/>
+    <group name="right_panda_arm"/>
+  </group>
+
   <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
   <group_state group="left_panda_arm" name="ready">
     <joint name="left_panda_joint1" value="0"/>
@@ -26,6 +33,7 @@
     <joint name="left_panda_joint6" value="1.571"/>
     <joint name="left_panda_joint7" value="0.785"/>
   </group_state>
+
   <group name="left_hand">
     <link name="left_panda_hand"/>
     <link name="left_panda_leftfinger"/>
@@ -43,6 +51,7 @@
     <joint name="right_panda_joint6" value="1.571"/>
     <joint name="right_panda_joint7" value="0.785"/>
   </group_state>
+
   <group name="right_hand">
     <link name="right_panda_hand"/>
     <link name="right_panda_leftfinger"/>
@@ -50,6 +59,8 @@
     <joint name="right_panda_finger_joint1"/>
     <passive_joint name="right_panda_finger_joint2"/>
   </group>
+
+
 
   <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
   <!--END EFFECTOR: Purpose: Represent information about an end effector.-->

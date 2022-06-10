@@ -12,16 +12,15 @@ from moveit_configs_utils import MoveItConfigsBuilder
 
 def generate_launch_description():
 
-
     moveit_config = (
-                    MoveItConfigsBuilder("dual_panda", package_name="sm_multi_panda_sim")
-                    .robot_description(file_path="config/panda.urdf.xacro")
-                    .robot_description_semantic(file_path="config/panda.srdf")
-                    .trajectory_execution(file_path="config/moveit_controllers.yaml")
-                    .planning_pipelines(pipelines=["ompl"])
-                    .moveit_cpp(file_path="config/moveit_cpp.yaml")            
-                     .to_moveit_configs()
-                     )
+        MoveItConfigsBuilder("dual_panda", package_name="sm_multi_panda_sim")
+        .robot_description(file_path="config/panda.urdf.xacro")
+        .robot_description_semantic(file_path="config/panda.srdf")
+        .trajectory_execution(file_path="config/moveit_controllers.yaml")
+        .planning_pipelines(pipelines=["ompl"])
+        .moveit_cpp(file_path="config/moveit_cpp.yaml")
+        .to_moveit_configs()
+    )
 
     xtermprefix = (
         "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' "
@@ -33,7 +32,7 @@ def generate_launch_description():
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
-        prefix = xtermprefix,
+        prefix=xtermprefix,
         parameters=[moveit_config.to_dict()],
     )
 
@@ -58,12 +57,11 @@ def generate_launch_description():
     )
 
     sm_multi_panda_sim = Node(
-            package="sm_multi_panda_sim",
-            executable="sm_multi_panda_sim_node",
-            prefix = xtermprefix,
-            parameters=[moveit_config.to_dict()]
-            )
-
+        package="sm_multi_panda_sim",
+        executable="sm_multi_panda_sim_node",
+        prefix=xtermprefix,
+        parameters=[moveit_config.to_dict()],
+    )
 
     # MoveItCpp demo executable
     # moveit_cpp_node = Node(
@@ -93,7 +91,7 @@ def generate_launch_description():
     ros2_control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        prefix= xtermprefix,
+        prefix=xtermprefix,
         parameters=[moveit_config.robot_description, ros2_controllers_path],
         output="both",
     )
@@ -107,7 +105,7 @@ def generate_launch_description():
     ]:
         load_controllers += [
             ExecuteProcess(
-                cmd=["ros2 run controller_manager spawner {}".format(controller)],
+                cmd=[f"ros2 run controller_manager spawner {controller}"],
                 shell=True,
                 output="screen",
             )
@@ -119,8 +117,8 @@ def generate_launch_description():
             robot_state_publisher,
             move_group_node,
             ros2_control_node,
-            #moveit_cpp_node
-            sm_multi_panda_sim
+            # moveit_cpp_node
+            sm_multi_panda_sim,
         ]
         + load_controllers
     )

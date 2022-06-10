@@ -34,11 +34,11 @@ public:
   {
 
     moveit::planning_interface::MoveGroupInterface::Options options ("right_panda_arm");
-    
+
     auto move_group_client = this->createClient<cl_move_group_interface::ClMoveGroup>(options); //ur_manipulator
-    
+
     move_group_client->createComponent<cl_move_group_interface::CpTrajectoryHistory>();
-    
+
     auto graspingComponent = move_group_client->createComponent<cl_move_group_interface::CpGraspingComponent>();
     graspingComponent->gripperLink_="tool0";
   }

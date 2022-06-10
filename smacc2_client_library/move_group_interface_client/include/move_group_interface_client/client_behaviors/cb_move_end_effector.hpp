@@ -25,14 +25,19 @@
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 namespace cl_move_group_interface
 {
+// Moves the end effector (or any other arbitrary link) to some goal pose
 class CbMoveEndEffector : public smacc2::SmaccAsyncClientBehavior
 {
 public:
   geometry_msgs::msg::PoseStamped targetPose;
   std::string tip_link_;
+
+  // group can be specified explicitly for for smacc-clientless usage
   std::optional<std::string> group_;
 
   CbMoveEndEffector();
+
+  // if tip_link is empty, the default group end_effector is used
   CbMoveEndEffector(geometry_msgs::msg::PoseStamped target_pose, std::string tip_link = "");
 
   virtual void onEntry() override;

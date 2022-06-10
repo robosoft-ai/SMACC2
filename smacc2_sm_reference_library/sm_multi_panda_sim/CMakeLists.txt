@@ -17,10 +17,17 @@ find_package(smacc2 REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 find_package(move_group_interface_client REQUIRED)
 
+find_package(sr_all_events_go REQUIRED)
+find_package(ros_publisher_client REQUIRED)
+find_package(keyboard_client REQUIRED)
+
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   ros_timer_client
   smacc2
   move_group_interface_client
+  sr_all_events_go
+  ros_publisher_client
+  keyboard_client
 )
 
 include_directories(
