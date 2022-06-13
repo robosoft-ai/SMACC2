@@ -22,7 +22,8 @@ public:
 
   // TRANSITION TABLE
   typedef mpl::list<
-    smacc2::Transition<EvReset, DsRun, SUCCESS>
+    //smacc2::Transition<EvReset, DsRun, SUCCESS>
+    smacc2::Transition<EvReset, MsResetting, SUCCESS>
 
     >reactions;
 

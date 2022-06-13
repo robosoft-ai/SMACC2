@@ -32,7 +32,7 @@ using namespace cl_move_group_interface;
 
 
 // STATE DECLARATION
-struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmMultiPandaSim>
+struct StMoveJoints : smacc2::SmaccState<StMoveJoints, MsExecute>
 {
   using SmaccState::SmaccState;
 

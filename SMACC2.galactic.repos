@@ -20,11 +20,11 @@ repositories:
     type: git
     url: https://github.com/PickNikRobotics/launch_param_builder
     version: main
-
   orocos_kdl_vendor:
     type: git
     url: https://github.com/ros2/orocos_kdl_vendor.git
     version: main
+
   ur_msgs:
     type: git
     url: https://github.com/ros-industrial/ur_msgs.git
