@@ -30,16 +30,11 @@ using namespace std::chrono_literals;
 
 namespace cl_move_group_interface
 {
-
-
 CbMoveSynchronizedLinkGoals::CbMoveSynchronizedLinkGoals(
-  std::vector<geometry_msgs::msg::PoseStamped> targetPoses,
-  std::vector<std::string> tip_links):
-  targetPoses_(targetPoses),
-  tip_links_(tip_links)
-  {
-
-  }
+  std::vector<geometry_msgs::msg::PoseStamped> targetPoses, std::vector<std::string> tip_links)
+: targetPoses_(targetPoses), tip_links_(tip_links)
+{
+}
 
 void CbMoveSynchronizedLinkGoals::onEntry()
 {
@@ -71,10 +66,10 @@ bool CbMoveSynchronizedLinkGoals::moveToAbsolutePose(
 
   moveGroupInterface.setPlanningTime(1.0);
 
-  for(int i =0; i< targetPoses_.size();i++)
+  for (int i = 0; i < targetPoses_.size(); i++)
   {
-    auto& targetObjectPose = targetPoses_[i];
-    auto& tip_link = tip_links_[i];
+    auto & targetObjectPose = targetPoses_[i];
+    auto & tip_link = tip_links_[i];
 
     moveGroupInterface.setPoseTarget(targetObjectPose, tip_link);
   }

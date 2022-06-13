@@ -26,7 +26,6 @@
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 namespace cl_move_group_interface
 {
-
 // Move any  arbitrary set of links to some goal poses
 class CbMoveSynchronizedLinkGoals : public smacc2::SmaccAsyncClientBehavior
 {
@@ -37,18 +36,14 @@ public:
   // group can be specified explicitly for for smacc-clientless usage
   std::optional<std::string> group_;
 
-CbMoveSynchronizedLinkGoals(
-  std::vector<geometry_msgs::msg::PoseStamped> targetPoses,
-  std::vector<std::string> tip_links);
+  CbMoveSynchronizedLinkGoals(
+    std::vector<geometry_msgs::msg::PoseStamped> targetPoses, std::vector<std::string> tip_links);
 
   virtual void onEntry() override;
 
 protected:
-  bool moveToAbsolutePose(
-    moveit::planning_interface::MoveGroupInterface & moveGroupInterface);
+  bool moveToAbsolutePose(moveit::planning_interface::MoveGroupInterface & moveGroupInterface);
 
   ClMoveGroup * movegroupClient_;
 };
 }  // namespace cl_move_group_interface
-
-
