@@ -25,6 +25,7 @@ struct State2 : smacc2::SmaccState<State2, SmAtomicHierarchy>
   typedef mpl::list<
 
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiState1, SUCCESS>
+    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State1, SUCCESS>
 
     >reactions;
 

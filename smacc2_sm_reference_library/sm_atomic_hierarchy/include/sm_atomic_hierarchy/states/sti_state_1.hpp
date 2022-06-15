@@ -23,7 +23,9 @@ struct StiState1 : smacc2::SmaccState<StiState1, State1>
 
   // TRANSITION TABLE
   typedef mpl::list<
+    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiState2, SUCCESS>
 
+    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>
 
     >reactions;
 
