@@ -60,9 +60,9 @@ protected:
 
   virtual void dispose();
 
-  virtual rclcpp::Node::SharedPtr getNode();
+  virtual rclcpp::Node::SharedPtr getNode() const;
 
-  virtual rclcpp::Logger getLogger();
+  virtual rclcpp::Logger getLogger() const;
 
 private:
   //internal visibility (private + friend)
