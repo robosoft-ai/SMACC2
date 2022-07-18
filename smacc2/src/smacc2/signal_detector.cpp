@@ -291,21 +291,23 @@ void SignalDetector::pollOnce()
           }
 
           RCLCPP_DEBUG_STREAM(
-            getLogger(),
-            "[SignalDetector] updatable state elements: " << this->updatableStateElements_.size());
+            getLogger(), "[SignalDetector] updatable state element count: "
+                           << this->updatableStateElements_.size());
           auto node = getNode();
           for (auto * udpatableStateElement : this->updatableStateElements_)
           {
-            auto updatableElementName = demangleType(typeid(*udpatableStateElement)).c_str();
+            std::string updatableElementName = demangleType(typeid(*udpatableStateElement));
+            auto updatableElementNameCstr = updatableElementName.c_str();
+
             try
             {
               RCLCPP_DEBUG_STREAM(
                 getLogger(),
-                "[SignalDetector] update client behavior call: " << updatableElementName);
+                "[SignalDetector] client behavior: " << updatableElementName << "::update()");
 
-              TRACEPOINT(smacc2_state_update_start, updatableElementName);
+              TRACEPOINT(smacc2_state_update_start, updatableElementNameCstr);
               udpatableStateElement->executeUpdate(smaccStateMachine_->getNode());
-              TRACEPOINT(smacc2_state_update_start, updatableElementName);
+              TRACEPOINT(smacc2_state_update_start, updatableElementNameCstr);
             }
             catch (const std::exception & e)
             {

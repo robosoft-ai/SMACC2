@@ -416,16 +416,16 @@ private:
     {
       RCLCPP_INFO(getLogger(), "[%s] -- STATIC STATE DESCRIPTION --", STATE_NAME);
 
-      for (const auto & stateReactorsVector : SmaccStateInfo::staticBehaviorInfo)
+      for (const auto & clientBehavior : SmaccStateInfo::staticBehaviorInfo)
       {
         RCLCPP_DEBUG(
-          getLogger(), "[%s] state reactor info: %s", STATE_NAME,
-          demangleSymbol(stateReactorsVector.first->name()).c_str());
-        for (auto & srinfo : stateReactorsVector.second)
+          getLogger(), "[%s] client behavior info: %s", STATE_NAME,
+          demangleSymbol(clientBehavior.first->name()).c_str());
+        for (auto & cbinfo : clientBehavior.second)
         {
           RCLCPP_DEBUG(
-            getLogger(), "[%s] state reactor: %s", STATE_NAME,
-            demangleSymbol(srinfo.behaviorType->name()).c_str());
+            getLogger(), "[%s] client behavior: %s", STATE_NAME,
+            demangleSymbol(cbinfo.behaviorType->name()).c_str());
         }
       }
 

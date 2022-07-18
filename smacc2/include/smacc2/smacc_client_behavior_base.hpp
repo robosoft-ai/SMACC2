@@ -41,7 +41,7 @@ public:
   void requiresClient(SmaccClientType *& storage);
 
   template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *& storage);
+  void requiresComponent(SmaccComponentType *& storage, bool throwExceptionIfNotExist = false);
 
 protected:
   virtual void runtimeConfigure();
