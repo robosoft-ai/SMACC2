@@ -74,6 +74,8 @@ public:
 
   void getComponents(std::vector<std::shared_ptr<ISmaccComponent>> & components);
 
+  const std::vector<std::shared_ptr<ISmaccComponent>> & iterateComponents() const;
+
   // now this needs to be public because sub-components needs to use. This is something to improve.
   template <typename EventType>
   void postEvent(const EventType & ev);

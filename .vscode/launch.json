@@ -103,6 +103,25 @@
             ]
         },
         {
+            "name": "(gdb) sm_path_planner",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../install/sm_path_planner/lib/sm_path_planner/sm_path_planner_exec",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "name": "(gdb) sm_aws_warehouse_navigation_node",
             "type": "cppdbg",
             "request": "launch",
