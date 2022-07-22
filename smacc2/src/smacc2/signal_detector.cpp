@@ -266,6 +266,8 @@ void SignalDetector::pollOnce()
       this->smaccStateMachine_->stateMachineCurrentAction !=
         StateMachineInternalAction::STATE_CONFIGURING &&
       this->smaccStateMachine_->stateMachineCurrentAction !=
+        StateMachineInternalAction::STATE_ENTERING &&
+      this->smaccStateMachine_->stateMachineCurrentAction !=
         StateMachineInternalAction::STATE_EXITING)
     {
       // we do not update updatable elements during trasitioning or configuration of states

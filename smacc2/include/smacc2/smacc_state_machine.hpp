@@ -52,7 +52,7 @@ enum class StateMachineInternalAction
 {
   STATE_CONFIGURING,
   STATE_ENTERING,
-  STATE_STEADY,
+  STATE_RUNNING,
   STATE_EXITING,
   TRANSITIONING
 };

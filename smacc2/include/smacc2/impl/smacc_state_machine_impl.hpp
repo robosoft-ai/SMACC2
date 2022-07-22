@@ -478,7 +478,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
   }
 
   this->updateStatusMessage();
-  stateMachineCurrentAction = StateMachineInternalAction::STATE_STEADY;
+  stateMachineCurrentAction = StateMachineInternalAction::STATE_RUNNING;
 }
 
 template <typename StateType>
