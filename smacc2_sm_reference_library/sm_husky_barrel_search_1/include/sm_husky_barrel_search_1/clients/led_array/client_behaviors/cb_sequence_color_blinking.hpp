@@ -20,36 +20,40 @@
 
 #pragma once
 
-#include <smacc2/smacc.hpp>
+#include <sm_husky_barrel_search_1/clients/led_array/cl_led_array.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
-namespace sm_dance_bot_warehouse_3
+namespace sm_husky_barrel_search_1
 {
-using cl_nav2zclient::CbPureSpinning;
-
-// STATE DECLARATION
-struct StNavigateToWaypoint1Recovery : smacc2::SmaccState<StNavigateToWaypoint1Recovery, MsDanceBotRunMode>
+namespace cl_led_array
 {
-  using SmaccState::SmaccState;
+using namespace std::chrono_literals;
 
-  // TRANSITION TABLE
-  typedef mpl::list<
-
-    Transition<EvCbSuccess<CbRetry<CbNavigateForward>, OrNavigation>, StNavigateToWaypointsX, SUCCESS>
-
-    >reactions;
-
-  // STATE FUNCTIONS
-  static void staticConfigure()
+class CbSequenceColorBlinking : public smacc2::SmaccAsyncClientBehavior
+{
+public:
+  void onEntry() override
   {
-    //configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI, 1.0 /*rad_s*/);
-    // configure_orthogonal<OrNavigation, CbNavigateForward>(2.0);
-    configure_orthogonal<OrNavigation, CbRetry<CbNavigateForward>>();
-    configure_orthogonal<OrNavigation, CbResumeSlam>();
+    cl_led_array::ClLedArray* ledarray;
+    this->requiresClient(ledarray);
+
+    while (!isShutdownRequested())
+    {
+      ledarray->turnOn(LedColor::RED);
+      rclcpp::sleep_for(1s);
+      ledarray->turnOff(LedColor::RED);
+      ledarray->turnOn(LedColor::YELLOW);
+      rclcpp::sleep_for(1s);
+      ledarray->turnOff(LedColor::YELLOW);
+      ledarray->turnOn(LedColor::GREEN);
+      rclcpp::sleep_for(1s);
+      ledarray->turnOff(LedColor::GREEN);
+    }
   }
 
-  void onExit()
+  void onExit() override
   {
-
   }
 };
-}  // namespace sm_dance_bot_warehouse_3
+}  // namespace cl_led_array
+}  // namespace sm_husky_barrel_search_1

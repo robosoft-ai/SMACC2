@@ -85,10 +85,14 @@ public:
   const std::vector<std::string> & getWaypointNames() const;
 
   long getCurrentWaypointIndex() const;
+  std::optional<std::string> getCurrentWaypointName() const;
 
   long currentWaypoint_;
 
   void rewind(int count);
+
+  void forward(int count);
+  void seekName(std::string name);
 
   smacc2::SmaccSignal<void()> onNavigationRequestSucceded;
   smacc2::SmaccSignal<void()> onNavigationRequestAborted;

@@ -21,35 +21,37 @@
 #pragma once
 
 #include <smacc2/smacc.hpp>
+#include <nav2z_client/nav2z_client.hpp>
+#include <nav2z_client/client_behaviors.hpp>
 
-namespace sm_dance_bot_warehouse_3
+namespace sm_husky_barrel_search_1
 {
-using cl_nav2zclient::CbPureSpinning;
+using namespace smacc2::default_events;
+using namespace cl_nav2z;
+using namespace smacc2;
+using sm_husky_barrel_search_1::cl_led_array::CbSequenceColorBlinking;
 
 // STATE DECLARATION
-struct StNavigateToWaypoint1Recovery : smacc2::SmaccState<StNavigateToWaypoint1Recovery, MsDanceBotRunMode>
+struct StForwardAwayBase : smacc2::SmaccState<StForwardAwayBase, SmHuskyBarrelSearch1>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
-  typedef mpl::list<
-
-    Transition<EvCbSuccess<CbRetry<CbNavigateForward>, OrNavigation>, StNavigateToWaypointsX, SUCCESS>
-
-    >reactions;
+  typedef mpl::list<Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigatePrebarriers>, //StExplore1>,
+                    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StForwardAwayBase>
+                    >
+      reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    //configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI, 1.0 /*rad_s*/);
-    // configure_orthogonal<OrNavigation, CbNavigateForward>(2.0);
-    configure_orthogonal<OrNavigation, CbRetry<CbNavigateForward>>();
-    configure_orthogonal<OrNavigation, CbResumeSlam>();
+
+    configure_orthogonal<OrNavigation, CbSeekWaypoint>("front-base-area");
+    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
   }
 
-  void onExit()
+  void runtimeConfigure()
   {
-
   }
 };
-}  // namespace sm_dance_bot_warehouse_3
+}  // namespace sm_husky_barrel_search_1

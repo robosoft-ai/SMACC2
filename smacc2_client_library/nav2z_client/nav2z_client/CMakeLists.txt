@@ -58,6 +58,7 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/client_behaviors/cb_pause_slam.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_resume_slam.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_wait_transform.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_skip_waypoint.cpp
 
   # COMPONENTS
   src/${PROJECT_NAME}/components/costmap_switch/cp_costmap_switch.cpp

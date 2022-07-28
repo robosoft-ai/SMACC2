@@ -23,33 +23,33 @@
 #include <smacc2/smacc.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include <nav2z_client/client_behaviors.hpp>
+
 namespace sm_husky_barrel_search_1
 {
-    using namespace smacc2::default_events;
-    using namespace cl_nav2z;
-    using namespace smacc2;
+using namespace smacc2::default_events;
+using namespace cl_nav2z;
+using namespace smacc2;
+using sm_husky_barrel_search_1::cl_led_array::CbSequenceColorBlinking;
 
-    // STATE DECLARATION
-    struct StEvasionMotion : smacc2::SmaccState<StEvasionMotion, SmHuskyBarrelSearch1>
-    {
-        using SmaccState::SmaccState;
+// STATE DECLARATION
+struct StLedBlinkingCommuncation : smacc2::SmaccState<StLedBlinkingCommuncation, SmHuskyBarrelSearch1>
+{
+  using SmaccState::SmaccState;
 
-        // TRANSITION TABLE
-        typedef mpl::list<
+  // TRANSITION TABLE
+  typedef mpl::list<Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StExitBase>,
+                    Transition<EvCbFailure<CbSleepFor, OrNavigation>, StLedBlinkingCommuncation>>
+      reactions;
 
-                Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, SS5::SsSearchMineSPattern1>,
-                Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StEvasionMotion>
-            >
-            reactions;
+  // STATE FUNCTIONS
+  static void staticConfigure()
+  {
+    configure_orthogonal<OrLedArray, CbSequenceColorBlinking>();
+    configure_orthogonal<OrNavigation, CbSleepFor>(6s);
+  }
 
-        // STATE FUNCTIONS
-        static void staticConfigure()
-        {
-            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
-        }
-
-        void runtimeConfigure()
-        {
-        }
-    };
-} // namespace sm_husky_barrel_search_1
+  void runtimeConfigure()
+  {
+  }
+};
+}  // namespace sm_husky_barrel_search_1

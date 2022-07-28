@@ -200,6 +200,7 @@ def generate_launch_description():
     )
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
+    xtermprefix = "gnome-terminal --"
 
     sm_dance_bot_warehouse_3_node = Node(
         package="sm_dance_bot_warehouse_3",

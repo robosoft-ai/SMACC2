@@ -45,23 +45,6 @@
           </surface>
           <max_contacts>10</max_contacts>
         </collision>
-        <!--
-        <visual name='visual'>
-          <cast_shadows>0</cast_shadows>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
-            </script>
-          </material>
-        </visual>
-        -->
         <velocity_decay>
           <linear>0</linear>
           <angular>0</angular>
@@ -90,10 +73,10 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <state world_name='default'>
-      <sim_time>9066 346000000</sim_time>
-      <real_time>115 624519784</real_time>
-      <wall_time>1645035093 316826545</wall_time>
-      <iterations>114263</iterations>
+      <sim_time>9071 797000000</sim_time>
+      <real_time>10 665731236</real_time>
+      <wall_time>1658774938 241820592</wall_time>
+      <iterations>5451</iterations>
       <model name='BlueBarrel'>
         <pose>14.243 -1.60021 0.499991 0 -0 -0.035996</pose>
         <scale>1 1 1</scale>
@@ -130,7 +113,7 @@
         <link name='link_0_0'>
           <pose>-13.9653 -30.9759 0.499999 0 0 -0.035996</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 -9.8 -0 -0 -0</acceleration>
+          <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
@@ -155,10 +138,20 @@
         </link>
       </model>
       <model name='MilitaryPickup_0'>
-        <pose>-26.5452 21.7094 0 0 0 -1.37008</pose>
+        <pose>-17.5608 18.1976 -0 0 -0 0.031339</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>-26.5452 21.7094 0 0 0 -1.37008</pose>
+          <pose>-17.5608 18.1976 -0 0 -0 0.031339</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='MilitaryPickup_0_clone'>
+        <pose>-17.0441 10.7442 0 0 -0 0.031339</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>-17.0441 10.7442 0 0 -0 0.031339</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -200,7 +193,7 @@
         <link name='link_0'>
           <pose>-4.56456 -2.64972 0.499999 0 -0 0.002242</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 -9.8 -0 -0 -0</acceleration>
+          <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
@@ -1510,8 +1503,8 @@
         <link name='link'>
           <pose>-10.7066 3.01548 0.003999 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.001313 -0.002571 0.002369 0.514152 -0.262616 0</acceleration>
-          <wrench>-8.2e-05 -0.000161 0.000149 0 -0 0</wrench>
+          <acceleration>0.002381 -0.000463 0.000421 0.092586 0.476148 0</acceleration>
+          <wrench>0.00015 -2.9e-05 2.6e-05 0 -0 0</wrench>
         </link>
       </model>
       <model name='vrc_driving_terrain'>
@@ -1531,32 +1524,32 @@
         </link>
       </model>
       <model name='white_box'>
-        <pose>1.44272 -27.4257 0.099999 -2e-06 -2e-06 -6e-06</pose>
+        <pose>1.44272 -27.4257 0.1 -2e-06 -2e-06 -6e-06</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>1.44272 -27.4257 0.099999 -2e-06 -2e-06 -6e-06</pose>
+          <pose>1.44272 -27.4257 0.1 -2e-06 -2e-06 -6e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='white_box_clone'>
-        <pose>7.35703 -13.2642 0.099991 2e-06 -2e-06 -7e-06</pose>
+        <pose>7.35703 -13.2642 0.099991 -2e-06 2e-06 -7e-06</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>7.35703 -13.2642 0.099991 2e-06 -2e-06 -7e-06</pose>
+          <pose>7.35703 -13.2642 0.099991 -2e-06 2e-06 -7e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 -9.8 -0 -0 -0</acceleration>
+          <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='white_box_clone_0'>
-        <pose>16.0512 -26.8718 0.099999 2e-06 -2e-06 -7e-06</pose>
+        <pose>16.0512 -26.8718 0.099991 2e-06 2e-06 -7e-06</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>16.0512 -26.8718 0.099999 2e-06 -2e-06 -7e-06</pose>
+          <pose>16.0512 -26.8718 0.099991 2e-06 2e-06 -7e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 -9.8 -0 -0 -0</acceleration>
+          <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
@@ -1566,7 +1559,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>-86.3477 -54.4723 53.3994 0 0.473797 0.511886</pose>
+        <pose>-73.8058 -24.6316 50.4193 0 0.473797 0.511886</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -3019,8 +3012,6 @@
         <kinematic>0</kinematic>
       </link>
       <link name='grass_plane'>
-
-      <!-- dd -->
         <collision name='collision'>
           <geometry>
             <plane>
@@ -13536,9 +13527,6 @@
       </link>
       <pose>-32.5058 0.321745 0 0 -0 0.106437</pose>
     </model>
-
-
-
     <model name='MilitaryPickup'>
       <link name='link'>
         <self_collide>0</self_collide>
@@ -14244,6 +14232,86 @@
       <static>1</static>
       <allow_auto_disable>1</allow_auto_disable>
       <pose>-29.7055 18.0587 0 0 -0 0</pose>
+    </model>
+    <model name='MilitaryPickup_0_clone'>
+      <link name='link'>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose>0 0 0 0 -0 0</pose>
+        <visual name='visual'>
+          <pose>0 0 0 0 0 -1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>model://MilitaryPickup/meshes/militarypickup.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <shader type='pixel'/>
+          </material>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose>0 0 0 0 0 -1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>model://MilitaryPickup/meshes/militarypickup.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+      <static>1</static>
+      <allow_auto_disable>1</allow_auto_disable>
+      <pose>-17.0441 10.7442 -0 0 -0 0.031339</pose>
     </model>
   </world>
 </sdf>

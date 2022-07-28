@@ -39,10 +39,29 @@ struct StNavigateToWaypointX;
 struct StDeactivateMine;
 struct StSatelliteCommunications;
 struct StSelfDestruction;
-struct StExploreAndRetreat;
+struct StExplore1;
+struct StExplore2;
+struct StExplore3;
+struct StExplore4;
+struct StExplore5;
+struct StAirStrikeCommunications;
 struct StUndoRetreat;
+struct StEvasionMotion;
+
+struct StNavigatePrebarriers;
+struct StNavigateBarriersForwardNext;
+
 struct StMoveBackwardsBlinking;
 struct StCrossMineFieldSlowly;
+struct StLedBlinkingCommuncation;
+struct StRetreatMotionFromMine;
+struct StSelectSaferMinePath;
+
+struct StBackupFromParking;
+struct StExitBase;
+struct StForwardAwayBase;
+
+struct StNavigatePrebarriers;
 
 namespace SS5
 {
@@ -72,9 +91,27 @@ struct SmHuskyBarrelSearch1
 #include "states/st_deactivate_mine.hpp"
 #include "states/st_self_destruction.hpp"
 #include "states/st_satellite_communications.hpp"
-#include "states/st_evasion_motion.hpp"
+
 #include "superstates/ss_search_mine_s_pattern_1.hpp"
-#include "states/st_explore_and_retreat.hpp"
-#include "states/st_undo_retreat.hpp"
+
+#include "states/explore_left/st_explore_1.hpp"
+#include "states/explore_left/st_explore_2.hpp"
+#include "states/explore_left/st_explore_3.hpp"
+#include "states/explore_left/st_explore_4.hpp"
+#include "states/explore_left/st_explore_5.hpp"
+#include "states/explore_left/st_undo_retreat.hpp"
+#include "states/explore_left/st_airstrike_communications.hpp"
+#include "states/explore_left/st_evasion_motion.hpp"
+
+#include "states/base_sequence/st_backup_from_parking.hpp"
+#include "states/base_sequence/st_led_blinking_communication.hpp"
+#include "states/base_sequence/st_exit_base.hpp"
+#include "states/base_sequence/st_forward_away_base.hpp"
+
+#include "states/mine_detection_retreat/st_navigate_prebarriers.hpp"
+#include "states/mine_detection_retreat/st_navigate_barriers_forward_next.hpp"
+#include "states/mine_detection_retreat/st_retreat_motion_from_mine.hpp"
+#include "states/mine_detection_retreat/st_select_safer_mine_path.hpp"
+
 #include "states/st_move_backwards_blinking.hpp"
 #include "states/st_cross_mine_field_slowly.hpp"

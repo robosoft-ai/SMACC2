@@ -2,16 +2,109 @@ waypoints:
   - name: base-entrance
     position:
       x: -23.5
+      y: 4.0
+      z: 0.0
+    orientation:
+      x: 0.0
       y: 0.0
+      z: -0.7071070192004544
+      w: 0.7071070192004544
+  - name: base-outdoor
+    position:
+      x: -23.5
+      y: -5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: -0.7071070192004544
+      w: 0.7071070192004544
+  - name: base-outdoor-forward
+    position:
+      x: -18.0
+      y: -5
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
       z: 0.0
       w: 1.0
-  - name: base-station
+
+  # - name: start-position
+  #   position:
+  #     x: -15.0
+  #     y: 15.0
+  #     z: 0.0
+  #   orientation:
+  #     x: 0.0
+  #     y: 0.0
+  #     z: 0.0
+  #     w: 1.0
+  # - name: base-station
+  #   position:
+  #     x: -25.0
+  #     y: 15.0
+  #     z: 0.0
+  #   orientation:
+  #     x: 0.0
+  #     y: 0.0
+  #     z: 0.0
+  #     w: 1.0
+
+
+  - name: military-pickup-red-left
     position:
-      x: -25.0
+      x: 59.0
+      y: 39.78
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: military-pickup-green
+    position:
+      x: -26.5
+      y: 21.7
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: front-base-area
+    position:
+      x: -4.0
+      y: 3.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: 1-reguard
+    position:
+      x: 10.0
+      y: 20.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: 2-reguard
+    position:
+      x: 20.0
+      y: 17.5
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: 3-reguard
+    position:
+      x: 25.0
       y: 15.0
       z: 0.0
     orientation:
@@ -19,10 +112,20 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  - name: start-position
+  - name: 4-reguard
     position:
+      x: 28.0
+      y: 14.0
+      z: 0.0
+    orientation:
       x: 0.0
       y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: 5-reguard
+    position:
+      x: 34.0
+      y: 18.0
       z: 0.0
     orientation:
       x: 0.0
@@ -49,6 +152,26 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
+  - name: pre-mine-field
+    position:
+      x: 89.061
+      y: 3.5317
+      z: 0.0087884
+    orientation:
+      x: 0.00023582
+      y: -0.00677
+      z: 0.084654
+      w: 0.99639
+  - name: pre-mine-collision
+    position:
+      x: 99.289
+      y: 6.2063
+      z: 0.0087828
+    orientation:
+      x: 0.0010567
+      y: -0.0065504
+      z: 0.17868
+      w: 0.98388
   - name: post-mine-field
     position:
       x: 115.0
@@ -103,36 +226,6 @@ waypoints:
     position:
       x: -20
       y: -15
-      z: 0.0
-    orientation:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      w: 1.0
-  - name: military-pickup-red-left
-    position:
-      x: 59.0
-      y: 39.78
-      z: 0.0
-    orientation:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      w: 1.0
-  - name: military-pickup-green
-    position:
-      x: -26.5
-      y: 21.7
-      z: 0.0
-    orientation:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      w: 1.0
-  - name: 1-reguard
-    position:
-      x: 25.0
-      y: 15.0
       z: 0.0
     orientation:
       x: 0.0

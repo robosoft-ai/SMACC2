@@ -23,42 +23,36 @@
 #include <smacc2/smacc.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include <nav2z_client/client_behaviors.hpp>
+#include <sm_husky_barrel_search_1/clients/cb_sleep_for.hpp>
+#include <sm_husky_barrel_search_1/clients/led_array/client_behaviors.hpp>
+
+
 namespace sm_husky_barrel_search_1
 {
     using namespace smacc2::default_events;
     using namespace cl_nav2z;
     using namespace smacc2;
+    using namespace std::chrono_literals;
+
 
     // STATE DECLARATION
-    struct StNavigateToWaypointX : smacc2::SmaccState<StNavigateToWaypointX, SmHuskyBarrelSearch1>
+    struct StExplore2 : smacc2::SmaccState<StExplore2, SmHuskyBarrelSearch1>
     {
         using SmaccState::SmaccState;
 
         // TRANSITION TABLE
         typedef mpl::list<
-
-            //Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StDeactivateMine, SUCCESS>,
-            Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StLedBlinkingCommuncation, SUCCESS>, // entrance to station
-            // Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StMoveBackwardsBlinking, SUCCESS>,
-            Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-            Transition<EvWaypoint2<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-            Transition<EvWaypoint3<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-            Transition<EvWaypoint4<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-            Transition<EvWaypoint5<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-            Transition<EvWaypoint6<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-            Transition<EvWaypoint7<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
-
-            // Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS5::SsSPattern1, SUCCESS>,
-            // Transition<EvCbSuccess<cl_nav2z::CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointX>
-            Transition<EvCbFailure<cl_nav2z::CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointX>
+              Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StExplore3, SUCCESS>,
+              Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExplore2, ABORT>
+              //Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
             >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            // configure_orthogonal<OrLED, CbLEDOn>();
-            // configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+            // configure_orthogonal<OrNavigation, CbSleepFor>(10s);
+            configure_orthogonal<OrNavigation, CbSeekWaypoint>("2-reguard");
             configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
         }
 

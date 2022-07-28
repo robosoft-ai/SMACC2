@@ -198,6 +198,7 @@ def generate_launch_description():
     # )
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
+    # xtermprefix = "gnome-terminal --"
 
     sm_husky_barrel_search_1_node = Node(
         package="sm_husky_barrel_search_1",
@@ -220,7 +221,19 @@ def generate_launch_description():
             # ("/sm_husky_barrel_search_1_2/odom_tracker/odom_tracker_path", "/odom_tracker_path"),
             # ("/sm_husky_barrel_search_1_2/odom_tracker/odom_tracker_stacked_path", "/odom_tracker_path_stacked")
         ],
-        arguments=["--ros-args", "--log-level", "INFO"],
+        arguments=[
+            "--ros-args",
+            "--log-level",
+            "INFO",
+            "--log-level",
+            "rcl:=INFO",
+            "--log-level",
+            "rmw_cyclonedds_cpp:=INFO",
+            "--log-level",
+            "rcl_action:=INFO",
+            "--log-level",
+            "rclcpp_action:=INFO",
+        ],
     )
 
     static_map_transform = Node(

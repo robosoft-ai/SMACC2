@@ -17,39 +17,27 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-
 #pragma once
 
-#include <smacc2/smacc.hpp>
+#include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
+#include <nav2z_client/nav2z_client.hpp>
+#include "cb_nav2z_client_behavior_base.hpp"
 
-namespace sm_dance_bot_warehouse_3
+namespace cl_nav2z
 {
-using cl_nav2zclient::CbPureSpinning;
-
-// STATE DECLARATION
-struct StNavigateToWaypoint1Recovery : smacc2::SmaccState<StNavigateToWaypoint1Recovery, MsDanceBotRunMode>
+class CbNavigateNamedWaypoint : public CbNav2ZClientBehaviorBase
 {
-  using SmaccState::SmaccState;
+public:
+  CbNavigateNamedWaypoint(std::string waypointname);
 
-  // TRANSITION TABLE
-  typedef mpl::list<
+  virtual ~CbNavigateNamedWaypoint();
 
-    Transition<EvCbSuccess<CbRetry<CbNavigateForward>, OrNavigation>, StNavigateToWaypointsX, SUCCESS>
+  void onEntry() override;
 
-    >reactions;
+  void onExit() override;
 
-  // STATE FUNCTIONS
-  static void staticConfigure()
-  {
-    //configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI, 1.0 /*rad_s*/);
-    // configure_orthogonal<OrNavigation, CbNavigateForward>(2.0);
-    configure_orthogonal<OrNavigation, CbRetry<CbNavigateForward>>();
-    configure_orthogonal<OrNavigation, CbResumeSlam>();
-  }
+  WaypointNavigator * waypointsNavigator_;
 
-  void onExit()
-  {
-
-  }
+  std::string waypointname_;
 };
-}  // namespace sm_dance_bot_warehouse_3
+}  // namespace cl_nav2z

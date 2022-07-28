@@ -22,34 +22,33 @@
 
 namespace cl_nav2z
 {
-CbNavigateNextWaypoint::CbNavigateNextWaypoint(std::optional<NavigateNextWaypointOptions> options)
+CbNavigateNamedWaypoint::CbNavigateNamedWaypoint(std::string waypointname)
 {
-  if (options) options_ = *options;
+  waypointname_ = waypointname;
 }
 
-CbNavigateNextWaypoint::~CbNavigateNextWaypoint() {}
+CbNavigateNamedWaypoint::~CbNavigateNamedWaypoint() {}
 
-void CbNavigateNextWaypoint::onEntry()
+void CbNavigateNamedWaypoint::onEntry()
 {
-  waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
-  waypointsNavigator_->sendNextGoal(options_);
+  // waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
+  // waypointsNavigator_->sendNextGoal(options_);
 
-  auto waypointname = waypointsNavigator_->getCurrentWaypointName();
+  // auto waypointname = waypointsNavigator_->getCurrentWaypointName();
 
-  if (waypointname)
-  {
-    RCLCPP_INFO(
-      getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints i: %ld with name '%s'",
-      waypointsNavigator_->getCurrentWaypointIndex(), waypointname->c_str());
-  }
-  else
-  {
-    RCLCPP_INFO(
-      getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints i: %ld",
-      waypointsNavigator_->getCurrentWaypointIndex());
-  }
+  // if(waypointname)
+  // {
+  // RCLCPP_INFO(
+  //   getLogger(), "[CbNavigateNamedWaypoint] current iteration waypoints i: %ld with name '%s'",
+  //   waypointsNavigator_->getCurrentWaypointIndex(), waypointname->c_str());  }
+  // else
+  // {
+  // RCLCPP_INFO(
+  //   getLogger(), "[CbNavigateNamedWaypoint] current iteration waypoints i: %ld",
+  //   waypointsNavigator_->getCurrentWaypointIndex());  }
+
 }
 
-void CbNavigateNextWaypoint::onExit() { waypointsNavigator_->stopWaitingResult(); }
+void CbNavigateNamedWaypoint::onExit() { waypointsNavigator_->stopWaitingResult(); }
 
 }  // namespace cl_nav2z

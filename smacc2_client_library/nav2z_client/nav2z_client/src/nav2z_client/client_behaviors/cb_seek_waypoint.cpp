@@ -18,38 +18,37 @@
  *
  ******************************************************************************************************************/
 
-#include <nav2z_client/client_behaviors/cb_navigate_next_waypoint.hpp>
+#include <nav2z_client/client_behaviors/cb_skip_waypoint.hpp>
 
 namespace cl_nav2z
 {
-CbNavigateNextWaypoint::CbNavigateNextWaypoint(std::optional<NavigateNextWaypointOptions> options)
+  
+CbSeekWaypoint::CbSeekWaypoint(std::string seekWaypointName)
+: count_(std::nullopt),
+seekWaypointName_(seekWaypointName)
 {
-  if (options) options_ = *options;
 }
 
-CbNavigateNextWaypoint::~CbNavigateNextWaypoint() {}
+CbSeekWaypoint::~CbSeekWaypoint() {}
 
-void CbNavigateNextWaypoint::onEntry()
+void CbSeekWaypoint::onEntry()
 {
-  waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
-  waypointsNavigator_->sendNextGoal(options_);
+  cl_nav2z::ClNav2Z * moveBaseClient_;
+  this->requiresClient(moveBaseClient_);
+  waypointsNavigator_ =  moveBaseClient_->getComponent<WaypointNavigator>();
 
-  auto waypointname = waypointsNavigator_->getCurrentWaypointName();
-
-  if (waypointname)
+  if(count_)
   {
-    RCLCPP_INFO(
-      getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints i: %ld with name '%s'",
-      waypointsNavigator_->getCurrentWaypointIndex(), waypointname->c_str());
+    waypointsNavigator_->forward(*count_);
+    count_ = std::nullopt;
   }
-  else
+  else if(seekWaypointName_)
   {
-    RCLCPP_INFO(
-      getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints i: %ld",
-      waypointsNavigator_->getCurrentWaypointIndex());
+    waypointsNavigator_->seekName(*seekWaypointName_);
+    seekWaypointName_ = std::nullopt;
   }
 }
 
-void CbNavigateNextWaypoint::onExit() { waypointsNavigator_->stopWaitingResult(); }
+void CbSeekWaypoint::onExit() { }
 
 }  // namespace cl_nav2z

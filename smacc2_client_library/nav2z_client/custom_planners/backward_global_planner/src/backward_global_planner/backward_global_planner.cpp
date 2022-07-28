@@ -277,7 +277,12 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(
     // static const unsigned char FREE_SPACE = 0;
     if (cost >= nav2_costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
     {
-      acceptedGlobalPlan = false;
+      RCLCPP_WARN_STREAM(
+        nh_->get_logger(),
+        "[BackwardGlobalPlanner] backwards plan is rejected because interscts the obstacle "
+        "inscribed inflated obstacle"
+          << " at: " << p.pose.position.x << " " << p.pose.position.y);
+
       break;
     }
   }
