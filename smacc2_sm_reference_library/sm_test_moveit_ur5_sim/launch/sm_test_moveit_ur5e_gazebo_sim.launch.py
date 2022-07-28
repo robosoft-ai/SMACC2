@@ -19,8 +19,7 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
-from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 
 # TODO(destogl): BEGIN this should be removed when MoveIt can handle parameters properly
@@ -77,73 +76,73 @@ def launch_setup(context, *args, **kwargs):
     moveit_config_file = LaunchConfiguration("moveit_config_file")
     prefix = LaunchConfiguration("prefix")
 
-    robot_description_content = Command(
-        [
-            PathJoinSubstitution([FindExecutable(name="xacro")]),
-            " ",
-            PathJoinSubstitution(
-                [FindPackageShare(description_package), "urdf", description_file]
-            ),
-            " ",
-            "name:=",
-            "ur",
-            " ",
-            "ur_type:=",
-            ur_type,
-            " ",
-            "prefix:=",
-            prefix,
-            " ",
-        ]
-    )
-    robot_description = {"robot_description": robot_description_content}
+    # robot_description_content = Command(
+    #     [
+    #         PathJoinSubstitution([FindExecutable(name="xacro")]),
+    #         " ",
+    #         PathJoinSubstitution(
+    #             [FindPackageShare(description_package), "urdf", description_file]
+    #         ),
+    #         " ",
+    #         "name:=",
+    #         "ur",
+    #         " ",
+    #         "ur_type:=",
+    #         ur_type,
+    #         " ",
+    #         "prefix:=",
+    #         prefix,
+    #         " ",
+    #     ]
+    # )
+    # robot_description = {"robot_description": robot_description_content}
 
-    # MoveIt Configuration
-    robot_description_semantic_content = Command(
-        [
-            PathJoinSubstitution([FindExecutable(name="xacro")]),
-            " ",
-            PathJoinSubstitution(
-                [FindPackageShare(moveit_config_package), "srdf", moveit_config_file]
-            ),
-            " ",
-            "name:=",
-            "ur",
-            " ",
-            "ur_type:=",
-            ur_type,
-            " ",
-            "prefix:=",
-            prefix,
-            " ",
-        ]
-    )
-    robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
+    # # MoveIt Configuration
+    # robot_description_semantic_content = Command(
+    #     [
+    #         PathJoinSubstitution([FindExecutable(name="xacro")]),
+    #         " ",
+    #         PathJoinSubstitution(
+    #             [FindPackageShare(moveit_config_package), "srdf", moveit_config_file]
+    #         ),
+    #         " ",
+    #         "name:=",
+    #         "ur",
+    #         " ",
+    #         "ur_type:=",
+    #         ur_type,
+    #         " ",
+    #         "prefix:=",
+    #         prefix,
+    #         " ",
+    #     ]
+    # )
+    # robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
 
-    robot_description_kinematics = PathJoinSubstitution(
-        [FindPackageShare("sm_test_moveit_ur5_sim"), "config", "moveit", "kinematics.yaml"]
-    )
+    # robot_description_kinematics = PathJoinSubstitution(
+    #     [FindPackageShare("sm_test_moveit_ur5_sim"), "config", "moveit", "kinematics.yaml"]
+    # )
 
-    smacc2_sm_config = PathJoinSubstitution(
-        [
-            FindPackageShare("sm_test_moveit_ur5_sim"),
-            "config",
-            "sm_test_moveit_ur5_sim_config.yaml",
-        ]
-    )
+    # smacc2_sm_config = PathJoinSubstitution(
+    #     [
+    #         FindPackageShare("sm_test_moveit_ur5_sim"),
+    #         "config",
+    #         "sm_test_moveit_ur5_sim_config.yaml",
+    #     ]
+    # )
 
-    sm_test_moveit_ur5_sim_node = Node(
-        package="sm_test_moveit_ur5_sim",
-        executable="sm_test_moveit_ur5_sim_node",
-        prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e",
-        parameters=[
-            {"use_sim_time": True},
-            robot_description,
-            robot_description_semantic,
-            robot_description_kinematics,
-            smacc2_sm_config,
-        ],
-    )
+    # sm_test_moveit_ur5_sim_node = Node(
+    #     package="sm_test_moveit_ur5_sim",
+    #     executable="sm_test_moveit_ur5_sim_node",
+    #     prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -geometry 1000x600 -e",
+    #     parameters=[
+    #         {"use_sim_time": True},
+    #         robot_description,
+    #         robot_description_semantic,
+    #         robot_description_kinematics,
+    #         smacc2_sm_config,
+    #     ],
+    # )
 
     # smacc2_sm_rviz = PathJoinSubstitution(
     # [
@@ -153,7 +152,7 @@ def launch_setup(context, *args, **kwargs):
     # ]
     # )
 
-    ## Launch rviz
+    # Launch rviz
     # start_rviz_cmd = Node(
     # package="rviz2",
     # executable="rviz2",
