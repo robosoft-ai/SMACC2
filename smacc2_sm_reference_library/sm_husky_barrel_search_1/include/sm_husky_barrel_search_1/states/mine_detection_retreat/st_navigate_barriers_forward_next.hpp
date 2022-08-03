@@ -41,8 +41,9 @@ namespace sm_husky_barrel_search_1
 
         // TRANSITION TABLE
         typedef mpl::list<
-              Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateBarriersForwardNext, SUCCESS>,
-              Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigatePrebarriers, ABORT>
+              Transition<EvGoalWaypointReached<CbNavigateNextWaypointUntilReached, OrNavigation>, StRetreatMotionFromMine, SUCCESS>,
+              Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, StNavigateBarriersForwardNext, SUCCESS>,
+              Transition<EvCbFailure<CbNavigateNextWaypointUntilReached, OrNavigation>, StNavigateBarriersForwardNext, ABORT>
               //Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
             >
             reactions;
@@ -51,7 +52,12 @@ namespace sm_husky_barrel_search_1
         static void staticConfigure()
         {
             // configure_orthogonal<OrNavigation, CbSleepFor>(10s);
-            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+            configure_orthogonal<OrNavigation, CbNavigateNextWaypointUntilReached>("pre-mine-collision",
+                                                                                NavigateNextWaypointOptions
+                                                                                {
+                                                                                    .controllerName_="SuperFastPathFollow",
+                                                                                    .goalCheckerName_ = "super_fast_follow_path_goal_checker"
+                                                                                });
         }
 
         void runtimeConfigure()

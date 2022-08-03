@@ -93,11 +93,8 @@ void CbNavigateGlobalPosition::execute()
   tf2::Quaternion q;
   q.setRPY(0, 0, goalYaw);
   goal.pose.pose.orientation = tf2::toMsg(q);
-  // store the start pose on the state machine storage so that it can
-  // be referenced from other states (for example return to radial start)
-  this->getStateMachine()->setGlobalSMData("radial_start_pose", goal.pose);
 
-  moveBaseClient_->sendGoal(goal);
+  this->sendGoal(goal);
 }
 
 // This is the substate destructor. This code will be executed when the

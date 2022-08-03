@@ -29,7 +29,8 @@
 // waypoints behaviors
 #include <nav2z_client/client_behaviors/cb_navigate_named_waypoint.hpp>
 #include <nav2z_client/client_behaviors/cb_navigate_next_waypoint.hpp>
-#include <nav2z_client/client_behaviors/cb_skip_waypoint.hpp>
+#include <nav2z_client/client_behaviors/cb_navigate_next_waypoint_until_reached.hpp>
+#include <nav2z_client/client_behaviors/cb_seek_waypoint.hpp>
 
 // slam behaviors
 #include <nav2z_client/client_behaviors/cb_pause_slam.hpp>

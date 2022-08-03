@@ -73,7 +73,7 @@ void WaypointNavigator::rewind(int /*count*/)
 void WaypointNavigator::forward(int count)
 {
   currentWaypoint_++;
-  if (currentWaypoint_ >= waypoints_.size() - 1) currentWaypoint_ = waypoints_.size() - 1;
+  if ((size_t)currentWaypoint_ >= waypoints_.size() - 1) currentWaypoint_ = waypoints_.size() - 1;
 }
 
 void WaypointNavigator::seekName(std::string name)
@@ -82,7 +82,7 @@ void WaypointNavigator::seekName(std::string name)
 
   auto previousWaypoint = currentWaypoint_;
 
-  while (!found && currentWaypoint_ < waypoints_.size() - 1)
+  while (!found && (size_t)currentWaypoint_ < waypoints_.size() - 1)
   {
     auto & nextName = waypointsNames_[currentWaypoint_];
     if (name == nextName)
@@ -103,7 +103,7 @@ void WaypointNavigator::seekName(std::string name)
 
   if (found)
   {
-    if (currentWaypoint_ >= waypoints_.size() - 1) currentWaypoint_ = waypoints_.size() - 1;
+    if ((size_t)currentWaypoint_ >= waypoints_.size() - 1) currentWaypoint_ = waypoints_.size() - 1;
   }
   else  // search backwards
   {
@@ -143,11 +143,14 @@ void WaypointNavigator::stopWaitingResult()
   }
 }
 
-void WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> options)
+std::optional<std::shared_future<
+  std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose>>>>
+WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> options)
 {
   if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypoints_.size())
   {
     auto & next = waypoints_[currentWaypoint_];
+    auto & nextName = waypointsNames_[currentWaypoint_];
 
     ClNav2Z::Goal goal;
     auto p = client_->getComponent<cl_nav2z::Pose>();
@@ -173,11 +176,23 @@ void WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> 
       RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default planners");
     }
 
-    plannerSwitcher->commitPublish();
-
-    RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default goal planner");
     auto goalCheckerSwitcher = client_->getComponent<GoalCheckerSwitcher>();
-    goalCheckerSwitcher->setGoalCheckerId("goal_checker");
+
+    if (options && options->goalCheckerName_)
+    {
+      RCLCPP_WARN(
+        getLogger(), "[WaypointsNavigator] override goal checker: %s",
+        options->goalCheckerName_->c_str());
+
+      goalCheckerSwitcher->setGoalCheckerId(*options->goalCheckerName_);
+    }
+    else
+    {
+      RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default goal checker");
+      goalCheckerSwitcher->setGoalCheckerId("goal_checker");
+    }
+
+    plannerSwitcher->commitPublish();
 
     // publish stuff
     // rclcpp::sleep_for(5s);
@@ -188,8 +203,8 @@ void WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> 
     {
       RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Storing path in odom tracker");
 
-      auto pathname =
-        this->owner_->getStateMachine()->getCurrentState()->getName() + " - " + getName();
+      auto pathname = this->owner_->getStateMachine()->getCurrentState()->getName() + " - " +
+                      getName() + " - " + nextName;
       odomTracker->pushPath(pathname);
       odomTracker->setStartPoint(pose);
       odomTracker->setWorkingMode(cl_nav2z::odom_tracker::WorkingMode::RECORD_PATH);
@@ -206,7 +221,7 @@ void WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> 
         client_->onCancelled(&WaypointNavigator::onGoalAborted, this);
     }
 
-    client_->sendGoal(goal);
+    return client_->sendGoal(goal);
   }
   else
   {
@@ -214,6 +229,8 @@ void WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> 
       getLogger(),
       "[WaypointsNavigator] All waypoints were consumed. There is no more waypoints available.");
   }
+
+  return std::nullopt;
 }
 
 void WaypointNavigator::insertWaypoint(int index, geometry_msgs::msg::Pose & newpose)

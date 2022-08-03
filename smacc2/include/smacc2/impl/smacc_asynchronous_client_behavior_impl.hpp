@@ -43,20 +43,23 @@ void SmaccAsyncClientBehavior::onOrthogonalAllocation()
   };
 }
 
-template <typename TCallback, typename T>
-boost::signals2::connection SmaccAsyncClientBehavior::onSuccess(TCallback callback, T * object)
+template <typename TCallbackMethod, typename T>
+boost::signals2::connection SmaccAsyncClientBehavior::onSuccess(
+  TCallbackMethod callback, T * object)
 {
   return this->getStateMachine()->createSignalConnection(onSuccess_, callback, object);
 }
 
-template <typename TCallback, typename T>
-boost::signals2::connection SmaccAsyncClientBehavior::onFinished(TCallback callback, T * object)
+template <typename TCallbackMethod, typename T>
+boost::signals2::connection SmaccAsyncClientBehavior::onFinished(
+  TCallbackMethod callback, T * object)
 {
   return this->getStateMachine()->createSignalConnection(onFinished_, callback, object);
 }
 
-template <typename TCallback, typename T>
-boost::signals2::connection SmaccAsyncClientBehavior::onFailure(TCallback callback, T * object)
+template <typename TCallbackMethod, typename T>
+boost::signals2::connection SmaccAsyncClientBehavior::onFailure(
+  TCallbackMethod callback, T * object)
 {
   return this->getStateMachine()->createSignalConnection(onFailure_, callback, object);
 }

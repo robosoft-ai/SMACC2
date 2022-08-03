@@ -19,27 +19,41 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
-#include <nav2z_client/nav2z_client.hpp>
-
-#include "cb_nav2z_client_behavior_base.hpp"
+#include "cb_navigate_next_waypoint.hpp"
 
 namespace cl_nav2z
 {
-class CbNavigateNextWaypoint : public CbNav2ZClientBehaviorBase
+  template<typename AsyncCB, typename Orthogonal>
+  struct EvGoalWaypointReached: sc::event<EvGoalWaypointReached<AsyncCB, Orthogonal>>
+  {
+  };
+  
+class CbNavigateNextWaypointUntilReached : public CbNavigateNextWaypoint
 {
 public:
-  CbNavigateNextWaypoint(std::optional<NavigateNextWaypointOptions> options = std::nullopt);
+  CbNavigateNextWaypointUntilReached(std::string goalWaypointName,
+                                 std::optional<NavigateNextWaypointOptions> options = std::nullopt);
 
-  virtual ~CbNavigateNextWaypoint();
+  virtual ~CbNavigateNextWaypointUntilReached();
+
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
+  {
+    this->requiresClient(moveBaseClient_);
+    CbNavigateNextWaypoint::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+
+    postEvGoalWaypointReached_ = [this]() {
+      this->postEvent<EvGoalWaypointReached<TSourceObject,TOrthogonal>>();
+    };
+  }
 
   void onEntry() override;
 
   void onExit() override;
 
-protected:
-  WaypointNavigator * waypointsNavigator_;
+private:
+  std::string goalWaypointName_;
 
-  NavigateNextWaypointOptions options_;
+  std::function<void()> postEvGoalWaypointReached_;
 };
 }  // namespace cl_nav2z

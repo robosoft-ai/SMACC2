@@ -32,7 +32,13 @@ CbNavigateNextWaypoint::~CbNavigateNextWaypoint() {}
 void CbNavigateNextWaypoint::onEntry()
 {
   waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
-  waypointsNavigator_->sendNextGoal(options_);
+
+  auto goalHandle = waypointsNavigator_->sendNextGoal(options_);
+
+  if (goalHandle)
+    goalHandleFuture_ = *goalHandle;
+  else
+    RCLCPP_ERROR(getLogger(), "[CbNavigateNextWaypoint] Failed to send goal");
 
   auto waypointname = waypointsNavigator_->getCurrentWaypointName();
 

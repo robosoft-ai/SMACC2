@@ -18,20 +18,81 @@
  *
  ******************************************************************************************************************/
 #include <nav2z_client/client_behaviors/cb_nav2z_client_behavior_base.hpp>
-
+#include <nav2z_client/common.hpp>
 namespace cl_nav2z
 {
 CbNav2ZClientBehaviorBase::~CbNav2ZClientBehaviorBase() {}
 
+void CbNav2ZClientBehaviorBase::sendGoal(ClNav2Z::Goal & goal)
+{
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Sending goal");
+  goalHandleFuture_ = this->moveBaseClient_->sendGoal(goal);
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[" << getName() << "] Sent goal, future valid: " << goalHandleFuture_.valid());
+
+  // this->goal_uuid_ = gh.get_goal_id () ;
+}
+
 void CbNav2ZClientBehaviorBase::propagateSuccessEvent(ClNav2Z::WrappedResult & r)
 {
+  auto name = getName();
+  if (isShutdownRequested())
+  {
+    RCLCPP_ERROR(
+      getLogger(), "[%s] Propagating success event skipped. the behavior is shutting down",
+      name.c_str());
+    return;
+  }
+
+  if (!goalHandleFuture_.valid())
+  {
+    RCLCPP_ERROR(this->getLogger(), "[%s] Goal handle is not valid", name.c_str());
+    return;
+  }
+
+  auto goalHandle = goalHandleFuture_.get();
+  auto goal_uuid_ = goalHandle->get_goal_id();
+
+  if (r.goal_id != goal_uuid_)
+  {
+    RCLCPP_ERROR(
+      getLogger(), "[%s] Received a failure event from an action server with a different goal_uuid",
+      name.c_str());
+    return;
+  }
+
   navigationResult_ = r.code;
-  auto name = smacc2::demangleType(typeid(*this));
+
   RCLCPP_INFO(getLogger(), "[%s] Propagating success event from action server", name.c_str());
   this->postSuccessEvent();
 }
 void CbNav2ZClientBehaviorBase::propagateFailureEvent(ClNav2Z::WrappedResult & r)
 {
+  if (isShutdownRequested())
+  {
+    RCLCPP_ERROR(
+      getLogger(), "[%s] Propagating failure event skipped. the behavior is shutting down",
+      getName().c_str());
+    return;
+  }
+
+  if (!goalHandleFuture_.valid())
+  {
+    RCLCPP_ERROR(getLogger(), "[%s] Goal handle is not valid", getName().c_str());
+    return;
+  }
+
+  auto goalHandle = goalHandleFuture_.get();
+  auto goal_uuid_ = goalHandle->get_goal_id();
+
+  if (r.goal_id != goal_uuid_)
+  {
+    RCLCPP_ERROR(
+      getLogger(), "[%s] Received a failure event from an action server with a different goal_uuid",
+      smacc2::demangleType(typeid(*this)).c_str());
+    return;
+  }
+
   navigationResult_ = r.code;
   auto name = smacc2::demangleType(typeid(*this));
   RCLCPP_INFO(getLogger(), "[%s] Propagating failure event from action server", name.c_str());

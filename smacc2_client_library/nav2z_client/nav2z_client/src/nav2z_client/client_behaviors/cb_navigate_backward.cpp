@@ -86,7 +86,7 @@ void CbNavigateBackwards::onEntry()
   auto goalCheckerSwitcher = moveBaseClient_->getComponent<GoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("backward_goal_checker");
 
-  moveBaseClient_->sendGoal(goal);
+  this->sendGoal(goal);
 }
 
 void CbNavigateBackwards::onExit()

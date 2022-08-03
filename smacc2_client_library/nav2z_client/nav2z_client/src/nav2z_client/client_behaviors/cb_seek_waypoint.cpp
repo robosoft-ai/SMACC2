@@ -18,14 +18,12 @@
  *
  ******************************************************************************************************************/
 
-#include <nav2z_client/client_behaviors/cb_skip_waypoint.hpp>
+#include <nav2z_client/client_behaviors/cb_seek_waypoint.hpp>
 
 namespace cl_nav2z
 {
-  
 CbSeekWaypoint::CbSeekWaypoint(std::string seekWaypointName)
-: count_(std::nullopt),
-seekWaypointName_(seekWaypointName)
+: count_(std::nullopt), seekWaypointName_(seekWaypointName)
 {
 }
 
@@ -35,20 +33,20 @@ void CbSeekWaypoint::onEntry()
 {
   cl_nav2z::ClNav2Z * moveBaseClient_;
   this->requiresClient(moveBaseClient_);
-  waypointsNavigator_ =  moveBaseClient_->getComponent<WaypointNavigator>();
+  waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
 
-  if(count_)
+  if (count_)
   {
     waypointsNavigator_->forward(*count_);
     count_ = std::nullopt;
   }
-  else if(seekWaypointName_)
+  else if (seekWaypointName_)
   {
     waypointsNavigator_->seekName(*seekWaypointName_);
     seekWaypointName_ = std::nullopt;
   }
 }
 
-void CbSeekWaypoint::onExit() { }
+void CbSeekWaypoint::onExit() {}
 
 }  // namespace cl_nav2z

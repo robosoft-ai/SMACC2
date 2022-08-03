@@ -81,7 +81,7 @@ void CbRotate::onEntry()
 
   RCLCPP_INFO_STREAM(getLogger(), "current pose: " << currentPoseMsg);
   RCLCPP_INFO_STREAM(getLogger(), "goal pose: " << goal.pose.pose);
-  moveBaseClient_->sendGoal(goal);
+  this->sendGoal(goal);
 }
 
 }  // namespace cl_nav2z

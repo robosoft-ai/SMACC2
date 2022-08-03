@@ -46,7 +46,6 @@ void CbNavigateNamedWaypoint::onEntry()
   // RCLCPP_INFO(
   //   getLogger(), "[CbNavigateNamedWaypoint] current iteration waypoints i: %ld",
   //   waypointsNavigator_->getCurrentWaypointIndex());  }
-
 }
 
 void CbNavigateNamedWaypoint::onExit() { waypointsNavigator_->stopWaitingResult(); }

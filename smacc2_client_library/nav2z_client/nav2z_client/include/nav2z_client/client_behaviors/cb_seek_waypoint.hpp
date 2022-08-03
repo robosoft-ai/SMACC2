@@ -29,7 +29,6 @@ namespace cl_nav2z
 class CbSeekWaypoint : public smacc2::ISmaccClientBehavior
 {
 public:
-
   CbSeekWaypoint(std::string skip_until_name);
 
   virtual ~CbSeekWaypoint();
@@ -43,8 +42,7 @@ public:
   NavigateNextWaypointOptions options_;
 
 private:
- std::optional<int> count_;
- std::optional<std::string> seekWaypointName_;
-
+  std::optional<int> count_;
+  std::optional<std::string> seekWaypointName_;
 };
 }  // namespace cl_nav2z

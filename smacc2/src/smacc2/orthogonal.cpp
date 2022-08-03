@@ -55,6 +55,7 @@ void ISmaccOrthogonal::addClientBehavior(std::shared_ptr<smacc2::ISmaccClientBeh
       clBehavior->getName().c_str());
     clBehavior->stateMachine_ = this->getStateMachine();
     clBehavior->currentOrthogonal = this;
+    clBehavior->currentState = clBehavior->stateMachine_->getCurrentState();
 
     clientBehaviors_.push_back(clBehavior);
   }

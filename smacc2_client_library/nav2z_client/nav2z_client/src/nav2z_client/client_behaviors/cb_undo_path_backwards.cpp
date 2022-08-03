@@ -58,7 +58,7 @@ void CbUndoPathBackwards::onEntry()
     goal.pose = forwardpath.poses.front();
     goal.pose.header.stamp = getNode()->now();
     plannerSwitcher->setUndoPathBackwardPlanner();
-    moveBaseClient_->sendGoal(goal);
+    this->sendGoal(goal);
   }
 }
 

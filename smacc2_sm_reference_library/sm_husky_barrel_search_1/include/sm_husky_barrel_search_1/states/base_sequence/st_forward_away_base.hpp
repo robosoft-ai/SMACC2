@@ -47,7 +47,10 @@ struct StForwardAwayBase : smacc2::SmaccState<StForwardAwayBase, SmHuskyBarrelSe
   {
 
     configure_orthogonal<OrNavigation, CbSeekWaypoint>("front-base-area");
-    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>(NavigateNextWaypointOptions{
+                                                                                    .controllerName_="SuperFastPathFollow",
+                                                                                    .goalCheckerName_ = "super_fast_follow_path_goal_checker"
+                                                                                });
   }
 
   void runtimeConfigure()

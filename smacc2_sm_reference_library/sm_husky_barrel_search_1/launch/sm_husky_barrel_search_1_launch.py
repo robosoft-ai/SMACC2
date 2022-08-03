@@ -20,7 +20,7 @@ from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -40,6 +40,8 @@ def generate_launch_description():
     params_file = LaunchConfiguration("params_file")
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
     autostart = LaunchConfiguration("autostart")
+    debug_sm_node = LaunchConfiguration("debug_sm_node")
+
     # show_gz_lidar = LaunchConfiguration("show_gz_lidar")
 
     # Launch configuration variables specific to simulation
@@ -106,6 +108,10 @@ def generate_launch_description():
 
     declare_autostart_cmd = DeclareLaunchArgument(
         "autostart", default_value="true", description="Automatically startup the nav2 stack"
+    )
+
+    debug_sm_node_cmd = DeclareLaunchArgument(
+        "debug_sm_node", default_value="true", description="Debug sm node"
     )
 
     declare_rviz_config_file_cmd = DeclareLaunchArgument(
@@ -206,6 +212,7 @@ def generate_launch_description():
         name="SmHuskyBarrelSearch1",
         output="screen",
         prefix=xtermprefix,
+        condition=UnlessCondition(debug_sm_node),
         parameters=[
             os.path.join(
                 get_package_share_directory("sm_husky_barrel_search_1"),
@@ -311,6 +318,7 @@ def generate_launch_description():
     ld.add_action(declare_params_file_cmd)
     ld.add_action(declare_bt_xml_cmd)
     ld.add_action(declare_autostart_cmd)
+    ld.add_action(debug_sm_node_cmd)
     ld.add_action(declare_map_yaml_cmd)
     ld.add_action(declare_show_gz_lidar)
     ld.add_action(declare_headless_simulator_argument)

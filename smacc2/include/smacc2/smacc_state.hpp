@@ -87,6 +87,9 @@ public:
   template <typename TOrthogonal>
   TOrthogonal * getOrthogonal();
 
+  template <typename TOrthogonal, typename TClientBehavior>
+  TClientBehavior * getClientBehavior();
+
   template <typename TEventGenerator>
   TEventGenerator * getEventGenerator();
 

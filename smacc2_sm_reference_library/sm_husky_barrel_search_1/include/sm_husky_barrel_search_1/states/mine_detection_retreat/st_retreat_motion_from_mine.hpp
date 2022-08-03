@@ -36,19 +36,23 @@ struct StRetreatMotionFromMine : smacc2::SmaccState<StRetreatMotionFromMine, SmH
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
-  typedef mpl::list<Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StSelectSaferMinePath>,
-                    Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StRetreatMotionFromMine>>
+  typedef mpl::list<Transition<EvCbSuccess<CbSequence, OrNavigation>, StSelectSaferMinePath, SUCCESS>,
+                    Transition<EvCbFailure<CbSequence, OrNavigation>, StRetreatMotionFromMine, ABORT>>
       reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateBackwards>(1.5);
+    configure_orthogonal<OrNavigation, CbSequence>();
     configure_orthogonal<OrLedArray, CbBlinking>(LedColor::YELLOW);
   }
 
   void runtimeConfigure()
   {
+    this->getClientBehavior<OrNavigation, CbSequence>()
+              ->then<OrNavigation, CbNavigateBackwards>(6.0)
+              ->then<OrNavigation, CbRotate>(-90.0)
+              ->then<OrNavigation, CbNavigateForward>(2.0);
   }
 };
 }  // namespace sm_husky_barrel_search_1

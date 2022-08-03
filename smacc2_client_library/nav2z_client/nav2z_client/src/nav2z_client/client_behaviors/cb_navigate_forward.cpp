@@ -141,7 +141,7 @@ void CbNavigateForward::onEntry()
   auto goalCheckerSwitcher = moveBaseClient_->getComponent<GoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("forward_goal_checker");
 
-  moveBaseClient_->sendGoal(goal);
+  this->sendGoal(goal);
 }
 
 void CbNavigateForward::onExit()

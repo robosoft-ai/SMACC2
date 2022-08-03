@@ -42,9 +42,13 @@ public:
   }
 
 protected:
-  cl_nav2z::ClNav2Z * moveBaseClient_;
-
   rclcpp_action::ResultCode navigationResult_;
+  std::shared_future<
+    std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose> > >
+    goalHandleFuture_;
+
+  void sendGoal(ClNav2Z::Goal & goal);
+  cl_nav2z::ClNav2Z * moveBaseClient_;
 
 private:
   void propagateSuccessEvent(ClNav2Z::WrappedResult &);

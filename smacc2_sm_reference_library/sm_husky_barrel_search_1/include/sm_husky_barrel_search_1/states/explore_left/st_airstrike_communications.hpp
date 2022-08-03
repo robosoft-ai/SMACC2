@@ -66,7 +66,7 @@ namespace sm_husky_barrel_search_1
                 smacc2::EvCbSuccess<CbSleepFor, OrNavigation>,
                 smacc2::EvCbSuccess<CbAbsoluteRotate, OrNavigation>
                 >>();
-        
+
             //configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
 
         }

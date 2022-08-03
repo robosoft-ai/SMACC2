@@ -52,7 +52,11 @@ namespace sm_husky_barrel_search_1
         {
             // configure_orthogonal<OrNavigation, CbSleepFor>(10s);
             configure_orthogonal<OrNavigation, CbSeekWaypoint>("pre-concrete-barriers");
-            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>(NavigateNextWaypointOptions
+                                                                                {
+                                                                                    .controllerName_="SuperFastPathFollow",
+                                                                                    .goalCheckerName_ = "super_fast_follow_path_goal_checker"
+                                                                                });
         }
 
         void runtimeConfigure()

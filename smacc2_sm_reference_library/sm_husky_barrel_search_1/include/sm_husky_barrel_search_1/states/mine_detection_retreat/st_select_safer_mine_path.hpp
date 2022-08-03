@@ -41,7 +41,7 @@ struct StSelectSaferMinePath : smacc2::SmaccState<StSelectSaferMinePath, SmHusky
   // STATE FUNCTIONS
   static void staticConfigure()
   {
- 
+    //  configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(1.5);
   }
 
   void runtimeConfigure()

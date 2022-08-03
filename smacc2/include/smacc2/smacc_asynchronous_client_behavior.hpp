@@ -71,6 +71,13 @@ public:
 
   void requestForceFinish();
 
+  // executes onExit in a new thread
+  void executeOnEntry() override;
+
+  // executes onExit in a new thread, waits first onEntry thread if it is still running
+  void executeOnExit() override;
+  void waitOnEntryThread();
+
 protected:
   void postSuccessEvent();
   void postFailureEvent();
@@ -80,9 +87,10 @@ protected:
   inline bool isShutdownRequested() { return isShutdownRequested_; }
 
 private:
-  void waitFutureIfNotFinished(std::future<int> & threadfut);
-  std::future<int> onEntryThread_;
-  std::future<int> onExitThread_;
+  void waitFutureIfNotFinished(std::optional<std::future<int>> & threadfut);
+
+  std::optional<std::future<int>> onEntryThread_;
+  std::optional<std::future<int>> onExitThread_;
 
   std::function<void()> postFinishEventFn_;
   std::function<void()> postSuccessEventFn_;
@@ -92,13 +100,7 @@ private:
   SmaccSignal<void()> onSuccess_;
   SmaccSignal<void()> onFailure_;
 
-  // executes onExit in a new thread
-  void executeOnEntry() override;
-
-  // executes onExit in a new thread, waits first onEntry thread if it is still running
-  void executeOnExit() override;
-
-  bool isShutdownRequested_;
+  bool isShutdownRequested_ = false;
 };
 }  // namespace smacc2
 

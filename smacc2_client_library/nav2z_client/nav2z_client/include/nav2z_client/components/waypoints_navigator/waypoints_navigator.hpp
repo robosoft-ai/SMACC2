@@ -46,6 +46,7 @@ struct Pose2D
 struct NavigateNextWaypointOptions
 {
   std::optional<std::string> controllerName_;
+  std::optional<std::string> goalCheckerName_;
 };
 
 // This component contains a list of waypoints. These waypoints can
@@ -76,7 +77,9 @@ public:
 
   void setWaypoints(const std::vector<Pose2D> & waypoints);
 
-  void sendNextGoal(std::optional<NavigateNextWaypointOptions> options = std::nullopt);
+  std::optional<std::shared_future<
+    std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose> > > >
+  sendNextGoal(std::optional<NavigateNextWaypointOptions> options = std::nullopt);
 
   void stopWaitingResult();
 
