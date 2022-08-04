@@ -17,28 +17,41 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#pragma once
 
-#include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
+#include <nav2z_client/client_behaviors/cb_rotate_look_at.hpp>
+#include <nav2z_client/common.hpp>
+#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
+#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/pose/cp_pose.hpp>
 #include <nav2z_client/nav2z_client.hpp>
-#include "cb_nav2z_client_behavior_base.hpp"
-#include "cb_navigate_next_waypoint.hpp"
+
+#include <rclcpp/parameter_client.hpp>
 
 namespace cl_nav2z
 {
-class CbNavigateNamedWaypoint : public CbNavigateNextWaypoint
+CbRotateLookAt::CbRotateLookAt() {}
+  
+CbRotateLookAt::CbRotateLookAt(const geometry_msgs::msg::PoseStamped& lookAtPose):
+    lookAtPose_(lookAtPose)
 {
-public:
-  CbNavigateNamedWaypoint(std::string waypointname);
+}
 
-  virtual ~CbNavigateNamedWaypoint();
+void CbRotateLookAt::onEntry()
+{
+  cl_nav2z::Pose *pose;
+  this->requiresComponent(pose);
 
-  void onEntry() override;
+  pose->waitTransformUpdate(rclcpp::Rate(20));
+  auto position = pose->toPoseMsg().position;
 
-  void onExit() override;
+  if(lookAtPose_)
+  {
+    auto targetPosition = lookAtPose_->pose.position;
+    double yaw_degrees = atan2(targetPosition.y - position.y, targetPosition.x - position.x)* 180.0/M_PI;
+    this->absoluteGoalAngleDegree = yaw_degrees;
+  }
+  
+  CbAbsoluteRotate::onEntry();
+}
 
-  WaypointNavigator * waypointsNavigator_;
-
-  std::string waypointname_;
-};
 }  // namespace cl_nav2z

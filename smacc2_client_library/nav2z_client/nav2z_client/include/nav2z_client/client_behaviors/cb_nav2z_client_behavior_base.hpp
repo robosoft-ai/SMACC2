@@ -36,23 +36,26 @@ public:
     this->requiresClient(moveBaseClient_);
     smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
-    moveBaseClient_->onSucceeded(&CbNav2ZClientBehaviorBase::propagateSuccessEvent, this);
-    moveBaseClient_->onAborted(&CbNav2ZClientBehaviorBase::propagateFailureEvent, this);
-    moveBaseClient_->onCancelled(&CbNav2ZClientBehaviorBase::propagateFailureEvent, this);
+    moveBaseClient_->onSucceeded(&CbNav2ZClientBehaviorBase::onNavigationActionSuccess, this);
+    moveBaseClient_->onAborted(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
+    moveBaseClient_->onCancelled(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
   }
 
 protected:
+  void sendGoal(ClNav2Z::Goal & goal);
+
+  bool isOwnActionResponse(ClNav2Z::WrappedResult & r);
+
+  virtual void onNavigationActionSuccess(ClNav2Z::WrappedResult &);
+  virtual void onNavigationActionAbort(ClNav2Z::WrappedResult &);
+
+  cl_nav2z::ClNav2Z * moveBaseClient_;
+
   rclcpp_action::ResultCode navigationResult_;
+
   std::shared_future<
     std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose> > >
     goalHandleFuture_;
-
-  void sendGoal(ClNav2Z::Goal & goal);
-  cl_nav2z::ClNav2Z * moveBaseClient_;
-
-private:
-  void propagateSuccessEvent(ClNav2Z::WrappedResult &);
-  void propagateFailureEvent(ClNav2Z::WrappedResult &);
 };
 
 enum class SpinningPlanner

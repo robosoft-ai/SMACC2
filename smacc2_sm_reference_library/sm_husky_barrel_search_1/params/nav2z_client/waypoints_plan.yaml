@@ -174,7 +174,7 @@ waypoints:
       w: 0.98388
   - name: post-mine-field
     position:
-      x: 115.0
+      x: 110.0
       y: 10.0
       z: 0.0
     orientation:
@@ -182,16 +182,16 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # - name: hidden-trees
-  #   position:
-  #     x: 170.0
-  #     y: 85
-  #     z: 0.0
-  #   orientation:
-  #     x: 0.0
-  #     y: 0.0
-  #     z: 0.0
-  #     w: 1.0
+  - name: hidden-trees
+    position:
+      x: 170.0
+      y: 85
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
   # - name: military-pickup
   #   position:
   #     x: 193.8

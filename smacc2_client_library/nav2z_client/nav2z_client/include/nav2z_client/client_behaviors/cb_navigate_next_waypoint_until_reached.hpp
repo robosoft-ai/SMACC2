@@ -23,16 +23,17 @@
 
 namespace cl_nav2z
 {
-  template<typename AsyncCB, typename Orthogonal>
-  struct EvGoalWaypointReached: sc::event<EvGoalWaypointReached<AsyncCB, Orthogonal>>
-  {
-  };
-  
+template <typename AsyncCB, typename Orthogonal>
+struct EvGoalWaypointReached : sc::event<EvGoalWaypointReached<AsyncCB, Orthogonal>>
+{
+};
+
 class CbNavigateNextWaypointUntilReached : public CbNavigateNextWaypoint
 {
 public:
-  CbNavigateNextWaypointUntilReached(std::string goalWaypointName,
-                                 std::optional<NavigateNextWaypointOptions> options = std::nullopt);
+  CbNavigateNextWaypointUntilReached(
+    std::string goalWaypointName,
+    std::optional<NavigateNextWaypointOptions> options = std::nullopt);
 
   virtual ~CbNavigateNextWaypointUntilReached();
 
@@ -43,13 +44,55 @@ public:
     CbNavigateNextWaypoint::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
     postEvGoalWaypointReached_ = [this]() {
-      this->postEvent<EvGoalWaypointReached<TSourceObject,TOrthogonal>>();
+      this->postEvent<EvGoalWaypointReached<TSourceObject, TOrthogonal>>();
+
+      // moveBaseClient_->onSucceeded(&CbNavigateNextWaypointUntilReached::onWaypointReached, this);
     };
   }
 
   void onEntry() override;
 
   void onExit() override;
+
+  void onNavigationActionSuccess(ClNav2Z::WrappedResult & r) override
+  {
+    if (!isOwnActionResponse(r))
+    {
+      RCLCPP_WARN(
+        getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
+        getName().c_str());
+      return;
+    }
+
+    navigationResult_ = r.code;
+
+    RCLCPP_INFO(
+      getLogger(), "[%s] Propagating success event from action server", getName().c_str());
+
+    waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
+
+    auto current_waypoint_name = waypointsNavigator_->getCurrentWaypointName();
+
+    if (current_waypoint_name == this->goalWaypointName_)
+    {
+      RCLCPP_INFO(
+        getLogger(),
+        "[CbNavigateNextWaypointUntilReached] GoalReached current iteration waypoint i: %ld with "
+        "name '%s'",
+        waypointsNavigator_->getCurrentWaypointIndex(), current_waypoint_name->c_str());
+
+      this->postEvGoalWaypointReached_();
+    }
+    else
+    {
+      RCLCPP_INFO(
+        getLogger(),
+        "[CbNavigateNextWaypointUntilReached] goal:'%s' current:'%s'. keep navigating.",
+        goalWaypointName_.c_str(), current_waypoint_name->c_str());
+    }
+
+    this->postSuccessEvent();
+  }
 
 private:
   std::string goalWaypointName_;

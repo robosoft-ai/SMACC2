@@ -28,20 +28,27 @@
 
 namespace sm_husky_barrel_search_1
 {
-
 // STATE DECLARATION
 struct StSelectSaferMinePath : smacc2::SmaccState<StSelectSaferMinePath, SmHuskyBarrelSearch1>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
-  typedef mpl::list<Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StNavigateToWaypointX>>
+  typedef mpl::list<
+      Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, SS5::SsSearchMineSPattern1>,
+      Transition<EvCbFailure<CbNavigateNextWaypointUntilReached, OrNavigation>, StSelectSaferMinePath>>
       reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    //  configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(1.5);
+    configure_orthogonal<OrNavigation, CbNavigateNextWaypointUntilReached>(
+        "post-mine-field",
+        NavigateNextWaypointOptions
+        {
+          .controllerName_ = "FollowPathSlow",
+          .goalCheckerName_ = "goal_checker"
+        });
   }
 
   void runtimeConfigure()

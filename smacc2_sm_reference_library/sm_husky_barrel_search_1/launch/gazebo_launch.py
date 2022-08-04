@@ -117,6 +117,12 @@ def generate_launch_description():
             "15.5",
             "-z",
             "0.1",
+            # "-x",
+            # "89.061"
+            # "-y",
+            # "3.5317",
+            # "-z",
+            # "0.1",
             "-Y",
             "0",
             "-spawn_service_timeout",

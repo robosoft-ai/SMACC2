@@ -61,7 +61,7 @@ struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmTestMoveitUr5Sim>
   {
     ClMoveGroup * moveGroupClient;
     this->requiresClient(moveGroupClient);
-    this->getOrthogonal<OrArm>()->getClientBehavior<CbMoveJoints>()->scalingFactor_ = 1;
+    this->getClientBehavior<OrArm,CbMoveJoints>()->scalingFactor_ = 1;
   }
 };
 }  // namespace sm_multi_ur5_sim

@@ -111,7 +111,7 @@ def generate_launch_description():
     )
 
     debug_sm_node_cmd = DeclareLaunchArgument(
-        "debug_sm_node", default_value="true", description="Debug sm node"
+        "debug_sm_node", default_value="false", description="Debug sm node"
     )
 
     declare_rviz_config_file_cmd = DeclareLaunchArgument(

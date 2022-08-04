@@ -55,7 +55,7 @@ struct StiRadialEndPoint : smacc2::SmaccState<StiRadialEndPoint, SS>
     auto forwardDistanceComputation = navzclient->getComponent<CpSquareShapeBoundary>();
 
     auto forwardBehavior =
-      this->getOrthogonal<OrNavigation>()->getClientBehavior<CbNavigateForward>();
+      this->getClientBehavior<OrNavigation,CbNavigateForward>();
 
     //forwardBehavior->setForwardDistance(std::min(forwardDistanceComputation->getForwardDistance() + EXTRA_SECURE_DISTANCE, 6.0f)); // at most 15 meters
     forwardBehavior->setForwardDistance(forwardDistanceComputation->getForwardDistance() ); // at most 15 meters

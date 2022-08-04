@@ -17,21 +17,27 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+#pragma once
 
-#include <nav2z_client/client_behaviors/cb_navigate_next_waypoint_until_reached.hpp>
+#include <tf2_ros/buffer.h>
+
+#include "cb_absolute_rotate.hpp"
+#include <geometry_msgs/msg/pose_stamped.hpp>
+#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 
 namespace cl_nav2z
 {
-CbNavigateNextWaypointUntilReached::CbNavigateNextWaypointUntilReached(
-  std::string goalWaypointName, std::optional<NavigateNextWaypointOptions> options)
-: CbNavigateNextWaypoint(options), goalWaypointName_(goalWaypointName)
+class CbRotateLookAt : public CbAbsoluteRotate
 {
-}
+public:
+  std::shared_ptr<tf2_ros::Buffer> listener;
 
-CbNavigateNextWaypointUntilReached::~CbNavigateNextWaypointUntilReached() {}
+  std::optional<geometry_msgs::msg::PoseStamped> lookAtPose_;
 
-void CbNavigateNextWaypointUntilReached::onEntry() { CbNavigateNextWaypoint::onEntry(); }
+  CbRotateLookAt();
+  CbRotateLookAt(const geometry_msgs::msg::PoseStamped& lookAtPose );
 
-void CbNavigateNextWaypointUntilReached::onExit() { CbNavigateNextWaypoint::onExit(); }
-
+  void onEntry() override;
+  // void onExit() override;
+};
 }  // namespace cl_nav2z

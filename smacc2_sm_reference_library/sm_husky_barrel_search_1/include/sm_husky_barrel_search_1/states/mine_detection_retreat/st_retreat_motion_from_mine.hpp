@@ -50,8 +50,8 @@ struct StRetreatMotionFromMine : smacc2::SmaccState<StRetreatMotionFromMine, SmH
   void runtimeConfigure()
   {
     this->getClientBehavior<OrNavigation, CbSequence>()
-              ->then<OrNavigation, CbNavigateBackwards>(6.0)
-              ->then<OrNavigation, CbRotate>(-90.0)
+              ->then<OrNavigation, CbNavigateBackwards>(1.5)
+              ->then<OrNavigation, CbRotate>(-70.0)
               ->then<OrNavigation, CbNavigateForward>(2.0);
   }
 };

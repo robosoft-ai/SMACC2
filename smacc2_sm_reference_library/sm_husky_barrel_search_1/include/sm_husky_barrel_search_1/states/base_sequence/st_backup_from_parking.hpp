@@ -26,10 +26,15 @@
 #include <sm_husky_barrel_search_1/clients/cb_sleep_for.hpp>
 #include <sm_husky_barrel_search_1/clients/led_array/client_behaviors.hpp>
 #include <smacc2/client_behaviors/cb_sequence.hpp>
+#include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
 
 namespace sm_husky_barrel_search_1
 {
 using cl_nav2z::CbNavigateBackwards;
+using cl_nav2z::CbAbsoluteRotate;
+using cl_nav2z::CbRotateLookAt;
+using cl_nav2z::WaypointNavigator;
+
 using sm_husky_barrel_search_1::cl_led_array::CbBlinking;
 using smacc2::client_behaviors::CbSequence;
 
@@ -39,20 +44,6 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
   using SmaccState::SmaccState;
 
   // // TRANSITION TABLE
-  // typedef mpl::list<
-  //                   Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StNavigateToWaypointX>,
-  //                   //Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StExitBase>,
-  //                   Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StBackupFromParking>>
-  //     reactions;
-
-  // // STATE FUNCTIONS
-  // static void staticConfigure()
-  // {
-  //   configure_orthogonal<OrNavigation, CbNavigateBackwards>(6.0);
-  //   configure_orthogonal<OrLedArray, CbBlinking>(LedColor::YELLOW);
-  // }
-
-
   typedef mpl::list<
                     Transition<EvCbSuccess<CbSequence, OrNavigation>, StExitBase>,
                     //Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StExitBase>,
@@ -69,10 +60,21 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
 
   void runtimeConfigure()
   {
+    cl_nav2z::ClNav2Z * moveBaseClient;
+    requiresClient(moveBaseClient);
+
+    auto cpWaypointsNavigator = moveBaseClient->getComponent<WaypointNavigator>();
+    auto currentPoseStamped = moveBaseClient->getComponent<cl_nav2z::Pose>()->toPoseStampedMsg();
+
+    auto lookat_pose = cpWaypointsNavigator->getNamedPose("military-pickup-green");
+    geometry_msgs::msg::PoseStamped pose_stamped = currentPoseStamped;
+    pose_stamped.pose = *lookat_pose;
+
     auto cbsequence = this->template getClientBehavior<OrNavigation, CbSequence>();
     cbsequence
       ->then<OrNavigation, CbNavigateBackwards>(6.0)
-      ->then<OrNavigation, CbRotate>(-90.0);
+      ->then<OrNavigation, CbRotateLookAt>(pose_stamped)
+      ->then<OrNavigation, CbAbsoluteRotate>(-90.0);
   }
 };
 }  // namespace sm_husky_barrel_search_1

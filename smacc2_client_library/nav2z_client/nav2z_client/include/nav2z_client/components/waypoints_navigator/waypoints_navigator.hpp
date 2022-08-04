@@ -84,8 +84,8 @@ public:
   void stopWaitingResult();
 
   const std::vector<geometry_msgs::msg::Pose> & getWaypoints() const;
-
   const std::vector<std::string> & getWaypointNames() const;
+  std::optional<geometry_msgs::msg::Pose> getNamedPose(std::string name) const;
 
   long getCurrentWaypointIndex() const;
   std::optional<std::string> getCurrentWaypointName() const;

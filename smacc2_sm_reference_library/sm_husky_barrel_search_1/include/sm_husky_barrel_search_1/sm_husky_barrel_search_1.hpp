@@ -112,6 +112,6 @@ struct SmHuskyBarrelSearch1
 #include "states/mine_detection_retreat/st_navigate_barriers_forward_next.hpp"
 #include "states/mine_detection_retreat/st_retreat_motion_from_mine.hpp"
 #include "states/mine_detection_retreat/st_select_safer_mine_path.hpp"
+#include "states/mine_detection_retreat/st_cross_mine_field_slowly.hpp"
 
 #include "states/st_move_backwards_blinking.hpp"
-#include "states/st_cross_mine_field_slowly.hpp"

@@ -46,8 +46,12 @@ void CbNavigateNamedWaypoint::onEntry()
   // RCLCPP_INFO(
   //   getLogger(), "[CbNavigateNamedWaypoint] current iteration waypoints i: %ld",
   //   waypointsNavigator_->getCurrentWaypointIndex());  }
+
+  auto waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
+  waypointsNavigator_->seekWaypoint(waypointName_);
+  CbNavigateNextWaypoint::onEntry();
 }
 
-void CbNavigateNamedWaypoint::onExit() { waypointsNavigator_->stopWaitingResult(); }
+void CbNavigateNamedWaypoint::onExit() { CbNavigateNextWaypoint::onExit(); }
 
 }  // namespace cl_nav2z

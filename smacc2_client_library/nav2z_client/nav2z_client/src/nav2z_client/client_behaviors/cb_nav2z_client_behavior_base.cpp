@@ -33,53 +33,23 @@ void CbNav2ZClientBehaviorBase::sendGoal(ClNav2Z::Goal & goal)
   // this->goal_uuid_ = gh.get_goal_id () ;
 }
 
-void CbNav2ZClientBehaviorBase::propagateSuccessEvent(ClNav2Z::WrappedResult & r)
+bool CbNav2ZClientBehaviorBase::isOwnActionResponse(ClNav2Z::WrappedResult & r)
 {
   auto name = getName();
   if (isShutdownRequested())
   {
     RCLCPP_ERROR(
-      getLogger(), "[%s] Propagating success event skipped. the behavior is shutting down",
+      getLogger(), "[%s] Propagating action client signal skipped. the behavior is shutting down",
       name.c_str());
-    return;
+    return false;
   }
 
   if (!goalHandleFuture_.valid())
   {
-    RCLCPP_ERROR(this->getLogger(), "[%s] Goal handle is not valid", name.c_str());
-    return;
-  }
-
-  auto goalHandle = goalHandleFuture_.get();
-  auto goal_uuid_ = goalHandle->get_goal_id();
-
-  if (r.goal_id != goal_uuid_)
-  {
     RCLCPP_ERROR(
-      getLogger(), "[%s] Received a failure event from an action server with a different goal_uuid",
+      this->getLogger(), "[%s]Propagating action client signal, our goal handle is not valid",
       name.c_str());
-    return;
-  }
-
-  navigationResult_ = r.code;
-
-  RCLCPP_INFO(getLogger(), "[%s] Propagating success event from action server", name.c_str());
-  this->postSuccessEvent();
-}
-void CbNav2ZClientBehaviorBase::propagateFailureEvent(ClNav2Z::WrappedResult & r)
-{
-  if (isShutdownRequested())
-  {
-    RCLCPP_ERROR(
-      getLogger(), "[%s] Propagating failure event skipped. the behavior is shutting down",
-      getName().c_str());
-    return;
-  }
-
-  if (!goalHandleFuture_.valid())
-  {
-    RCLCPP_ERROR(getLogger(), "[%s] Goal handle is not valid", getName().c_str());
-    return;
+    return false;
   }
 
   auto goalHandle = goalHandleFuture_.get();
@@ -90,11 +60,40 @@ void CbNav2ZClientBehaviorBase::propagateFailureEvent(ClNav2Z::WrappedResult & r
     RCLCPP_ERROR(
       getLogger(), "[%s] Received a failure event from an action server with a different goal_uuid",
       smacc2::demangleType(typeid(*this)).c_str());
+    return false;
+  }
+
+  return true;
+}
+
+void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(ClNav2Z::WrappedResult & r)
+{
+  if (!isOwnActionResponse(r))
+  {
+    RCLCPP_WARN(
+      getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
+      getName().c_str());
     return;
   }
 
   navigationResult_ = r.code;
-  auto name = smacc2::demangleType(typeid(*this));
+
+  RCLCPP_INFO(getLogger(), "[%s] Propagating success event from action server", getName().c_str());
+  this->postSuccessEvent();
+}
+
+void CbNav2ZClientBehaviorBase::onNavigationActionAbort(ClNav2Z::WrappedResult & r)
+{
+  if (!isOwnActionResponse(r))
+  {
+    RCLCPP_WARN(
+      getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
+      getName().c_str());
+    return;
+  }
+
+  navigationResult_ = r.code;
+  auto name = getName();
   RCLCPP_INFO(getLogger(), "[%s] Propagating failure event from action server", name.c_str());
   this->postFailureEvent();
 }

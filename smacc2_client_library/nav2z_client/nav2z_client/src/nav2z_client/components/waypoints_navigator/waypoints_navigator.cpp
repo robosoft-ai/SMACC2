@@ -73,7 +73,7 @@ void WaypointNavigator::rewind(int /*count*/)
 void WaypointNavigator::forward(int count)
 {
   currentWaypoint_++;
-  if ((size_t)currentWaypoint_ >= waypoints_.size() - 1) currentWaypoint_ = waypoints_.size() - 1;
+  if (currentWaypoint_ >= waypoints_.size() - 1) currentWaypoint_ = waypoints_.size() - 1;
 }
 
 void WaypointNavigator::seekName(std::string name)
@@ -82,9 +82,12 @@ void WaypointNavigator::seekName(std::string name)
 
   auto previousWaypoint = currentWaypoint_;
 
-  while (!found && (size_t)currentWaypoint_ < waypoints_.size() - 1)
+  while (!found && currentWaypoint_ < waypoints_.size())
   {
     auto & nextName = waypointsNames_[currentWaypoint_];
+    RCLCPP_INFO(
+      getLogger(), "[WaypointNavigator] seeking ,%ld/%ld candidate waypoint: %s", currentWaypoint_,
+      waypoints_.size(), nextName.c_str());
     if (name == nextName)
     {
       found = true;
@@ -103,7 +106,7 @@ void WaypointNavigator::seekName(std::string name)
 
   if (found)
   {
-    if ((size_t)currentWaypoint_ >= waypoints_.size() - 1) currentWaypoint_ = waypoints_.size() - 1;
+    if (currentWaypoint_ >= waypoints_.size() - 1) currentWaypoint_ = waypoints_.size() - 1;
   }
   else  // search backwards
   {
@@ -111,6 +114,8 @@ void WaypointNavigator::seekName(std::string name)
     while (!found && currentWaypoint_ > 0)
     {
       auto & nextName = waypointsNames_[currentWaypoint_];
+      RCLCPP_INFO(
+        getLogger(), "[WaypointNavigator] seeking , candidate waypoint: %s", nextName.c_str());
       if (name == nextName)
       {
         found = true;
@@ -277,6 +282,22 @@ void WaypointNavigator::removeWaypoint(int index)
 const std::vector<geometry_msgs::msg::Pose> & WaypointNavigator::getWaypoints() const
 {
   return waypoints_;
+}
+
+std::optional<geometry_msgs::msg::Pose> WaypointNavigator::getNamedPose(std::string name) const
+{
+  if (this->waypointsNames_.size() > 0)
+  {
+    for (int i = 0; i < (int)this->waypointsNames_.size(); i++)
+    {
+      if (this->waypointsNames_[i] == name)
+      {
+        return this->waypoints_[i];
+      }
+    }
+  }
+
+  return std::nullopt;
 }
 
 const std::vector<std::string> & WaypointNavigator::getWaypointNames() const
