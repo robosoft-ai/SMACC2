@@ -30,8 +30,8 @@ repositories:
   # ros2_control backports
   ros2_control:
     type: git
-    url: https://github.com/ros-controls/ros2_control.git
-    version: master
+    url: https://github.com/StoglRobotics-forks/ros2_control.git
+    version: smacc-galactic-backport
   ros2_controllers:
     type: git
     url: https://github.com/StoglRobotics-forks/ros2_controllers.git
