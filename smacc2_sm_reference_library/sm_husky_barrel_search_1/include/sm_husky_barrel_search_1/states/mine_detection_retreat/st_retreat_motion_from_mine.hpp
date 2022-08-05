@@ -51,8 +51,8 @@ struct StRetreatMotionFromMine : smacc2::SmaccState<StRetreatMotionFromMine, SmH
   {
     this->getClientBehavior<OrNavigation, CbSequence>()
               ->then<OrNavigation, CbNavigateBackwards>(1.5)
-              ->then<OrNavigation, CbRotate>(-70.0)
-              ->then<OrNavigation, CbNavigateForward>(2.0);
+              ->then<OrNavigation, CbRotate>(-60.0)
+              ->then<OrNavigation, CbNavigateForward>(3.0);
   }
 };
 }  // namespace sm_husky_barrel_search_1

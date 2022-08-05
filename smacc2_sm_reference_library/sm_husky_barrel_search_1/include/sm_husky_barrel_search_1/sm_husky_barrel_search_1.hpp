@@ -63,6 +63,11 @@ struct StForwardAwayBase;
 
 struct StNavigatePrebarriers;
 
+struct StNavigateToFireEnemyPosition;
+struct StFire;
+struct StMissionAccomplished;
+struct StMoveBaseEntrance;
+
 namespace SS5
 {
 class SsSearchMineSPattern1;
@@ -88,9 +93,6 @@ struct SmHuskyBarrelSearch1
 #include "states/st_acquire_sensors.hpp"
 #include "states/st_detect_items.hpp"
 #include "states/st_navigate_to_waypoint_x.hpp"
-#include "states/st_deactivate_mine.hpp"
-#include "states/st_self_destruction.hpp"
-#include "states/st_satellite_communications.hpp"
 
 #include "superstates/ss_search_mine_s_pattern_1.hpp"
 
@@ -104,6 +106,7 @@ struct SmHuskyBarrelSearch1
 #include "states/explore_left/st_evasion_motion.hpp"
 
 #include "states/base_sequence/st_backup_from_parking.hpp"
+#include "states/base_sequence/st_move_base_entrance.hpp"
 #include "states/base_sequence/st_led_blinking_communication.hpp"
 #include "states/base_sequence/st_exit_base.hpp"
 #include "states/base_sequence/st_forward_away_base.hpp"
@@ -114,4 +117,6 @@ struct SmHuskyBarrelSearch1
 #include "states/mine_detection_retreat/st_select_safer_mine_path.hpp"
 #include "states/mine_detection_retreat/st_cross_mine_field_slowly.hpp"
 
-#include "states/st_move_backwards_blinking.hpp"
+#include "states/attack_enemy/st_navigate_to_fire_enemy_position.hpp"
+#include "states/attack_enemy/st_fire.hpp"
+#include "states/attack_enemy/st_mission_accomplished.hpp"

@@ -76,7 +76,7 @@ public:
 
   // executes onExit in a new thread, waits first onEntry thread if it is still running
   void executeOnExit() override;
-  void waitOnEntryThread();
+  void waitOnEntryThread(bool requestFinish);
 
 protected:
   void postSuccessEvent();
@@ -87,7 +87,7 @@ protected:
   inline bool isShutdownRequested() { return isShutdownRequested_; }
 
 private:
-  void waitFutureIfNotFinished(std::optional<std::future<int>> & threadfut);
+  void waitFutureIfNotFinished(std::optional<std::future<int>> & threadfut, bool requestFinish);
 
   std::optional<std::future<int>> onEntryThread_;
   std::optional<std::future<int>> onExitThread_;

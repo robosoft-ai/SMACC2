@@ -80,7 +80,10 @@ private:
 
   std::list<std::function<std::shared_ptr<smacc2::SmaccAsyncClientBehavior>()>> sequenceNodes_;
   boost::signals2::connection conn_;
+  boost::signals2::connection conn2_;
+
   std::shared_ptr<smacc2::SmaccAsyncClientBehavior> bh_;
+  std::atomic<int> consume_{0};
 };
 }  // namespace client_behaviors
 }  // namespace smacc2

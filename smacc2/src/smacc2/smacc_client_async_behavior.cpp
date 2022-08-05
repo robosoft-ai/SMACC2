@@ -35,7 +35,8 @@ void SmaccAsyncClientBehavior::executeOnEntry()
   });
 }
 
-void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::optional<std::future<int>> & threadfut)
+void SmaccAsyncClientBehavior::waitFutureIfNotFinished(
+  std::optional<std::future<int>> & threadfut, bool requestFinish)
 {
   try
   {
@@ -43,14 +44,32 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::optional<std::future
     while (rclcpp::ok())
     {
       //bool valid = threadfut.valid();
-      if (threadfut)
+      if (threadfut && threadfut->valid())
       {
         auto status = threadfut->wait_for(std::chrono::milliseconds(20));
         if (status == std::future_status::ready)
         {
+          // done
           threadfut->get();
           break;
         }
+        else
+        {
+          // in progress
+          RCLCPP_INFO_STREAM(
+            getLogger(),
+            "[" << getName()
+                << "] fut valid but waiting for asynchronous onEntry thread to finish: state: "
+                << (int)status);
+        }
+      }
+      else
+      {
+        RCLCPP_INFO_STREAM(
+          getLogger(),
+          "[" << getName()
+              << "] waiting future onEntryThread. It was not even created. Skipping wait.");
+        break;
       }
 
       // r.sleep();
@@ -62,7 +81,7 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::optional<std::future
         "behavior stuck? requesting force finish",
         this->getName().c_str());
 
-      requestForceFinish();
+      if (requestFinish) requestForceFinish();
     }
   }
   catch (const std::exception & e)
@@ -73,15 +92,15 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(std::optional<std::future
   }
 }
 
-void SmaccAsyncClientBehavior::waitOnEntryThread()
+void SmaccAsyncClientBehavior::waitOnEntryThread(bool requestFinish)
 {
-  waitFutureIfNotFinished(this->onEntryThread_);
+  waitFutureIfNotFinished(this->onEntryThread_, requestFinish);
 }
 
 void SmaccAsyncClientBehavior::executeOnExit()
 {
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] onExit - join async onEntry thread");
-  this->waitOnEntryThread();
+  this->waitOnEntryThread(true);
 
   RCLCPP_INFO_STREAM(
     getLogger(), "[" << getName() << "] onExit - Creating asynchronous onExit thread");

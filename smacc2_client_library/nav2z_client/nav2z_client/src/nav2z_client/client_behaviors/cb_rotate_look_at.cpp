@@ -30,27 +30,28 @@
 namespace cl_nav2z
 {
 CbRotateLookAt::CbRotateLookAt() {}
-  
-CbRotateLookAt::CbRotateLookAt(const geometry_msgs::msg::PoseStamped& lookAtPose):
-    lookAtPose_(lookAtPose)
+
+CbRotateLookAt::CbRotateLookAt(const geometry_msgs::msg::PoseStamped & lookAtPose)
+: lookAtPose_(lookAtPose)
 {
 }
 
 void CbRotateLookAt::onEntry()
 {
-  cl_nav2z::Pose *pose;
+  cl_nav2z::Pose * pose;
   this->requiresComponent(pose);
 
   pose->waitTransformUpdate(rclcpp::Rate(20));
   auto position = pose->toPoseMsg().position;
 
-  if(lookAtPose_)
+  if (lookAtPose_)
   {
     auto targetPosition = lookAtPose_->pose.position;
-    double yaw_degrees = atan2(targetPosition.y - position.y, targetPosition.x - position.x)* 180.0/M_PI;
+    double yaw_degrees =
+      atan2(targetPosition.y - position.y, targetPosition.x - position.x) * 180.0 / M_PI;
     this->absoluteGoalAngleDegree = yaw_degrees;
   }
-  
+
   CbAbsoluteRotate::onEntry();
 }
 

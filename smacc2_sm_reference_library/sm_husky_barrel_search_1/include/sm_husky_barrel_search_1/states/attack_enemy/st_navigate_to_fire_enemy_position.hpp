@@ -23,31 +23,41 @@
 #include <smacc2/smacc.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include <nav2z_client/client_behaviors.hpp>
+#include <sm_husky_barrel_search_1/clients/cb_sleep_for.hpp>
+#include <sm_husky_barrel_search_1/clients/led_array/client_behaviors.hpp>
+
 
 namespace sm_husky_barrel_search_1
 {
     using namespace smacc2::default_events;
     using namespace cl_nav2z;
     using namespace smacc2;
-    using sm_husky_barrel_search_1::cl_led_array::CbBlinking;
+    using namespace std::chrono_literals;
 
     // STATE DECLARATION
-    struct StMoveBackwardsBlinking : smacc2::SmaccState<StMoveBackwardsBlinking, SmHuskyBarrelSearch1>
+    struct StNavigateToFireEnemyPosition : smacc2::SmaccState<StNavigateToFireEnemyPosition, SmHuskyBarrelSearch1>
     {
         using SmaccState::SmaccState;
 
         // TRANSITION TABLE
         typedef mpl::list<
-                Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StNavigateToWaypointX>,
-                Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StMoveBackwardsBlinking>
+              Transition<EvGoalWaypointReached<CbNavigateNextWaypointUntilReached, OrNavigation>, StFire, SUCCESS>,
+              Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, StNavigateToFireEnemyPosition, SUCCESS>,
+              Transition<EvCbFailure<CbNavigateNextWaypointUntilReached, OrNavigation>, StNavigateToFireEnemyPosition, ABORT>
+              //Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
             >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal<OrNavigation, CbNavigateBackwards>(10);
-            configure_orthogonal<OrLedArray, CbBlinking>(LedColor::YELLOW);
+            // configure_orthogonal<OrNavigation, CbSleepFor>(10s);
+            configure_orthogonal<OrNavigation, CbNavigateNextWaypointUntilReached>("hidden-trees",
+                                                                                NavigateNextWaypointOptions
+                                                                                {
+                                                                                    .controllerName_="SuperFastPathFollow",
+                                                                                    .goalCheckerName_ = "super_fast_follow_path_goal_checker"
+                                                                                });
         }
 
         void runtimeConfigure()

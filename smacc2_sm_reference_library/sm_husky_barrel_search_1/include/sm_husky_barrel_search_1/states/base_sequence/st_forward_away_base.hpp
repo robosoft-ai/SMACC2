@@ -37,8 +37,10 @@ struct StForwardAwayBase : smacc2::SmaccState<StForwardAwayBase, SmHuskyBarrelSe
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
-  typedef mpl::list<Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigatePrebarriers>, //StExplore1>,
-                    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StForwardAwayBase>
+  typedef mpl::list<
+                    // Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigatePrebarriers>>,
+                    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StExplore1, SUCCESS>,
+                    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StForwardAwayBase, ABORT>
                     >
       reactions;
 

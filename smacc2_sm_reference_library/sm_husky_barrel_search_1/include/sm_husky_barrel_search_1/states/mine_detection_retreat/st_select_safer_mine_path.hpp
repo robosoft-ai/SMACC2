@@ -36,6 +36,7 @@ struct StSelectSaferMinePath : smacc2::SmaccState<StSelectSaferMinePath, SmHusky
   // TRANSITION TABLE
   typedef mpl::list<
       Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, SS5::SsSearchMineSPattern1>,
+      //Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, StNavigateToFireEnemyPosition>,
       Transition<EvCbFailure<CbNavigateNextWaypointUntilReached, OrNavigation>, StSelectSaferMinePath>>
       reactions;
 

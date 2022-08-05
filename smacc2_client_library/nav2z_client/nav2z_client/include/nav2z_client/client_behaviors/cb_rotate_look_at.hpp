@@ -21,8 +21,8 @@
 
 #include <tf2_ros/buffer.h>
 
-#include "cb_absolute_rotate.hpp"
 #include <geometry_msgs/msg/pose_stamped.hpp>
+#include "cb_absolute_rotate.hpp"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 
 namespace cl_nav2z
@@ -35,7 +35,7 @@ public:
   std::optional<geometry_msgs::msg::PoseStamped> lookAtPose_;
 
   CbRotateLookAt();
-  CbRotateLookAt(const geometry_msgs::msg::PoseStamped& lookAtPose );
+  CbRotateLookAt(const geometry_msgs::msg::PoseStamped & lookAtPose);
 
   void onEntry() override;
   // void onExit() override;

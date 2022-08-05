@@ -182,6 +182,16 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
+  - name: pre-attack-position
+    position:
+      x: 155.0
+      y: 65
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
   - name: hidden-trees
     position:
       x: 170.0
@@ -192,36 +202,36 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # - name: military-pickup
-  #   position:
-  #     x: 193.8
-  #     y: 114
-  #     z: 0.0
-  #   orientation:
-  #     x: 0.0
-  #     y: 0.0
-  #     z: 0.0
-  #     w: 1.0
-  # - name: military-pickup
-  #   position:
-  #     x: 184.245
-  #     y: 92.4654
-  #     z: 0.0
-  #   orientation:
-  #     x: 0.5
-  #     y: 0.5
-  #     z: 0.5
-  #     w: 0.5
-  # - name: military-pickup
-  #   position:
-  #      x: 174.572
-  #      y: 120.16
-  #      z: 0.0
-  #   orientation:
-  #      x: 0.0
-  #      y: 0.0
-  #      z: 0.0
-  #      w: 1.0
+  - name: enemy-military-pickup-1
+    position:
+      x: 193.8
+      y: 114
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: enemy-military-pickup-2
+    position:
+      x: 184.245
+      y: 92.4654
+      z: 0.0
+    orientation:
+      x: 0.5
+      y: 0.5
+      z: 0.5
+      w: 0.5
+  - name: enemy-military-pickup-3
+    position:
+       x: 174.572
+       y: 120.16
+       z: 0.0
+    orientation:
+       x: 0.0
+       y: 0.0
+       z: 0.0
+       w: 1.0
   # - name: spattern-region
   #   position:
   #     x: -20

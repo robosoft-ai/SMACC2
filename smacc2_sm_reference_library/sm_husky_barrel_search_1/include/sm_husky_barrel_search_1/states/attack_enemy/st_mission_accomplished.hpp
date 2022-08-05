@@ -26,37 +26,31 @@
 #include <sm_husky_barrel_search_1/clients/cb_sleep_for.hpp>
 #include <sm_husky_barrel_search_1/clients/led_array/client_behaviors.hpp>
 
-
 namespace sm_husky_barrel_search_1
 {
-    using namespace smacc2::default_events;
-    using namespace cl_nav2z;
-    using namespace smacc2;
-    using namespace std::chrono_literals;
-    using sm_husky_barrel_search_1::cl_led_array::CbLEDOff;
-    using sm_husky_barrel_search_1::cl_led_array::CbLEDOn;
-    using sm_husky_barrel_search_1::cl_led_array::LedColor;
+using namespace smacc2::default_events;
+using namespace cl_nav2z;
+using namespace smacc2;
+using namespace std::chrono_literals;
 
-    // STATE DECLARATION
-    struct StDeactivateMine : smacc2::SmaccState<StDeactivateMine, SmHuskyBarrelSearch1>
-    {
-        using SmaccState::SmaccState;
+// STATE DECLARATION
+struct StMissionAccomplished : smacc2::SmaccState<StMissionAccomplished, SmHuskyBarrelSearch1>
+{
+  using SmaccState::SmaccState;
 
-        // TRANSITION TABLE
-        typedef mpl::list<
-                Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StNavigateToWaypointX>
-            >
-            reactions;
+  // TRANSITION TABLE
+  typedef mpl::list<
 
-        // STATE FUNCTIONS
-        static void staticConfigure()
-        {
-            configure_orthogonal<OrNavigation, CbSleepFor>(4s);
-            configure_orthogonal<OrLedArray, CbLEDOn>(LedColor::GREEN);
-        }
+      >
+      reactions;
 
-        void runtimeConfigure()
-        {
-        }
-    };
-} // namespace sm_husky_barrel_search_1
+  // STATE FUNCTIONS
+  static void staticConfigure()
+  {
+  }
+
+  void runtimeConfigure()
+  {
+  }
+};
+}  // namespace sm_husky_barrel_search_1

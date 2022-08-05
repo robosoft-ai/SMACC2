@@ -45,7 +45,7 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
 
   // // TRANSITION TABLE
   typedef mpl::list<
-                    Transition<EvCbSuccess<CbSequence, OrNavigation>, StExitBase>,
+                    Transition<EvCbSuccess<CbSequence, OrNavigation>, StMoveBaseEntrance>,
                     //Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StExitBase>,
                     Transition<EvCbFailure<CbSequence, OrNavigation>, StBackupFromParking>
                     >
@@ -60,20 +60,22 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
 
   void runtimeConfigure()
   {
-    cl_nav2z::ClNav2Z * moveBaseClient;
-    requiresClient(moveBaseClient);
+    // cl_nav2z::ClNav2Z * moveBaseClient;
+    // requiresClient(moveBaseClient);
 
-    auto cpWaypointsNavigator = moveBaseClient->getComponent<WaypointNavigator>();
-    auto currentPoseStamped = moveBaseClient->getComponent<cl_nav2z::Pose>()->toPoseStampedMsg();
+    // auto cpWaypointsNavigator = moveBaseClient->getComponent<WaypointNavigator>();
+    // auto currentPoseStamped = moveBaseClient->getComponent<cl_nav2z::Pose>()->toPoseStampedMsg();
 
-    auto lookat_pose = cpWaypointsNavigator->getNamedPose("military-pickup-green");
-    geometry_msgs::msg::PoseStamped pose_stamped = currentPoseStamped;
-    pose_stamped.pose = *lookat_pose;
+    // auto lookat_pose = cpWaypointsNavigator->getNamedPose("military-pickup-green");
+    // geometry_msgs::msg::PoseStamped pose_stamped = currentPoseStamped;
+    // pose_stamped.pose = *lookat_pose;
 
     auto cbsequence = this->template getClientBehavior<OrNavigation, CbSequence>();
     cbsequence
       ->then<OrNavigation, CbNavigateBackwards>(6.0)
-      ->then<OrNavigation, CbRotateLookAt>(pose_stamped)
+      // ->then<OrNavigation, CbSleepFor>(1s)
+      // ->then<OrNavigation, CbRotateLookAt>(pose_stamped)
+      // ->then<OrNavigation, CbSleepFor>(1s)
       ->then<OrNavigation, CbAbsoluteRotate>(-90.0);
   }
 };

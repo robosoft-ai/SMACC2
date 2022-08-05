@@ -91,8 +91,8 @@ controller_server:
       stateful: True
     super_fast_follow_path_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 1.2
-      yaw_goal_tolerance: 0.665 # almost free orientation
+      xy_goal_tolerance: 1.4
+      yaw_goal_tolerance: 0.865 # almost free orientation
       stateful: True
 
 
