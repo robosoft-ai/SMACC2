@@ -18,7 +18,7 @@
  *
  ******************************************************************************************************************/
 
-#include <sm_husky_barrel_search_1/clients/nav2z_client/components/cp_waypoints_visualizer.hpp>
+#include <nav2z_client/components/waypoints_navigator/waypoints_visualizer.hpp>
 
 namespace cl_nav2z
 {
@@ -41,7 +41,16 @@ namespace cl_nav2z
     int i =0;
     for (auto& waypoint: waypoints)
     {
-      auto name = waypointsNames[i];
+      std::string name;
+      if((long)waypointsNames.size() > i)
+      {
+        name = waypointsNames[i];
+      }
+      else
+      {
+        name = "waypoint_" + std::to_string(i);
+      }
+      
       visualization_msgs::msg::Marker marker;
       createMarker(waypoint, marker);
       markers_.markers.push_back(marker);

@@ -33,12 +33,12 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    this->requiresClient(moveBaseClient_);
+    this->requiresClient(nav2zClient_);
     smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
-    moveBaseClient_->onSucceeded(&CbNav2ZClientBehaviorBase::onNavigationActionSuccess, this);
-    moveBaseClient_->onAborted(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
-    moveBaseClient_->onCancelled(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
+    nav2zClient_->onSucceeded(&CbNav2ZClientBehaviorBase::onNavigationActionSuccess, this);
+    nav2zClient_->onAborted(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
+    nav2zClient_->onCancelled(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
   }
 
 protected:
@@ -49,7 +49,7 @@ protected:
   virtual void onNavigationActionSuccess(ClNav2Z::WrappedResult &);
   virtual void onNavigationActionAbort(ClNav2Z::WrappedResult &);
 
-  cl_nav2z::ClNav2Z * moveBaseClient_;
+  cl_nav2z::ClNav2Z * nav2zClient_;
 
   rclcpp_action::ResultCode navigationResult_;
 

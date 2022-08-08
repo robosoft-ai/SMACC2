@@ -228,7 +228,7 @@ void OdomTracker::logStateString()
     i++;
   }
   ss << "---";
-  RCLCPP_INFO(getLogger(), ss.str().c_str());
+  RCLCPP_DEBUG(getLogger(), ss.str().c_str());
 }
 
 void OdomTracker::clearPath()

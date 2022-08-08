@@ -37,7 +37,7 @@ void CbRotate::onEntry()
 {
   double angle_increment_degree = rotateDegree;
 
-  auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
 
   if (spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning)
   {
@@ -48,14 +48,14 @@ void CbRotate::onEntry()
     plannerSwitcher->setDefaultPlanners();
   }
 
-  auto p = moveBaseClient_->getComponent<cl_nav2z::Pose>();
+  auto p = nav2zClient_->getComponent<cl_nav2z::Pose>();
   auto referenceFrame = p->getReferenceFrame();
   auto currentPoseMsg = p->toPoseMsg();
 
   tf2::Transform currentPose;
   tf2::fromMsg(currentPoseMsg, currentPose);
 
-  auto odomTracker = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
+  auto odomTracker = nav2zClient_->getComponent<odom_tracker::OdomTracker>();
   ClNav2Z::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
   goal.pose.header.stamp = getNode()->now();
@@ -72,7 +72,7 @@ void CbRotate::onEntry()
   stampedCurrentPoseMsg.header.stamp = getNode()->now();
   stampedCurrentPoseMsg.pose = currentPoseMsg;
 
-  this->requiresClient(moveBaseClient_);
+  this->requiresClient(nav2zClient_);
   auto pathname = this->getCurrentState()->getName() + " - " + getName();
   odomTracker->pushPath(pathname);
 

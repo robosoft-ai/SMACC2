@@ -60,11 +60,11 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
 
   void runtimeConfigure()
   {
-    // cl_nav2z::ClNav2Z * moveBaseClient;
-    // requiresClient(moveBaseClient);
+    // cl_nav2z::ClNav2Z * nav2zClient;
+    // requiresClient(nav2zClient);
 
-    // auto cpWaypointsNavigator = moveBaseClient->getComponent<WaypointNavigator>();
-    // auto currentPoseStamped = moveBaseClient->getComponent<cl_nav2z::Pose>()->toPoseStampedMsg();
+    // auto cpWaypointsNavigator = nav2zClient->getComponent<WaypointNavigator>();
+    // auto currentPoseStamped = nav2zClient->getComponent<cl_nav2z::Pose>()->toPoseStampedMsg();
 
     // auto lookat_pose = cpWaypointsNavigator->getNamedPose("military-pickup-green");
     // geometry_msgs::msg::PoseStamped pose_stamped = currentPoseStamped;

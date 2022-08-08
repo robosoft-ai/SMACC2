@@ -27,7 +27,7 @@ void CostmapSwitch::registerProxyFromDynamicReconfigureServer(
 {
   RCLCPP_INFO(getLogger(), "[CostmapSwitch] registering costmap type: %s", costmapName.c_str());
   auto proxy = std::make_shared<CostmapProxy>(
-    this->moveBaseClient_->getName() + "/" + costmapName, enablePropertyName, getNode());
+    this->nav2zClient_->getName() + "/" + costmapName, enablePropertyName, getNode());
   costmapProxies[costmapName] = proxy;
 }
 
@@ -35,9 +35,9 @@ CostmapSwitch::CostmapSwitch() {}
 
 void CostmapSwitch::onInitialize()
 {
-  this->moveBaseClient_ = dynamic_cast<cl_nav2z::ClNav2Z *>(owner_);
+  this->nav2zClient_ = dynamic_cast<cl_nav2z::ClNav2Z *>(owner_);
 
-  if (this->moveBaseClient_ == nullptr)
+  if (this->nav2zClient_ == nullptr)
   {
     RCLCPP_ERROR(getLogger(), "the owner of the CostmapSwitch must be a ClNav2Z");
   }

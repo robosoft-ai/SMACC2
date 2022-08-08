@@ -40,24 +40,24 @@ public:
   {
     auto roslaunchClient =this->createClient<smacc2::client_bases::ClRosLaunch>("sm_aws_warehouse_navigation", "navigation_launch.py");
 
-    auto movebaseClient = this->createClient<cl_nav2z::ClNav2Z>();
+    auto nav2zClient = this->createClient<cl_nav2z::ClNav2Z>();
 
     // create pose component
-    movebaseClient->createComponent<cl_nav2z::Pose>(StandardReferenceFrames::Map);
+    nav2zClient->createComponent<cl_nav2z::Pose>(StandardReferenceFrames::Map);
 
     // create planner switcher
-    movebaseClient->createComponent<cl_nav2z::PlannerSwitcher>();
+    nav2zClient->createComponent<cl_nav2z::PlannerSwitcher>();
 
     // create goal checker switcher
-    movebaseClient->createComponent<cl_nav2z::GoalCheckerSwitcher>();
+    nav2zClient->createComponent<cl_nav2z::GoalCheckerSwitcher>();
 
     // create odom tracker
-    movebaseClient->createComponent<cl_nav2z::odom_tracker::OdomTracker>();
+    nav2zClient->createComponent<cl_nav2z::odom_tracker::OdomTracker>();
 
-    movebaseClient->createComponent<cl_nav2z::Amcl>();
+    nav2zClient->createComponent<cl_nav2z::Amcl>();
 
     // create waypoints navigator component
-    // auto waypointsNavigator = movebaseClient->createComponent<cl_nav2z::WaypointNavigator>();
+    // auto waypointsNavigator = nav2zClient->createComponent<cl_nav2z::WaypointNavigator>();
     // loadWaypointsFromYaml(waypointsNavigator);
 
     // // change this to skip some points of the yaml file, default = 0

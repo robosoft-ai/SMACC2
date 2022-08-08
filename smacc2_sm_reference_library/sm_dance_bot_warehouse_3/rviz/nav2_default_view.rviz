@@ -9,9 +9,13 @@ Panels:
         - /TF1/Frames1
         - /TF1/Tree1
         - /LaserScan1
+        - /Odometry1
+        - /Odometry1/Shape1
+        - /WayPointsMarkers1
         - /BackwardLocalPlan1
+        - /MarkerArray1
       Splitter Ratio: 0.5833333134651184
-    Tree Height: 865
+    Tree Height: 441
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -65,9 +69,6 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: ""
-      Mass Properties:
-        Inertia: false
-        Mass: false
       Name: RobotModel
       TF Prefix: ""
       Update Interval: 0
@@ -569,7 +570,7 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /backward_planner/global_plan
       Value: true
-    - Angle Tolerance: 0.10000000149011612
+    - Angle Tolerance: 0.20000000298023224
       Class: rviz_default_plugins/Odometry
       Covariance:
         Orientation:
@@ -587,9 +588,9 @@ Visualization Manager:
           Value: true
         Value: false
       Enabled: true
-      Keep: 10000
+      Keep: 3000
       Name: Odometry
-      Position Tolerance: 0.10000000149011612
+      Position Tolerance: 0.20000000298023224
       Shape:
         Alpha: 1
         Axes Length: 1
@@ -597,7 +598,7 @@ Visualization Manager:
         Color: 255; 25; 0
         Head Length: 0
         Head Radius: 0
-        Shaft Length: 0.02800000086426735
+        Shaft Length: 0.04800000041723251
         Shaft Radius: 0.009999999776482582
         Value: Arrow
       Topic:
@@ -648,7 +649,7 @@ Visualization Manager:
       Enabled: true
       Name: BackwardLocalPlannerGoalMarker
       Namespaces:
-        my_namespace2: true
+        {}
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -660,7 +661,7 @@ Visualization Manager:
       Enabled: true
       Name: ForwardCarrot
       Namespaces:
-        my_namespace2: true
+        {}
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -672,7 +673,7 @@ Visualization Manager:
       Enabled: true
       Name: UndoGlobalPlannerMarkers
       Namespaces:
-        my_namespace2: true
+        {}
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -736,6 +737,19 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /backward_local_planner/path
       Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: MarkerArray
+      Namespaces:
+        waypoints: true
+        waypoints_labels: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /cp_waypoints_visualizer/visualization_markers
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -773,21 +787,26 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: -4.785000801086426
-      Class: rviz_default_plugins/TopDownOrtho
+      Class: rviz_default_plugins/Orbit
+      Distance: 21.965763092041016
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
+      Focal Point:
+        X: 3.393266201019287
+        Y: -5.605958938598633
+        Z: -2.6819653511047363
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: -123.52355194091797
+      Pitch: 1.5047963857650757
       Target Frame: base_link
-      Value: TopDownOrtho (rviz_default_plugins)
-      X: -0.6155462265014648
-      Y: -0.8152815103530884
+      Value: Orbit (rviz_default_plugins)
+      Yaw: 4.6792097091674805
     Saved: ~
 Window Geometry:
   Displays:

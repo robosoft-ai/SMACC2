@@ -31,7 +31,7 @@ CbNavigateNamedWaypoint::~CbNavigateNamedWaypoint() {}
 
 void CbNavigateNamedWaypoint::onEntry()
 {
-  // waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
+  // waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
   // waypointsNavigator_->sendNextGoal(options_);
 
   // auto waypointname = waypointsNavigator_->getCurrentWaypointName();
@@ -47,7 +47,7 @@ void CbNavigateNamedWaypoint::onEntry()
   //   getLogger(), "[CbNavigateNamedWaypoint] current iteration waypoints i: %ld",
   //   waypointsNavigator_->getCurrentWaypointIndex());  }
 
-  auto waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
+  auto waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
   waypointsNavigator_->seekWaypoint(waypointName_);
   CbNavigateNextWaypoint::onEntry();
 }

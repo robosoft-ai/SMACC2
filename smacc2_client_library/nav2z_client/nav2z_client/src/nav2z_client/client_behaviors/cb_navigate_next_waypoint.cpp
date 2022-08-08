@@ -31,7 +31,7 @@ CbNavigateNextWaypoint::~CbNavigateNextWaypoint() {}
 
 void CbNavigateNextWaypoint::onEntry()
 {
-  waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
+  waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
 
   auto goalHandle = waypointsNavigator_->sendNextGoal(options_);
 

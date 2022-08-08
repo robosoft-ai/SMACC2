@@ -56,12 +56,12 @@ struct StFire : smacc2::SmaccState<StFire, SmHuskyBarrelSearch1>
 
   void runtimeConfigure()
   {
-    cl_nav2z::ClNav2Z* moveBaseClient;
+    cl_nav2z::ClNav2Z* nav2zClient;
 
-    requiresClient(moveBaseClient);
+    requiresClient(nav2zClient);
 
-    cpWaypointsNavigator = moveBaseClient->getComponent<WaypointNavigator>();
-    currentPose = moveBaseClient->getComponent<cl_nav2z::Pose>();
+    cpWaypointsNavigator = nav2zClient->getComponent<WaypointNavigator>();
+    currentPose = nav2zClient->getComponent<cl_nav2z::Pose>();
     
     auto enemyPosition1 = getLookAtPosition("enemy-military-pickup-1");
     auto enemyPosition2 = getLookAtPosition("enemy-military-pickup-2");

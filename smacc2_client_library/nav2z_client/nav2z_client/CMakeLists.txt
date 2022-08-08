@@ -65,12 +65,14 @@ add_library(${PROJECT_NAME} SHARED
   # COMPONENTS
   src/${PROJECT_NAME}/components/costmap_switch/cp_costmap_switch.cpp
   #src/${PROJECT_NAME}/components/odom_tracker/odom_tracker_node.cpp
+
   src/${PROJECT_NAME}/components/odom_tracker/odom_tracker.cpp
   src/${PROJECT_NAME}/components/planner_switcher/planner_switcher.cpp
   src/${PROJECT_NAME}/components/goal_checker_switcher/goal_checker_switcher.cpp
   src/${PROJECT_NAME}/components/pose/cp_pose.cpp
   src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_event_dispatcher.cpp
   src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_navigator.cpp
+  src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_visualizer.cpp
   src/${PROJECT_NAME}/components/amcl/amcl.cpp
   src/${PROJECT_NAME}/components/slam_toolbox/cp_slam_toolbox.cpp
 )

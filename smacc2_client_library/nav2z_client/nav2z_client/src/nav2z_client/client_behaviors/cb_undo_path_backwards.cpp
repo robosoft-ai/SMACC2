@@ -34,9 +34,9 @@ using namespace std::chrono_literals;
 void CbUndoPathBackwards::onEntry()
 {
   listener = std::make_shared<tf2_ros::Buffer>(this->getNode()->get_clock());
-  auto * odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+  auto * odomTracker = nav2zClient_->getComponent<OdomTracker>();
 
-  auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
 
   nav_msgs::msg::Path forwardpath = odomTracker->getPath();
   // RCLCPP_INFO_STREAM(getLogger(),"[UndoPathBackward] Current path backwards: " << forwardpath);
@@ -45,7 +45,7 @@ void CbUndoPathBackwards::onEntry()
 
   ClNav2Z::Goal goal;
 
-  auto goalCheckerSwitcher = moveBaseClient_->getComponent<GoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("undo_path_backwards_goal_checker");
 
   // WARNING: There might be some race condition with the remote undo global planner were the global path was not received yet
@@ -71,7 +71,7 @@ void CbUndoPathBackwards::onExit()
     RCLCPP_INFO_STREAM(
       getLogger(),
       getName() << " - Exiting: undo navigation successful, popping odom tracker path");
-    auto * odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+    auto * odomTracker = nav2zClient_->getComponent<OdomTracker>();
     odomTracker->popPath();
   }
   else

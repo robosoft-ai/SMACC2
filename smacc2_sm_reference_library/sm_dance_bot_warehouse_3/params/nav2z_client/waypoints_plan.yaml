@@ -1,6 +1,6 @@
 waypoints:
-  # POINT 0
-  - position:
+  - name: 0
+    position:
       x: 1.25
       y: 7.00
       z: 0.0
@@ -9,8 +9,8 @@ waypoints:
       y: 0.5
       z: 0.5
       w: 0.5
-  # POINT 1
-  - position:
+  - name: 1
+    position:
       x: 1.25
       y: -8.25
       z: 0.0
@@ -19,8 +19,18 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 2
-  - position:
+  - name: pre-top-corner-left
+    position:
+      x: -3.75
+      y: 0.5
+      z: 0.0
+    orientation:
+      x: 0.5
+      y: 0.5
+      z: 0.5
+      w: 0.5
+  - name: top-left-corner
+    position:
       x: -6.00
       y: 9.25
       z: 0.0
@@ -29,9 +39,19 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 3
-  - position:
-      x: -4.00
+  - name: top-left-corner--b
+    position:
+      x: -3.75
+      y: 9.25
+      z: 0.0
+    orientation:
+      x: 0.707
+      y: 0.0
+      z: 0.0
+      w: -0.707
+  - name: 5
+    position:
+      x: -3.75
       y: -8.50
       z: 0.0
     orientation:
@@ -39,19 +59,39 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 4
-  - position:
-      x: 5.50
-      y: 1.75
+  - name: pre-right
+    position:
+      x: 1.75
+      y: 2.25
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 5
-  - position:
-      x: -4.00
+  - name: right
+    position:
+      x: 5.50
+      y: 2.25
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: post-right
+    position:
+      x: 1.75
+      y: 2.25
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: 9
+    position:
+      x: -3.750
       y: -8.50
       z: 0.0
     orientation:
@@ -59,8 +99,8 @@ waypoints:
       y: 0.5
       z: 0.5
       w: 0.5
-  # POINT 6
-  - position:
+  - name: 10
+    position:
        x: 5.5
        y: -9.5
        z: 0.0
@@ -69,9 +109,9 @@ waypoints:
        y: 0.0
        z: 0.0
        w: 1.0
-  # POINT 7
-  - position:
-      x: -4.00
+  - name: 11
+    position:
+      x: -3.750
       y: -8.50
       z: 0.0
     orientation:
@@ -79,8 +119,8 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 8
-  - position:
+  - name: top-left-corner-2
+    position:
       x: -6.0
       y: 9.25
       z: 0.0
@@ -89,18 +129,18 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 9
-  - position:
-      x: -4.0
-      y: 6.60
+  - name: 13
+    position:
+      x: -3.75
+      y: 8.0 #6.60
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 10
-  - position:
+  - name: 14
+    position:
       x: 0.5
       y: 6.60
       z: 0.0
@@ -109,8 +149,8 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 11
-  - position:
+  - name: 15
+    position:
       x: 0.5
       y: 3.75
       z: 0.0
@@ -119,9 +159,9 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 12
-  - position:
-      x: -4.0
+  - name: 16
+    position:
+      x: -3.75
       y: 3.75
       z: 0.0
     orientation:
@@ -129,9 +169,9 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 13
-  - position:
-      x: -4.0
+  - name: 17
+    position:
+      x: -3.75
       y: 0.5
       z: 0.0
     orientation:
@@ -139,8 +179,8 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 14
-  - position:
+  - name: 18
+    position:
       x: 0.5
       y: 0.5
       z: 0.0
@@ -149,8 +189,8 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 15
-  - position:
+  - name: 19
+    position:
       x: 0.5
       y: -2.5
       z: 0.0
@@ -159,9 +199,9 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 16
-  - position:
-      x: -4.0
+  - name: 20
+    position:
+      x: -3.75
       y: -2.5
       z: 0.0
     orientation:
@@ -169,9 +209,9 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 17
-  - position:
-      x: -4.0
+  - name: 21
+    position:
+      x: -3.75
       y: -5.5
       z: 0.0
     orientation:
@@ -179,8 +219,8 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 18
-  - position:
+  - name: 22
+    position:
       x: 0.5
       y: -5.5
       z: 0.0
@@ -189,8 +229,8 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 19
-  - position:
+  - name: 23
+    position:
       x: -0.87
       y: -0.85
       z: 0.0

@@ -68,7 +68,6 @@ include_directories(include
 #---------------------------------------------------------
 add_executable(${PROJECT_NAME}_node
   src/${PROJECT_NAME}/sm_husky_barrel_search_1_node.cpp
-  src/${PROJECT_NAME}/nav2z_client/cp_waypoints_visualizer.cpp
 )
 
 

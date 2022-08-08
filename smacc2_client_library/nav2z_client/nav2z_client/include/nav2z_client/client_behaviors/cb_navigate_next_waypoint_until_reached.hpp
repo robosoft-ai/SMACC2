@@ -40,13 +40,13 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    this->requiresClient(moveBaseClient_);
+    this->requiresClient(nav2zClient_);
     CbNavigateNextWaypoint::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
     postEvGoalWaypointReached_ = [this]() {
       this->postEvent<EvGoalWaypointReached<TSourceObject, TOrthogonal>>();
 
-      // moveBaseClient_->onSucceeded(&CbNavigateNextWaypointUntilReached::onWaypointReached, this);
+      // nav2zClient_->onSucceeded(&CbNavigateNextWaypointUntilReached::onWaypointReached, this);
     };
   }
 
@@ -69,7 +69,7 @@ public:
     RCLCPP_INFO(
       getLogger(), "[%s] Propagating success event from action server", getName().c_str());
 
-    waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
+    waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
 
     auto current_waypoint_name = waypointsNavigator_->getCurrentWaypointName();
 

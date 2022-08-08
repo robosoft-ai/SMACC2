@@ -26,7 +26,7 @@ CbNav2ZClientBehaviorBase::~CbNav2ZClientBehaviorBase() {}
 void CbNav2ZClientBehaviorBase::sendGoal(ClNav2Z::Goal & goal)
 {
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Sending goal");
-  goalHandleFuture_ = this->moveBaseClient_->sendGoal(goal);
+  goalHandleFuture_ = this->nav2zClient_->sendGoal(goal);
   RCLCPP_INFO_STREAM(
     getLogger(), "[" << getName() << "] Sent goal, future valid: " << goalHandleFuture_.valid());
 
