@@ -73,7 +73,8 @@ void WaypointNavigator::rewind(int /*count*/)
 void WaypointNavigator::forward(int count)
 {
   currentWaypoint_++;
-  if (currentWaypoint_ >= (long)waypoints_.size() - 1) currentWaypoint_ = (long)waypoints_.size() - 1;
+  if (currentWaypoint_ >= (long)waypoints_.size() - 1)
+    currentWaypoint_ = (long)waypoints_.size() - 1;
 }
 
 void WaypointNavigator::seekName(std::string name)
@@ -106,7 +107,8 @@ void WaypointNavigator::seekName(std::string name)
 
   if (found)
   {
-    if (currentWaypoint_ >= (long)waypoints_.size() - 1) currentWaypoint_ = (long)waypoints_.size() - 1;
+    if (currentWaypoint_ >= (long)waypoints_.size() - 1)
+      currentWaypoint_ = (long)waypoints_.size() - 1;
   }
   else  // search backwards
   {
@@ -157,16 +159,14 @@ WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> optio
     auto & next = waypoints_[currentWaypoint_];
 
     std::string nextName;
-    if((long)waypointsNames_.size() > currentWaypoint_)
+    if ((long)waypointsNames_.size() > currentWaypoint_)
     {
       nextName = waypointsNames_[currentWaypoint_];
-      RCLCPP_INFO(
-        getLogger(), "[WaypointNavigator] sending goal, waypoint: %s", nextName.c_str());
+      RCLCPP_INFO(getLogger(), "[WaypointNavigator] sending goal, waypoint: %s", nextName.c_str());
     }
     else
     {
-      RCLCPP_INFO(
-        getLogger(), "[WaypointNavigator] sending goal, waypoint: %ld", currentWaypoint_);
+      RCLCPP_INFO(getLogger(), "[WaypointNavigator] sending goal, waypoint: %ld", currentWaypoint_);
     }
 
     ClNav2Z::Goal goal;

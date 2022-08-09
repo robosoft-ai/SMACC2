@@ -19,8 +19,8 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <nav2z_client/nav2z_client.hpp>
 #include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
+#include <nav2z_client/nav2z_client.hpp>
 
 #include <smacc2/smacc.hpp>
 
@@ -31,27 +31,28 @@ namespace cl_nav2z
 {
 class ClNav2Z;
 
-class CpWaypointsVisualizer : public smacc2::ISmaccComponent,
-                              public smacc2::ISmaccUpdatable
+class CpWaypointsVisualizer : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdatable
 {
 public:
-  cl_nav2z::WaypointNavigator* waypointsNavigator_;
+  cl_nav2z::WaypointNavigator * waypointsNavigator_;
 
   CpWaypointsVisualizer(rclcpp::Duration duration);
 
   void onInitialize() override;
 
-  protected:
-  virtual void update () override;
+protected:
+  virtual void update() override;
 
-  private:
-    std::mutex m_mutex_;
+private:
+  std::mutex m_mutex_;
 
-    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr markersPub_;
-    visualization_msgs::msg::MarkerArray markers_;
-    visualization_msgs::msg::MarkerArray markerLabels_;
+  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr markersPub_;
+  visualization_msgs::msg::MarkerArray markers_;
+  visualization_msgs::msg::MarkerArray markerLabels_;
 
-    void createMarker(const geometry_msgs::msg::Pose& waypoint, visualization_msgs::msg::Marker& m);
-    void createMarkerLabel(const geometry_msgs::msg::Pose& waypoint, std::string label, visualization_msgs::msg::Marker& m);
+  void createMarker(const geometry_msgs::msg::Pose & waypoint, visualization_msgs::msg::Marker & m);
+  void createMarkerLabel(
+    const geometry_msgs::msg::Pose & waypoint, std::string label,
+    visualization_msgs::msg::Marker & m);
 };
 }  // namespace cl_nav2z

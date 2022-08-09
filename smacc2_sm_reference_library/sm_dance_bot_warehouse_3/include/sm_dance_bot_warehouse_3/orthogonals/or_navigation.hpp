@@ -66,7 +66,7 @@ public:
 
     // create odom tracker
     nav2zClient->createComponent<CpSlamToolbox>();
-    
+
 
     // create waypoints navigator component
     auto waypointsNavigator = nav2zClient->createComponent<WaypointNavigator>();

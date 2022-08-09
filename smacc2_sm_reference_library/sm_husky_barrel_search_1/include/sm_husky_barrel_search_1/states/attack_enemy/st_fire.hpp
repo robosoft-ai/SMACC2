@@ -62,7 +62,7 @@ struct StFire : smacc2::SmaccState<StFire, SmHuskyBarrelSearch1>
 
     cpWaypointsNavigator = nav2zClient->getComponent<WaypointNavigator>();
     currentPose = nav2zClient->getComponent<cl_nav2z::Pose>();
-    
+
     auto enemyPosition1 = getLookAtPosition("enemy-military-pickup-1");
     auto enemyPosition2 = getLookAtPosition("enemy-military-pickup-2");
     auto enemyPosition3 = getLookAtPosition("enemy-military-pickup-3");
