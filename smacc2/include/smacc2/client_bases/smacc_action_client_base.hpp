@@ -254,26 +254,32 @@ public:
     // ResultCallback result_callback;
     // options.result_callback = done_cb;
 
-    options.result_callback =
-      [this](const typename rclcpp_action::ClientGoalHandle<ActionType>::WrappedResult & result) {
-        // TODO(#1652): a work around until rcl_action interface is updated
-        // if goal ids are not matched, the older goal call this callback so ignore the result
-        // if matched, it must be processed (including aborted)
-        RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result callback, getting shared future");
-        goalHandle_ = lastRequest_->get();
-        RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result CB Check goal id");
-        if (this->goalHandle_->get_goal_id() == result.goal_id)
-        {
-          // goal_result_available_ = true;
-          // result_ = result;
-          RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result CB Goal id matches");
-          done_cb(result);
-        }
-        else
-        {
-          RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result CB Goal id DOES NOT match");
-        }
-      };
+    options.result_callback = [this](const typename rclcpp_action::ClientGoalHandle<
+                                     ActionType>::WrappedResult & result) {
+      // TODO(#1652): a work around until rcl_action interface is updated
+      // if goal ids are not matched, the older goa call this callback so ignore the result
+      // if matched, it must be processed (including aborted)
+
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << getName() << "]  Action result callback, getting shared future");
+      // auto goalHandle = result->get();
+      // goalHandle_ = lastRequest_->get();
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << getName() << "]  Action client Result goal id: "
+                         << rclcpp_action::to_string(result.goal_id));
+
+      // if (goalHandle_->get_goal_id() == result.goal_id)
+      // {
+      //   // goal_result_available_ = true;
+      //   // result_ = result;
+      //   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "]  Result CB Goal id matches with last request");
+      done_cb(result);
+      // }
+      // else
+      // {
+      //   RCLCPP_ERROR_STREAM(getLogger(), "[" << getName() << "]  Result CB Goal id DOES NOT match with last request. Skipping, incorrect behavior.");
+      // }
+    };
 
     // if (lastRequest_ && lastRequest_->valid())
     // {
@@ -286,13 +292,25 @@ public:
     //   RCLCPP_INFO_STREAM(getLogger(), getName() << ": no previous request.");
     // }
 
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] client ready clients: "
+                       << this->client_->get_number_of_ready_clients());
+    RCLCPP_INFO_STREAM(
+      getLogger(),
+      "[" << getName() << "] Waiting it is ready? " << client_->action_server_is_ready());
+
     RCLCPP_INFO_STREAM(getLogger(), getName() << ": async send goal.");
-    this->lastRequest_ = this->client_->async_send_goal(goal, options);
+    auto lastRequest = this->client_->async_send_goal(goal, options);
+    this->lastRequest_ = lastRequest;
 
     RCLCPP_INFO_STREAM(
-      getLogger(), "[" << getName() << "] Action goal sent to " << this->action_endpoint_
-                       << "\": " << std::endl
-                       << goal);
+      getLogger(),
+      "["
+        << getName()
+        << "] Action request "
+        // << rclcpp_action::to_string(this->goalHandle_->get_goal_id()) <<". Goal sent to " << this->action_endpoint_
+        << "\": " << std::endl
+        << goal);
 
     // if (client_->isServerConnected())
     // {
@@ -300,13 +318,6 @@ public:
 
     // RCLCPP_INFO_STREAM(getLogger(), getName() << ": Goal Id: "  <<
     // rclcpp_action::to_string(lastRequest_->get()->get_goal_id()));
-
-    RCLCPP_INFO_STREAM(
-      getLogger(), "[" << getName() << "] client ready clients: "
-                       << this->client_->get_number_of_ready_clients());
-    RCLCPP_INFO_STREAM(
-      getLogger(),
-      "[" << getName() << "] Waiting it is ready? " << client_->action_server_is_ready());
 
     // for (auto& gh: this->goal_handles_)
     // {
@@ -333,7 +344,7 @@ public:
     //     //client_->waitForServer();
     // }
 
-    return *lastRequest_;
+    return lastRequest;
   }
 
 protected:
@@ -356,7 +367,7 @@ protected:
     const auto & resultType = result_msg.code;
 
     RCLCPP_INFO_STREAM(
-      getLogger(), "[" << this->getName() << "] request result of request ["
+      getLogger(), "[" << this->getName() << "] response result ["
                        << rclcpp_action::to_string(result_msg.goal_id) << "]: " << (int)resultType);
 
     if (resultType == rclcpp_action::ResultCode::SUCCEEDED)

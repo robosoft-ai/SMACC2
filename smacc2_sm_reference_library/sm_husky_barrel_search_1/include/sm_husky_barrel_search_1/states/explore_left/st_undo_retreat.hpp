@@ -33,26 +33,30 @@ namespace sm_husky_barrel_search_1
     using namespace cl_nav2z;
     using namespace smacc2;
     using namespace std::chrono_literals;
-    using sm_husky_barrel_search_1::cl_led_array::CbLEDOff;
-    using sm_husky_barrel_search_1::cl_led_array::CbLEDOn;
-    using sm_husky_barrel_search_1::cl_led_array::LedColor;
+    using sm_husky_barrel_search_1::cl_led_array::CbBlinking;
 
     // STATE DECLARATION
-    struct StCrossMineFieldSlowly : smacc2::SmaccState<StCrossMineFieldSlowly, SmHuskyBarrelSearch1>
+    struct StUndoRetreat : smacc2::SmaccState<StUndoRetreat, SmHuskyBarrelSearch1>
     {
         using SmaccState::SmaccState;
 
         // TRANSITION TABLE
         typedef mpl::list<
-                Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StNavigateToWaypointX>,
-                Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StCrossMineFieldSlowly>
+                // Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StEvasionMotion>
+                Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StEvasionMotion>
+                // Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StUndoRetreat>
+
             >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>(NavigateNextWaypointOptions{.controllerName_="FollowPathSlow"});
+            configure_orthogonal<OrNavigation, CbNavigateBackwards>(8);
+            configure_orthogonal<OrLedArray, CbBlinking>(LedColor::YELLOW);
+
+            //configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+
         }
 
         void runtimeConfigure()

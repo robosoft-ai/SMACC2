@@ -18,36 +18,35 @@
  *
  ******************************************************************************************************************/
 
-#pragma once
+#include <nav2z_client/client_behaviors/cb_seek_waypoint.hpp>
 
-#include <smacc2/smacc.hpp>
-#include <nav2z_client/nav2z_client.hpp>
-#include <nav2z_client/client_behaviors.hpp>
-namespace sm_husky_barrel_search_1
+namespace cl_nav2z
 {
-    using namespace smacc2::default_events;
-    using namespace cl_nav2z;
-    using namespace smacc2;
+CbSeekWaypoint::CbSeekWaypoint(std::string seekWaypointName)
+: count_(std::nullopt), seekWaypointName_(seekWaypointName)
+{
+}
 
-    // STATE DECLARATION
-    struct StSatelliteComunications : smacc2::SmaccState<StSatelliteComunications, SmHuskyBarrelSearch1>
-    {
-        using SmaccState::SmaccState;
+CbSeekWaypoint::~CbSeekWaypoint() {}
 
-        // TRANSITION TABLE
-        typedef mpl::list<
-            >
-            reactions;
+void CbSeekWaypoint::onEntry()
+{
+  cl_nav2z::ClNav2Z * nav2zClient_;
+  this->requiresClient(nav2zClient_);
+  waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
 
-        // STATE FUNCTIONS
-        static void staticConfigure()
-        {
-            configure_orthogonal<OrNavigation, CbSleepFor>(4s);
-            configure_orthogonal<OrLedArray, CbLEDOn>(LedColor::YELLOW);
-        }
+  if (count_)
+  {
+    waypointsNavigator_->forward(*count_);
+    count_ = std::nullopt;
+  }
+  else if (seekWaypointName_)
+  {
+    waypointsNavigator_->seekName(*seekWaypointName_);
+    seekWaypointName_ = std::nullopt;
+  }
+}
 
-        void runtimeConfigure()
-        {
-        }
-    };
-} // namespace sm_husky_barrel_search_1
+void CbSeekWaypoint::onExit() {}
+
+}  // namespace cl_nav2z

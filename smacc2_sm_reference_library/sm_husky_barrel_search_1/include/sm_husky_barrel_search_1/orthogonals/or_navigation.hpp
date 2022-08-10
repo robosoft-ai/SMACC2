@@ -31,7 +31,7 @@
 #include <nav2z_client/components/slam_toolbox/cp_slam_toolbox.hpp>
 #include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
 
-#include <sm_husky_barrel_search_1/clients/nav2z_client/components/cp_waypoints_visualizer.hpp>
+#include <nav2z_client/components/waypoints_navigator/waypoints_visualizer.hpp>
 
 namespace sm_husky_barrel_search_1
 {

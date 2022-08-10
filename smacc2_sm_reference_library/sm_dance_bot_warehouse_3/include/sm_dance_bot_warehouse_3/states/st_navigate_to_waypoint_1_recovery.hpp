@@ -44,7 +44,6 @@ struct StNavigateToWaypoint1Recovery : smacc2::SmaccState<StNavigateToWaypoint1R
     //configure_orthogonal<OrNavigation, CbPureSpinning>(2.0*M_PI, 1.0 /*rad_s*/);
     // configure_orthogonal<OrNavigation, CbNavigateForward>(2.0);
     configure_orthogonal<OrNavigation, CbRetry<CbNavigateForward>>();
-
     configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 

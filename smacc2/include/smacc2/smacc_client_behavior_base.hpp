@@ -43,12 +43,18 @@ public:
   template <typename SmaccComponentType>
   void requiresComponent(SmaccComponentType *& storage, bool throwExceptionIfNotExist = false);
 
-protected:
-  virtual void runtimeConfigure();
-
   virtual void onEntry() {}
 
   virtual void onExit() {}
+
+  //internal visibility (private + friend)
+  virtual void executeOnEntry();
+
+  //internal visibility (private + friend)
+  virtual void executeOnExit();
+
+protected:
+  virtual void runtimeConfigure();
 
   template <typename EventType>
   void postEvent(const EventType & ev);
@@ -65,12 +71,6 @@ protected:
   virtual rclcpp::Logger getLogger() const;
 
 private:
-  //internal visibility (private + friend)
-  virtual void executeOnEntry();
-
-  //internal visibility (private + friend)
-  virtual void executeOnExit();
-
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation();
 

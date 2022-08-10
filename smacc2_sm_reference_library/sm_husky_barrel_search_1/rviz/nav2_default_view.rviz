@@ -17,8 +17,9 @@ Panels:
         - /MarkerArray1
         - /Image1
         - /Image1/Topic1
+        - /Pose1
       Splitter Ratio: 0.5833333134651184
-    Tree Height: 371
+    Tree Height: 795
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -123,9 +124,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
       Name: RobotModel
       TF Prefix: ""
       Update Interval: 0
@@ -525,7 +523,6 @@ Visualization Manager:
           Topic:
             Depth: 5
             Durability Policy: Volatile
-            Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /intel_realsense_r200_depth/image_raw
@@ -713,7 +710,7 @@ Visualization Manager:
       Enabled: true
       Name: ForwardCarrot
       Namespaces:
-        my_namespace2: true
+        {}
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -816,6 +813,26 @@ Visualization Manager:
         Reliability Policy: Best Effort
         Value: /opencv_debug_image
       Value: true
+    - Alpha: 1
+      Axes Length: 1
+      Axes Radius: 0.10000000149011612
+      Class: rviz_default_plugins/Pose
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.30000001192092896
+      Head Radius: 0.10000000149011612
+      Name: Pose
+      Shaft Length: 1
+      Shaft Radius: 0.05000000074505806
+      Shape: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /goal_pose
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -854,17 +871,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 20
+      Distance: 13.163750648498535
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 1.2338628768920898
-        Y: -5.712062358856201
-        Z: -0.6100907325744629
-
+        X: -3.0800833702087402
+        Y: -9.971904754638672
+        Z: 0.9439042210578918
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false

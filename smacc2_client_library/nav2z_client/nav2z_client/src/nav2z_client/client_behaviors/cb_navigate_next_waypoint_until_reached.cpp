@@ -18,24 +18,20 @@
  *
  ******************************************************************************************************************/
 
-#pragma once
+#include <nav2z_client/client_behaviors/cb_navigate_next_waypoint_until_reached.hpp>
 
-#include <functional>
-#include <rclcpp/rclcpp.hpp>
-#include <smacc2/client_behaviors/cb_sequence.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
+namespace cl_nav2z
+{
+CbNavigateNextWaypointUntilReached::CbNavigateNextWaypointUntilReached(
+  std::string goalWaypointName, std::optional<NavigateNextWaypointOptions> options)
+: CbNavigateNextWaypoint(options), goalWaypointName_(goalWaypointName)
+{
+}
 
-namespace smacc2
-{
-namespace client_behaviors
-{
-void CbSequenceNode::onEntry()
-{
-  for (auto & cb : sequenceNodes_)
-  {
-    // cb->onEntry();
-  }
-}  // namespace client_behaviors
-}  // namespace client_behaviors
-}  // namespace smacc2
-// namespace client_behaviors
+CbNavigateNextWaypointUntilReached::~CbNavigateNextWaypointUntilReached() {}
+
+void CbNavigateNextWaypointUntilReached::onEntry() { CbNavigateNextWaypoint::onEntry(); }
+
+void CbNavigateNextWaypointUntilReached::onExit() { CbNavigateNextWaypoint::onExit(); }
+
+}  // namespace cl_nav2z

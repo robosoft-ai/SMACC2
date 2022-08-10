@@ -23,33 +23,35 @@
 #include <smacc2/smacc.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include <nav2z_client/client_behaviors.hpp>
+
 namespace sm_husky_barrel_search_1
 {
-    using namespace smacc2::default_events;
-    using namespace cl_nav2z;
-    using namespace smacc2;
+using namespace smacc2::default_events;
+using namespace cl_nav2z;
+using namespace smacc2;
+using sm_husky_barrel_search_1::cl_led_array::CbSequenceColorBlinking;
 
-    // STATE DECLARATION
-    struct StEvasionMotion : smacc2::SmaccState<StEvasionMotion, SmHuskyBarrelSearch1>
-    {
-        using SmaccState::SmaccState;
+// STATE DECLARATION
+struct StExitBase : smacc2::SmaccState<StExitBase, SmHuskyBarrelSearch1>
+{
+  using SmaccState::SmaccState;
 
-        // TRANSITION TABLE
-        typedef mpl::list<
+  // TRANSITION TABLE
+  typedef mpl::list<Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StForwardAwayBase>,
+                    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExitBase>
+                    >
+      reactions;
 
-                Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, SS5::SsSearchMineSPattern1>,
-                Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StEvasionMotion>
-            >
-            reactions;
+  // STATE FUNCTIONS
+  static void staticConfigure()
+  {
 
-        // STATE FUNCTIONS
-        static void staticConfigure()
-        {
-            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
-        }
+    configure_orthogonal<OrNavigation, CbSeekWaypoint>("base-outdoor-forward");
+    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+  }
 
-        void runtimeConfigure()
-        {
-        }
-    };
-} // namespace sm_husky_barrel_search_1
+  void runtimeConfigure()
+  {
+  }
+};
+}  // namespace sm_husky_barrel_search_1

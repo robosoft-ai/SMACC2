@@ -54,8 +54,8 @@ controller_server:
     min_y_velocity_threshold: 0.5
     min_theta_velocity_threshold: 0.001
     progress_checker_plugin: "progress_checker"
-    goal_checker_plugins: ["goal_checker", "forward_goal_checker", "backward_goal_checker", "absolute_rotate_goal_checker", "undo_path_backwards_goal_checker"]
-    controller_plugins: ["FollowPath","FollowPathSlow","BackwardLocalPlanner", "ForwardLocalPlanner", "PureSpinningLocalPlanner", "UndoBackwardLocalPlanner"]
+    goal_checker_plugins: ["goal_checker", "forward_goal_checker", "backward_goal_checker", "absolute_rotate_goal_checker", "undo_path_backwards_goal_checker", "super_fast_follow_path_goal_checker"]
+    controller_plugins: ["FollowPath","FollowPathSlow", "SuperFastPathFollow","BackwardLocalPlanner", "ForwardLocalPlanner", "PureSpinningLocalPlanner", "UndoBackwardLocalPlanner"]
 
     # Progress checker parameters
     progress_checker:
@@ -71,8 +71,8 @@ controller_server:
       stateful: True
     backward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.09
-      yaw_goal_tolerance: 0.05
+      xy_goal_tolerance: 0.25
+      yaw_goal_tolerance: 0.15
       stateful: True
     forward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
@@ -89,6 +89,12 @@ controller_server:
       xy_goal_tolerance: 0.03 # 4 cm
       yaw_goal_tolerance: 0.1
       stateful: True
+    super_fast_follow_path_goal_checker:
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 1.4
+      yaw_goal_tolerance: 0.865 # almost free orientation
+      stateful: True
+
 
     # DWB parameters
     FollowPath:
@@ -172,6 +178,48 @@ controller_server:
       GoalAlign.forward_point_distance: 0.1
       PathDist.scale: 32.0
       GoalDist.scale: 24.0
+      RotateToGoal.scale: 32.0
+      RotateToGoal.slowing_factor: 5.0
+      RotateToGoal.lookahead_time: -1.0
+    SuperFastPathFollow:
+      plugin: "dwb_core::DWBLocalPlanner"
+      debug_trajectory_details: True
+      min_vel_x: 0.0
+      min_vel_y: 0.0
+      max_vel_x: 5.0
+      max_vel_y: 0.0
+      max_vel_theta: 2.0
+      min_speed_xy: 0.0
+      max_speed_xy: 5.0 # 0.3
+      min_speed_theta: 0.0
+      # Add high threshold velocity for turtlebot 3 issue.
+      # https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/75
+      acc_lim_x: 4.5
+      acc_lim_y: 0.0
+      acc_lim_theta: 7.2
+      decel_lim_x: -4.5
+      decel_lim_y: 0.0
+      decel_lim_theta: -7.2
+      vx_samples: 40
+      vy_samples: 3
+      vtheta_samples: 40
+      sim_time: 1.2
+      linear_granularity: 0.05
+      angular_granularity: 0.025
+      transform_tolerance: 0.5
+      xy_goal_tolerance: 0.157
+      yaw_goal_tolerance: 0.15
+      trans_stopped_velocity: 0.25
+      short_circuit_trajectory_evaluation: True
+      stateful: True
+      critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
+      BaseObstacle.scale: 0.02
+      PathAlign.scale: 32.0
+      PathAlign.forward_point_distance: 0.1
+      GoalAlign.scale: 24.0
+      GoalAlign.forward_point_distance: 0.1
+      PathDist.scale: 152.0
+      GoalDist.scale: 144.0
       RotateToGoal.scale: 32.0
       RotateToGoal.slowing_factor: 5.0
       RotateToGoal.lookahead_time: -1.0

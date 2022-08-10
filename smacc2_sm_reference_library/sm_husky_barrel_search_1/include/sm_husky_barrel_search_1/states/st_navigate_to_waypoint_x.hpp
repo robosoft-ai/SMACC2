@@ -38,9 +38,10 @@ namespace sm_husky_barrel_search_1
         typedef mpl::list<
 
             //Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StDeactivateMine, SUCCESS>,
-            Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>, // entrance to station
-            Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StMoveBackwardsBlinking, SUCCESS>,
-            Transition<EvWaypoint2<ClNav2Z, OrNavigation>, StExploreAndRetreat, SUCCESS>,
+            Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StLedBlinkingCommuncation, SUCCESS>, // entrance to station
+            // Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StMoveBackwardsBlinking, SUCCESS>,
+            Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
+            Transition<EvWaypoint2<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
             Transition<EvWaypoint3<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
             Transition<EvWaypoint4<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,
             Transition<EvWaypoint5<ClNav2Z, OrNavigation>, StNavigateToWaypointX, SUCCESS>,

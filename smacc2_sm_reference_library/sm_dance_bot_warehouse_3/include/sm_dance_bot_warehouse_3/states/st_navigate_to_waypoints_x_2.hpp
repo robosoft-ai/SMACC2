@@ -123,17 +123,17 @@ struct StNavigateToWaypointsX2 : smacc2::SmaccState<StNavigateToWaypointsX2, MsD
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvWaypoint9<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_10>,
-    Transition<EvWaypoint10<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_11>,
-    Transition<EvWaypoint11<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_12>,
-    Transition<EvWaypoint12<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_13>,
-    Transition<EvWaypoint13<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_14>,
-    Transition<EvWaypoint14<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_15>,
-    Transition<EvWaypoint15<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_16>,
-    Transition<EvWaypoint16<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_17>,
-    Transition<EvWaypoint17<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_18>,
-    Transition<EvWaypoint18<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_19>,
-    Transition<EvWaypoint19<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_20> ,
+    Transition<EvWaypoint13<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_10>,
+    Transition<EvWaypoint14<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_11>,
+    Transition<EvWaypoint15<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_12>,
+    Transition<EvWaypoint16<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_13>,
+    Transition<EvWaypoint17<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_14>,
+    Transition<EvWaypoint18<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_15>,
+    Transition<EvWaypoint19<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_16>,
+    Transition<EvWaypoint20<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_17>,
+    Transition<EvWaypoint21<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_18>,
+    Transition<EvWaypoint22<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_19>,
+    Transition<EvWaypoint23<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_20> ,
     Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX2>
     >
     reactions;

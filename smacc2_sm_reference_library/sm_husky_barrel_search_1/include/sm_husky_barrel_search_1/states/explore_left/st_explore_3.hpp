@@ -23,31 +23,36 @@
 #include <smacc2/smacc.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include <nav2z_client/client_behaviors.hpp>
+#include <sm_husky_barrel_search_1/clients/cb_sleep_for.hpp>
+#include <sm_husky_barrel_search_1/clients/led_array/client_behaviors.hpp>
+
 
 namespace sm_husky_barrel_search_1
 {
     using namespace smacc2::default_events;
     using namespace cl_nav2z;
     using namespace smacc2;
-    using sm_husky_barrel_search_1::cl_led_array::CbBlinking;
+    using namespace std::chrono_literals;
 
     // STATE DECLARATION
-    struct StMoveBackwardsBlinking : smacc2::SmaccState<StMoveBackwardsBlinking, SmHuskyBarrelSearch1>
+    struct StExplore3 : smacc2::SmaccState<StExplore3, SmHuskyBarrelSearch1>
     {
         using SmaccState::SmaccState;
 
         // TRANSITION TABLE
         typedef mpl::list<
-                Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StNavigateToWaypointX>,
-                Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StMoveBackwardsBlinking>
+              Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StExplore4, SUCCESS>,
+              Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExplore3, ABORT>
+              //Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
             >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal<OrNavigation, CbNavigateBackwards>(10);
-            configure_orthogonal<OrLedArray, CbBlinking>(LedColor::YELLOW);
+            // configure_orthogonal<OrNavigation, CbSleepFor>(10s);
+            configure_orthogonal<OrNavigation, CbSeekWaypoint>("3-reguard");
+            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
         }
 
         void runtimeConfigure()

@@ -72,7 +72,7 @@ public:
 
 private:
   std::map<std::string, std::shared_ptr<CostmapProxy>> costmapProxies;
-  cl_nav2z::ClNav2Z * moveBaseClient_;
+  cl_nav2z::ClNav2Z * nav2zClient_;
 };
 //-------------------------------------------------------------------------
 class CostmapProxy

@@ -47,10 +47,12 @@ add_library(${PROJECT_NAME} SHARED
 
   src/${PROJECT_NAME}/client_behaviors/cb_nav2z_client_behavior_base.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_absolute_rotate.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_rotate_look_at.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_backward.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_forward.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_global_position.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint_until_reached.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_rotate.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_undo_path_backwards.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_wait_pose.cpp
@@ -58,16 +60,19 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/client_behaviors/cb_pause_slam.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_resume_slam.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_wait_transform.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_seek_waypoint.cpp
 
   # COMPONENTS
   src/${PROJECT_NAME}/components/costmap_switch/cp_costmap_switch.cpp
   #src/${PROJECT_NAME}/components/odom_tracker/odom_tracker_node.cpp
+
   src/${PROJECT_NAME}/components/odom_tracker/odom_tracker.cpp
   src/${PROJECT_NAME}/components/planner_switcher/planner_switcher.cpp
   src/${PROJECT_NAME}/components/goal_checker_switcher/goal_checker_switcher.cpp
   src/${PROJECT_NAME}/components/pose/cp_pose.cpp
   src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_event_dispatcher.cpp
   src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_navigator.cpp
+  src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_visualizer.cpp
   src/${PROJECT_NAME}/components/amcl/amcl.cpp
   src/${PROJECT_NAME}/components/slam_toolbox/cp_slam_toolbox.cpp
 )

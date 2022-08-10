@@ -309,6 +309,7 @@
                 }
             ]
         },
+
         {
             "name": "(gdb) SmDanceBotWarehouse3",
             "type": "cppdbg",

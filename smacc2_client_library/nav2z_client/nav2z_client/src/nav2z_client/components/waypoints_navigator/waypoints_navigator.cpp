@@ -70,6 +70,76 @@ void WaypointNavigator::rewind(int /*count*/)
   if (currentWaypoint_ < 0) currentWaypoint_ = 0;
 }
 
+void WaypointNavigator::forward(int count)
+{
+  currentWaypoint_++;
+  if (currentWaypoint_ >= (long)waypoints_.size() - 1)
+    currentWaypoint_ = (long)waypoints_.size() - 1;
+}
+
+void WaypointNavigator::seekName(std::string name)
+{
+  bool found = false;
+
+  auto previousWaypoint = currentWaypoint_;
+
+  while (!found && currentWaypoint_ < (long)waypoints_.size())
+  {
+    auto & nextName = waypointsNames_[currentWaypoint_];
+    RCLCPP_INFO(
+      getLogger(), "[WaypointNavigator] seeking ,%ld/%ld candidate waypoint: %s", currentWaypoint_,
+      waypoints_.size(), nextName.c_str());
+    if (name == nextName)
+    {
+      found = true;
+      RCLCPP_INFO(
+        getLogger(), "[WaypointNavigator] found target waypoint: %s == %s-> found",
+        nextName.c_str(), name.c_str());
+    }
+    else
+    {
+      RCLCPP_INFO(
+        getLogger(), "[WaypointNavigator] current waypoint: %s != %s -> forward", nextName.c_str(),
+        name.c_str());
+      currentWaypoint_++;
+    }
+  }
+
+  if (found)
+  {
+    if (currentWaypoint_ >= (long)waypoints_.size() - 1)
+      currentWaypoint_ = (long)waypoints_.size() - 1;
+  }
+  else  // search backwards
+  {
+    currentWaypoint_ = previousWaypoint;
+    while (!found && currentWaypoint_ > 0)
+    {
+      auto & nextName = waypointsNames_[currentWaypoint_];
+      RCLCPP_INFO(
+        getLogger(), "[WaypointNavigator] seeking , candidate waypoint: %s", nextName.c_str());
+      if (name == nextName)
+      {
+        found = true;
+        RCLCPP_INFO(
+          getLogger(), "[WaypointNavigator] found target waypoint: %s == %s-> found",
+          nextName.c_str(), name.c_str());
+      }
+      else
+      {
+        RCLCPP_INFO(
+          getLogger(), "[WaypointNavigator] current waypoint: %s != %s -> rewind", nextName.c_str(),
+          name.c_str());
+        currentWaypoint_--;
+      }
+    }
+  }
+
+  RCLCPP_INFO(
+    getLogger(), "[WaypointNavigator] seekName( %s), previous index: %ld, after index: %ld",
+    name.c_str(), previousWaypoint, currentWaypoint_);
+}
+
 void WaypointNavigator::stopWaitingResult()
 {
   if (succeddedNav2ZClientConnection_.connected())
@@ -80,11 +150,24 @@ void WaypointNavigator::stopWaitingResult()
   }
 }
 
-void WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> options)
+std::optional<std::shared_future<
+  std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose>>>>
+WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> options)
 {
   if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypoints_.size())
   {
     auto & next = waypoints_[currentWaypoint_];
+
+    std::string nextName;
+    if ((long)waypointsNames_.size() > currentWaypoint_)
+    {
+      nextName = waypointsNames_[currentWaypoint_];
+      RCLCPP_INFO(getLogger(), "[WaypointNavigator] sending goal, waypoint: %s", nextName.c_str());
+    }
+    else
+    {
+      RCLCPP_INFO(getLogger(), "[WaypointNavigator] sending goal, waypoint: %ld", currentWaypoint_);
+    }
 
     ClNav2Z::Goal goal;
     auto p = client_->getComponent<cl_nav2z::Pose>();
@@ -110,11 +193,23 @@ void WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> 
       RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default planners");
     }
 
-    plannerSwitcher->commitPublish();
-
-    RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default goal planner");
     auto goalCheckerSwitcher = client_->getComponent<GoalCheckerSwitcher>();
-    goalCheckerSwitcher->setGoalCheckerId("goal_checker");
+
+    if (options && options->goalCheckerName_)
+    {
+      RCLCPP_WARN(
+        getLogger(), "[WaypointsNavigator] override goal checker: %s",
+        options->goalCheckerName_->c_str());
+
+      goalCheckerSwitcher->setGoalCheckerId(*options->goalCheckerName_);
+    }
+    else
+    {
+      RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default goal checker");
+      goalCheckerSwitcher->setGoalCheckerId("goal_checker");
+    }
+
+    plannerSwitcher->commitPublish();
 
     // publish stuff
     // rclcpp::sleep_for(5s);
@@ -125,8 +220,8 @@ void WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> 
     {
       RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Storing path in odom tracker");
 
-      auto pathname =
-        this->owner_->getStateMachine()->getCurrentState()->getName() + " - " + getName();
+      auto pathname = this->owner_->getStateMachine()->getCurrentState()->getName() + " - " +
+                      getName() + " - " + nextName;
       odomTracker->pushPath(pathname);
       odomTracker->setStartPoint(pose);
       odomTracker->setWorkingMode(cl_nav2z::odom_tracker::WorkingMode::RECORD_PATH);
@@ -143,7 +238,7 @@ void WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> 
         client_->onCancelled(&WaypointNavigator::onGoalAborted, this);
     }
 
-    client_->sendGoal(goal);
+    return client_->sendGoal(goal);
   }
   else
   {
@@ -151,6 +246,8 @@ void WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> 
       getLogger(),
       "[WaypointsNavigator] All waypoints were consumed. There is no more waypoints available.");
   }
+
+  return std::nullopt;
 }
 
 void WaypointNavigator::insertWaypoint(int index, geometry_msgs::msg::Pose & newpose)
@@ -199,9 +296,34 @@ const std::vector<geometry_msgs::msg::Pose> & WaypointNavigator::getWaypoints() 
   return waypoints_;
 }
 
+std::optional<geometry_msgs::msg::Pose> WaypointNavigator::getNamedPose(std::string name) const
+{
+  if (this->waypointsNames_.size() > 0)
+  {
+    for (int i = 0; i < (int)this->waypointsNames_.size(); i++)
+    {
+      if (this->waypointsNames_[i] == name)
+      {
+        return this->waypoints_[i];
+      }
+    }
+  }
+
+  return std::nullopt;
+}
+
 const std::vector<std::string> & WaypointNavigator::getWaypointNames() const
 {
   return waypointsNames_;
+}
+
+std::optional<std::string> WaypointNavigator::getCurrentWaypointName() const
+{
+  if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypointsNames_.size())
+  {
+    return waypointsNames_[currentWaypoint_];
+  }
+  return std::nullopt;
 }
 
 long WaypointNavigator::getCurrentWaypointIndex() const { return currentWaypoint_; }

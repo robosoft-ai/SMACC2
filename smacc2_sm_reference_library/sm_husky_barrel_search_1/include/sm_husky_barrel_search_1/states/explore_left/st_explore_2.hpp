@@ -33,25 +33,26 @@ namespace sm_husky_barrel_search_1
     using namespace cl_nav2z;
     using namespace smacc2;
     using namespace std::chrono_literals;
-    using sm_husky_barrel_search_1::cl_led_array::CbLEDOff;
-    using sm_husky_barrel_search_1::cl_led_array::CbLEDOn;
-    using sm_husky_barrel_search_1::cl_led_array::LedColor;
+
 
     // STATE DECLARATION
-    struct StExploreAndRetreat : smacc2::SmaccState<StExploreAndRetreat, SmHuskyBarrelSearch1>
+    struct StExplore2 : smacc2::SmaccState<StExplore2, SmHuskyBarrelSearch1>
     {
         using SmaccState::SmaccState;
 
         // TRANSITION TABLE
         typedef mpl::list<
-                Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
+              Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StExplore3, SUCCESS>,
+              Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExplore2, ABORT>
+              //Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
             >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal<OrNavigation, CbSleepFor>(10s);
+            // configure_orthogonal<OrNavigation, CbSleepFor>(10s);
+            configure_orthogonal<OrNavigation, CbSeekWaypoint>("2-reguard");
             configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
         }
 

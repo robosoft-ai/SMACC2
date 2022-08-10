@@ -225,10 +225,10 @@ void SignalDetector::pollOnce()
 
     if (currentState != nullptr)
     {
-      RCLCPP_INFO_THROTTLE(
-        getLogger(), *(getNode()->get_clock()), 10000,
-        "[SignalDetector] heartbeat. Current State: %s",
-        demangleType(typeid(*currentState)).c_str());
+      // RCLCPP_INFO_THROTTLE(
+      //   getLogger(), *(getNode()->get_clock()), 10000,
+      //   "[SignalDetector] heartbeat. Current State: %s",
+      //   demangleType(typeid(*currentState)).c_str());
     }
 
     this->findUpdatableClientsAndComponents();

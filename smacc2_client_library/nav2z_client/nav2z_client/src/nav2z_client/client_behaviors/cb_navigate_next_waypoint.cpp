@@ -31,12 +31,29 @@ CbNavigateNextWaypoint::~CbNavigateNextWaypoint() {}
 
 void CbNavigateNextWaypoint::onEntry()
 {
-  waypointsNavigator_ = moveBaseClient_->getComponent<WaypointNavigator>();
-  waypointsNavigator_->sendNextGoal(options_);
+  waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
 
-  RCLCPP_INFO(
-    getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints i: %ld",
-    waypointsNavigator_->getCurrentWaypointIndex());
+  auto goalHandle = waypointsNavigator_->sendNextGoal(options_);
+
+  if (goalHandle)
+    goalHandleFuture_ = *goalHandle;
+  else
+    RCLCPP_ERROR(getLogger(), "[CbNavigateNextWaypoint] Failed to send goal");
+
+  auto waypointname = waypointsNavigator_->getCurrentWaypointName();
+
+  if (waypointname)
+  {
+    RCLCPP_INFO(
+      getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints i: %ld with name '%s'",
+      waypointsNavigator_->getCurrentWaypointIndex(), waypointname->c_str());
+  }
+  else
+  {
+    RCLCPP_INFO(
+      getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints i: %ld",
+      waypointsNavigator_->getCurrentWaypointIndex());
+  }
 }
 
 void CbNavigateNextWaypoint::onExit() { waypointsNavigator_->stopWaitingResult(); }

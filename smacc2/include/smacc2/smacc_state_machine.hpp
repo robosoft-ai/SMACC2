@@ -76,6 +76,14 @@ public:
   template <typename TOrthogonal>
   TOrthogonal * getOrthogonal();
 
+  template <typename TOrthogonal, typename TClientBehavior>
+  inline TClientBehavior * getClientBehavior()
+  {
+    auto orthogonal = this->template getOrthogonal<TOrthogonal>();
+
+    return orthogonal->template getClientBehavior<TClientBehavior>();
+  }
+
   const std::map<std::string, std::shared_ptr<smacc2::ISmaccOrthogonal>> & getOrthogonals() const;
 
   template <typename SmaccComponentType>

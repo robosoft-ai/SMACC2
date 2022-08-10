@@ -13,16 +13,29 @@
 // limitations under the License.
 
 #pragma once
+
+// rotation behavior
 #include <nav2z_client/client_behaviors/cb_absolute_rotate.hpp>
+#include <nav2z_client/client_behaviors/cb_rotate.hpp>
+#include <nav2z_client/client_behaviors/cb_rotate_look_at.hpp>
+
 #include <nav2z_client/client_behaviors/cb_navigate_backwards.hpp>
 #include <nav2z_client/client_behaviors/cb_navigate_forward.hpp>
 #include <nav2z_client/client_behaviors/cb_navigate_global_position.hpp>
-#include <nav2z_client/client_behaviors/cb_navigate_next_waypoint.hpp>
-#include <nav2z_client/client_behaviors/cb_pause_slam.hpp>
-#include <nav2z_client/client_behaviors/cb_resume_slam.hpp>
 #include <nav2z_client/client_behaviors/cb_retry_behavior.hpp>
-#include <nav2z_client/client_behaviors/cb_rotate.hpp>
 #include <nav2z_client/client_behaviors/cb_undo_path_backwards.hpp>
+
+// nav2 synchronization behaviors
 #include <nav2z_client/client_behaviors/cb_wait_nav2_nodes.hpp>
 #include <nav2z_client/client_behaviors/cb_wait_pose.hpp>
 #include <nav2z_client/client_behaviors/cb_wait_transform.hpp>
+
+// waypoints behaviors
+#include <nav2z_client/client_behaviors/cb_navigate_named_waypoint.hpp>
+#include <nav2z_client/client_behaviors/cb_navigate_next_waypoint.hpp>
+#include <nav2z_client/client_behaviors/cb_navigate_next_waypoint_until_reached.hpp>
+#include <nav2z_client/client_behaviors/cb_seek_waypoint.hpp>
+
+// slam behaviors
+#include <nav2z_client/client_behaviors/cb_pause_slam.hpp>
+#include <nav2z_client/client_behaviors/cb_resume_slam.hpp>

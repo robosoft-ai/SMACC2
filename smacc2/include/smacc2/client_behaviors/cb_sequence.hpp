@@ -28,10 +28,10 @@ namespace smacc2
 {
 namespace client_behaviors
 {
-class CbSequenceNode : public smacc2::SmaccAsyncClientBehavior
+class CbSequence : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbSequenceNode();
+  CbSequence();
 
   // template <typename TOrthogonal, typename TBehavior>
   // static void configure_orthogonal_runtime(
@@ -46,15 +46,44 @@ public:
 
   void onEntry() override;
 
-  template <typename TBehavior, typename... Args>
-  CbSequenceNode * then(Args &&... args)
+  // template <typename TOrthogonal, typename TSourceObject>
+  // void onOrthogonalAllocation()
+  // {
+  //   smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+  // }
+
+  void onExit() override { sequenceNodes_.clear(); }
+
+  template <typename TOrthogonal, typename TBehavior, typename... Args>
+  CbSequence * then(Args &&... args)
   {
-    sequenceNodes_.push_back(new TBehavior(args...));
+    std::function<std::shared_ptr<smacc2::SmaccAsyncClientBehavior>()> delayedCBFactoryFn =
+      [this, args...]() {
+        RCLCPP_INFO(getLogger(), "CbSequence::then creating new sub behavior");
+        auto createdBh = std::shared_ptr<TBehavior>(new TBehavior(args...));
+
+        this->getCurrentState()->getOrthogonal<TOrthogonal>()->addClientBehavior(createdBh);
+        createdBh->template onOrthogonalAllocation<TOrthogonal, TBehavior>();
+
+        return createdBh;
+      };
+
+    sequenceNodes_.push_back(delayedCBFactoryFn);
+
     return this;
   }
 
 private:
-  std::vector<smacc2::SmaccAsyncClientBehavior *> sequenceNodes_;
+  void onSubNodeSuccess();
+  void onSubNodeAbort();
+  void recursiveConsumeNext();
+
+  std::list<std::function<std::shared_ptr<smacc2::SmaccAsyncClientBehavior>()>> sequenceNodes_;
+  boost::signals2::connection conn_;
+  boost::signals2::connection conn2_;
+
+  std::shared_ptr<smacc2::SmaccAsyncClientBehavior> bh_;
+  std::atomic<int> consume_{0};
 };
 }  // namespace client_behaviors
 }  // namespace smacc2
