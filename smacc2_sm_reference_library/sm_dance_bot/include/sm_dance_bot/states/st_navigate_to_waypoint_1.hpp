@@ -40,7 +40,7 @@ struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDance
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(0, 0, 0);
+    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(2.0, 0, 0);
     configure_orthogonal<OrLED, CbLEDOn>();
     configure_orthogonal<OrStringPublisher, CbStringPublisher>("All Done!");
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
