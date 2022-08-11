@@ -738,17 +738,29 @@ Visualization Manager:
         Value: /backward_local_planner/path
       Value: true
     - Class: rviz_default_plugins/MarkerArray
+<<<<<<< HEAD
       Enabled: false
       Name: MarkerArray
       Namespaces:
         {}
+=======
+      Enabled: true
+      Name: MarkerArray
+      Namespaces:
+        waypoints: true
+        waypoints_labels: true
+>>>>>>> galactic
       Topic:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /cp_waypoints_visualizer/visualization_markers
+<<<<<<< HEAD
       Value: false
+=======
+      Value: true
+>>>>>>> galactic
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -787,16 +799,26 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
+<<<<<<< HEAD
       Distance: 7.299130439758301
+=======
+      Distance: 21.965763092041016
+>>>>>>> galactic
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
+<<<<<<< HEAD
         X: 0.0062076635658741
         Y: 0.12170763313770294
         Z: -2.3110249042510986
+=======
+        X: 3.393266201019287
+        Y: -5.605958938598633
+        Z: -2.6819653511047363
+>>>>>>> galactic
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
