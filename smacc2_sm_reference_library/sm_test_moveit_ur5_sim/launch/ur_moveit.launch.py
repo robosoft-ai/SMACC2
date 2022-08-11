@@ -54,7 +54,7 @@ def launch_setup(context, *args, **kwargs):
     prefix = LaunchConfiguration("prefix")
     use_sim_time = LaunchConfiguration("use_sim_time")
     launch_rviz = LaunchConfiguration("launch_rviz")
-    launch_servo = LaunchConfiguration("launch_servo")
+    # launch_servo = LaunchConfiguration("launch_servo")
 
     joint_limit_params = PathJoinSubstitution(
         [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
@@ -229,24 +229,29 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Servo node for realtime control
-    servo_yaml = load_yaml("ur_moveit_config", "config/ur_servo.yaml")
-    servo_params = {"moveit_servo": servo_yaml}
-    servo_node = Node(
-        package="moveit_servo",
-        condition=IfCondition(launch_servo),
-        executable="servo_node_main",
-        parameters=[
-            servo_params,
-            robot_description,
-            robot_description_semantic,
-        ],
-        output={
-            "stdout": "screen",
-            "stderr": "screen",
-        },
-    )
+    # servo_yaml = load_yaml("ur_moveit_config", "config/ur_servo.yaml")
+    # servo_params = {"moveit_servo": servo_yaml}
+    # servo_node = Node(
+    #     package="moveit_servo",
+    #     condition=IfCondition(launch_servo),
+    #     executable="servo_node_main",
+    #     parameters=[
+    #         servo_params,
+    #         robot_description,
+    #         robot_description_semantic,
+    #     ],
+    #     output={
+    #         "stdout": "screen",
+    #         "stderr": "screen",
+    #     },
+    # )
 
-    nodes_to_start = [move_group_node, mongodb_server_node, rviz_node, servo_node]
+    nodes_to_start = [
+        move_group_node,
+        mongodb_server_node,
+        rviz_node,
+        # servo_node
+    ]
 
     return nodes_to_start
 

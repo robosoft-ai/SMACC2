@@ -33,10 +33,64 @@ void ISmaccComponent::postEvent(const EventType & ev)
   stateMachine_->postEvent(ev);
 }
 
+template <typename EventType>
+void ISmaccComponent::postEvent()
+{
+  auto ev = new EventType();
+  stateMachine_->postEvent(ev);
+}
+
 template <typename TComponent>
-void ISmaccComponent::requiresComponent(TComponent *& requiredComponentStorage)
+void ISmaccComponent::requiresComponent(
+  TComponent *& requiredComponentStorage, bool throwExceptionIfNotExist)
 {
   requiredComponentStorage = this->owner_->getComponent<TComponent>();
+
+  if (requiredComponentStorage == nullptr && throwExceptionIfNotExist)
+  {
+    RCLCPP_DEBUG_STREAM(
+      this->getLogger(), std::string("Required component ") +
+                           demangleSymbol(typeid(TComponent).name()) +
+                           " not found. Available components:");
+
+    std::vector<std::shared_ptr<ISmaccComponent>> components;
+    this->owner_->getComponents(components);
+
+    for (auto c : components)
+    {
+      RCLCPP_DEBUG(this->getLogger(), "- Component %s", c->getName().c_str());
+    }
+
+    throw std::runtime_error(
+      std::string("Component ") + demangleSymbol(typeid(TComponent).name()) + " not found");
+  }
+}
+
+template <typename TComponent>
+void ISmaccComponent::requiresComponent(
+  std::string name, TComponent *& requiredComponentStorage, bool throwExceptionIfNotExist)
+{
+  requiredComponentStorage = this->owner_->getComponent<TComponent>(name);
+
+  if (requiredComponentStorage == nullptr && throwExceptionIfNotExist)
+  {
+    RCLCPP_DEBUG_STREAM(
+      this->getLogger(), std::string("Required component with name: '") + name + "'" +
+                           demangleSymbol(typeid(TComponent).name()) +
+                           " not found. Available components:");
+
+    std::vector<std::shared_ptr<ISmaccComponent>> components;
+    this->owner_->getComponents(components);
+
+    for (auto c : components)
+    {
+      RCLCPP_DEBUG(this->getLogger(), " - Component %s", c->getName().c_str());
+    }
+
+    throw std::runtime_error(
+      std::string("Component ") + demangleSymbol(typeid(TComponent).name()) +
+      std::string(" not found"));
+  }
 }
 
 template <typename TClient>

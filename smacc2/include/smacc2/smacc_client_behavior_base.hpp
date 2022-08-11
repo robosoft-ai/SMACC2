@@ -41,7 +41,11 @@ public:
   void requiresClient(SmaccClientType *& storage);
 
   template <typename SmaccComponentType>
+<<<<<<< HEAD
   void requiresComponent(SmaccComponentType *& storage);
+=======
+  void requiresComponent(SmaccComponentType *& storage, bool throwExceptionIfNotExist = false);
+>>>>>>> galactic
 
   virtual void onEntry() {}
 
@@ -66,9 +70,9 @@ protected:
 
   virtual void dispose();
 
-  virtual rclcpp::Node::SharedPtr getNode();
+  virtual rclcpp::Node::SharedPtr getNode() const;
 
-  virtual rclcpp::Logger getLogger();
+  virtual rclcpp::Logger getLogger() const;
 
 private:
   template <typename TOrthogonal, typename TSourceObject>

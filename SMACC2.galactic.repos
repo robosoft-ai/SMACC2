@@ -31,6 +31,21 @@ repositories:
     url: https://github.com/StoglRobotics-forks/ros2_controllers.git
     version: galactic-backports-smacc2
 
+  # simulation
+  Universal_Robots_ROS2_Gazebo_Simulation:
+    type: git
+    url: https://github.com/UniversalRobots/Universal_Robots_ROS2_Gazebo_Simulation.git
+    version: ros2
+  gazebo_ros2_control:
+    type: git
+    url: https://github.com/ros-controls/gazebo_ros2_control
+    version: master
+
+  # planning
+  moveit2:
+    type: git
+    url: https://github.com/ros-planning/moveit2.git
+    version: galactic
 
   ####### Tracing tools (uncomment if needed)
 #  ros2_tracing:
