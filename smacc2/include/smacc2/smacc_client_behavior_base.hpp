@@ -41,11 +41,7 @@ public:
   void requiresClient(SmaccClientType *& storage);
 
   template <typename SmaccComponentType>
-<<<<<<< HEAD
-  void requiresComponent(SmaccComponentType *& storage);
-=======
   void requiresComponent(SmaccComponentType *& storage, bool throwExceptionIfNotExist = false);
->>>>>>> galactic
 
   virtual void onEntry() {}
 
