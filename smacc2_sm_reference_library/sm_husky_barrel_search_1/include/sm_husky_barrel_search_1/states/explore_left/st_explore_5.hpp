@@ -33,6 +33,7 @@ namespace sm_husky_barrel_search_1
     using namespace cl_nav2z;
     using namespace smacc2;
     using namespace std::chrono_literals;
+    using namespace cl_opencv_perception;
 
     // STATE DECLARATION
     struct StExplore5: smacc2::SmaccState<StExplore5, SmHuskyBarrelSearch1>
@@ -41,8 +42,9 @@ namespace sm_husky_barrel_search_1
 
         // TRANSITION TABLE
         typedef mpl::list<
-              Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StAirStrikeCommunications, SUCCESS>,
-              Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExplore5, ABORT>
+              Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StExplore6, SUCCESS>,
+              Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExplore5, ABORT>,
+              Transition<EvEnemyDetected<ClOpenCVPerception, OrPerception>, StAirStrikeCommunications, ABORT>
               //Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
             >
             reactions;

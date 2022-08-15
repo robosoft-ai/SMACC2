@@ -31,22 +31,49 @@ struct EvDetectedBarrelColor : sc::event<EvDetectedBarrelColor>
 {
 };
 
+
+template <typename AsyncCB, typename Orthogonal>
+struct EvEnemyDetected : sc::event<EvEnemyDetected<AsyncCB, Orthogonal>>
+{
+};
 class ClOpenCVPerception : public smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>
 {
 public:
   ClOpenCVPerception(std::string topicname = "/detected_color")
-  : smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>(topicname)
+    : smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>(topicname)
   {
   }
 
-  virtual ~ClOpenCVPerception() {}
+  virtual ~ClOpenCVPerception()
+  {
+  }
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>::onOrthogonalAllocation<
-      TOrthogonal, TSourceObject>();
+    smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>::onOrthogonalAllocation<TOrthogonal,
+                                                                                              TSourceObject>();
+
+    this->postEvEnemyDetected = [this]() {
+      this->postEvent<EvEnemyDetected<TSourceObject, TOrthogonal>>();
+    };
   }
+
+  void MessageCallback(const std_msgs::msg::Int32& detectedMsg)
+  {
+    if (detectedMsg.data == 1)
+    {
+      this->postEvEnemyDetected();
+    }
+  }
+
+  void onInitialize() override
+  {
+    this->onMessageReceived(&ClOpenCVPerception::MessageCallback, this);
+  }
+
+  private:
+  std::function<void()> postEvEnemyDetected;
 };
 }  // namespace cl_opencv_perception
 }  // namespace sm_husky_barrel_search_1
