@@ -45,6 +45,7 @@ namespace sm_husky_barrel_search_1
               Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StExplore6, SUCCESS>,
               Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExplore5, ABORT>,
               Transition<EvEnemyDetected<ClOpenCVPerception, OrPerception>, StAirStrikeCommunications, ABORT>
+
               //Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
             >
             reactions;
