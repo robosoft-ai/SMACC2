@@ -134,6 +134,7 @@ struct StNavigateToWaypointsX2 : smacc2::SmaccState<StNavigateToWaypointsX2, MsD
     Transition<EvWaypoint23<ClNav2Z, OrNavigation>, StRotateDegrees3, TRANSITION_18>,
     Transition<EvWaypoint24<ClNav2Z, OrNavigation>, StRotateDegrees4, TRANSITION_19>,
     Transition<EvWaypoint25<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_20> ,
+
     Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX2>
     >
     reactions;

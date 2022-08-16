@@ -47,6 +47,7 @@ struct StExplore5;
 struct StExplore6;
 struct StExplore7;
 struct StExplore8;
+
 struct StAirStrikeCommunications;
 struct StUndoRetreat;
 struct StEvasionMotion;
