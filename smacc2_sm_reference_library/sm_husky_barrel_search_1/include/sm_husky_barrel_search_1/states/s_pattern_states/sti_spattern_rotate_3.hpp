@@ -45,7 +45,8 @@ struct StiSPatternRotate3 : smacc2::SmaccState<StiSPatternRotate3, SS>
       getLogger(), "[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
       superstate.iteration_count, SS::total_iterations());
 
-    float offset = 0;
+        float offset = superstate.base_angle_degrees();
+
     // float angle = 0;
     // if (superstate.direction() == TDirection::LEFT)
     //     angle = -90 - offset;
@@ -57,7 +58,7 @@ struct StiSPatternRotate3 : smacc2::SmaccState<StiSPatternRotate3, SS>
     if (superstate.direction() == TDirection::RIGHT)
     {
       // - offset because we are looking to the north and we have to turn clockwise
-      this->configure<OrNavigation, CbAbsoluteRotate>(0 - offset);
+      this->configure<OrNavigation, CbAbsoluteRotate>(0 + offset);
     }
     else
     {

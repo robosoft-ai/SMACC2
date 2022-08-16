@@ -30,25 +30,29 @@ struct StiSPatternRotate4 : smacc2::SmaccState<StiSPatternRotate4, SS>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward4>,
-    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternRotate4>
+      Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward4>,
+      Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternRotate4>
 
-    >reactions;
+      >
+      reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure() {}
+  static void staticConfigure()
+  {
+  }
 
   void runtimeConfigure()
   {
-    auto & superstate = this->context<SS>();
-    RCLCPP_INFO(
-      getLogger(), "[SsrSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
-      superstate.iteration_count, SS::total_iterations());
+    auto& superstate = this->context<SS>();
 
-    float offset = 0;
+    RCLCPP_INFO(getLogger(), "[SsrSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
+                superstate.iteration_count, SS::total_iterations());
+
+    float offset = superstate.base_angle_degrees();
+
     float angle = 0;
     if (superstate.direction() == TDirection::LEFT)
-      angle = -90 - offset;
+      angle = -90 + offset;
     else
       angle = 90 + offset;
 

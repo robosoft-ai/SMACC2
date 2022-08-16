@@ -637,9 +637,9 @@ Visualization Manager:
           Value: true
         Value: false
       Enabled: true
-      Keep: 10000
+      Keep: 1000
       Name: Odometry
-      Position Tolerance: 0.10000000149011612
+      Position Tolerance: 0.800000011920929
       Shape:
         Alpha: 1
         Axes Length: 1
@@ -647,8 +647,8 @@ Visualization Manager:
         Color: 255; 25; 0
         Head Length: 0
         Head Radius: 0
-        Shaft Length: 0.04800000041723251
-        Shaft Radius: 0.019999999552965164
+        Shaft Length: 0.20000000298023224
+        Shaft Radius: 0.03999999910593033
         Value: Arrow
       Topic:
         Depth: 5
@@ -686,7 +686,7 @@ Visualization Manager:
       Enabled: true
       Name: BackwardsGlobalPlanMarkers
       Namespaces:
-        {}
+        my_namespace2: true
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -698,7 +698,7 @@ Visualization Manager:
       Enabled: true
       Name: BackwardLocalPlannerGoalMarker
       Namespaces:
-        {}
+        my_namespace2: true
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -871,7 +871,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 13.163750648498535
+      Distance: 18.494123458862305
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1

@@ -19,6 +19,7 @@
  ******************************************************************************************************************/
 
 #include <smacc2/smacc.hpp>
+#include <sm_husky_barrel_search_1/clients/opencv_perception_client/cl_opencv_perception_client.hpp>
 
 namespace sm_husky_barrel_search_1
 {
@@ -48,7 +49,7 @@ enum class TDirection
 };
 
 using namespace sm_husky_barrel_search_1::s_pattern_states;
-
+using namespace cl_opencv_perception;
 // STATE DECLARATION
 struct SsSearchMineSPattern1 : smacc2::SmaccState<SsSearchMineSPattern1, SmHuskyBarrelSearch1, StiSPatternLoopStart>
 {
@@ -57,9 +58,8 @@ public:
 
   // TRANSITION TABLE
   typedef mpl::list<
-
+    // Transition<EvEnemyClusterDetected<ClOpenCVPerception, OrPerception>, StFire, SUCCESS>,
     Transition<EvLoopEnd<StiSPatternLoopStart>, StNavigateToFireEnemyPosition, ENDLOOP>
-
     >reactions;
 
   // STATE FUNCTIONS
@@ -69,9 +69,10 @@ public:
   }
 
   static constexpr float pitch1_lenght_meters() { return 0.75; }
-  static constexpr float pitch2_lenght_meters() { return 0.75; }
+  static constexpr float pitch2_lenght_meters() { return 15.0;/*0.75;*/ }
   static constexpr int total_iterations() { return 9; }
   static constexpr TDirection direction() { return TDirection::RIGHT; }
+  static constexpr float base_angle_degrees() { return 45.0; }
 
   int iteration_count;
 

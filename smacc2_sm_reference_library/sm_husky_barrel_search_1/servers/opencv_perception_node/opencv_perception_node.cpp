@@ -30,6 +30,8 @@
 
 #include <sensor_msgs/msg/image.hpp>
 #include <std_msgs/msg/int32.hpp>
+#include <sm_husky_barrel_search_1/msg/detected_objects.hpp>
+
 #include <iostream>
 
 #include <opencv2/opencv.hpp>
@@ -42,7 +44,7 @@
 //   image_tools::sensor_msgs::msg::Image,
 //   sensor_msgs::msg::Image);
 
-rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr detectionPub;
+rclcpp::Publisher<sm_husky_barrel_search_1::msg::DetectedObjects>::SharedPtr detectionPub;
 rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr debugImagePub;
 rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr imageSub;
 
@@ -66,9 +68,9 @@ void segmentColor(const cv::Mat& inputRGB, int hueMean, int hueWindow, cv::Mat& 
 #define DEFAULT_MIN_VALUE 20
 #define DEFAULT_MIN_BLOB_AREA 20
 
-int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hueMean, int hueWindow,
-              std::string message = "", int minSaturation = DEFAULT_MIN_SATURATION, int minValue = DEFAULT_MIN_VALUE,
-              int minBlobArea = DEFAULT_MIN_BLOB_AREA, bool imgShow = false)
+int testImage(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& detectedObjects, std::string colorName,
+              int hueMean, int hueWindow, std::string message = "", int minSaturation = DEFAULT_MIN_SATURATION,
+              int minValue = DEFAULT_MIN_VALUE, int minBlobArea = DEFAULT_MIN_BLOB_AREA, bool imgShow = false)
 {
   cv::Mat segmented;
 
@@ -90,7 +92,7 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hu
     auto area = cv::contourArea(currentCountour);
     auto currentHierarchy = hierarchy[idx];
 
-    if (area > minBlobArea && currentHierarchy[3]< 0)
+    if (area > minBlobArea && currentHierarchy[3] < 0)
     {
       foundCount++;
       auto r = cv::boundingRect(currentCountour);
@@ -99,6 +101,8 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hu
       cv::drawContours(debugImage, contours, idx, cv::Scalar(255, 0, 0), 1, cv::LINE_8, hierarchy, 0);
       cv::rectangle(debugImage, r, cv::Scalar(255, 0, 0), 1);
       cv::putText(debugImage, message, cv::Point(r.x, r.y), cv::FONT_HERSHEY_SIMPLEX, 0.3, cv::Vec3b(255, 255, 255));
+
+      detectedObjects.push_back(message);
     }
   }
 
@@ -148,45 +152,46 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hu
   // return blobs.size();
 }
 
-int testRed(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
+int testRed(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& detectedObjects, bool imShow = false)
 {
-  return testImage(input, debugImage, "red", 130, 20, "enemy", DEFAULT_MIN_SATURATION, DEFAULT_MIN_VALUE,
-                   DEFAULT_MIN_BLOB_AREA, imShow);
+  return testImage(input, debugImage, detectedObjects, "red", 130, 20, "enemy", DEFAULT_MIN_SATURATION,
+                   DEFAULT_MIN_VALUE, DEFAULT_MIN_BLOB_AREA, imShow);
 
   // RGB
   // return testImage(input, debugImage, "red", 10, 10, "enemy", DEFAULT_MIN_SATURATION, DEFAULT_MIN_VALUE,
   // DEFAULT_MIN_BLOB_AREA, imShow);
 }
 
-int testBlue(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
+int testBlue(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& detectedObjects, bool imShow = false)
 {
-  return testImage(input, debugImage, "blue", 10, 10, "blue-barrel", DEFAULT_MIN_SATURATION, DEFAULT_MIN_VALUE,
-                   DEFAULT_MIN_BLOB_AREA, imShow);
+  return testImage(input, debugImage, detectedObjects, "blue", 10, 10, "blue-barrel", DEFAULT_MIN_SATURATION,
+                   DEFAULT_MIN_VALUE, DEFAULT_MIN_BLOB_AREA, imShow);
 }
 
-int testGreen(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
+int testGreen(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& detectedObjects, bool imShow = false)
 {
-  return testImage(input, debugImage, "green", 50, 10, "ally", DEFAULT_MIN_SATURATION, DEFAULT_MIN_VALUE,
-                   DEFAULT_MIN_BLOB_AREA, imShow);
+  return testImage(input, debugImage, detectedObjects, "green", 50, 10, "ally", DEFAULT_MIN_SATURATION,
+                   DEFAULT_MIN_VALUE, DEFAULT_MIN_BLOB_AREA, imShow);
 }
 
-int testYellow(cv::Mat& input, cv::Mat& debugImage, bool imShow = false)
+int testYellow(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& detectedObjects, bool imShow = false)
 {
   // hue: 31 , minvalue: 200, minsat: 40, in rgb
   // return testImage(input, debugImage, "yellow", 31, 10, "mine", 40, 200, 100, imShow);
 
   // return testImage(input, debugImage, "yellow", 195, 40, "mine", 40, 20, 100, imShow);
-  return testImage(input, debugImage, "yellow", 90, 10, "mine", 40, 200, 100, imShow);
+  return testImage(input, debugImage, detectedObjects, "yellow", 90, 10, "mine", 40, 200, 100, imShow);
 }
 
 void testYellowFile(std::string path)
 {
   cv::Mat input;
   cv::cvtColor(cv::imread(path), input, cv::COLOR_RGB2BGR);
+  std::vector<std::string> detectedObjects;
 
   cv::Mat debugImage = input.clone();
 
-  testYellow(input, debugImage, true);
+  testYellow(input, debugImage, detectedObjects, true);
 
   cv::imshow("yellow filter - " + path, debugImage);
   cv::waitKey();
@@ -195,9 +200,10 @@ void testYellowFile(std::string path)
 void testRedFile(std::string path)
 {
   cv::Mat input = cv::imread(path);
+  std::vector<std::string> detectedObjects;
   cv::Mat debugImage = input.clone();
   bool imShow = true;
-  testRed(input, debugImage, imShow);
+  testRed(input, debugImage, detectedObjects, imShow);
 
   cv::imshow("red filter - " + path, debugImage);
 
@@ -207,6 +213,7 @@ void testRedFile(std::string path)
 void testRedFileBench(std::string path)
 {
   cv::Mat input = cv::imread(path);
+  std::vector<std::string> detectedObjects;
   // cv::cvtColor(input, input, cv::COLOR_RGB2BGR);
 
   cv::Mat debugImage = input.clone();
@@ -218,7 +225,7 @@ void testRedFileBench(std::string path)
   {
     auto huevalue = i;
     std::cout << "huevalue: " << huevalue << std::endl;
-    testImage(input, debugImage, "red", huevalue, 20, "red", DEFAULT_MIN_SATURATION, DEFAULT_MIN_VALUE,
+    testImage(input, debugImage, detectedObjects, "red", huevalue, 20, "red", DEFAULT_MIN_SATURATION, DEFAULT_MIN_VALUE,
               DEFAULT_MIN_BLOB_AREA, imShow);
     cv::imshow("red filter - " + path, debugImage);
     cv::waitKey();
@@ -228,13 +235,15 @@ void testRedFileBench(std::string path)
 void testBlueFile(std::string path, cv::Mat& debugImage)
 {
   cv::Mat input = cv::imread(path);
-  testImage(input, debugImage, "blue", 10, 10, "");
+  std::vector<std::string> detectedObjects;
+  testImage(input, debugImage, detectedObjects, "blue", 10, 10, "");
 }
 
 void testGreenFile(std::string path, cv::Mat& debugImage)
 {
   cv::Mat input = cv::imread(path);
-  testImage(input, debugImage, "green", 50, 10, "");
+  std::vector<std::string> detectedObjects;
+  testImage(input, debugImage, detectedObjects, "green", 50, 10, "");
 }
 
 int encoding2mat_type(const std::string& encoding)
@@ -299,29 +308,32 @@ void callback(const sensor_msgs::msg::Image& imgMsg)
 
   bool testGreenAlly = false;
 
+  std::vector<std::string> detectedObjects;
+
   int detectedColor = 0;
-  if (testRed(image, outmat) > 0)
+  if (testRed(image, outmat, detectedObjects) > 0)
   {
     detectedColor = 1;
   }
 
-  if (testGreenAlly && testGreen(image, outmat) > 0)
+  if (testGreenAlly && testGreen(image, outmat, detectedObjects) > 0)
   {
     detectedColor = 2;
   }
 
-  if (testBlue(image, outmat) > 0)
+  if (testBlue(image, outmat, detectedObjects) > 0)
   {
     detectedColor = 3;
   }
 
-  if (testYellow(image, outmat) > 0)
+  if (testYellow(image, outmat, detectedObjects) > 0)
   {
     detectedColor = 4;
   }
 
-  std_msgs::msg::Int32 detectedColorMsg;
-  detectedColorMsg.data = detectedColor;
+  sm_husky_barrel_search_1::msg::DetectedObjects detectedColorMsg;
+  detectedColorMsg.detected_objects = detectedObjects;
+
   detectionPub->publish(detectedColorMsg);
 
   cv::cvtColor(outmat, outmat, cv::COLOR_RGB2BGR);
@@ -336,7 +348,7 @@ void main_ros_loop(int argc, char** argv)
   rclcpp::Node::SharedPtr nh = rclcpp::Node::make_shared("opencv_perception_node");
 
   RCLCPP_INFO(nh->get_logger(), "opencv perception node started");
-  detectionPub = nh->create_publisher<std_msgs::msg::Int32>("detected_color", 1);
+  detectionPub = nh->create_publisher<sm_husky_barrel_search_1::msg::DetectedObjects>("detected_objects", 1);
   imageSub = nh->create_subscription<sensor_msgs::msg::Image>("/image_raw", rclcpp::QoS(1).best_effort(), callback);
   debugImagePub = nh->create_publisher<sensor_msgs::msg::Image>("/opencv_debug_image", rclcpp::QoS(1).best_effort());
 

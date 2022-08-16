@@ -34,13 +34,34 @@ using sm_husky_barrel_search_1::cl_led_array::CbSequenceColorBlinking;
 // STATE DECLARATION
 struct StExitBase : smacc2::SmaccState<StExitBase, SmHuskyBarrelSearch1>
 {
+
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
-  typedef mpl::list<Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StForwardAwayBase>,
+  // typedef mpl::list<
+  //     Transition<EvCbSuccess<CbNavigateNamedWaypoint, OrNavigation>, SS5::SsSearchMineSPattern1>,
+  //     //Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, StNavigateToFireEnemyPosition>,
+  //     Transition<EvCbFailure<CbNavigateNamedWaypoint, OrNavigation>, StSelectSaferMinePath>>
+  //     reactions;
+
+  // // STATE FUNCTIONS
+  // static void staticConfigure()
+  // {
+  //   configure_orthogonal<OrNavigation, CbNavigateNamedWaypoint>(
+  //       "post-mine-field",
+  //       NavigateNextWaypointOptions{
+  //                         .controllerName_="SuperFastPathFollow",
+  //                         .goalCheckerName_ = "super_fast_follow_path_goal_checker"
+  //                     });
+
+  //}
+
+
+  // TRANSITION TABLE
+  typedef mpl::list<
+                    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StForwardAwayBase>,
                     Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExitBase>
-                    >
-      reactions;
+                    > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

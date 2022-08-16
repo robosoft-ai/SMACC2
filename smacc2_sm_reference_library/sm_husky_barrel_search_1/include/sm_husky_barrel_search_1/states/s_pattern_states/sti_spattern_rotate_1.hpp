@@ -42,11 +42,11 @@ struct StiSPatternRotate1 : smacc2::SmaccState<StiSPatternRotate1, SS>
   {
     auto & superstate = this->context<SS>();
 
-    float offset = 0;
+    float offset = superstate.base_angle_degrees();
     if (superstate.direction() == TDirection::RIGHT)
     {
       // - offset because we are looking to the north and we have to turn clockwise
-      this->configure<OrNavigation, CbAbsoluteRotate>(0 - offset);
+      this->configure<OrNavigation, CbAbsoluteRotate>(0 + offset);
     }
     else
     {

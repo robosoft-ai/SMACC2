@@ -1,0 +1,1 @@
+string[] detected_objects
