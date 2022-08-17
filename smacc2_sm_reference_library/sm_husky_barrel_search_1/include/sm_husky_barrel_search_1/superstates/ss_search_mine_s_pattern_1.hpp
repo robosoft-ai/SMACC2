@@ -32,12 +32,16 @@ namespace s_pattern_states
 // FORWARD DECLARATIONS OF INNER STATES
 class StiSPatternRotate1;
 class StiSPatternForward1;
+class StiSPatternForward1Retry;
 class StiSPatternRotate2;
 class StiSPatternForward2;
+class StiSPatternForward2Retry;
 class StiSPatternRotate3;
 class StiSPatternForward3;
+class StiSPatternForward3Retry;
 class StiSPatternRotate4;
 class StiSPatternForward4;
+class StiSPatternForward4Retry;
 class StiSPatternLoopStart;
 }  // namespace s_pattern_states
 }  // namespace sm_husky_barrel_search_1
@@ -85,6 +89,11 @@ using SS = SsSearchMineSPattern1;
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_2.hpp>
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_3.hpp>
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_4.hpp>
+#include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_1_retry.hpp>
+#include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_2_retry.hpp>
+#include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_3_retry.hpp>
+#include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_4_retry.hpp>
+
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_loop_start.hpp>
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_rotate_1.hpp>
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_rotate_2.hpp>

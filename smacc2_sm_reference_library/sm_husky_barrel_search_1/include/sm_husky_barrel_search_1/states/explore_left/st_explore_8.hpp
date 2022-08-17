@@ -26,39 +26,39 @@
 #include <sm_husky_barrel_search_1/clients/cb_sleep_for.hpp>
 #include <sm_husky_barrel_search_1/clients/led_array/client_behaviors.hpp>
 
-
 namespace sm_husky_barrel_search_1
 {
-    using namespace smacc2::default_events;
-    using namespace cl_nav2z;
-    using namespace smacc2;
-    using namespace std::chrono_literals;
-    using namespace cl_opencv_perception;
+using namespace smacc2::default_events;
+using namespace cl_nav2z;
+using namespace smacc2;
+using namespace std::chrono_literals;
+using namespace cl_opencv_perception;
 
-    // STATE DECLARATION
-    struct StExplore8: smacc2::SmaccState<StExplore5, SmHuskyBarrelSearch1>
-    {
-        using SmaccState::SmaccState;
+// STATE DECLARATION
+struct StExplore8 : smacc2::SmaccState<StExplore5, SmHuskyBarrelSearch1>
+{
+  using SmaccState::SmaccState;
 
-        // TRANSITION TABLE
-        typedef mpl::list<
-              Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StAirStrikeCommunications, SUCCESS>,
-              Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExplore8, ABORT>,
-              Transition<EvEnemyDetected<ClOpenCVPerception, OrPerception>, StAirStrikeCommunications, ABORT>
-              //Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
-            >
-            reactions;
+  // TRANSITION TABLE
+  typedef mpl::list<
+      Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StAirStrikeCommunications, SUCCESS>,
+      Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExplore8, ABORT>
+      //,
+      //   Transition<EvEnemyDetected<ClOpenCVPerception, OrPerception>, StAirStrikeCommunications, ABORT>
+      // Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
+      >
+      reactions;
 
-        // STATE FUNCTIONS
-        static void staticConfigure()
-        {
-            // configure_orthogonal<OrNavigation, CbSleepFor>(10s);
-            configure_orthogonal<OrNavigation, CbSeekWaypoint>("8-reguard");
-            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
-        }
+  // STATE FUNCTIONS
+  static void staticConfigure()
+  {
+    // configure_orthogonal<OrNavigation, CbSleepFor>(10s);
+    configure_orthogonal<OrNavigation, CbSeekWaypoint>("8-reguard");
+    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
+  }
 
-        void runtimeConfigure()
-        {
-        }
-    };
-} // namespace sm_husky_barrel_search_1
+  void runtimeConfigure()
+  {
+  }
+};
+}  // namespace sm_husky_barrel_search_1

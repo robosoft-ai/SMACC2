@@ -44,10 +44,12 @@ namespace sm_husky_barrel_search_1
 
         // TRANSITION TABLE
         typedef mpl::list<
-              Transition<EvGoalWaypointReached<CbNavigateNextWaypointUntilReached, OrNavigation>, StFire, SUCCESS>,
-              Transition<EvEnemyClusterDetected<ClOpenCVPerception, OrPerception>, StFire, SUCCESS>,
-              Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, StNavigateToFireEnemyPosition, SUCCESS>,
-              Transition<EvCbFailure<CbNavigateNextWaypointUntilReached, OrNavigation>, StNavigateToFireEnemyPosition, ABORT>
+            //   Transition<EvGoalWaypointReached<CbNavigateNextWaypointUntilReached, OrNavigation>, StFire, SUCCESS>,
+            //   Transition<EvEnemyClusterDetected<ClOpenCVPerception, OrPerception>, StFire, SUCCESS>,
+              Transition<EvEnemyClusterFireDistance<ClOpenCVPerception, OrPerception>, StFire, SUCCESS>,
+
+              Transition<EvCbSuccess<CbNavigateNamedWaypoint, OrNavigation>, StNavigateToFireEnemyPosition, SUCCESS>,
+              Transition<EvCbFailure<CbNavigateNamedWaypoint, OrNavigation>, StNavigateToFireEnemyPosition, ABORT>
               //Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
             >
             reactions;
@@ -56,12 +58,20 @@ namespace sm_husky_barrel_search_1
         static void staticConfigure()
         {
             // configure_orthogonal<OrNavigation, CbSleepFor>(10s);
-            configure_orthogonal<OrNavigation, CbNavigateNextWaypointUntilReached>("hidden-trees",
-                                                                                NavigateNextWaypointOptions
-                                                                                {
-                                                                                    .controllerName_="SuperFastPathFollow",
-                                                                                    .goalCheckerName_ = "super_fast_follow_path_goal_checker"
-                                                                                });
+            // configure_orthogonal<OrNavigation, CbNavigateNextWaypointUntilReached>("hidden-trees",
+            //                                                                     NavigateNextWaypointOptions
+            //                                                                     {
+            //                                                                         .controllerName_="SuperFastPathFollow",
+            //                                                                         .goalCheckerName_ = "super_fast_follow_path_goal_checker"
+            //                                                                     });
+
+
+            configure_orthogonal<OrNavigation, CbNavigateNamedWaypoint>("hidden-trees",
+                                                                            NavigateNextWaypointOptions
+                                                                            {
+                                                                                .controllerName_="SuperFastPathFollow",
+                                                                                .goalCheckerName_ = "super_fast_follow_path_goal_checker"
+                                                                            });
         }
 
         void runtimeConfigure()

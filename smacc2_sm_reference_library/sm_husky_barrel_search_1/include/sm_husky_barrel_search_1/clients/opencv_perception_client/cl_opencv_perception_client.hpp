@@ -42,6 +42,12 @@ struct EvEnemyClusterDetected : sc::event<EvEnemyClusterDetected<AsyncCB, Orthog
 {
 };
 
+template <typename AsyncCB, typename Orthogonal>
+struct EvEnemyClusterFireDistance : sc::event<EvEnemyClusterFireDistance<AsyncCB, Orthogonal>>
+{
+};
+
+
 class ClOpenCVPerception
   : public smacc2::client_bases::SmaccSubscriberClient<sm_husky_barrel_search_1::msg::DetectedObjects>
 {
@@ -66,19 +72,31 @@ public:
     this->postEvEnemyClusterDetected = [this]() {
       this->postEvent<EvEnemyClusterDetected<TSourceObject, TOrthogonal>>();
     };
+
+    this->postEvEnemyClusterFireDistance = [this]() {
+      this->postEvent<EvEnemyClusterFireDistance<TSourceObject, TOrthogonal>>();
+    };
   }
 
   void MessageCallback(const sm_husky_barrel_search_1::msg::DetectedObjects& detectedMsg)
   {
     int totalEnemies = 0;
+
+    int totalEnemiesFireDistance = 0;
+
     for (auto detectedObject : detectedMsg.detected_objects)
     {
-      size_t found = detectedObject.find("enemy");
+      size_t found = detectedObject.name.find("enemy");
 
       if (found != std::string::npos)
       {
         this->postEvEnemyDetected();
         totalEnemies++;
+
+        if(detectedObject.blob_area >= 50)
+        {
+          totalEnemiesFireDistance++;
+        }
       }
     }
 
@@ -86,6 +104,17 @@ public:
     {
       this->postEvEnemyClusterDetected();
     }
+
+    if (totalEnemiesFireDistance > 0)
+    {
+      RCLCPP_INFO_THROTTLE(this->getLogger(), *(getNode()->get_clock()) ,  1000, "Enemies in fire distance: %d", totalEnemiesFireDistance);
+    }
+
+    if(totalEnemiesFireDistance >= 3)
+    {
+      this->postEvEnemyClusterFireDistance();
+    }
+
   }
 
   void onInitialize() override
@@ -97,6 +126,8 @@ public:
 private:
   std::function<void()> postEvEnemyDetected;
   std::function<void()> postEvEnemyClusterDetected;
+  std::function<void()> postEvEnemyClusterFireDistance;
+
 };
 }  // namespace cl_opencv_perception
 }  // namespace sm_husky_barrel_search_1

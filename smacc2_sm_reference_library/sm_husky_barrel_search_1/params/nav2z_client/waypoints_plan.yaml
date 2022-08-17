@@ -227,7 +227,8 @@ waypoints:
   - name: hidden-trees
     position:
       x: 170.0
-      y: 85
+      #y: 85
+      y: 100
       z: 0.0
     orientation:
       x: 0.0

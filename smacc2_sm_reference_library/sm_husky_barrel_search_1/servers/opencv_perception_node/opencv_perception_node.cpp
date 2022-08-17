@@ -68,7 +68,7 @@ void segmentColor(const cv::Mat& inputRGB, int hueMean, int hueWindow, cv::Mat& 
 #define DEFAULT_MIN_VALUE 20
 #define DEFAULT_MIN_BLOB_AREA 20
 
-int testImage(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& detectedObjects, std::string colorName,
+int testImage(cv::Mat& input, cv::Mat& debugImage, std::vector<sm_husky_barrel_search_1::msg::DetectedObject>& detectedObjects, std::string colorName,
               int hueMean, int hueWindow, std::string message = "", int minSaturation = DEFAULT_MIN_SATURATION,
               int minValue = DEFAULT_MIN_VALUE, int minBlobArea = DEFAULT_MIN_BLOB_AREA, bool imgShow = false)
 {
@@ -102,7 +102,10 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& det
       cv::rectangle(debugImage, r, cv::Scalar(255, 0, 0), 1);
       cv::putText(debugImage, message, cv::Point(r.x, r.y), cv::FONT_HERSHEY_SIMPLEX, 0.3, cv::Vec3b(255, 255, 255));
 
-      detectedObjects.push_back(message);
+      sm_husky_barrel_search_1::msg::DetectedObject detectedObject;
+      detectedObject.name = message;
+      detectedObject.blob_area = area;
+      detectedObjects.push_back(detectedObject);
     }
   }
 
@@ -152,7 +155,7 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& det
   // return blobs.size();
 }
 
-int testRed(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& detectedObjects, bool imShow = false)
+int testRed(cv::Mat& input, cv::Mat& debugImage, std::vector<sm_husky_barrel_search_1::msg::DetectedObject>& detectedObjects, bool imShow = false)
 {
   return testImage(input, debugImage, detectedObjects, "red", 130, 20, "enemy", DEFAULT_MIN_SATURATION,
                    DEFAULT_MIN_VALUE, DEFAULT_MIN_BLOB_AREA, imShow);
@@ -162,19 +165,19 @@ int testRed(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& detec
   // DEFAULT_MIN_BLOB_AREA, imShow);
 }
 
-int testBlue(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& detectedObjects, bool imShow = false)
+int testBlue(cv::Mat& input, cv::Mat& debugImage, std::vector<sm_husky_barrel_search_1::msg::DetectedObject>& detectedObjects, bool imShow = false)
 {
   return testImage(input, debugImage, detectedObjects, "blue", 10, 10, "blue-barrel", DEFAULT_MIN_SATURATION,
                    DEFAULT_MIN_VALUE, DEFAULT_MIN_BLOB_AREA, imShow);
 }
 
-int testGreen(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& detectedObjects, bool imShow = false)
+int testGreen(cv::Mat& input, cv::Mat& debugImage, std::vector<sm_husky_barrel_search_1::msg::DetectedObject>& detectedObjects, bool imShow = false)
 {
   return testImage(input, debugImage, detectedObjects, "green", 50, 10, "ally", DEFAULT_MIN_SATURATION,
                    DEFAULT_MIN_VALUE, DEFAULT_MIN_BLOB_AREA, imShow);
 }
 
-int testYellow(cv::Mat& input, cv::Mat& debugImage, std::vector<std::string>& detectedObjects, bool imShow = false)
+int testYellow(cv::Mat& input, cv::Mat& debugImage, std::vector<sm_husky_barrel_search_1::msg::DetectedObject>& detectedObjects, bool imShow = false)
 {
   // hue: 31 , minvalue: 200, minsat: 40, in rgb
   // return testImage(input, debugImage, "yellow", 31, 10, "mine", 40, 200, 100, imShow);
@@ -187,7 +190,7 @@ void testYellowFile(std::string path)
 {
   cv::Mat input;
   cv::cvtColor(cv::imread(path), input, cv::COLOR_RGB2BGR);
-  std::vector<std::string> detectedObjects;
+  std::vector<sm_husky_barrel_search_1::msg::DetectedObject> detectedObjects;
 
   cv::Mat debugImage = input.clone();
 
@@ -200,7 +203,7 @@ void testYellowFile(std::string path)
 void testRedFile(std::string path)
 {
   cv::Mat input = cv::imread(path);
-  std::vector<std::string> detectedObjects;
+  std::vector<sm_husky_barrel_search_1::msg::DetectedObject> detectedObjects;
   cv::Mat debugImage = input.clone();
   bool imShow = true;
   testRed(input, debugImage, detectedObjects, imShow);
@@ -213,7 +216,7 @@ void testRedFile(std::string path)
 void testRedFileBench(std::string path)
 {
   cv::Mat input = cv::imread(path);
-  std::vector<std::string> detectedObjects;
+  std::vector<sm_husky_barrel_search_1::msg::DetectedObject> detectedObjects;
   // cv::cvtColor(input, input, cv::COLOR_RGB2BGR);
 
   cv::Mat debugImage = input.clone();
@@ -235,14 +238,14 @@ void testRedFileBench(std::string path)
 void testBlueFile(std::string path, cv::Mat& debugImage)
 {
   cv::Mat input = cv::imread(path);
-  std::vector<std::string> detectedObjects;
+  std::vector<sm_husky_barrel_search_1::msg::DetectedObject> detectedObjects;
   testImage(input, debugImage, detectedObjects, "blue", 10, 10, "");
 }
 
 void testGreenFile(std::string path, cv::Mat& debugImage)
 {
   cv::Mat input = cv::imread(path);
-  std::vector<std::string> detectedObjects;
+  std::vector<sm_husky_barrel_search_1::msg::DetectedObject> detectedObjects;
   testImage(input, debugImage, detectedObjects, "green", 50, 10, "");
 }
 
@@ -308,7 +311,7 @@ void callback(const sensor_msgs::msg::Image& imgMsg)
 
   bool testGreenAlly = false;
 
-  std::vector<std::string> detectedObjects;
+  std::vector<sm_husky_barrel_search_1::msg::DetectedObject> detectedObjects;
 
   int detectedColor = 0;
   if (testRed(image, outmat, detectedObjects) > 0)

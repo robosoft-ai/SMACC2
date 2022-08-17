@@ -18,42 +18,32 @@
  *
  ******************************************************************************************************************/
 
-#pragma once
-
-#include <smacc2/smacc.hpp>
-#include <nav2z_client/nav2z_client.hpp>
-#include <nav2z_client/client_behaviors.hpp>
-#include <sm_husky_barrel_search_1/clients/cb_sleep_for.hpp>
-#include <sm_husky_barrel_search_1/clients/led_array/client_behaviors.hpp>
-
 namespace sm_husky_barrel_search_1
 {
+namespace s_pattern_states
+{
 // STATE DECLARATION
-struct StSelectSaferMinePath : smacc2::SmaccState<StSelectSaferMinePath, SmHuskyBarrelSearch1>
+struct StiSPatternForward2Retry : public smacc2::SmaccState<StiSPatternForward2Retry, SS>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
-      Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, SS5::SsSearchMineSPattern1>,
-      //Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, StNavigateToFireEnemyPosition>, // uncomment to skip mine search
-      Transition<EvCbFailure<CbNavigateNextWaypointUntilReached, OrNavigation>, StSelectSaferMinePath>>
-      reactions;
+
+    Transition<EvCbSuccess<CbRetry<CbNavigateForward>, OrNavigation>, StiSPatternRotate3>
+    // Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiSPatternRotate2>
+
+    >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateNextWaypointUntilReached>(
-        "post-mine-field",
-        NavigateNextWaypointOptions
-        {
-          .controllerName_ = "FollowPathSlow",
-          .goalCheckerName_ = "goal_checker"
-        });
+    configure_orthogonal<OrNavigation, CbRetry<CbNavigateForward>>();
+    // configure_orthogonal<OrNavigation, CbPauseSlam>();
+    // configure_orthogonal<OrLED, CbLEDOn>();
   }
 
-  void runtimeConfigure()
-  {
-  }
+  void runtimeConfigure() {}
 };
+}  // namespace s_pattern_states
 }  // namespace sm_husky_barrel_search_1

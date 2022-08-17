@@ -73,10 +73,10 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <state world_name='default'>
-      <sim_time>9508 441000000</sim_time>
-      <real_time>605 358748764</real_time>
-      <wall_time>1660679570 591889953</wall_time>
-      <iterations>408710</iterations>
+      <sim_time>10309 805000000</sim_time>
+      <real_time>1058 471010528</real_time>
+      <wall_time>1660763099 823068494</wall_time>
+      <iterations>801364</iterations>
       <model name='MilitaryPickupRedEnemy'>
         <pose>59.0153 39.78 0 0 0 -1.39997</pose>
         <scale>1 1 1</scale>
@@ -438,170 +438,170 @@
         </link>
       </model>
       <model name='mine'>
-        <pose>98.4312 39.3089 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>98.4312 39.3089 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>98.4312 39.3089 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>98.4312 39.3089 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone'>
-        <pose>93.7959 36.654 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>93.7959 36.654 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>93.7959 36.654 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>93.7959 36.654 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_0'>
-        <pose>88.1406 31.4287 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>88.1406 31.4287 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>88.1406 31.4287 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>88.1406 31.4287 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_1'>
-        <pose>98.8148 32.1679 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>98.8148 32.1679 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>98.8148 32.1679 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>98.8148 32.1679 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_10'>
-        <pose>96.8074 7.28599 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>96.8074 7.28599 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>96.8074 7.28599 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>96.8074 7.28599 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_11'>
-        <pose>91.2165 6.20438 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>91.2165 6.20438 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>91.2165 6.20438 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>91.2165 6.20438 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_12'>
-        <pose>91.994 -1.98623 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>91.994 -1.98623 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>91.994 -1.98623 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>91.994 -1.98623 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_13'>
-        <pose>97.685 -0.525295 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>97.685 -0.525294 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>97.685 -0.525295 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>97.685 -0.525294 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_14'>
-        <pose>101.907 0.752516 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>101.907 0.752517 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>101.907 0.752516 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>101.907 0.752517 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 -9.8 -0 -0 -0</acceleration>
+          <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_2'>
-        <pose>95.3052 27.4382 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>95.3052 27.4382 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>95.3052 27.4382 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>95.3052 27.4382 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_3'>
-        <pose>89.2511 25.9904 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>89.2511 25.9904 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>89.2511 25.9904 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>89.2511 25.9904 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_4'>
-        <pose>90.0743 19.3901 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>90.0743 19.3901 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>90.0743 19.3901 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>90.0743 19.3901 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_5'>
-        <pose>90.9245 13.3564 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>90.9245 13.3564 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>90.9245 13.3564 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>90.9245 13.3564 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_6'>
-        <pose>95.7708 16.7644 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>95.7708 16.7644 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>95.7708 16.7644 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>95.7708 16.7644 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_7'>
-        <pose>99.9832 22.0127 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>99.9832 22.0127 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>99.9832 22.0127 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>99.9832 22.0127 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_8'>
-        <pose>100.671 13.8361 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>100.671 13.8361 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>100.671 13.8361 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>100.671 13.8361 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='mine_clone_9'>
-        <pose>101.011 7.52485 0.099993 -7e-06 7e-06 -1.28503</pose>
+        <pose>101.011 7.52485 0.099997 7e-06 -7e-06 -1.28503</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>101.011 7.52485 0.099993 -7e-06 7e-06 -1.28503</pose>
+          <pose>101.011 7.52485 0.099997 7e-06 -7e-06 -1.28503</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
@@ -628,10 +628,10 @@
         </link>
       </model>
       <model name='pine_tree_0_clone'>
-        <pose>1.16003 13.2194 0 0 -0 0</pose>
+        <pose>2.51694 12.617 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>1.16003 13.2194 0 0 -0 0</pose>
+          <pose>2.51694 12.617 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -682,6 +682,36 @@
         <scale>1 1 1</scale>
         <link name='link'>
           <pose>8.45734 14.3876 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='pine_tree_0_clone_clone_3'>
+        <pose>8.53862 16.9853 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>8.53862 16.9853 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='pine_tree_0_clone_clone_4'>
+        <pose>2.33857 17.5417 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>2.33857 17.5417 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='pine_tree_0_clone_clone_5'>
+        <pose>6.97409 19.4852 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>6.97409 19.4852 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -1543,8 +1573,8 @@
         <link name='link'>
           <pose>-10.7066 3.01548 0.003999 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.001313 -0.002571 0.002369 0.514152 -0.262616 0</acceleration>
-          <wrench>-8.2e-05 -0.000161 0.000149 0 -0 0</wrench>
+          <acceleration>0.002381 -0.000463 0.000421 0.092586 0.476148 0</acceleration>
+          <wrench>0.00015 -2.9e-05 2.6e-05 0 -0 0</wrench>
         </link>
       </model>
       <model name='vrc_driving_terrain'>
@@ -1564,30 +1594,30 @@
         </link>
       </model>
       <model name='white_box'>
-        <pose>1.44272 -27.4257 0.099991 -3e-06 -3e-06 -6e-06</pose>
+        <pose>1.44272 -27.4257 0.1 -2e-06 2e-06 -6e-06</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>1.44272 -27.4257 0.099991 -3e-06 -3e-06 -6e-06</pose>
+          <pose>1.44272 -27.4257 0.1 -2e-06 2e-06 -6e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='white_box_clone'>
-        <pose>7.35703 -13.2642 0.099996 -2e-06 -2e-06 -7e-06</pose>
+        <pose>7.35703 -13.2642 0.099993 7e-06 2e-06 -7e-06</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>7.35703 -13.2642 0.099996 -2e-06 -2e-06 -7e-06</pose>
+          <pose>7.35703 -13.2642 0.099993 7e-06 2e-06 -7e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='white_box_clone_0'>
-        <pose>16.0512 -26.8718 0.099991 2e-06 -2e-06 -7e-06</pose>
+        <pose>16.0512 -26.8718 0.099992 2e-06 -2e-06 -7e-06</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>16.0512 -26.8718 0.099991 2e-06 -2e-06 -7e-06</pose>
+          <pose>16.0512 -26.8718 0.099992 2e-06 -2e-06 -7e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
@@ -1599,7 +1629,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>-105.652 -77.1833 53.0035 -0 0.373795 0.375237</pose>
+        <pose>-53.7465 -36.4118 25.321 0 0.289795 0.663237</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -14422,6 +14452,195 @@
         <kinematic>0</kinematic>
       </link>
       <pose>8.45734 14.3876 0 0 -0 0</pose>
+    </model>
+    <model name='pine_tree_0_clone_clone_3'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://pine_tree/meshes/pine_tree.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='branch'>
+          <geometry>
+            <mesh>
+              <uri>model://pine_tree/meshes/pine_tree.dae</uri>
+              <submesh>
+                <name>Branch</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://pine_tree/materials/scripts/</uri>
+              <uri>model://pine_tree/materials/textures/</uri>
+              <name>PineTree/Branch</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='bark'>
+          <geometry>
+            <mesh>
+              <uri>model://pine_tree/meshes/pine_tree.dae</uri>
+              <submesh>
+                <name>Bark</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://pine_tree/materials/scripts/</uri>
+              <uri>model://pine_tree/materials/textures/</uri>
+              <name>PineTree/Bark</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>8.53862 16.9853 0 0 -0 0</pose>
+    </model>
+    <model name='pine_tree_0_clone_clone_4'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://pine_tree/meshes/pine_tree.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='branch'>
+          <geometry>
+            <mesh>
+              <uri>model://pine_tree/meshes/pine_tree.dae</uri>
+              <submesh>
+                <name>Branch</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://pine_tree/materials/scripts/</uri>
+              <uri>model://pine_tree/materials/textures/</uri>
+              <name>PineTree/Branch</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='bark'>
+          <geometry>
+            <mesh>
+              <uri>model://pine_tree/meshes/pine_tree.dae</uri>
+              <submesh>
+                <name>Bark</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://pine_tree/materials/scripts/</uri>
+              <uri>model://pine_tree/materials/textures/</uri>
+              <name>PineTree/Bark</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>2.33857 17.5417 0 0 -0 0</pose>
+    </model>
+    <model name='pine_tree_0_clone_clone_5'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://pine_tree/meshes/pine_tree.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='branch'>
+          <geometry>
+            <mesh>
+              <uri>model://pine_tree/meshes/pine_tree.dae</uri>
+              <submesh>
+                <name>Branch</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://pine_tree/materials/scripts/</uri>
+              <uri>model://pine_tree/materials/textures/</uri>
+              <name>PineTree/Branch</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='bark'>
+          <geometry>
+            <mesh>
+              <uri>model://pine_tree/meshes/pine_tree.dae</uri>
+              <submesh>
+                <name>Bark</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://pine_tree/materials/scripts/</uri>
+              <uri>model://pine_tree/materials/textures/</uri>
+              <name>PineTree/Bark</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>6.97409 19.4852 0 0 -0 0</pose>
     </model>
   </world>
 </sdf>

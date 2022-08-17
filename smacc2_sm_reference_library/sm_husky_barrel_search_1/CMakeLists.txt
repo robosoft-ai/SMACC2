@@ -66,9 +66,10 @@ include_directories(include
 
 #---------------------------------------------------------
 rosidl_generate_interfaces(${PROJECT_NAME}
-"msg/DetectedObjects.msg"
-DEPENDENCIES builtin_interfaces std_msgs
-)
+                            msg/DetectedObjects.msg
+                            msg/DetectedObject.msg
+                            DEPENDENCIES builtin_interfaces std_msgs
+                          )
 
 
 #---------------------------------------------------------
