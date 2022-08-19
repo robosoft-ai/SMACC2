@@ -50,6 +50,10 @@ struct StForwardAwayBase : smacc2::SmaccState<StForwardAwayBase, SmHuskyBarrelSe
   // STATE FUNCTIONS
   static void staticConfigure()
   {
+    configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::RED);
+    configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::GREEN);
+    configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::YELLOW);
+        
     configure_orthogonal<OrNavigation, CbSeekWaypoint>("front-base-area");
     configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>(NavigateNextWaypointOptions{ .controllerName_ = "SuperFa"
                                                                                                                "stPathF"
