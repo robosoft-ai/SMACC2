@@ -234,7 +234,7 @@
       </visual>
       <sensor name='hls_lfcd_lds' type='ray'>
         <always_on>1</always_on>
-        <visualize>1</visualize>
+        <visualize>0</visualize>
         <pose>-0.064 0 0.321 0 -0 0</pose>
         <update_rate>5</update_rate>
         <ray>

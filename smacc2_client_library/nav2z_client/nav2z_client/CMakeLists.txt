@@ -53,6 +53,7 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_global_position.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint_until_reached.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_navigate_named_waypoint.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_rotate.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_undo_path_backwards.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_wait_pose.cpp

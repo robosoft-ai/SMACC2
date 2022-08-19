@@ -31,7 +31,7 @@ struct StiSPatternForward3 : public smacc2::SmaccState<StiSPatternForward3, SS>
   typedef mpl::list<
 
     Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiSPatternRotate4>,
-    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiSPatternRotate3>
+    Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiSPatternForward3Retry>
 
     >reactions;
 

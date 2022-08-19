@@ -132,6 +132,36 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
+  - name: 6-reguard
+    position:
+      x: 54.0
+      y: 18.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: 7-reguard
+    position:
+      x: 74.0
+      y: 18.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  - name: 8-reguard
+    position:
+      x: 94.0
+      y: 18.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
   - name: pre-concrete-barriers
     position:
       x: 35.0
@@ -174,8 +204,10 @@ waypoints:
       w: 0.98388
   - name: post-mine-field
     position:
-      x: 110.0
-      y: 10.0
+      # x: 110.0
+      # y: 10.0
+      x: 130.0
+      y: 65.0
       z: 0.0
     orientation:
       x: 0.0
@@ -195,7 +227,8 @@ waypoints:
   - name: hidden-trees
     position:
       x: 170.0
-      y: 85
+      #y: 85
+      y: 100
       z: 0.0
     orientation:
       x: 0.0

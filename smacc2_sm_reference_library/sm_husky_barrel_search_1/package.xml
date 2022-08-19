@@ -29,6 +29,8 @@
   <depend>assimp</depend>
   <depend>geometry_msgs</depend>
 
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>

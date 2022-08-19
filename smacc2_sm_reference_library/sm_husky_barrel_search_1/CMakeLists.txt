@@ -57,7 +57,6 @@ set(dependencies
 
 link_directories(${gazebo_dev_LIBRARY_DIRS} /usr/lib/x86_64-linux-gnu/OGRE-1.9.0/)
 
-
 include_directories(include
                     ${Boost_INCLUDE_DIRS}
                     ${OpenCV_INCLUDE_DIRS}
@@ -66,10 +65,17 @@ include_directories(include
                     ${CMAKE_BINARY_DIR}/rosidl_generator_cpp)
 
 #---------------------------------------------------------
+rosidl_generate_interfaces(${PROJECT_NAME}
+                            msg/DetectedObjects.msg
+                            msg/DetectedObject.msg
+                            DEPENDENCIES builtin_interfaces std_msgs
+                          )
+
+
+#---------------------------------------------------------
 add_executable(${PROJECT_NAME}_node
   src/${PROJECT_NAME}/sm_husky_barrel_search_1_node.cpp
 )
-
 
 ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
 target_link_libraries(${PROJECT_NAME}_node
@@ -80,11 +86,12 @@ target_link_libraries(${PROJECT_NAME}_node
   #${OGRE_LIBRARIES}
   #${gazebo_LIBRARIES}
   #${gazebo_ros_LIBRARIES}
+  ${PROJECT_NAME}__rosidl_typesupport_cpp
 )
 
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
-ament_export_dependencies(${dependencies})
+ament_export_dependencies(${dependencies} rosidl_default_runtime)
 
 #---------------------------------------------------------
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sm_husky_barrel_search_1.dsv.in")
@@ -106,7 +113,7 @@ target_link_libraries(${PROJECT_NAME}_node
 
 ament_export_include_directories(include)
 ament_export_libraries(odom_to_tf)
-ament_export_dependencies(${dependencies})
+ament_export_dependencies(${dependencies} rosidl_generator_cpp)
 
 #---------------------------------------------------------
 
@@ -137,12 +144,13 @@ add_executable(opencv_perception_node
   servers/opencv_perception_node/opencv_perception_node.cpp
   servers/opencv_perception_node/cv_mat_sensor_msgs_image_type_adapter.cpp
 )
-ament_target_dependencies(opencv_perception_node ${dependencies})
+ament_target_dependencies(opencv_perception_node ${dependencies} rosidl_generator_cpp)
 
 target_link_libraries(opencv_perception_node
                         boost_thread
                         boost_system
-                        ${Boost_LIBS} ${OpenCV_LIBS})
+                        ${Boost_LIBS} ${OpenCV_LIBS}
+                        ${PROJECT_NAME}__rosidl_typesupport_cpp)
 
 #---------------------------------------------------------
 
@@ -166,5 +174,6 @@ install(DIRECTORY rviz DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY params DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY urdf DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY models DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY servers/opencv_perception_node/test_images DESTINATION share/${PROJECT_NAME})
 
 ament_package()

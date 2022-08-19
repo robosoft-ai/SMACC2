@@ -56,6 +56,8 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
   {
     configure_orthogonal<OrNavigation, CbSequence>();
     configure_orthogonal<OrLedArray, CbBlinking>(LedColor::YELLOW);
+    configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::RED);
+    configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::GREEN);
   }
 
   void runtimeConfigure()

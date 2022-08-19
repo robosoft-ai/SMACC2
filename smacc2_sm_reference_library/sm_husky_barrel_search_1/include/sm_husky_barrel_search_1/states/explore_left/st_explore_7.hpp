@@ -23,33 +23,37 @@
 #include <smacc2/smacc.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include <nav2z_client/client_behaviors.hpp>
+#include <sm_husky_barrel_search_1/clients/cb_sleep_for.hpp>
+#include <sm_husky_barrel_search_1/clients/led_array/client_behaviors.hpp>
+
+
 namespace sm_husky_barrel_search_1
 {
     using namespace smacc2::default_events;
     using namespace cl_nav2z;
     using namespace smacc2;
+    using namespace std::chrono_literals;
+    using namespace cl_opencv_perception;
 
     // STATE DECLARATION
-    struct StEvasionMotion : smacc2::SmaccState<StEvasionMotion, SmHuskyBarrelSearch1>
+    struct StExplore7: smacc2::SmaccState<StExplore5, SmHuskyBarrelSearch1>
     {
         using SmaccState::SmaccState;
 
         // TRANSITION TABLE
         typedef mpl::list<
-
-                Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigatePrebarriers>,
-                Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StEvasionMotion>
+              Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StExplore8, SUCCESS>,
+              Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExplore7, ABORT>,
+              Transition<EvEnemyDetected<ClOpenCVPerception, OrPerception>, StAirStrikeCommunications, ABORT>
+              //Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
             >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::RED);
-            configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::GREEN);
-            configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::YELLOW);
-
-            configure_orthogonal<OrNavigation, CbSeekWaypoint>("1-reguard");
+            // configure_orthogonal<OrNavigation, CbSleepFor>(10s);
+            configure_orthogonal<OrNavigation, CbSeekWaypoint>("7-reguard");
             configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
         }
 

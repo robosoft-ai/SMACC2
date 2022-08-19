@@ -19,6 +19,7 @@
  ******************************************************************************************************************/
 
 #include <smacc2/smacc.hpp>
+#include <sm_husky_barrel_search_1/clients/opencv_perception_client/cl_opencv_perception_client.hpp>
 
 namespace sm_husky_barrel_search_1
 {
@@ -31,12 +32,16 @@ namespace s_pattern_states
 // FORWARD DECLARATIONS OF INNER STATES
 class StiSPatternRotate1;
 class StiSPatternForward1;
+class StiSPatternForward1Retry;
 class StiSPatternRotate2;
 class StiSPatternForward2;
+class StiSPatternForward2Retry;
 class StiSPatternRotate3;
 class StiSPatternForward3;
+class StiSPatternForward3Retry;
 class StiSPatternRotate4;
 class StiSPatternForward4;
+class StiSPatternForward4Retry;
 class StiSPatternLoopStart;
 }  // namespace s_pattern_states
 }  // namespace sm_husky_barrel_search_1
@@ -48,7 +53,7 @@ enum class TDirection
 };
 
 using namespace sm_husky_barrel_search_1::s_pattern_states;
-
+using namespace cl_opencv_perception;
 // STATE DECLARATION
 struct SsSearchMineSPattern1 : smacc2::SmaccState<SsSearchMineSPattern1, SmHuskyBarrelSearch1, StiSPatternLoopStart>
 {
@@ -57,9 +62,8 @@ public:
 
   // TRANSITION TABLE
   typedef mpl::list<
-
+    // Transition<EvEnemyClusterDetected<ClOpenCVPerception, OrPerception>, StFire, SUCCESS>,
     Transition<EvLoopEnd<StiSPatternLoopStart>, StNavigateToFireEnemyPosition, ENDLOOP>
-
     >reactions;
 
   // STATE FUNCTIONS
@@ -69,9 +73,10 @@ public:
   }
 
   static constexpr float pitch1_lenght_meters() { return 0.75; }
-  static constexpr float pitch2_lenght_meters() { return 0.75; }
+  static constexpr float pitch2_lenght_meters() { return 15.0;/*0.75;*/ }
   static constexpr int total_iterations() { return 9; }
   static constexpr TDirection direction() { return TDirection::RIGHT; }
+  static constexpr float base_angle_degrees() { return 45.0; }
 
   int iteration_count;
 
@@ -84,6 +89,11 @@ using SS = SsSearchMineSPattern1;
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_2.hpp>
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_3.hpp>
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_4.hpp>
+#include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_1_retry.hpp>
+#include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_2_retry.hpp>
+#include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_3_retry.hpp>
+#include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_forward_4_retry.hpp>
+
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_loop_start.hpp>
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_rotate_1.hpp>
 #include <sm_husky_barrel_search_1/states/s_pattern_states/sti_spattern_rotate_2.hpp>

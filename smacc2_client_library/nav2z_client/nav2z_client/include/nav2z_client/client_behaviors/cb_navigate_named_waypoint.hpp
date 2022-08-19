@@ -29,7 +29,8 @@ namespace cl_nav2z
 class CbNavigateNamedWaypoint : public CbNavigateNextWaypoint
 {
 public:
-  CbNavigateNamedWaypoint(std::string waypointname);
+  CbNavigateNamedWaypoint(
+    std::string waypointname, std::optional<NavigateNextWaypointOptions> options = std::nullopt);
 
   virtual ~CbNavigateNamedWaypoint();
 

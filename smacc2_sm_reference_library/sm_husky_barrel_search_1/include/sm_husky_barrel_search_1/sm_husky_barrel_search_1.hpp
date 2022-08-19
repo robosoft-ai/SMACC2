@@ -44,6 +44,10 @@ struct StExplore2;
 struct StExplore3;
 struct StExplore4;
 struct StExplore5;
+struct StExplore6;
+struct StExplore7;
+struct StExplore8;
+
 struct StAirStrikeCommunications;
 struct StUndoRetreat;
 struct StEvasionMotion;
@@ -101,6 +105,10 @@ struct SmHuskyBarrelSearch1
 #include "states/explore_left/st_explore_3.hpp"
 #include "states/explore_left/st_explore_4.hpp"
 #include "states/explore_left/st_explore_5.hpp"
+#include "states/explore_left/st_explore_6.hpp"
+#include "states/explore_left/st_explore_7.hpp"
+#include "states/explore_left/st_explore_8.hpp"
+
 #include "states/explore_left/st_undo_retreat.hpp"
 #include "states/explore_left/st_airstrike_communications.hpp"
 #include "states/explore_left/st_evasion_motion.hpp"

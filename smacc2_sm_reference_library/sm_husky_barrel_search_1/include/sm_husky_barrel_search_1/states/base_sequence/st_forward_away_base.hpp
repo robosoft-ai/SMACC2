@@ -38,21 +38,33 @@ struct StForwardAwayBase : smacc2::SmaccState<StForwardAwayBase, SmHuskyBarrelSe
 
   // TRANSITION TABLE
   typedef mpl::list<
-                    // Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigatePrebarriers>>,
-                    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StExplore1, SUCCESS>,
-                    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StForwardAwayBase, ABORT>
-                    >
+      // Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigatePrebarriers>,
+
+      // to test final state
+      // Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateToFireEnemyPosition>,
+
+      Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StExplore1, SUCCESS>,
+      Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StForwardAwayBase, ABORT> >
       reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
+    configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::RED);
+    configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::GREEN);
+    configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::YELLOW);
 
     configure_orthogonal<OrNavigation, CbSeekWaypoint>("front-base-area");
-    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>(NavigateNextWaypointOptions{
-                                                                                    .controllerName_="SuperFastPathFollow",
-                                                                                    .goalCheckerName_ = "super_fast_follow_path_goal_checker"
-                                                                                });
+    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>(NavigateNextWaypointOptions{ .controllerName_ = "SuperFa"
+                                                                                                               "stPathF"
+                                                                                                               "ollow",
+                                                                                            .goalCheckerName_ = "super_"
+                                                                                                                "fast_"
+                                                                                                                "follow"
+                                                                                                                "_path_"
+                                                                                                                "goal_"
+                                                                                                                "checke"
+                                                                                                                "r" });
   }
 
   void runtimeConfigure()

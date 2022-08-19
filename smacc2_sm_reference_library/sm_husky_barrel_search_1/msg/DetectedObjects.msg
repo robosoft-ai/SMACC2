@@ -1,0 +1,1 @@
+sm_husky_barrel_search_1/DetectedObject[] detected_objects

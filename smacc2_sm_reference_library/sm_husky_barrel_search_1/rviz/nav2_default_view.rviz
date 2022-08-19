@@ -13,8 +13,6 @@ Panels:
         - /LaserScan1
         - /Odometry1
         - /Odometry1/Shape1
-        - /BackwardLocalPlan1
-        - /MarkerArray1
         - /Image1
         - /Image1/Topic1
         - /Pose1
@@ -619,7 +617,7 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /backward_planner/global_plan
       Value: true
-    - Angle Tolerance: 0.10000000149011612
+    - Angle Tolerance: 0.20000000298023224
       Class: rviz_default_plugins/Odometry
       Covariance:
         Orientation:
@@ -637,9 +635,9 @@ Visualization Manager:
           Value: true
         Value: false
       Enabled: true
-      Keep: 10000
+      Keep: 5000
       Name: Odometry
-      Position Tolerance: 0.10000000149011612
+      Position Tolerance: 0.800000011920929
       Shape:
         Alpha: 1
         Axes Length: 1
@@ -647,8 +645,8 @@ Visualization Manager:
         Color: 255; 25; 0
         Head Length: 0
         Head Radius: 0
-        Shaft Length: 0.04800000041723251
-        Shaft Radius: 0.019999999552965164
+        Shaft Length: 0.20000000298023224
+        Shaft Radius: 0.03999999910593033
         Value: Arrow
       Topic:
         Depth: 5
@@ -686,7 +684,7 @@ Visualization Manager:
       Enabled: true
       Name: BackwardsGlobalPlanMarkers
       Namespaces:
-        {}
+        my_namespace2: true
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -698,7 +696,7 @@ Visualization Manager:
       Enabled: true
       Name: BackwardLocalPlannerGoalMarker
       Namespaces:
-        {}
+        my_namespace2: true
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -871,16 +869,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 13.163750648498535
+      Distance: 18.705524444580078
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -3.0800833702087402
-        Y: -9.971904754638672
-        Z: 0.9439042210578918
+        X: -1.5321376323699951
+        Y: -6.632905960083008
+        Z: 1.8157644271850586
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false

@@ -18,11 +18,13 @@
  *
  ******************************************************************************************************************/
 
-#include <nav2z_client/client_behaviors/cb_navigate_next_waypoint.hpp>
+#include <nav2z_client/client_behaviors/cb_navigate_named_waypoint.hpp>
 
 namespace cl_nav2z
 {
-CbNavigateNamedWaypoint::CbNavigateNamedWaypoint(std::string waypointname)
+CbNavigateNamedWaypoint::CbNavigateNamedWaypoint(
+  std::string waypointname, std::optional<NavigateNextWaypointOptions> options)
+: CbNavigateNextWaypoint(options)
 {
   waypointname_ = waypointname;
 }
@@ -48,7 +50,7 @@ void CbNavigateNamedWaypoint::onEntry()
   //   waypointsNavigator_->getCurrentWaypointIndex());  }
 
   auto waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
-  waypointsNavigator_->seekWaypoint(waypointName_);
+  waypointsNavigator_->seekName(waypointname_);
   CbNavigateNextWaypoint::onEntry();
 }
 

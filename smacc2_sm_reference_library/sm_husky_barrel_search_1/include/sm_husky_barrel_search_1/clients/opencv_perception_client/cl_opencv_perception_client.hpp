@@ -22,6 +22,7 @@
 
 #include <smacc2/client_bases/smacc_subscriber_client.hpp>
 #include <std_msgs/msg/int32.hpp>
+#include <sm_husky_barrel_search_1/msg/detected_objects.hpp>
 
 namespace sm_husky_barrel_search_1
 {
@@ -31,22 +32,102 @@ struct EvDetectedBarrelColor : sc::event<EvDetectedBarrelColor>
 {
 };
 
-class ClOpenCVPerception : public smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>
+template <typename AsyncCB, typename Orthogonal>
+struct EvEnemyDetected : sc::event<EvEnemyDetected<AsyncCB, Orthogonal>>
+{
+};
+
+template <typename AsyncCB, typename Orthogonal>
+struct EvEnemyClusterDetected : sc::event<EvEnemyClusterDetected<AsyncCB, Orthogonal>>
+{
+};
+
+template <typename AsyncCB, typename Orthogonal>
+struct EvEnemyClusterFireDistance : sc::event<EvEnemyClusterFireDistance<AsyncCB, Orthogonal>>
+{
+};
+
+
+class ClOpenCVPerception
+  : public smacc2::client_bases::SmaccSubscriberClient<sm_husky_barrel_search_1::msg::DetectedObjects>
 {
 public:
-  ClOpenCVPerception(std::string topicname = "/detected_color")
-  : smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>(topicname)
+  ClOpenCVPerception(std::string topicname = "/detected_objects")
+    : smacc2::client_bases::SmaccSubscriberClient<sm_husky_barrel_search_1::msg::DetectedObjects>(topicname)
   {
   }
 
-  virtual ~ClOpenCVPerception() {}
+  virtual ~ClOpenCVPerception()
+  {
+  }
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::Int32>::onOrthogonalAllocation<
-      TOrthogonal, TSourceObject>();
+    smacc2::client_bases::SmaccSubscriberClient<sm_husky_barrel_search_1::msg::DetectedObjects>::onOrthogonalAllocation<
+        TOrthogonal, TSourceObject>();
+
+    this->postEvEnemyDetected = [this]() { this->postEvent<EvEnemyDetected<TSourceObject, TOrthogonal>>(); };
+
+    this->postEvEnemyClusterDetected = [this]() {
+      this->postEvent<EvEnemyClusterDetected<TSourceObject, TOrthogonal>>();
+    };
+
+    this->postEvEnemyClusterFireDistance = [this]() {
+      this->postEvent<EvEnemyClusterFireDistance<TSourceObject, TOrthogonal>>();
+    };
   }
+
+  void MessageCallback(const sm_husky_barrel_search_1::msg::DetectedObjects& detectedMsg)
+  {
+    int totalEnemies = 0;
+
+    int totalEnemiesFireDistance = 0;
+
+    for (auto detectedObject : detectedMsg.detected_objects)
+    {
+      size_t found = detectedObject.name.find("enemy");
+
+      if (found != std::string::npos)
+      {
+        this->postEvEnemyDetected();
+        totalEnemies++;
+
+        if(detectedObject.blob_area >= 50)
+        {
+          totalEnemiesFireDistance++;
+        }
+      }
+    }
+
+    if (totalEnemies >= 3)
+    {
+      this->postEvEnemyClusterDetected();
+    }
+
+    if (totalEnemiesFireDistance > 0)
+    {
+      RCLCPP_INFO_THROTTLE(this->getLogger(), *(getNode()->get_clock()) ,  1000, "Enemies in fire distance: %d", totalEnemiesFireDistance);
+    }
+
+    if(totalEnemiesFireDistance >= 3)
+    {
+      this->postEvEnemyClusterFireDistance();
+    }
+
+  }
+
+  void onInitialize() override
+  {
+    smacc2::client_bases::SmaccSubscriberClient<sm_husky_barrel_search_1::msg::DetectedObjects>::onInitialize();
+    this->onMessageReceived(&ClOpenCVPerception::MessageCallback, this);
+  }
+
+private:
+  std::function<void()> postEvEnemyDetected;
+  std::function<void()> postEvEnemyClusterDetected;
+  std::function<void()> postEvEnemyClusterFireDistance;
+
 };
 }  // namespace cl_opencv_perception
 }  // namespace sm_husky_barrel_search_1

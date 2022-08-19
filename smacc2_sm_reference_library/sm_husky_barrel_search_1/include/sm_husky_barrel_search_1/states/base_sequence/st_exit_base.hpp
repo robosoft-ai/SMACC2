@@ -34,13 +34,14 @@ using sm_husky_barrel_search_1::cl_led_array::CbSequenceColorBlinking;
 // STATE DECLARATION
 struct StExitBase : smacc2::SmaccState<StExitBase, SmHuskyBarrelSearch1>
 {
+
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
-  typedef mpl::list<Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StForwardAwayBase>,
+  typedef mpl::list<
+                    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StForwardAwayBase>,
                     Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExitBase>
-                    >
-      reactions;
+                    > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()

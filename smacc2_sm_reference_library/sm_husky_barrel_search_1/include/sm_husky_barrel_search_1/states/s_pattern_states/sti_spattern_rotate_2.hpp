@@ -30,32 +30,35 @@ struct StiSPatternRotate2 : smacc2::SmaccState<StiSPatternRotate2, SS>
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward2>,
-    Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternForward2>
+      Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward2>,
+      Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternForward2>
 
-    >reactions;
+      >
+      reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    float offset = 0;
-    float angle = 0;
-    if (SS::direction() == TDirection::LEFT)
-      angle = 90 + offset;
-    else
-      angle = -90 - offset;
-
-    configure_orthogonal<OrNavigation, CbAbsoluteRotate>(angle);
+    configure_orthogonal<OrNavigation, CbAbsoluteRotate>();
     // configure_orthogonal<OrNavigation, CbResumeSlam>();
     // configure_orthogonal<OrLED, CbLEDOff>();
   }
 
   void runtimeConfigure()
   {
-    auto & superstate = this->context<SS>();
-    RCLCPP_INFO(
-      getLogger(), "[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
-      superstate.iteration_count, SS::total_iterations());
+    auto& superstate = this->context<SS>();
+    RCLCPP_INFO(getLogger(), "[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
+                superstate.iteration_count, SS::total_iterations());
+
+    float offset = superstate.base_angle_degrees();
+
+    float angle = 0;
+    if (SS::direction() == TDirection::LEFT)
+      angle = 90 + offset;
+    else
+      angle = -90 + offset;
+
+    this->getClientBehavior<OrNavigation, CbAbsoluteRotate>()->absoluteGoalAngleDegree = angle;
   }
 };
 }  // namespace s_pattern_states
