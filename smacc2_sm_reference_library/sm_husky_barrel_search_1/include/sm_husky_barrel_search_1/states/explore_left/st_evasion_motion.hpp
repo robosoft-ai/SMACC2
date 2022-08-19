@@ -48,9 +48,9 @@ namespace sm_husky_barrel_search_1
             configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::RED);
             configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::GREEN);
             configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::YELLOW);
-            
+
             configure_orthogonal<OrNavigation, CbSeekWaypoint>("1-reguard");
-            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();        
+            configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
         }
 
         void runtimeConfigure()
