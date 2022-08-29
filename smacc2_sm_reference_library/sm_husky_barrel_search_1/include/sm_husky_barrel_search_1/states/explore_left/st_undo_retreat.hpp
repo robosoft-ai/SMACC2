@@ -21,6 +21,7 @@
 #pragma once
 
 #include <smacc2/smacc.hpp>
+#include <smacc2/client_behaviors/cb_sequence.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include <nav2z_client/client_behaviors.hpp>
 #include <sm_husky_barrel_search_1/clients/cb_sleep_for.hpp>
@@ -34,6 +35,7 @@ namespace sm_husky_barrel_search_1
     using namespace smacc2;
     using namespace std::chrono_literals;
     using sm_husky_barrel_search_1::cl_led_array::CbBlinking;
+    using smacc2::client_behaviors::CbSequence;
 
     // STATE DECLARATION
     struct StUndoRetreat : smacc2::SmaccState<StUndoRetreat, SmHuskyBarrelSearch1>
@@ -42,25 +44,32 @@ namespace sm_husky_barrel_search_1
 
         // TRANSITION TABLE
         typedef mpl::list<
-                // Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StEvasionMotion>
-                Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StEvasionMotion>
-                // Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StUndoRetreat>
+                //Transition<EvCbSuccess<CbSequence, OrNavigation>, StEvasionMotion>,
 
+                Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StEvasionMotion>,
+                Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StUndoRetreat>
+
+                //Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StEvasionMotion>
+                // Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StUndoRetreat>
             >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal<OrNavigation, CbNavigateBackwards>(8);
+            // configure_orthogonal<OrNavigation, CbNavigateBackwards>(8);
+            configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+            // configure_orthogonal<OrNavigation, CbSequence>();
             configure_orthogonal<OrLedArray, CbBlinking>(LedColor::YELLOW);
-
             //configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
-
         }
 
         void runtimeConfigure()
         {
+            // auto cbsequence = this->template getClientBehavior<OrNavigation, CbSequence>();
+            // cbsequence
+            // ->then<OrNavigation, CbUndoPathBackwards>()
+            // ->then<OrNavigation, CbUndoPathBackwards>();
         }
     };
 } // namespace sm_husky_barrel_search_1

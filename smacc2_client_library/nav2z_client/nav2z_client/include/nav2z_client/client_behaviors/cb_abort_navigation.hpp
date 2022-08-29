@@ -21,25 +21,17 @@
 
 #include <tf2_ros/buffer.h>
 
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
 #include "cb_nav2z_client_behavior_base.hpp"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 
 namespace cl_nav2z
 {
-using ::cl_nav2z::odom_tracker::OdomTracker;
-
-class CbUndoPathBackwards : public CbNav2ZClientBehaviorBase
+class CbAbortNavigation : public CbNav2ZClientBehaviorBase
 {
 public:
-  std::optional<std::string> goalChecker_;
+  CbAbortNavigation();
 
   void onEntry() override;
-
   void onExit() override;
-
-private:
-  std::shared_ptr<tf2_ros::Buffer> listener;
-
-  OdomTracker * odomTracker;
 };
 }  // namespace cl_nav2z

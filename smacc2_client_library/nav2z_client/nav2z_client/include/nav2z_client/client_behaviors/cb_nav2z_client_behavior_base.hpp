@@ -44,6 +44,8 @@ public:
 protected:
   void sendGoal(ClNav2Z::Goal & goal);
 
+  void cancelGoal();
+
   bool isOwnActionResponse(ClNav2Z::WrappedResult & r);
 
   virtual void onNavigationActionSuccess(ClNav2Z::WrappedResult &);

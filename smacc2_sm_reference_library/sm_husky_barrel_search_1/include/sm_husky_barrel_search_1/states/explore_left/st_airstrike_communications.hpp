@@ -55,7 +55,8 @@ namespace sm_husky_barrel_search_1
         static void staticConfigure()
         {
             configure_orthogonal<OrLedArray, CbSequenceColorBlinking>();
-            configure_orthogonal<OrNavigation, CbAbsoluteRotate>(35.0);
+            //configure_orthogonal<OrNavigation, CbAbsoluteRotate>(35.0);
+            configure_orthogonal<OrNavigation, CbAbortNavigation>();
             configure_orthogonal<OrNavigation, CbSleepFor>(15s);
 
 
@@ -63,8 +64,10 @@ namespace sm_husky_barrel_search_1
             static_createStateReactor<
             SrAllEventsGo, smacc2::state_reactors::EvAllGo<SrAllEventsGo, StAirStrikeCommunications>,
             mpl::list<
-                smacc2::EvCbSuccess<CbSleepFor, OrNavigation>,
-                smacc2::EvCbSuccess<CbAbsoluteRotate, OrNavigation>
+                smacc2::EvCbSuccess<CbSleepFor, OrNavigation>
+                // ,
+                // smacc2::EvCbSuccess<CbAbsoluteRotate, OrNavigation>
+                // smacc2::EvCbAbort<CbAbortNavigation, OrNavigation>
                 >>();
 
             //configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();

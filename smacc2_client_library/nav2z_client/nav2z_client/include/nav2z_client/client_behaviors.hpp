@@ -15,6 +15,7 @@
 #pragma once
 
 // rotation behavior
+#include <nav2z_client/client_behaviors/cb_abort_navigation.hpp>
 #include <nav2z_client/client_behaviors/cb_absolute_rotate.hpp>
 #include <nav2z_client/client_behaviors/cb_rotate.hpp>
 #include <nav2z_client/client_behaviors/cb_rotate_look_at.hpp>

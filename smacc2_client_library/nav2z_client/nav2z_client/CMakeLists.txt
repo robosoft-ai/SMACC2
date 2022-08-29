@@ -50,6 +50,7 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/client_behaviors/cb_rotate_look_at.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_backward.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_forward.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_abort_navigation.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_global_position.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint_until_reached.cpp
