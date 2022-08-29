@@ -57,7 +57,7 @@ namespace sm_husky_barrel_search_1
             configure_orthogonal<OrLedArray, CbSequenceColorBlinking>();
             //configure_orthogonal<OrNavigation, CbAbsoluteRotate>(35.0);
             configure_orthogonal<OrNavigation, CbAbortNavigation>();
-            configure_orthogonal<OrNavigation, CbSleepFor>(15s);
+            configure_orthogonal<OrNavigation, CbSleepFor>(5s);
 
 
             // Create State Reactor

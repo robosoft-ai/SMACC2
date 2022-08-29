@@ -29,9 +29,7 @@
 
 namespace cl_nav2z
 {
-CbAbortNavigation::CbAbortNavigation()
-{
-}
+CbAbortNavigation::CbAbortNavigation() {}
 
 void CbAbortNavigation::onEntry()
 {
@@ -40,8 +38,6 @@ void CbAbortNavigation::onEntry()
   this->cancelGoal();
 }
 
-void CbAbortNavigation::onExit()
-{
-}
+void CbAbortNavigation::onExit() {}
 
 }  // namespace cl_nav2z
