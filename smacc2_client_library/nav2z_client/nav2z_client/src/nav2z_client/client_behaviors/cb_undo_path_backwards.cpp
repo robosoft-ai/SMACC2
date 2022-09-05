@@ -35,6 +35,8 @@ void CbUndoPathBackwards::onEntry()
   listener = std::make_shared<tf2_ros::Buffer>(this->getNode()->get_clock());
   odomTracker = nav2zClient_->getComponent<OdomTracker>();
 
+  odomTracker->logStateString(false);
+
   auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
 
   nav_msgs::msg::Path forwardpath = odomTracker->getPath();
@@ -74,7 +76,7 @@ void CbUndoPathBackwards::onExit()
     odomTracker = nav2zClient_->getComponent<OdomTracker>();
     odomTracker->popPath();
 
-    odomTracker->logStateString();
+    odomTracker->logStateString(false);
   }
   else
   {
@@ -83,7 +85,7 @@ void CbUndoPathBackwards::onExit()
                                 "popping current path");
 
     odomTracker = nav2zClient_->getComponent<OdomTracker>();
-    odomTracker->logStateString();
+    odomTracker->logStateString(false);
     // navigation interrupted or aborted. The path may be not totally undone.
     // We keep the odom tracker in its current state, probably in the middle of the undoing process.
     // Could you try to repeat the behavior?

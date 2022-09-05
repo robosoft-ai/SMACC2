@@ -46,19 +46,22 @@ namespace sm_husky_barrel_search_1
         typedef mpl::list<
                 //Transition<EvCbSuccess<CbSequence, OrNavigation>, StEvasionMotion>,
 
-                Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StEvasionMotion>,
-                Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StUndoRetreat>
+                // undo testing
+                // Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StEvasionMotion>,
+                // Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StUndoRetreat>
 
-                //Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StEvasionMotion>
-                // Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StUndoRetreat>
+                // backward motion
+                Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StEvasionMotion>,
+                Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StUndoRetreat>
             >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            // configure_orthogonal<OrNavigation, CbNavigateBackwards>(8);
-            configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+            configure_orthogonal<OrNavigation, CbNavigateBackwards>(8);
+            //configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+
             // configure_orthogonal<OrNavigation, CbSequence>();
             configure_orthogonal<OrLedArray, CbBlinking>(LedColor::YELLOW);
             //configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
