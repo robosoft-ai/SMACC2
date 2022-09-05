@@ -93,7 +93,7 @@ template <typename TOrthogonal>
 void ISmaccStateMachine::createOrthogonal()
 {
   //this->lockStateMachine("create orthogonal");
-  std::lock_guard<std::recursive_mutex> guard();
+  std::lock_guard<std::recursive_mutex> guard(m_mutex_);
   std::string orthogonalkey = demangledTypeName<TOrthogonal>();
 
   if (orthogonals_.count(orthogonalkey) == 0)
