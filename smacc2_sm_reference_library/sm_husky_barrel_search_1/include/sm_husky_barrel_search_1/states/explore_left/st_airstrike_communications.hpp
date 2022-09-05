@@ -44,8 +44,11 @@ namespace sm_husky_barrel_search_1
         // TRANSITION TABLE
         typedef mpl::list<
                 // Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StEvasionMotion>
-                // Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
-                smacc2::Transition<EvAllGo<SrAllEventsGo, StAirStrikeCommunications>, StUndoRetreat>
+                Transition<EvCbFailure<CbAbortNavigation, OrNavigation>, StUndoRetreat>,
+                Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
+                //smacc2::Transition<EvAllGo<SrAllEventsGo, StAirStrikeCommunications>, StUndoRetreat>
+
+
 
                 // Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StUndoRetreat>
             >
@@ -55,17 +58,20 @@ namespace sm_husky_barrel_search_1
         static void staticConfigure()
         {
             configure_orthogonal<OrLedArray, CbSequenceColorBlinking>();
-            configure_orthogonal<OrNavigation, CbAbsoluteRotate>(35.0);
-            configure_orthogonal<OrNavigation, CbSleepFor>(15s);
+            //configure_orthogonal<OrNavigation, CbAbsoluteRotate>(35.0);
+            configure_orthogonal<OrNavigation, CbAbortNavigation>();
+            configure_orthogonal<OrNavigation, CbSleepFor>(5s);
 
 
             // Create State Reactor
-            static_createStateReactor<
-            SrAllEventsGo, smacc2::state_reactors::EvAllGo<SrAllEventsGo, StAirStrikeCommunications>,
-            mpl::list<
-                smacc2::EvCbSuccess<CbSleepFor, OrNavigation>,
-                smacc2::EvCbSuccess<CbAbsoluteRotate, OrNavigation>
-                >>();
+            // static_createStateReactor<
+            // SrAllEventsGo, smacc2::state_reactors::EvAllGo<SrAllEventsGo, StAirStrikeCommunications>,
+            // mpl::list<
+            //     smacc2::EvCbSuccess<CbSleepFor, OrNavigation>
+            //     // ,
+            //     // smacc2::EvCbSuccess<CbAbsoluteRotate, OrNavigation>
+            //     // smacc2::EvCbAbort<CbAbortNavigation, OrNavigation>
+            //     >>();
 
             //configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
 

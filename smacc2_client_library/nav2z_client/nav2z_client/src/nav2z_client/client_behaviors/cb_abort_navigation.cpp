@@ -17,29 +17,27 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#pragma once
 
-#include <tf2_ros/buffer.h>
-
+#include <nav2z_client/client_behaviors/cb_abort_navigation.hpp>
+#include <nav2z_client/common.hpp>
+#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
 #include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
-#include "cb_nav2z_client_behavior_base.hpp"
+#include <nav2z_client/components/pose/cp_pose.hpp>
+#include <nav2z_client/nav2z_client.hpp>
+
+#include <rclcpp/parameter_client.hpp>
 
 namespace cl_nav2z
 {
-using ::cl_nav2z::odom_tracker::OdomTracker;
+CbAbortNavigation::CbAbortNavigation() {}
 
-class CbUndoPathBackwards : public CbNav2ZClientBehaviorBase
+void CbAbortNavigation::onEntry()
 {
-public:
-  std::optional<std::string> goalChecker_;
+  // this->sendGoal(goal);
 
-  void onEntry() override;
+  this->cancelGoal();
+}
 
-  void onExit() override;
+void CbAbortNavigation::onExit() {}
 
-private:
-  std::shared_ptr<tf2_ros::Buffer> listener;
-
-  OdomTracker * odomTracker;
-};
 }  // namespace cl_nav2z

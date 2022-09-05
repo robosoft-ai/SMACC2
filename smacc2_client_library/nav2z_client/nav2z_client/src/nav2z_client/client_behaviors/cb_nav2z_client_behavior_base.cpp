@@ -33,6 +33,8 @@ void CbNav2ZClientBehaviorBase::sendGoal(ClNav2Z::Goal & goal)
   // this->goal_uuid_ = gh.get_goal_id () ;
 }
 
+void CbNav2ZClientBehaviorBase::cancelGoal() { this->nav2zClient_->cancelGoal(); }
+
 bool CbNav2ZClientBehaviorBase::isOwnActionResponse(ClNav2Z::WrappedResult & r)
 {
   auto name = getName();

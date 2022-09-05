@@ -20,6 +20,7 @@
   <depend>rcl</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_action</depend>
+  <depend>sdformat_urdf</depend>
   <depend>smacc2_msgs</depend>
   <depend>tracetools</depend>
   <depend>tracetools_trace</depend>

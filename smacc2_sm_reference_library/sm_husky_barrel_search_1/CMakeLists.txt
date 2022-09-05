@@ -19,6 +19,7 @@ find_package(ament_cmake_python REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(nav2z_client REQUIRED)
+
 find_package(Boost COMPONENTS thread system REQUIRED)
 find_package(OpenCV REQUIRED)
 
@@ -52,7 +53,7 @@ set(dependencies
 
   sr_all_events_go
   #gazebo_dev
-  #gazebo_ros
+  gazebo_ros
 )
 
 link_directories(${gazebo_dev_LIBRARY_DIRS} /usr/lib/x86_64-linux-gnu/OGRE-1.9.0/)
