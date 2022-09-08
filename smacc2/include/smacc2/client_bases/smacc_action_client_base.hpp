@@ -89,7 +89,7 @@ public:
   }
 
   std::optional<std::shared_future<typename GoalHandle::SharedPtr>> lastRequest_;
-  typename GoalHandle::SharedPtr goalHandle_;
+  // typename GoalHandle::SharedPtr goalHandle_;
 
   smacc2::SmaccSignal<void(const WrappedResult &)> onSucceeded_;
   smacc2::SmaccSignal<void(const WrappedResult &)> onAborted_;
@@ -100,9 +100,9 @@ public:
   // event creation/posting factory functions
   std::function<void(WrappedResult)> postSuccessEvent;
   std::function<void(WrappedResult)> postAbortedEvent;
+  std::function<void(WrappedResult)> postCancelledEvent;
   // std::function<void(WrappedResult)> postPreemptedEvent;
   // std::function<void(WrappedResult)> postRejectedEvent;
-  std::function<void(WrappedResult)> postCancelledEvent;
 
   std::function<void(const Feedback &)> postFeedbackEvent;
 

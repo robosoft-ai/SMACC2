@@ -119,7 +119,12 @@ void SmaccAsyncClientBehavior::dispose()
                         "thread");
   try
   {
-    this->onExitThread_->get();
+    if (this->onExitThread_)
+    {
+      // this->onExitThread_->get();
+      this->onExitThread_->get();
+    }
+    //this->onExitThread_->get();
   }
   catch (...)
   {

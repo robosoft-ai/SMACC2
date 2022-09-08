@@ -29,7 +29,7 @@ namespace sm_husky_barrel_search_1
 using namespace smacc2::default_events;
 using namespace cl_nav2z;
 using namespace smacc2;
-using sm_husky_barrel_search_1::cl_led_array::CbSequenceColorBlinking;
+using smacc2::client_behaviors::CbSequence;
 
 // STATE DECLARATION
 struct StMoveBaseEntrance : smacc2::SmaccState<StMoveBaseEntrance, SmHuskyBarrelSearch1>
@@ -37,19 +37,27 @@ struct StMoveBaseEntrance : smacc2::SmaccState<StMoveBaseEntrance, SmHuskyBarrel
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
-  typedef mpl::list<Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, StLedBlinkingCommuncation>,
-                    Transition<EvCbFailure<CbNavigateNextWaypointUntilReached, OrNavigation>, StMoveBaseEntrance>
+  typedef mpl::list<
+                    // Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, StLedBlinkingCommuncation>,
+                    // Transition<EvCbFailure<CbNavigateNextWaypointUntilReached, OrNavigation>, StMoveBaseEntrance>
                     >
       reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateNextWaypointUntilReached>("base-entrance");
+    // configure_orthogonal<OrNavigation, CbNavigateNextWaypointUntilReached>("base-entrance");
+    configure_orthogonal<OrNavigation, CbSequence>();
+
   }
 
   void runtimeConfigure()
   {
+    auto cbSequence =  this->getClientBehavior<OrNavigation, CbSequence>();
+
+    cbSequence->then<OrNavigation,CbNavigateNextWaypointUntilReached>("base-entrance")
+              ->then<OrNavigation,CbSleepFor>(5s)
+              ->then<OrNavigation,CbUndoPathBackwards>();
   }
 };
 }  // namespace sm_husky_barrel_search_1

@@ -31,7 +31,7 @@ CbSequence::CbSequence() {}
 
 void CbSequence::recursiveConsumeNext()
 {
-  RCLCPP_INFO(getLogger(), "[SequenceNode] on entry: %ld", sequenceNodes_.size());
+  RCLCPP_INFO(getLogger(), "[SequenceNode] next onEntry: %ld", sequenceNodes_.size());
 
   auto first = sequenceNodes_.front();
   auto onDelayedConfigureFn = first;
@@ -59,7 +59,8 @@ void CbSequence::onEntry()
     rclcpp::sleep_for(std::chrono::milliseconds(200));
     RCLCPP_INFO_THROTTLE(
       getLogger(), *(getNode()->get_clock()), 1000,
-      "[CbSequence] Waiting for subnodes to finish %ld", sequenceNodes_.size());
+      "[CbSequence] Waiting for subnodes to finish %ld. Current head Behavior: %s ",
+      sequenceNodes_.size(), demangleType(&typeid(*bh_)).c_str());
 
     if (consume_)
     {

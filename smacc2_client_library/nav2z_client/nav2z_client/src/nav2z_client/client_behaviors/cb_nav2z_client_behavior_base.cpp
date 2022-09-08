@@ -28,7 +28,7 @@ void CbNav2ZClientBehaviorBase::sendGoal(ClNav2Z::Goal & goal)
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Sending goal");
   goalHandleFuture_ = this->nav2zClient_->sendGoal(goal);
   RCLCPP_INFO_STREAM(
-    getLogger(), "[" << getName() << "] Sent goal, future valid: " << goalHandleFuture_.valid());
+    getLogger(), "[" << getName() << "] Goal set, future valid: " << goalHandleFuture_.valid());
 
   // this->goal_uuid_ = gh.get_goal_id () ;
 }
@@ -60,8 +60,11 @@ bool CbNav2ZClientBehaviorBase::isOwnActionResponse(ClNav2Z::WrappedResult & r)
   if (r.goal_id != goal_uuid_)
   {
     RCLCPP_ERROR(
-      getLogger(), "[%s] Received a failure event from an action server with a different goal_uuid",
-      smacc2::demangleType(typeid(*this)).c_str());
+      getLogger(),
+      "[%s] Received a failure event from an action server with a different goal_uuid: %s, "
+      "expected: %s",
+      smacc2::demangleType(typeid(*this)).c_str(), rclcpp_action::to_string(r.goal_id).c_str(),
+      rclcpp_action::to_string(goal_uuid_).c_str());
     return false;
   }
 
