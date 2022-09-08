@@ -36,9 +36,9 @@ public:
     this->requiresClient(nav2zClient_);
     smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
-    nav2zClient_->onSucceeded(&CbNav2ZClientBehaviorBase::onNavigationActionSuccess, this);
-    nav2zClient_->onAborted(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
-    nav2zClient_->onCancelled(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
+    // nav2zClient_->onSucceeded(&CbNav2ZClientBehaviorBase::onNavigationActionSuccess, this);
+    // nav2zClient_->onAborted(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
+    // nav2zClient_->onCancelled(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
   }
 
 protected:
@@ -47,6 +47,8 @@ protected:
   void cancelGoal();
 
   bool isOwnActionResponse(ClNav2Z::WrappedResult & r);
+
+  virtual void onNavigationResult(ClNav2Z::WrappedResult & r);
 
   virtual void onNavigationActionSuccess(ClNav2Z::WrappedResult &);
   virtual void onNavigationActionAbort(ClNav2Z::WrappedResult &);

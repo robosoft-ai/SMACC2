@@ -33,12 +33,8 @@ void CbNavigateNextWaypoint::onEntry()
 {
   waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
 
-  auto goalHandle = waypointsNavigator_->sendNextGoal(options_);
-
-  if (goalHandle)
-    goalHandleFuture_ = *goalHandle;
-  else
-    RCLCPP_ERROR(getLogger(), "[CbNavigateNextWaypoint] Failed to send goal");
+  auto goalHandle =
+    waypointsNavigator_->sendNextGoal(options_, [this](auto r) { this->onNavigationResult(r); });
 
   auto waypointname = waypointsNavigator_->getCurrentWaypointName();
 

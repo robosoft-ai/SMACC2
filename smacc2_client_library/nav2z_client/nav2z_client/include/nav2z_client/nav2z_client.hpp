@@ -32,6 +32,8 @@ class ClNav2Z
 {
 public:
   using smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>::GoalHandle;
+  using smacc2::client_bases::SmaccActionClientBase<
+    nav2_msgs::action::NavigateToPose>::ResultCallback;
 
   ClNav2Z(std::string navigateToPoseAction = "/navigate_to_pose");
 

@@ -106,8 +106,6 @@ public:
 
   std::function<void(const Feedback &)> postFeedbackEvent;
 
-  ResultCallback done_cb;
-  // SimpleActiveCallback active_cb;
   FeedbackCallback feedback_cb;
 
   template <typename EvType>
@@ -143,9 +141,10 @@ public:
       RCLCPP_DEBUG(getLogger(), "[%s] FEEDBACK EVENT", demangleType(typeid(*this)).c_str());
     };
 
-    done_cb = [this](auto r) { this->onResult(r); };
-    // done_cb = boost::bind(&SmaccActionClientBase<ActionType>::onResult, this, _1, _2);
+    // result_cb = [this](auto r) { this->onResult(r); };
+    // result_cb = boost::bind(&SmaccActionClientBase<ActionType>::onResult, this, _1, _2);
     // active_cb;
+
     feedback_cb = [this](auto client, auto feedback) { this->onFeedback(client, feedback); };
   }
 
@@ -236,9 +235,11 @@ public:
     }
   }
 
-  std::shared_future<typename GoalHandle::SharedPtr> sendGoal(Goal & goal)
+  std::shared_future<typename GoalHandle::SharedPtr> sendGoal(
+    Goal & goal,
+    ResultCallback resultCallback = nullptr)  // bug related with the cancel action and the issue
   {
-    // client_->sendGoal(goal, done_cb, active_cb, feedback_cb);
+    // client_->sendGoal(goal, result_cb, active_cb, feedback_cb);
     // std::shared_future<typename GoalHandle::SharedPtr>
 
     SendGoalOptions options;
@@ -252,10 +253,10 @@ public:
 
     /// Function called when the result for the goal is received.
     // ResultCallback result_callback;
-    // options.result_callback = done_cb;
+    // options.result_callback = result_cb;
 
-    options.result_callback = [this](const typename rclcpp_action::ClientGoalHandle<
-                                     ActionType>::WrappedResult & result) {
+    options.result_callback = [this, resultCallback](const typename rclcpp_action::ClientGoalHandle<
+                                                     ActionType>::WrappedResult & result) {
       // TODO(#1652): a work around until rcl_action interface is updated
       // if goal ids are not matched, the older goa call this callback so ignore the result
       // if matched, it must be processed (including aborted)
@@ -273,7 +274,19 @@ public:
       //   // goal_result_available_ = true;
       //   // result_ = result;
       //   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "]  Result CB Goal id matches with last request");
-      done_cb(result);
+
+      if (resultCallback != nullptr)
+      {
+        RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "]  Result CB calling user callback");
+        resultCallback(result);
+      }
+      else
+      {
+        RCLCPP_INFO_STREAM(
+          getLogger(), "[" << getName() << "]  Result CB calling default callback");
+        this->onResult(result);
+      }
+
       // }
       // else
       // {

@@ -30,6 +30,11 @@ using ::cl_nav2z::odom_tracker::WorkingMode;
 
 using namespace std::chrono_literals;
 
+CbUndoPathBackwards::CbUndoPathBackwards(std::optional<CbUndoPathBackwardsOptions> options)
+{
+  options_ = options;
+}
+
 void CbUndoPathBackwards::onEntry()
 {
   listener = std::make_shared<tf2_ros::Buffer>(this->getNode()->get_clock());
@@ -47,10 +52,19 @@ void CbUndoPathBackwards::onEntry()
   ClNav2Z::Goal goal;
 
   auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
-  goalCheckerSwitcher->setGoalCheckerId("undo_path_backwards_goal_checker");
+
+  if (options_ && options_->goalCheckerId_)
+  {
+    goalCheckerSwitcher->setGoalCheckerId(*options_->goalCheckerId_);
+  }
+  else
+  {
+    goalCheckerSwitcher->setGoalCheckerId("undo_path_backwards_goal_checker");
+  }
 
   // WARNING: There might be some race condition with the remote undo global planner were the global path was not
   // received yet
+  // TODO: waiting notification from global planner that it is loaded
   rclcpp::sleep_for(1s);
 
   // this line is used to flush/reset backward planner in the case it were already there
@@ -59,7 +73,18 @@ void CbUndoPathBackwards::onEntry()
   {
     goal.pose = forwardpath.poses.front();
     goal.pose.header.stamp = getNode()->now();
-    plannerSwitcher->setUndoPathBackwardPlanner();
+
+    if (options_->undoControllerName_)
+    {
+      plannerSwitcher->setUndoPathBackwardPlanner(false);
+      plannerSwitcher->setDesiredController(*options_->undoControllerName_);
+      plannerSwitcher->commitPublish();
+    }
+    else
+    {
+      plannerSwitcher->setUndoPathBackwardPlanner();
+    }
+
     this->sendGoal(goal);
   }
 }

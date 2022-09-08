@@ -26,7 +26,8 @@ CbNav2ZClientBehaviorBase::~CbNav2ZClientBehaviorBase() {}
 void CbNav2ZClientBehaviorBase::sendGoal(ClNav2Z::Goal & goal)
 {
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Sending goal");
-  goalHandleFuture_ = this->nav2zClient_->sendGoal(goal);
+  goalHandleFuture_ =
+    this->nav2zClient_->sendGoal(goal, [this](auto result) { this->onNavigationResult(result); });
   RCLCPP_INFO_STREAM(
     getLogger(), "[" << getName() << "] Goal set, future valid: " << goalHandleFuture_.valid());
 
@@ -71,15 +72,27 @@ bool CbNav2ZClientBehaviorBase::isOwnActionResponse(ClNav2Z::WrappedResult & r)
   return true;
 }
 
+void CbNav2ZClientBehaviorBase::onNavigationResult(ClNav2Z::WrappedResult & r)
+{
+  if (r.code == rclcpp_action::ResultCode::SUCCEEDED)
+  {
+    this->onNavigationActionSuccess(r);
+  }
+  else
+  {
+    this->onNavigationActionAbort(r);
+  }
+}
+
 void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(ClNav2Z::WrappedResult & r)
 {
-  if (!isOwnActionResponse(r))
-  {
-    RCLCPP_WARN(
-      getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
-      getName().c_str());
-    return;
-  }
+  // if (!isOwnActionResponse(r))
+  // {
+  //   RCLCPP_WARN(
+  //     getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
+  //     getName().c_str());
+  //   return;
+  // }
 
   navigationResult_ = r.code;
 
@@ -89,13 +102,13 @@ void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(ClNav2Z::WrappedResult
 
 void CbNav2ZClientBehaviorBase::onNavigationActionAbort(ClNav2Z::WrappedResult & r)
 {
-  if (!isOwnActionResponse(r))
-  {
-    RCLCPP_WARN(
-      getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
-      getName().c_str());
-    return;
-  }
+  // if (!isOwnActionResponse(r))
+  // {
+  //   RCLCPP_WARN(
+  //     getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
+  //     getName().c_str());
+  //   return;
+  // }
 
   navigationResult_ = r.code;
   auto name = getName();

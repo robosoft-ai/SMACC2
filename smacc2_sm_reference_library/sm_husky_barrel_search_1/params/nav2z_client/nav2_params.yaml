@@ -236,8 +236,8 @@ controller_server:
     UndoBackwardLocalPlanner:
       plugin: "backward_local_planner::BackwardLocalPlanner"
       transform_tolerance: 0.5
-      k_rho: -1.4 # linear distance to the goal gain, default = -1.0 (related with carrot distance)
-      k_alpha: -0.2 #-0.1
+      k_rho: -1.2 # linear distance to the goal gain, default = -1.0 (related with carrot distance)
+      k_alpha: -0.8 #-0.1
       k_betta: -1.2 # -1.0
       carrot_distance: 0.5 #meters default 0.5
       carrot_angular_distance: 0.3 # no constraint, max 3.1416

@@ -56,7 +56,7 @@ struct StMoveBaseEntrance : smacc2::SmaccState<StMoveBaseEntrance, SmHuskyBarrel
     auto cbSequence =  this->getClientBehavior<OrNavigation, CbSequence>();
 
     cbSequence->then<OrNavigation,CbNavigateNextWaypointUntilReached>("base-entrance")
-              ->then<OrNavigation,CbSleepFor>(5s)
+              ->then<OrNavigation,CbSleepFor>(6s)
               ->then<OrNavigation,CbUndoPathBackwards>();
   }
 };
