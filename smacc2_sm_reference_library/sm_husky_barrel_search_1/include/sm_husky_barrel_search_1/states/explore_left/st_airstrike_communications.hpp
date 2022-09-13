@@ -44,7 +44,7 @@ namespace sm_husky_barrel_search_1
         // TRANSITION TABLE
         typedef mpl::list<
                 // Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StEvasionMotion>
-                Transition<EvCbFailure<CbAbortNavigation, OrNavigation>, StUndoRetreat>,
+                Transition<EvCbFinished<CbAbortNavigation, OrNavigation>, StUndoRetreat>,
                 Transition<EvCbSuccess<CbSleepFor, OrNavigation>, StUndoRetreat>
                 //smacc2::Transition<EvAllGo<SrAllEventsGo, StAirStrikeCommunications>, StUndoRetreat>
 

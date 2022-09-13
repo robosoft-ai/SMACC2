@@ -38,26 +38,30 @@ struct StMoveBaseEntrance : smacc2::SmaccState<StMoveBaseEntrance, SmHuskyBarrel
 
   // TRANSITION TABLE
   typedef mpl::list<
-                    // Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, StLedBlinkingCommuncation>,
-                    // Transition<EvCbFailure<CbNavigateNextWaypointUntilReached, OrNavigation>, StMoveBaseEntrance>
+                    Transition<EvCbSuccess<CbNavigateNextWaypointUntilReached, OrNavigation>, StLedBlinkingCommuncation>,
+                    Transition<EvCbFailure<CbNavigateNextWaypointUntilReached, OrNavigation>, StMoveBaseEntrance>
                     >
       reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // configure_orthogonal<OrNavigation, CbNavigateNextWaypointUntilReached>("base-entrance");
-    configure_orthogonal<OrNavigation, CbSequence>();
+    configure_orthogonal<OrNavigation, CbNavigateNextWaypointUntilReached>("base-entrance");
+    // configure_orthogonal<OrNavigation, CbSequence>();
 
   }
 
   void runtimeConfigure()
   {
-    auto cbSequence =  this->getClientBehavior<OrNavigation, CbSequence>();
+    // auto cbSequence =  this->getClientBehavior<OrNavigation, CbSequence>();
 
-    cbSequence->then<OrNavigation,CbNavigateNextWaypointUntilReached>("base-entrance")
-              ->then<OrNavigation,CbSleepFor>(6s)
-              ->then<OrNavigation,CbUndoPathBackwards>();
+    // cbSequence->then<OrNavigation,CbNavigateNextWaypointUntilReached>("base-entrance")
+    //           ->then<OrNavigation,CbSleepFor>(6s)
+    //           ->then<OrNavigation,CbUndoPathBackwards>(
+    //             CbUndoPathBackwardsOptions{
+    //               .undoControllerName_ = "UndoBackwardLocalPlanner"
+    //             }
+    //           );
   }
 };
 }  // namespace sm_husky_barrel_search_1

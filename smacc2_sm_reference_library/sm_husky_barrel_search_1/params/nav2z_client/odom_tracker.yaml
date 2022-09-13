@@ -3,5 +3,5 @@ SmHuskyBarrelSearch1:
     odom_frame: odom
     record_point_distance_threshold:  0.01 # 1 cm
     record_angular_distance_threshold: 0.01 # rads
-    clear_point_distance_threshold: 0.45 # 5cm
-    clear_angular_distance_threshold: 0.4 # rads
+    clear_point_distance_threshold: 0.85 # 5cm
+    clear_angular_distance_threshold: 0.6 # rads

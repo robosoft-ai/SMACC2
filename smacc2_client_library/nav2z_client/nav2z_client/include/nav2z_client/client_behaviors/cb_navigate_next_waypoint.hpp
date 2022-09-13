@@ -41,5 +41,6 @@ protected:
   WaypointNavigator * waypointsNavigator_;
 
   NavigateNextWaypointOptions options_;
+
 };
 }  // namespace cl_nav2z

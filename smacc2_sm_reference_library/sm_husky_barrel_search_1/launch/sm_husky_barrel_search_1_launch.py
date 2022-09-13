@@ -224,7 +224,7 @@ def generate_launch_description():
             ),
         ],
         remappings=[
-            ("/odom", "/odometry/local"),
+            # ("/odom", "/odometry/local"),
             # ("/sm_husky_barrel_search_1_2/odom_tracker/odom_tracker_path", "/odom_tracker_path"),
             # ("/sm_husky_barrel_search_1_2/odom_tracker/odom_tracker_stacked_path", "/odom_tracker_path_stacked")
         ],

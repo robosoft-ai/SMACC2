@@ -33,8 +33,10 @@ void CbNavigateNextWaypoint::onEntry()
 {
   waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
 
+  this->getStateMachine()->createSignalConnection(navigationCallback_, [this](auto r) { this->onNavigationResult(r); }, this);
+
   auto goalHandle =
-    waypointsNavigator_->sendNextGoal(options_, [this](auto r) { this->onNavigationResult(r); });
+    waypointsNavigator_->sendNextGoal(options_, navigationCallback_ });
 
   auto waypointname = waypointsNavigator_->getCurrentWaypointName();
 
