@@ -42,5 +42,7 @@ protected:
 
   NavigateNextWaypointOptions options_;
 
+  smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult & )> navigationCallback_;
+
 };
 }  // namespace cl_nav2z

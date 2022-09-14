@@ -36,7 +36,7 @@ void CbNav2ZClientBehaviorBase::sendGoal(ClNav2Z::Goal & goal)
 
 void CbNav2ZClientBehaviorBase::cancelGoal() { this->nav2zClient_->cancelGoal(); }
 
-bool CbNav2ZClientBehaviorBase::isOwnActionResponse(ClNav2Z::WrappedResult & r)
+bool CbNav2ZClientBehaviorBase::isOwnActionResponse(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> & r)
 {
   auto name = getName();
   if (isShutdownRequested())
@@ -72,7 +72,7 @@ bool CbNav2ZClientBehaviorBase::isOwnActionResponse(ClNav2Z::WrappedResult & r)
   return true;
 }
 
-void CbNav2ZClientBehaviorBase::onNavigationResult(ClNav2Z::WrappedResult & r)
+void CbNav2ZClientBehaviorBase::onNavigationResult(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> & r)
 {
   if (r.code == rclcpp_action::ResultCode::SUCCEEDED)
   {
@@ -84,7 +84,7 @@ void CbNav2ZClientBehaviorBase::onNavigationResult(ClNav2Z::WrappedResult & r)
   }
 }
 
-void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(ClNav2Z::WrappedResult & r)
+void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> & r)
 {
   // if (!isOwnActionResponse(r))
   // {
@@ -100,7 +100,7 @@ void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(ClNav2Z::WrappedResult
   this->postSuccessEvent();
 }
 
-void CbNav2ZClientBehaviorBase::onNavigationActionAbort(ClNav2Z::WrappedResult & r)
+void CbNav2ZClientBehaviorBase::onNavigationActionAbort(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> & r)
 {
   // if (!isOwnActionResponse(r))
   // {

@@ -46,12 +46,12 @@ protected:
 
   void cancelGoal();
 
-  bool isOwnActionResponse(ClNav2Z::WrappedResult & r);
+  bool isOwnActionResponse(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> & r);
 
-  virtual void onNavigationResult(ClNav2Z::WrappedResult & r);
+  virtual void onNavigationResult(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> & r);
 
-  virtual void onNavigationActionSuccess(ClNav2Z::WrappedResult &);
-  virtual void onNavigationActionAbort(ClNav2Z::WrappedResult &);
+  virtual void onNavigationActionSuccess(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> &);
+  virtual void onNavigationActionAbort(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> &);
 
   cl_nav2z::ClNav2Z * nav2zClient_;
 

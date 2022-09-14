@@ -237,7 +237,8 @@ public:
 
   std::shared_future<typename GoalHandle::SharedPtr> sendGoal(
     Goal & goal,
-    ResultCallback resultCallback = nullptr)  // bug related with the cancel action and the issue
+    smacc2::SmaccSignal<void (const WrappedResult & result)> resultCallback=nullptr)
+    //ResultCallback resultCallback = nullptr)  // bug related with the cancel action and the issue
   {
     // client_->sendGoal(goal, result_cb, active_cb, feedback_cb);
     // std::shared_future<typename GoalHandle::SharedPtr>
