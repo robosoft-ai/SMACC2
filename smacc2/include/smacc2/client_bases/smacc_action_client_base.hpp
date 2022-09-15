@@ -60,6 +60,8 @@ public:
   using CancelResponse = typename ActionType::Impl::CancelGoalService::Response;
   using CancelCallback = std::function<void(typename CancelResponse::SharedPtr)>;
 
+  typedef smacc2::SmaccSignal<void(const WrappedResult &)> SmaccActionResultSignal;
+
   std::string action_endpoint_;
   SmaccActionClientBase(std::string actionServerName) : ISmaccActionClient()
   {
@@ -91,11 +93,11 @@ public:
   std::optional<std::shared_future<typename GoalHandle::SharedPtr>> lastRequest_;
   // typename GoalHandle::SharedPtr goalHandle_;
 
-  smacc2::SmaccSignal<void(const WrappedResult &)> onSucceeded_;
-  smacc2::SmaccSignal<void(const WrappedResult &)> onAborted_;
-  // smacc2::SmaccSignal<void(const WrappedResult &)> onPreempted_;
-  // smacc2::SmaccSignal<void(const WrappedResult &)> onRejected_;
-  smacc2::SmaccSignal<void(const WrappedResult &)> onCancelled_;
+  SmaccActionResultSignal onSucceeded_;
+  SmaccActionResultSignal onAborted_;
+  // SmaccActionResultSignal onPreempted_;
+  // SmaccActionResultSignal onRejected_;
+  SmaccActionResultSignal onCancelled_;
 
   // event creation/posting factory functions
   std::function<void(WrappedResult)> postSuccessEvent;
@@ -214,7 +216,7 @@ public:
   {
     if (lastRequest_ && lastRequest_->valid())
     {
-      rclcpp::spin_until_future_complete(getNode(), *lastRequest_);
+      // rclcpp::spin_until_future_complete(getNode(), *lastRequest_);
       auto req = lastRequest_->get();
       RCLCPP_INFO_STREAM(
         getLogger(), "[" << getName() << "] Cancelling goal. req id: "
@@ -222,7 +224,7 @@ public:
       auto cancelresult = client_->async_cancel_goal(req);
 
       // wait actively
-      rclcpp::spin_until_future_complete(getNode(), cancelresult);
+      // rclcpp::spin_until_future_complete(getNode(), cancelresult);
       //lastRequest_.reset();
       return true;
     }
@@ -236,9 +238,9 @@ public:
   }
 
   std::shared_future<typename GoalHandle::SharedPtr> sendGoal(
-    Goal & goal,
-    smacc2::SmaccSignal<void (const WrappedResult & result)> resultCallback=nullptr)
-    //ResultCallback resultCallback = nullptr)  // bug related with the cancel action and the issue
+    Goal & goal, typename SmaccActionResultSignal::WeakPtr resultCallback =
+                   typename SmaccActionResultSignal::WeakPtr())
+  //ResultCallback resultCallback = nullptr)  // bug related with the cancel action and the issue
   {
     // client_->sendGoal(goal, result_cb, active_cb, feedback_cb);
     // std::shared_future<typename GoalHandle::SharedPtr>
@@ -276,10 +278,12 @@ public:
       //   // result_ = result;
       //   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "]  Result CB Goal id matches with last request");
 
-      if (resultCallback != nullptr)
+      auto resultCallbackPtr = resultCallback.lock();
+
+      if (resultCallbackPtr != nullptr)
       {
         RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "]  Result CB calling user callback");
-        resultCallback(result);
+        (*resultCallbackPtr)(result);
       }
       else
       {

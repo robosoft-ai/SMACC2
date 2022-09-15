@@ -54,7 +54,7 @@ public:
 
   void onExit() override;
 
-  void onNavigationActionSuccess(ClNav2Z::WrappedResult & r) override
+  void onNavigationActionSuccess(const ClNav2Z::WrappedResult & r) override
   {
     // if (!isOwnActionResponse(r))
     // {

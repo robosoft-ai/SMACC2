@@ -25,9 +25,13 @@ CbNav2ZClientBehaviorBase::~CbNav2ZClientBehaviorBase() {}
 
 void CbNav2ZClientBehaviorBase::sendGoal(ClNav2Z::Goal & goal)
 {
+  this->navigationCallback_ = std::make_shared<cl_nav2z::ClNav2Z::SmaccNavigateResultSignal>();
+
+  this->getStateMachine()->createSignalConnection(
+    *navigationCallback_, &CbNav2ZClientBehaviorBase::onNavigationResult, this);
+
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Sending goal");
-  goalHandleFuture_ =
-    this->nav2zClient_->sendGoal(goal, [this](auto result) { this->onNavigationResult(result); });
+  goalHandleFuture_ = this->nav2zClient_->sendGoal(goal, navigationCallback_);
   RCLCPP_INFO_STREAM(
     getLogger(), "[" << getName() << "] Goal set, future valid: " << goalHandleFuture_.valid());
 
@@ -36,7 +40,7 @@ void CbNav2ZClientBehaviorBase::sendGoal(ClNav2Z::Goal & goal)
 
 void CbNav2ZClientBehaviorBase::cancelGoal() { this->nav2zClient_->cancelGoal(); }
 
-bool CbNav2ZClientBehaviorBase::isOwnActionResponse(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> & r)
+bool CbNav2ZClientBehaviorBase::isOwnActionResponse(const ClNav2Z::WrappedResult & r)
 {
   auto name = getName();
   if (isShutdownRequested())
@@ -72,7 +76,7 @@ bool CbNav2ZClientBehaviorBase::isOwnActionResponse(smacc2::SmaccSignal<void (co
   return true;
 }
 
-void CbNav2ZClientBehaviorBase::onNavigationResult(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> & r)
+void CbNav2ZClientBehaviorBase::onNavigationResult(const ClNav2Z::WrappedResult & r)
 {
   if (r.code == rclcpp_action::ResultCode::SUCCEEDED)
   {
@@ -84,7 +88,7 @@ void CbNav2ZClientBehaviorBase::onNavigationResult(smacc2::SmaccSignal<void (con
   }
 }
 
-void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> & r)
+void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(const ClNav2Z::WrappedResult & r)
 {
   // if (!isOwnActionResponse(r))
   // {
@@ -100,7 +104,7 @@ void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(smacc2::SmaccSignal<vo
   this->postSuccessEvent();
 }
 
-void CbNav2ZClientBehaviorBase::onNavigationActionAbort(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> & r)
+void CbNav2ZClientBehaviorBase::onNavigationActionAbort(const ClNav2Z::WrappedResult & r)
 {
   // if (!isOwnActionResponse(r))
   // {

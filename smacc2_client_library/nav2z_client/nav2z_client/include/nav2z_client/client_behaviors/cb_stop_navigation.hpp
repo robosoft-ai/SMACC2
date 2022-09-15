@@ -27,10 +27,10 @@
 
 namespace cl_nav2z
 {
-class CbAbortNavigation : public CbNav2ZClientBehaviorBase
+class CbStopNavigation : public CbNavigateGlobalPosition
 {
 public:
-  CbAbortNavigation();
+  CbStopNavigation();
 
   void onEntry() override;
   void onExit() override;

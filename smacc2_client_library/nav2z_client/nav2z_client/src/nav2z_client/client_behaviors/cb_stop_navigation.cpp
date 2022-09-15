@@ -17,22 +17,36 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#pragma once
 
-#include <tf2_ros/buffer.h>
+#include <nav2z_client/client_behaviors/cb_abort_navigation.hpp>
+#include <nav2z_client/common.hpp>
+#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
+#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/pose/cp_pose.hpp>
+#include <nav2z_client/nav2z_client.hpp>
 
-#include "cb_nav2z_client_behavior_base.hpp"
-#include "cb_navigate_global_position.hpp"
-#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
+#include <rclcpp/parameter_client.hpp>
 
 namespace cl_nav2z
 {
-class CbAbortNavigation : public CbNav2ZClientBehaviorBase
-{
-public:
-  CbAbortNavigation();
+CbStopNavigation::CbStopNavigation() {}
 
-  void onEntry() override;
-  void onExit() override;
-};
+void CbStopNavigation::onEntry()
+{
+  // this->sendGoal(goal);
+
+  // this->cancelGoal();
+
+  cl_nav2z::Pose * poseComponent;
+  this->requiresComponent(poseComponent);
+
+  this->setGoal(poseComponent->toPoseMsg());
+
+  CbNavigateGlobalPosition::onEntry();
+
+  // this->sendGoal(goal);
+}
+
+void CbStopNavigation::onExit() {}
+
 }  // namespace cl_nav2z

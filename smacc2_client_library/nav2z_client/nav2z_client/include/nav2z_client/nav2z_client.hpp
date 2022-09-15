@@ -35,6 +35,8 @@ public:
   using smacc2::client_bases::SmaccActionClientBase<
     nav2_msgs::action::NavigateToPose>::ResultCallback;
 
+  typedef smacc2::SmaccSignal<void(const WrappedResult &)> SmaccNavigateResultSignal;
+
   ClNav2Z(std::string navigateToPoseAction = "/navigate_to_pose");
 
   virtual ~ClNav2Z();

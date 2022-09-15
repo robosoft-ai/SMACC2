@@ -46,17 +46,17 @@ protected:
 
   void cancelGoal();
 
-  bool isOwnActionResponse(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> & r);
-
-  virtual void onNavigationResult(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> & r);
-
-  virtual void onNavigationActionSuccess(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> &);
-  virtual void onNavigationActionAbort(smacc2::SmaccSignal<void (const ClNav2Z::WrappedResult &)> &);
+  // handling results according its type
+  bool isOwnActionResponse(const ClNav2Z::WrappedResult &);
+  virtual void onNavigationResult(const ClNav2Z::WrappedResult &);
+  virtual void onNavigationActionSuccess(const ClNav2Z::WrappedResult &);
+  virtual void onNavigationActionAbort(const ClNav2Z::WrappedResult &);
 
   cl_nav2z::ClNav2Z * nav2zClient_;
+  cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::SharedPtr navigationCallback_;
 
+  // deprecated
   rclcpp_action::ResultCode navigationResult_;
-
   std::shared_future<
     std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose> > >
     goalHandleFuture_;

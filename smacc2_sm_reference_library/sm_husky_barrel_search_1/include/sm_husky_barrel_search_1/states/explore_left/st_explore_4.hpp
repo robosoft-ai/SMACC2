@@ -41,7 +41,7 @@ struct StExplore4 : smacc2::SmaccState<StExplore4, SmHuskyBarrelSearch1>
 
   // TRANSITION TABLE
   typedef mpl::list<Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StExplore5, SUCCESS>,
-                    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExplore4, ABORT>,
+                    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StExplore4>,
                     Transition<EvEnemyDetected<ClOpenCVPerception, OrPerception>, StAirStrikeCommunications, ABORT> >
       reactions;
 
@@ -55,6 +55,16 @@ struct StExplore4 : smacc2::SmaccState<StExplore4, SmHuskyBarrelSearch1>
 
   void runtimeConfigure()
   {
+  }
+
+    void onExit(ABORT)
+  {
+
+      cl_nav2z::OdomTracker* odomTracker;
+      requiresComponent(odomTracker);
+
+      odomTracker->pushPath("StAirStrikeCommunications");
+
   }
 };
 }  // namespace sm_husky_barrel_search_1

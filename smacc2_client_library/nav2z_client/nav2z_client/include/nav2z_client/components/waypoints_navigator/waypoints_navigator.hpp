@@ -81,7 +81,8 @@ public:
     std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose> > > >
   sendNextGoal(
     std::optional<NavigateNextWaypointOptions> options = std::nullopt,
-    ClNav2Z::ResultCallback callback = nullptr);
+    cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::WeakPtr callback =
+      cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::WeakPtr());
 
   void stopWaitingResult();
 
