@@ -135,6 +135,7 @@ public:
     postCancelledEvent = [this](auto msg) {
       this->postResultEvent<EvActionCancelled<TSourceObject, TOrthogonal>>(msg);
     };
+
     postFeedbackEvent = [this](auto msg) {
       auto actionFeedbackEvent = new EvActionFeedback<Feedback, TOrthogonal>();
       actionFeedbackEvent->client = this;
@@ -214,27 +215,33 @@ public:
 
   virtual bool cancelGoal() override
   {
-    if (lastRequest_ && lastRequest_->valid())
-    {
-      // rclcpp::spin_until_future_complete(getNode(), *lastRequest_);
-      auto req = lastRequest_->get();
-      RCLCPP_INFO_STREAM(
-        getLogger(), "[" << getName() << "] Cancelling goal. req id: "
-                         << rclcpp_action::to_string(req->get_goal_id()));
-      auto cancelresult = client_->async_cancel_goal(req);
+    auto fut = this->client_->async_cancel_all_goals();
+    fut.wait();
 
-      // wait actively
-      // rclcpp::spin_until_future_complete(getNode(), cancelresult);
-      //lastRequest_.reset();
-      return true;
-    }
-    else
-    {
-      RCLCPP_ERROR(
-        getLogger(), "%s [at %s]: not connected with actionserver, skipping cancel goal ...",
-        getName().c_str(), getNamespace().c_str());
-      return false;
-    }
+    // if (lastRequest_ && lastRequest_->valid())
+    // {
+
+    //   // rclcpp::spin_until_future_complete(getNode(), *lastRequest_);
+    //   auto req = lastRequest_->get();
+    //   RCLCPP_INFO_STREAM(
+    //     getLogger(), "[" << getName() << "] Cancelling goal. req id: "
+    //                      << rclcpp_action::to_string(req->get_goal_id()));
+    //   auto cancelresult = client_->async_cancel_goal(req);
+
+    //   // wait actively
+    //   // rclcpp::spin_until_future_complete(getNode(), cancelresult);
+    //   //lastRequest_.reset();
+    //   return true;
+    // }
+    // else
+    // {
+    //   RCLCPP_ERROR(
+    //     getLogger(), "%s [at %s]: not connected with actionserver, skipping cancel goal ...",
+    //     getName().c_str(), getNamespace().c_str());
+    //   return false;
+    // }
+
+    return true;
   }
 
   std::shared_future<typename GoalHandle::SharedPtr> sendGoal(
