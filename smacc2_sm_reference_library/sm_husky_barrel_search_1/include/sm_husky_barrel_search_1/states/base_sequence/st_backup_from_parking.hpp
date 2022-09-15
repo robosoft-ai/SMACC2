@@ -32,6 +32,7 @@ namespace sm_husky_barrel_search_1
 {
 using cl_nav2z::CbNavigateBackwards;
 using cl_nav2z::CbAbsoluteRotate;
+using cl_nav2z::CbAbortNavigation;
 using cl_nav2z::CbRotateLookAt;
 using cl_nav2z::WaypointNavigator;
 
@@ -45,7 +46,7 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
 
   // // TRANSITION TABLE
   typedef mpl::list<
-                    Transition<EvCbSuccess<CbSequence, OrNavigation>, StMoveBaseEntrance>,
+                    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StMoveBaseEntrance>,
                     //Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StExitBase>,
                     Transition<EvCbFailure<CbSequence, OrNavigation>, StBackupFromParking>
                     >
@@ -54,6 +55,7 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
   // STATE FUNCTIONS
   static void staticConfigure()
   {
+    configure_orthogonal<OrNavigation, CbSequence>();
     configure_orthogonal<OrNavigation, CbSequence>();
     configure_orthogonal<OrLedArray, CbBlinking>(LedColor::YELLOW);
     configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::RED);
@@ -72,13 +74,16 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
     // geometry_msgs::msg::PoseStamped pose_stamped = currentPoseStamped;
     // pose_stamped.pose = *lookat_pose;
 
-    auto cbsequence = this->template getClientBehavior<OrNavigation, CbSequence>();
+    auto cbsequence = this->getClientBehavior<OrNavigation, CbSequence>(0);
     cbsequence
       ->then<OrNavigation, CbNavigateBackwards>(6.0)
-      // ->then<OrNavigation, CbSleepFor>(1s)
-      // ->then<OrNavigation, CbRotateLookAt>(pose_stamped)
-      // ->then<OrNavigation, CbSleepFor>(1s)
       ->then<OrNavigation, CbAbsoluteRotate>(-90.0);
+
+    
+    auto cbsequence2 = this->getClientBehavior<OrNavigation, CbSequence>(1);
+    cbsequence2
+      ->then<OrNavigation, CbSleepFor>(4s)
+      ->then<OrNavigation, CbAbortNavigation>();
   }
 };
 }  // namespace sm_husky_barrel_search_1

@@ -174,9 +174,9 @@ TOrthogonal * ISmaccState::getOrthogonal()
 }
 
 template <typename TOrthogonal, typename TClientBehavior>
-TClientBehavior * ISmaccState::getClientBehavior()
+TClientBehavior * ISmaccState::getClientBehavior(int index)
 {
-  return this->getStateMachine().getClientBehavior<TOrthogonal, TClientBehavior>();
+  return this->getStateMachine().getClientBehavior<TOrthogonal, TClientBehavior>(index);
 }
 
 template <typename TEventGenerator>
