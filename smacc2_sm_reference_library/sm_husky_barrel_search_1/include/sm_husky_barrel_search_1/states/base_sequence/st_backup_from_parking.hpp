@@ -46,10 +46,13 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
 
   // // TRANSITION TABLE
   typedef mpl::list<
-                    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StMoveBaseEntrance>,
+                    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StMoveBaseEntrance>
                     //Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StExitBase>,
-                    Transition<EvCbFailure<CbSequence, OrNavigation>, StBackupFromParking>
+                    // Transition<EvCbFailure<CbSequence, OrNavigation>, StBackupFromParking>
+                    ,Transition<EvCbFailure<CbAbortNavigation, OrNavigation>, StMoveBaseEntrance>
+
                     >
+
       reactions;
 
   // STATE FUNCTIONS
@@ -82,8 +85,13 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
     
     auto cbsequence2 = this->getClientBehavior<OrNavigation, CbSequence>(1);
     cbsequence2
-      ->then<OrNavigation, CbSleepFor>(4s)
+      ->then<OrNavigation, CbSleepFor>(10s)
       ->then<OrNavigation, CbAbortNavigation>();
+      // ->then<OrNavigation, CbSleepFor>(10s)
+      // ->then<OrNavigation, CbNavigateForward>(2.0)
+      // ->then<OrNavigation, CbSleepFor>(10s)
+      // ->then<OrNavigation, CbUndoPathBackwards>();
+
   }
 };
 }  // namespace sm_husky_barrel_search_1
