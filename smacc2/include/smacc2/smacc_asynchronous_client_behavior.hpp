@@ -84,7 +84,11 @@ protected:
 
   virtual void dispose() override;
 
-  inline bool isShutdownRequested() { return isShutdownRequested_; }
+  inline bool isShutdownRequested() 
+  { 
+
+    return isShutdownRequested_; 
+  }
 
 private:
   void waitFutureIfNotFinished(std::optional<std::future<int>> & threadfut, bool requestFinish);
