@@ -21,6 +21,7 @@ find_package(tf2)
 find_package(nav2z_planners_common)
 find_package(pluginlib)
 find_package(nav_2d_utils)
+find_package(rclcpp_lifecycle REQUIRED)
 
 set(dependencies
   nav2_core
@@ -32,6 +33,7 @@ set(dependencies
   nav2z_planners_common
   pluginlib
   nav_2d_utils
+  rclcpp_lifecycle
 )
 
 include_directories(include)

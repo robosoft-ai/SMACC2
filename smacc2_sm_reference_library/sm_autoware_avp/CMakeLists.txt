@@ -16,12 +16,12 @@ find_package(ros_timer_client REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 find_package(autoware_auto_msgs REQUIRED)
-find_package(geometry_msgs REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   ros_timer_client
   smacc2
-  geometry_msgs
+  tf2_geometry_msgs
 )
 
 include_directories(

@@ -19,6 +19,7 @@
   <depend>nav_2d_utils</depend>
   <depend>std_msgs</depend>
   <depend>tf2</depend>
+  <depend>rclcpp_lifecycle</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
