@@ -1,0 +1,41 @@
+repositories:
+  src/SMACC2:
+    type: git
+    url: git@github.com:robosoft-ai/SMACC2.git
+    version: add-hercules-base-sm
+  src/Universal_Robots_ROS2_Description:
+    type: git
+    url: git@github.com:UniversalRobots/Universal_Robots_ROS2_Description.git
+    version: ros2
+  src/Universal_Robots_ROS2_Driver:
+    type: git
+    url: git@github.com:StoglRobotics-forks/Universal_Robots_ROS2_Driver.git
+    version: main
+  src/Universal_Robots_ROS2_Gazebo_Simulation:
+    type: git
+    url: git@github.com:UniversalRobots/Universal_Robots_ROS2_Gazebo_Simulation.git
+    version: ros2
+  src/gazebo_ros2_control:
+    type: git
+    url: git@github.com:destogl/gazebo_ros2_control.git
+    version: master
+  src/husky:
+    type: git
+    url: git@github.com:StoglRobotics-forks/husky.git
+    version: fixup-missing-using
+  src/moveit2:
+    type: git
+    url: git@github.com:ros-planning/moveit2.git
+    version: humble
+  src/robotiq_85_gripper:
+    type: git
+    url: git@github.com:StoglRobotics-forks/robotiq_85_gripper.git
+    version: rolling-ros2-control-simulation
+  src/ros2_control:
+    type: git
+    url: git@github.com:ros-controls/ros2_control.git
+    version: humble
+  src/ros2_controllers:
+    type: git
+    url: git@github.com:StoglRobotics-forks/ros2_controllers.git
+    version: master
