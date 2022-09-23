@@ -58,7 +58,7 @@ void CbSequence::onEntry()
   this->recursiveConsumeNext();
   while (!sequenceNodes_.empty())
   {
-    bool is_shutdown_requested = !this->isShutdownRequested();
+    bool is_shutdown_requested = this->isShutdownRequested();
     if(is_shutdown_requested)
     {
       break;
