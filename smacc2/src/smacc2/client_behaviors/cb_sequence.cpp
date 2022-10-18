@@ -27,13 +27,12 @@ namespace smacc2
 {
 namespace client_behaviors
 {
-CbSequence::CbSequence()
-{
-}
+CbSequence::CbSequence() {}
 
 void CbSequence::recursiveConsumeNext()
 {
-  RCLCPP_INFO(getLogger(), "[SequenceNode %ld] next onEntry: %ld", (long)this, sequenceNodes_.size());
+  RCLCPP_INFO(
+    getLogger(), "[SequenceNode %ld] next onEntry: %ld", (long)this, sequenceNodes_.size());
 
   auto first = sequenceNodes_.front();
   auto onDelayedConfigureFn = first;
@@ -46,11 +45,16 @@ void CbSequence::recursiveConsumeNext()
   this->conn_ = bh_->onSuccess(&CbSequence::onSubNodeSuccess, this);
   this->conn2_ = bh_->onFailure(&CbSequence::onSubNodeAbort, this);
 
-  RCLCPP_INFO(getLogger(), "[SequenceNode %ld] subnode %s on entry", (long)this, currentNodeName.c_str());
+  RCLCPP_INFO(
+    getLogger(), "[SequenceNode %ld] subnode %s on entry", (long)this, currentNodeName.c_str());
   bh_->executeOnEntry();
-  RCLCPP_INFO(getLogger(), "[SequenceNode %ld] subnode %s on entry finished", (long)this, currentNodeName.c_str());
+  RCLCPP_INFO(
+    getLogger(), "[SequenceNode %ld] subnode %s on entry finished", (long)this,
+    currentNodeName.c_str());
   bh_->waitOnEntryThread(false);  // we do not request to finish to keep on subscriptions
-  RCLCPP_INFO(getLogger(), "[SequenceNode %ld] subnode %s thread finished", (long)this, currentNodeName.c_str());
+  RCLCPP_INFO(
+    getLogger(), "[SequenceNode %ld] subnode %s thread finished", (long)this,
+    currentNodeName.c_str());
 }
 
 void CbSequence::onEntry()
@@ -59,15 +63,16 @@ void CbSequence::onEntry()
   while (!sequenceNodes_.empty())
   {
     bool is_shutdown_requested = this->isShutdownRequested();
-    if(is_shutdown_requested)
+    if (is_shutdown_requested)
     {
       break;
     }
 
     rclcpp::sleep_for(std::chrono::milliseconds(200));
-    RCLCPP_INFO_THROTTLE(getLogger(), *(getNode()->get_clock()), 1000,
-                         "[CbSequence %ld] Waiting for subnodes to finish %ld. Current head Behavior: %s ", (long)this,
-                         sequenceNodes_.size(), demangleType(&typeid(*bh_)).c_str());
+    RCLCPP_INFO_THROTTLE(
+      getLogger(), *(getNode()->get_clock()), 1000,
+      "[CbSequence %ld] Waiting for subnodes to finish %ld. Current head Behavior: %s ", (long)this,
+      sequenceNodes_.size(), demangleType(&typeid(*bh_)).c_str());
 
     if (consume_)
     {
@@ -99,19 +104,22 @@ void CbSequence::onEntry()
 
 void CbSequence::onSubNodeSuccess()
 {
-  RCLCPP_INFO(getLogger(), "[CbSequence %ld] Success NextCbSequence %ld", (long)this, sequenceNodes_.size());
+  RCLCPP_INFO(
+    getLogger(), "[CbSequence %ld] Success NextCbSequence %ld", (long)this, sequenceNodes_.size());
   consume_++;
 }
 
 void CbSequence::onSubNodeAbort()
 {
-  RCLCPP_INFO(getLogger(), "[CbSequence %ld] Abort NextCbSequence %ld", (long)this, sequenceNodes_.size());
+  RCLCPP_INFO(
+    getLogger(), "[CbSequence %ld] Abort NextCbSequence %ld", (long)this, sequenceNodes_.size());
   // bh_->waitOnEntryThread();
   this->conn_.disconnect();
   this->conn2_.disconnect();
 
   this->postFailureEvent();
-  RCLCPP_INFO(getLogger(), "[CbSequence %ld] Abort NextCbSequence requesting for force finish", (long)this);
+  RCLCPP_INFO(
+    getLogger(), "[CbSequence %ld] Abort NextCbSequence requesting for force finish", (long)this);
   this->requestForceFinish();
   consume_++;
 }

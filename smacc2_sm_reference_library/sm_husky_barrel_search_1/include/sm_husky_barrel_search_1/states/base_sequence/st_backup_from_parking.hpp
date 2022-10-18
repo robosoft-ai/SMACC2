@@ -82,7 +82,7 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
       ->then<OrNavigation, CbNavigateBackwards>(6.0)
       ->then<OrNavigation, CbAbsoluteRotate>(-90.0);
 
-    
+
     auto cbsequence2 = this->getClientBehavior<OrNavigation, CbSequence>(1);
     cbsequence2
       ->then<OrNavigation, CbSleepFor>(10s)

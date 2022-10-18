@@ -61,7 +61,7 @@ public:
   // returns a client behavior of a given type. If the client behavior is not found, it returns nullptr
   // the index parameter is used to specify the client behavior in case there are more than one
   template <typename TClientBehavior>
-  TClientBehavior * getClientBehavior(int index=0);
+  TClientBehavior * getClientBehavior(int index = 0);
 
   rclcpp::Node::SharedPtr getNode();
   inline rclcpp::Logger getLogger() { return getNode()->get_logger(); }
