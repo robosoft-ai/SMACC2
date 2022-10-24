@@ -34,5 +34,8 @@ public:
 
   void onEntry() override;
   void onExit() override;
+
+  void onNavigationActionSuccess(const ClNav2Z::WrappedResult &) override;
+  void onNavigationActionAbort(const ClNav2Z::WrappedResult &) override;
 };
 }  // namespace cl_nav2z
