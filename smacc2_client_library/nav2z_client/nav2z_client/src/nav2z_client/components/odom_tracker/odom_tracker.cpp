@@ -76,6 +76,9 @@ void OdomTracker::onInitialize()
 
   if (this->subscribeToOdometryTopic_)
   {
+    RCLCPP_INFO_STREAM(
+      nh->get_logger(), "[OdomTracker] subscribing to odom topic: " << odomTopicName_);
+
     rclcpp::SensorDataQoS qos;
     odomSub_ = nh->create_subscription<nav_msgs::msg::Odometry>(
       odomTopicName_, qos,
@@ -450,6 +453,8 @@ bool OdomTracker::updateRecordPath(const nav_msgs::msg::Odometry & odom)
 
     // RCLCPP_WARN(getLogger(),"dist %lf vs min %lf", dist, recordPointDistanceThreshold_);
 
+    RCLCPP_WARN_THROTTLE(getLogger(), *getNode()->get_clock(), 2000, "odom received");
+
     if (dist > recordPointDistanceThreshold_ || goalAngleOffset > recordAngularDistanceThreshold_)
     {
       enqueueOdomMessage = true;
@@ -463,6 +468,9 @@ bool OdomTracker::updateRecordPath(const nav_msgs::msg::Odometry & odom)
 
   if (enqueueOdomMessage)
   {
+    RCLCPP_WARN_THROTTLE(
+      getLogger(), *getNode()->get_clock(), 2000, "enqueue odom tracker pose. dist %lf vs min %lf",
+      dist, recordPointDistanceThreshold_);
     baseTrajectory_.poses.push_back(base_pose);
   }
 
@@ -505,7 +513,7 @@ void OdomTracker::updateConfiguration()
  */
 void OdomTracker::processOdometryMessage(const nav_msgs::msg::Odometry::SharedPtr odom)
 {
-  // RCLCPP_INFO(getLogger(),"odom_tracker m_mutex acquire");
+  RCLCPP_INFO_THROTTLE(getLogger(), *getNode()->get_clock(), 2000, "[odom_tracker] update");
   std::lock_guard<std::mutex> lock(m_mutex_);
 
   updateConfiguration();

@@ -107,7 +107,8 @@
         "node": "cpp",
         "callback": "cpp",
         "image": "cpp",
-        "primitiveset": "cpp"
+        "primitiveset": "cpp",
+        "*.ipp": "cpp"
     },
     "python.autoComplete.extraPaths": [
         "/opt/ros/galactic/lib/python3.8/site-packages"
@@ -115,5 +116,6 @@
     "python.analysis.extraPaths": [
         "/opt/ros/galactic/lib/python3.8/site-packages"
     ],
+    "cmake.sourceDirectory": "${workspaceFolder}/SMACC2/smacc2",
 
 }

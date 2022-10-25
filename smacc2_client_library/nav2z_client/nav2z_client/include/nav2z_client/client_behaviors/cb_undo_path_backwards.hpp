@@ -28,10 +28,19 @@ namespace cl_nav2z
 {
 using ::cl_nav2z::odom_tracker::OdomTracker;
 
+struct CbUndoPathBackwardsOptions
+{
+  // the name of the goal checker selected in the navigation2 stack
+  std::optional<std::string> goalCheckerId_;
+
+  // the name of the goal checker selected in the navigation2 stack
+  std::optional<std::string> undoControllerName_;
+};
+
 class CbUndoPathBackwards : public CbNav2ZClientBehaviorBase
 {
 public:
-  std::optional<std::string> goalChecker_;
+  CbUndoPathBackwards(std::optional<CbUndoPathBackwardsOptions> options = std::nullopt);
 
   void onEntry() override;
 
@@ -41,5 +50,7 @@ private:
   std::shared_ptr<tf2_ros::Buffer> listener;
 
   OdomTracker * odomTracker;
+
+  std::optional<CbUndoPathBackwardsOptions> options_;
 };
 }  // namespace cl_nav2z

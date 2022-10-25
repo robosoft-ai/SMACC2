@@ -33,12 +33,12 @@ void CbNavigateNextWaypoint::onEntry()
 {
   waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
 
-  auto goalHandle = waypointsNavigator_->sendNextGoal(options_);
+  this->navigationCallback_ = std::make_shared<cl_nav2z::ClNav2Z::SmaccNavigateResultSignal>();
 
-  if (goalHandle)
-    goalHandleFuture_ = *goalHandle;
-  else
-    RCLCPP_ERROR(getLogger(), "[CbNavigateNextWaypoint] Failed to send goal");
+  this->getStateMachine()->createSignalConnection(
+    *navigationCallback_, &CbNavigateNextWaypoint::onNavigationResult, this);
+
+  auto goalHandle = waypointsNavigator_->sendNextGoal(options_, navigationCallback_);
 
   auto waypointname = waypointsNavigator_->getCurrentWaypointName();
 

@@ -22,16 +22,27 @@
 #include <tf2_ros/buffer.h>
 
 #include "cb_nav2z_client_behavior_base.hpp"
+#include "cb_navigate_global_position.hpp"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 
 namespace cl_nav2z
 {
-class CbAbortNavigation : public CbNav2ZClientBehaviorBase
+class CbAbortNavigation : public smacc2::SmaccAsyncClientBehavior
 {
 public:
   CbAbortNavigation();
 
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
+  {
+    this->requiresClient(nav2zClient_);
+    smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+  }
+
   void onEntry() override;
   void onExit() override;
+
+private:
+  cl_nav2z::ClNav2Z * nav2zClient_;
 };
 }  // namespace cl_nav2z

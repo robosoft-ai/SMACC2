@@ -79,7 +79,10 @@ public:
 
   std::optional<std::shared_future<
     std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose> > > >
-  sendNextGoal(std::optional<NavigateNextWaypointOptions> options = std::nullopt);
+  sendNextGoal(
+    std::optional<NavigateNextWaypointOptions> options = std::nullopt,
+    cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::WeakPtr callback =
+      cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::WeakPtr());
 
   void stopWaitingResult();
 

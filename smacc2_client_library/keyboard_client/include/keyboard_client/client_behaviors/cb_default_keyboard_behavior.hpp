@@ -49,7 +49,7 @@ public:
         postKeyEvent<EvKeyPressG<CbDefaultKeyboardBehavior, TOrthogonal>>();
       else if (character == 'h')
         postKeyEvent<EvKeyPressH<CbDefaultKeyboardBehavior, TOrthogonal>>();
-      else if (character == 'y')
+      else if (character == 'i')
         postKeyEvent<EvKeyPressI<CbDefaultKeyboardBehavior, TOrthogonal>>();
       else if (character == 'j')
         postKeyEvent<EvKeyPressJ<CbDefaultKeyboardBehavior, TOrthogonal>>();

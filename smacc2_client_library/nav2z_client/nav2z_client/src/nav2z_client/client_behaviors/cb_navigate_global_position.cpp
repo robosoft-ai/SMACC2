@@ -29,6 +29,8 @@ namespace cl_nav2z
 {
 using namespace ::cl_nav2z::odom_tracker;
 
+CbNavigateGlobalPosition::CbNavigateGlobalPosition() {}
+
 CbNavigateGlobalPosition::CbNavigateGlobalPosition(
   float x, float y, float yaw, std::optional<CbNavigateGlobalPositionOptions> options)
 {

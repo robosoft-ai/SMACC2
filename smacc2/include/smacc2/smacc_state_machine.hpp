@@ -76,12 +76,14 @@ public:
   template <typename TOrthogonal>
   TOrthogonal * getOrthogonal();
 
+  // gets the client behavior in a given orthogonal
+  // the index is used to distinguish between multiple client behaviors of the same type
   template <typename TOrthogonal, typename TClientBehavior>
-  inline TClientBehavior * getClientBehavior()
+  inline TClientBehavior * getClientBehavior(int index = 0)
   {
     auto orthogonal = this->template getOrthogonal<TOrthogonal>();
 
-    return orthogonal->template getClientBehavior<TClientBehavior>();
+    return orthogonal->template getClientBehavior<TClientBehavior>(index);
   }
 
   const std::map<std::string, std::shared_ptr<smacc2::ISmaccOrthogonal>> & getOrthogonals() const;

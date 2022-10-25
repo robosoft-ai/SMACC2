@@ -25,17 +25,22 @@ CbNav2ZClientBehaviorBase::~CbNav2ZClientBehaviorBase() {}
 
 void CbNav2ZClientBehaviorBase::sendGoal(ClNav2Z::Goal & goal)
 {
+  this->navigationCallback_ = std::make_shared<cl_nav2z::ClNav2Z::SmaccNavigateResultSignal>();
+
+  this->getStateMachine()->createSignalConnection(
+    *navigationCallback_, &CbNav2ZClientBehaviorBase::onNavigationResult, this);
+
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Sending goal");
-  goalHandleFuture_ = this->nav2zClient_->sendGoal(goal);
+  goalHandleFuture_ = this->nav2zClient_->sendGoal(goal, navigationCallback_);
   RCLCPP_INFO_STREAM(
-    getLogger(), "[" << getName() << "] Sent goal, future valid: " << goalHandleFuture_.valid());
+    getLogger(), "[" << getName() << "] Goal set, future valid: " << goalHandleFuture_.valid());
 
   // this->goal_uuid_ = gh.get_goal_id () ;
 }
 
 void CbNav2ZClientBehaviorBase::cancelGoal() { this->nav2zClient_->cancelGoal(); }
 
-bool CbNav2ZClientBehaviorBase::isOwnActionResponse(ClNav2Z::WrappedResult & r)
+bool CbNav2ZClientBehaviorBase::isOwnActionResponse(const ClNav2Z::WrappedResult & r)
 {
   auto name = getName();
   if (isShutdownRequested())
@@ -60,23 +65,38 @@ bool CbNav2ZClientBehaviorBase::isOwnActionResponse(ClNav2Z::WrappedResult & r)
   if (r.goal_id != goal_uuid_)
   {
     RCLCPP_ERROR(
-      getLogger(), "[%s] Received a failure event from an action server with a different goal_uuid",
-      smacc2::demangleType(typeid(*this)).c_str());
+      getLogger(),
+      "[%s] Received a failure event from an action server with a different goal_uuid: %s, "
+      "expected: %s",
+      smacc2::demangleType(typeid(*this)).c_str(), rclcpp_action::to_string(r.goal_id).c_str(),
+      rclcpp_action::to_string(goal_uuid_).c_str());
     return false;
   }
 
   return true;
 }
 
-void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(ClNav2Z::WrappedResult & r)
+void CbNav2ZClientBehaviorBase::onNavigationResult(const ClNav2Z::WrappedResult & r)
 {
-  if (!isOwnActionResponse(r))
+  if (r.code == rclcpp_action::ResultCode::SUCCEEDED)
   {
-    RCLCPP_WARN(
-      getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
-      getName().c_str());
-    return;
+    this->onNavigationActionSuccess(r);
   }
+  else
+  {
+    this->onNavigationActionAbort(r);
+  }
+}
+
+void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(const ClNav2Z::WrappedResult & r)
+{
+  // if (!isOwnActionResponse(r))
+  // {
+  //   RCLCPP_WARN(
+  //     getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
+  //     getName().c_str());
+  //   return;
+  // }
 
   navigationResult_ = r.code;
 
@@ -84,15 +104,15 @@ void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(ClNav2Z::WrappedResult
   this->postSuccessEvent();
 }
 
-void CbNav2ZClientBehaviorBase::onNavigationActionAbort(ClNav2Z::WrappedResult & r)
+void CbNav2ZClientBehaviorBase::onNavigationActionAbort(const ClNav2Z::WrappedResult & r)
 {
-  if (!isOwnActionResponse(r))
-  {
-    RCLCPP_WARN(
-      getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
-      getName().c_str());
-    return;
-  }
+  // if (!isOwnActionResponse(r))
+  // {
+  //   RCLCPP_WARN(
+  //     getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
+  //     getName().c_str());
+  //   return;
+  // }
 
   navigationResult_ = r.code;
   auto name = getName();

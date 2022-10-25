@@ -152,7 +152,9 @@ void WaypointNavigator::stopWaitingResult()
 
 std::optional<std::shared_future<
   std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose>>>>
-WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> options)
+WaypointNavigator::sendNextGoal(
+  std::optional<NavigateNextWaypointOptions> options,
+  cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::WeakPtr resultCallback)
 {
   if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypoints_.size())
   {
@@ -238,7 +240,7 @@ WaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> optio
         client_->onCancelled(&WaypointNavigator::onGoalAborted, this);
     }
 
-    return client_->sendGoal(goal);
+    return client_->sendGoal(goal, resultCallback);
   }
   else
   {

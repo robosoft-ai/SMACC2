@@ -48,6 +48,8 @@ rclcpp::Node::SharedPtr ISmaccOrthogonal::getNode() { return this->stateMachine_
 
 void ISmaccOrthogonal::addClientBehavior(std::shared_ptr<smacc2::ISmaccClientBehavior> clBehavior)
 {
+  std::lock_guard<std::mutex> lock(this->mutex_);
+
   if (clBehavior != nullptr)
   {
     RCLCPP_INFO(
@@ -72,6 +74,8 @@ std::string ISmaccOrthogonal::getName() const { return demangleSymbol(typeid(*th
 
 void ISmaccOrthogonal::runtimeConfigure()
 {
+  std::lock_guard<std::mutex> lock(this->mutex_);
+
   for (auto & clBehavior : clientBehaviors_)
   {
     RCLCPP_INFO(
@@ -84,6 +88,8 @@ void ISmaccOrthogonal::runtimeConfigure()
 
 void ISmaccOrthogonal::onEntry()
 {
+  std::lock_guard<std::mutex> lock(this->mutex_);
+
   if (clientBehaviors_.size() > 0)
   {
     for (auto & clBehavior : clientBehaviors_)
@@ -118,6 +124,8 @@ void ISmaccOrthogonal::onEntry()
 
 void ISmaccOrthogonal::onExit()
 {
+  std::lock_guard<std::mutex> lock(this->mutex_);
+
   if (clientBehaviors_.size() > 0)
   {
     for (auto & clBehavior : clientBehaviors_)

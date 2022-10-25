@@ -54,15 +54,15 @@ public:
 
   void onExit() override;
 
-  void onNavigationActionSuccess(ClNav2Z::WrappedResult & r) override
+  void onNavigationActionSuccess(const ClNav2Z::WrappedResult & r) override
   {
-    if (!isOwnActionResponse(r))
-    {
-      RCLCPP_WARN(
-        getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
-        getName().c_str());
-      return;
-    }
+    // if (!isOwnActionResponse(r))
+    // {
+    //   RCLCPP_WARN(
+    //     getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
+    //     getName().c_str());
+    //   return;
+    // }
 
     navigationResult_ = r.code;
 

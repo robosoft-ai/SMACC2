@@ -47,20 +47,20 @@ namespace sm_husky_barrel_search_1
                 //Transition<EvCbSuccess<CbSequence, OrNavigation>, StEvasionMotion>,
 
                 // undo testing
-                // Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StEvasionMotion>,
-                // Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StUndoRetreat>
+                Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StEvasionMotion>,
+                Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StUndoRetreat>
 
                 // backward motion
-                Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StEvasionMotion>,
-                Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StUndoRetreat>
+                // Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StEvasionMotion>,
+                // Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StUndoRetreat>
             >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal<OrNavigation, CbNavigateBackwards>(8);
-            //configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+            // configure_orthogonal<OrNavigation, CbNavigateBackwards>(8);
+            configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
 
             // configure_orthogonal<OrNavigation, CbSequence>();
             configure_orthogonal<OrLedArray, CbBlinking>(LedColor::YELLOW);
@@ -69,6 +69,20 @@ namespace sm_husky_barrel_search_1
 
         void runtimeConfigure()
         {
+            //     auto cbSequence =  this->getClientBehavior<OrNavigation, CbSequence>();
+
+            //     cbSequence->then<OrNavigation,CbNavigateNextWaypointUntilReached>("base-entrance")
+            //     ->then<OrNavigation,CbSleepFor>(6s)
+            //     ->then<OrNavigation,CbUndoPathBackwards>(
+            //         CbUndoPathBackwardsOptions{
+            //         .undoControllerName_ = "UndoBackwardLocalPlanner"
+            //         }
+            //     ->then<OrNavigation,CbUndoPathBackwards>(
+            //         CbUndoPathBackwardsOptions{
+            //         .undoControllerName_ = "UndoBackwardLocalPlanner"
+            //         }
+            //   );
+
             // auto cbsequence = this->template getClientBehavior<OrNavigation, CbSequence>();
             // cbsequence
             // ->then<OrNavigation, CbUndoPathBackwards>()
