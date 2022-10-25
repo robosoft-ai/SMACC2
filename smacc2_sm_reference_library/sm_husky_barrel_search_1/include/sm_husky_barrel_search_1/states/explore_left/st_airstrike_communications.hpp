@@ -60,7 +60,7 @@ namespace sm_husky_barrel_search_1
             configure_orthogonal<OrLedArray, CbSequenceColorBlinking>();
             //configure_orthogonal<OrNavigation, CbAbsoluteRotate>(35.0);
             // configure_orthogonal<OrNavigation, CbStopNavigation>();
-            configure_orthogonal<OrNavigation, CbAbortNavigation>();
+            // configure_orthogonal<OrNavigation, CbAbortNavigation>();
             configure_orthogonal<OrNavigation, CbSleepFor>(5s);
 
 
@@ -80,12 +80,12 @@ namespace sm_husky_barrel_search_1
 
         void runtimeConfigure()
         {
-            cl_nav2z::ClNav2Z *nav2zClient;
-            requiresClient(nav2zClient);
+            // cl_nav2z::ClNav2Z *nav2zClient;
+            // requiresClient(nav2zClient);
 
-            auto odomTracker = nav2zClient->getComponent<cl_nav2z::OdomTracker>();
+            // auto odomTracker = nav2zClient->getComponent<cl_nav2z::OdomTracker>();
 
-            odomTracker->popPath();
+            // odomTracker->popPath();
         }
 
     };
