@@ -27,7 +27,6 @@
 #include <sm_husky_barrel_search_1/clients/led_array/client_behaviors.hpp>
 #include <smacc2/client_behaviors/cb_sequence.hpp>
 #include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
-#include <sm_husky_barrel_search_1/clients/cb_callback.hpp>
 
 namespace sm_husky_barrel_search_1
 {
@@ -35,7 +34,6 @@ using cl_nav2z::CbNavigateBackwards;
 using cl_nav2z::CbAbsoluteRotate;
 using cl_nav2z::CbRotateLookAt;
 using cl_nav2z::WaypointNavigator;
-using cl_nav2z::CbUndoPathBackwards;
 
 using sm_husky_barrel_search_1::cl_led_array::CbBlinking;
 using smacc2::client_behaviors::CbSequence;
@@ -47,16 +45,15 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
 
   // // TRANSITION TABLE
   typedef mpl::list<
-                    // Transition<EvCbSuccess<CbSequence, OrNavigation>, StMoveBaseEntrance>,
+                    Transition<EvCbSuccess<CbSequence, OrNavigation>, StMoveBaseEntrance>,
                     //Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StExitBase>,
-                    // Transition<EvCbFailure<CbSequence, OrNavigation>, StBackupFromParking>
+                    Transition<EvCbFailure<CbSequence, OrNavigation>, StBackupFromParking>
                     >
       reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbSequence>();
     configure_orthogonal<OrNavigation, CbSequence>();
     configure_orthogonal<OrLedArray, CbBlinking>(LedColor::YELLOW);
     configure_orthogonal<OrLedArray, CbLEDOff>(LedColor::RED);
@@ -75,31 +72,13 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
     // geometry_msgs::msg::PoseStamped pose_stamped = currentPoseStamped;
     // pose_stamped.pose = *lookat_pose;
 
-    auto cbsequence = this->getClientBehavior<OrNavigation, CbSequence>(0);
+    auto cbsequence = this->template getClientBehavior<OrNavigation, CbSequence>();
     cbsequence
-      ->then<OrNavigation, CbSleepFor>(20s)
-      ->then<OrNavigation, CbAbortNavigation>()
-      ->then<OrNavigation, CbCallback>(
-          [this]()
-          {
-            OdomTracker* odomTracker;
-            this->requiresComponent(odomTracker);
-            // odomTracker->pushPath("StAirStrikeCommunications");
-            // odomTracker->setWorkingMode(cl_nav2z::odom_tracker::WorkingMode::IDLE);
-          }
-      )
-      ->then<OrNavigation, CbSleepFor>(1s)
-      ->then<OrNavigation, CbUndoPathBackwards>();
-
-
-    auto cbsequence2 = this->getClientBehavior<OrNavigation, CbSequence>(1);
-    cbsequence2
-      ->then<OrNavigation, CbNavigateBackwards>(3)
-      ->then<OrNavigation, CbNavigateForward>(3);
-      // ->then<OrNavigation, CbAbsoluteRotate>(90);
-      // ->then<OrNavigation, CbSleepFor>(10s)
-      //
-
+      ->then<OrNavigation, CbNavigateBackwards>(6.0)
+      // ->then<OrNavigation, CbSleepFor>(1s)
+      // ->then<OrNavigation, CbRotateLookAt>(pose_stamped)
+      // ->then<OrNavigation, CbSleepFor>(1s)
+      ->then<OrNavigation, CbAbsoluteRotate>(-90.0);
   }
 };
 }  // namespace sm_husky_barrel_search_1

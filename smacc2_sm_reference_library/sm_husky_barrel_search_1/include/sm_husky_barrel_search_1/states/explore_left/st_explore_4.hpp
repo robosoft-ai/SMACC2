@@ -60,13 +60,13 @@ struct StExplore4 : smacc2::SmaccState<StExplore4, SmHuskyBarrelSearch1>
     void onExit(ABORT)
   {
 
-      cl_nav2z::OdomTracker* odomTracker;
-      requiresComponent(odomTracker);
-      odomTracker->pushPath("StAirStrikeCommunications");
-      
-      ClNav2Z* nav2z;
-      requiresClient(nav2z);
-      nav2z->cancelGoal();
+      // cl_nav2z::OdomTracker* odomTracker;
+      // requiresComponent(odomTracker);
+      // odomTracker->pushPath("StAirStrikeCommunications");
+
+      // ClNav2Z* nav2z;
+      // requiresClient(nav2z);
+      // nav2z->cancelGoal();
   }
 };
 }  // namespace sm_husky_barrel_search_1

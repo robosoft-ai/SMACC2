@@ -29,7 +29,7 @@ namespace sm_husky_barrel_search_1
 class CbCallback : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  
+
   CbCallback(std::function<void()> callback):callback_(callback)
   {
 
