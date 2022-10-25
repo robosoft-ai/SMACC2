@@ -46,7 +46,8 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
 
   // // TRANSITION TABLE
   typedef mpl::list<
-                    Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StMoveBaseEntrance>
+                    Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StMoveBaseEntrance>
+                    // Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StMoveBaseEntrance>
                     //Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StExitBase>,
                     // Transition<EvCbFailure<CbSequence, OrNavigation>, StBackupFromParking>
                     // ,Transition<EvCbFailure<CbAbortNavigation, OrNavigation>, StMoveBaseEntrance>
@@ -81,16 +82,17 @@ struct StBackupFromParking : smacc2::SmaccState<StBackupFromParking, SmHuskyBarr
     cbsequence
       ->then<OrNavigation, CbSleepFor>(20s)
       ->then<OrNavigation, CbAbortNavigation>()
-      ->then<OrNavigation, CbSleepFor>(5s)
+      ->then<OrNavigation, CbSleepFor>(15s)
       ->then<OrNavigation, CbNavigateForward>(1.0);
 
 
     auto cbsequence2 = this->getClientBehavior<OrNavigation, CbSequence>(1);
     cbsequence2
       ->then<OrNavigation, CbNavigateBackwards>(3)
-      ->then<OrNavigation, CbNavigateForward>(3);
+      ->then<OrNavigation, CbNavigateForward>(3)
+      ->then<OrNavigation, CbAbsoluteRotate>(90);
       // ->then<OrNavigation, CbSleepFor>(10s)
-      // 
+      //
 
   }
 };

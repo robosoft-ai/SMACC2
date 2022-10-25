@@ -1,8 +1,8 @@
 #pragma once
 
+#include <optional>
 #include <smacc2/smacc_client.hpp>
 #include <smacc2/smacc_signal.hpp>
-#include <optional>
 
 namespace smacc2
 {
@@ -16,27 +16,29 @@ class SmaccServiceServerClient : public smacc2::ISmaccClient
 
 public:
   std::optional<std::string> serviceName_;
-  SmaccServiceServerClient()
-  {
-    initialized_ = false;
-  }
+  SmaccServiceServerClient() { initialized_ = false; }
   SmaccServiceServerClient(std::string service_name)
   {
     serviceName_ = service_name;
     initialized_ = false;
   }
 
-  virtual ~SmaccServiceServerClient()
-  {
-  }
+  virtual ~SmaccServiceServerClient() {}
 
-  smacc2::SmaccSignal<void(const std::shared_ptr<typename TService::Request>, std::shared_ptr<typename TService::Response>)> onServiceRequestReceived_;
+  smacc2::SmaccSignal<void(
+    const std::shared_ptr<typename TService::Request>,
+    std::shared_ptr<typename TService::Response>)>
+    onServiceRequestReceived_;
 
   template <typename T>
-  boost::signals2::connection
-  onServiceRequestReceived(void (T::*callback)(const std::shared_ptr<typename TService::Request>, std::shared_ptr<typename TService::Response>), T* object)
+  boost::signals2::connection onServiceRequestReceived(
+    void (T::*callback)(
+      const std::shared_ptr<typename TService::Request>,
+      std::shared_ptr<typename TService::Response>),
+    T * object)
   {
-     return this->getStateMachine()->createSignalConnection(onServiceRequestReceived_, callback, object);
+    return this->getStateMachine()->createSignalConnection(
+      onServiceRequestReceived_, callback, object);
   }
 
   void onInitialize() override
@@ -45,13 +47,19 @@ public:
     {
       if (!serviceName_)
       {
-        RCLCPP_ERROR_STREAM(getLogger(), "[" << this->getName() << "] service server with no service name set. Skipping.");
+        RCLCPP_ERROR_STREAM(
+          getLogger(),
+          "[" << this->getName() << "] service server with no service name set. Skipping.");
       }
       else
       {
-        RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Client Service: " << *serviceName_);
+        RCLCPP_INFO_STREAM(
+          getLogger(), "[" << this->getName() << "] Client Service: " << *serviceName_);
 
-        server_ = getNode()->create_service<TService>(*serviceName_, std::bind(&SmaccServiceServerClient<TService>::serviceCallback, this,std::placeholders::_1,std::placeholders::_2));
+        server_ = getNode()->create_service<TService>(
+          *serviceName_, std::bind(
+                           &SmaccServiceServerClient<TService>::serviceCallback, this,
+                           std::placeholders::_1, std::placeholders::_2));
 
         this->initialized_ = true;
       }
@@ -59,7 +67,9 @@ public:
   }
 
 private:
-  void serviceCallback(const std::shared_ptr<typename TService::Request> req, std::shared_ptr<typename TService::Response> res)
+  void serviceCallback(
+    const std::shared_ptr<typename TService::Request> req,
+    std::shared_ptr<typename TService::Response> res)
   {
     onServiceRequestReceived_(req, res);
   }

@@ -35,18 +35,10 @@ void CbAbortNavigation::onEntry()
 {
   // this->sendGoal(goal);
 
-  this->cancelGoal();
+  this->nav2zClient_->cancelGoal();
+  this->postSuccessEvent();
 }
 
 void CbAbortNavigation::onExit() {}
 
-
-  void CbAbortNavigation::onNavigationActionSuccess(const ClNav2Z::WrappedResult &) 
-  {
-    this->postFailureEvent();
-  }
-  void CbAbortNavigation::onNavigationActionAbort(const ClNav2Z::WrappedResult & r) 
-  {
-    this->postSuccessEvent();
-  }
 }  // namespace cl_nav2z
