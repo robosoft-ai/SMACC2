@@ -18,6 +18,13 @@ find_package(Boost COMPONENTS thread REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_srvs REQUIRED)
 
+set(dependencies
+  smacc2
+  rclcpp
+  ros_timer_client
+  std_srvs
+)
+
 include_directories(include
                     ${smacc2_INCLUDE_DIRS}
                     ${ros_timer_client_INCLUDE_DIRS})
@@ -33,7 +40,7 @@ target_link_libraries(${PROJECT_NAME}_node
   ${std_srvs_LIBRARIES}
 )
 
-ament_target_dependencies(${PROJECT_NAME}_node smacc2)
+ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
 
 install(
   DIRECTORY include/
