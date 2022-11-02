@@ -1,0 +1,29 @@
+name: Humble Binary Build
+on: 
+   pull_request: 
+   push: 
+   branches: 
+         - humble
+   schedule: # Run every morning to detect flakiness and broken dependencies 
+         - cron: '43 3 * * *'
+
+jobs:
+  ci: 
+    name: humble binary build
+    runs-on: ubuntu-22.04
+    container:
+        image: osrf/ros:humble-desktop
+
+    steps:
+        - uses: actions/checkout@v1
+
+        - name: dependencies and build
+          shell: bash
+          run: |
+                apt-get update
+                rm /etc/ros/rosdep/sources.list.d/20-default.list
+                rosdep init
+                rosdep update
+                rosdep install --from-paths . --ignore-src -r -y --skip-keys warehouse_ros_mongo
+                source /opt/ros/humble/setup.bash
+                colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-skip sm_multi_ur5_sim sm_test_moveit_ur5_sim
