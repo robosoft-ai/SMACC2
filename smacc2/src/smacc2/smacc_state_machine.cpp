@@ -152,11 +152,11 @@ void ISmaccStateMachine::initializeROS(std::string shortname)
   RCLCPP_WARN_STREAM(nh_->get_logger(), "State machine base creation:" << shortname);
   // STATE MACHINE TOPICS
   stateMachinePub_ = nh_->create_publisher<smacc2_msgs::msg::SmaccStateMachine>(
-    shortname + "/smacc/state_machine_description", 1);
+    shortname + "/smacc/state_machine_description", rclcpp::QoS(1));
   stateMachineStatusPub_ =
-    nh_->create_publisher<smacc2_msgs::msg::SmaccStatus>(shortname + "/smacc/status", 1);
+    nh_->create_publisher<smacc2_msgs::msg::SmaccStatus>(shortname + "/smacc/status", rclcpp::QoS(1));
   transitionLogPub_ = nh_->create_publisher<smacc2_msgs::msg::SmaccTransitionLogEntry>(
-    shortname + "/smacc/transition_log", 1);
+    shortname + "/smacc/transition_log", rclcpp::QoS(1));
 
   // STATE MACHINE SERVICES
   transitionHistoryService_ = nh_->create_service<smacc2_msgs::srv::SmaccGetTransitionHistory>(

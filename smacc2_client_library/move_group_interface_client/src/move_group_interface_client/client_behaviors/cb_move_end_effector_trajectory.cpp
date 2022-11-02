@@ -50,7 +50,7 @@ void CbMoveEndEffectorTrajectory::initializeROS()
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] initializing ros");
 
   auto nh = this->getNode();
-  markersPub_ = nh->create_publisher<visualization_msgs::msg::MarkerArray>("trajectory_markers", 1);
+  markersPub_ = nh->create_publisher<visualization_msgs::msg::MarkerArray>("trajectory_markers", rclcpp::QoS(1));
   iksrv_ = nh->create_client<moveit_msgs::srv::GetPositionIK>("/compute_ik");
 }
 

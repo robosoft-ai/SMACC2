@@ -110,7 +110,7 @@ void ForwardLocalPlanner::configure(
     "%lf, ",
     max_linear_x_speed_, max_angular_z_speed_, k_rho_, carrot_distance_);
   goalMarkerPublisher_ = nh_->create_publisher<visualization_msgs::msg::MarkerArray>(
-    "forward_local_planner/carrot_goal_marker", 1);
+    "forward_local_planner/carrot_goal_marker", rclcpp::QoS(1));
 
   waiting_ = false;
   waitingTimeout_ = rclcpp::Duration(10s);

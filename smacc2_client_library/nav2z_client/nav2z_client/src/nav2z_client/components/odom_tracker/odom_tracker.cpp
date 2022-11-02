@@ -85,9 +85,9 @@ void OdomTracker::onInitialize()
       std::bind(&OdomTracker::processOdometryMessage, this, std::placeholders::_1));
   }
 
-  robotBasePathPub_ = nh->create_publisher<nav_msgs::msg::Path>("odom_tracker_path", 1);
+  robotBasePathPub_ = nh->create_publisher<nav_msgs::msg::Path>("odom_tracker_path", rclcpp::QoS(1));
   robotBasePathStackedPub_ =
-    nh->create_publisher<nav_msgs::msg::Path>("odom_tracker_stacked_path", 1);
+    nh->create_publisher<nav_msgs::msg::Path>("odom_tracker_stacked_path", rclcpp::QoS(1));
 }
 
 /**

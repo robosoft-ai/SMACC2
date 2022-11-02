@@ -351,7 +351,7 @@ void main_ros_loop(int argc, char** argv)
   rclcpp::Node::SharedPtr nh = rclcpp::Node::make_shared("opencv_perception_node");
 
   RCLCPP_INFO(nh->get_logger(), "opencv perception node started");
-  detectionPub = nh->create_publisher<sm_husky_barrel_search_1::msg::DetectedObjects>("detected_objects", 1);
+  detectionPub = nh->create_publisher<sm_husky_barrel_search_1::msg::DetectedObjects>("detected_objects", rclcpp::QoS(1));
   imageSub = nh->create_subscription<sensor_msgs::msg::Image>("/image_raw", rclcpp::QoS(1).best_effort(), callback);
   debugImagePub = nh->create_publisher<sensor_msgs::msg::Image>("/opencv_debug_image", rclcpp::QoS(1).best_effort());
 
