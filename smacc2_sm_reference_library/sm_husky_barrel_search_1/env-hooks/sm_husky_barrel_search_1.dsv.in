@@ -1,2 +1,0 @@
-prepend-non-duplicate;GAZEBO_MODEL_PATH;share/sm_husky_barrel_search_1/models
-prepend-non-duplicate;GAZEBO_MODEL_PATH;share/sm_husky_barrel_search_1/worlds

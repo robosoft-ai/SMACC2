@@ -1,9 +1,0 @@
-<launch>
-    <executable cmd="gzserver -s libgazebo_ros_factory.so $(find-pkg-share sm_husky_barrel_search_1)/worlds/led_plugin_demo.world --verbose" cwd="$(find-pkg-share sm_husky_barrel_search_1)" output="screen">
-        <env name="GAZEBO_PLUGIN_PATH" value="/home/geus/Desktop/smacc_ws/install/sm_husky_barrel_search_1/lib"/>
-    </executable>
-
-    <executable cmd="gzclient" cwd="$(find-pkg-share sm_husky_barrel_search_1)" output="screen">
-        <env name="GAZEBO_PLUGIN_PATH" value="/home/geus/Desktop/smacc_ws/install/sm_husky_barrel_search_1/lib"/>
-    </executable>
-</launch>
