@@ -20,7 +20,7 @@
 
 #include <tf2/impl/utils.h>
 #include <tf2/utils.h>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include <move_group_interface_client/common.hpp>
 
 std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg)

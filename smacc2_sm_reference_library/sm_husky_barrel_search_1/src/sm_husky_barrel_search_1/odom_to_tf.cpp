@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
 //   nh.param<std::string>("newFrame", newFrame, "H01_base/base_link");
 //   nh.param<std::string>("orgFrame", orgFrame, "world");
   auto sub_odom = nh->create_subscription<nav_msgs::msg::Odometry>(odomTopic, rclcpp::SensorDataQoS(), &odomCallback);
-  repub_odom = nh->create_publisher<nav_msgs::msg::Odometry>(odomTopicRepub, 10 );
+  repub_odom = nh->create_publisher<nav_msgs::msg::Odometry>(odomTopicRepub, rclcpp::SensorDataQoS(10) );
 
   rclcpp::spin(nh);
   return 0;

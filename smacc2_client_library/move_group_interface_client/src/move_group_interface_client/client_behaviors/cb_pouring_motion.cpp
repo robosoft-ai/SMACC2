@@ -35,30 +35,6 @@ CbCircularPouringMotion::CbCircularPouringMotion(
 {
 }
 
-#ifndef ROS_ROLLING
-
-geometry_msgs::msg::Point & toMsg(const tf2::Vector3 & in, geometry_msgs::msg::Point & out)
-{
-  out.x = in.getX();
-  out.y = in.getY();
-  out.z = in.getZ();
-  return out;
-}
-
-void toMsg(const tf2::Transform & in, geometry_msgs::msg::Pose & out)
-{
-  out.position.x = in.getOrigin().getX();
-  out.position.y = in.getOrigin().getY();
-  out.position.z = in.getOrigin().getZ();
-  out.orientation = toMsg(in.getRotation());
-}
-
-void fromMsg(const geometry_msgs::msg::Point & in, tf2::Vector3 & out)
-{
-  out = tf2::Vector3(in.x, in.y, in.z);
-}
-#endif
-
 void CbCircularPouringMotion::generateTrajectory()
 {
   // at least 1 sample per centimeter (average)
@@ -95,12 +71,7 @@ void CbCircularPouringMotion::generateTrajectory()
 
   tf2::Vector3 pivotPoint;
 
-#ifdef ROS_ROLLING
   tf2::fromMsg(this->relativePivotPoint_, pivotPoint);
-#else
-  fromMsg(this->relativePivotPoint_, pivotPoint);
-
-#endif
 
   tf2::Vector3 pivot = (currentEndEffectorTransform * pivotPoint);
 
@@ -180,12 +151,8 @@ void CbCircularPouringMotion::createMarkers()
   this->getCurrentEndEffectorPose(globalFrame_, currentEndEffectorTransform);
   tf2::Vector3 pivotPoint;
 
-#ifdef ROS_ROLLING
   tf2::fromMsg(this->relativePivotPoint_, pivotPoint);
-#else
-  fromMsg(this->relativePivotPoint_, pivotPoint);
 
-#endif
   tf2::Vector3 pivot = (currentEndEffectorTransform * pivotPoint);
 
   visualization_msgs::msg::Marker marker;
@@ -203,11 +170,8 @@ void CbCircularPouringMotion::createMarkers()
   marker.color.g = 0;
   marker.color.b = 1.0;
 
-#ifdef ROS_ROLLING
   tf2::toMsg(pivot, marker.pose.position);
-#else
-  toMsg(pivot, marker.pose.position);
-#endif
+
   marker.header.frame_id = globalFrame_;
   marker.header.stamp = getNode()->now();
 

@@ -23,7 +23,7 @@
 
 #include "cb_nav2z_client_behavior_base.hpp"
 #include "cb_navigate_global_position.hpp"
-#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 
 namespace cl_nav2z
 {

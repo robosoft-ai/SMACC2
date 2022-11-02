@@ -212,6 +212,7 @@ std::string ISmaccStateMachine::getStateMachineName()
 
 void ISmaccStateMachine::disposeStateAndDisconnectSignals()
 {
+
   for (auto & conn : this->stateCallbackConnections)
   {
     RCLCPP_WARN_STREAM(

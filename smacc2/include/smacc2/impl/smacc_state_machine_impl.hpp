@@ -564,6 +564,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
     }
   }
 
+
   //this->lockStateMachine("state exit");
 }
 

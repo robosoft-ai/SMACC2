@@ -108,7 +108,8 @@
         "callback": "cpp",
         "image": "cpp",
         "primitiveset": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "core": "cpp"
     },
     "python.autoComplete.extraPaths": [
         "/opt/ros/galactic/lib/python3.8/site-packages"

@@ -1,14 +1,14 @@
 name: Humble Binary Build
-on: 
-   pull_request: 
-   push: 
-   branches: 
+on:
+   pull_request:
+   push:
+   branches:
          - humble
-   schedule: # Run every morning to detect flakiness and broken dependencies 
+   schedule: # Run every morning to detect flakiness and broken dependencies
          - cron: '43 3 * * *'
 
 jobs:
-  ci: 
+  ci:
     name: humble binary build
     runs-on: ubuntu-22.04
     container:

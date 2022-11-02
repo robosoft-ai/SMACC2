@@ -20,7 +20,8 @@ find_package(std_srvs REQUIRED)
 
 include_directories(include
                     ${smacc2_INCLUDE_DIRS}
-                    ${ros_timer_client_INCLUDE_DIRS})
+                    ${ros_timer_client_INCLUDE_DIRS}
+                    ${std_srvs_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME}_node
                 src/sm_atomic_services/sm_atomic_services_node.cpp)

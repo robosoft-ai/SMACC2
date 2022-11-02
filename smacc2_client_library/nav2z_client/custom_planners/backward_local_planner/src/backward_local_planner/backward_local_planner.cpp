@@ -95,8 +95,8 @@ void tryGetOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::string 
 
 void BackwardLocalPlanner::configure(
   const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent, std::string name,
-  const std::shared_ptr<tf2_ros::Buffer> & tf,
-  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> & costmap_ros)
+  const std::shared_ptr<tf2_ros::Buffer> tf,
+  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
   this->costmapRos_ = costmap_ros;
   // rclcpp::Node::SharedPtr nh("~/BackwardLocalPlanner");
