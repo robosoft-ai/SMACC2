@@ -14,9 +14,30 @@ on:
 
 jobs:
   binary:
-    uses: ./.github/workflows/reusable-industrial-ci-with-cache.yml
-    with:
-      ros_repo: main
-      ros_distro: humble
-      upstream_workspace: SMACC2-not-released.humble.repos
-      ref_for_scheduled_build: humble
+    name: humble binary build
+    runs-on: ubuntu-22.04
+    container:
+        image: osrf/ros:humble-desktop
+
+    steps:
+        - uses: actions/checkout@v1
+
+        - name: dependencies and build
+          shell: bash
+          run: |
+                apt-get update
+                rm /etc/ros/rosdep/sources.list.d/20-default.list
+                rosdep init
+                rosdep update
+                rosdep install --from-paths . --ignore-src -r -y --skip-keys warehouse_ros_mongo
+                source /opt/ros/humble/setup.bash
+                colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-skip sm_multi_ur5_sim sm_test_moveit_ur5_sim
+
+
+# problems with mongodb
+#     uses: ./.github/workflows/reusable-industrial-ci-with-cache.yml
+#     with:
+#       ros_repo: main
+#       ros_distro: humble
+#       upstream_workspace: SMACC2-not-released.humble.repos
+#       ref_for_scheduled_build: humble
