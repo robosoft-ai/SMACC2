@@ -162,7 +162,8 @@ void BackwardLocalPlanner::configure(
   goalMarkerPublisher_ = nh_->create_publisher<visualization_msgs::msg::MarkerArray>(
     "backward_local_planner/goal_marker", rclcpp::QoS(1));
 
-  planPub_ = nh_->create_publisher<nav_msgs::msg::Path>("backward_local_planner/path", rclcpp::QoS(1));
+  planPub_ =
+    nh_->create_publisher<nav_msgs::msg::Path>("backward_local_planner/path", rclcpp::QoS(1));
 }
 
 void BackwardLocalPlanner::updateParameters()

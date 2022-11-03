@@ -153,8 +153,8 @@ void ISmaccStateMachine::initializeROS(std::string shortname)
   // STATE MACHINE TOPICS
   stateMachinePub_ = nh_->create_publisher<smacc2_msgs::msg::SmaccStateMachine>(
     shortname + "/smacc/state_machine_description", rclcpp::QoS(1));
-  stateMachineStatusPub_ =
-    nh_->create_publisher<smacc2_msgs::msg::SmaccStatus>(shortname + "/smacc/status", rclcpp::QoS(1));
+  stateMachineStatusPub_ = nh_->create_publisher<smacc2_msgs::msg::SmaccStatus>(
+    shortname + "/smacc/status", rclcpp::QoS(1));
   transitionLogPub_ = nh_->create_publisher<smacc2_msgs::msg::SmaccTransitionLogEntry>(
     shortname + "/smacc/transition_log", rclcpp::QoS(1));
 
@@ -212,7 +212,6 @@ std::string ISmaccStateMachine::getStateMachineName()
 
 void ISmaccStateMachine::disposeStateAndDisconnectSignals()
 {
-
   for (auto & conn : this->stateCallbackConnections)
   {
     RCLCPP_WARN_STREAM(

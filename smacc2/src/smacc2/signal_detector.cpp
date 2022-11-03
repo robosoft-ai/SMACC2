@@ -215,8 +215,7 @@ void SignalDetector::pollOnce()
   //TRACEPOINT( spinOnce);
   TRACEPOINT(spinOnce);
 
-  std::lock_guard
-  <std::recursive_mutex> lock(smaccStateMachine_->m_mutex_);
+  std::lock_guard<std::recursive_mutex> lock(smaccStateMachine_->m_mutex_);
   try
   {
     //smaccStateMachine_->lockStateMachine("update behaviors");
