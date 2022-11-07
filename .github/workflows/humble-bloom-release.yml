@@ -1,4 +1,4 @@
-name: bloom-release
+name: Humble bloom-release
 
 on:
   push:
@@ -20,10 +20,15 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
+      - uses: ros-tooling/setup-ros@v0.2
+        with:
+          required-ros-distributions: galactic
+
       # BASIC CODE QUALITY
       - run: |
           sudo apt-get update
           sudo apt-get install -y clang-format-12
+
       - uses: actions/setup-python@v3
         with:
           python-version: 3.9

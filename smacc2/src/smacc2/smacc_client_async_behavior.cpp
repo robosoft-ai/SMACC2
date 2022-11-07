@@ -27,12 +27,15 @@ namespace smacc2
 void SmaccAsyncClientBehavior::executeOnEntry()
 {
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] asynchronous onEntry thread started");
-  this->onEntryThread_ = std::async(std::launch::async, [=] {
-    this->onEntry();
-    this->postFinishEventFn_();
-    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] asynchronous onEntry thread finished");
-    return 0;
-  });
+  this->onEntryThread_ = std::async(
+    std::launch::async,
+    [=]
+    {
+      this->onEntry();
+      this->postFinishEventFn_();
+      RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] asynchronous onEntry thread finished");
+      return 0;
+    });
 }
 
 void SmaccAsyncClientBehavior::waitFutureIfNotFinished(
@@ -104,11 +107,14 @@ void SmaccAsyncClientBehavior::executeOnExit()
 
   RCLCPP_INFO_STREAM(
     getLogger(), "[" << getName() << "] onExit - Creating asynchronous onExit thread");
-  this->onExitThread_ = std::async(std::launch::async, [=] {
-    this->onExit();
-    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] asynchronous onExit done.");
-    return 0;
-  });
+  this->onExitThread_ = std::async(
+    std::launch::async,
+    [=]
+    {
+      this->onExit();
+      RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] asynchronous onExit done.");
+      return 0;
+    });
 }
 
 void SmaccAsyncClientBehavior::dispose()
