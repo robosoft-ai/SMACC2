@@ -25,16 +25,16 @@ jobs:
           required-ros-distributions: galactic
 
       # BASIC CODE QUALITY
-      - run: |
-          sudo apt-get update
-          sudo apt-get install -y clang-format-12
+      # - run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y clang-format-12
 
-      - uses: actions/setup-python@v3
-        with:
-          python-version: 3.9
+      # - uses: actions/setup-python@v3
+      #   with:
+      #     python-version: 3.9
 
-      - name: code quality check
-        uses: pre-commit/action@v3.0.0
+      # - name: code quality check
+      #   uses: pre-commit/action@v3.0.0
 
       # BLOOM PRERELEASE CHECK
       # - name: industrial_ci prerelease check
