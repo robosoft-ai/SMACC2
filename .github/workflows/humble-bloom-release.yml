@@ -11,6 +11,8 @@ on:
 jobs:
   bloom-release:
     runs-on: ubuntu-22.04
+    container:
+      image: osrf/ros:humble-desktop
     env:
       ROS_DISTRO: humble
       PRERELEASE: true
@@ -20,9 +22,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
-      - uses: ros-tooling/setup-ros@v0.2
-        with:
-          required-ros-distributions: humble
+      # - uses: ros-tooling/setup-ros@v0.2
+      #   with:
+      #     required-ros-distributions: galactic
 
       # BASIC CODE QUALITY
       # - run: |
