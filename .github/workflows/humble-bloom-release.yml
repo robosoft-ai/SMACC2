@@ -41,6 +41,9 @@ jobs:
       # BLOOM PRERELEASE CHECK
       # - name: industrial_ci prerelease check
       #   uses: ros-industrial/industrial_ci@master
+      - shell: bash
+        run: |
+          apt-get install python3-colcon-*
 
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
