@@ -42,7 +42,7 @@ jobs:
 
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
-          package-name: smacc_rta
+          package-name: smacc2 smacc2_msgs
           target-ros2-distro: humble
           vcs-repo-file-url: SMACC2.humble.repos
 
