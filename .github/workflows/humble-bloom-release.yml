@@ -37,8 +37,14 @@ jobs:
         uses: pre-commit/action@v3.0.0
 
       # BLOOM PRERELEASE CHECK
-      - name: industrial_ci prerelease check
-        uses: ros-industrial/industrial_ci@master
+      # - name: industrial_ci prerelease check
+      #   uses: ros-industrial/industrial_ci@master
+
+      - uses: ros-tooling/action-ros-ci@v0.2
+        with:
+          package-name: smacc_rta
+          target-ros2-distro: humble
+          vcs-repo-file-url: SMACC2.humble.repos
 
       # BLOOM RELEASE
       - name: bloom release
