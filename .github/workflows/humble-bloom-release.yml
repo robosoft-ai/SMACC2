@@ -43,7 +43,7 @@ jobs:
       #   uses: ros-industrial/industrial_ci@master
       - shell: bash
         run: |
-          apt-get install python3-colcon-*
+          apt-get install python3-colcon-* python3-colcon-coveragepy-result
 
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
