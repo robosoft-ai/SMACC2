@@ -46,6 +46,7 @@ jobs:
           apt-get update
           apt-get install -y python3-colcon-* python3-colcon-coveragepy-result
           source /opt/ros/humble/setup.bash
+          rosdep update
           rosdep install --from-paths . --ignore-src -r -y
           colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-up-to smacc2 smacc2_msgs
 
