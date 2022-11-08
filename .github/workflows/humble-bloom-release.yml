@@ -10,7 +10,7 @@ on:
 
 jobs:
   bloom-release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       ROS_DISTRO: humble
       PRERELEASE: true
@@ -22,7 +22,7 @@ jobs:
 
       - uses: ros-tooling/setup-ros@v0.2
         with:
-          required-ros-distributions: galactic
+          required-ros-distributions: humble
 
       # BASIC CODE QUALITY
       # - run: |
