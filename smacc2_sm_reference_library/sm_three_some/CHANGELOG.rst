@@ -2,8 +2,8 @@
 Changelog for package sm_three_some
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.22.1 (2022-11-09)
+-------------------
 * pre-release
 * Contributors: pabloinigoblasco
 

@@ -2,8 +2,8 @@
 Changelog for package sm_atomic_24hr
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.22.1 (2022-11-09)
+-------------------
 * pre-release
 * Contributors: pabloinigoblasco
 

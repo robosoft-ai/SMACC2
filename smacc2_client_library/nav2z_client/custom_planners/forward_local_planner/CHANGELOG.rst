@@ -2,8 +2,8 @@
 Changelog for package forward_local_planner
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.22.1 (2022-11-09)
+-------------------
 * pre-release
 * Contributors: pabloinigoblasco
 

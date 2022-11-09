@@ -2,8 +2,8 @@
 Changelog for package sr_all_events_go
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.22.1 (2022-11-09)
+-------------------
 * pre-release
 * Contributors: pabloinigoblasco
 

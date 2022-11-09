@@ -12,8 +12,8 @@ Changelog for package smacc2_msgs
 * Initial release of SMACC2 core
 * Contributors: Brett Aldrich, Pablo Inigo Blasco, Denis Štogl
 
-Forthcoming
------------
+1.22.1 (2022-11-09)
+-------------------
 * minor
 * pre-release
 * Contributors: pabloinigoblasco
