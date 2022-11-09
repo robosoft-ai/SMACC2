@@ -4,6 +4,9 @@ Changelog for package sm_multi_ur5_sim
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
 * improvements in navigation client behaviors and husky barrel demo (#311)
   * improvements in navigation client behaviors and husky barrel demo
   * many improvements in action client and cb sequence for hysky barrel search

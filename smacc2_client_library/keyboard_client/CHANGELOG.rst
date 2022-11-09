@@ -4,6 +4,12 @@ Changelog for package keyboard_client
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
+* pre-release
+* Contributors: pabloinigoblasco
+
 * more progress in humble SMACC2 deb generation
 * Feature/fix mutex galactic (#319)
   * bug fix galactic mutex

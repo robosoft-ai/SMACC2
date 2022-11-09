@@ -4,6 +4,9 @@ Changelog for package sr_conditional
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
 * more progress in humble SMACC2 deb generation
 * Revert "Ignore packages which should not be released."
   This reverts commit dec14a936a877b2ef722a6a32f1bf3df09312542.

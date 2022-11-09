@@ -4,6 +4,9 @@ Changelog for package sm_atomic_services
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
 * progress in migration to humble
 * Feature/fix mutex galactic (#319)
   * bug fix galactic mutex

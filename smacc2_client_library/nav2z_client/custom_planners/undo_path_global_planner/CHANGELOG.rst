@@ -4,6 +4,12 @@ Changelog for package undo_path_global_planner
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
+* pre-release
+* Contributors: pabloinigoblasco
+
 * humble check
 * publisher
 * progress in migration to humble

@@ -4,6 +4,9 @@ Changelog for package sm_atomic_hierarchy
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
 * Feature/testing smacc rta inter context routes (#306)
   * Update galactic-binary-build.yml
   * Update glactic-semi-binary-build.yml

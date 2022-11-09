@@ -4,6 +4,9 @@ Changelog for package sm_pack_ml
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
 * Packml example (#300)
   * initial commit of packml
   * progressing substate for start and execute

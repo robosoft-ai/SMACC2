@@ -4,6 +4,12 @@ Changelog for package pure_spinning_local_planner
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
+* pre-release
+* Contributors: pabloinigoblasco
+
 * humble check
 * progress in migration to humble
 * Revert "Ignore packages which should not be released."

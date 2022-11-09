@@ -4,6 +4,12 @@ Changelog for package forward_global_planner
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
+* pre-release
+* Contributors: pabloinigoblasco
+
 * publisher
 * Revert "Ignore packages which should not be released."
   This reverts commit dec14a936a877b2ef722a6a32f1bf3df09312542.

@@ -18,3 +18,13 @@ Changelog for package smacc2
 ------------------
 * Initial release of SMACC2 core
 * Contributors: Brett Aldrich, Pablo Inigo Blasco, Denis Štogl
+
+Forthcoming
+-----------
+* pre-release
+* Contributors: pabloinigoblasco
+
+0.0.0 (2021-08-30)
+------------------
+* Initial release of SMACC2 core
+* Contributors: Pablo Inigo Blasco

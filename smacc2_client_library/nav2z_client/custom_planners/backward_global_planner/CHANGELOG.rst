@@ -4,6 +4,12 @@ Changelog for package backward_global_planner
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
+* pre-release
+* Contributors: pabloinigoblasco
+
 * improvements in navigation client behaviors and husky barrel demo (#311)
   * improvements in navigation client behaviors and husky barrel demo
   * many improvements in action client and cb sequence for hysky barrel search

@@ -4,6 +4,9 @@ Changelog for package sm_atomic_subscribers_performance_test
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
 * Feature/galactic rolling merge (#288)
   * 0.1.0
   * Revert "Ignore all packages except smacc2 and smacc2_msgs"

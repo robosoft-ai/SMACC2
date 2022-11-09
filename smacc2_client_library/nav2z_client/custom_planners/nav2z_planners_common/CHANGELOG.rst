@@ -4,6 +4,12 @@ Changelog for package nav2z_planners_common
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
+* pre-release
+* Contributors: pabloinigoblasco
+
 * humble check
 * progress in migration to humble
 * migrating to humble

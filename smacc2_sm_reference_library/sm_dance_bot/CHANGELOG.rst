@@ -4,6 +4,9 @@ Changelog for package sm_dance_bot
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
 * publisher
 * Feature/warehouse 3 improvements (#313)
   * improvements in navigation client behaviors and husky barrel demo

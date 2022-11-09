@@ -4,6 +4,9 @@ Changelog for package sm_respira_1
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
 * Revert "Ignore packages which should not be released."
   This reverts commit dec14a936a877b2ef722a6a32f1bf3df09312542.
 * Contributors: Denis Štogl

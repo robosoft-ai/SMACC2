@@ -4,6 +4,12 @@ Changelog for package forward_local_planner
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
+* pre-release
+* Contributors: pabloinigoblasco
+
 * publisher
 * progress in migration to humble
 * Revert "Ignore packages which should not be released."

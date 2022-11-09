@@ -4,6 +4,9 @@ Changelog for package sm_pubsub_1
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
 * publisher
 * Feature/galactic rolling merge (#288)
   * 0.1.0

@@ -4,6 +4,9 @@ Changelog for package sm_dance_bot_warehouse_3
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
 * removing husky demo
 * publisher
 * Feature/warehouse 3 improvements (#313)

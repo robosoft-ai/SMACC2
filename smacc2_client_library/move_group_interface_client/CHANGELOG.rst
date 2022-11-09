@@ -4,6 +4,12 @@ Changelog for package move_group_interface_client
 
 Forthcoming
 -----------
+* pre-release
+* Contributors: pabloinigoblasco
+
+* pre-release
+* Contributors: pabloinigoblasco
+
 * more progress in humble SMACC2 deb generation
 * humble check
 * publisher
