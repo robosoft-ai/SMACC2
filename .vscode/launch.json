@@ -4,12 +4,19 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
+      
+      
         {
-            "name": "Python: Current File",
+            "name": "GenerateDebians",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/SMACC2_RTA/ci/generate_debs.py",
+            "args": ["-src_folder",
+                ".",
+                "-ubuntu_version", "focal", "-ros_version", "galactic", "-repo_owner", "robosoft-ai" 
+                , "-repo_name", "SMACC2_RTA-academic" ,"-packages",  "smacc2_rta"
+            ],
+            "cwd": "${workspaceFolder}/SMACC2_RTA/",
             "console": "integratedTerminal"
         },
         {
@@ -46,22 +53,21 @@
                 }
             ]
         },
-
-            {
-                "name": "C++ Debugger sm_test_moveit_ur5_sim",
-                "request": "launch",
-                "type": "cppdbg",
-                "miDebuggerServerAddress": "localhost:3000",
-                "cwd": "/",
-                "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
-                "setupCommands": [
-                    {
-                        "description": "Enable pretty-printing for gdb",
-                        "text": "-enable-pretty-printing",
-                        "ignoreFailures": true
-                    }
-                ]
-            }
+        {
+            "name": "C++ Debugger sm_test_moveit_ur5_sim",
+            "request": "launch",
+            "type": "cppdbg",
+            "miDebuggerServerAddress": "localhost:3000",
+            "cwd": "/",
+            "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
 
         {
             "name": "(gdb) Attach sm_test_moveit_ur5_sim_node",
@@ -77,7 +83,7 @@
                     "ignoreFailures": true
                 },
                 {
-                    "description":  "Set Disassembly Flavor to Intel",
+                    "description": "Set Disassembly Flavor to Intel",
                     "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
                 }
@@ -146,7 +152,7 @@
                 }
             ]
         },
-                {
+        {
             "name": "(gdb) sm_aws_warehouse_navigation_node",
             "type": "cppdbg",
             "request": "launch",
@@ -282,7 +288,6 @@
             "name": "(gdb) SmDanceBotWarehouse2",
             "type": "cppdbg",
             "request": "launch",
-
             "program": "${workspaceFolder}/../install/sm_dance_bot_warehouse_2/lib/sm_dance_bot_warehouse_2/sm_dance_bot_warehouse_2_node",
             "args": [
                 "--ros-args",
@@ -309,12 +314,10 @@
                 }
             ]
         },
-
         {
             "name": "(gdb) SmDanceBotWarehouse3",
             "type": "cppdbg",
             "request": "launch",
-
             "program": "${workspaceFolder}/../install/sm_dance_bot_warehouse_3/lib/sm_dance_bot_warehouse_3/sm_dance_bot_warehouse_3_node",
             "args": [
                 "--ros-args",
@@ -345,7 +348,6 @@
             "name": "(gdb) SmHuskyBarrelSearch1",
             "type": "cppdbg",
             "request": "launch",
-
             "program": "${workspaceFolder}/../install/sm_husky_barrel_search_1/lib/sm_husky_barrel_search_1/sm_husky_barrel_search_1_node",
             "args": [
                 "--ros-args",
@@ -376,12 +378,14 @@
             "name": "(gdb) SmHuskyBarrelSearch1-opencv",
             "type": "cppdbg",
             "request": "launch",
-
             "program": "${workspaceFolder}/../install/sm_husky_barrel_search_1/lib/sm_husky_barrel_search_1/opencv_perception_node",
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "args": ["-r", "/image_raw:=/intel_realsense_r200_depth/image_raw"],
+            "args": [
+                "-r",
+                "/image_raw:=/intel_realsense_r200_depth/image_raw"
+            ],
             "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
@@ -417,7 +421,6 @@
                 }
             ]
         },
-
         {
             "name": "(gdb) SmAutowareAvp",
             "type": "cppdbg",

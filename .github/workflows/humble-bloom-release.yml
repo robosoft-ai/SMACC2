@@ -2,9 +2,9 @@ name: Humble bloom-release
 
 on:
   push:
-    # paths:
-    #   - package.xml
-    #   - '*/package.xml'
+     paths:
+       - package.xml
+       - '*/package.xml'
     branches: humble
     workflow_dispatch:
 
