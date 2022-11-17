@@ -22,7 +22,7 @@ jobs:
     - uses: peaceiris/actions-gh-pages@v3
       with:
         deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        external_repository:  robosoft-ai/SMACC2_Documentation
+        external_repository:  robosoft-ai/smacc_doxygen
         # publish_branch: gh-pages
         publish_dir: docs/
         destination_dir: ${{ steps.vars.outputs.short_ref }}  # Branch name
