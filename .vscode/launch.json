@@ -4,8 +4,8 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-      
-      
+
+
         {
             "name": "GenerateDebians",
             "type": "python",
@@ -13,7 +13,7 @@
             "program": "${workspaceFolder}/SMACC2_RTA/ci/generate_debs.py",
             "args": ["-src_folder",
                 ".",
-                "-ubuntu_version", "focal", "-ros_version", "galactic", "-repo_owner", "robosoft-ai" 
+                "-ubuntu_version", "focal", "-ros_version", "galactic", "-repo_owner", "robosoft-ai"
                 , "-repo_name", "SMACC2_RTA-academic" ,"-packages",  "smacc2_rta"
             ],
             "cwd": "${workspaceFolder}/SMACC2_RTA/",
