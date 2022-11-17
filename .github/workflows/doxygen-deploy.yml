@@ -1,11 +1,8 @@
 name: "Doxygen Deployment"
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
-      - galactic
-      - foxy
+  schedule:
+    - cron: '43 3 * * *'
 
 jobs:
   deploy-doc:
