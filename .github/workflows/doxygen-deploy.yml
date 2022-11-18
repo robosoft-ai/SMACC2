@@ -2,7 +2,7 @@ name: "Doxygen Deployment"
 on:
   workflow_dispatch:
   push:
-    branches: [humble]
+    branches: [foxy]
 
 jobs:
   deploy-doc:
