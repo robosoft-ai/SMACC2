@@ -4,7 +4,7 @@
 
  <h2>Description</h2> A large multi stage state machine that demonstrates that the NxN problem is not as formidable as some would have you believe.<br></br>
 
-<a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__multi__stage__1.html">Doxygen Namespace & Class Reference</a>
+<a href="https://robosoft-ai.github.io/smacc2_doxygen/master/html/namespacesm__multi__stage__1.html">Doxygen Namespace & Class Reference</a>
 
  <h2>Build Instructions</h2>
 
