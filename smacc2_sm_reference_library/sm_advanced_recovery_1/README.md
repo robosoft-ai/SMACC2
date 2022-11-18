@@ -3,7 +3,7 @@
  ![sm_advanced_recovery](docs/SmAdvancedRecovery1_2021-11-27_15045.svg)
 
  <h2>Description</h2> A state machine sketch for the RespiraWorks Ventilator<br></br>
-<a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__respira__1.html">Doxygen Namespace & Class Reference</a>
+<a href="https://robosoft-ai.github.io/smacc2_doxygen/master/html/namespacesm__respira__1.html">Doxygen Namespace & Class Reference</a>
 
  <h2>Build Instructions</h2>
 
