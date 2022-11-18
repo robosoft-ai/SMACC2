@@ -151,7 +151,7 @@ public:
   template <typename StateType>
   void notifyOnRuntimeConfigurationFinished(StateType * state);
 
-  inline unsigned long getCurrentStateCounter() const;
+  inline uint64_t getCurrentStateCounter() const;
 
   inline ISmaccState * getCurrentState() const;
 
@@ -218,7 +218,7 @@ private:
   // Event to notify to the signaldetection thread that a request has been created...
   SignalDetector * signalDetector_;
 
-  unsigned long stateSeqCounter_;
+  uint64_t stateSeqCounter_;
 
   // void lockStateMachine(std::string msg);
 
