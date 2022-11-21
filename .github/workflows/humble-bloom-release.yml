@@ -2,7 +2,7 @@ name: Humble bloom-release
 
 on:
   push:
-     paths:
+    paths:
        - package.xml
        - '*/package.xml'
     branches: humble
