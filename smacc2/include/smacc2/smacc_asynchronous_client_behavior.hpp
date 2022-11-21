@@ -84,6 +84,10 @@ protected:
 
   virtual void dispose() override;
 
+  /// \brief onEntry is executed in a new thread. However the current state cannot be left
+  /// until the onEntry thread finishes. This flag can be checked from the onEntry thread to force finishing the thread.
+  // All asyncrhonous client behaviors should implement the ability of interrupting the onEntry thread.
+  // to avoid blocking the state machine.
   inline bool isShutdownRequested() { return isShutdownRequested_; }
 
 private:

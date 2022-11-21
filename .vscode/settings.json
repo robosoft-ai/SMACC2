@@ -109,7 +109,9 @@
         "image": "cpp",
         "primitiveset": "cpp",
         "*.ipp": "cpp",
-        "core": "cpp"
+        "core": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp"
     },
     "python.autoComplete.extraPaths": [
         "/opt/ros/galactic/lib/python3.8/site-packages"
