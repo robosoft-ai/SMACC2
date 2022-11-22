@@ -773,7 +773,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
         }
 
         costmap2d->worldToMap(p[0], p[1], mx, my);
-        //         unsigned int cost = costmap2d->getCost(mx, my);
+        //         uint64_t cost = costmap2d->getCost(mx, my);
 
         // RCLCPP_INFO(nh_->get_logger(),"[BackwardLocalPlanner] checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i,
         // p[0], p[1], mx, my, cost); RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] cost: " << cost);

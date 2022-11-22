@@ -511,7 +511,7 @@ void FlashLightSetting::SetColor(const ignition::math::Color &_color)
 }
 
 //////////////////////////////////////////////////
-unsigned int FlashLightSetting::BlockCount()
+uint64_t FlashLightSetting::BlockCount()
 {
   return this->dataPtr->blocks.size();
 }

@@ -27,10 +27,10 @@ struct State1;
 struct State2;
 
 //VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
-static unsigned int _counter_ = 0;
+static uint64_t _counter_ = 0;
 rclcpp::Time _start_time_;
 
-unsigned int _sum_of_iterations_ = 0.0;
+uint64_t _sum_of_iterations_ = 0.0;
 double _sum_of_elapsed_time_ = 0.0;
 
 //--------------------------------------------------------------------
