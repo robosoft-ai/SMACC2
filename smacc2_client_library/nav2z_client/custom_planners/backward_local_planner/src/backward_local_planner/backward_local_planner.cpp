@@ -735,7 +735,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   // check plan rejection
   bool acceptedLocalTrajectoryFreeOfObstacles = true;
 
-  uint64_t mx, my;
+  unsigned int mx, my;
 
   if (this->enable_obstacle_checking_)
   {
