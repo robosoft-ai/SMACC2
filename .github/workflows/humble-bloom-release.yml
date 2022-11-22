@@ -6,7 +6,7 @@ on:
        - package.xml
        - '*/package.xml'
     branches: humble
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   bloom-release:
