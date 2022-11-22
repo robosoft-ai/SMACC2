@@ -438,7 +438,7 @@ nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(
   auto costmap2d = this->costmap_ros_->getCostmap();
   for (auto & p : plan)
   {
-    unsigned int mx, my;
+    uint64_t mx, my;
     costmap2d->worldToMap(p.pose.position.x, p.pose.position.y, mx, my);
     auto cost = costmap2d->getCost(mx, my);
 

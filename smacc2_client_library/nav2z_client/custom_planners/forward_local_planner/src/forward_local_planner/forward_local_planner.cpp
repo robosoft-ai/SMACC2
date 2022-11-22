@@ -544,7 +544,7 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
   // check plan rejection
   bool aceptedplan = true;
 
-  unsigned int mx, my;
+  uint64_t mx, my;
 
   int i = 0;
   // RCLCPP_INFO_STREAM(nh_->get_logger(), "lplanner goal: " << finalgoalpose.pose.position);
