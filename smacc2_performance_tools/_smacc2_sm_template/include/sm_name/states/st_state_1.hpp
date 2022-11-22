@@ -25,14 +25,14 @@ using smacc2::EvStateRequestFinish;
 using smacc2::Transition;
 
 // STATE MACHINE SHARED VARIABLES (used in this state)
-extern unsigned int _counter_;
+extern uint64_t _counter_;
 extern rclcpp::Time _start_time_;
 
-extern unsigned int _sum_of_iterations_;
+extern uint64_t _sum_of_iterations_;
 extern double _sum_of_elapsed_time_;
 
 // State constants
-constexpr unsigned int ITERATIONS_CHECK = 1000;
+constexpr uint64_t ITERATIONS_CHECK = 1000;
 
 // STATE DECLARATION
 struct State1 : smacc2::SmaccState<State1, $SmName$>
