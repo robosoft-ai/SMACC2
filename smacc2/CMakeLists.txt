@@ -31,6 +31,7 @@ include_directories(include ${LTTNGUST_INCLUDE_DIRS})
 file(GLOB_RECURSE SRC_FILES src *.cpp)
 add_library(smacc2 SHARED ${SRC_FILES})
 
+# removes unused parameters warning related with lttng, compiler warning
 set_source_files_properties(
   src/smacc2/smacc_tracing.cpp
   PROPERTIES
