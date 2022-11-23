@@ -25,7 +25,9 @@ namespace sm_atomic_services
       public:
         void onServiceRequestReceived(const std::shared_ptr<typename std_srvs::srv::Empty::Request> req, std::shared_ptr<typename std_srvs::srv::Empty::Response> res) override
         {
+            RCLCPP_INFO_STREAM(getLogger(), "CbServiceServer: service request received:" << (uint64_t)req.get());
             postEvRequestReceived();
+            RCLCPP_INFO_STREAM(getLogger(), "CbServiceServer: response:" << (uint64_t)res.get());
         }
 
         template <typename TOrthogonal, typename TSourceObject>
