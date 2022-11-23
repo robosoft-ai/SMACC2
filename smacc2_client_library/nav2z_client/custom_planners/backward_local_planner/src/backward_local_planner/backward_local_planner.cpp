@@ -735,7 +735,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   // check plan rejection
   bool acceptedLocalTrajectoryFreeOfObstacles = true;
 
-  unsigned int mx, my;
+  uint32_t mx, my;
 
   if (this->enable_obstacle_checking_)
   {
@@ -773,7 +773,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
         }
 
         costmap2d->worldToMap(p[0], p[1], mx, my);
-        //         unsigned int cost = costmap2d->getCost(mx, my);
+        //         uint32_t cost = costmap2d->getCost(mx, my);
 
         // RCLCPP_INFO(nh_->get_logger(),"[BackwardLocalPlanner] checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i,
         // p[0], p[1], mx, my, cost); RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] cost: " << cost);
