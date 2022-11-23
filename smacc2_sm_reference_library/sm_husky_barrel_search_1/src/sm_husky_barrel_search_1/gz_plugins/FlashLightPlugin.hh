@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <string>
+#include <rclcpp/rclcpp.hpp>
 
 #include <ignition/math/Color.hh>
 
@@ -31,7 +32,6 @@
 #include <gazebo/physics/physics.hh>
 #include <gazebo_ros/node.hpp>
 #include <std_msgs/msg/int8.hpp>
-#include <rclcpp/rclcpp.hpp>
 
 
 namespace smacc2
