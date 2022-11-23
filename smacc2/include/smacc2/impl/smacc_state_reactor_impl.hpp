@@ -39,8 +39,7 @@ void StateReactor::postEvent()
 template <typename TEv>
 void StateReactor::setOutputEvent()
 {
-  this->postEventFn = [this]()
-  {
+  this->postEventFn = [this]() {
     RCLCPP_INFO_STREAM(
       this->getLogger(), "[State Reactor Base] postingfn posting event: " << demangleSymbol<TEv>());
     auto * ev = new TEv();
@@ -58,8 +57,7 @@ template <typename T, typename TClass>
 void StateReactor::createEventCallback(void (TClass::*callback)(T *), TClass * object)
 {
   const auto * eventtype = &typeid(T);
-  this->eventCallbacks_[eventtype] = [=](void * msg)
-  {
+  this->eventCallbacks_[eventtype] = [=](void * msg) {
     T * evptr = (T *)msg;
     (object->*callback)(evptr);
   };
@@ -69,8 +67,7 @@ template <typename T>
 void StateReactor::createEventCallback(std::function<void(T *)> callback)
 {
   const auto * eventtype = &typeid(T);
-  this->eventCallbacks_[eventtype] = [=](void * msg)
-  {
+  this->eventCallbacks_[eventtype] = [=](void * msg) {
     T * evptr = (T *)msg;
     callback(evptr);
   };
@@ -82,8 +79,7 @@ template <typename TEv>
 void StateReactorHandler::addInputEvent()
 {
   StateReactorCallbackFunctor functor;
-  functor.fn = [this](std::shared_ptr<smacc2::StateReactor> sr)
-  {
+  functor.fn = [this](std::shared_ptr<smacc2::StateReactor> sr) {
     RCLCPP_INFO(
       nh_->get_logger(), "[%s] State Reactor adding input event: %s",
       srInfo_->stateReactorType->getFullName().c_str(), demangledTypeName<TEv>().c_str());
@@ -103,8 +99,7 @@ template <typename TEv>
 void StateReactorHandler::setOutputEvent()
 {
   StateReactorCallbackFunctor functor;
-  functor.fn = [this](std::shared_ptr<smacc2::StateReactor> sr)
-  {
+  functor.fn = [this](std::shared_ptr<smacc2::StateReactor> sr) {
     RCLCPP_INFO(
       nh_->get_logger(), "[%s] State Reactor setting output event: %s",
       srInfo_->stateReactorType->getFullName().c_str(), demangledTypeName<TEv>().c_str());
