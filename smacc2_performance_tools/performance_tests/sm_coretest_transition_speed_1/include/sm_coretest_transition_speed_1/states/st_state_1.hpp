@@ -39,7 +39,6 @@ extern double _sum_of_elapsed_time_;
 // State constants
 constexpr uint64_t ITERATIONS_CHECK = 100;
 
-
 // STATE DECLARATION
 struct State1 : smacc2::SmaccState<State1, SmCoretestTransitionSpeed1>
 {
