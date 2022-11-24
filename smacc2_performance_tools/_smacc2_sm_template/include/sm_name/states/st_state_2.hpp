@@ -32,7 +32,8 @@ using smacc2::EvStateRequestFinish;
 using smacc2::Transition;
 
 // STATE MACHINE SHARED VARIABLES (used in this state)
-extern uint32_t _counter_;
+extern uint64_t _counter_;
+
 
 // STATE DECLARATION
 struct State2 : smacc2::SmaccState<State2, $SmName$>

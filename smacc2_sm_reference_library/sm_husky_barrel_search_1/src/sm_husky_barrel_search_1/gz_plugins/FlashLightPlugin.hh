@@ -118,7 +118,7 @@ namespace smacc2
 
     /// \brief Get the number of blocks.
     /// \return The number of blocks the object currently has.
-    public: virtual unsigned int BlockCount() final;
+    public: virtual uint64_t BlockCount() final;
 
     /// \brief Remove a specified block.
     /// \param[in] _index Index to the block to remove

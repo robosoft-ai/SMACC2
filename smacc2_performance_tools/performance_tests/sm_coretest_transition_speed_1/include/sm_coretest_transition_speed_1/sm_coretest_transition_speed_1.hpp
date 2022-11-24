@@ -30,11 +30,12 @@ struct State1;
 struct State2;
 
 //VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
-static uint32_t _counter_ = 1;
+
+static uint64_t _counter_ = 1;
 std::shared_ptr<rclcpp::Node> _node_;
 rclcpp::Time _start_time_;
 
-uint32_t _sum_of_iterations_ = 0.0;
+uint64_t _sum_of_iterations_ = 0.0;
 double _sum_of_elapsed_time_ = 0.0;
 
 //--------------------------------------------------------------------

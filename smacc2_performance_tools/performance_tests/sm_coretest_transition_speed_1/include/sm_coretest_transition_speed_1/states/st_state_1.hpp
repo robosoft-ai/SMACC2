@@ -28,15 +28,17 @@ using smacc2::EvStateRequestFinish;
 using smacc2::Transition;
 
 // STATE MACHINE SHARED VARIABLES (used in this state)
-extern uint32_t _counter_;
+
+extern uint64_t _counter_;
 extern std::shared_ptr<rclcpp::Node> _node_;
 extern rclcpp::Time _start_time_;
 
-extern uint32_t _sum_of_iterations_;
+extern uint64_t _sum_of_iterations_;
 extern double _sum_of_elapsed_time_;
 
 // State constants
-constexpr uint32_t ITERATIONS_CHECK = 100;
+constexpr uint64_t ITERATIONS_CHECK = 100;
+
 
 // STATE DECLARATION
 struct State1 : smacc2::SmaccState<State1, SmCoretestTransitionSpeed1>
