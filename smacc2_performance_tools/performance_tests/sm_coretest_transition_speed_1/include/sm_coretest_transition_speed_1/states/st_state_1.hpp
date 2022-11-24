@@ -28,6 +28,7 @@ using smacc2::EvStateRequestFinish;
 using smacc2::Transition;
 
 // STATE MACHINE SHARED VARIABLES (used in this state)
+
 extern uint64_t _counter_;
 extern std::shared_ptr<rclcpp::Node> _node_;
 extern rclcpp::Time _start_time_;

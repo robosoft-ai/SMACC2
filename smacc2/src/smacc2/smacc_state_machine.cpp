@@ -34,7 +34,7 @@ using namespace std::chrono_literals;
 using namespace smacc2::introspection;
 ISmaccStateMachine::ISmaccStateMachine(
   std::string stateMachineName, SignalDetector * signalDetector)
-: currentState_(nullptr), stateSeqCounter_(0), nh_(nullptr)
+: nh_(nullptr), currentState_(nullptr), stateSeqCounter_(0)
 {
   rclcpp::NodeOptions node_options;
   // This enables loading arbitrary parameters
