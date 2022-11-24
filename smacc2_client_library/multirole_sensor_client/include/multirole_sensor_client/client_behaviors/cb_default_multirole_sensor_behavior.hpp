@@ -43,8 +43,7 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    deferedEventPropagation = [this]()
-    {
+    deferedEventPropagation = [this]() {
       RCLCPP_INFO(
         getLogger(), "[CbDefaultMultiRoleSensorBehavior] onEntry. Requires client of type '%s'",
         demangleSymbol<ClientType>().c_str());

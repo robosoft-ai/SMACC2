@@ -72,22 +72,19 @@ public:
 
     smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
-    postJointDiscontinuityEvent = [this](auto traj)
-    {
+    postJointDiscontinuityEvent = [this](auto traj) {
       auto ev = new EvJointDiscontinuity<TSourceObject, TOrthogonal>();
       ev->trajectory = traj;
       this->postEvent(ev);
     };
 
-    postIncorrectInitialStateEvent = [this](auto traj)
-    {
+    postIncorrectInitialStateEvent = [this](auto traj) {
       auto ev = new EvIncorrectInitialPosition<TSourceObject, TOrthogonal>();
       ev->trajectory = traj;
       this->postEvent(ev);
     };
 
-    postMotionExecutionFailureEvents = [this]
-    {
+    postMotionExecutionFailureEvents = [this] {
       RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] motion execution failed");
       movegroupClient_->postEventMotionExecutionFailed();
       this->postEvent<EvMoveGroupMotionExecutionFailed<TSourceObject, TOrthogonal>>();

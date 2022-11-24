@@ -18,8 +18,8 @@ jobs:
       with:
         python-version: 3.9.7
 
-    - name: Install clang-format-14
-      run: sudo apt-get install clang-format-14 cppcheck
+    - name: Install clang-format
+      run: sudo apt-get install clang-format cppcheck
 
     - uses: pre-commit/action@v2.0.3
       with:
