@@ -15,14 +15,11 @@ on:
 
 jobs:
   binary:
-    runs-on: ubuntu-22.04
-    container:
-      image: osrf/ros:humble-desktop
+    runs-on: ubuntu-latest
   
     steps:
-      - run: |
-          apt-get update
-     
+      - uses: actions/checkout@v1
+
       - uses: ./.github/workflows/reusable-industrial-ci-with-cache.yml
         with:
           ros_repo: main
