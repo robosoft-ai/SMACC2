@@ -65,7 +65,7 @@ void CbNavigateForward::onEntry()
   }
 
   // get current pose
-  auto p = moveBaseClient_->getComponent<Pose>();
+  auto p = nav2zClient_->getComponent<Pose>();
   auto referenceFrame = p->getReferenceFrame();
   auto currentPoseMsg = p->toPoseMsg();
   tf2::Transform currentPose;
@@ -76,9 +76,9 @@ void CbNavigateForward::onEntry()
                      << "current pose: " << currentPoseMsg);
 
   // force global orientation if it is requested
-  if (this->forceInitialOrientation)
+  if (options.forwardSpeed)
   {
-    currentPoseMsg.orientation = *forceInitialOrientation;
+    currentPoseMsg.orientation = *(options.forceInitialOrientation);
     RCLCPP_WARN_STREAM(
       getLogger(),
       "[" << getName() << "]"
@@ -125,7 +125,7 @@ void CbNavigateForward::onEntry()
   currentStampedPoseMsg.header.stamp = getNode()->now();
   tf2::toMsg(currentPose, currentStampedPoseMsg.pose);
 
-  odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
+  odomTracker_ = nav2zClient_->getComponent<OdomTracker>();
   if (odomTracker_ != nullptr)
   {
     auto pathname = this->getCurrentState()->getName() + " - " + getName();
@@ -135,13 +135,13 @@ void CbNavigateForward::onEntry()
     odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
   }
 
-  auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
   plannerSwitcher->setForwardPlanner();
 
-  auto goalCheckerSwitcher = moveBaseClient_->getComponent<GoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("forward_goal_checker");
 
-  moveBaseClient_->sendGoal(goal);
+  this->sendGoal(goal);
 }
 
 void CbNavigateForward::onExit()

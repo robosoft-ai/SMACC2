@@ -8,7 +8,7 @@
       <visual name='visual'>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_white_jersey_barrier/meshes/jersey_barrier.dae</uri>
+            <uri>https://fuel.ignitionrobotics.org/1.0/openrobotics/models/drc practice: white jersey barrier/2/files/meshes/jersey_barrier.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -22,7 +22,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_white_jersey_barrier/meshes/jersey_barrier.dae</uri>
+            <uri>https://fuel.ignitionrobotics.org/1.0/openrobotics/models/drc practice: white jersey barrier/2/files/meshes/jersey_barrier.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -79,7 +79,7 @@
       <visual name='visual'>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_orange_jersey_barrier/meshes/jersey_barrier.dae</uri>
+            <uri>https://fuel.ignitionrobotics.org/1.0/openrobotics/models/drc practice: orange jersey barrier/2/files/meshes/jersey_barrier.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -93,7 +93,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_orange_jersey_barrier/meshes/jersey_barrier.dae</uri>
+            <uri>https://fuel.ignitionrobotics.org/1.0/openrobotics/models/drc practice: orange jersey barrier/2/files/meshes/jersey_barrier.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -150,7 +150,7 @@
       <visual name='visual'>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_white_jersey_barrier/meshes/jersey_barrier.dae</uri>
+            <uri>https://fuel.ignitionrobotics.org/1.0/openrobotics/models/drc practice: white jersey barrier/2/files/meshes/jersey_barrier.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -164,7 +164,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_white_jersey_barrier/meshes/jersey_barrier.dae</uri>
+            <uri>https://fuel.ignitionrobotics.org/1.0/openrobotics/models/drc practice: white jersey barrier/2/files/meshes/jersey_barrier.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -221,7 +221,7 @@
       <visual name='visual'>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_blue_cylinder/meshes/cylinder.dae</uri>
+            <uri>model://blue_cylinder/meshes/cylinder.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -235,7 +235,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_blue_cylinder/meshes/cylinder.dae</uri>
+            <uri>model://blue_cylinder/meshes/cylinder.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -292,7 +292,7 @@
       <visual name='visual'>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_orange_jersey_barrier/meshes/jersey_barrier.dae</uri>
+            <uri>https://fuel.ignitionrobotics.org/1.0/openrobotics/models/drc practice: orange jersey barrier/2/files/meshes/jersey_barrier.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -306,7 +306,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_orange_jersey_barrier/meshes/jersey_barrier.dae</uri>
+            <uri>https://fuel.ignitionrobotics.org/1.0/openrobotics/models/drc practice: orange jersey barrier/2/files/meshes/jersey_barrier.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -363,7 +363,7 @@
       <visual name='visual'>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_white_jersey_barrier/meshes/jersey_barrier.dae</uri>
+            <uri>https://fuel.ignitionrobotics.org/1.0/openrobotics/models/drc practice: white jersey barrier/2/files/meshes/jersey_barrier.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -377,7 +377,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_white_jersey_barrier/meshes/jersey_barrier.dae</uri>
+            <uri>https://fuel.ignitionrobotics.org/1.0/openrobotics/models/drc practice: white jersey barrier/2/files/meshes/jersey_barrier.dae</uri>
           </mesh>
         </geometry>
         <surface>
@@ -434,7 +434,7 @@
       <visual name='visual'>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_blue_cylinder/meshes/cylinder.dae</uri>
+            <uri>model://blue_cylinder/meshes/cylinder.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -448,7 +448,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://drc_practice_blue_cylinder/meshes/cylinder.dae</uri>
+            <uri>model://blue_cylinder/meshes/cylinder.dae</uri>
           </mesh>
         </geometry>
         <surface>

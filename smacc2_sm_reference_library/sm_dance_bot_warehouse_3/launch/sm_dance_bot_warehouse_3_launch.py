@@ -20,7 +20,7 @@ from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -49,6 +49,7 @@ def generate_launch_description():
     use_robot_state_pub = LaunchConfiguration("use_robot_state_pub")
     use_rviz = LaunchConfiguration("use_rviz")
     headless = LaunchConfiguration("headless")
+    debug_sm = LaunchConfiguration("debug_sm")
 
     urdf = os.path.join(sm_dance_bot_warehouse_3_dir, "urdf", "turtlebot3_waffle.urdf")
 
@@ -67,6 +68,10 @@ def generate_launch_description():
 
     declare_headless_simulator_argument = DeclareLaunchArgument(
         "headless", default_value="False", description="Whether to execute gzclient)"
+    )
+
+    declare_headless_debug_sm_argument = DeclareLaunchArgument(
+        "debug_sm", default_value="False", description="Whether to execute the sm node)"
     )
 
     declare_use_namespace_cmd = DeclareLaunchArgument(
@@ -200,9 +205,11 @@ def generate_launch_description():
     )
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
+    # xtermprefix = "gnome-terminal --"
 
     sm_dance_bot_warehouse_3_node = Node(
         package="sm_dance_bot_warehouse_3",
+        condition=UnlessCondition(debug_sm),
         executable="sm_dance_bot_warehouse_3_node",
         name="SmDanceBotWareHouse3",
         output="screen",
@@ -253,6 +260,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Declare the launch options
+    ld.add_action(declare_headless_debug_sm_argument)
     ld.add_action(declare_namespace_cmd)
     ld.add_action(declare_use_namespace_cmd)
     ld.add_action(declare_slam_cmd)

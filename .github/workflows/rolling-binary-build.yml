@@ -2,13 +2,13 @@ name: Rolling Binary Build
 on:
   pull_request:
     branches:
-      - master
+      - rolling
   push:
     branches:
-      - master
-  schedule:
-    # Run every day to detect flakiness and broken dependencies
-    - cron: '03 1 * * *'
+      - rolling
+  # schedule:
+  #   # Run every day to detect flakiness and broken dependencies
+  #   - cron: '03 1 * * *'
 
 jobs:
   rolling_binary:

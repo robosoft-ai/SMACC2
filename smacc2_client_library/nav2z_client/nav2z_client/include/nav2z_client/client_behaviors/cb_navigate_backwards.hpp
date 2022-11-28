@@ -41,7 +41,7 @@ public:
 
   cl_nav2z::odom_tracker::OdomTracker * odomTracker_;
 
-  CbNavigateBackwards(float backwardDistance);
+  CbNavigateBackwards(float backwardDistanceMeters);
 
   void onEntry() override;
 

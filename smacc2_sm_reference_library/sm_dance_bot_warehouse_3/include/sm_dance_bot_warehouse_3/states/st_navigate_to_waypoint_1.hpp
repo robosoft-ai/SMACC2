@@ -46,7 +46,7 @@ struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDance
 
     // x: 0.0 #-2.0
     // y: 5.25 # 0.5
-    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(1.0,0.0,0.0);
+    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(2.0,0.0, 90.0);
     configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 };

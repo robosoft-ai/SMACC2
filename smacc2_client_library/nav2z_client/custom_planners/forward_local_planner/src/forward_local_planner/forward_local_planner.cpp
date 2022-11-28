@@ -68,8 +68,8 @@ void ForwardLocalPlanner::cleanup()
 
 void ForwardLocalPlanner::configure(
   const rclcpp_lifecycle::LifecycleNode::WeakPtr & node, std::string name,
-  const std::shared_ptr<tf2_ros::Buffer> & tf,
-  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> & costmap_ros)
+  const std::shared_ptr<tf2_ros::Buffer> tf,
+  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
   // nh_ = rclcpp::Node::make_shared("~/ForwardLocalPlanner");
   nh_ = node.lock();
@@ -110,7 +110,7 @@ void ForwardLocalPlanner::configure(
     "%lf, ",
     max_linear_x_speed_, max_angular_z_speed_, k_rho_, carrot_distance_);
   goalMarkerPublisher_ = nh_->create_publisher<visualization_msgs::msg::MarkerArray>(
-    "forward_local_planner/carrot_goal_marker", 1);
+    "forward_local_planner/carrot_goal_marker", rclcpp::QoS(1));
 
   waiting_ = false;
   waitingTimeout_ = rclcpp::Duration(10s);

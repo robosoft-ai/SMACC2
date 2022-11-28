@@ -76,15 +76,19 @@ void OdomTracker::onInitialize()
 
   if (this->subscribeToOdometryTopic_)
   {
+    RCLCPP_INFO_STREAM(
+      nh->get_logger(), "[OdomTracker] subscribing to odom topic: " << odomTopicName_);
+
     rclcpp::SensorDataQoS qos;
     odomSub_ = nh->create_subscription<nav_msgs::msg::Odometry>(
       odomTopicName_, qos,
       std::bind(&OdomTracker::processOdometryMessage, this, std::placeholders::_1));
   }
 
-  robotBasePathPub_ = nh->create_publisher<nav_msgs::msg::Path>("odom_tracker_path", 1);
+  robotBasePathPub_ =
+    nh->create_publisher<nav_msgs::msg::Path>("odom_tracker_path", rclcpp::QoS(1));
   robotBasePathStackedPub_ =
-    nh->create_publisher<nav_msgs::msg::Path>("odom_tracker_stacked_path", 1);
+    nh->create_publisher<nav_msgs::msg::Path>("odom_tracker_stacked_path", rclcpp::QoS(1));
 }
 
 /**
@@ -145,20 +149,25 @@ void OdomTracker::pushPath(std::string pathname)
 {
   RCLCPP_INFO(getLogger(), "odom_tracker m_mutex acquire");
   std::lock_guard<std::mutex> lock(m_mutex_);
-  RCLCPP_INFO(getLogger(), "PUSH_PATH PATH EXITTING");
-  this->logStateString();
+  this->logStateString(false);
 
   pathInfos_.push_back({currentPathName_, this->currentMotionGoal_});
   pathStack_.push_back(baseTrajectory_);
+
+  geometry_msgs::msg::PoseStamped goalPose;
+  if (this->currentMotionGoal_) goalPose = *this->currentMotionGoal_;
+
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[OdomTracker] currentPathName: " << pathname
+                                                   << "  size: " << baseTrajectory_.poses.size()
+                                                   << "  current motion goal: " << goalPose);
 
   currentPathName_ = pathname;
 
   // clean the current trajectory to start a new one
   baseTrajectory_.poses.clear();
 
-  RCLCPP_INFO(getLogger(), "PUSH_PATH PATH EXITTING");
-  this->logStateString();
-  RCLCPP_INFO(getLogger(), "odom_tracker m_mutex release");
+  this->logStateString(false);
   this->updateAggregatedStackPath();
 
   this->currentMotionGoal_.reset();
@@ -201,7 +210,7 @@ void OdomTracker::popPath(int popCount, bool keepPreviousPath)
   this->currentMotionGoal_.reset();
 }
 
-void OdomTracker::logStateString()
+void OdomTracker::logStateString(bool debug)
 {
   std::stringstream ss;
   ss << "--- odom tracker state ---" << std::endl;
@@ -228,7 +237,11 @@ void OdomTracker::logStateString()
     i++;
   }
   ss << "---";
-  RCLCPP_INFO(getLogger(), ss.str().c_str());
+
+  if (debug)
+    RCLCPP_DEBUG(getLogger(), ss.str().c_str());
+  else
+    RCLCPP_INFO(getLogger(), ss.str().c_str());
 }
 
 void OdomTracker::clearPath()
@@ -387,8 +400,8 @@ bool OdomTracker::updateClearPath(const nav_msgs::msg::Odometry & odom)
     if (
       acceptBackward &&
       baseTrajectory_.poses.size() > 1) /* we always leave at least one item, specially interesting
-                                                               for the backward local planner reach the backwards goal
-                                                               with enough precision*/
+                                                                                   for the backward local planner reach
+                                                               the backwards goal with enough precision*/
     {
       baseTrajectory_.poses.pop_back();
     }
@@ -441,6 +454,8 @@ bool OdomTracker::updateRecordPath(const nav_msgs::msg::Odometry & odom)
 
     // RCLCPP_WARN(getLogger(),"dist %lf vs min %lf", dist, recordPointDistanceThreshold_);
 
+    RCLCPP_WARN_THROTTLE(getLogger(), *getNode()->get_clock(), 2000, "odom received");
+
     if (dist > recordPointDistanceThreshold_ || goalAngleOffset > recordAngularDistanceThreshold_)
     {
       enqueueOdomMessage = true;
@@ -454,6 +469,9 @@ bool OdomTracker::updateRecordPath(const nav_msgs::msg::Odometry & odom)
 
   if (enqueueOdomMessage)
   {
+    RCLCPP_WARN_THROTTLE(
+      getLogger(), *getNode()->get_clock(), 2000, "enqueue odom tracker pose. dist %lf vs min %lf",
+      dist, recordPointDistanceThreshold_);
     baseTrajectory_.poses.push_back(base_pose);
   }
 
@@ -496,7 +514,7 @@ void OdomTracker::updateConfiguration()
  */
 void OdomTracker::processOdometryMessage(const nav_msgs::msg::Odometry::SharedPtr odom)
 {
-  // RCLCPP_INFO(getLogger(),"odom_tracker m_mutex acquire");
+  RCLCPP_INFO_THROTTLE(getLogger(), *getNode()->get_clock(), 2000, "[odom_tracker] update");
   std::lock_guard<std::mutex> lock(m_mutex_);
 
   updateConfiguration();

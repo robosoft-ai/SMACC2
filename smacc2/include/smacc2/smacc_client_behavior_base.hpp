@@ -41,14 +41,20 @@ public:
   void requiresClient(SmaccClientType *& storage);
 
   template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *& storage);
-
-protected:
-  virtual void runtimeConfigure();
+  void requiresComponent(SmaccComponentType *& storage, bool throwExceptionIfNotExist = false);
 
   virtual void onEntry() {}
 
   virtual void onExit() {}
+
+  //internal visibility (private + friend)
+  virtual void executeOnEntry();
+
+  //internal visibility (private + friend)
+  virtual void executeOnExit();
+
+protected:
+  virtual void runtimeConfigure();
 
   template <typename EventType>
   void postEvent(const EventType & ev);
@@ -60,17 +66,11 @@ protected:
 
   virtual void dispose();
 
-  virtual rclcpp::Node::SharedPtr getNode();
+  virtual rclcpp::Node::SharedPtr getNode() const;
 
-  virtual rclcpp::Logger getLogger();
+  virtual rclcpp::Logger getLogger() const;
 
 private:
-  //internal visibility (private + friend)
-  virtual void executeOnEntry();
-
-  //internal visibility (private + friend)
-  virtual void executeOnExit();
-
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation();
 

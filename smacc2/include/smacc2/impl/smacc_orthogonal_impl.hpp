@@ -88,14 +88,18 @@ void ISmaccOrthogonal::assignClientToOrthogonal(TClient * client)
 }
 
 template <typename TClientBehavior>
-TClientBehavior * ISmaccOrthogonal::getClientBehavior()
+TClientBehavior * ISmaccOrthogonal::getClientBehavior(int index)
 {
+  int i = 0;
   for (auto & cb : this->clientBehaviors_)
   {
     auto * ret = dynamic_cast<TClientBehavior *>(cb.get());
     if (ret != nullptr)
     {
-      return ret;
+      if (i == index)
+        return ret;
+      else
+        i++;
     }
   }
 

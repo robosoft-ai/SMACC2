@@ -45,7 +45,7 @@ struct StiRadialRotate : smacc2::SmaccState<StiRadialRotate, SS>
 
   void runtimeConfigure()
   {
-    auto cbAbsRotate = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbAbsoluteRotate>();
+    auto cbAbsRotate = this->getClientBehavior<OrNavigation,CbAbsoluteRotate>();
 
     cbAbsRotate->spinningPlanner = SpinningPlanner::PureSpinning;
 

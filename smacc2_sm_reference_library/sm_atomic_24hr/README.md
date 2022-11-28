@@ -3,7 +3,7 @@
  ! New Image required
 
  <h2>Description</h2> A completely minimal state machine example.<br></br>
-<a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__atomic.html">Doxygen Namespace & Class Reference</a>
+<a href="https://robosoft-ai.github.io/smacc2_doxygen/master/html/namespacesm__atomic.html">Doxygen Namespace & Class Reference</a>
 
  <h2>Build Instructions</h2>
 

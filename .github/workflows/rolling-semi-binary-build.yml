@@ -2,10 +2,10 @@ name: Rolling Semi-Binary Build
 on:
   pull_request:
     branches:
-      - master
+      - rolling
   push:
     branches:
-      - master
+      - rolling
   schedule:
     # Run every day to detect flakiness and broken dependencies
     - cron: '33 1 * * *'

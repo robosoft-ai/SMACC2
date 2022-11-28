@@ -87,6 +87,12 @@ public:
   template <typename TOrthogonal>
   TOrthogonal * getOrthogonal();
 
+  // gets the client behavior given the client type and orthogonal type
+  // if the client behavior is not found, it returns nullptr
+  // the index parameter is used to specify the client behavior in case there are more than one
+  template <typename TOrthogonal, typename TClientBehavior>
+  TClientBehavior * getClientBehavior(int index = 0);
+
   template <typename TEventGenerator>
   TEventGenerator * getEventGenerator();
 

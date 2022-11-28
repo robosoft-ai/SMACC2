@@ -52,7 +52,7 @@ enum class StateMachineInternalAction
 {
   STATE_CONFIGURING,
   STATE_ENTERING,
-  STATE_STEADY,
+  STATE_RUNNING,
   STATE_EXITING,
   TRANSITIONING
 };
@@ -76,10 +76,20 @@ public:
   template <typename TOrthogonal>
   TOrthogonal * getOrthogonal();
 
+  // gets the client behavior in a given orthogonal
+  // the index is used to distinguish between multiple client behaviors of the same type
+  template <typename TOrthogonal, typename TClientBehavior>
+  inline TClientBehavior * getClientBehavior(int index = 0)
+  {
+    auto orthogonal = this->template getOrthogonal<TOrthogonal>();
+
+    return orthogonal->template getClientBehavior<TClientBehavior>(index);
+  }
+
   const std::map<std::string, std::shared_ptr<smacc2::ISmaccOrthogonal>> & getOrthogonals() const;
 
   template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *& storage);
+  void requiresComponent(SmaccComponentType *& storage, bool throwsExceptionIfNotExist = false);
 
   template <typename EventType>
   void postEvent(EventType * ev, EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
@@ -141,7 +151,7 @@ public:
   template <typename StateType>
   void notifyOnRuntimeConfigurationFinished(StateType * state);
 
-  inline unsigned long getCurrentStateCounter() const;
+  inline uint64_t getCurrentStateCounter() const;
 
   inline ISmaccState * getCurrentState() const;
 
@@ -208,7 +218,7 @@ private:
   // Event to notify to the signaldetection thread that a request has been created...
   SignalDetector * signalDetector_;
 
-  unsigned long stateSeqCounter_;
+  uint64_t stateSeqCounter_;
 
   // void lockStateMachine(std::string msg);
 

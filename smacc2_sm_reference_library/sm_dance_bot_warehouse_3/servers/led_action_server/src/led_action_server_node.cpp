@@ -154,7 +154,7 @@ public:
 
     RCLCPP_INFO(get_logger(), "Starting Tool Action Server");
     stateMarkerPublisher_ =
-      this->create_publisher<visualization_msgs::msg::MarkerArray>("tool_markers", 1);
+      this->create_publisher<visualization_msgs::msg::MarkerArray>("tool_markers", rclcpp::QoS(1));
   }
 
   /**

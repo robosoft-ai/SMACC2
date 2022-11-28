@@ -30,14 +30,17 @@ ISmaccClientBehavior::ISmaccClientBehavior()
 
 ISmaccClientBehavior::~ISmaccClientBehavior()
 {
-  RCLCPP_WARN(getLogger(), "Client behavior deallocated.");
+  RCLCPP_WARN_STREAM(getLogger(), "[" << getName() << "Client behavior deallocated.");
 }
 
 std::string ISmaccClientBehavior::getName() const { return demangleSymbol(typeid(*this).name()); }
 
-rclcpp::Node::SharedPtr ISmaccClientBehavior::getNode() { return this->stateMachine_->getNode(); }
+rclcpp::Node::SharedPtr ISmaccClientBehavior::getNode() const
+{
+  return this->stateMachine_->getNode();
+}
 
-rclcpp::Logger ISmaccClientBehavior::getLogger()
+rclcpp::Logger ISmaccClientBehavior::getLogger() const
 {
   auto nh = this->getNode();
   if (nh != nullptr)

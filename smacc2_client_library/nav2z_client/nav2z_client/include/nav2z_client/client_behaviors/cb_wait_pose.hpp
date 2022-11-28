@@ -47,13 +47,13 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    this->requiresClient(moveBaseClient_);
+    this->requiresClient(nav2zClient_);
     smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 
   void onEntry() override;
 
 protected:
-  cl_nav2z::ClNav2Z * moveBaseClient_;
+  cl_nav2z::ClNav2Z * nav2zClient_;
 };
 }  // namespace cl_nav2z

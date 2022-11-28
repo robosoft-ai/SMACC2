@@ -112,7 +112,7 @@ controller_server:
       decel_lim_theta: -3.2
       vx_samples: 20
       vy_samples: 5
-      vtheta_samples: 20
+      vtheta_samples: 30
       sim_time: 1.7
       linear_granularity: 0.05
       angular_granularity: 0.025

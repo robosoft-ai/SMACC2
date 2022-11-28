@@ -32,7 +32,7 @@ CbWaitPose::~CbWaitPose() {}
 
 void CbWaitPose::onEntry()
 {
-  auto pose = this->moveBaseClient_->getComponent<Pose>();
+  auto pose = this->nav2zClient_->getComponent<Pose>();
   try
   {
     pose->waitTransformUpdate(rclcpp::Rate(20));
