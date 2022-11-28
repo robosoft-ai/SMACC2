@@ -23,17 +23,15 @@
 #include <tf2_ros/buffer.h>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
-
 #include <optional>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 #include "cb_nav2z_client_behavior_base.hpp"
 
 namespace cl_nav2z
 {
-class CbNavigateForward : public CbNav2ZClientBehaviorBase
+struct CbNavigateForwardOptions
 {
-public:
   // just a stub to show how to use parameterless constructor
   std::optional<float> forwardSpeed;
 
@@ -44,6 +42,13 @@ public:
 
   // the name of the goal checker selected in the navigation2 stack
   std::optional<std::string> goalChecker_;
+};
+
+// Performs a relative motion forwards
+class CbNavigateForward : public CbNav2ZClientBehaviorBase
+{
+public:
+  CbNavigateForwardOptions options;
 
   CbNavigateForward();
 

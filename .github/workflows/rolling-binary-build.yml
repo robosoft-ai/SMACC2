@@ -6,9 +6,9 @@ on:
   push:
     branches:
       - master
-  schedule:
-    # Run every day to detect flakiness and broken dependencies
-    - cron: '03 1 * * *'
+  # schedule:
+  #   # Run every day to detect flakiness and broken dependencies
+  #   - cron: '03 1 * * *'
 
 jobs:
   rolling_binary:

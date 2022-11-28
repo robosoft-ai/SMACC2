@@ -19,12 +19,9 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <condition_variable>
 #include <future>
-#include <mutex>
 #include <smacc2/smacc_client_behavior_base.hpp>
 #include <smacc2/smacc_signal.hpp>
-#include <thread>
 
 namespace smacc2
 {
@@ -43,16 +40,18 @@ struct EvCbFailure : sc::event<EvCbFailure<AsyncCB, Orthogonal>>
 {
 };
 
-// INTRODUCTION: All of them conceptually start in parallel when the state starts. No behavior should block the creation of other behaviors,
-// Asnchronous client behaviors are used when the onEntry or onExit function execution is slow
-// CONCEPT: this funcionality is related with the orthogonality of SmaccState machines.
-// Alternative for long duration behaviors: using default-synchromous SmaccClientBehaviors with the update method
+// INTRODUCTION: Conceptually, AsynchronousClientBehaviors start in parallel on state entry.
+// Asnchronous client behaviors are used when the onEntry or onExit function execution could be too much slow and
+// could block the state machine thread.
+// AsynchronousClientBehaviors are related with the concept orthogonality of Smacc State Machines.
 // ASYNCHRONOUS STATE MACHINES DESIGN NOTES: Asynchronous behaviors can safely post events and use its local methods,
 //  but the interaction with other components or elements of
 // the state machine is not by-default thread safe and must be manually implemented. For example, if some element of the architecture
 // (components, states, clients) need to access to this behavior client information it is needed to implement a mutex for the internal
 // state of this behavior. Other example: if this behavior access to some component located in other thread, it is also may be needed
 // to some mutex for that component
+// ALTERNATIVE: for long duration behaviors: using default-synchromous SmaccClientBehaviors with the update method
+
 class SmaccAsyncClientBehavior : public ISmaccClientBehavior
 {
 public:
@@ -70,18 +69,32 @@ public:
   template <typename TCallback, typename T>
   boost::signals2::connection onFailure(TCallback callback, T * object);
 
+  void requestForceFinish();
+
+  // executes onExit in a new thread
+  void executeOnEntry() override;
+
+  // executes onExit in a new thread, waits first onEntry thread if it is still running
+  void executeOnExit() override;
+  void waitOnEntryThread(bool requestFinish);
+
 protected:
   void postSuccessEvent();
   void postFailureEvent();
 
   virtual void dispose() override;
 
+  /// \brief onEntry is executed in a new thread. However the current state cannot be left
+  /// until the onEntry thread finishes. This flag can be checked from the onEntry thread to force finishing the thread.
+  // All asyncrhonous client behaviors should implement the ability of interrupting the onEntry thread.
+  // to avoid blocking the state machine.
   inline bool isShutdownRequested() { return isShutdownRequested_; }
 
 private:
-  void waitFutureIfNotFinished(std::future<int> & threadfut);
-  std::future<int> onEntryThread_;
-  std::future<int> onExitThread_;
+  void waitFutureIfNotFinished(std::optional<std::future<int>> & threadfut, bool requestFinish);
+
+  std::optional<std::future<int>> onEntryThread_;
+  std::optional<std::future<int>> onExitThread_;
 
   std::function<void()> postFinishEventFn_;
   std::function<void()> postSuccessEventFn_;
@@ -91,13 +104,7 @@ private:
   SmaccSignal<void()> onSuccess_;
   SmaccSignal<void()> onFailure_;
 
-  // executes onExit in a new thread
-  void executeOnEntry() override;
-
-  // executes onExit in a new thread, waits first onEntry thread if it is still running
-  void executeOnExit() override;
-
-  bool isShutdownRequested_;
+  bool isShutdownRequested_ = false;
 };
 }  // namespace smacc2
 

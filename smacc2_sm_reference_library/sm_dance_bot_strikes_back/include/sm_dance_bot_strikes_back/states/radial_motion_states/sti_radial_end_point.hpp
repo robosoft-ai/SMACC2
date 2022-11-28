@@ -52,7 +52,7 @@ struct StiRadialEndPoint : smacc2::SmaccState<StiRadialEndPoint, SS>
     auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
 
     auto forwardBehavior =
-      this->getOrthogonal<OrNavigation>()->getClientBehavior<CbNavigateForward>();
+      this->getClientBehavior<OrNavigation, CbNavigateForward>();
 
     forwardBehavior->setForwardDistance(std::min(lidarData->forwardObstacleDistance, 6.0f)); // at most 15 meters
   }

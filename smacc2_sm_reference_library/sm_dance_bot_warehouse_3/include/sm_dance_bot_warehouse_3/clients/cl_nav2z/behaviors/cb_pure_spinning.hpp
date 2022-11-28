@@ -60,7 +60,7 @@ struct CbPureSpinning : public smacc2::SmaccAsyncClientBehavior
   void onEntry() override
   {
       auto nh = this->getNode();
-      cmd_vel_pub_ = nh->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 1);
+      cmd_vel_pub_ = nh->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", rclcpp::QoS(1));
 
       cl_nav2z::Pose* pose;
       this->requiresComponent(pose);

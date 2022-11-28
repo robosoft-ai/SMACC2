@@ -3,7 +3,7 @@ project(sm_dance_bot_warehouse_3)
 
 # Default to C++20
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 20)
+  set(CMAKE_CXX_STANDARD 17)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -88,11 +88,6 @@ install(TARGETS
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
-
-#ament_python_install_package(${PROJECT_NAME}
-#  PACKAGE_DIR servers/service_node_3
-#  )
-
 
 install(FILES
         servers/service_node_3/service_node_3.py

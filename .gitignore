@@ -2,3 +2,4 @@ dependencies
 build
 install
 log
+bin

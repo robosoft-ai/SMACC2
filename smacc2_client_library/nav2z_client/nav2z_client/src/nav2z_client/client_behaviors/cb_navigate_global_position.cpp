@@ -29,13 +29,18 @@ namespace cl_nav2z
 {
 using namespace ::cl_nav2z::odom_tracker;
 
-CbNavigateGlobalPosition::CbNavigateGlobalPosition(float x, float y, float yaw)
+CbNavigateGlobalPosition::CbNavigateGlobalPosition() {}
+
+CbNavigateGlobalPosition::CbNavigateGlobalPosition(
+  float x, float y, float yaw, std::optional<CbNavigateGlobalPositionOptions> options)
 {
   auto p = geometry_msgs::msg::Point();
   p.x = x;
   p.y = y;
   goalPosition = p;
   goalYaw = yaw;
+
+  if (options) this->options = *options;
 }
 
 void CbNavigateGlobalPosition::setGoal(const geometry_msgs::msg::Pose & pose)
@@ -49,13 +54,21 @@ void CbNavigateGlobalPosition::onEntry()
   RCLCPP_INFO(getLogger(), "Entering Navigate Global position");
   RCLCPP_INFO(getLogger(), "Component requirements completed");
 
-  auto pose = moveBaseClient_->getComponent<cl_nav2z::Pose>()->toPoseMsg();
-  auto * odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+  auto pose = nav2zClient_->getComponent<cl_nav2z::Pose>()->toPoseMsg();
+  auto * odomTracker = nav2zClient_->getComponent<OdomTracker>();
 
-  auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
-  plannerSwitcher->setDefaultPlanners();
+  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
 
-  auto goalCheckerSwitcher = moveBaseClient_->getComponent<GoalCheckerSwitcher>();
+  plannerSwitcher->setDefaultPlanners(false);
+
+  if (options.controllerName_)
+  {
+    plannerSwitcher->setDesiredController(*(options.controllerName_));
+  }
+
+  plannerSwitcher->commitPublish();
+
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("goal_checker");
 
   auto pathname = this->getCurrentState()->getName() + " - " + getName();
@@ -69,7 +82,7 @@ void CbNavigateGlobalPosition::onEntry()
 // auxiliary function that defines the motion that is requested to the nav2 action server
 void CbNavigateGlobalPosition::execute()
 {
-  auto p = moveBaseClient_->getComponent<cl_nav2z::Pose>();
+  auto p = nav2zClient_->getComponent<cl_nav2z::Pose>();
   auto referenceFrame = p->getReferenceFrame();
   // auto currentPoseMsg = p->toPoseMsg();
 
@@ -82,11 +95,8 @@ void CbNavigateGlobalPosition::execute()
   tf2::Quaternion q;
   q.setRPY(0, 0, goalYaw);
   goal.pose.pose.orientation = tf2::toMsg(q);
-  // store the start pose on the state machine storage so that it can
-  // be referenced from other states (for example return to radial start)
-  this->getStateMachine()->setGlobalSMData("radial_start_pose", goal.pose);
 
-  moveBaseClient_->sendGoal(goal);
+  this->sendGoal(goal);
 }
 
 // This is the substate destructor. This code will be executed when the

@@ -17,10 +17,21 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
+
+# from launch.actions import DeclareLaunchArgument, ExecuteProcess
+from launch.actions import (
+    DeclareLaunchArgument,
+    ExecuteProcess,
+    LogInfo,
+    RegisterEventHandler,
+)
+
 from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions.node import Node
+from launch.event_handlers import (
+    OnProcessStart,
+)
 
 
 def generate_launch_description():
@@ -128,7 +139,10 @@ def generate_launch_description():
             "0.5",
             "-Y",
             "0",
+            "-spawn_service_timeout",
+            "20",
         ],
+        prefix=xtermprefix,
     )
 
     # Add any conditioned actions
@@ -142,6 +156,16 @@ def generate_launch_description():
 
     ld.add_action(start_gazebo_server_cmd)
     ld.add_action(start_gazebo_client_cmd)
-    ld.add_action(spawn_entity_node)
+
+    # ld.add_action(spawn_entity_node)
+
+    ld.add_action(
+        RegisterEventHandler(
+            OnProcessStart(
+                target_action=start_gazebo_server_cmd,
+                on_start=[LogInfo(msg="Turtlesim started, spawning turtle"), spawn_entity_node],
+            )
+        )
+    ),
 
     return ld

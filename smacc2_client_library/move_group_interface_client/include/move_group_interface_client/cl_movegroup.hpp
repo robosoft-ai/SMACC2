@@ -87,6 +87,8 @@ public:
 
   ClMoveGroup(std::string groupName);
 
+  ClMoveGroup(const moveit::planning_interface::MoveGroupInterface::Options & options);
+
   virtual ~ClMoveGroup();
 
   void onInitialize() override;
@@ -121,6 +123,8 @@ public:
     return this->getStateMachine()->createSignalConnection(onFailed_, callback, object);
   }
 
+  const moveit::planning_interface::MoveGroupInterface::Options & getOptions() const;
+
 private:
   std::function<void()> postEventMotionExecutionSucceded_;
   std::function<void()> postEventMotionExecutionFailed_;
@@ -128,6 +132,7 @@ private:
   smacc2::SmaccSignal<void()> onSucceded_;
   smacc2::SmaccSignal<void()> onFailed_;
 
-  std::string groupName_;
+  // std::string groupName_;
+  moveit::planning_interface::MoveGroupInterface::Options options_;
 };
 }  // namespace cl_move_group_interface

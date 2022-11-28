@@ -95,8 +95,8 @@ void tryGetOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::string 
 
 void BackwardLocalPlanner::configure(
   const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent, std::string name,
-  const std::shared_ptr<tf2_ros::Buffer> & tf,
-  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> & costmap_ros)
+  const std::shared_ptr<tf2_ros::Buffer> tf,
+  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
   this->costmapRos_ = costmap_ros;
   // rclcpp::Node::SharedPtr nh("~/BackwardLocalPlanner");
@@ -160,9 +160,10 @@ void BackwardLocalPlanner::configure(
   }
 
   goalMarkerPublisher_ = nh_->create_publisher<visualization_msgs::msg::MarkerArray>(
-    "backward_local_planner/goal_marker", 1);
+    "backward_local_planner/goal_marker", rclcpp::QoS(1));
 
-  planPub_ = nh_->create_publisher<nav_msgs::msg::Path>("backward_local_planner/path", 1);
+  planPub_ =
+    nh_->create_publisher<nav_msgs::msg::Path>("backward_local_planner/path", rclcpp::QoS(1));
 }
 
 void BackwardLocalPlanner::updateParameters()

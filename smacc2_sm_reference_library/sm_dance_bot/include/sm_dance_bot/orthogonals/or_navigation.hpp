@@ -41,25 +41,25 @@ class OrNavigation : public smacc2::Orthogonal<OrNavigation>
 public:
   void onInitialize() override
   {
-    auto movebaseClient = this->createClient<ClNav2Z>();
+    auto nav2zClient = this->createClient<ClNav2Z>();
 
     // create pose component
-    movebaseClient->createComponent<cl_nav2z::Pose>();
+    nav2zClient->createComponent<cl_nav2z::Pose>();
 
     // create planner switcher
-    movebaseClient->createComponent<PlannerSwitcher>();
+    nav2zClient->createComponent<PlannerSwitcher>();
 
     // create goal checker switcher
-    movebaseClient->createComponent<cl_nav2z::GoalCheckerSwitcher>();
+    nav2zClient->createComponent<cl_nav2z::GoalCheckerSwitcher>();
 
     // create odom tracker
-    movebaseClient->createComponent<cl_nav2z::odom_tracker::OdomTracker>();
+    nav2zClient->createComponent<cl_nav2z::odom_tracker::OdomTracker>();
 
     // create odom tracker
-    movebaseClient->createComponent<cl_nav2z::CpSlamToolbox>();
+    nav2zClient->createComponent<cl_nav2z::CpSlamToolbox>();
 
     // create waypoints navigator component
-    auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();
+    auto waypointsNavigator = nav2zClient->createComponent<WaypointNavigator>();
     loadWaypointsFromYaml(waypointsNavigator);
 
     // change this to skip some points of the yaml file, default = 0

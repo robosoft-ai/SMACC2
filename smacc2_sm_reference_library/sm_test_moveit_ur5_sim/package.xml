@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>sm_test_moveit_ur5_sim</name>
-  <version>0.0.0</version>
+  <version>1.22.1</version>
   <description>The sm_test_moveit_ur5_sim package</description>
   <maintainer email="smacc2@smacc2.cool">SMACC2 is cool</maintainer>
   <license>Apache-2.0</license>
@@ -17,6 +17,8 @@
   <depend>move_group_interface_client</depend>
   <depend>controller_manager</depend>
   <depend>warehouse_ros_mongo</depend>
+
+  <exec_depend>joint_trajectory_controller</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

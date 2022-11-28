@@ -3,7 +3,7 @@
  ! New Image required
 
  <h2>Description</h2> ! New Description required.<br></br>
-<a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__atomic__subscribers__performance__test.html">Doxygen Namespace & Class Reference</a>
+<a href="https://robosoft-ai.github.io/smacc2_doxygen/master/html/namespacesm__atomic__subscribers__performance__test.html">Doxygen Namespace & Class Reference</a>
 
  <h2>Build Instructions</h2>
 

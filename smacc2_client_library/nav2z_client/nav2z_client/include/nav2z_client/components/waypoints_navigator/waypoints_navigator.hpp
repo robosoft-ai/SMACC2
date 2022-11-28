@@ -43,6 +43,12 @@ struct Pose2D
   double yaw_;
 };
 
+struct NavigateNextWaypointOptions
+{
+  std::optional<std::string> controllerName_;
+  std::optional<std::string> goalCheckerName_;
+};
+
 // This component contains a list of waypoints. These waypoints can
 // be iterated in the different states using CbNextWaiPoint
 // waypoint index is only incremented if the current waypoint is successfully reached
@@ -71,16 +77,28 @@ public:
 
   void setWaypoints(const std::vector<Pose2D> & waypoints);
 
-  void sendNextGoal();
+  std::optional<std::shared_future<
+    std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose> > > >
+  sendNextGoal(
+    std::optional<NavigateNextWaypointOptions> options = std::nullopt,
+    cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::WeakPtr callback =
+      cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::WeakPtr());
+
   void stopWaitingResult();
 
   const std::vector<geometry_msgs::msg::Pose> & getWaypoints() const;
+  const std::vector<std::string> & getWaypointNames() const;
+  std::optional<geometry_msgs::msg::Pose> getNamedPose(std::string name) const;
 
   long getCurrentWaypointIndex() const;
+  std::optional<std::string> getCurrentWaypointName() const;
 
   long currentWaypoint_;
 
   void rewind(int count);
+
+  void forward(int count);
+  void seekName(std::string name);
 
   smacc2::SmaccSignal<void()> onNavigationRequestSucceded;
   smacc2::SmaccSignal<void()> onNavigationRequestAborted;

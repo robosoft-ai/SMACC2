@@ -97,9 +97,10 @@ void UndoPathGlobalPlanner::configure(
     "odom_tracker_path", qos,
     std::bind(&UndoPathGlobalPlanner::onForwardTrailMsg, this, std::placeholders::_1));
 
-  planPub_ = nh_->create_publisher<nav_msgs::msg::Path>("undo_path_planner/global_plan", 1);
-  markersPub_ =
-    nh_->create_publisher<visualization_msgs::msg::MarkerArray>("undo_path_planner/markers", 1);
+  planPub_ =
+    nh_->create_publisher<nav_msgs::msg::Path>("undo_path_planner/global_plan", rclcpp::QoS(1));
+  markersPub_ = nh_->create_publisher<visualization_msgs::msg::MarkerArray>(
+    "undo_path_planner/markers", rclcpp::QoS(1));
 
   declareOrSet(nh_, name_ + ".transform_tolerance", transform_tolerance_);
 }

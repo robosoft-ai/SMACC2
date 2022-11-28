@@ -21,7 +21,6 @@
 #include <move_group_interface_client/client_behaviors/cb_circular_pivot_motion.hpp>
 #include <move_group_interface_client/client_behaviors/cb_pouring_motion.hpp>
 #include <move_group_interface_client/common.hpp>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 namespace cl_move_group_interface
 {
@@ -71,6 +70,7 @@ void CbCircularPouringMotion::generateTrajectory()
   v0 = (currentEndEffectorTransform * lidEndEffectorTransform).getOrigin();
 
   tf2::Vector3 pivotPoint;
+
   tf2::fromMsg(this->relativePivotPoint_, pivotPoint);
 
   tf2::Vector3 pivot = (currentEndEffectorTransform * pivotPoint);
@@ -150,7 +150,9 @@ void CbCircularPouringMotion::createMarkers()
   tf2::Stamped<tf2::Transform> currentEndEffectorTransform;
   this->getCurrentEndEffectorPose(globalFrame_, currentEndEffectorTransform);
   tf2::Vector3 pivotPoint;
+
   tf2::fromMsg(this->relativePivotPoint_, pivotPoint);
+
   tf2::Vector3 pivot = (currentEndEffectorTransform * pivotPoint);
 
   visualization_msgs::msg::Marker marker;
@@ -169,6 +171,7 @@ void CbCircularPouringMotion::createMarkers()
   marker.color.b = 1.0;
 
   tf2::toMsg(pivot, marker.pose.position);
+
   marker.header.frame_id = globalFrame_;
   marker.header.stamp = getNode()->now();
 

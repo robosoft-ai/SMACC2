@@ -98,7 +98,7 @@ public:
   // threadsafe
   nav_msgs::msg::Path getPath();
 
-  void logStateString();
+  void logStateString(bool debug = true);
 
 protected:
   void onInitialize() override;

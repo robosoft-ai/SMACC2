@@ -24,7 +24,7 @@ int main(int argc, char ** argv)
   rclcpp::init(argc, argv);
   rclcpp::Node::SharedPtr node = rclcpp::Node::make_shared("temperature_sensor_node");
 
-  auto pub = node->create_publisher<std_msgs::msg::Float32>("/temperature", 1);
+  auto pub = node->create_publisher<std_msgs::msg::Float32>("/temperature", rclcpp::QoS(1));
   int i = 0;
 
   rclcpp::Rate r(30);

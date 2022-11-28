@@ -3,7 +3,7 @@
  ![sm_three_some](docs/SmThreeSome_2021-10-18_102812.svg)
 
  <h2>Description</h2> A simple, but complete state machine example. We highly recommend using this example as a starting point for users' state machine projects.<br></br>
-<a href="https://robosoft-ai.github.io/SMACC2_Documentation/master/html/namespacesm__three__some.html">Doxygen Namespace & Class Reference</a>
+<a href="https://robosoft-ai.github.io/smacc2_doxygen/master/html/namespacesm__three__some.html">Doxygen Namespace & Class Reference</a>
 
  <h2>Build Instructions</h2>
 

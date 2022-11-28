@@ -53,8 +53,8 @@ void PureSpinningLocalPlanner::cleanup()
 
 void PureSpinningLocalPlanner::configure(
   const rclcpp_lifecycle::LifecycleNode::WeakPtr & node, std::string name,
-  const std::shared_ptr<tf2_ros::Buffer> & tf,
-  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> & costmap_ros)
+  const std::shared_ptr<tf2_ros::Buffer> tf,
+  const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
   costmapRos_ = costmap_ros;
   name_ = name;
