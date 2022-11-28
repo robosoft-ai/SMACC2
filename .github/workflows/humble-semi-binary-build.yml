@@ -15,9 +15,17 @@ on:
 
 jobs:
   binary:
-    uses: ./.github/workflows/reusable-industrial-ci-with-cache.yml
-    with:
-      ros_repo: main
-      ros_distro: humble
-      upstream_workspace: SMACC2.humble.repos
-      ref_for_scheduled_build: humble
+    runs-on: ubuntu-22.04
+    container:
+      image: osrf/ros:humble-desktop
+  
+    steps:
+      - run: |
+          apt-get update
+     
+      - uses: ./.github/workflows/reusable-industrial-ci-with-cache.yml
+        with:
+          ros_repo: main
+          ros_distro: humble
+          upstream_workspace: SMACC2.humble.repos
+          ref_for_scheduled_build: humble
