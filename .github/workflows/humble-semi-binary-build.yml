@@ -1,4 +1,4 @@
-name: Humble Binary Build
+name: Humble Semi-Binary Build
 on:
    pull_request:
       branches:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   ci:
-    name: humble binary build
+    name: humble semi-binary build
     runs-on: ubuntu-22.04
     container:
         image: osrf/ros:humble-desktop
