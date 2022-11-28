@@ -22,10 +22,10 @@ repositories:
     version: ros2
 
   # ros2_control backports
-  ros2_control:
-    type: git
-    url: https://github.com/ros-controls/ros2_control.git
-    version: galactic
+  #ros2_control:
+  #  type: git
+  #  url: https://github.com/ros-controls/ros2_control.git
+  #  version: galactic
   ros2_controllers:
     type: git
     url: https://github.com/StoglRobotics-forks/ros2_controllers.git
@@ -43,10 +43,10 @@ repositories:
     version: master
 
   # planning
-  moveit2:
-    type: git
-    url: https://github.com/ros-planning/moveit2.git
-    version: galactic
+  #moveit2:
+  #  type: git
+  #  url: https://github.com/ros-planning/moveit2.git
+  #  version: galactic
 
   ####### Tracing tools (uncomment if needed)
 #  ros2_tracing:
