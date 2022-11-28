@@ -1,5 +1,2 @@
 repositories:
-    submodules/warehouse_ros_mongo:
-        type: git
-        url: https://github.com/ros-planning/warehouse_ros_mongo.git
-        version: ros2
+
