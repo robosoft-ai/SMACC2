@@ -26,10 +26,10 @@ repositories:
   #  type: git
   #  url: https://github.com/ros-controls/ros2_control.git
   #  version: galactic
-  ros2_controllers:
-    type: git
-    url: https://github.com/StoglRobotics-forks/ros2_controllers.git
-    version: galactic-backports-smacc2
+  #ros2_controllers:
+  #  type: git
+  #  url: https://github.com/StoglRobotics-forks/ros2_controllers.git
+  #  version: galactic-backports-smacc2
 
   # simulation
   Universal_Robots_ROS2_Gazebo_Simulation:
