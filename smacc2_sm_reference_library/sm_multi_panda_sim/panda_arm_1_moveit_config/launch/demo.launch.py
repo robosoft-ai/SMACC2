@@ -43,10 +43,10 @@ def generate_launch_description():
     )
 
     # RViz
-    rviz_config = os.path.join(
-        get_package_share_directory("panda_arm_1_moveit_config"),
-        "launch/moveit.rviz",
-    )
+    # rviz_config = os.path.join(
+    #     get_package_share_directory("panda_arm_1_moveit_config"),
+    #     "launch/moveit.rviz",
+    # )
     # rviz_node = Node(
     #     package="rviz2",
     #     executable="rviz2",
