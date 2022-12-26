@@ -15,8 +15,6 @@
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
-from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.actions import Node
 from launch.actions import ExecuteProcess
 from ament_index_python.packages import get_package_share_directory
@@ -26,11 +24,6 @@ from launch_ros.actions import PushRosNamespace
 
 
 def generate_launch_description():
-
-    # Command-line arguments
-    tutorial_arg = DeclareLaunchArgument(
-        "rviz_tutorial", default_value="False", description="Tutorial flag"
-    )
 
     panda_arm_1_moveit_config = (
         MoveItConfigsBuilder("panda_arm_1", "robot_description_left")
@@ -164,7 +157,7 @@ def generate_launch_description():
         ],
     )
 
-    namespace = launch_include_with_namespace = GroupAction(
+    namespace = GroupAction(
         actions=[
             PushRosNamespace("panda_arm_2"),
             rviz_node,
