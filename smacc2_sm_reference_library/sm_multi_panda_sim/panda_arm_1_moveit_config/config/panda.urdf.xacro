@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
+
+    <xacro:arg name="left_initial_positions_file"
+            default="$(find panda_arm_1_moveit_config)/config/left_initial_positions.yaml"/>
+    <xacro:arg name="right_initial_positions_file"
+            default="$(find panda_arm_1_moveit_config)/config/right_initial_positions.yaml"/>
+
+    <!-- Root link -->
+    <link name="world"/>
+
+    <!-- Xacro imports -->
+    <xacro:include filename="panda_arm_macro.xacro" />
+
+    <!-- Left arm -->
+    <xacro:panda_arm
+        name="left_panda"
+        prefix="left_"
+        parent="world"
+        initial_positions_file="$(arg left_initial_positions_file)">
+        <origin xyz="0 -1.5 0" rpy="0 0 0" />
+    </xacro:panda_arm>
+
+    <!-- Right arm -->
+    <!-- <xacro:panda_arm
+        name="right_panda"
+        prefix="right_"
+        parent="world"
+        initial_positions_file="$(arg right_initial_positions_file)">
+        <origin xyz="0 1.5 0" rpy="0 0 0" />
+    </xacro:panda_arm> -->
+</robot>

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>panda_arm_1_moveit_config</name>
+  <version>2.0.4</version>
+  <description>
+    <p>
+      MoveIt Resources for testing: Franka Emika Panda
+    </p>
+    <p>
+      A project-internal configuration for testing in MoveIt.
+    </p>
+  </description>
+  <author email="mike@picknik.ai">Mike Lautman</author>
+  <maintainer email="mike@picknik.ai">Mike Lautman</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://moveit.ros.org/</url>
+  <url type="bugtracker">https://github.com/ros-planning/moveit_resources/issues</url>
+  <url type="repository">https://github.com/ros-planning/moveit_resources</url>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>moveit_resources_panda_description</exec_depend>
+  <!-- disabled to remove circular dependencies
+  <exec_depend>moveit_ros_move_group</exec_depend>
+  <exec_depend>moveit_fake_controller_manager</exec_depend>
+  <exec_depend>moveit_kinematics</exec_depend>
+  <exec_depend>moveit_planners_ompl</exec_depend>
+  <exec_depend>moveit_ros_visualization</exec_depend>
+  -->
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <!-- TODO(#40): Package not available in ROS 2, find equivalent when migrating launch files
+  <exec_depend>topic_tools</exec_depend>
+  -->
+  <!-- This package is referenced in the warehouse launch files, but does not build out of the box at the moment.
+       Commented the dependency until this works. -->
+  <!-- <exec_depend>warehouse_ros_mongo</exec_depend> -->
+
+  <export>
+      <build_type>ament_cmake</build_type>
+  </export>
+</package>
