@@ -43,7 +43,7 @@ struct StLeftArmMoves : smacc2::SmaccState<StLeftArmMoves, SmMultiPandaSim>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-  
+
 
     std::map<std::string, double> leftJointValues{
                                                     { "left_panda_joint1", 0.1 },
@@ -59,7 +59,7 @@ struct StLeftArmMoves : smacc2::SmaccState<StLeftArmMoves, SmMultiPandaSim>
   void runtimeConfigure()
   {
     this->getClientBehavior<OrArmLeft, CbMoveJoints>()->scalingFactor_=100;
-    
+
     // std::map<std::string, double> leftJointValues{
     //   { "left_panda_joint1", 0.1 },
     //   { "left_panda_joint2", 0.1 },

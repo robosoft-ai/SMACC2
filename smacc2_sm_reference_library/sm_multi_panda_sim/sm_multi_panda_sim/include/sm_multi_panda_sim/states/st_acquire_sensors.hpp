@@ -47,7 +47,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmMultiPandaSim>
     >reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure() 
+  static void staticConfigure()
   {
     configure_orthogonal<OrArmLeft, CbWaitJointState>();
   }

@@ -33,7 +33,7 @@ class OrArmLeft : public smacc2::Orthogonal<OrArmLeft>
 public:
   void onInitialize() override
   {
- 
+
     moveit::planning_interface::MoveGroupInterface::Options options ("left_panda_arm","robot_description_left", "/panda_arm_1");
 
 
