@@ -22,17 +22,16 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
 
 WORKDIR "/home/ros2_ws/src"
 
-RUN echo "x23"
+RUN echo "copying current code version to docker image:"
 ADD . /home/ros2_ws/src/SMACC2
-RUN if [ $LOCAL_FOLDER_SOURCE -eq 0 ] ; then (echo "downloading repo" && rm -R /home/ros2_ws/src/SMACC2  && git clone -b $GIT_BRANCH https://github.com/robosoft-ai/SMACC2.git /home/ros2_ws/src/SMACC2); else  (echo "using local copy" &&  rm -R /home/ros2_ws/src/SMACC2/.git); fi
 WORKDIR "/home/ros2_ws"
 
-
 # install dependencies and build
-RUN ls src && vcs import  src --skip-existing --input src/SMACC2/SMACC2-not-released.$ROS_DISTRO.repos \
-  && ls src
+RUN ls src
+RUN vcs import  src --skip-existing --input src/SMACC2/SMACC2-not-released.$ROS_DISTRO.repos || true
+RUN ls src
 
-RUN rosdep install --from-paths src --ignore-src -r -y
+RUN rosdep install --from-paths src --ignore-src -r -y --skip-keys warehouse-ros-mongo || true
 RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
 
 RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && colcon build --merge-install"
