@@ -265,7 +265,8 @@ void ISmaccStateMachine::setGlobalSMData(std::string name, T value)
     // RCLCPP_WARN(getLogger(),"set SM Data lock acquire");
 
     globalData_[name] = {
-      [this, name]() {
+      [this, name]()
+      {
         std::stringstream ss;
         auto val = any_cast<T>(globalData_[name].second);
         ss << val;
@@ -348,8 +349,8 @@ struct Bind<4>
   boost::signals2::connection bindaux(
     TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object)
   {
-    return signal.connect(
-      [=](auto a1, auto a2, auto a3) { return (object->*callback)(a1, a2, a3); });
+    return signal.connect([=](auto a1, auto a2, auto a3)
+                          { return (object->*callback)(a1, a2, a3); });
   }
 };
 }  // namespace utils
