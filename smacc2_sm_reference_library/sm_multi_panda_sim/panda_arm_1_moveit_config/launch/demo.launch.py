@@ -10,6 +10,7 @@ from moveit_configs_utils import MoveItConfigsBuilder
 from launch.actions import GroupAction
 from launch_ros.actions import PushRosNamespace
 
+
 def generate_launch_description():
 
     # Command-line arguments
@@ -32,7 +33,7 @@ def generate_launch_description():
         executable="move_group",
         output="screen",
         parameters=[moveit_config.to_dict() | {"ros_control_namespace": "/panda_arm_1"}],
-        arguments=["--ros-args","--log-level","move_group:=DEBUG"]
+        arguments=["--ros-args", "--log-level", "move_group:=DEBUG"],
     )
 
     # RViz
@@ -51,7 +52,7 @@ def generate_launch_description():
             moveit_config.robot_description_semantic,
             moveit_config.planning_pipelines,
             moveit_config.robot_description_kinematics,
-            {"ros_control_namespace": "/panda_arm_1"}
+            {"ros_control_namespace": "/panda_arm_1"},
         ],
     )
     # Publish TF
@@ -74,8 +75,7 @@ def generate_launch_description():
         executable="ros2_control_node",
         parameters=[moveit_config.robot_description, ros2_controllers_path],
         output="both",
-        arguments = ["--ros-args", "--log-level", "debug"]
-
+        arguments=["--ros-args", "--log-level", "debug"],
     )
 
     # Load controllers
@@ -87,26 +87,24 @@ def generate_launch_description():
     ]:
         load_controllers += [
             ExecuteProcess(
-                cmd=["ros2 run controller_manager spawner {}".format(controller) + " -n panda_arm_1 -c panda_arm_1/controller_manager"],
+                cmd=[
+                    f"ros2 run controller_manager spawner {controller}"
+                    + " -n panda_arm_1 -c panda_arm_1/controller_manager"
+                ],
                 shell=True,
                 output="screen",
             )
         ]
 
-
     namespace = launch_include_with_namespace = GroupAction(
-            actions =[
-                #rviz_node,
-                PushRosNamespace('panda_arm_1'),                
-                robot_state_publisher,
-                move_group_node,
-                ros2_control_node,
-            ]
-            + load_controllers
-            )
-
-    return LaunchDescription(
-        [
-            namespace
+        actions=[
+            # rviz_node,
+            PushRosNamespace("panda_arm_1"),
+            robot_state_publisher,
+            move_group_node,
+            ros2_control_node,
         ]
+        + load_controllers
     )
+
+    return LaunchDescription([namespace])

@@ -56,7 +56,7 @@ install(
 
 install(DIRECTORY
   # config
-  # launch
+  launch
   # rviz
   # urdf
   # srdf

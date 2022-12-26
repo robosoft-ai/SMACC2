@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>panda_arm__moveit_config</name>
+  <name>panda_arm_2_moveit_config</name>
   <version>2.0.4</version>
   <description>
     <p>

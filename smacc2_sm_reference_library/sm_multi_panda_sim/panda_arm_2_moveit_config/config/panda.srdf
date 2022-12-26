@@ -43,7 +43,7 @@
   <!-- <end_effector group="right_hand" name="right_hand" parent_group="right_panda_arm" parent_link="right_panda_link8"/> -->
   <end_effector group="right_panda_arm" name="right_panda_link8"/> -->
 
-  
+
 
   <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
   <!-- We don't use a virtual joint here since world->left_panda_link0 and world->right_panda_link0 are already defined in the URDF -->
@@ -122,6 +122,6 @@
   <disable_collisions link1="right_panda_link5" link2="right_panda_link7" reason="Never"/>
   <disable_collisions link1="right_panda_link5" link2="right_panda_hand" reason="Never"/>
   <disable_collisions link1="right_panda_link7" link2="right_panda_rightfinger" reason="Never"/>
-  
+
 
 </robot>

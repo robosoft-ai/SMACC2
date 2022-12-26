@@ -10,6 +10,7 @@ from moveit_configs_utils import MoveItConfigsBuilder
 from launch.actions import GroupAction
 from launch_ros.actions import PushRosNamespace
 
+
 def generate_launch_description():
 
     # Command-line arguments
@@ -17,11 +18,8 @@ def generate_launch_description():
         "rviz_tutorial", default_value="False", description="Tutorial flag"
     )
 
-
-  
-  
     panda_arm_1_moveit_config = (
-        MoveItConfigsBuilder("panda_arm_1","robot_description_left")
+        MoveItConfigsBuilder("panda_arm_1", "robot_description_left")
         .robot_description(file_path="config/panda.urdf.xacro")
         .robot_description_semantic(file_path="config/panda.srdf")
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
@@ -31,16 +29,21 @@ def generate_launch_description():
 
     print("---------------")
     print(panda_arm_1_moveit_config)
-    
 
-    panda_arm_1_moveit_config_description_left = dict([ (k, panda_arm_1_moveit_config.robot_description[k]) for k in panda_arm_1_moveit_config.robot_description.keys()])
-    panda_arm_1_moveit_config_description_semantic_left= dict([ (k, panda_arm_1_moveit_config.robot_description_semantic[k]) for k in panda_arm_1_moveit_config.robot_description_semantic.keys()])
+    panda_arm_1_moveit_config_description_left = {
+        k: panda_arm_1_moveit_config.robot_description[k]
+        for k in panda_arm_1_moveit_config.robot_description.keys()
+    }
+    panda_arm_1_moveit_config_description_semantic_left = {
+        k: panda_arm_1_moveit_config.robot_description_semantic[k]
+        for k in panda_arm_1_moveit_config.robot_description_semantic.keys()
+    }
 
     print("***********")
     print(panda_arm_1_moveit_config_description_left)
 
     panda_arm_2_moveit_config = (
-        MoveItConfigsBuilder("panda_arm_2","robot_description")
+        MoveItConfigsBuilder("panda_arm_2", "robot_description")
         .robot_description(file_path="config/panda.urdf.xacro")
         .robot_description_semantic(file_path="config/panda.srdf")
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
@@ -49,16 +52,15 @@ def generate_launch_description():
     )
 
     print(panda_arm_2_moveit_config)
-  
-
-    
 
     # Start the actual move_group node/action server
     move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
-        parameters=[panda_arm_2_moveit_config.to_dict() | {"ros_control_namespace": "/panda_arm_2"}],
+        parameters=[
+            panda_arm_2_moveit_config.to_dict() | {"ros_control_namespace": "/panda_arm_2"}
+        ],
     )
 
     # RViz
@@ -77,7 +79,7 @@ def generate_launch_description():
             panda_arm_2_moveit_config.robot_description_semantic,
             panda_arm_2_moveit_config.planning_pipelines,
             panda_arm_2_moveit_config.robot_description_kinematics,
-            {"ros_control_namespace": "/panda_arm_2"}
+            {"ros_control_namespace": "/panda_arm_2"},
         ],
     )
     # Publish TF
@@ -112,7 +114,10 @@ def generate_launch_description():
     ]:
         load_controllers += [
             ExecuteProcess(
-                cmd=["ros2 run controller_manager spawner {}".format(controller) + " -n panda_arm_2 -c panda_arm_2/controller_manager"],
+                cmd=[
+                    f"ros2 run controller_manager spawner {controller}"
+                    + " -n panda_arm_2 -c panda_arm_2/controller_manager"
+                ],
                 shell=True,
                 output="screen",
             )
@@ -128,39 +133,32 @@ def generate_launch_description():
     # print([ (k.replace("robot_description", "robot_description2"), panda_arm_2_moveit_config.robot_description[k]) for k in list(panda_arm_2_moveit_config.robot_description)])
     # print("------------------------------------------")
 
-
-        
-
-    state_machine = Node(package="sm_multi_panda_sim", 
-                        executable="sm_multi_panda_sim_node", 
-                        output='screen',
-                        prefix=xtermprefix,
-                        parameters=[
-                            panda_arm_1_moveit_config_description_left,
-                            panda_arm_1_moveit_config_description_semantic_left,
-                        #             # panda_arm_2_moveit_config.planning_pipelines,
-                        #             # panda_arm_2_moveit_config.robot_description_kinematics,
-                                     panda_arm_2_moveit_config.robot_description,
-                                     panda_arm_2_moveit_config.robot_description_semantic,
-                        #             # panda_arm_1_moveit_config.planning_pipelines,
-                        #             # panda_arm_1_moveit_config.robot_description_kinematics,
-                        ]
-                                    )
+    state_machine = Node(
+        package="sm_multi_panda_sim",
+        executable="sm_multi_panda_sim_node",
+        output="screen",
+        prefix=xtermprefix,
+        parameters=[
+            panda_arm_1_moveit_config_description_left,
+            panda_arm_1_moveit_config_description_semantic_left,
+            #             # panda_arm_2_moveit_config.planning_pipelines,
+            #             # panda_arm_2_moveit_config.robot_description_kinematics,
+            panda_arm_2_moveit_config.robot_description,
+            panda_arm_2_moveit_config.robot_description_semantic,
+            #             # panda_arm_1_moveit_config.planning_pipelines,
+            #             # panda_arm_1_moveit_config.robot_description_kinematics,
+        ],
+    )
 
     namespace = launch_include_with_namespace = GroupAction(
-            actions =[
-                PushRosNamespace('panda_arm_2'),                
-                rviz_node,
-                robot_state_publisher,
-                move_group_node,
-                ros2_control_node,
-            ]
-            + load_controllers
-            )
-
-    return LaunchDescription(
-        [
-            state_machine,
-            namespace
+        actions=[
+            PushRosNamespace("panda_arm_2"),
+            rviz_node,
+            robot_state_publisher,
+            move_group_node,
+            ros2_control_node,
         ]
+        + load_controllers
     )
+
+    return LaunchDescription([state_machine, namespace])
