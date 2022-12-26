@@ -7,11 +7,12 @@
       MoveIt Resources for testing: Franka Emika Panda
     </p>
     <p>
-      A project-internal configuration for testing in MoveIt.
+      A project-internal configuration for testing in MoveIt and smacc.
     </p>
   </description>
-  <author email="mike@picknik.ai">Mike Lautman</author>
-  <maintainer email="mike@picknik.ai">Mike Lautman</maintainer>
+  <author email="pablo@ibrobotics.com">Pablo Iñigo Blasco</author>
+  <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
+
 
   <license>BSD</license>
 
