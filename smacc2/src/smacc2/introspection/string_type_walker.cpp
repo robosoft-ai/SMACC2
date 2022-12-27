@@ -142,9 +142,9 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     orderedTypedict.emplace_back(item);
   }
 
-  std::sort(
-    orderedTypedict.begin(), orderedTypedict.end(),
-    [](auto & a, auto & b) { return std::stoi(a.first.substr(2)) > std::stoi(b.first.substr(2)); });
+  std::sort(orderedTypedict.begin(), orderedTypedict.end(), [](auto & a, auto & b) {
+    return std::stoi(a.first.substr(2)) > std::stoi(b.first.substr(2));
+  });
   // -----------------------------------------------------------------
 
   std::set<std::string> allbasetypes;

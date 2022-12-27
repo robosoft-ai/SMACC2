@@ -1,1 +1,41 @@
 repositories:
+
+  moveit2:
+    type: git
+    url: https://github.com/ros-planning/moveit2.git
+    version: feature/multiple_namespace_support_from_parameters
+
+  ros2_control:
+    type: git
+    url: https://github.com/ros-controls/ros2_control.git
+    version: 30131b42f082a06032507040840c7ca4c48a6241
+
+  ros2_controllers:
+    type: git
+    url: https://github.com/ros-controls/ros2_controllers.git
+    version: f08c3789e81b72f64858eccfb4a1553fd9ed801f # 2.15.0
+
+  realtime_tools:
+    type: git
+    url: https://github.com/ros-controls/realtime_tools.git
+    version: 2.4.0
+
+  ros_param_shortcuts:
+    type: git
+    url: https://github.com/PickNikRobotics/rosparam_shortcuts
+    version: 0.5.0
+
+  generate_parameter_library:
+    type: git
+    url: https://github.com/PickNikRobotics/generate_parameter_library.git
+    version: 0.3.0
+
+  rsl:
+    type: git
+    url: https://github.com/PickNikRobotics/RSL.git
+    version: 0.2.0
+
+  moveit_resources:
+    type: git
+    url: https://github.com/ros-planning/moveit_resources.git
+    version: ros2

@@ -43,8 +43,7 @@ public:
     this->requiresClient(nav2zClient_);
     CbNavigateNextWaypoint::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
-    postEvGoalWaypointReached_ = [this]()
-    {
+    postEvGoalWaypointReached_ = [this]() {
       this->postEvent<EvGoalWaypointReached<TSourceObject, TOrthogonal>>();
 
       // nav2zClient_->onSucceeded(&CbNavigateNextWaypointUntilReached::onWaypointReached, this);
