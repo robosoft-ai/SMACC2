@@ -25,30 +25,52 @@ namespace smacc2
 {
 namespace client_behaviors
 {
+using namespace std::chrono_literals;
 template <typename ServiceType>
 class CbServiceCall : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbServiceCall(const char * serviceName) : serviceName_(serviceName) {}
+  CbServiceCall(const char * serviceName) : serviceName_(serviceName)
+  {
+    request_ = std::make_shared<typename ServiceType::Request>();
+    pollRate_ = 100ms;
+  }
 
-  CbServiceCall(const char * serviceName, std::shared_ptr<typename ServiceType::Request>)
-  : serviceName_(serviceName)
+  CbServiceCall(
+    const char * serviceName, std::shared_ptr<typename ServiceType::Request> request,
+    std::chrono::milliseconds pollRate = 100ms)
+  : serviceName_(serviceName), request_(request), result_(nullptr), pollRate_(pollRate)
   {
   }
 
   void onEntry() override
   {
-    RCLCPP_INFO_STREAM(
-      getLogger(), "[" << this->getName() << "] creating service client: " << serviceName_);
+    RCLCPP_DEBUG_STREAM(
+      getLogger(), "[" << this->getName() << "] creating ros service client: " << serviceName_);
 
     client_ = getNode()->create_client<ServiceType>(serviceName_);
 
-    result_ = client_->async_send_request(request_).get();
+    RCLCPP_DEBUG_STREAM(
+      getLogger(), "[" << this->getName() << "] making service request to " << serviceName_);
 
-    //, std::bind(&CbServiceCall<ServiceType>::onServiceResponse, this, std::placeholders::_1));
+    resultFuture_ = client_->async_send_request(request_);
+
+    std::future_status status = resultFuture_.wait_for(0s);
+
+    RCLCPP_DEBUG_STREAM(
+      getLogger(), "thread state: " << (int)status << " ok " << rclcpp::ok() << " shutdown "
+                                    << this->isShutdownRequested() << "");
+    while (status != std::future_status::ready && rclcpp::ok() && !this->isShutdownRequested())
+    {
+      RCLCPP_DEBUG_STREAM(getLogger(), "[" << this->getName() << "] waiting response ");
+      rclcpp::sleep_for(pollRate_);
+      status = resultFuture_.wait_for(0s);
+    }
   }
 
+  typename rclcpp::Client<ServiceType>::SharedFuture resultFuture_;
   typename std::shared_ptr<typename ServiceType::Response> result_;
+  std::chrono::milliseconds pollRate_;
 
 protected:
   //rclcpp::NodeHandle nh_;
@@ -58,7 +80,8 @@ protected:
 
   void onServiceResponse(typename rclcpp::Client<ServiceType>::SharedFuture result)
   {
-    result_ = result;
+    result_ = result.get();
+    RCLCPP_DEBUG_STREAM(getLogger(), "[" << this->getName() << "] response received ");
   }
 };
 
