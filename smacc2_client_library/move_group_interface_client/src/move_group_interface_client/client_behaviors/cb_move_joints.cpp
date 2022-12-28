@@ -86,33 +86,39 @@ void CbMoveJoints::moveJoints(moveit::planning_interface::MoveGroupInterface & m
   {
     moveGroupInterface.setJointValueTarget(jointValueTarget_);
     //moveGroupInterface.setGoalJointTolerance(0.01);
-    success =
-      (moveGroupInterface.plan(computedMotionPlan) ==
-       moveit::planning_interface::MoveItErrorCode::SUCCESS);
-    RCLCPP_INFO(getLogger(), "Success Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
+
+    auto result = moveGroupInterface.plan(computedMotionPlan);
+
+    success = (result == moveit::core::MoveItErrorCode::SUCCESS);
+
+    RCLCPP_INFO(
+      getLogger(), "[CbMoveJoints] Execution plan result %s (%d)", success ? "SUCCESS" : "FAILED",
+      result.val);
   }
 
   if (success)
   {
     auto executionResult = moveGroupInterface.execute(computedMotionPlan);
 
-    auto statestr = currentJointStatesToString(moveGroupInterface, jointValueTarget_);
+    //auto statestr = currentJointStatesToString(moveGroupInterface, jointValueTarget_);
 
     if (executionResult == moveit_msgs::msg::MoveItErrorCodes::SUCCESS)
     {
       RCLCPP_INFO_STREAM(
         getLogger(), "[" << this->getName()
                          << "] motion execution succeeded. Throwing success event. " << std::endl
-                         << statestr);
+        //                         << statestr
+      );
       movegroupClient_->postEventMotionExecutionSucceded();
       this->postSuccessEvent();
     }
     else
     {
       RCLCPP_WARN_STREAM(
-        getLogger(), "[" << this->getName() << "] motion execution failed. Throwing fail event."
-                         << std::endl
-                         << statestr);
+        getLogger(),
+        "[" << this->getName() << "] motion execution failed. Throwing fail event." << std::endl
+        //                         << statestr
+      );
       movegroupClient_->postEventMotionExecutionFailed();
       this->postFailureEvent();
     }
@@ -121,9 +127,10 @@ void CbMoveJoints::moveJoints(moveit::planning_interface::MoveGroupInterface & m
   {
     auto statestr = currentJointStatesToString(moveGroupInterface, jointValueTarget_);
     RCLCPP_WARN_STREAM(
-      getLogger(), "[" << this->getName() << "] motion execution failed. Throwing fail event."
-                       << std::endl
-                       << statestr);
+      getLogger(),
+      "[" << this->getName() << "] motion execution failed. Throwing fail event." << std::endl
+      //                       << statestr
+    );
     movegroupClient_->postEventMotionExecutionFailed();
     this->postFailureEvent();
   }
