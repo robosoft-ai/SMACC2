@@ -61,7 +61,9 @@
                         "ignoreFailures": true
                     }
                 ]
-            }
+            },
+
+
 
         {
             "name": "(gdb) Attach sm_test_moveit_ur5_sim_node",
@@ -195,6 +197,25 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/../install/sm_atomic/lib/sm_atomic/sm_atomic_node",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) sm_atomic_services",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../install/sm_atomic_services/lib/sm_atomic_services/sm_atomic_services_node",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
