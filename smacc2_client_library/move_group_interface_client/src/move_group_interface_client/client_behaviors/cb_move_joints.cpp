@@ -89,7 +89,7 @@ void CbMoveJoints::moveJoints(moveit::planning_interface::MoveGroupInterface & m
 
     auto result = moveGroupInterface.plan(computedMotionPlan);
 
-    success = (result == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    success = (result == moveit::core::MoveItErrorCode::SUCCESS);
 
     RCLCPP_INFO(
       getLogger(), "[CbMoveJoints] Execution plan result %s (%d)", success ? "SUCCESS" : "FAILED",
