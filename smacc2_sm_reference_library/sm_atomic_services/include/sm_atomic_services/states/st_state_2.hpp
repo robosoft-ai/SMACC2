@@ -13,9 +13,11 @@
 // limitations under the License.
 
 #include <smacc2/smacc.hpp>
+#include <smacc2/client_behaviors/cb_call_service.hpp>
 
 namespace sm_atomic_services
 {
+    using smacc2::client_behaviors::CbServiceCall;
 // STATE DECLARATION
 struct State2 : smacc2::SmaccState<State2, SmAtomicServices>
 {
@@ -32,7 +34,12 @@ struct State2 : smacc2::SmaccState<State2, SmAtomicServices>
 // STATE FUNCTIONS
     static void staticConfigure()
     {
+        // the state reacts on a service request
         configure_orthogonal<OrServices, CbServiceServer>();
+
+        // to evaluate the previous client behavior we test here the call to that service
+        configure_orthogonal<OrServices, CbServiceCall<std_srvs::srv::Empty>>("/service");
+
     }
 
     void runtimeConfigure()
