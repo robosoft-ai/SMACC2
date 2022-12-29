@@ -29,4 +29,5 @@ jobs:
 
     - name: "pre-commit"
       run: |
+        source /opt/ros/$ROS_DISTRO/setup.bash
         pre-commit run -a
