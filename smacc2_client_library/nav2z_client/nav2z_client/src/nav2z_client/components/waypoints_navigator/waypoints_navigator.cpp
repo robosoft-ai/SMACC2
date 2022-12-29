@@ -388,7 +388,7 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
         }
         catch (...)
         {
-          RCLCPP_ERROR(getLogger(), "parsing waypoint file, syntax error in point %d", i);
+          RCLCPP_ERROR(getLogger(), "parsing waypoint file, syntax error in point %ld", i);
         }
       }
       RCLCPP_INFO_STREAM(getLogger(), "Parsed " << this->waypoints_.size() << " waypoints.");
@@ -451,7 +451,7 @@ void WaypointNavigator::loadWayPointsFromFile2(std::string filepath)
         }
         catch (...)
         {
-          RCLCPP_ERROR(getLogger(), "parsing waypoint file, syntax error in point %d", i);
+          RCLCPP_ERROR(getLogger(), "parsing waypoint file, syntax error in point %ld", i);
         }
       }
       RCLCPP_INFO_STREAM(getLogger(), "Parsed " << this->waypoints_.size() << " waypoints.");
