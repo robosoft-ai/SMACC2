@@ -25,7 +25,9 @@ namespace smacc2
 namespace client_bases
 {
 ClRosLaunch::ClRosLaunch(std::string packageName, std::string launchFilename)
-: packageName_(packageName), launchFileName_(launchFilename), cancellationToken_(false)
+: packageName_(packageName)
+  , launchFileName_(launchFilename)
+  , cancellationToken_(false)
 {
 }
 
