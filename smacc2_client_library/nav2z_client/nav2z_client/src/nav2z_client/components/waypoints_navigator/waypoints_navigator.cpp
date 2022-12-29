@@ -360,7 +360,6 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
     if (wp_node != NULL)
     {
       for (uint64_t i = 0; i < wp_node->size(); ++i)
-
       {
         // Parse waypoint entries on YAML
         geometry_msgs::msg::Pose wp;

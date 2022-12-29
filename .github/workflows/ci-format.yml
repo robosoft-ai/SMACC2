@@ -10,14 +10,30 @@ on:
 jobs:
   pre-commit:
     name: Format
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
+      #with:
+      #  python-version: 3.9.7
+
+    - name: Install clang-format
+      run: |
+       sudo apt-get update
+       sudo apt-get install -y clang-format-12 cppcheck
+       git config --global --add safe.directory `pwd`
+       pip3 install pre-commit
+
+    - uses: ros-tooling/setup-ros@v0.2
       with:
-        python-version: 3.9.7
-    - name: Install clang-format-10
-      run: sudo apt-get install clang-format-10 cppcheck
-    - uses: pre-commit/action@v2.0.3
-      with:
-        extra_args: --all-files --hook-stage manual
+        required-ros-distributions: galactic
+
+    # - uses: pre-commit/action@v2.0.3
+    #   with:
+    #     extra_args: --all-files --hook-stage manual
+
+    - name: "pre-commit"
+      run: |
+        source /opt/ros/galactic/setup.bash
+        echo `pwd`
+        pre-commit run -a
