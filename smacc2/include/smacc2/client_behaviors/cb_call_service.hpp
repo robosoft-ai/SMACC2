@@ -66,6 +66,19 @@ public:
       rclcpp::sleep_for(pollRate_);
       status = resultFuture_.wait_for(0s);
     }
+
+    if (status == std::future_status::ready)
+    {
+      RCLCPP_DEBUG_STREAM(getLogger(), "[" << this->getName() << "] response received ");
+      result_ = resultFuture_.get();
+      onServiceResponse(result_);
+      this->postSuccessEvent();
+    }
+    else
+    {
+      RCLCPP_DEBUG_STREAM(getLogger(), "[" << this->getName() << "] response not received ");
+      this->postFailureEvent();
+    }
   }
 
   typename rclcpp::Client<ServiceType>::SharedFuture resultFuture_;
@@ -78,9 +91,8 @@ protected:
   std::string serviceName_;
   std::shared_ptr<typename ServiceType::Request> request_;
 
-  void onServiceResponse(typename rclcpp::Client<ServiceType>::SharedFuture result)
+  virtual void onServiceResponse(std::shared_ptr<typename ServiceType::Response> result)
   {
-    result_ = result.get();
     RCLCPP_DEBUG_STREAM(getLogger(), "[" << this->getName() << "] response received ");
   }
 };
