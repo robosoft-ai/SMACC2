@@ -88,6 +88,8 @@ private:
   boost::thread signalDetectorThread_;
 };
 
+void onSigQuit(int sig);
+
 // Main entry point for any SMACC state machine
 // It instantiates and starts the specified state machine type
 // it uses two threads: a new thread and the current one.
@@ -96,6 +98,8 @@ private:
 template <typename StateMachineType>
 void run()
 {
+  ::signal(SIGQUIT, onSigQuit);
+
   // create the asynchronous state machine scheduler
   SmaccFifoScheduler scheduler1(true);
 
@@ -130,6 +134,8 @@ struct SmExecution
 template <typename StateMachineType>
 SmExecution * run_async()
 {
+  ::signal(SIGQUIT, onSigQuit);
+
   SmExecution * ret = new SmExecution();
 
   // create the asynchronous state machine scheduler
