@@ -10,17 +10,21 @@ on:
 jobs:
   pre-commit:
     name: Format
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    container: ros/humble-desktop:latest
     steps:
     - uses: actions/checkout@v2
-
     - uses: actions/setup-python@v2
-      with:
-        python-version: 3.9.7
 
     - name: Install clang-format
-      run: sudo apt-get install clang-format cppcheck
+      run: |
+       sudo apt-get update
+       sudo apt-get install -y clang-format-12 cppcheck
+       git config --global --add safe.directory `pwd`
+       pip3 install pre-commit
 
-    - uses: pre-commit/action@v2.0.3
-      with:
-        extra_args: --all-files --hook-stage manual
+    - name: "pre-commit"
+      run: |
+        source /opt/ros/humble/setup.bash
+        echo `pwd`
+        pre-commit run -a
