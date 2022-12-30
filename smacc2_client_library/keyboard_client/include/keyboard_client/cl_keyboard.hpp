@@ -184,7 +184,8 @@ public:
     smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>::onOrthogonalAllocation<
       TOrthogonal, TSourceObject>();
 
-    postEventKeyPress = [=](auto unicode_keychar) {
+    postEventKeyPress = [=](auto unicode_keychar)
+    {
       char character = (char)unicode_keychar.data;
       RCLCPP_WARN(getLogger(), "detected keyboard: %c", character);
 
