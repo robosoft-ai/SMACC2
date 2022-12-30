@@ -28,9 +28,8 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    this->postTimerEvent_ = [this]() {
-      this->template postEvent<EvTimer<TSourceObject, TOrthogonal>>();
-    };
+    this->postTimerEvent_ = [this]()
+    { this->template postEvent<EvTimer<TSourceObject, TOrthogonal>>(); };
   }
 
   void onClientTimerTickCallback();

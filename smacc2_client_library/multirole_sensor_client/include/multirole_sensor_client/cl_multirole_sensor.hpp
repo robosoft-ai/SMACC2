@@ -59,7 +59,8 @@ public:
     SmaccSubscriberClient<MessageType>::template onOrthogonalAllocation<
       TOrthogonal, TSourceObject>();
 
-    this->postTimeoutMessageEvent = [this]() {
+    this->postTimeoutMessageEvent = [this]()
+    {
       this->onMessageTimeout_();
 
       auto event = new EvTopicMessageTimeout<TSourceObject, TOrthogonal>();

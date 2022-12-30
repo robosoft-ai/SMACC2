@@ -212,7 +212,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
     ss << "----------------------------------------------------------" << std::endl;
 
     auto resumeMsg = ss.str();
-    RCLCPP_INFO(getLogger(), "%s", resumeMsg.c_str());
+    RCLCPP_DEBUG(getLogger(), "%s", resumeMsg.c_str());
     stateMsgs.push_back(stateMsg);
   }
 }

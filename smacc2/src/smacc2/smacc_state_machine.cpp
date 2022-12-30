@@ -33,17 +33,17 @@ namespace smacc2
 using namespace std::chrono_literals;
 using namespace smacc2::introspection;
 ISmaccStateMachine::ISmaccStateMachine(
-  std::string stateMachineName, SignalDetector * signalDetector)
+  std::string stateMachineName, SignalDetector * signalDetector, rclcpp::NodeOptions nodeOptions)
 : nh_(nullptr), currentState_(nullptr), stateSeqCounter_(0)
 {
-  rclcpp::NodeOptions node_options;
   // This enables loading arbitrary parameters
   // However, best practice would be to declare parameters in the corresponding classes
   // and provide descriptions about expected use
   // TODO(henningkayser): remove once all parameters are declared inside the components
   // node_options.automatically_declare_parameters_from_overrides(true);
 
-  nh_ = rclcpp::Node::make_shared(stateMachineName, node_options);  //
+  nh_ = rclcpp::Node::make_shared(
+    stateMachineName, nodeOptions.automatically_declare_parameters_from_overrides(true));  //
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "Creating State Machine Base: " << nh_->get_fully_qualified_name());
 

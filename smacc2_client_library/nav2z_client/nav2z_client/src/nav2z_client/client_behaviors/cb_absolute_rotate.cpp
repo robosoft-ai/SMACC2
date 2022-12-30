@@ -144,7 +144,9 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
     {
       // save old yaw tolerance
       auto fut = parameters_client->get_parameters(
-        {localPlannerName + ".yaw_goal_tolerance"}, [&](auto futureParameters) {
+        {localPlannerName + ".yaw_goal_tolerance"},
+        [&](auto futureParameters)
+        {
           auto params = futureParameters.get();
           oldYawTolerance = params[0].as_double();
         });
@@ -169,7 +171,9 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 
         // save old yaw tolerance
         auto fut = parameters_client->get_parameters(
-          {localPlannerName + ".max_vel_theta"}, [&](auto futureParameters) {
+          {localPlannerName + ".max_vel_theta"},
+          [&](auto futureParameters)
+          {
             auto params = futureParameters.get();
             oldMaxVelTheta = params[0].as_double();
           });

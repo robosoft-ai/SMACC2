@@ -63,7 +63,9 @@ enum class StateMachineInternalAction
 class ISmaccStateMachine
 {
 public:
-  ISmaccStateMachine(std::string stateMachineName, SignalDetector * signalDetector);
+  ISmaccStateMachine(
+    std::string stateMachineName, SignalDetector * signalDetector,
+    rclcpp::NodeOptions nodeOptions = rclcpp::NodeOptions());
 
   virtual ~ISmaccStateMachine();
 
