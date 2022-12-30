@@ -21,6 +21,7 @@ jobs:
       run: |
        apt update
        apt install -y python3-pip clang-format-12 ros-humble-ament-cppcheck
+       git config --global --add safe.directory `pwd`
        pip install pre-commit
     - name: pre-commit
       shell: bash
