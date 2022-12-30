@@ -1,0 +1,9 @@
+# MoveIt uses this configuration for controller management
+trajectory_execution:
+  # execution_duration_monitoring: false
+  allowed_execution_duration_scaling: 3.0
+  allowed_goal_duration_margin: 3.0 #0.5
+  # allowed_start_tolerance: 0.01
+
+moveit_controller_manager: moveit_ros_control_interface/Ros2ControlManager
+ros_control_namespace: /panda_arm_1

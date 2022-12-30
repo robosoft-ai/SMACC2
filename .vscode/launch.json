@@ -19,6 +19,38 @@
             "cwd": "${workspaceFolder}/SMACC2_RTA/",
             "console": "integratedTerminal"
         },
+        //--ros-args --params-file /tmp/launch_params_jjq8gm1o --params-file /tmp/launch_params_hsldl96i --params-file /tmp/launch_params_rwalruxx --params-file /tmp/launch_params_w36ac8qs
+
+        {
+            "name": "(gdb) smPandaMultiSim",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../install/sm_multi_panda_sim/lib/sm_multi_panda_sim/sm_multi_panda_sim_node",
+            "args": [
+                "--ros-args",
+                "--params-file",
+                "/tmp/launch_params_jjq8gm1o",
+                "--params-file",
+                "/tmp/launch_params_hsldl96i",
+                "--params-file",
+                "/tmp/launch_params_rwalruxx",
+                "--params-file",
+                "/tmp/launch_params_w36ac8qs"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+
         {
             "name": "(gdb) sm_test_moveit_ur5_sim_node",
             "type": "cppdbg",

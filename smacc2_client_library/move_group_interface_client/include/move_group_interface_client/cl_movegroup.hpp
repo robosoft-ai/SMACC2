@@ -100,12 +100,14 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    postEventMotionExecutionSucceded_ = [=]() {
+    postEventMotionExecutionSucceded_ = [=]()
+    {
       this->onSucceded_();
       this->postEvent<EvMoveGroupMotionExecutionSucceded<TSourceObject, TOrthogonal>>();
     };
 
-    postEventMotionExecutionFailed_ = [=]() {
+    postEventMotionExecutionFailed_ = [=]()
+    {
       this->onFailed_();
       this->postEvent<EvMoveGroupMotionExecutionFailed<TSourceObject, TOrthogonal>>();
     };
