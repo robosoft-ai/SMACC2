@@ -38,7 +38,8 @@ private:
 public:
   SrConditional(std::function<bool(TEv *)> sr_conditionalFunction)
   {
-    std::function<void(TEv *)> callback = [this, sr_conditionalFunction](TEv * ev) {
+    std::function<void(TEv *)> callback = [this, sr_conditionalFunction](TEv * ev)
+    {
       bool condition = sr_conditionalFunction(ev);
       this->conditionFlag = condition;
     };

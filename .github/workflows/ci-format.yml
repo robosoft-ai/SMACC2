@@ -11,21 +11,20 @@ jobs:
   pre-commit:
     name: Format
     runs-on: ubuntu-latest
-    container: 
-      image: orsf/humble-desktop:latest
-      
+    container:
+      image: osrf/ros:humble-desktop
+
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
 
-    - name: Install clang-format
+    - name: Install clang-format-12
       run: |
-       sudo apt-get update
-       sudo apt-get install -y clang-format cppcheck
+       apt update
+       apt install -y python3-pip clang-format-12 ros-humble-ament-cppcheck
        git config --global --add safe.directory `pwd`
-       pip3 install pre-commit
-    - name: "pre-commit"
+       pip install pre-commit
+    - name: pre-commit
+      shell: bash
       run: |
         source /opt/ros/humble/setup.bash
-        echo `pwd`
         pre-commit run -a
