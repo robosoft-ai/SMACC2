@@ -1,0 +1,77 @@
+# This config file is used by ros2_control
+/panda_arm_1/controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    left_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    # right_arm_controller:
+    #   type: joint_trajectory_controller/JointTrajectoryController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+
+/panda_arm_1/left_arm_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - left_panda_joint1
+      - left_panda_joint2
+      - left_panda_joint3
+      - left_panda_joint4
+      - left_panda_joint5
+      - left_panda_joint6
+      - left_panda_joint7
+
+    constraints:
+      left_panda_joint1:
+        goal: 1.0
+        trajectory: 1.0
+
+      left_panda_joint2:
+        goal: 1.0
+        trajectory: 1.0
+
+      left_panda_joint3:
+        goal: 1.0
+        trajectory: 1.0
+
+      left_panda_joint4:
+        goal: 1.0
+        trajectory: 1.0
+
+      left_panda_joint5:
+        goal: 1.0
+        trajectory: 1.0
+
+      left_panda_joint6:
+        goal: 1.0
+        trajectory: 1.0
+
+      left_panda_joint7:
+        goal: 1.0
+        trajectory: 1.0
+
+
+
+# /panda_arm_1/right_arm_controller:
+#   ros__parameters:
+#     command_interfaces:
+#       - position
+#     state_interfaces:
+#       - position
+#       - velocity
+#     joints:
+#       - right_panda_joint1
+#       - right_panda_joint2
+#       - right_panda_joint3
+#       - right_panda_joint4
+#       - right_panda_joint5
+#       - right_panda_joint6
+#       - right_panda_joint7
