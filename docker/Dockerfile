@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
   gnupg2 \
   lsb-release \
   python3-colcon-ros \
+  apt-utils \
   && apt-get clean \
   && apt upgrade -y --with-new-pkgs
 
