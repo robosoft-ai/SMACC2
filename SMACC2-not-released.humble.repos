@@ -47,3 +47,8 @@ repositories:
     type: git
     url: https://github.com/ros/resource_retriever.git
     version: humble
+    
+  geometric_shapes:
+    type: git
+    url: https://github.com/ros-planning/geometric_shapes.git
+    version: ros2
