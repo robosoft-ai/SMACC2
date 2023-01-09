@@ -42,3 +42,8 @@ repositories:
     type: git
     url: https://github.com/ros-controls/kinematics_interface.git
     version: master
+
+  geometric_shapes:
+    type: git
+    url: https://github.com/ros-planning/geometric_shapes.git
+    version: ros2
