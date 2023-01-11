@@ -18,6 +18,7 @@
  *
  ******************************************************************************************************************/
 
+#include <signal.h>
 #include <limits>
 #include <memory>
 #include <thread>
@@ -379,4 +380,11 @@ void SignalDetector::pollingLoop()
     r.sleep();
   }
 }
+
+void onSigQuit(int)
+{
+  RCLCPP_INFO(rclcpp::get_logger("SMACC"), "SignalDetector: SIGQUIT received");
+  exit(0);
+}
+
 }  // namespace smacc2
