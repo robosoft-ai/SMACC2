@@ -48,7 +48,7 @@ void CbRosLaunch::onEntry()
     RCLCPP_INFO_STREAM(
       getLogger(), "[CbRosLaunch] launching: " << *packageName_ << " , " << *launchFileName_);
     smacc2::client_bases::ClRosLaunch::executeRosLaunch(
-      *packageName_, *launchFileName_, []() { return false; });
+      *packageName_, *launchFileName_, [this]() { return this->isShutdownRequested(); });
   }
   else
   {

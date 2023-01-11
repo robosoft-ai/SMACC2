@@ -42,7 +42,6 @@ repositories:
     type: git
     url: https://github.com/ros-controls/kinematics_interface.git
     version: master
-
   resource_retreiver:
     type: git
     url: https://github.com/ros/resource_retriever.git
@@ -52,3 +51,4 @@ repositories:
     type: git
     url: https://github.com/ros-planning/geometric_shapes.git
     version: ros2
+
