@@ -71,7 +71,7 @@ struct State1 : smacc2::SmaccState<State1, SmCoretestTransitionSpeed1>
       // Using fatal to override all logging restrictions.
       RCLCPP_FATAL(
         _node_->get_logger(),
-        "Executed %u iterations in %lf seconds: %lf Hz. Longtime frequency: %lf Hz",
+        "Executed %lu iterations in %lf seconds: %lf Hz. Longtime frequency: %lf Hz",
         ITERATIONS_CHECK, elapsed.seconds(), frequency_Hz, global_frequency_Hz);
 
       _counter_ = 1;
