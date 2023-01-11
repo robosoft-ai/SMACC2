@@ -32,6 +32,7 @@ RUN ls src
 RUN vcs import  src --skip-existing --input src/SMACC2/SMACC2-not-released.$ROS_DISTRO.repos || true
 RUN ls src
 
+RUN sudo apt-get update && sudo apt install -y ros-humble-slam-toolbox
 RUN rosdep update
 RUN rosdep install --from-paths src --ignore-src -r -y --skip-keys warehouse-ros-mongo || true
 RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
