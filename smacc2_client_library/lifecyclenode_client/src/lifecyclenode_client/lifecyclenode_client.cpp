@@ -22,25 +22,21 @@
 
 namespace cl_lifecyclenode
 {
-ClLifecycleNode::ClLifecycleNode(std::string node_name) : nodeName_(node_name)
-{
-}
+ClLifecycleNode::ClLifecycleNode(std::string node_name) : nodeName_(node_name) {}
 
-ClLifecycleNode::~ClLifecycleNode()
-{
-}
+ClLifecycleNode::~ClLifecycleNode() {}
 
 void ClLifecycleNode::onInitialize()
 {
-  client_get_state_ =
-      this->getNode()->create_client<lifecycle_msgs::srv::GetState>(this->nodeName_ + "/" + node_get_state_topic);
-  client_change_state_ =
-      this->getNode()->create_client<lifecycle_msgs::srv::ChangeState>(this->nodeName_ + "/" + node_change_state_topic);
+  client_get_state_ = this->getNode()->create_client<lifecycle_msgs::srv::GetState>(
+    this->nodeName_ + "/" + node_get_state_topic);
+  client_change_state_ = this->getNode()->create_client<lifecycle_msgs::srv::ChangeState>(
+    this->nodeName_ + "/" + node_change_state_topic);
 
   this->subscription_transition_event_ =
-      this->getNode() /*  */->create_subscription<lifecycle_msgs::msg::TransitionEvent>(
-          this->nodeName_ + "/" + node_transition_event_topic, 10,
-          std::bind(&ClLifecycleNode::onTransitionEvent, this, std::placeholders::_1));
+    this->getNode() /*  */->create_subscription<lifecycle_msgs::msg::TransitionEvent>(
+      this->nodeName_ + "/" + node_transition_event_topic, 10,
+      std::bind(&ClLifecycleNode::onTransitionEvent, this, std::placeholders::_1));
 }
 
 void ClLifecycleNode::changeState(uint8_t state)
@@ -73,7 +69,7 @@ void ClLifecycleNode::onTransitionEvent(const lifecycle_msgs::msg::TransitionEve
       break;
     case lifecycle_msgs::msg::Transition::TRANSITION_DESTROY:
       break;
-      
+
     case lifecycle_msgs::msg::Transition::TRANSITION_ON_CONFIGURE_SUCCESS:
       break;
     case lifecycle_msgs::msg::Transition::TRANSITION_ON_CONFIGURE_FAILURE:

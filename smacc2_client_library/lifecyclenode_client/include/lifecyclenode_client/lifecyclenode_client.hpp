@@ -19,10 +19,10 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc2/smacc.hpp>
-#include <lifecycle_msgs/srv/get_state.hpp>
-#include <lifecycle_msgs/srv/change_state.hpp>
 #include <lifecycle_msgs/msg/transition_event.hpp>
+#include <lifecycle_msgs/srv/change_state.hpp>
+#include <lifecycle_msgs/srv/get_state.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace cl_lifecyclenode
 {
@@ -92,8 +92,8 @@ private:
   rclcpp::Client<lifecycle_msgs::srv::GetState>::SharedPtr client_get_state_;
   rclcpp::Client<lifecycle_msgs::srv::ChangeState>::SharedPtr client_change_state_;
 
-  rclcpp::Subscription<lifecycle_msgs::msg::TransitionEvent>::SharedPtr subscription_transition_event_;
-
+  rclcpp::Subscription<lifecycle_msgs::msg::TransitionEvent>::SharedPtr
+    subscription_transition_event_;
 
   std::string nodeName_;
   const std::string node_get_state_topic = "/get_state";
