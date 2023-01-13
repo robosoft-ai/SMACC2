@@ -11,25 +11,24 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # find dependencies
-find_package(ament_cmake REQUIRED)
-find_package(smacc2 REQUIRED)
-find_package(ros_timer_client REQUIRED)
+find_package(ament_cmake_auto REQUIRED)
+ament_auto_find_build_dependencies()
+
 find_package(Boost COMPONENTS thread REQUIRED)
 
-include_directories(include
-                    ${smacc2_INCLUDE_DIRS}
-                    ${ros_timer_client_INCLUDE_DIRS})
+include_directories(include)
 
-add_executable(${PROJECT_NAME}_node
-                src/sm_atomic_lifecycle/sm_atomic_lifecycle_node.cpp)
+ament_auto_add_executable(${PROJECT_NAME}_node
+                          src/sm_atomic_lifecycle/sm_atomic_lifecycle_node.cpp)
+
+ament_auto_add_executable(lifecycle_example_node
+                      src/lifecycle_examplenode/lifecycle_example_node.cpp)
 
 target_link_libraries(${PROJECT_NAME}_node
-  ${smacc2_LIBRARIES}
-  ${ros_timer_client_LIBRARIES}
   ${Boost_LIBRARIES}
 )
 
-ament_target_dependencies(${PROJECT_NAME}_node smacc2)
+#ament_target_dependencies(${PROJECT_NAME}_node smacc2)
 
 install(
   DIRECTORY include/
@@ -48,6 +47,7 @@ install(DIRECTORY
 
 install(TARGETS
         ${PROJECT_NAME}_node
+        lifecycle_example_node
         DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

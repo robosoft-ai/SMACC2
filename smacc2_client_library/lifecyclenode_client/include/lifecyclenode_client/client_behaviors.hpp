@@ -12,34 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
-
-// rotation behavior
-#include <lifecyclenode_client/client_behaviors/cb_absolute_rotate.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_rotate.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_rotate_look_at.hpp>
-
-#include <lifecyclenode_client/client_behaviors/cb_navigate_backwards.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_navigate_forward.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_navigate_global_position.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_retry_behavior.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_undo_path_backwards.hpp>
-
-// nav2 synchronization behaviors
-#include <lifecyclenode_client/client_behaviors/cb_wait_nav2_nodes.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_wait_pose.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_wait_transform.hpp>
-
-// others
-#include <lifecyclenode_client/client_behaviors/cb_abort_navigation.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_stop_navigation.hpp>
-
-// waypoints behaviors
-#include <lifecyclenode_client/client_behaviors/cb_navigate_named_waypoint.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_navigate_next_waypoint.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_navigate_next_waypoint_until_reached.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_seek_waypoint.hpp>
-
-// slam behaviors
-#include <lifecyclenode_client/client_behaviors/cb_pause_slam.hpp>
-#include <lifecyclenode_client/client_behaviors/cb_resume_slam.hpp>
+#include <lifecyclenode_client/client_behaviors/cb_activate.hpp>
+#include <lifecyclenode_client/client_behaviors/cb_cleanup.hpp>
+#include <lifecyclenode_client/client_behaviors/cb_configure.hpp>
+#include <lifecyclenode_client/client_behaviors/cb_deactivate.hpp>
+#include <lifecyclenode_client/client_behaviors/cb_shutdown.hpp>

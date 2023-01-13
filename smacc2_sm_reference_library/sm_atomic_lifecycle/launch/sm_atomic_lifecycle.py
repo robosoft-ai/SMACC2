@@ -15,8 +15,9 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
 
-
 def generate_launch_description():
     return LaunchDescription(
-        [Node(package="sm_atomic_lifecycle", executable="sm_atomic_node", output="screen")]
+        [
+         Node(package="sm_atomic_lifecycle", executable="sm_atomic_lifecycle_node", output="screen"),
+         Node(package="sm_atomic_lifecycle", executable="lifecycle_example_node", output="screen")],        
     )

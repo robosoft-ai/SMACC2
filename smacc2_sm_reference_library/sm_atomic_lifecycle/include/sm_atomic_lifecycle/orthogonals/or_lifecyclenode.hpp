@@ -13,37 +13,19 @@
 // limitations under the License.
 
 #include <smacc2/smacc.hpp>
+#include <lifecyclenode_client/lifecyclenode_client.hpp>
+
+using namespace std::chrono_literals;
 
 namespace sm_atomic_lifecycle
 {
-using namespace cl_ros_timer;
-using namespace smacc2::default_transition_tags;
-
-// STATE DECLARATION
-using cl_lifecyclenode::CbConfigure;
-using cl_lifecyclenode::EvTransitionConfigure;
-
-struct State1 : smacc2::SmaccState<State1, SmAtomicLifecycle>
+using namespace std::chrono_literals;
+class OrLifecycleNode : public smacc2::Orthogonal<OrLifecycleNode>
 {
-  using SmaccState::SmaccState;
-
-  // TRANSITION TABLE
-  typedef mpl::list<
-
-    // Transition<EvTransitionConfigure<CbConfigure, OrLifecycleNode>, State2, SUCCESS>
-
-    >reactions;
-
-  // STATE FUNCTIONS
-  static void staticConfigure()
+public:
+  void onInitialize() override
   {
-    configure_orthogonal<OrLifecycleNode, CbConfigure>();
+    auto client = this->createClient<cl_lifecyclenode::ClLifecycleNode>("lifecycle_example_node");
   }
-
-  void runtimeConfigure() {}
-
-  void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
-
-  void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
 };
 }  // namespace sm_atomic_lifecycle

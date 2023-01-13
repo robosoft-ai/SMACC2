@@ -16,13 +16,16 @@
 
 // CLIENTS
 #include <ros_timer_client/cl_ros_timer.hpp>
+#include <lifecyclenode_client/lifecyclenode_client.hpp>
 
 //CLIENT BEHAVIORS
 #include <ros_timer_client/client_behaviors/cb_timer_countdown_loop.hpp>
 #include <ros_timer_client/client_behaviors/cb_timer_countdown_once.hpp>
+#include <lifecyclenode_client/client_behaviors.hpp>
 
 // ORTHOGONALS
 #include "orthogonals/or_timer.hpp"
+#include "orthogonals/or_lifecyclenode.hpp"
 
 using namespace boost;
 using namespace smacc2;
@@ -39,7 +42,11 @@ struct SmAtomicLifecycle : public smacc2::SmaccStateMachineBase<SmAtomicLifecycl
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  virtual void onInitialize() override { this->createOrthogonal<OrTimer>(); }
+  virtual void onInitialize() override
+  {
+    this->createOrthogonal<OrTimer>();
+    this->createOrthogonal<OrLifecycleNode>();
+  }
 };
 
 }  // namespace sm_atomic_lifecycle
