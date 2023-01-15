@@ -1,7 +1,7 @@
 repositories:
   moveit2:
     type: git
-    url: https://github.com/ros-planning/moveit2.git
+    url: https://github.com/pabloinigoblasco/moveit2.git
     version: feature/multiple_namespace_support_from_parameters
 
   ros2_control:
@@ -38,6 +38,7 @@ repositories:
     type: git
     url: https://github.com/ros-planning/moveit_resources.git
     version: ros2
+    
   kinematics_interface:
     type: git
     url: https://github.com/ros-controls/kinematics_interface.git
