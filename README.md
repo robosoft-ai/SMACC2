@@ -1,9 +1,3 @@
-
-
-
-
-
-
 # SMACC2
 
 SMACC2 is an event-driven, asynchronous, behavioral state machine library for real-time ROS2 (Robotic Operating System) applications written in C++, designed to allow programmers to build robot control applications for multicomponent robots, in an intuitive and systematic manner.
