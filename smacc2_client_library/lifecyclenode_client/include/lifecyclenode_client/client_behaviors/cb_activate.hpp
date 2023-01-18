@@ -20,20 +20,16 @@
 
 #pragma once
 
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <lifecyclenode_client/lifecyclenode_client.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_lifecyclenode
 {
 class CbActivate : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbActivate()
-  {
-  }
-  virtual ~CbActivate()
-  {
-  }
+  CbActivate() {}
+  virtual ~CbActivate() {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
@@ -42,17 +38,17 @@ public:
 
     this->requiresClient(this->lifecycleNodeClient_);
 
-    lifecycleNodeClient_->onTransitionOnActivateSuccess_.connect([this]() { this->postSuccessEvent(); });
-    lifecycleNodeClient_->onTransitionOnActivateFailure_.connect([this]() { this->postFailureEvent(); });
-    lifecycleNodeClient_->onTransitionOnActivateError_.connect([this]() { this->postFailureEvent();});
+    lifecycleNodeClient_->onTransitionOnActivateSuccess_.connect(
+      [this]() { this->postSuccessEvent(); });
+    lifecycleNodeClient_->onTransitionOnActivateFailure_.connect(
+      [this]() { this->postFailureEvent(); });
+    lifecycleNodeClient_->onTransitionOnActivateError_.connect(
+      [this]() { this->postFailureEvent(); });
   }
 
-  virtual void onEntry() override
-  {
-    lifecycleNodeClient_->activate();
-  }
+  virtual void onEntry() override { lifecycleNodeClient_->activate(); }
 
 private:
-  ClLifecycleNode* lifecycleNodeClient_;
+  ClLifecycleNode * lifecycleNodeClient_;
 };
 }  // namespace cl_lifecyclenode

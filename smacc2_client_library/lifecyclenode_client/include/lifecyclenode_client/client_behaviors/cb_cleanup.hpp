@@ -20,20 +20,16 @@
 
 #pragma once
 
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <lifecyclenode_client/lifecyclenode_client.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_lifecyclenode
 {
 class CbCleanup : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbCleanup()
-  {
-  }
-  virtual ~CbCleanup()
-  {
-  }
+  CbCleanup() {}
+  virtual ~CbCleanup() {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
@@ -42,17 +38,17 @@ public:
 
     this->requiresClient(this->lifecycleNodeClient_);
 
-    lifecycleNodeClient_->onTransitionOnCleanupSuccess_.connect([this]() { this->postSuccessEvent(); });
-    lifecycleNodeClient_->onTransitionOnCleanupFailure_.connect([this]() { this->postFailureEvent(); });
-    lifecycleNodeClient_->onTransitionOnCleanupError_.connect([this]() { this->postFailureEvent();});
+    lifecycleNodeClient_->onTransitionOnCleanupSuccess_.connect(
+      [this]() { this->postSuccessEvent(); });
+    lifecycleNodeClient_->onTransitionOnCleanupFailure_.connect(
+      [this]() { this->postFailureEvent(); });
+    lifecycleNodeClient_->onTransitionOnCleanupError_.connect(
+      [this]() { this->postFailureEvent(); });
   }
 
-  virtual void onEntry() override
-  {
-    lifecycleNodeClient_->cleanup();
-  }
+  virtual void onEntry() override { lifecycleNodeClient_->cleanup(); }
 
 private:
-  ClLifecycleNode* lifecycleNodeClient_;
+  ClLifecycleNode * lifecycleNodeClient_;
 };
 }  // namespace cl_lifecyclenode

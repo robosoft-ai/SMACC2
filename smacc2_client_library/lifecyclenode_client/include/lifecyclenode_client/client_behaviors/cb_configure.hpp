@@ -20,20 +20,16 @@
 
 #pragma once
 
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <lifecyclenode_client/lifecyclenode_client.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_lifecyclenode
 {
 class CbConfigure : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbConfigure()
-  {
-  }
-  virtual ~CbConfigure()
-  {
-  }
+  CbConfigure() {}
+  virtual ~CbConfigure() {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
@@ -42,19 +38,19 @@ public:
 
     this->requiresClient(this->lifecycleNodeClient_);
 
-    lifecycleNodeClient_->onTransitionOnConfigureSuccess_.connect([this]() { 
-        RCLCPP_INFO(getLogger(), "CbConfigure: onTransitionOnConfigureSuccess_");
-     this->postSuccessEvent(); });
-    lifecycleNodeClient_->onTransitionOnConfigureFailure_.connect([this]() { this->postFailureEvent(); });
-    lifecycleNodeClient_->onTransitionOnConfigureError_.connect([this]() { this->postFailureEvent();});
+    lifecycleNodeClient_->onTransitionOnConfigureSuccess_.connect([this]() {
+      RCLCPP_INFO(getLogger(), "CbConfigure: onTransitionOnConfigureSuccess_");
+      this->postSuccessEvent();
+    });
+    lifecycleNodeClient_->onTransitionOnConfigureFailure_.connect(
+      [this]() { this->postFailureEvent(); });
+    lifecycleNodeClient_->onTransitionOnConfigureError_.connect(
+      [this]() { this->postFailureEvent(); });
   }
 
-  virtual void onEntry() override
-  {
-    lifecycleNodeClient_->configure();
-  }
+  virtual void onEntry() override { lifecycleNodeClient_->configure(); }
 
 private:
-  ClLifecycleNode* lifecycleNodeClient_;
+  ClLifecycleNode * lifecycleNodeClient_;
 };
 }  // namespace cl_lifecyclenode

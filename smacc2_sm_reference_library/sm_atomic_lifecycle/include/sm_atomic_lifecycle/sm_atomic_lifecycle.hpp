@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <smacc2/smacc.hpp>
 
 // CLIENTS
@@ -33,12 +39,21 @@ using namespace smacc2;
 namespace sm_atomic_lifecycle
 {
 //STATE
-class State1;
-class State2;
+class StActivating;
+class StActive;
+class StCleaningUp;
+class StConfiguring;
+class StDeactivating;
+class StErrorProcessing;
+class StFinalized;
+class StInactive;
+class StInit;
+class StShuttingDown;
+class StUnconfigured;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
-struct SmAtomicLifecycle : public smacc2::SmaccStateMachineBase<SmAtomicLifecycle, State1>
+struct SmAtomicLifecycle : public smacc2::SmaccStateMachineBase<SmAtomicLifecycle, StInit>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -51,5 +66,14 @@ struct SmAtomicLifecycle : public smacc2::SmaccStateMachineBase<SmAtomicLifecycl
 
 }  // namespace sm_atomic_lifecycle
 
-#include "states/st_state_1.hpp"
-#include "states/st_state_2.hpp"
+#include "states/st_activating.hpp"
+#include "states/st_active.hpp"
+#include "states/st_cleaning_up.hpp"
+#include "states/st_configuring.hpp"
+#include "states/st_deactivating.hpp"
+#include "states/st_error_processing.hpp"
+#include "states/st_finalized.hpp"
+#include "states/st_inactive.hpp"
+#include "states/st_init.hpp"
+#include "states/st_shutting_down.hpp"
+#include "states/st_unconfigured.hpp"

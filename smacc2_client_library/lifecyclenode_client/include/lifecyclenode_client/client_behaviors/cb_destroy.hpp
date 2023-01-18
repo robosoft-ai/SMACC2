@@ -20,20 +20,16 @@
 
 #pragma once
 
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <lifecyclenode_client/lifecyclenode_client.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_lifecyclenode
 {
 class CbDestroy : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbDestroy()
-  {
-  }
-  virtual ~CbDestroy()
-  {
-  }
+  CbDestroy() {}
+  virtual ~CbDestroy() {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
@@ -42,17 +38,17 @@ public:
 
     this->requiresClient(this->lifecycleNodeClient_);
 
-    lifecycleNodeClient_->onTransitionOnDestroySuccess_.connect([this]() { this->postSuccessEvent(); });
-    lifecycleNodeClient_->onTransitionOnDestroyFailure_.connect([this]() { this->postFailureEvent(); });
-    lifecycleNodeClient_->onTransitionOnDestroyError_.connect([this]() { this->postFailureEvent();});
+    lifecycleNodeClient_->onTransitionOnDestroySuccess_.connect(
+      [this]() { this->postSuccessEvent(); });
+    lifecycleNodeClient_->onTransitionOnDestroyFailure_.connect(
+      [this]() { this->postFailureEvent(); });
+    lifecycleNodeClient_->onTransitionOnDestroyError_.connect(
+      [this]() { this->postFailureEvent(); });
   }
 
-  virtual void onEntry() override
-  {
-    lifecycleNodeClient_->destroy();
-  }
+  virtual void onEntry() override { lifecycleNodeClient_->destroy(); }
 
 private:
-  ClLifecycleNode* lifecycleNodeClient_;
+  ClLifecycleNode * lifecycleNodeClient_;
 };
 }  // namespace cl_lifecyclenode

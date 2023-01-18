@@ -12,32 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <smacc2/smacc.hpp>
 
 namespace sm_atomic_lifecycle
 {
-using namespace cl_ros_timer;
-using namespace smacc2::default_transition_tags;
 
-// STATE DECLARATION
-using cl_lifecyclenode::CbConfigure;
-using cl_lifecyclenode::EvTransitionConfigure;
+using sm_atomic_lifecycle::OrLifecycleNode;
+using namespace cl_lifecyclenode;
 
-struct State1 : smacc2::SmaccState<State1, SmAtomicLifecycle>
+struct StInit : smacc2::SmaccState<StInit, SmAtomicLifecycle>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
-
-    // Transition<EvTransitionConfigure<CbConfigure, OrLifecycleNode>, State2, SUCCESS>
+    Transition< EvTransitionCreate<ClLifecycleNode, OrLifecycleNode>, StUnconfigured, SUCCESS>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrLifecycleNode, CbConfigure>();
   }
 
   void runtimeConfigure() {}
