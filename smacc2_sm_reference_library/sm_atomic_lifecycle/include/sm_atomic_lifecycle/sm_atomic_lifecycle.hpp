@@ -47,13 +47,12 @@ class StDeactivating;
 class StErrorProcessing;
 class StFinalized;
 class StInactive;
-class StInit;
 class StShuttingDown;
 class StUnconfigured;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
-struct SmAtomicLifecycle : public smacc2::SmaccStateMachineBase<SmAtomicLifecycle, StInit>
+struct SmAtomicLifecycle : public smacc2::SmaccStateMachineBase<SmAtomicLifecycle, StUnconfigured>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -74,6 +73,5 @@ struct SmAtomicLifecycle : public smacc2::SmaccStateMachineBase<SmAtomicLifecycl
 #include "states/st_error_processing.hpp"
 #include "states/st_finalized.hpp"
 #include "states/st_inactive.hpp"
-#include "states/st_init.hpp"
 #include "states/st_shutting_down.hpp"
 #include "states/st_unconfigured.hpp"

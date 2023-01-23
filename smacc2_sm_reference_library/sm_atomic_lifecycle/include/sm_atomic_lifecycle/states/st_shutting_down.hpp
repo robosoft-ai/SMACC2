@@ -41,9 +41,9 @@ struct StShuttingDown : smacc2::SmaccState<StShuttingDown, SmAtomicLifecycle>
   {
   }
 
-  void runtimeConfigure() 
-  { 
-    
+  void runtimeConfigure()
+  {
+
   }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }

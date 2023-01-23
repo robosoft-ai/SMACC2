@@ -356,6 +356,11 @@ public:
       this->postEvent<EvTransitionOnDeactivateError<TSourceObject, TOrthogonal>>();
     };
 
+    this->postOnTransitionCleanup_ = [=]() {
+      this->onTransitionCleanup_();
+      this->postEvent<EvTransitionCleanup<TSourceObject, TOrthogonal>>();
+    };
+
     this->postOnTransitionOnCleanupSuccess_ = [=]() {
       this->onTransitionOnCleanupSuccess_();
       this->postEvent<EvTransitionOnCleanupSuccess<TSourceObject, TOrthogonal>>();

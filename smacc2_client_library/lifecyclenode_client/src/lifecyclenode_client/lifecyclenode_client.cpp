@@ -35,8 +35,8 @@ void ClLifecycleNode::onInitialize()
 
   this->subscription_transition_event_ =
     this->getNode() /*  */->create_subscription<lifecycle_msgs::msg::TransitionEvent>(
-      this->nodeName_ + node_transition_event_topic,
-      1', std::bind(&ClLifecycleNode::onTransitionEvent, this, std::placeholders::_1));
+      this->nodeName_ + node_transition_event_topic, 100,
+      std::bind(&ClLifecycleNode::onTransitionEvent, this, std::placeholders::_1));
 }
 
 void ClLifecycleNode::changeState(uint8_t state)
@@ -75,105 +75,234 @@ void ClLifecycleNode::shutdown()
 void ClLifecycleNode::onTransitionEvent(const lifecycle_msgs::msg::TransitionEvent::SharedPtr msg)
 {
   RCLCPP_INFO(
-    this->getNode()->get_logger(), "[ClLifecycleNode] Transition event received: %s, %d",
-    msg->transition.label.c_str(), msg->transition.id);
+    this->getNode()->get_logger(), "[ClLifecycleNode] Transition event received: %d -> %d",
+    msg->start_state.id, msg->goal_state.id);
 
   lastTransitionEvent_ = msg;
-  switch (msg->transition.id)
+  // switch (msg->transition.id)
+  // {
+  // case lifecycle_msgs::msg::Transition::TRANSITION_CREATE:
+  // if (msg->start_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_UNKNOWN &&
+  //     msg->goal_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED)
+  // {
+  //   RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_CREATE");
+  //   this->postOnTransitionCreate_();
+  // }
+  // // case lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE:
+  // else
+  if (
+    msg->start_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_CONFIGURING)
   {
-    case lifecycle_msgs::msg::Transition::TRANSITION_CREATE:
-      this->postOnTransitionCreate_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE:
-      this->postOnTransitionConfigure_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_CLEANUP:
-      this->postOnTransitionCleanup_();
-
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE:
-      this->postOnTransitionActivate_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE:
-      this->postOnTransitionDeactivate_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_UNCONFIGURED_SHUTDOWN:
-      this->postOnTransitionUnconfiguredShutdown_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_INACTIVE_SHUTDOWN:
-      this->postOnTransitionInactiveShutdown_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ACTIVE_SHUTDOWN:
-      this->postOnTransitionActiveShutdown_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_DESTROY:
-      this->postOnTransitionDestroy_();
-      break;
-
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_CONFIGURE_SUCCESS:
-      this->postOnTransitionOnConfigureSuccess_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_CONFIGURE_FAILURE:
-      this->postOnTransitionOnConfigureFailure_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_CONFIGURE_ERROR:
-      this->postOnTransitionOnConfigureError_();
-      break;
-
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_CLEANUP_SUCCESS:
-      this->postOnTransitionOnCleanupSuccess_();
-
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_CLEANUP_FAILURE:
-      this->postOnTransitionOnCleanupFailure_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_CLEANUP_ERROR:
-      this->postOnTransitionOnCleanupError_();
-      break;
-
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_ACTIVATE_SUCCESS:
-      this->postOnTransitionOnActivateSuccess_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_ACTIVATE_FAILURE:
-      this->postOnTransitionOnActivateFailure_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_ACTIVATE_ERROR:
-      this->postOnTransitionOnActivateError_();
-      break;
-
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_DEACTIVATE_SUCCESS:
-      this->postOnTransitionOnDeactivateSuccess_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_DEACTIVATE_FAILURE:
-      this->postOnTransitionOnDeactivateFailure_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_DEACTIVATE_ERROR:
-      this->postOnTransitionOnDeactivateError_();
-      break;
-
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_SHUTDOWN_SUCCESS:
-      this->postOnTransitionOnShutdownSuccess_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_SHUTDOWN_FAILURE:
-      this->postOnTransitionOnShutdownFailure_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_SHUTDOWN_ERROR:
-      this->postOnTransitionOnShutdownError_();
-      break;
-
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_ERROR_SUCCESS:
-      this->postOnTransitionOnErrorSuccess_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_ERROR_FAILURE:
-      this->postOnTransitionOnErrorFailure_();
-      break;
-    case lifecycle_msgs::msg::Transition::TRANSITION_ON_ERROR_ERROR:
-      this->postOnTransitionOnErrorError_();
-      break;
-
-    default:
-      break;
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_CONFIGURE");
+    this->postOnTransitionConfigure_();
   }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_CLEANUP:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_CLEANINGUP)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_CLEANUP");
+    this->postOnTransitionCleanup_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_ACTIVATING)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ACTIVATE");
+    this->postOnTransitionActivate_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_DEACTIVATING)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_DEACTIVATE");
+    this->postOnTransitionDeactivate_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_UNCONFIGURED_SHUTDOWN:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_SHUTTINGDOWN)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_UNCONFIGURED_SHUTDOWN");
+    this->postOnTransitionUnconfiguredShutdown_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_INACTIVE_SHUTDOWN:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_SHUTTINGDOWN)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_INACTIVE_SHUTDOWN");
+    this->postOnTransitionInactiveShutdown_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ACTIVE_SHUTDOWN:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_SHUTTINGDOWN)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ACTIVE_SHUTDOWN");
+    this->postOnTransitionActiveShutdown_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_DESTROY:
+  else if (msg->start_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_FINALIZED)
+  // &&msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_DESTROYING
+
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_DESTROY");
+    this->postOnTransitionDestroy_();
+  }
+
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_CONFIGURE_SUCCESS:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_CONFIGURING &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_CONFIGURE_SUCCESS");
+    this->postOnTransitionOnConfigureSuccess_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_CONFIGURE_FAILURE:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_CONFIGURING &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_CONFIGURE_FAILURE");
+    this->postOnTransitionOnConfigureFailure_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_CONFIGURE_ERROR:
+  if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_CONFIGURING &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_ERRORPROCESSING)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_CONFIGURE_ERROR");
+    this->postOnTransitionOnConfigureError_();
+  }
+
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_CLEANUP_SUCCESS:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_CLEANINGUP &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_CLEANUP_SUCCESS");
+    this->postOnTransitionOnCleanupSuccess_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_CLEANUP_FAILURE:
+  // else if (msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_CLEANINGUP
+  // &&msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_ERRORPROCESSING)
+  // {
+  //   RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_CLEANUP_FAILURE");
+  //   this->postOnTransitionOnCleanupFailure_();
+  // }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_CLEANUP_ERROR:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_CLEANINGUP &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_ERRORPROCESSING)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_CLEANUP_ERROR");
+    this->postOnTransitionOnCleanupError_();
+  }
+
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_ACTIVATE_SUCCESS:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_ACTIVATING &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_ACTIVATE_SUCCESS");
+    this->postOnTransitionOnActivateSuccess_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_ACTIVATE_FAILURE:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_ACTIVATING &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_ACTIVATE_FAILURE");
+    this->postOnTransitionOnActivateFailure_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_ACTIVATE_ERROR:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_ACTIVATING &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_ERRORPROCESSING)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_ACTIVATE_ERROR");
+    this->postOnTransitionOnActivateError_();
+  }
+
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_DEACTIVATE_SUCCESS:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_DEACTIVATING &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_DEACTIVATE_SUCCESS");
+    this->postOnTransitionOnDeactivateSuccess_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_DEACTIVATE_FAILURE:
+  // else if (msg->start_state.id == &&msg->goal_state.id ==)
+  // {
+  //   RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_DEACTIVATE_FAILURE");
+  //   this->postOnTransitionOnDeactivateFailure_();
+  // }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_DEACTIVATE_ERROR:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_DEACTIVATING &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_ERRORPROCESSING)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_DEACTIVATE_ERROR");
+    this->postOnTransitionOnDeactivateError_();
+  }
+
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_SHUTDOWN_SUCCESS:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_SHUTTINGDOWN &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_FINALIZED)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_SHUTDOWN_SUCCESS");
+    this->postOnTransitionOnShutdownSuccess_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_SHUTDOWN_FAILURE:
+  // else if (msg->start_state.id == &&msg->goal_state.id ==)
+  // {
+  //   RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_SHUTDOWN_FAILURE");
+  //   this->postOnTransitionOnShutdownFailure_();
+  // }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_SHUTDOWN_ERROR:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_SHUTTINGDOWN &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_ERRORPROCESSING)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_SHUTDOWN_ERROR");
+    this->postOnTransitionOnShutdownError_();
+  }
+
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_ERROR_SUCCESS:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_ERRORPROCESSING &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_ERROR_SUCCESS");
+    this->postOnTransitionOnErrorSuccess_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_ERROR_FAILURE:
+  else if (
+    msg->start_state.id == lifecycle_msgs::msg::State::TRANSITION_STATE_ERRORPROCESSING &&
+    msg->goal_state.id == lifecycle_msgs::msg::State::PRIMARY_STATE_FINALIZED)
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_ERROR_FAILURE");
+    this->postOnTransitionOnErrorFailure_();
+  }
+  // case lifecycle_msgs::msg::Transition::TRANSITION_ON_ERROR_ERROR:
+  // else if (msg->start_state.id == &&msg->goal_state.id ==)
+  // {
+  //   RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_ON_ERROR_ERROR");
+  //   this->postOnTransitionOnErrorError_();
+  // }
+
+  // default:
+  else
+  {
+    RCLCPP_INFO(this->getNode()->get_logger(), "TRANSITION_UNKNOWN");
+  }
+  // }
 
 }  // namespace cl_lifecyclenode
 }  // namespace cl_lifecyclenode
