@@ -231,6 +231,25 @@
             ]
         },
         {
+            "name": "(gdb) sm_atomic_lifecycle",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../install/sm_atomic_lifecycle/lib/sm_atomic_lifecycle/sm_atomic_lifecycle_node",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "name": "(gdb) smacc_aws_warehouse_navigation",
             "type": "cppdbg",
             "request": "launch",

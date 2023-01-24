@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>lifecyclenode_client</name>
+  <version>2.3.1</version>
+  <description>The lifecyclenode_client package implements SMACC Action Client Plugin for the ROS Navigation State - move_base node.  Developed by Reel Robotics.</description>
+
+  <author email="pablo@ibrobotics.com">Pablo Inigo Blasco</author>
+  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+
+  <license>BSDv3</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>smacc2</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_lifecycle</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
