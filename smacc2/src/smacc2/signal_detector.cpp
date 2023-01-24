@@ -41,12 +41,13 @@ using namespace std::chrono_literals;
 * SignalDetector()
 ******************************************************************************************************************
 */
-SignalDetector::SignalDetector(SmaccFifoScheduler * scheduler)
+SignalDetector::SignalDetector(SmaccFifoScheduler * scheduler, ExecutionModel executionModel)
 {
   scheduler_ = scheduler;
   loop_rate_hz = 20.0;
   end_ = false;
   initialized_ = false;
+  executionModel_ = executionModel;
 }
 
 rclcpp::Node::SharedPtr SignalDetector::getNode() { return this->smaccStateMachine_->getNode(); }
@@ -371,13 +372,27 @@ void SignalDetector::pollingLoop()
 
   RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] loop rate hz:" << loop_rate_hz);
 
-  rclcpp::Rate r(loop_rate_hz);
-
-  while (rclcpp::ok() && !end_)
+  if (this->executionModel_ == ExecutionModel::SINGLE_THREAD_SPINNER)
   {
-    pollOnce();
-    rclcpp::spin_some(nh);
-    r.sleep();
+    RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] running in single threaded mode");
+
+    rclcpp::Rate r(loop_rate_hz);
+    while (rclcpp::ok() && !end_)
+    {
+      RCLCPP_INFO_STREAM_THROTTLE(
+        getLogger(), *getNode()->get_clock(), 10000, "[SignalDetector] heartbeat");
+      pollOnce();
+      rclcpp::spin_some(nh);
+      r.sleep();
+    }
+  }
+  else
+  {
+    RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] running in multi threaded mode");
+
+    rclcpp::executors::MultiThreadedExecutor executor;
+    executor.add_node(nh);
+    executor.spin();
   }
 }
 
