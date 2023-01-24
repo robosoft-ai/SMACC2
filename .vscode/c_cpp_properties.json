@@ -4,14 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "/usr/include",
-<<<<<<< HEAD
                 "${workspaceFolder}/../**",
                 "/opt/ros/humble/include",
-=======
-                "${workspaceFolder}/../install/include",
-                "${workspaceFolder}/**/include",
-                "/opt/ros/galactic/include",
->>>>>>> 2b0ccc04... Feature/lifecycle nodes (#390)
                 "/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
                 "/usr/include/x86_64-linux-gnu/qt5",
                 "/usr/include/x86_64-linux-gnu/qt5/QtCore",
