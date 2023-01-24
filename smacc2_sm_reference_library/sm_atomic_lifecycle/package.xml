@@ -9,6 +9,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>ament_cmake_auto</depend>
   <depend>ros_timer_client</depend>
   <depend>lifecyclenode_client</depend>
   <depend>smacc2</depend>
