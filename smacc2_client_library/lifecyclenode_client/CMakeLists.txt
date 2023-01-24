@@ -14,10 +14,12 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
+find_package(smacc2 REQUIRED)
 
 set(dependencies
   rclcpp
   rclcpp_lifecycle
+  smacc2
 )
 
 include_directories(include)
