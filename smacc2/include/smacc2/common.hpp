@@ -70,8 +70,6 @@ enum class SMRunMode
   RELEASE
 };
 
-template <typename StateMachineType>
-void run();
 }  // namespace smacc2
 
 #include <smacc2/smacc_default_events.hpp>
