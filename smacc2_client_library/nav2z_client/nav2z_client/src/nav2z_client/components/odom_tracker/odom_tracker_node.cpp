@@ -104,7 +104,8 @@ public:
     RCLCPP_INFO(getLogger(), "Creating odom tracker action server");
 
     as_ = std::make_shared<Server>(
-      n, "odom_tracker", boost::bind(&OdomTrackerActionServer::execute, this, _1), false);
+      n, "odom_tracker", std::bind(&OdomTrackerActionServer::execute, this, std::placeholders::_1),
+      false);
     RCLCPP_INFO(getLogger(), "Starting OdomTracker Action Server");
 
     as_->start();
