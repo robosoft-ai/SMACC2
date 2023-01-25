@@ -3,21 +3,20 @@
         {
             "name": "Linux",
             "includePath": [
-
                 "/usr/include",
                 "${workspaceFolder}/../**",
                 "/opt/ros/humble/include",
                 "/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
                 "/usr/include/x86_64-linux-gnu/qt5",
                 "/usr/include/x86_64-linux-gnu/qt5/QtCore",
-                "/usr/include/opencv4"
+                "/usr/include/opencv4",
+                "${workspaceFolder}/SMACC2/smacc2_client_library/ros_timer_client/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c11",
             "cppStandard": "c++17",
-            "intelliSenseMode": "linux-clang-x64",
-
+            "intelliSenseMode": "linux-clang-x64"
         }
     ],
     "version": 4

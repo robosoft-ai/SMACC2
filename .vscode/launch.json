@@ -248,6 +248,47 @@
             ]
         },
         {
+<<<<<<< HEAD
+=======
+            "name": "(gdb) sm_atomic_services",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../install/sm_atomic_services/lib/sm_atomic_services/sm_atomic_services_node",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) sm_atomic_lifecycle",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../install/sm_atomic_lifecycle/lib/sm_atomic_lifecycle/sm_atomic_lifecycle_node",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+>>>>>>> 2b0ccc04... Feature/lifecycle nodes (#390)
             "name": "(gdb) smacc_aws_warehouse_navigation",
             "type": "cppdbg",
             "request": "launch",

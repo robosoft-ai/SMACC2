@@ -91,7 +91,7 @@ protected:
   std::string serviceName_;
   std::shared_ptr<typename ServiceType::Request> request_;
 
-  virtual void onServiceResponse(std::shared_ptr<typename ServiceType::Response> result)
+  virtual void onServiceResponse(std::shared_ptr<typename ServiceType::Response> /*result*/)
   {
     RCLCPP_DEBUG_STREAM(getLogger(), "[" << this->getName() << "] response received ");
   }
