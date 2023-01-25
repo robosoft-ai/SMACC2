@@ -36,9 +36,6 @@
   <!-- TODO(#40): Package not available in ROS 2, find equivalent when migrating launch files
   <exec_depend>topic_tools</exec_depend>
   -->
-  <!-- This package is referenced in the warehouse launch files, but does not build out of the box at the moment.
-       Commented the dependency until this works. -->
-  <!-- <exec_depend>warehouse_ros_mongo</exec_depend> -->
 
   <export>
       <build_type>ament_cmake</build_type>
