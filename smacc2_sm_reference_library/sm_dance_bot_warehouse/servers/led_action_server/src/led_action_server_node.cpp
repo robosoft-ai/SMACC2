@@ -144,7 +144,6 @@ public:
   void run()
   {
     RCLCPP_INFO(this->get_logger(), "Creating tool action server");
-    //as_ = std::make_shared<Server>(n, "led_action_server", boost::bind(&LEDActionServer::execute, this,  _1), false);
 
     this->as_ = rclcpp_action::create_server<sm_dance_bot_warehouse::action::LEDControl>(
       this, "led_action_server",

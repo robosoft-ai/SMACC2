@@ -142,10 +142,6 @@ public:
       RCLCPP_DEBUG(getLogger(), "[%s] FEEDBACK EVENT", demangleType(typeid(*this)).c_str());
     };
 
-    // result_cb = [this](auto r) { this->onResult(r); };
-    // result_cb = boost::bind(&SmaccActionClientBase<ActionType>::onResult, this, _1, _2);
-    // active_cb;
-
     feedback_cb = [this](auto client, auto feedback) { this->onFeedback(client, feedback); };
   }
 
