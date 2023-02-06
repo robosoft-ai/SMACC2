@@ -1,0 +1,85 @@
+
+repositories:
+  # core
+  core/autoware_msgs:
+    type: git
+    url: https://github.com/autowarefoundation/autoware_msgs.git
+    version: 1b6ec808b018fe5515c54db7f3e481b54a70e6ca # main
+  core/autoware_common:
+    type: git
+    url: https://github.com/autowarefoundation/autoware_common.git
+    version: 4c351494157307a4416af8b6d0bb42e66f4a56a7 # main
+  core/autoware.core:
+    type: git
+    url: https://github.com/autowarefoundation/autoware.core.git
+    version: 9caa3bbe1fadc515827be206ec9550a223ac89f4 # main
+  core/external/autoware_auto_msgs: # TODO(mfc): Remove when autoware_msgs is merged
+    type: git
+    url: https://github.com/tier4/autoware_auto_msgs.git
+    version: c8a5d2001da052137c08cdf9e8d75c1975f99b84 # tier4/main
+  # universe
+  universe/autoware.universe:
+    type: git
+    url: https://github.com/pabloinigoblasco/autoware.universe.git # https://github.com/autowarefoundation/autoware.universe.git
+    version: c7cfd8bb1fffb9fa3690bb250ef53f724a55b740 # pabloinigoblasco/behavior_planning_updates, main
+  universe/external/tier4_ad_api_adaptor: # TODO(TIER IV): Improve design/code and transfer to AWF
+    type: git
+    url: https://github.com/tier4/tier4_ad_api_adaptor.git
+    version: 7cb94a5339dafb7a858ed92435aaa8304caaceb2 # tier4/universe
+  universe/external/tier4_autoware_msgs:
+    type: git
+    url: https://github.com/tier4/tier4_autoware_msgs.git
+    version: 0365eac15926afc6bcb8d60c828e16f84d72174f # tier4/universe
+  universe/external/grid_map:
+    type: git
+    url: https://github.com/ANYbotics/grid_map.git
+    version: ba2f9cb6e62f7ee9c5bac7401391a211e442e459
+  universe/external/muSSP:
+    type: git
+    url: https://github.com/tier4/muSSP.git
+    version: c79e98fd5e658f4f90c06d93472faa977bc873b9 # tier4/main
+  universe/external/ndt_omp:
+    type: git
+    url: https://github.com/tier4/ndt_omp.git
+    version: 7fa5fa727ea2b999da925d6ab7dfa1298af521e4 # tier4/main
+  universe/external/pointcloud_to_laserscan:
+    type: git
+    url: https://github.com/tier4/pointcloud_to_laserscan.git
+    version: 948a4fca35dcb03c6c8fbfa610a686f7c919fe0b # tier4/main
+  # launcher
+  launcher/autoware_launch:
+    type: git
+    url: https://github.com/autowarefoundation/autoware_launch.git
+    version: b43d09c1cdf6f03fe09b2f24852e20e8ee7cc81a # main
+  # sensor_component
+  sensor_component/external/sensor_component_description:
+    type: git
+    url: https://github.com/tier4/sensor_component_description.git
+    version: 8c9f349a9edb4f9e9f5cc763fc936e4a9db04484 # main
+  sensor_component/external/tamagawa_imu_driver:
+    type: git
+    url: https://github.com/tier4/tamagawa_imu_driver.git
+    version: 28ad3cd4fb043e5f92353a540c3531cd4cb7bef3 # ros2
+  sensor_component/external/velodyne_vls:
+    type: git
+    url: https://github.com/tier4/velodyne_vls.git
+    version: d28bcaf726e8af8d07926744a8cd9c057ff86229 #tier4/universe
+  # sensor_kit
+  sensor_kit/sample_sensor_kit_launch:
+    type: git
+    url: https://github.com/autowarefoundation/sample_sensor_kit_launch.git
+    version: 1d18f51bb73104ba93475203a5c67c4a52f9f658 # main
+  # vehicle
+  vehicle/sample_vehicle_launch:
+    type: git
+    url: https://github.com/autowarefoundation/sample_vehicle_launch.git
+    version: c74af0906ae1710141d88fac94aa38ebad60f86d # main
+  vehicle/external/pacmod_interface:
+    type: git
+    url: https://github.com/tier4/pacmod_interface.git
+    version: 81448e3b86f5c6ec4d961bef984a511e8cb4cf93 # main
+  # param
+  param/autoware_individual_params:
+    type: git
+    url: https://github.com/autowarefoundation/autoware_individual_params.git
+    version: 0b99a3638c7f19fc0cad2090c2c25ec7ddc62047 # main
