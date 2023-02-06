@@ -26,10 +26,18 @@
 
 namespace smacc2
 {
+enum class ExecutionModel
+{
+  SINGLE_THREAD_SPINNER,
+  MULTI_THREAD_SPINNER
+};
+
 class SignalDetector
 {
 public:
-  SignalDetector(SmaccFifoScheduler * scheduler);
+  SignalDetector(
+    SmaccFifoScheduler * scheduler,
+    ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER);
 
   void initialize(ISmaccStateMachine * stateMachine);
 
@@ -86,6 +94,8 @@ private:
   SmaccFifoScheduler::processor_handle processorHandle_;
 
   boost::thread signalDetectorThread_;
+
+  ExecutionModel executionModel_;
 };
 
 void onSigQuit(int sig);
@@ -96,7 +106,7 @@ void onSigQuit(int sig);
 // The created thread is for the state machine process
 // it locks the current thread to handle events of the state machine
 template <typename StateMachineType>
-void run()
+void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
 {
   ::signal(SIGQUIT, onSigQuit);
 
@@ -104,7 +114,7 @@ void run()
   SmaccFifoScheduler scheduler1(true);
 
   // create the signalDetector component
-  SignalDetector signalDetector(&scheduler1);
+  SignalDetector signalDetector(&scheduler1, executionModel);
 
   // create the asynchronous state machine processor
   SmaccFifoScheduler::processor_handle sm =
