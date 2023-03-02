@@ -21,26 +21,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-
-      # - uses: ros-tooling/setup-ros@v0.2
-      #   with:
-      #     required-ros-distributions: galactic
-
-      # BASIC CODE QUALITY
-      # - run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y clang-format-12
-
-      # - uses: actions/setup-python@v3
-      #   with:
-      #     python-version: 3.9
-
-      # - name: code quality check
-      #   uses: pre-commit/action@v3.0.0
-
-      # BLOOM PRERELEASE CHECK
-      # - name: industrial_ci prerelease check
-      #   uses: ros-industrial/industrial_ci@master
+        
       - shell: bash
         run: |
           apt-get update
@@ -49,12 +30,6 @@ jobs:
           rosdep update
           rosdep install --from-paths . --ignore-src -r -y --skip-keys warehouse_ros_mongo
           colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-up-to smacc2 smacc2_msgs
-
-      # - uses: ros-tooling/action-ros-ci@v0.2
-      #   with:
-      #     package-name: smacc2 smacc2_msgs
-      #     target-ros2-distro: humble
-      #     vcs-repo-file-url: SMACC2.humble.repos
 
       # BLOOM RELEASE
       - name: bloom release
@@ -65,6 +40,6 @@ jobs:
           github_user: pabloinigoblasco
           git_user: pabloinigoblasco
           git_email: pablo@ibrobotics.com
-          release_repository_push_url: https://github.com/robosoft-ai/SMACC2-release
+          release_repository_push_url: https://github.com/robosoft-ai/SMACC2-release.git
           tag_and_release: true
           open_pr: true
