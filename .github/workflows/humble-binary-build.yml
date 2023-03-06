@@ -26,6 +26,6 @@ jobs:
                 rm /etc/ros/rosdep/sources.list.d/20-default.list
                 rosdep init
                 rosdep update
-                rosdep install --from-paths . --ignore-src -r -y --skip-keys warehouse_ros_mongo
+                rosdep install --from-paths . --ignore-src -r -y
                 source /opt/ros/humble/setup.bash
                 colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-skip sm_multi_ur5_sim sm_test_moveit_ur5_sim

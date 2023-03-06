@@ -31,7 +31,7 @@ RUN ls src
 RUN vcs import  src --skip-existing --input src/SMACC2/SMACC2-not-released.$ROS_DISTRO.repos || true
 RUN ls src
 
-RUN rosdep install --from-paths src --ignore-src -r -y --skip-keys warehouse-ros-mongo || true
+RUN rosdep install --from-paths src --ignore-src -r -y  || true
 RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
 
 RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && colcon build --merge-install --packages-skip moveit_servo"

@@ -234,16 +234,16 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Warehouse mongodb server
-    mongodb_server_node = Node(
-        package="warehouse_ros_mongo",
-        executable="mongo_wrapper_ros.py",
-        parameters=[
-            {"warehouse_port": 33829},
-            {"warehouse_host": "localhost"},
-            {"warehouse_plugin": "warehouse_ros_mongo::MongoDatabaseConnection"},
-        ],
-        output="screen",
-    )
+    # mongodb_server_node = Node(
+    #     package="warehouse_ros_mongo",
+    #     executable="mongo_wrapper_ros.py",
+    #     parameters=[
+    #         {"warehouse_port": 33829},
+    #         {"warehouse_host": "localhost"},
+    #         {"warehouse_plugin": "warehouse_ros_mongo::MongoDatabaseConnection"},
+    #     ],
+    #     output="screen",
+    # )
 
     # Servo node for realtime control
     # servo_yaml = load_yaml(
@@ -266,7 +266,7 @@ def launch_setup(context, *args, **kwargs):
     #     },
     # )
 
-    nodes_to_start = [move_group_node, mongodb_server_node]  # servo_node
+    nodes_to_start = [move_group_node]  # servo_node
 
     return nodes_to_start
 
