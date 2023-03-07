@@ -59,9 +59,8 @@ public:
     //   std::bind(&CbWaitTopicMessage<TMessage>::onMessageReceived, this, std::placeholders::_1),
     //   sub_option);
 
-    std::function<void(typename TMessage::SharedPtr)> fn = [this](auto msg) {
-      this->onMessageReceived(msg);
-    };
+    std::function<void(typename TMessage::SharedPtr)> fn = [this](auto msg)
+    { this->onMessageReceived(msg); };
 
     auto nh = getNode();
     sub_ = nh->create_subscription<TMessage>(topicname_, qos, fn);
