@@ -125,17 +125,15 @@ public:
   void onOrthogonalAllocation()
   {
     // we create here all the event factory functions capturing the TOrthogonal
-    postSuccessEvent = [this](auto msg) {
-      this->postResultEvent<EvActionSucceeded<TSourceObject, TOrthogonal>>(msg);
-    };
-    postAbortedEvent = [this](auto msg) {
-      this->postResultEvent<EvActionAborted<TSourceObject, TOrthogonal>>(msg);
-    };
+    postSuccessEvent = [this](auto msg)
+    { this->postResultEvent<EvActionSucceeded<TSourceObject, TOrthogonal>>(msg); };
+    postAbortedEvent = [this](auto msg)
+    { this->postResultEvent<EvActionAborted<TSourceObject, TOrthogonal>>(msg); };
 
-    postCancelledEvent = [this](auto msg) {
-      this->postResultEvent<EvActionCancelled<TSourceObject, TOrthogonal>>(msg);
-    };
-    postFeedbackEvent = [this](auto msg) {
+    postCancelledEvent = [this](auto msg)
+    { this->postResultEvent<EvActionCancelled<TSourceObject, TOrthogonal>>(msg); };
+    postFeedbackEvent = [this](auto msg)
+    {
       auto actionFeedbackEvent = new EvActionFeedback<Feedback, TOrthogonal>();
       actionFeedbackEvent->client = this;
       actionFeedbackEvent->feedbackMessage = msg;
@@ -255,25 +253,26 @@ public:
     // options.result_callback = done_cb;
 
     options.result_callback =
-      [this](const typename rclcpp_action::ClientGoalHandle<ActionType>::WrappedResult & result) {
-        // TODO(#1652): a work around until rcl_action interface is updated
-        // if goal ids are not matched, the older goal call this callback so ignore the result
-        // if matched, it must be processed (including aborted)
-        RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result callback, getting shared future");
-        goalHandle_ = lastRequest_->get();
-        RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result CB Check goal id");
-        if (this->goalHandle_->get_goal_id() == result.goal_id)
-        {
-          // goal_result_available_ = true;
-          // result_ = result;
-          RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result CB Goal id matches");
-          done_cb(result);
-        }
-        else
-        {
-          RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result CB Goal id DOES NOT match");
-        }
-      };
+      [this](const typename rclcpp_action::ClientGoalHandle<ActionType>::WrappedResult & result)
+    {
+      // TODO(#1652): a work around until rcl_action interface is updated
+      // if goal ids are not matched, the older goal call this callback so ignore the result
+      // if matched, it must be processed (including aborted)
+      RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result callback, getting shared future");
+      goalHandle_ = lastRequest_->get();
+      RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result CB Check goal id");
+      if (this->goalHandle_->get_goal_id() == result.goal_id)
+      {
+        // goal_result_available_ = true;
+        // result_ = result;
+        RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result CB Goal id matches");
+        done_cb(result);
+      }
+      else
+      {
+        RCLCPP_INFO_STREAM(getLogger(), getName() << ": Result CB Goal id DOES NOT match");
+      }
+    };
 
     // if (lastRequest_ && lastRequest_->valid())
     // {

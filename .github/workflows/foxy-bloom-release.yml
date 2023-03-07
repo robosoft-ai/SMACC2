@@ -1,0 +1,45 @@
+name: foxy bloom-release
+
+on:
+  push:
+    paths:
+       - package.xml
+       - '*/package.xml'
+    branches: foxy
+  workflow_dispatch:
+
+jobs:
+  bloom-release:
+    runs-on: ubuntu-latest
+    container:
+      image: osrf/ros:foxy-desktop
+    env:
+      ROS_DISTRO: foxy
+      PRERELEASE: true
+      BASEDIR: ${{ github.workspace }}/.work
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - shell: bash
+        run: |
+          apt-get update
+          apt-get install -y python3-colcon-* python3-colcon-coveragepy-result
+          source /opt/ros/foxy/setup.bash
+          rosdep update
+          rosdep install --from-paths . --ignore-src -r -y --skip-keys warehouse_ros_mongo
+          colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-up-to smacc2 smacc2_msgs
+
+      # BLOOM RELEASE
+      - name: bloom release
+        uses: at-wat/bloom-release-action@v0
+        with:
+          ros_distro: ${{ env.ROS_DISTRO }}
+          github_token_bloom: ${{ secrets.GITTOKEN_BLOOM }}
+          github_user: pabloinigoblasco
+          git_user: pabloinigoblasco
+          git_email: pablo@ibrobotics.com
+          release_repository_push_url: https://github.com/robosoft-ai/SMACC2-release
+          tag_and_release: true
+          open_pr: true
