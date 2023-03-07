@@ -38,12 +38,12 @@ public:
 
     this->requiresClient(this->lifecycleNodeClient_);
 
-    lifecycleNodeClient_->onTransitionOnDeactivateSuccess_.connect(
-      [this]() { this->postSuccessEvent(); });
-    lifecycleNodeClient_->onTransitionOnDeactivateFailure_.connect(
-      [this]() { this->postFailureEvent(); });
-    lifecycleNodeClient_->onTransitionOnDeactivateError_.connect(
-      [this]() { this->postFailureEvent(); });
+    lifecycleNodeClient_->onTransitionOnDeactivateSuccess_.connect([this]()
+                                                                   { this->postSuccessEvent(); });
+    lifecycleNodeClient_->onTransitionOnDeactivateFailure_.connect([this]()
+                                                                   { this->postFailureEvent(); });
+    lifecycleNodeClient_->onTransitionOnDeactivateError_.connect([this]()
+                                                                 { this->postFailureEvent(); });
   }
 
   virtual void onEntry() override { lifecycleNodeClient_->deactivate(); }

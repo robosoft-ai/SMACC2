@@ -38,14 +38,16 @@ public:
 
     this->requiresClient(this->lifecycleNodeClient_);
 
-    lifecycleNodeClient_->onTransitionOnConfigureSuccess_.connect([this]() {
-      RCLCPP_INFO(getLogger(), "CbConfigure: onTransitionOnConfigureSuccess_");
-      this->postSuccessEvent();
-    });
-    lifecycleNodeClient_->onTransitionOnConfigureFailure_.connect(
-      [this]() { this->postFailureEvent(); });
-    lifecycleNodeClient_->onTransitionOnConfigureError_.connect(
-      [this]() { this->postFailureEvent(); });
+    lifecycleNodeClient_->onTransitionOnConfigureSuccess_.connect(
+      [this]()
+      {
+        RCLCPP_INFO(getLogger(), "CbConfigure: onTransitionOnConfigureSuccess_");
+        this->postSuccessEvent();
+      });
+    lifecycleNodeClient_->onTransitionOnConfigureFailure_.connect([this]()
+                                                                  { this->postFailureEvent(); });
+    lifecycleNodeClient_->onTransitionOnConfigureError_.connect([this]()
+                                                                { this->postFailureEvent(); });
   }
 
   virtual void onEntry() override { lifecycleNodeClient_->configure(); }
