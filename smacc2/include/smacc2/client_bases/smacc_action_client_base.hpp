@@ -125,18 +125,16 @@ public:
   void onOrthogonalAllocation()
   {
     // we create here all the event factory functions capturing the TOrthogonal
-    postSuccessEvent = [this](auto msg) {
-      this->postResultEvent<EvActionSucceeded<TSourceObject, TOrthogonal>>(msg);
-    };
-    postAbortedEvent = [this](auto msg) {
-      this->postResultEvent<EvActionAborted<TSourceObject, TOrthogonal>>(msg);
-    };
+    postSuccessEvent = [this](auto msg)
+    { this->postResultEvent<EvActionSucceeded<TSourceObject, TOrthogonal>>(msg); };
+    postAbortedEvent = [this](auto msg)
+    { this->postResultEvent<EvActionAborted<TSourceObject, TOrthogonal>>(msg); };
 
-    postCancelledEvent = [this](auto msg) {
-      this->postResultEvent<EvActionCancelled<TSourceObject, TOrthogonal>>(msg);
-    };
+    postCancelledEvent = [this](auto msg)
+    { this->postResultEvent<EvActionCancelled<TSourceObject, TOrthogonal>>(msg); };
 
-    postFeedbackEvent = [this](auto msg) {
+    postFeedbackEvent = [this](auto msg)
+    {
       auto actionFeedbackEvent = new EvActionFeedback<Feedback, TOrthogonal>();
       actionFeedbackEvent->client = this;
       actionFeedbackEvent->feedbackMessage = msg;
@@ -265,8 +263,10 @@ public:
     // ResultCallback result_callback;
     // options.result_callback = result_cb;
 
-    options.result_callback = [this, resultCallback](const typename rclcpp_action::ClientGoalHandle<
-                                                     ActionType>::WrappedResult & result) {
+    options.result_callback =
+      [this, resultCallback](
+        const typename rclcpp_action::ClientGoalHandle<ActionType>::WrappedResult & result)
+    {
       // TODO(#1652): a work around until rcl_action interface is updated
       // if goal ids are not matched, the older goa call this callback so ignore the result
       // if matched, it must be processed (including aborted)

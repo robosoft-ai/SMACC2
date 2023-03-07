@@ -268,7 +268,8 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    this->postOnTransitionCreate_ = [=]() {
+    this->postOnTransitionCreate_ = [=]()
+    {
       RCLCPP_INFO(this->getLogger(), "postOnTransitionCreate_");
       this->onTransitionCreate_();
       sc::event<EvTransitionCreate<TSourceObject, TOrthogonal>> * ev =
@@ -276,132 +277,158 @@ public:
       this->postEvent(ev);
     };
 
-    this->postOnTransitionConfigure_ = [=]() {
+    this->postOnTransitionConfigure_ = [=]()
+    {
       this->onTransitionConfigure_();
       this->postEvent<EvTransitionConfigure<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionActivate_ = [=]() {
+    this->postOnTransitionActivate_ = [=]()
+    {
       this->onTransitionActivate_();
       this->postEvent<EvTransitionActivate<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionDeactivate_ = [=]() {
+    this->postOnTransitionDeactivate_ = [=]()
+    {
       this->onTransitionDeactivate_();
       this->postEvent<EvTransitionDeactivate<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionUnconfiguredShutdown_ = [=]() {
+    this->postOnTransitionUnconfiguredShutdown_ = [=]()
+    {
       this->onTransitionUnconfiguredShutdown_();
       this->postEvent<EvTransitionUnconfiguredShutdown<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionInactiveShutdown_ = [=]() {
+    this->postOnTransitionInactiveShutdown_ = [=]()
+    {
       this->onTransitionInactiveShutdown_();
       this->postEvent<EvTransitionInactiveShutdown<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionActiveShutdown_ = [=]() {
+    this->postOnTransitionActiveShutdown_ = [=]()
+    {
       this->onTransitionActiveShutdown_();
       this->postEvent<EvTransitionActiveShutdown<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionDestroy_ = [=]() {
+    this->postOnTransitionDestroy_ = [=]()
+    {
       this->onTransitionDestroy_();
       this->postEvent<EvTransitionDestroy<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnConfigureSuccess_ = [=]() {
+    this->postOnTransitionOnConfigureSuccess_ = [=]()
+    {
       this->onTransitionOnConfigureSuccess_();
       this->postEvent<EvTransitionOnConfigureSuccess<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnConfigureFailure_ = [=]() {
+    this->postOnTransitionOnConfigureFailure_ = [=]()
+    {
       this->onTransitionOnConfigureFailure_();
       this->postEvent<EvTransitionOnConfigureFailure<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnConfigureError_ = [=]() {
+    this->postOnTransitionOnConfigureError_ = [=]()
+    {
       this->onTransitionOnConfigureError_();
       this->postEvent<EvTransitionOnConfigureError<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnActivateSuccess_ = [=]() {
+    this->postOnTransitionOnActivateSuccess_ = [=]()
+    {
       this->onTransitionOnActivateSuccess_();
       this->postEvent<EvTransitionOnActivateSuccess<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnActivateFailure_ = [=]() {
+    this->postOnTransitionOnActivateFailure_ = [=]()
+    {
       this->onTransitionOnActivateFailure_();
       this->postEvent<EvTransitionOnActivateFailure<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnActivateError_ = [=]() {
+    this->postOnTransitionOnActivateError_ = [=]()
+    {
       this->onTransitionOnActivateError_();
       this->postEvent<EvTransitionOnActivateError<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnDeactivateSuccess_ = [=]() {
+    this->postOnTransitionOnDeactivateSuccess_ = [=]()
+    {
       this->onTransitionOnDeactivateSuccess_();
       this->postEvent<EvTransitionOnDeactivateSuccess<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnDeactivateFailure_ = [=]() {
+    this->postOnTransitionOnDeactivateFailure_ = [=]()
+    {
       this->onTransitionOnDeactivateFailure_();
       this->postEvent<EvTransitionOnDeactivateFailure<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnDeactivateError_ = [=]() {
+    this->postOnTransitionOnDeactivateError_ = [=]()
+    {
       this->onTransitionOnDeactivateError_();
       this->postEvent<EvTransitionOnDeactivateError<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionCleanup_ = [=]() {
+    this->postOnTransitionCleanup_ = [=]()
+    {
       this->onTransitionCleanup_();
       this->postEvent<EvTransitionCleanup<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnCleanupSuccess_ = [=]() {
+    this->postOnTransitionOnCleanupSuccess_ = [=]()
+    {
       this->onTransitionOnCleanupSuccess_();
       this->postEvent<EvTransitionOnCleanupSuccess<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnCleanupFailure_ = [=]() {
+    this->postOnTransitionOnCleanupFailure_ = [=]()
+    {
       this->onTransitionOnCleanupFailure_();
       this->postEvent<EvTransitionOnCleanupFailure<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnCleanupError_ = [=]() {
+    this->postOnTransitionOnCleanupError_ = [=]()
+    {
       this->onTransitionOnCleanupError_();
       this->postEvent<EvTransitionOnCleanupError<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnShutdownSuccess_ = [=]() {
+    this->postOnTransitionOnShutdownSuccess_ = [=]()
+    {
       this->onTransitionOnShutdownSuccess_();
       this->postEvent<EvTransitionOnShutdownSuccess<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnShutdownFailure_ = [=]() {
+    this->postOnTransitionOnShutdownFailure_ = [=]()
+    {
       this->onTransitionOnShutdownFailure_();
       this->postEvent<EvTransitionOnShutdownFailure<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnShutdownError_ = [=]() {
+    this->postOnTransitionOnShutdownError_ = [=]()
+    {
       this->onTransitionOnShutdownError_();
       this->postEvent<EvTransitionOnShutdownError<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnErrorSuccess_ = [=]() {
+    this->postOnTransitionOnErrorSuccess_ = [=]()
+    {
       this->onTransitionOnErrorSuccess_();
       this->postEvent<EvTransitionOnErrorSuccess<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnErrorFailure_ = [=]() {
+    this->postOnTransitionOnErrorFailure_ = [=]()
+    {
       this->onTransitionOnErrorFailure_();
       this->postEvent<EvTransitionOnErrorFailure<TSourceObject, TOrthogonal>>();
     };
 
-    this->postOnTransitionOnErrorError_ = [=]() {
+    this->postOnTransitionOnErrorError_ = [=]()
+    {
       this->onTransitionOnErrorError_();
       this->postEvent<EvTransitionOnErrorError<TSourceObject, TOrthogonal>>();
     };

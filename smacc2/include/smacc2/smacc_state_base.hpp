@@ -179,31 +179,37 @@ public:
   static void configure_orthogonal_runtime(
     std::function<void(TBehavior & bh, MostDerived &)> initializationFunction)
   {
-    configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState * state) {
-      // auto bh = std::make_shared<TBehavior>(args...);
-      auto bh = state->configure<TOrthogonal, TBehavior>();
-      initializationFunction(*bh, *(static_cast<MostDerived *>(state)));
-    });
+    configure_orthogonal_internal<TOrthogonal, TBehavior>(
+      [=](ISmaccState * state)
+      {
+        // auto bh = std::make_shared<TBehavior>(args...);
+        auto bh = state->configure<TOrthogonal, TBehavior>();
+        initializationFunction(*bh, *(static_cast<MostDerived *>(state)));
+      });
   }
 
   template <typename TOrthogonal, typename TBehavior>
   static void configure_orthogonal_runtime(
     std::function<void(TBehavior & bh)> initializationFunction)
   {
-    configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState * state) {
-      // auto bh = std::make_shared<TBehavior>(args...);
-      auto bh = state->configure<TOrthogonal, TBehavior>();
-      initializationFunction(*bh);
-    });
+    configure_orthogonal_internal<TOrthogonal, TBehavior>(
+      [=](ISmaccState * state)
+      {
+        // auto bh = std::make_shared<TBehavior>(args...);
+        auto bh = state->configure<TOrthogonal, TBehavior>();
+        initializationFunction(*bh);
+      });
   }
 
   template <typename TOrthogonal, typename TBehavior, typename... Args>
   static void configure_orthogonal(Args &&... args)
   {
-    configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState * state) {
-      // auto bh = std::make_shared<TBehavior>(args...);
-      state->configure<TOrthogonal, TBehavior>(args...);
-    });
+    configure_orthogonal_internal<TOrthogonal, TBehavior>(
+      [=](ISmaccState * state)
+      {
+        // auto bh = std::make_shared<TBehavior>(args...);
+        state->configure<TOrthogonal, TBehavior>(args...);
+      });
   }
 
   template <
@@ -247,7 +253,8 @@ public:
       SmaccStateInfo::stateReactorsInfo[tindex] =
         std::vector<std::shared_ptr<SmaccStateReactorInfo>>();
 
-    srinfo->factoryFunction = [&, srh, args...](ISmaccState * state) {
+    srinfo->factoryFunction = [&, srh, args...](ISmaccState * state)
+    {
       auto sr =
         state->createStateReactor<TStateReactor, TOutputEvent, TInputEventList, TArgs...>(args...);
       srh->configureStateReactor(sr);
@@ -277,7 +284,8 @@ public:
       SmaccStateInfo::eventGeneratorsInfo[tindex] =
         std::vector<std::shared_ptr<SmaccEventGeneratorInfo>>();
 
-    eginfo->factoryFunction = [&, egh, args...](ISmaccState * state) {
+    eginfo->factoryFunction = [&, egh, args...](ISmaccState * state)
+    {
       auto eg = state->createEventGenerator<TEventGenerator>(args...);
       egh->configureEventGenerator(eg);
       eg->initialize(state);
@@ -306,7 +314,8 @@ public:
       SmaccStateInfo::stateReactorsInfo[tindex] =
         std::vector<std::shared_ptr<SmaccStateReactorInfo>>();
 
-    srinfo->factoryFunction = [&, srh, args...](ISmaccState * state) {
+    srinfo->factoryFunction = [&, srh, args...](ISmaccState * state)
+    {
       auto sr = state->createStateReactor<TStateReactor>(args...);
       srh->configureStateReactor(sr);
       sr->initialize(state);

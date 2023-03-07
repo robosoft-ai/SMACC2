@@ -58,17 +58,18 @@ public:
   CbSequence * then(Args &&... args)
   {
     std::function<std::shared_ptr<smacc2::SmaccAsyncClientBehavior>()> delayedCBFactoryFn =
-      [this, args...]() {
-        RCLCPP_INFO(
-          getLogger(), "[CbSequence] then creating new sub behavior %s ",
-          demangleSymbol<TBehavior>().c_str());
-        auto createdBh = std::shared_ptr<TBehavior>(new TBehavior(args...));
+      [this, args...]()
+    {
+      RCLCPP_INFO(
+        getLogger(), "[CbSequence] then creating new sub behavior %s ",
+        demangleSymbol<TBehavior>().c_str());
+      auto createdBh = std::shared_ptr<TBehavior>(new TBehavior(args...));
 
-        this->getCurrentState()->getOrthogonal<TOrthogonal>()->addClientBehavior(createdBh);
-        createdBh->template onOrthogonalAllocation<TOrthogonal, TBehavior>();
+      this->getCurrentState()->getOrthogonal<TOrthogonal>()->addClientBehavior(createdBh);
+      createdBh->template onOrthogonalAllocation<TOrthogonal, TBehavior>();
 
-        return createdBh;
-      };
+      return createdBh;
+    };
 
     sequenceNodes_.push_back(delayedCBFactoryFn);
 

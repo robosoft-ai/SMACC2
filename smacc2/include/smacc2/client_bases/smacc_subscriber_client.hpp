@@ -74,14 +74,16 @@ public:
   void onOrthogonalAllocation()
   {
     // ros topic message received smacc event callback
-    this->postMessageEvent = [this](auto msg) {
+    this->postMessageEvent = [this](auto msg)
+    {
       auto event = new EvTopicMessage<TSourceObject, TOrthogonal>();
       event->msgData = msg;
       this->postEvent(event);
     };
 
     // initial ros topic message received smacc event callback
-    this->postInitialMessageEvent = [this](auto msg) {
+    this->postInitialMessageEvent = [this](auto msg)
+    {
       auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal>();
       event->msgData = msg;
       this->postEvent(event);
@@ -109,9 +111,8 @@ protected:
         rclcpp::SensorDataQoS qos;
         if (queueSize) qos.keep_last(*queueSize);
 
-        std::function<void(typename MessageType::SharedPtr)> fn = [this](auto msg) {
-          this->messageCallback(*msg);
-        };
+        std::function<void(typename MessageType::SharedPtr)> fn = [this](auto msg)
+        { this->messageCallback(*msg); };
         sub_ = getNode()->create_subscription<MessageType>(*topicName, qos, fn);
         this->initialized_ = true;
       }
