@@ -1,6 +1,0 @@
-prepend-non-duplicate;GAZEBO_MODEL_PATH;share/sm_aws_warehouse_navigation/models
-prepend-non-duplicate;GAZEBO_MODEL_PATH;share/sm_aws_warehouse_navigation/worlds
-prepend-non-duplicate;GAZEBO_MODEL_PATH;/home/geus/Desktop/smacc2/install/neo_simulation2/share/neo_simulation2/models
-prepend-non-duplicate;GAZEBO_MODEL_PATH;/home/geus/Desktop/smacc2/install/neo_simulation2/share/neo_simulation2/robots
-prepend-non-duplicate;GAZEBO_MODEL_PATH;/home/geus/Desktop/smacc2/install/neo_simulation2/share/neo_simulation2/worlds
-prepend-non-duplicate;GAZEBO_MODEL_PATH;/home/geus/Desktop/smacc2/install/neo_simulation2/share/
