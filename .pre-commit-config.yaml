@@ -102,4 +102,3 @@ repos:
         exclude: CHANGELOG\.rst$
       - id: rst-directive-colons
       - id: rst-inline-touching-normal
-      
