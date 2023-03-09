@@ -70,7 +70,7 @@ void BackwardGlobalPlanner::configure(
 
   // RCLCPP_INFO_NAMED(nh_->get_logger(), "Backwards", "BackwardGlobalPlanner initialize");
   costmap_ros_ = costmap_ros;
-  // RCLCPP_WARN_NAMED(nh_->get_logger(), "Backwards", "initializating global planner, costmap address: %ld",
+  // RCLCPP_WARN_NAMED(nh_->get_logger(), "Backwards", "Initializing global planner, costmap address: %ld",
   // (long)costmap_ros);
 
   planPub_ = nh_->create_publisher<nav_msgs::msg::Path>("backward_planner/global_plan", 1);

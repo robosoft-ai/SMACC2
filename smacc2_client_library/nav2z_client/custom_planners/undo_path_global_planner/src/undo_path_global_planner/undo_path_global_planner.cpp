@@ -88,7 +88,7 @@ void UndoPathGlobalPlanner::configure(
   costmap_ros_ = costmap_ros;
   tf_ = tf;
   name_ = name;
-  // RCLCPP_WARN_NAMED(nh_->get_logger(), "Backwards", "initializating global planner, costmap address: %ld",
+  // RCLCPP_WARN_NAMED(nh_->get_logger(), "Backwards", "initializing global planner, costmap address: %ld",
   // (long)costmap_ros);
 
   rclcpp::SensorDataQoS qos;
@@ -269,7 +269,7 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(
       RCLCPP_WARN_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] Warning possible bug");
     }
 
-    // ------- FULL FORWARD PASS TO FIND THE STARTING POIINT OF THE FORWARD MOTION ------
+    // ------- FULL FORWARD PASS TO FIND THE STARTING POINT OF THE FORWARD MOTION ------
     RCLCPP_DEBUG_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] second pass loop");
     for (int i = mindistindex; i >= 0; i--)
     {

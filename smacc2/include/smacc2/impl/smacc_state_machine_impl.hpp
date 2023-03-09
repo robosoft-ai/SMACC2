@@ -409,7 +409,7 @@ void ISmaccStateMachine::notifyOnStateEntryStart(StateType * state)
 
   RCLCPP_DEBUG(
     getLogger(),
-    "[State Machne] Initializating a new state '%s' and updating current state. Getting state "
+    "[State Machne] Initializing a new state '%s' and updating current state. Getting state "
     "meta-information. number of orthogonals: %ld",
     demangleSymbol(typeid(StateType).name()).c_str(), this->orthogonals_.size());
 

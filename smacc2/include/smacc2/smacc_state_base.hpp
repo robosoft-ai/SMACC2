@@ -414,7 +414,7 @@ private:
   {
     // finally we go to the derived state onEntry Function
 
-    RCLCPP_DEBUG(getLogger(), "[%s] State object created. Initializating...", STATE_NAME);
+    RCLCPP_DEBUG(getLogger(), "[%s] State object created. Initializing...", STATE_NAME);
     this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
 
     RCLCPP_DEBUG_STREAM(

@@ -20,7 +20,7 @@
 
 namespace $sm_name$
 {
-// SMACC2 clases
+// SMACC2 classes
 using smacc2::EvStateRequestFinish;
 using smacc2::Transition;
 
