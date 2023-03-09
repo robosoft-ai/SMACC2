@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-// Author: Denis Štogl 
+// Author: Denis Štogl
 //
 
 #pragma once

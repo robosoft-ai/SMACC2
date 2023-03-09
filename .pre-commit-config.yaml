@@ -130,7 +130,7 @@ repos:
 
   # Spellcheck in comments and docs
   # skipping of *.svg files is not working...
-  
+  #
   #- repo: https://github.com/codespell-project/codespell
   #  rev: v2.2.0
   #  hooks:
