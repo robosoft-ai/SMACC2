@@ -50,6 +50,5 @@ jobs:
 
     - name: "pre-commit"
       run: |
-        source /opt/ros/galactic/setup.bash
-        echo `pwd`
-        pre-commit run -a
+        pip install pre-commit
+        sudo pre-commit install
