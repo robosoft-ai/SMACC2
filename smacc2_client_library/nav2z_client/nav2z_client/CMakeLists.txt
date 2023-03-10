@@ -79,6 +79,13 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/components/slam_toolbox/cp_slam_toolbox.cpp
 )
 
+# removes unused parameters warning related with lttng, compiler warning
+set_source_files_properties(
+  src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_navigator.cpp
+  PROPERTIES
+  COMPILE_FLAGS "-Wno-unused-parameter"
+)
+
 ament_target_dependencies(${PROJECT_NAME}
                           ${dependencies})
 
