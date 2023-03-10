@@ -33,9 +33,9 @@ jobs:
           
           sudo apt install -y clang-format-12 cppcheck
       
-    - uses: pre-commit/action@v2.0.3
-      with:
-        extra_args: --all-files --hook-stage manual
+    #- uses: pre-commit/action@v2.0.3
+    #  with:
+    #    extra_args: --all-files --hook-stage manual
  
     #   sudo apt-get update
 
@@ -48,8 +48,8 @@ jobs:
     #   with:
     #     extra_args: --all-files --hook-stage manual
 
-    #- name: "pre-commit"
-    #  run: |
-    #    source /opt/ros/galactic/setup.bash
-    #    echo `pwd`
-    #    pre-commit run -a
+    - name: "pre-commit"
+      run: |
+        source /opt/ros/galactic/setup.bash
+        echo `pwd`
+        pre-commit run -a
