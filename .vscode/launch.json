@@ -13,79 +13,6 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "(gdb) sm_test_moveit_ur5_sim_node",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
-            "args": [
-                // "--ros-args",
-                // "-r",
-                // "__node:=sm_test_moveit_ur5_sim_node",
-                // // "--params-file",
-                // // "${workspaceFolder}/../install/sm_moveit_ur5_sim/share/sm_moveit_ur5_sim/params/sm_aws_warehouse_navigation_config.yaml"
-                "--ros-args",
-                "--params-file",
-                "/tmp/launch_params_iw9ydu1_",
-                "--params-file",
-                "/tmp/launch_params_t32qpc19",
-                "--params-file",
-                "/tmp/launch_params__9jy9bhe",
-                "--params-file",
-                "/home/geus/Desktop/smacc_ws/install/sm_test_moveit_ur5_sim/share/sm_test_moveit_ur5_sim/config/sm_test_moveit_ur5_sim_config.yaml"
-            ],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-
-            {
-                "name": "C++ Debugger sm_test_moveit_ur5_sim",
-                "request": "launch",
-                "type": "cppdbg",
-                "miDebuggerServerAddress": "localhost:3000",
-                "cwd": "/",
-                "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
-                "setupCommands": [
-                    {
-                        "description": "Enable pretty-printing for gdb",
-                        "text": "-enable-pretty-printing",
-                        "ignoreFailures": true
-                    }
-                ]
-            },
-
-
-
-        {
-            "name": "(gdb) Attach sm_test_moveit_ur5_sim_node",
-            "type": "cppdbg",
-            "request": "attach",
-            "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
-            "processId": "${command:pickProcess}",
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                },
-                {
-                    "description":  "Set Disassembly Flavor to Intel",
-                    "text": "-gdb-set disassembly-flavor intel",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
             "name": "(gdb) smacc_rta",
             "type": "cppdbg",
             "request": "launch",
@@ -110,56 +37,6 @@
             "request": "launch",
             "program": "${workspaceFolder}/../install/sm_path_planner/lib/sm_path_planner/sm_path_planner_exec",
             "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
-            "name": "(gdb) sm_aws_warehouse_navigation_node",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/../install/sm_aws_warehouse_navigation/lib/sm_aws_warehouse_navigation/sm_aws_warehouse_navigation_node",
-            "args": [
-                "--ros-args",
-                "-r",
-                "__node:=sm_aws_warehouse_navigation",
-                "--params-file",
-                "${workspaceFolder}/../install/sm_aws_warehouse_navigation/share/sm_aws_warehouse_navigation/params/sm_aws_warehouse_navigation_config.yaml"
-            ],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-                {
-            "name": "(gdb) sm_aws_warehouse_navigation_node",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/../install/sm_aws_warehouse_navigation/lib/sm_aws_warehouse_navigation/sm_aws_warehouse_navigation_node",
-            "args": [
-                "--ros-args",
-                "-r",
-                "__node:=sm_aws_warehouse_navigation",
-                "--params-file",
-                "${workspaceFolder}/../install/sm_aws_warehouse_navigation/share/sm_aws_warehouse_navigation/params/sm_aws_warehouse_navigation_config.yaml"
-            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -235,25 +112,6 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/../install/sm_atomic_lifecycle/lib/sm_atomic_lifecycle/sm_atomic_lifecycle_node",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
-            "name": "(gdb) smacc_aws_warehouse_navigation",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/../install/sm_aws_warehouse_navigation/lib/sm_aws_warehouse_navigation/sm_aws_warehouse_navigation_node",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -443,32 +301,6 @@
                 "__node:=sm_atomic_performance_test",
                 "--params-file",
                 "${workspaceFolder}/../install/sm_atomic_performance_test/share/sm_atomic_performance_test/config/sm_atomic_config.yaml"
-            ],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-
-        {
-            "name": "(gdb) SmAutowareAvp",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/../install/sm_autoware_avp/lib/sm_autoware_avp/sm_autoware_avp_node",
-            "args": [
-                "--ros-args",
-                "-r",
-                "__node:=sm_autoware_avp_node",
-                "--params-file",
-                "${workspaceFolder}/../install/sm_autoware_avp/share/sm_autoware_avp/config/sm_autoware_avp_config.yaml"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
