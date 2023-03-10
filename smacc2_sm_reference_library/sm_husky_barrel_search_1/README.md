@@ -29,7 +29,7 @@ source ~/<ros2_ws>/install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_husky_barrel_search_1 sm_husky_barrel_search_1.launch
+ros2 launch sm_husky_barrel_search_1 sm_husky_barrel_search_1_launch.py
 ```
 
  <h2>Viewer Instructions</h2>
