@@ -7,7 +7,7 @@ if(NOT CMAKE_CXX_STANDARD)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
+  add_compile_options(-Wall -Wextra -Wno-unused-variable -Wno-unused-parameter)
 endif()
 
 # find dependencies
@@ -76,6 +76,41 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 add_executable(${PROJECT_NAME}_node
   src/${PROJECT_NAME}/sm_husky_barrel_search_1_node.cpp
 )
+
+## removes unused parameters warning related with lttng, compiler warning
+#set_source_files_properties(
+#  servers/opencv_perception_node/opencv_perception_node.cpp
+#  PROPERTIES
+#  COMPILE_FLAGS "-Wno-unused-parameter"
+#)
+
+## removes unused parameters warning related with lttng, compiler warning
+#set_source_files_properties(
+#  servers/opencv_perception_node/opencv_perception_node.cpp
+#  PROPERTIES
+#  COMPILE_FLAGS "-Wno-unused-variable"
+#)
+
+# removes unused parameters warning related with lttng, compiler warning
+set_source_files_properties(
+  servers/opencv_perception_node/opencv_perception_node.cpp
+  PROPERTIES
+  COMPILE_FLAGS "-Wno-unused-but-set-variable"
+)
+
+## removes unused parameters warning related with lttng, compiler warning
+#set_source_files_properties(
+#  include/sm_husky_barrel_search_1/states/explore_left/st_airstrike_communications.hpp
+#  PROPERTIES
+#  COMPILE_FLAGS "-Wno-unused-parameter"
+#)
+
+## removes unused parameters warning related with lttng, compiler warning
+#set_source_files_properties(
+#  include/sm_husky_barrel_search_1/states/explore_left/st_airstrike_communications.hpp
+#  PROPERTIES
+#  COMPILE_FLAGS "-Wno-unused-variable"
+#)
 
 ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
 target_link_libraries(${PROJECT_NAME}_node
