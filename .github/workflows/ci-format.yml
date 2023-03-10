@@ -22,9 +22,12 @@ jobs:
     - name: Install clang-format
       #Pulled from this forum post https://travis-ci.community/t/clang-10-was-recently-broken-on-linux-unmet-dependencies-for-clang-10-clang-tidy-10-valgrind/11527
       run: |
-          sudo apt-get install -yq --allow-downgrades libc6=2.31-0ubuntu9.2 libc6-dev=2.31-0ubuntu9.2
-          sudo -E apt-get -yq --no-install-suggests --no-install-recommends --allow-downgrades --allow-remove-essential --allow-change-held-packages install build-essential automake autoconf autoconf-archive libtool-bin texinfo yasm gcc-10 g++-10 clang-10 clang-format-10 clang-tidy-10 ninja-build cppcheck valgrind doxygen graphviz lcov -o Debug::pkgProblemResolver=yes
-          sudo apt install clang-format-10 cppcheck
+          sudo add-apt-repository main
+          sudo add-apt-repository universe
+          sudo add-apt-repository restricted
+          sudo add-apt-repository multiverse  
+          sudo apt-get-update
+          sudo apt install clang-format-12 cppcheck
       
     - uses: pre-commit/action@v2.0.3
       with:
