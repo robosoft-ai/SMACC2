@@ -51,4 +51,4 @@ jobs:
     - name: "pre-commit"
       run: |
         pip install pre-commit
-        sudo pre-commit install
+        pre-commit run -a
