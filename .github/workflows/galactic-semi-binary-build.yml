@@ -19,5 +19,5 @@ jobs:
     with:
       ros_repo: main
       ros_distro: galactic
-      upstream_workspace: SMACC2.galactic.repos
+      upstream_workspace: ./.github/SMACC2.galactic.repos
       ref_for_scheduled_build: galactic
