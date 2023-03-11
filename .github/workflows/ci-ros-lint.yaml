@@ -101,7 +101,6 @@ jobs:
           #sr_conditional
           #sr_event_countdown
 
-          #smacc2_ci
           #smacc_client_library
           #smacc_event_generators
           #smacc_msgs
