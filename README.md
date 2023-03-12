@@ -17,63 +17,14 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
 
 1. Binary builds - against released packages (main and testing) in ROS distributions. Shows that direct local build is possible.
 
-   Uses repos file: `src/SMACC2/SMACC2-not-released.<ros-distro>.repos`
+   Uses repos file: `src/SMACC2/.github/SMACC2-not-released.<ros-distro>.repos`
 
 1. Semi-binary builds - against released core ROS packages (main and testing), but the immediate dependencies are pulled from source.
    Shows that local build with dependencies is possible and if fails there we can expect that after the next package sync we will not be able to build.
 
-   Uses repos file: `src/SMACC2/SMACC2.repos`
+   Uses repos file: `src/SMACC2/.github/SMACC2.repos`
 
 1. Source build - also core ROS packages are build from source. It shows potential issues in the mid future.
-
-
-## Getting started - ROS Rolling + Ubuntu 20.04 (Focal)
-
-1. [Install ROS 2 Rolling](https://index.ros.org/doc/ros2/Installation/Rolling/Linux-Install-Debians/).
-
-2. Make sure that `colcon`, its extensions and `vcs` are installed:
-   ```
-   sudo apt install python3-colcon-common-extensions python3-vcstool
-   ```
-3. Create a new ROS 2 workspace if necessary:
-   ```
-   export COLCON_WS=~/workspace/rolling_ws
-   mkdir -p $COLCON_WS/src
-   ```
-4. Or just navigate to your workspace source folder:
-   ```
-   cd ~/workspace/rolling_ws/src
-   ```
-5. Clone the repo:
-   ```
-   git clone https://github.com/robosoft-ai/SMACC2.git
-   ```
-6. Navigate to the workspace:
-   ```
-   cd ~/workspace/rolling_ws
-   ```
-7. Update System:
-   ```
-   sudo apt update
-   sudo apt upgrade
-   ```
-8. Source the workspace:
-   ```
-   source /opt/ros/rolling/setup.bash
-   ```
-9. Update dependencies:
-   ```
-   rosdep update
-   ```
-10. Pull relevant packages and install dependencies:
-   ```
-   vcs import src --skip-existing --input src/SMACC2/SMACC2-not-released.rolling.repos
-   rosdep install --ignore-src --from-paths src -y -r
-   ```
-11. Compile:
-   ```
-   colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
-   ```
 
 ## Getting started - ROS Galactic
 
@@ -120,7 +71,7 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
    ```
 11. Pull relevant packages and install dependencies:
    ```
-   vcs import src --skip-existing --input src/SMACC2/SMACC2.galactic.repos
+   vcs import src --skip-existing --input src/SMACC2/.github/SMACC2.galactic.repos
    rosdep install --ignore-src --from-paths src -y -r
    ```
 12. Compile:
@@ -173,10 +124,58 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
    ```
 11. Pull relevant packages and install dependencies:
    ```
-   vcs import src --skip-existing --input src/SMACC2/SMACC2.foxy.repos
+   vcs import src --skip-existing --input src/SMACC2/.github/SMACC2.foxy.repos
    rosdep install --ignore-src --from-paths src -y -r
    ```
 12. Compile:
+   ```
+   colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
+   ```
+
+## Getting started - ROS Rolling + Ubuntu 20.04 (Focal)
+
+1. [Install ROS 2 Rolling](https://index.ros.org/doc/ros2/Installation/Rolling/Linux-Install-Debians/).
+
+2. Make sure that `colcon`, its extensions and `vcs` are installed:
+   ```
+   sudo apt install python3-colcon-common-extensions python3-vcstool
+   ```
+3. Create a new ROS 2 workspace if necessary:
+   ```
+   export COLCON_WS=~/workspace/rolling_ws
+   mkdir -p $COLCON_WS/src
+   ```
+4. Or just navigate to your workspace source folder:
+   ```
+   cd ~/workspace/rolling_ws/src
+   ```
+5. Clone the repo:
+   ```
+   git clone https://github.com/robosoft-ai/SMACC2.git
+   ```
+6. Navigate to the workspace:
+   ```
+   cd ~/workspace/rolling_ws
+   ```
+7. Update System:
+   ```
+   sudo apt update
+   sudo apt upgrade
+   ```
+8. Source the workspace:
+   ```
+   source /opt/ros/rolling/setup.bash
+   ```
+9. Update dependencies:
+   ```
+   rosdep update
+   ```
+10. Pull relevant packages and install dependencies:
+   ```
+   vcs import src --skip-existing --input src/SMACC2/SMACC2-not-released.rolling.repos
+   rosdep install --ignore-src --from-paths src -y -r
+   ```
+11. Compile:
    ```
    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
    ```
@@ -191,7 +190,6 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
   *  ***Extensive Documentation:*** Although many ROS users are familiar with doxygen, our development team has spent a lot of time researching the more advanced features of doxygen such as uml style class diagrams and call graphs, and we've used them to document the SMACC2 library. Have a look to [our doxygen sites](https://robosoft-ai.github.io/smacc2_doxygen/master/html/namespaces.html) and we think you'll be blown away at what Doxygen looks like when [it's done right](https://robosoft-ai.github.io/smacc2_doxygen/master/html/classsmacc2_1_1ISmaccStateMachine.html) and it becomes a powerful tool to research a codebase.
   *  ***SMACC2 Runtime Analyzer:*** The SMACC2 library works out of the box with the SMACC2 RTA. This allows developers to visualize and runtime debug the state machines they are working on. The SMACC2 RTA is closed source, but is free for individual and academic use. It can be found [here](https://robosoft.ai/product-category/smacc2-runtime-analyzer/).
 
-
 ## Repository Structure
 - `smacc2` - core library of SMACC2.
 - `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`nav2z_client`), MoveIt2 (`move_group_interface_client`).
@@ -201,11 +199,8 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
 - `↓smacc2_state_reactor_library` - ...
 - `smacc2_performance_tools` - ...
 
-
-
 ## SMACC2 applications
 From it's inception, SMACC2 was written to support the programming of multi-component, complex robots. If your project involves small, solar-powered insect robots, that simply navigate towards a light source, then SMACC2 might not be the right choice for you. But if you are trying to program a robot with a mobile base, a robotic arm, a gripper, two lidar sensors, a gps transceiver and an imu, then you've come to the right place.
-
 
 ## Run a State Machine
 The easiest way to get started is by selecting one of the state machines in our [reference library](smacc2_sm_reference_library), and then hacking it to meet your needs.
@@ -221,9 +216,7 @@ Each state machine in the reference library comes with it's own README.md file, 
 
   *  If you want to get started with ROS Navigation and exploring the orthogonal read-write cycle, then try [sm_dance_bot_strikes_back](smacc2_sm_reference_library/sm_dance_bot_strikes_back).
 
-
 Operating instructions can be found in each reference state machines readme file.
-
 
 ## Writing your State Machines
 There is a [state machine generator in the reference library](smacc2_sm_reference_library/create-sm-package.bash).
