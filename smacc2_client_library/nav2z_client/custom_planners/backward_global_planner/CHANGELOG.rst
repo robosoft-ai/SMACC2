@@ -2,6 +2,9 @@
 Changelog for package backward_global_planner
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.22.1 (2022-11-09)
 -------------------
 * pre-release

@@ -2,6 +2,9 @@
 Changelog for package sr_conditional
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.22.1 (2022-11-09)
 -------------------
 * pre-release

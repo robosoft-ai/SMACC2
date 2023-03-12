@@ -2,6 +2,9 @@
 Changelog for package multirole_sensor_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.22.1 (2022-11-09)
 -------------------
 * pre-release

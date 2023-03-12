@@ -4,6 +4,9 @@ Changelog for package panda_arm_2_moveit_config
 
 Forthcoming
 -----------
+* minor
+* Contributors: pabloinigoblasco
+
 * fix
 * removing mongo dependency (`#402 <https://github.com/robosoft-ai/SMACC2/issues/402>`_)
   * removing mongo dependency

@@ -4,6 +4,9 @@ Changelog for package sm_atomic_lifecycle
 
 Forthcoming
 -----------
+* minor
+* Contributors: pabloinigoblasco
+
 * fix
 * version
 * removing mongo dependency (`#402 <https://github.com/robosoft-ai/SMACC2/issues/402>`_)

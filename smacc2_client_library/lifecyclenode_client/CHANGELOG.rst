@@ -4,6 +4,9 @@ Changelog for package lifecyclenode_client
 
 Forthcoming
 -----------
+* minor
+* Contributors: pabloinigoblasco
+
 * fix
 * version
 * Contributors: pabloinigoblasco

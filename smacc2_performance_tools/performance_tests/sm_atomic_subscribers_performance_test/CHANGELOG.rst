@@ -2,6 +2,9 @@
 Changelog for package sm_atomic_subscribers_performance_test
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.22.1 (2022-11-09)
 -------------------
 * pre-release
