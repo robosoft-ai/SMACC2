@@ -2,8 +2,8 @@
 Changelog for package sm_atomic_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.6 (2023-03-12)
+------------------
 * minor
 * Contributors: pabloinigoblasco
 

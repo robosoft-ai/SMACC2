@@ -2,8 +2,8 @@
 Changelog for package panda_arm_2_moveit_config
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.6 (2023-03-12)
+------------------
 * minor
 * Contributors: pabloinigoblasco
 

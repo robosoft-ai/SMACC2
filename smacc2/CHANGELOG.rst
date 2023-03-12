@@ -19,8 +19,8 @@ Changelog for package smacc2
 * Initial release of SMACC2 core
 * Contributors: Brett Aldrich, Pablo Inigo Blasco, Denis Štogl
 
-Forthcoming
------------
+2.3.6 (2023-03-12)
+------------------
 
 1.22.1 (2022-11-09)
 -------------------
