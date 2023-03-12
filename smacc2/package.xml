@@ -2,13 +2,13 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>smacc2</name>
-  <version>2.3.6</version>
+  <version>2.3.7</version>
 
   <description>An Event-Driven, Asynchronous, Behavioral State Machine Library for ROS2 (Robotic Operating System) applications written in C++.</description>
 
-  <author email="pablo@robosoft.ai">Pablo Inigo Blasco</author>
+  <author email="pablo@ibrobotics.com">Pablo Inigo Blasco</author>
   <author email="brett@robosoft.ai">Brett Aldrich</author>
-  <maintainer email="pablo@robosoft.ai">Pablo Inigo Blasco</maintainer>
+  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
   <maintainer email="denis@stoglrobotics.de">Denis Stogl</maintainer>
   <license>Apache-2.0</license>
 
@@ -20,7 +20,6 @@
   <depend>rcl</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_action</depend>
-  <depend>sdformat_urdf</depend>
   <depend>smacc2_msgs</depend>
   <depend>tracetools</depend>
   <depend>tracetools_trace</depend>
