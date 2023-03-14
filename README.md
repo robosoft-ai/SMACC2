@@ -110,7 +110,7 @@ To use it go to the `src` folder of your ROS2 workspace and execute:
   ```
   smacc2/smacc2_sm_reference_library/create-sm-package.bash <name_of_state_machine>
   ```
-After than compile your workspace and source it to set paths of the new package.
+After than compile your workspace and source it to set paths of the new package. 
 Check `README.md` in new package about instructions to start newly created state machine.
 
 Happy Coding!
