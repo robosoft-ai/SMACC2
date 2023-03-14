@@ -29,7 +29,7 @@ WORKDIR "/home/ros2_ws"
 
 
 # install dependencies and build
-RUN ls src && vcs import  src --skip-existing --input src/SMACC2/SMACC2-not-released.$ROS_DISTRO.repos \
+RUN ls src && vcs import  src --skip-existing --input src/SMACC2/.github/SMACC2-not-released.$ROS_DISTRO.repos \
   && ls src
 
 RUN rosdep install --from-paths src --ignore-src -r -y
