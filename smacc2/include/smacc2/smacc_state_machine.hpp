@@ -141,7 +141,7 @@ public:
   void notifyOnRuntimeConfigured(StateType * state);
 
   template <typename StateType>
-  void notifyOnStateExitting(StateType * state);
+  void notifyOnStateExiting(StateType * state);
 
   template <typename StateType>
   void notifyOnStateExited(StateType * state);
