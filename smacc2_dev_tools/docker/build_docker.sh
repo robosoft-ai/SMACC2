@@ -1,7 +1,7 @@
 #!/bin/sh
 DIR="$(dirname "$(realpath "$0")")"
 echo $DIR
-cd $DIR/..
+cd $DIR/../..
 echo `pwd`
 
 ROS_DISTRO=$1
