@@ -11,7 +11,7 @@ SMACC2 is an event-driven, asynchronous, behavioral state machine library for re
 SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wiki.ros.org/smach). SMACC is built on top of the [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
 
 
-## Repository Status, Packages and Documentation 
+## Repository Status, Packages and Documentation
 
 ROS2 Distro | Branch | Build status | Documentation | Released packages
 :---------: | :----: | :----------: | :-----------: | :---------------:
