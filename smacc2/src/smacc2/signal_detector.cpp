@@ -117,11 +117,14 @@ void SignalDetector::findUpdatableClientsAndComponents()
  */
 void SignalDetector::findUpdatableStateElements(ISmaccState * currentState)
 {
-  this->updatableStateElements_.clear();
+  updatableStateElements_.push_back(std::vector<ISmaccUpdatable *>());
+
+  auto & updatableElements = updatableStateElements_.back();
+
   for (auto pair : this->smaccStateMachine_->getOrthogonals())
   {
     auto & orthogonal = pair.second;
-    auto & behaviors = orthogonal->getClientBehaviors();
+    auto & behaviors = orthogonal->getClientBehaviors().back();
 
     for (auto & currentBehavior : behaviors)
     {
@@ -133,7 +136,7 @@ void SignalDetector::findUpdatableStateElements(ISmaccState * currentState)
         RCLCPP_DEBUG_STREAM(
           getLogger(),
           "Adding updatable behavior: " << demangleType(typeid(updatableClientBehavior)));
-        this->updatableStateElements_.push_back(updatableClientBehavior);
+        updatableElements.push_back(updatableClientBehavior);
       }
     }
   }
@@ -141,7 +144,7 @@ void SignalDetector::findUpdatableStateElements(ISmaccState * currentState)
   auto updatableState = dynamic_cast<ISmaccUpdatable *>(currentState);
   if (updatableState != nullptr)
   {
-    this->updatableStateElements_.push_back(updatableState);
+    updatableElements.push_back(updatableState);
   }
 
   auto statereactors = currentState->getStateReactors();
@@ -153,7 +156,7 @@ void SignalDetector::findUpdatableStateElements(ISmaccState * currentState)
       RCLCPP_DEBUG_STREAM(
         getLogger(),
         "Adding updatable stateReactorr: " << demangleType(typeid(updatableStateReactor)));
-      this->updatableStateElements_.push_back(updatableStateReactor);
+      updatableElements.push_back(updatableStateReactor);
     }
   }
 
@@ -166,9 +169,19 @@ void SignalDetector::findUpdatableStateElements(ISmaccState * currentState)
       RCLCPP_DEBUG_STREAM(
         getLogger(),
         "Adding updatable eventGenerator: " << demangleType(typeid(updatableEventGenerator)));
-      this->updatableStateElements_.push_back(updatableEventGenerator);
+      updatableElements.push_back(updatableEventGenerator);
     }
   }
+}
+
+void SignalDetector::notifyStateConfigured(ISmaccState * currentState)
+{
+  this->findUpdatableStateElements(currentState);
+}
+
+void SignalDetector::notifyStateExited(ISmaccState * currentState)
+{
+  this->updatableStateElements_.pop_back();
 }
 
 /**
@@ -222,17 +235,6 @@ void SignalDetector::pollOnce()
   {
     //smaccStateMachine_->lockStateMachine("update behaviors");
 
-    long currentStateIndex = smaccStateMachine_->getCurrentStateCounter();
-    auto currentState = smaccStateMachine_->getCurrentState();
-
-    if (currentState != nullptr)
-    {
-      // RCLCPP_INFO_THROTTLE(
-      //   getLogger(), *(getNode()->get_clock()), 10000,
-      //   "[SignalDetector] heartbeat. Current State: %s",
-      //   demangleType(typeid(*currentState)).c_str());
-    }
-
     this->findUpdatableClientsAndComponents();
     RCLCPP_DEBUG_STREAM(getLogger(), "updatable clients: " << this->updatableClients_.size());
 
@@ -272,54 +274,23 @@ void SignalDetector::pollOnce()
       this->smaccStateMachine_->stateMachineCurrentAction !=
         StateMachineInternalAction::STATE_EXITING)
     {
-      // we do not update updatable elements during trasitioning or configuration of states
-      RCLCPP_DEBUG_STREAM(getLogger(), "[SignalDetector] update behaviors. checking current state");
+      RCLCPP_DEBUG_STREAM(
+        getLogger(), "updatable states: " << this->updatableStateElements_.size());
 
-      if (currentState != nullptr)
+      for (auto stateElement : this->updatableStateElements_)
       {
-        RCLCPP_DEBUG_STREAM(getLogger(), "[SignalDetector] current state: " << currentStateIndex);
-        RCLCPP_DEBUG_STREAM(
-          getLogger(), "[SignalDetector] last state: " << this->lastState_.load());
-
-        if (currentStateIndex != 0)
+        for (auto * udpatableStateElement : stateElement)
         {
-          if (currentStateIndex != (long)this->lastState_.load())
-          {
-            RCLCPP_DEBUG_STREAM(
-              getLogger(),
-              "[PollOnce] detected new state, refreshing updatable client "
-              "behavior table");
-            // we are in a new state, refresh the updatable client behaviors table
-            this->lastState_.store(currentStateIndex);
-            this->findUpdatableStateElements(currentState);
-          }
+          std::string updatableElementName = demangleType(typeid(*udpatableStateElement));
+          auto updatableElementNameCstr = updatableElementName.c_str();
 
           RCLCPP_DEBUG_STREAM(
-            getLogger(), "[SignalDetector] updatable state element count: "
-                           << this->updatableStateElements_.size());
-          auto node = getNode();
-          for (auto * udpatableStateElement : this->updatableStateElements_)
-          {
-            std::string updatableElementName = demangleType(typeid(*udpatableStateElement));
-            auto updatableElementNameCstr = updatableElementName.c_str();
+            getLogger(), "pollOnce update client behavior call: "
+                           << demangleType(typeid(*udpatableStateElement)));
+          TRACEPOINT(smacc2_state_update_start, updatableElementNameCstr);
 
-            try
-            {
-              RCLCPP_DEBUG_STREAM(
-                getLogger(),
-                "[SignalDetector] client behavior: " << updatableElementName << "::update()");
-
-              TRACEPOINT(smacc2_state_update_start, updatableElementNameCstr);
-              udpatableStateElement->executeUpdate(smaccStateMachine_->getNode());
-              TRACEPOINT(smacc2_state_update_start, updatableElementNameCstr);
-            }
-            catch (const std::exception & e)
-            {
-              RCLCPP_ERROR_STREAM(
-                node->get_logger(),
-                "Error in updatable elemnent " << updatableElementName << ": " << e.what() << '\n');
-            }
-          }
+          udpatableStateElement->executeUpdate(smaccStateMachine_->getNode());
+          TRACEPOINT(smacc2_state_update_start, updatableElementNameCstr);
         }
       }
     }
