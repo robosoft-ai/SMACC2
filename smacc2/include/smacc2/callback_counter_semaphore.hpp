@@ -19,33 +19,33 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <iostream>
 #include <boost/signals2.hpp>
-#include <thread>
 #include <condition_variable>
+#include <iostream>
 #include <mutex>
-#include <boost/signals2.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <thread>
 
 namespace smacc2
 {
-class CallbackCounterSemaphore {
+class CallbackCounterSemaphore
+{
 public:
-    CallbackCounterSemaphore(std::string name, int count = 0);
-    bool acquire();
+  CallbackCounterSemaphore(std::string name, int count = 0);
+  bool acquire();
 
-    void release();
+  void release();
 
-    void finalize();
+  void finalize();
 
-    void addConnection(boost::signals2::connection conn);
+  void addConnection(boost::signals2::connection conn);
 
 private:
-    int count_;
-    std::mutex mutex_;
-    std::condition_variable cv_;
-    std::vector<boost::signals2::connection> connections_;
-    bool finalized = false;
-    std::string name_;
+  int count_;
+  std::mutex mutex_;
+  std::condition_variable cv_;
+  std::vector<boost::signals2::connection> connections_;
+  bool finalized = false;
+  std::string name_;
 };
-}
+}  // namespace smacc2
