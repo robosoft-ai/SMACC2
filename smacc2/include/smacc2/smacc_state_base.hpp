@@ -126,7 +126,7 @@ public:
     this->getStateMachine().notifyOnStateExitting(derivedThis);
     {
       std::lock_guard<std::recursive_mutex> lock(this->getStateMachine().getMutex());
-      this->getStateMachine().disposeStateAndDisconnectSignals();
+      this->getStateMachine().notifyOnStateExitting(derivedThis);
       try
       {
         TRACEPOINT(smacc2_state_onExit_start, STATE_NAME);
@@ -442,6 +442,14 @@ private:
       auto & staticDefinedBehaviors = SmaccStateInfo::staticBehaviorInfo[tindex];
       auto & staticDefinedStateReactors = SmaccStateInfo::stateReactorsInfo[tindex];
       auto & staticDefinedEventGenerators = SmaccStateInfo::eventGeneratorsInfo[tindex];
+
+      for (auto & ortho : this->getStateMachine().getOrthogonals())
+      {
+        RCLCPP_INFO(
+          getLogger(), "[%s] Initializing orthogonal: %s", STATE_NAME,
+          demangleSymbol(typeid(*ortho.second).name()).c_str());
+        ortho.second->initState(this);
+      }
 
       RCLCPP_DEBUG_STREAM(
         getLogger(), "finding static client behaviors. State Database: "
