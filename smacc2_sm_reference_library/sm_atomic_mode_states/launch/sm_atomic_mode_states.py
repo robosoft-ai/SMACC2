@@ -18,5 +18,11 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     return LaunchDescription(
-        [Node(package="sm_atomic_mode_states", executable="sm_atomic_mode_states_node", output="screen")]
+        [
+            Node(
+                package="sm_atomic_mode_states",
+                executable="sm_atomic_mode_states_node",
+                output="screen",
+            )
+        ]
     )
