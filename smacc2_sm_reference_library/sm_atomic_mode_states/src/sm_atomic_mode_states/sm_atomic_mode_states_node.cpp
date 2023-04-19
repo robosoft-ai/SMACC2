@@ -12,6 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ *****************************************************************************************************************/
+
+
 #include <sm_atomic_mode_states/sm_atomic_mode_states.hpp>
 
 //--------------------------------------------------------------------
