@@ -32,6 +32,8 @@ enum class ExecutionModel
   MULTI_THREAD_SPINNER
 };
 
+// Mostly define the state machine ros thread and receive events state machine components (clients, state elements)
+// This class also contains the event queue of the state machine
 class SignalDetector
 {
 public:
@@ -53,8 +55,6 @@ public:
 
   void pollingLoop();
 
-  void pollOnce();
-
   template <typename EventType>
   void postEvent(EventType * ev)
   {
@@ -65,13 +65,18 @@ public:
   rclcpp::Node::SharedPtr getNode();
   inline rclcpp::Logger getLogger() { return getNode()->get_logger(); }
 
+  void notifyStateConfigured(ISmaccState * currentState);
+
+  void notifyStateExited(ISmaccState * currentState);
+
 private:
+  void pollOnce();
+
   ISmaccStateMachine * smaccStateMachine_;
 
   std::vector<ISmaccUpdatable *> updatableClients_;
 
-  std::vector<ISmaccUpdatable *> updatableStateElements_;
-
+  std::vector<std::vector<ISmaccUpdatable *>> updatableStateElements_;
   std::atomic<uint64_t> lastState_;
 
   void findUpdatableClientsAndComponents();

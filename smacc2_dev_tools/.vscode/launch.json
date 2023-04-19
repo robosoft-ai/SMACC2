@@ -89,6 +89,25 @@
             ]
         },
         {
+            "name": "(gdb) sm_atomic_mode_states",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../install/sm_atomic_mode_states/lib/sm_atomic_mode_states/sm_atomic_mode_states_node",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {-
             "name": "(gdb) sm_atomic_services",
             "type": "cppdbg",
             "request": "launch",

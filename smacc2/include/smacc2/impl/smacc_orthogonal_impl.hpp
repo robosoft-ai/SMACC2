@@ -91,7 +91,7 @@ template <typename TClientBehavior>
 TClientBehavior * ISmaccOrthogonal::getClientBehavior(int index)
 {
   int i = 0;
-  for (auto & cb : this->clientBehaviors_)
+  for (auto & cb : this->clientBehaviors_.back())
   {
     auto * ret = dynamic_cast<TClientBehavior *>(cb.get());
     if (ret != nullptr)
@@ -105,13 +105,12 @@ TClientBehavior * ISmaccOrthogonal::getClientBehavior(int index)
 
   return nullptr;
 }
-
 inline const std::vector<std::shared_ptr<smacc2::ISmaccClient>> & ISmaccOrthogonal::getClients()
 {
   return clients_;
 }
 
-inline const std::vector<std::shared_ptr<smacc2::ISmaccClientBehavior>> &
+inline const std::vector<std::vector<std::shared_ptr<smacc2::ISmaccClientBehavior>>> &
 ISmaccOrthogonal::getClientBehaviors() const
 {
   return this->clientBehaviors_;
