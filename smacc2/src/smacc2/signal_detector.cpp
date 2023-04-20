@@ -179,7 +179,7 @@ void SignalDetector::notifyStateConfigured(ISmaccState * currentState)
   this->findUpdatableStateElements(currentState);
 }
 
-void SignalDetector::notifyStateExited(ISmaccState * currentState)
+void SignalDetector::notifyStateExited(ISmaccState * /*currentState*/)
 {
   this->updatableStateElements_.pop_back();
 }
