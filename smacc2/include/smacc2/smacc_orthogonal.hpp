@@ -83,6 +83,8 @@ private:
 
   std::vector<std::vector<std::shared_ptr<smacc2::ISmaccClientBehavior>>> clientBehaviors_;
   friend class ISmaccStateMachine;
+
+  std::mutex mutex_;
 };
 
 }  // namespace smacc2
