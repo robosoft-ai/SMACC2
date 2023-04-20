@@ -34,7 +34,7 @@ using namespace std::chrono_literals;
 using namespace smacc2::introspection;
 ISmaccStateMachine::ISmaccStateMachine(
   std::string stateMachineName, SignalDetector * signalDetector)
-: nh_(nullptr), currentState_(nullptr), stateSeqCounter_(0)
+: nh_(nullptr), stateSeqCounter_(0)
 {
   rclcpp::NodeOptions node_options;
   // This enables loading arbitrary parameters
@@ -75,6 +75,22 @@ ISmaccStateMachine::ISmaccStateMachine(
 ISmaccStateMachine::~ISmaccStateMachine()
 {
   RCLCPP_INFO(nh_->get_logger(), "Finishing State Machine");
+}
+
+void ISmaccStateMachine::disconnectSmaccSignalObject(void * object_ptr)
+{
+  RCLCPP_INFO(
+    nh_->get_logger(), "[SmaccSignals] object signal disconnecting %ld", (long)object_ptr);
+  if (stateCallbackConnections.count(object_ptr) > 0)
+  {
+    auto callbackSemaphore = stateCallbackConnections[object_ptr];
+    callbackSemaphore->finalize();
+    stateCallbackConnections.erase(object_ptr);
+  }
+  else
+  {
+    RCLCPP_INFO(nh_->get_logger(), "[SmaccSignals] no signals found %ld", (long)object_ptr);
+  }
 }
 
 rclcpp::Node::SharedPtr ISmaccStateMachine::getNode() { return this->nh_; }
@@ -193,37 +209,21 @@ void ISmaccStateMachine::state_machine_visualization()
   stateMachineStatusPub_->publish(status_msg_);
 }
 
-// void ISmaccStateMachine::lockStateMachine(std::string msg)
-// {
-//   RCLCPP_DEBUG(nh_->get_logger(), "-- locking SM: %s", msg.c_str());
-//   m_mutex_.lock();
-// }
+void ISmaccStateMachine::lockStateMachine(std::string msg)
+{
+  RCLCPP_DEBUG(nh_->get_logger(), "-- locking SM: %s", msg.c_str());
+  m_mutex_.lock();
+}
 
-// void ISmaccStateMachine::unlockStateMachine(std::string msg)
-// {
-//   RCLCPP_DEBUG(nh_->get_logger(), "-- unlocking SM: %s", msg.c_str());
-//   m_mutex_.unlock();
-// }
+void ISmaccStateMachine::unlockStateMachine(std::string msg)
+{
+  RCLCPP_DEBUG(nh_->get_logger(), "-- unlocking SM: %s", msg.c_str());
+  m_mutex_.unlock();
+}
 
 std::string ISmaccStateMachine::getStateMachineName()
 {
   return demangleSymbol(typeid(*this).name());
-}
-
-void ISmaccStateMachine::disposeStateAndDisconnectSignals()
-{
-  for (auto & conn : this->stateCallbackConnections)
-  {
-    RCLCPP_WARN_STREAM(
-      getLogger(),
-      "[StateMachine] Disconnecting scoped-lifetime SmaccSignal "
-      "subscription");
-    conn.disconnect();
-  }
-
-  this->stateCallbackConnections.clear();
-
-  currentState_ = nullptr;
 }
 
 void ISmaccStateMachine::checkStateMachineConsistence()

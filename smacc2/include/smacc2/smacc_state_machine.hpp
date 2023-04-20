@@ -34,6 +34,7 @@
 #include <smacc2_msgs/msg/smacc_transition_log_entry.hpp>
 #include <smacc2_msgs/srv/smacc_get_transition_history.hpp>
 
+#include <smacc2/callback_counter_semaphore.hpp>
 #include <smacc2/smacc_state.hpp>
 #include <smacc2/smacc_state_reactor.hpp>
 //#include <smacc2/smacc_event_generator.hpp>
@@ -52,7 +53,7 @@ enum class StateMachineInternalAction
 {
   STATE_CONFIGURING,
   STATE_ENTERING,
-  STATE_STEADY,
+  STATE_RUNNING,
   STATE_EXITING,
   TRANSITIONING
 };
@@ -79,7 +80,7 @@ public:
   const std::map<std::string, std::shared_ptr<smacc2::ISmaccOrthogonal>> & getOrthogonals() const;
 
   template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *& storage);
+  void requiresComponent(SmaccComponentType *& storage, bool throwsException = false);
 
   template <typename EventType>
   void postEvent(EventType * ev, EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
@@ -118,8 +119,7 @@ public:
   boost::signals2::connection createSignalConnection(
     TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object);
 
-  // template <typename TSmaccSignal, typename TMemberFunctionPrototype>
-  // boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback);
+  void disconnectSmaccSignalObject(void * object);
 
   template <typename StateType>
   void notifyOnStateEntryStart(StateType * state);
@@ -135,8 +135,6 @@ public:
 
   template <typename StateType>
   void notifyOnStateExited(StateType * state);
-
-  void disposeStateAndDisconnectSignals();
 
   template <typename StateType>
   void notifyOnRuntimeConfigurationFinished(StateType * state);
@@ -177,7 +175,7 @@ protected:
 
   // if it is null, you may be located in a transition. There is a small gap of time where internally
   // this currentState_ is null. This may change in the future.
-  ISmaccState * currentState_;
+  std::vector<ISmaccState *> currentState_;
 
   std::shared_ptr<SmaccStateInfo> currentStateInfo_;
 
@@ -195,7 +193,7 @@ private:
 
   StateMachineInternalAction stateMachineCurrentAction;
 
-  std::list<boost::signals2::connection> stateCallbackConnections;
+  std::map<void *, std::shared_ptr<CallbackCounterSemaphore>> stateCallbackConnections;
 
   // shared variables
   std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;
@@ -210,9 +208,9 @@ private:
 
   uint64_t stateSeqCounter_;
 
-  // void lockStateMachine(std::string msg);
+  void lockStateMachine(std::string msg);
 
-  // void unlockStateMachine(std::string msg);
+  void unlockStateMachine(std::string msg);
 
   template <typename EventType>
   void propagateEventToStateReactors(ISmaccState * st, EventType * ev);

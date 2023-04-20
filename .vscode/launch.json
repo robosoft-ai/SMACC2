@@ -13,31 +13,6 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "(gdb) sm_test_moveit_ur5_sim_node",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
-            "args": [
-                "--ros-args",
-                "-r",
-                "__node:=sm_test_moveit_ur5_sim_node",
-                // "--params-file",
-                // "${workspaceFolder}/../install/sm_moveit_ur5_sim/share/sm_moveit_ur5_sim/params/sm_aws_warehouse_navigation_config.yaml"
-            ],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
             "name": "(gdb) smacc_rta",
             "type": "cppdbg",
             "request": "launch",
@@ -57,42 +32,11 @@
             ]
         },
         {
-            "name": "(gdb) sm_aws_warehouse_navigation_node",
+            "name": "(gdb) sm_path_planner",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/../install/sm_aws_warehouse_navigation/lib/sm_aws_warehouse_navigation/sm_aws_warehouse_navigation_node",
-            "args": [
-                "--ros-args",
-                "-r",
-                "__node:=sm_aws_warehouse_navigation",
-                "--params-file",
-                "${workspaceFolder}/../install/sm_aws_warehouse_navigation/share/sm_aws_warehouse_navigation/params/sm_aws_warehouse_navigation_config.yaml"
-            ],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-                {
-            "name": "(gdb) sm_aws_warehouse_navigation_node",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/../install/sm_aws_warehouse_navigation/lib/sm_aws_warehouse_navigation/sm_aws_warehouse_navigation_node",
-            "args": [
-                "--ros-args",
-                "-r",
-                "__node:=sm_aws_warehouse_navigation",
-                "--params-file",
-                "${workspaceFolder}/../install/sm_aws_warehouse_navigation/share/sm_aws_warehouse_navigation/params/sm_aws_warehouse_navigation_config.yaml"
-            ],
+            "program": "${workspaceFolder}/../install/sm_path_planner/lib/sm_path_planner/sm_path_planner_exec",
+            "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -145,10 +89,48 @@
             ]
         },
         {
-            "name": "(gdb) smacc_aws_warehouse_navigation",
+            "name": "(gdb) sm_atomic_mode_states",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/../install/sm_aws_warehouse_navigation/lib/sm_aws_warehouse_navigation/sm_aws_warehouse_navigation_node",
+            "program": "${workspaceFolder}/../install/sm_atomic_mode_states/lib/sm_atomic_mode_states/sm_atomic_mode_states_node",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {-
+            "name": "(gdb) sm_atomic_services",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../install/sm_atomic_services/lib/sm_atomic_services/sm_atomic_services_node",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) sm_atomic_lifecycle",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../install/sm_atomic_lifecycle/lib/sm_atomic_lifecycle/sm_atomic_lifecycle_node",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -244,6 +226,7 @@
                 }
             ]
         },
+
         {
             "name": "(gdb) SmDanceBotWarehouse3",
             "type": "cppdbg",
@@ -307,20 +290,15 @@
             ]
         },
         {
-            "name": "(gdb) SmAtomicSubscribersPerformanceTest",
+            "name": "(gdb) SmHuskyBarrelSearch1-opencv",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/../install/sm_atomic_subscribers_performance_test/lib/sm_atomic_subscribers_performance_test/sm_atomic_subscribers_performance_test_node",
-            "args": [
-                "--ros-args",
-                "-r",
-                "__node:=sm_atomic_performance_test",
-                "--params-file",
-                "${workspaceFolder}/../install/sm_atomic_performance_test/share/sm_atomic_performance_test/config/sm_atomic_config.yaml"
-            ],
+
+            "program": "${workspaceFolder}/../install/sm_husky_barrel_search_1/lib/sm_husky_barrel_search_1/opencv_perception_node",
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
+            "args": ["-r", "/image_raw:=/intel_realsense_r200_depth/image_raw"],
             "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
@@ -331,18 +309,17 @@
                 }
             ]
         },
-
         {
-            "name": "(gdb) SmAutowareAvp",
+            "name": "(gdb) SmAtomicSubscribersPerformanceTest",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/../install/sm_autoware_avp/lib/sm_autoware_avp/sm_autoware_avp_node",
+            "program": "${workspaceFolder}/../install/sm_atomic_subscribers_performance_test/lib/sm_atomic_subscribers_performance_test/sm_atomic_subscribers_performance_test_node",
             "args": [
                 "--ros-args",
                 "-r",
-                "__node:=sm_autoware_avp_node",
+                "__node:=sm_atomic_performance_test",
                 "--params-file",
-                "${workspaceFolder}/../install/sm_autoware_avp/share/sm_autoware_avp/config/sm_autoware_avp_config.yaml"
+                "${workspaceFolder}/../install/sm_atomic_performance_test/share/sm_atomic_performance_test/config/sm_atomic_config.yaml"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

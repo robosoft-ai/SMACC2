@@ -48,6 +48,8 @@ rclcpp::Node::SharedPtr ISmaccOrthogonal::getNode() { return this->stateMachine_
 
 void ISmaccOrthogonal::addClientBehavior(std::shared_ptr<smacc2::ISmaccClientBehavior> clBehavior)
 {
+  std::lock_guard<std::mutex> lock(this->mutex_);
+
   if (clBehavior != nullptr)
   {
     RCLCPP_INFO(
@@ -55,8 +57,9 @@ void ISmaccOrthogonal::addClientBehavior(std::shared_ptr<smacc2::ISmaccClientBeh
       clBehavior->getName().c_str());
     clBehavior->stateMachine_ = this->getStateMachine();
     clBehavior->currentOrthogonal = this;
+    clBehavior->currentState = clBehavior->stateMachine_->getCurrentState();
 
-    clientBehaviors_.push_back(clBehavior);
+    clientBehaviors_.back().push_back(clBehavior);
   }
   else
   {
@@ -67,11 +70,21 @@ void ISmaccOrthogonal::addClientBehavior(std::shared_ptr<smacc2::ISmaccClientBeh
 
 void ISmaccOrthogonal::onInitialize() {}
 
+void ISmaccOrthogonal::initState(ISmaccState * state)
+{
+  RCLCPP_INFO(
+    getLogger(), "[Orthogonal %s] initState: %s", this->getName().c_str(),
+    state->getClassName().c_str());
+  clientBehaviors_.push_back(std::vector<std::shared_ptr<smacc2::ISmaccClientBehavior>>());
+}
+
 std::string ISmaccOrthogonal::getName() const { return demangleSymbol(typeid(*this).name()); }
 
 void ISmaccOrthogonal::runtimeConfigure()
 {
-  for (auto & clBehavior : clientBehaviors_)
+  std::lock_guard<std::mutex> lock(this->mutex_);
+
+  for (auto & clBehavior : clientBehaviors_.back())
   {
     RCLCPP_INFO(
       getLogger(), "[Orthogonal %s] runtimeConfigure, current Behavior: %s",
@@ -83,9 +96,11 @@ void ISmaccOrthogonal::runtimeConfigure()
 
 void ISmaccOrthogonal::onEntry()
 {
-  if (clientBehaviors_.size() > 0)
+  std::lock_guard<std::mutex> lock(this->mutex_);
+
+  if (clientBehaviors_.back().size() > 0)
   {
-    for (auto & clBehavior : clientBehaviors_)
+    for (auto & clBehavior : clientBehaviors_.back())
     {
       RCLCPP_INFO(
         getLogger(), "[Orthogonal %s] OnEntry, current Behavior: %s", orthogonalName, cbName);
@@ -117,9 +132,11 @@ void ISmaccOrthogonal::onEntry()
 
 void ISmaccOrthogonal::onExit()
 {
-  if (clientBehaviors_.size() > 0)
+  std::lock_guard<std::mutex> lock(this->mutex_);
+
+  if (clientBehaviors_.back().size() > 0)
   {
-    for (auto & clBehavior : clientBehaviors_)
+    for (auto & clBehavior : clientBehaviors_.back())
     {
       RCLCPP_INFO(
         getLogger(), "[Orthogonal %s] OnExit, current Behavior: %s", orthogonalName, cbName);
@@ -138,19 +155,23 @@ void ISmaccOrthogonal::onExit()
       }
       TRACEPOINT(smacc2_client_behavior_on_exit_end, statename, orthogonalName, cbName);
     }
-
-    int i = 0;
-    for (auto & clBehavior : clientBehaviors_)
-    {
-      clBehavior->dispose();
-      clientBehaviors_[i] = nullptr;
-    }
-
-    clientBehaviors_.clear();
   }
   else
   {
     RCLCPP_INFO(getLogger(), "[Orthogonal %s] OnExit", orthogonalName);
   }
 }
+
+void ISmaccOrthogonal::onDispose()
+{
+  for (auto & clBehavior : clientBehaviors_.back())
+  {
+    clBehavior->dispose();
+    this->getStateMachine()->disconnectSmaccSignalObject((void *)clBehavior.get());
+  }
+
+  clientBehaviors_.back().clear();
+  clientBehaviors_.pop_back();
+}
+
 }  // namespace smacc2
