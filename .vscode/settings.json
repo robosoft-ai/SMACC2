@@ -121,6 +121,6 @@
     "python.analysis.extraPaths": [
         "/opt/ros/galactic/lib/python3.8/site-packages"
     ],
-    "cmake.sourceDirectory": "${workspaceFolder}/SMACC2/smacc2",
+    "cmake.sourceDirectory": "${workspaceFolder}/smacc2",
 
 }
