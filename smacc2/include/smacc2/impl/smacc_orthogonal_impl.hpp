@@ -88,26 +88,29 @@ void ISmaccOrthogonal::assignClientToOrthogonal(TClient * client)
 }
 
 template <typename TClientBehavior>
-TClientBehavior * ISmaccOrthogonal::getClientBehavior()
+TClientBehavior * ISmaccOrthogonal::getClientBehavior(int index)
 {
-  for (auto & cb : this->clientBehaviors_)
+  int i = 0;
+  for (auto & cb : this->clientBehaviors_.back())
   {
     auto * ret = dynamic_cast<TClientBehavior *>(cb.get());
     if (ret != nullptr)
     {
-      return ret;
+      if (i == index)
+        return ret;
+      else
+        i++;
     }
   }
 
   return nullptr;
 }
-
 inline const std::vector<std::shared_ptr<smacc2::ISmaccClient>> & ISmaccOrthogonal::getClients()
 {
   return clients_;
 }
 
-inline const std::vector<std::shared_ptr<smacc2::ISmaccClientBehavior>> &
+inline const std::vector<std::vector<std::shared_ptr<smacc2::ISmaccClientBehavior>>> &
 ISmaccOrthogonal::getClientBehaviors() const
 {
   return this->clientBehaviors_;

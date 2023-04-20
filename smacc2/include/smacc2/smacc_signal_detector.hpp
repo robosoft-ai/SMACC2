@@ -26,10 +26,20 @@
 
 namespace smacc2
 {
+enum class ExecutionModel
+{
+  SINGLE_THREAD_SPINNER,
+  MULTI_THREAD_SPINNER
+};
+
+// Mostly define the state machine ros thread and receive events state machine components (clients, state elements)
+// This class also contains the event queue of the state machine
 class SignalDetector
 {
 public:
-  SignalDetector(SmaccFifoScheduler * scheduler);
+  SignalDetector(
+    SmaccFifoScheduler * scheduler,
+    ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER);
 
   void initialize(ISmaccStateMachine * stateMachine);
 
@@ -45,8 +55,6 @@ public:
 
   void pollingLoop();
 
-  void pollOnce();
-
   template <typename EventType>
   void postEvent(EventType * ev)
   {
@@ -57,16 +65,22 @@ public:
   rclcpp::Node::SharedPtr getNode();
   inline rclcpp::Logger getLogger() { return getNode()->get_logger(); }
 
+  void notifyStateConfigured(ISmaccState * currentState);
+
+  void notifyStateExited(ISmaccState * currentState);
+
 private:
+  void pollOnce();
+
   ISmaccStateMachine * smaccStateMachine_;
 
   std::vector<ISmaccUpdatable *> updatableClients_;
 
-  std::vector<ISmaccUpdatable *> updatableStateElements_;
-
+  std::vector<std::vector<ISmaccUpdatable *>> updatableStateElements_;
   std::atomic<uint64_t> lastState_;
 
   void findUpdatableClientsAndComponents();
+
   void findUpdatableStateElements(ISmaccState * currentState);
 
   // Loop frequency of the signal detector (to check answers from actionservers)
@@ -85,7 +99,11 @@ private:
   SmaccFifoScheduler::processor_handle processorHandle_;
 
   boost::thread signalDetectorThread_;
+
+  ExecutionModel executionModel_;
 };
+
+void onSigQuit(int sig);
 
 // Main entry point for any SMACC state machine
 // It instantiates and starts the specified state machine type
@@ -93,13 +111,15 @@ private:
 // The created thread is for the state machine process
 // it locks the current thread to handle events of the state machine
 template <typename StateMachineType>
-void run()
+void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
 {
+  ::signal(SIGQUIT, onSigQuit);
+
   // create the asynchronous state machine scheduler
   SmaccFifoScheduler scheduler1(true);
 
   // create the signalDetector component
-  SignalDetector signalDetector(&scheduler1);
+  SignalDetector signalDetector(&scheduler1, executionModel);
 
   // create the asynchronous state machine processor
   SmaccFifoScheduler::processor_handle sm =
@@ -111,10 +131,49 @@ void run()
   scheduler1.initiate_processor(sm);
 
   //create a thread for the asynchronous state machine processor execution
-  boost::thread otherThread(boost::bind(&sc::fifo_scheduler<>::operator(), &scheduler1, 0));
+  boost::thread schedulerThread(boost::bind(&sc::fifo_scheduler<>::operator(), &scheduler1, 0));
 
   // use the  main thread for the signal detector component (waiting actionclient requests)
   signalDetector.pollingLoop();
+}
+
+struct SmExecution
+{
+  boost::thread * schedulerThread;
+  boost::thread * signalDetectorLoop;
+  SignalDetector * signalDetector;
+  SmaccFifoScheduler * scheduler1;
+  SmaccFifoScheduler::processor_handle sm;
+};
+
+template <typename StateMachineType>
+SmExecution * run_async()
+{
+  ::signal(SIGQUIT, onSigQuit);
+
+  SmExecution * ret = new SmExecution();
+
+  // create the asynchronous state machine scheduler
+  ret->scheduler1 = new SmaccFifoScheduler(true);
+
+  // create the signalDetector component
+  ret->signalDetector = new SignalDetector(ret->scheduler1);
+
+  // create the asynchronous state machine processor
+  ret->sm = ret->scheduler1->create_processor<StateMachineType>(ret->signalDetector);
+
+  // initialize the asynchronous state machine processor
+  ret->signalDetector->setProcessorHandle(ret->sm);
+
+  ret->scheduler1->initiate_processor(ret->sm);
+
+  //create a thread for the asynchronous state machine processor execution
+  ret->schedulerThread =
+    new boost::thread(boost::bind(&sc::fifo_scheduler<>::operator(), ret->scheduler1, NULL));
+  ret->signalDetectorLoop =
+    new boost::thread(boost::bind(&SignalDetector::pollingLoop, ret->signalDetector));
+
+  return ret;
 }
 
 }  // namespace smacc2
