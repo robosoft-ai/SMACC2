@@ -1,4 +1,4 @@
-name: foxy bloom-release
+name: Foxy bloom-release
 
 on:
   push:
