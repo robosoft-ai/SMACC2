@@ -33,7 +33,7 @@ jobs:
 
       # BLOOM RELEASE
       - name: bloom release
-        uses: pabloinigoblasco/bloom-release-action@v0
+        uses: pabloinigoblasco/bloom-release-action@master
         with:
           ros_distro: ${{ env.ROS_DISTRO }}
           github_token_bloom: ${{ secrets.GITTOKEN_BLOOM }}
