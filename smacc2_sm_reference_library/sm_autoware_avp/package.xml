@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>sm_autoware_avp</name>
-  <version>2.1.10</version>
+  <version>2.1.20</version>
   <description>The sm_autoware_avp package</description>
   <maintainer email="smacc2@smacc2.cool">SMACC2 is cool</maintainer>
   <license>Apache-2.0</license>
