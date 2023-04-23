@@ -40,6 +40,6 @@ jobs:
           github_user: pabloinigoblasco
           git_user: pabloinigoblasco
           git_email: pablo@ibrobotics.com
-          release_repository_push_url: https://github.com/robosoft-ai/smacc2-release
+          release_repository_push_url: https://github.com/robosoft-ai/SMACC2-release
           tag_and_release: true
           open_pr: true
