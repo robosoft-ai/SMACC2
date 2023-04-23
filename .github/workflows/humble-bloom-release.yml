@@ -33,13 +33,14 @@ jobs:
 
       # BLOOM RELEASE
       - name: bloom release
-        uses: at-wat/bloom-release-action@v0
+        uses: pabloinigoblasco/bloom-release-action@master
         with:
           ros_distro: ${{ env.ROS_DISTRO }}
           github_token_bloom: ${{ secrets.GITTOKEN_BLOOM }}
           github_user: pabloinigoblasco
           git_user: pabloinigoblasco
           git_email: pablo@ibrobotics.com
-          release_repository_push_url: https://github.com/robosoft-ai/smacc2-release.git
+          release_repository_push_url: https://github.com/robosoft-ai/SMACC2-release
           tag_and_release: true
           open_pr: true
+
