@@ -33,7 +33,6 @@ class OrArmRight : public smacc2::Orthogonal<OrArmRight>
 public:
   void onInitialize() override
   {
-
     moveit::planning_interface::MoveGroupInterface::Options options ("right_panda_arm","robot_description", "/panda_arm_2");
 
     auto move_group_client = this->createClient<cl_move_group_interface::ClMoveGroup>(options); //ur_manipulator

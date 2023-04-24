@@ -43,7 +43,6 @@ struct StRightArmMoves : smacc2::SmaccState<StRightArmMoves, SmMultiPandaSim>
   static void staticConfigure()
   {
 
-
     std::map<std::string, double> rightJointValues{ { "right_panda_joint1", 0.1 },
                                                      { "right_panda_joint2", 0.1 },
                                                      { "right_panda_joint3", 0.1 },
