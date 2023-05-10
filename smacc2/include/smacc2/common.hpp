@@ -20,6 +20,7 @@
 #pragma once
 
 // boost statechart
+#define BOOST_BIND_NO_PLACEHOLDERS
 #include <boost/statechart/asynchronous_state_machine.hpp>
 #include <boost/statechart/custom_reaction.hpp>
 #include <boost/statechart/deep_history.hpp>
