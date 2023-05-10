@@ -81,7 +81,8 @@ public:
     }
   }
 
-  typename rclcpp::Client<ServiceType>::SharedFuture resultFuture_;
+  std::shared_future<std::shared_ptr<typename ServiceType::Response>> resultFuture_;
+
   typename std::shared_ptr<typename ServiceType::Response> result_;
   std::chrono::milliseconds pollRate_;
 
