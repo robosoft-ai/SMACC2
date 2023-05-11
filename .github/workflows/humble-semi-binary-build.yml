@@ -29,4 +29,4 @@ jobs:
                 vcs import < SMACC2.humble.repos
                 rosdep install --from-paths . --ignore-src -r -y
                 source /opt/ros/humble/setup.bash
-                colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-skip sm_multi_ur5_sim sm_test_moveit_ur5_sim --parallel-workers 6
+                colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-skip sm_multi_ur5_sim sm_test_moveit_ur5_sim --parallel-workers 4
