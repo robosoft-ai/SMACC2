@@ -14,7 +14,7 @@ jobs:
       run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
     - uses: mattnotmitt/doxygen-action@v1
       with:
-        doxyfile-path: 'smacc2_ci/Doxyfile'
+        doxyfile-path: '.github/Doxyfile'
 
     - uses: peaceiris/actions-gh-pages@v3
       with:
