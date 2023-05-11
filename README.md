@@ -172,7 +172,7 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
    ```
 10. Pull relevant packages and install dependencies:
    ```
-   vcs import src --skip-existing --input src/SMACC2/SMACC2-not-released.rolling.repos
+   vcs import src --skip-existing --input src/SMACC2/.github/SMACC2-not-released.rolling.repos
    rosdep install --ignore-src --from-paths src -y -r
    ```
 11. Compile:
