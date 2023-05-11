@@ -29,4 +29,5 @@ jobs:
                 vcs import < SMACC2.humble.repos
                 rosdep install --from-paths . --ignore-src -r -y
                 source /opt/ros/humble/setup.bash
-                colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-skip sm_multi_ur5_sim sm_test_moveit_ur5_sim --parallel-workers 4
+
+                colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-skip sm_multi_ur5_sim sm_test_moveit_ur5_sim sm_atomic_hierarchy    sm_aws_warehouse_navigation  sm_dance_bot_warehouse_2 sm_multi_ur5_sim sm_three_some sm_atomic_lifecycle sm_branching sm_dance_bot_warehouse_3 sm_pack_ml sm_advanced_recovery_1 sm_atomic_mode_states sm_dance_bot sm_ferrari sm_pubsub_1 sm_atomic sm_atomic_services sm_dance_bot_strikes_back sm_multi_panda_sim sm_respira_1 sm_atomic_24hr sm_autoware_avp sm_dance_bot_warehouse sm_multi_stage_1 sm_test_moveit_ur5_sim
