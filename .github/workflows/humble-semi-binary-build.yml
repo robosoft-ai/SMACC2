@@ -26,7 +26,7 @@ jobs:
                 rm /etc/ros/rosdep/sources.list.d/20-default.list
                 rosdep init
                 rosdep update
-                vcs import < SMACC2.humble.repos
+                vcs import < .github/SMACC2.humble.repos
                 rosdep install --from-paths . --ignore-src -r -y
                 source /opt/ros/humble/setup.bash
 
