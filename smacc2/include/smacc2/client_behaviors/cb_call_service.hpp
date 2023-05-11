@@ -53,7 +53,7 @@ public:
     RCLCPP_DEBUG_STREAM(
       getLogger(), "[" << this->getName() << "] making service request to " << serviceName_);
 
-    resultFuture_ = client_->async_send_request(request_);
+    resultFuture_ = client_->async_send_request(request_).future.share();
 
     std::future_status status = resultFuture_.wait_for(0s);
 

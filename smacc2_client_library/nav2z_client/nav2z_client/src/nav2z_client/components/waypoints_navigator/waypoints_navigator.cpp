@@ -70,7 +70,7 @@ void WaypointNavigator::rewind(int /*count*/)
   if (currentWaypoint_ < 0) currentWaypoint_ = 0;
 }
 
-void WaypointNavigator::forward(int count)
+void WaypointNavigator::forward(int /*count*/)
 {
   currentWaypoint_++;
   if (currentWaypoint_ >= (long)waypoints_.size() - 1)
