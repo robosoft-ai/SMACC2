@@ -24,12 +24,12 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
 
 1. Binary builds - against released packages (main and testing) in ROS distributions. Shows that direct local build is possible.
 
-   Uses repos file: `src/SMACC2/SMACC2-not-released.<ros-distro>.repos`
+   Uses repos file: `src/SMACC2/.github/SMACC2-not-released.<ros-distro>.repos`
 
 1. Semi-binary builds - against released core ROS packages (main and testing), but the immediate dependencies are pulled from source.
    Shows that local build with dependencies is possible and if fails there we can expect that after the next package sync we will not be able to build.
 
-   Uses repos file: `src/SMACC2/SMACC2.repos`
+   Uses repos file: `src/SMACC2/.github/SMACC2.repos`
 
 1. Source build - also core ROS packages are build from source. It shows potential issues in the mid future.
 
@@ -53,7 +53,7 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
    ```
    cd $COLCON_WS
    git clone https://github.com/robosoft-ai/SMACC2.git src/SMACC2
-   vcs import src --skip-existing --input src/SMACC2/SMACC2-not-released.rolling.repos
+   vcs import src --skip-existing --input src/.github/SMACC2/SMACC2-not-released.rolling.repos
    rosdep install --ignore-src --from-paths src -y -r
    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
    source install/setup.bash
