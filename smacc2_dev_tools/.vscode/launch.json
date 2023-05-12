@@ -52,14 +52,14 @@
         },
 
         {
-            "name": "(gdb) sm_test_moveit_ur5_sim_node",
+            "name": "(gdb) sm_panda_moveit2z_cb_inventory_node",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
+            "program": "${workspaceFolder}/../install/sm_panda_moveit2z_cb_inventory/lib/sm_panda_moveit2z_cb_inventory/sm_panda_moveit2z_cb_inventory_node",
             "args": [
                 // "--ros-args",
                 // "-r",
-                // "__node:=sm_test_moveit_ur5_sim_node",
+                // "__node:=sm_panda_moveit2z_cb_inventory_node",
                 // // "--params-file",
                 // // "${workspaceFolder}/../install/sm_moveit_ur5_sim/share/sm_moveit_ur5_sim/params/sm_aws_warehouse_navigation_config.yaml"
                 "--ros-args",
@@ -70,7 +70,7 @@
                 "--params-file",
                 "/tmp/launch_params__9jy9bhe",
                 "--params-file",
-                "/home/geus/Desktop/smacc_ws/install/sm_test_moveit_ur5_sim/share/sm_test_moveit_ur5_sim/config/sm_test_moveit_ur5_sim_config.yaml"
+                "/home/geus/Desktop/smacc_ws/install/sm_panda_moveit2z_cb_inventory/share/sm_panda_moveit2z_cb_inventory/config/sm_panda_moveit2z_cb_inventory_config.yaml"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -86,12 +86,12 @@
             ]
         },
         {
-            "name": "C++ Debugger sm_test_moveit_ur5_sim",
+            "name": "C++ Debugger sm_panda_moveit2z_cb_inventory",
             "request": "launch",
             "type": "cppdbg",
             "miDebuggerServerAddress": "localhost:3000",
             "cwd": "/",
-            "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
+            "program": "${workspaceFolder}/../install/sm_panda_moveit2z_cb_inventory/lib/sm_panda_moveit2z_cb_inventory/sm_panda_moveit2z_cb_inventory_node",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
@@ -102,10 +102,10 @@
         }
 
         {
-            "name": "(gdb) Attach sm_test_moveit_ur5_sim_node",
+            "name": "(gdb) Attach sm_panda_moveit2z_cb_inventory_node",
             "type": "cppdbg",
             "request": "attach",
-            "program": "${workspaceFolder}/../install/sm_test_moveit_ur5_sim/lib/sm_test_moveit_ur5_sim/sm_test_moveit_ur5_sim_node",
+            "program": "${workspaceFolder}/../install/sm_panda_moveit2z_cb_inventory/lib/sm_panda_moveit2z_cb_inventory/sm_panda_moveit2z_cb_inventory_node",
             "processId": "${command:pickProcess}",
             "MIMode": "gdb",
             "setupCommands": [
