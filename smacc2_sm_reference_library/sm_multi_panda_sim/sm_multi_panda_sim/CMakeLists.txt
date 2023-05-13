@@ -15,7 +15,11 @@ find_package(ament_cmake REQUIRED)
 find_package(ros_timer_client REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
+<<<<<<< HEAD
 find_package(moveit2z_client REQUIRED)
+=======
+find_package(moveit2z REQUIRED)
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f
 
 find_package(sr_all_events_go REQUIRED)
 find_package(ros_publisher_client REQUIRED)
@@ -24,7 +28,11 @@ find_package(keyboard_client REQUIRED)
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   ros_timer_client
   smacc2
+<<<<<<< HEAD
   moveit2z_client
+=======
+  moveit2z
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f
   sr_all_events_go
   ros_publisher_client
   keyboard_client

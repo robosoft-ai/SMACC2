@@ -23,8 +23,13 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "smacc2/smacc.hpp"
+<<<<<<< HEAD
 #include <moveit2z_client/cl_moveit2z.hpp>
 #include <moveit2z_client/components/cp_grasping_objects.hpp>
+=======
+#include <moveit2z/cl_moveit2z.hpp>
+#include <moveit2z/components/cp_grasping_objects.hpp>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f
 
 namespace sm_panda_moveit2z_cb_inventory
 {

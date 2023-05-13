@@ -14,7 +14,11 @@
 
   <depend>ros_timer_client</depend>
   <depend>smacc2</depend>
+<<<<<<< HEAD
   <depend>moveit2z_client</depend>
+=======
+  <depend>moveit2z</depend>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f
   <depend>controller_manager</depend>
   <depend>moveit_configs_utils</depend>
   <exec_depend>moveit_resources_panda_description</exec_depend>

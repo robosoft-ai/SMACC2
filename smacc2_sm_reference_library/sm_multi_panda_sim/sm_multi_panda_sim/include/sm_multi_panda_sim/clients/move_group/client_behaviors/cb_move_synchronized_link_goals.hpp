@@ -21,8 +21,13 @@
 #pragma once
 
 #include <sensor_msgs/msg/joint_state.hpp>
+<<<<<<< HEAD
 #include <moveit2z_client/common.hpp>
 #include <moveit2z_client/cl_moveit2z.hpp>
+=======
+#include <moveit2z/common.hpp>
+#include <moveit2z/cl_moveit2z.hpp>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f
 
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <condition_variable>
