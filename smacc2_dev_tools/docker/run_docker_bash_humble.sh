@@ -1,5 +1,4 @@
 #!/bin/sh
-#sudo docker run -it smacc2:humble /bin/bash
 xhost +
 
 DIR="$(dirname "$(realpath "$0")")"

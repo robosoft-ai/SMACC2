@@ -16,9 +16,9 @@
 
 #include <chrono>
 
-#include <move_group_interface_client/cl_movegroup.hpp>
-#include <move_group_interface_client/components/cp_trajectory_history.hpp>
-#include <move_group_interface_client/components/cp_grasping_objects.hpp>
+#include <moveit2z/cl_moveit2z.hpp>
+#include <moveit2z/components/cp_trajectory_history.hpp>
+#include <moveit2z/components/cp_grasping_objects.hpp>
 
 #include "ros_timer_client/cl_ros_timer.hpp"
 #include "smacc2/smacc.hpp"
@@ -36,11 +36,11 @@ public:
 
     moveit::planning_interface::MoveGroupInterface::Options options ("right_panda_arm","robot_description", "/panda_arm_2");
 
-    auto move_group_client = this->createClient<cl_move_group_interface::ClMoveGroup>(options); //ur_manipulator
+    auto move_group_client = this->createClient<cl_moveit2z::ClMoveit2z>(options); //ur_manipulator
 
-    move_group_client->createComponent<cl_move_group_interface::CpTrajectoryHistory>();
+    move_group_client->createComponent<cl_moveit2z::CpTrajectoryHistory>();
 
-    // auto graspingComponent = move_group_client->createComponent<cl_move_group_interface::CpGraspingComponent>();
+    // auto graspingComponent = move_group_client->createComponent<cl_moveit2z::CpGraspingComponent>();
     // graspingComponent->gripperLink_="right_panda_link8";
   }
 };

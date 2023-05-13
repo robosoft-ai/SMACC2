@@ -16,9 +16,9 @@
 
 #include <chrono>
 
-#include <move_group_interface_client/cl_movegroup.hpp>
-#include <move_group_interface_client/components/cp_trajectory_history.hpp>
-#include <move_group_interface_client/components/cp_grasping_objects.hpp>
+#include <moveit2z/cl_moveit2z.hpp>
+#include <moveit2z/components/cp_trajectory_history.hpp>
+#include <moveit2z/components/cp_grasping_objects.hpp>
 
 #include "ros_timer_client/cl_ros_timer.hpp"
 #include "smacc2/smacc.hpp"
@@ -32,9 +32,9 @@ class OrArm : public smacc2::Orthogonal<OrArm>
 public:
   void onInitialize() override
   {
-    auto move_group_client = this->createClient<cl_move_group_interface::ClMoveGroup>("ur_manipulator"); //ur_manipulator
-    move_group_client->createComponent<cl_move_group_interface::CpTrajectoryHistory>();
-    auto graspingComponent = move_group_client->createComponent<cl_move_group_interface::CpGraspingComponent>();
+    auto move_group_client = this->createClient<cl_moveit2z::ClMoveit2z>("ur_manipulator"); //ur_manipulator
+    move_group_client->createComponent<cl_moveit2z::CpTrajectoryHistory>();
+    auto graspingComponent = move_group_client->createComponent<cl_moveit2z::CpGraspingComponent>();
 
     graspingComponent->gripperLink_="tool0";
     graspingComponent->createGraspableBox("virtualBox", 0,0.5,0.5,0.1,0.1,0.1);

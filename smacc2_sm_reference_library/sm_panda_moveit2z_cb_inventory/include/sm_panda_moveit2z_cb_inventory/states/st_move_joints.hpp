@@ -28,7 +28,7 @@ using smacc2::EvStateRequestFinish;
 using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
-using namespace cl_move_group_interface;
+using namespace cl_moveit2z;
 
 // STATE DECLARATION
 struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmPandaMoveit2zCbInventory>
@@ -57,7 +57,7 @@ struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmPandaMoveit2zCbInventor
 
   void runtimeConfigure()
   {
-    ClMoveGroup * moveGroupClient;
+    ClMoveit2z * moveGroupClient;
     this->requiresClient(moveGroupClient);
     this->getClientBehavior<OrArm,CbMoveJoints>()->scalingFactor_ = 1;
   }

@@ -27,11 +27,10 @@ ADD . /home/ros2_ws/src/SMACC2
 WORKDIR "/home/ros2_ws"
 
 # install dependencies and build
-RUN ls src
-RUN vcs import  src --skip-existing --input src/SMACC2/.github/SMACC2-not-released.$ROS_DISTRO.repos || true
+RUN vcs import  src --skip-existing --input src/SMACC2/.github/SMACC2-not-released.$ROS_DISTRO.repos
 RUN ls src
 
-RUN rosdep install --from-paths src --ignore-src -r -y  || true
+RUN rosdep install --from-paths src --ignore-src -r -y
 RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
 
 RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && colcon build --merge-install --packages-skip moveit_servo"

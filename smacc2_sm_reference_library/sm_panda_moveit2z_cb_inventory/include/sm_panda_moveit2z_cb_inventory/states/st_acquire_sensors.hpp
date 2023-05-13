@@ -30,7 +30,7 @@ using smacc2::EvStateRequestFinish;
 using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
-using namespace cl_move_group_interface;
+using namespace cl_moveit2z;
 using smacc2::client_behaviors::CbWaitTopicMessage;
 
 // STATE DECLARATION

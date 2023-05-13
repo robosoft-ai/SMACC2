@@ -14,7 +14,7 @@
 
   <depend>ros_timer_client</depend>
   <depend>smacc2</depend>
-  <depend>move_group_interface_client</depend>
+  <depend>moveit2z</depend>
   <depend>controller_manager</depend>
 
   <exec_depend>joint_trajectory_controller</exec_depend>
