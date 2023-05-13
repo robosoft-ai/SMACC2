@@ -14,11 +14,7 @@
 
   <depend>ros_timer_client</depend>
   <depend>smacc2</depend>
-<<<<<<< HEAD
   <depend>moveit2z_client</depend>
-=======
-  <depend>moveit2z</depend>
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f
   <depend>controller_manager</depend>
 
   <exec_depend>joint_trajectory_controller</exec_depend>
