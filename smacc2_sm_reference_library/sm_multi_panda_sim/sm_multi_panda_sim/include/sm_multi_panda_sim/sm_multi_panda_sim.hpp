@@ -51,8 +51,8 @@
 #include "orthogonals/or_updatable_publisher.hpp"
 
 // CLIENTS
-#include <move_group_interface_client/cl_movegroup.hpp>
-#include <move_group_interface_client/client_behaviors.hpp>
+#include <moveit2z/cl_moveit2z.hpp>
+#include <moveit2z/client_behaviors.hpp>
 
 // CLIENT BEHAVIORS
 #include <smacc2/client_behaviors/cb_wait_topic_message.hpp>
@@ -63,7 +63,7 @@
 namespace sm_multi_panda_sim
 {
 
-using namespace cl_move_group_interface;
+using namespace cl_moveit2z;
 using namespace cl_ros_timer;
 using namespace cl_keyboard;
 using namespace boost;

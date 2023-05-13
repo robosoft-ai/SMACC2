@@ -23,8 +23,8 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "smacc2/smacc.hpp"
-#include <move_group_interface_client/cl_movegroup.hpp>
-#include <move_group_interface_client/components/cp_grasping_objects.hpp>
+#include <moveit2z/cl_moveit2z.hpp>
+#include <moveit2z/components/cp_grasping_objects.hpp>
 
 namespace sm_panda_moveit2z_cb_inventory
 {
@@ -53,7 +53,7 @@ struct StAttachObject : smacc2::SmaccState<StAttachObject, SmPandaMoveit2zCbInve
   void runtimeConfigure()
   {
     RCLCPP_INFO(getLogger(), "Entering StAttachObject");
-    cl_move_group_interface::ClMoveGroup* moveGroupClient;
+    cl_moveit2z::ClMoveit2z* moveGroupClient;
     requiresClient(moveGroupClient);
   }
 

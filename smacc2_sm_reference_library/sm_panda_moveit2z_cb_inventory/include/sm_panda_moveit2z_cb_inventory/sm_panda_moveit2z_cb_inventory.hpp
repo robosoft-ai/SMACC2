@@ -29,8 +29,8 @@
 // ORTHOGONALS
 #include "sm_panda_moveit2z_cb_inventory/orthogonals/or_arm.hpp"
 
-#include <move_group_interface_client/cl_movegroup.hpp>
-#include <move_group_interface_client/client_behaviors.hpp>
+#include <moveit2z/cl_moveit2z.hpp>
+#include <moveit2z/client_behaviors.hpp>
 
 #include <smacc2/client_behaviors/cb_wait_topic_message.hpp>
 
@@ -38,7 +38,7 @@
 namespace sm_panda_moveit2z_cb_inventory
 {
 
-using namespace cl_move_group_interface;
+using namespace cl_moveit2z;
 
 //STATES
 struct StAcquireSensors;

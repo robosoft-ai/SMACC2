@@ -97,7 +97,7 @@ struct StLeftArmMoves : smacc2::SmaccState<StLeftArmMoves, SmMultiPandaSim>
 
   void onExit()
   {
-    // cl_move_group_interface::MoveGroupInterface* move_group_client_;
+    // cl_moveit2z::MoveGroupInterface* move_group_client_;
     // requiresClient(move_group_client_);
     // move_group_client_->stop();
   }

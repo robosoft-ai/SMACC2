@@ -21,15 +21,15 @@
 #pragma once
 
 #include <sensor_msgs/msg/joint_state.hpp>
-#include <move_group_interface_client/common.hpp>
-#include <move_group_interface_client/cl_movegroup.hpp>
+#include <moveit2z/common.hpp>
+#include <moveit2z/cl_moveit2z.hpp>
 
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <condition_variable>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <std_msgs/msg/string.hpp>
 
-namespace cl_move_group_interface
+namespace cl_moveit2z
 {
 class CbMoveSynchronizedLinkGoals : public smacc2::SmaccAsyncClientBehavior
 {
@@ -41,7 +41,7 @@ public:
 
   void onEntry() override
   {
-    ClMoveGroup * movegroupClient_;
+    ClMoveit2z * movegroupClient_;
     requiresClient(movegroupClient_);
 
     //auto group_name = movegroupClient_->getOptions().group_name_;

@@ -30,10 +30,10 @@ using smacc2::EvStateRequestFinish;
 using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
-using namespace cl_move_group_interface;
+using namespace cl_moveit2z;
 using smacc2::client_behaviors::CbWaitTopicMessage;
 using namespace std::chrono_literals;
-using cl_move_group_interface::CbWaitJointState;
+using cl_moveit2z::CbWaitJointState;
 
 // STATE DECLARATION
 struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmMultiPandaSim>

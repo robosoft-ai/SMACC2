@@ -24,7 +24,7 @@
 #include <rclcpp/duration.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
-namespace cl_move_group_interface
+namespace cl_moveit2z
 {
   using namespace std::chrono_literals;
 
