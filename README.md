@@ -192,7 +192,7 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
 
 ## Repository Structure
 - `smacc2` - core library of SMACC2.
-- `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`nav2z_client`), MoveIt2 (`moveit2z`).
+- `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`nav2z_client`), MoveIt2 (`moveit2z_client`).
 - `smacc2_event_generators` - ...
 - `smacc2_msgs` - ROS 2 messages for SMACC2 framework.
 - `smacc2_sm_reference_library` - libraries with reference implementations of state-machines used for demonstaration and testing of functionalities.

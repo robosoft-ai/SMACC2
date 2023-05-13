@@ -16,9 +16,9 @@
 
 #include <chrono>
 
-#include <moveit2z/cl_moveit2z.hpp>
-#include <moveit2z/components/cp_trajectory_history.hpp>
-#include <moveit2z/components/cp_grasping_objects.hpp>
+#include <moveit2z_client/cl_moveit2z.hpp>
+#include <moveit2z_client/components/cp_trajectory_history.hpp>
+#include <moveit2z_client/components/cp_grasping_objects.hpp>
 
 #include "ros_timer_client/cl_ros_timer.hpp"
 #include "smacc2/smacc.hpp"
