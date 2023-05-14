@@ -28,23 +28,23 @@
 
 namespace cl_moveit2z
 {
-  class CbMoveCartesianRelative2 : public CbMoveEndEffectorTrajectory
-  {
-  public:
-    geometry_msgs::msg::Vector3 offset_;
+class CbMoveCartesianRelative2 : public CbMoveEndEffectorTrajectory
+{
+public:
+  geometry_msgs::msg::Vector3 offset_;
 
-    std::optional<double> linearSpeed_m_s_;
+  std::optional<double> linearSpeed_m_s_;
 
-    CbMoveCartesianRelative2(std::string referenceFrame, std::string tipLink);
+  CbMoveCartesianRelative2(std::string referenceFrame, std::string tipLink);
 
-    CbMoveCartesianRelative2(
-      std::string referenceFrame, std::string tipLink, geometry_msgs::msg::Vector3 offset);
+  CbMoveCartesianRelative2(
+    std::string referenceFrame, std::string tipLink, geometry_msgs::msg::Vector3 offset);
 
-    virtual ~CbMoveCartesianRelative2();
+  virtual ~CbMoveCartesianRelative2();
 
-    void generateTrajectory() override;
+  void generateTrajectory() override;
 
-  private:
-    std::string globalFrame_;
-  };
+private:
+  std::string globalFrame_;
+};
 }  // namespace cl_moveit2z

@@ -28,114 +28,114 @@
 
 namespace cl_moveit2z
 {
-  template <typename AsyncCB, typename Orthogonal>
-  struct EvJointDiscontinuity : sc::event<EvJointDiscontinuity<AsyncCB, Orthogonal>>
+template <typename AsyncCB, typename Orthogonal>
+struct EvJointDiscontinuity : sc::event<EvJointDiscontinuity<AsyncCB, Orthogonal>>
+{
+  moveit_msgs::msg::RobotTrajectory trajectory;
+};
+
+template <typename AsyncCB, typename Orthogonal>
+struct EvIncorrectInitialPosition : sc::event<EvIncorrectInitialPosition<AsyncCB, Orthogonal>>
+{
+  moveit_msgs::msg::RobotTrajectory trajectory;
+};
+
+enum class ComputeJointTrajectoryErrorCode
+{
+  SUCCESS,
+  INCORRECT_INITIAL_STATE,
+  JOINT_TRAJECTORY_DISCONTINUITY
+};
+
+// this is a base behavior to define any kind of parametrized family of trajectories or motions
+class CbMoveEndEffectorTrajectory : public smacc2::SmaccAsyncClientBehavior,
+                                    public smacc2::ISmaccUpdatable
+{
+public:
+  // std::string tip_link_;
+  std::optional<std::string> group_;
+
+  std::optional<std::string> tipLink_;
+
+  std::optional<bool> allowInitialTrajectoryStateJointDiscontinuity_;
+
+  CbMoveEndEffectorTrajectory(std::optional<std::string> tipLink = std::nullopt);
+
+  CbMoveEndEffectorTrajectory(
+    const std::vector<geometry_msgs::msg::PoseStamped> & endEffectorTrajectory,
+    std::optional<std::string> tipLink = std::nullopt);
+
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
   {
-    moveit_msgs::msg::RobotTrajectory trajectory;
-  };
+    this->initializeROS();
 
-  template <typename AsyncCB, typename Orthogonal>
-  struct EvIncorrectInitialPosition : sc::event<EvIncorrectInitialPosition<AsyncCB, Orthogonal>>
-  {
-    moveit_msgs::msg::RobotTrajectory trajectory;
-  };
+    smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
-  enum class ComputeJointTrajectoryErrorCode
-  {
-    SUCCESS,
-    INCORRECT_INITIAL_STATE,
-    JOINT_TRAJECTORY_DISCONTINUITY
-  };
-
-  // this is a base behavior to define any kind of parametrized family of trajectories or motions
-  class CbMoveEndEffectorTrajectory : public smacc2::SmaccAsyncClientBehavior,
-                                      public smacc2::ISmaccUpdatable
-  {
-  public:
-    // std::string tip_link_;
-    std::optional<std::string> group_;
-
-    std::optional<std::string> tipLink_;
-
-    std::optional<bool> allowInitialTrajectoryStateJointDiscontinuity_;
-
-    CbMoveEndEffectorTrajectory(std::optional<std::string> tipLink = std::nullopt);
-
-    CbMoveEndEffectorTrajectory(
-      const std::vector<geometry_msgs::msg::PoseStamped> & endEffectorTrajectory,
-      std::optional<std::string> tipLink = std::nullopt);
-
-    template <typename TOrthogonal, typename TSourceObject>
-    void onOrthogonalAllocation()
+    postJointDiscontinuityEvent = [this](auto traj)
     {
-      this->initializeROS();
+      auto ev = new EvJointDiscontinuity<TSourceObject, TOrthogonal>();
+      ev->trajectory = traj;
+      this->postEvent(ev);
+    };
 
-      smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    postIncorrectInitialStateEvent = [this](auto traj)
+    {
+      auto ev = new EvIncorrectInitialPosition<TSourceObject, TOrthogonal>();
+      ev->trajectory = traj;
+      this->postEvent(ev);
+    };
 
-      postJointDiscontinuityEvent = [this](auto traj)
-      {
-        auto ev = new EvJointDiscontinuity<TSourceObject, TOrthogonal>();
-        ev->trajectory = traj;
-        this->postEvent(ev);
-      };
+    postMotionExecutionFailureEvents = [this]
+    {
+      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] motion execution failed");
+      movegroupClient_->postEventMotionExecutionFailed();
+      this->postEvent<EvMoveGroupMotionExecutionFailed<TSourceObject, TOrthogonal>>();
+    };
+  }
 
-      postIncorrectInitialStateEvent = [this](auto traj)
-      {
-        auto ev = new EvIncorrectInitialPosition<TSourceObject, TOrthogonal>();
-        ev->trajectory = traj;
-        this->postEvent(ev);
-      };
+  virtual void onEntry() override;
 
-      postMotionExecutionFailureEvents = [this]
-      {
-        RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] motion execution failed");
-        movegroupClient_->postEventMotionExecutionFailed();
-        this->postEvent<EvMoveGroupMotionExecutionFailed<TSourceObject, TOrthogonal>>();
-      };
-    }
+  virtual void onExit() override;
 
-    virtual void onEntry() override;
+  virtual void update() override;
 
-    virtual void onExit() override;
+protected:
+  ComputeJointTrajectoryErrorCode computeJointSpaceTrajectory(
+    moveit_msgs::msg::RobotTrajectory & computedJointTrajectory);
 
-    virtual void update() override;
+  void executeJointSpaceTrajectory(
+    const moveit_msgs::msg::RobotTrajectory & computedJointTrajectory);
 
-  protected:
-    ComputeJointTrajectoryErrorCode computeJointSpaceTrajectory(
-      moveit_msgs::msg::RobotTrajectory & computedJointTrajectory);
+  virtual void generateTrajectory() = 0;
 
-    void executeJointSpaceTrajectory(
-      const moveit_msgs::msg::RobotTrajectory & computedJointTrajectory);
+  virtual void createMarkers();
 
-    virtual void generateTrajectory() = 0;
+  std::vector<geometry_msgs::msg::PoseStamped> endEffectorTrajectory_;
 
-    virtual void createMarkers();
+  ClMoveit2z * movegroupClient_ = nullptr;
 
-    std::vector<geometry_msgs::msg::PoseStamped> endEffectorTrajectory_;
+  visualization_msgs::msg::MarkerArray beahiorMarkers_;
 
-    ClMoveit2z * movegroupClient_ = nullptr;
+  void getCurrentEndEffectorPose(
+    std::string globalFrame, tf2::Stamped<tf2::Transform> & currentEndEffectorTransform);
 
-    visualization_msgs::msg::MarkerArray beahiorMarkers_;
+private:
+  void initializeROS();
 
-    void getCurrentEndEffectorPose(
-      std::string globalFrame, tf2::Stamped<tf2::Transform> & currentEndEffectorTransform);
+  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr markersPub_;
 
-  private:
-    void initializeROS();
+  std::atomic<bool> markersInitialized_;
 
-    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr markersPub_;
+  rclcpp::Client<moveit_msgs::srv::GetPositionIK>::SharedPtr iksrv_;
 
-    std::atomic<bool> markersInitialized_;
+  std::mutex m_mutex_;
 
-    rclcpp::Client<moveit_msgs::srv::GetPositionIK>::SharedPtr iksrv_;
+  std::function<void(moveit_msgs::msg::RobotTrajectory &)> postJointDiscontinuityEvent;
+  std::function<void(moveit_msgs::msg::RobotTrajectory &)> postIncorrectInitialStateEvent;
 
-    std::mutex m_mutex_;
+  std::function<void()> postMotionExecutionFailureEvents;
 
-    std::function<void(moveit_msgs::msg::RobotTrajectory &)> postJointDiscontinuityEvent;
-    std::function<void(moveit_msgs::msg::RobotTrajectory &)> postIncorrectInitialStateEvent;
-
-    std::function<void()> postMotionExecutionFailureEvents;
-
-    bool autocleanmarkers = false;
-  };
+  bool autocleanmarkers = false;
+};
 }  // namespace cl_moveit2z

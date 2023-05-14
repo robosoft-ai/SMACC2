@@ -26,12 +26,12 @@
 
 namespace cl_moveit2z
 {
-  // releases the current attached object
-  class CbDetachObject : public smacc2::SmaccAsyncClientBehavior
-  {
-  public:
-    virtual void onEntry() override;
+// releases the current attached object
+class CbDetachObject : public smacc2::SmaccAsyncClientBehavior
+{
+public:
+  virtual void onEntry() override;
 
-    virtual void onExit() override;
-  };
+  virtual void onExit() override;
+};
 }  // namespace cl_moveit2z

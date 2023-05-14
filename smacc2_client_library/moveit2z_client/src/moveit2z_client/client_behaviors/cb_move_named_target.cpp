@@ -22,18 +22,18 @@
 
 namespace cl_moveit2z
 {
-  CbMoveNamedTarget::CbMoveNamedTarget(std::string namedtarget) : namedTarget_(namedtarget) {}
+CbMoveNamedTarget::CbMoveNamedTarget(std::string namedtarget) : namedTarget_(namedtarget) {}
 
-  void CbMoveNamedTarget::onEntry()
-  {
-    this->requiresClient(movegroupClient_);
-    movegroupClient_->moveGroupClientInterface->setNamedTarget(this->namedTarget_);
-  }
+void CbMoveNamedTarget::onEntry()
+{
+  this->requiresClient(movegroupClient_);
+  movegroupClient_->moveGroupClientInterface->setNamedTarget(this->namedTarget_);
+}
 
-  void CbMoveNamedTarget::onExit() {}
+void CbMoveNamedTarget::onExit() {}
 
-  std::map<std::string, double> CbMoveNamedTarget::getNamedTargetValues()
-  {
-    return movegroupClient_->moveGroupClientInterface->getNamedTargetValues(this->namedTarget_);
-  }
+std::map<std::string, double> CbMoveNamedTarget::getNamedTargetValues()
+{
+  return movegroupClient_->moveGroupClientInterface->getNamedTargetValues(this->namedTarget_);
+}
 }  // namespace cl_moveit2z

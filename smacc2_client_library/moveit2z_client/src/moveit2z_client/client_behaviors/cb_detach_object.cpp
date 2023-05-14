@@ -23,32 +23,31 @@
 
 namespace cl_moveit2z
 {
-  void CbDetachObject::onEntry()
-  {
-    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] requesting components");
+void CbDetachObject::onEntry()
+{
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] requesting components");
 
-    cl_moveit2z::CpGraspingComponent * graspingComponent;
-    this->requiresComponent(graspingComponent);
+  cl_moveit2z::CpGraspingComponent * graspingComponent;
+  this->requiresComponent(graspingComponent);
 
-    cl_moveit2z::ClMoveit2z * moveGroupClient;
-    this->requiresClient(moveGroupClient);
+  cl_moveit2z::ClMoveit2z * moveGroupClient;
+  this->requiresClient(moveGroupClient);
 
-    auto & planningSceneInterface = moveGroupClient->planningSceneInterface;
+  auto & planningSceneInterface = moveGroupClient->planningSceneInterface;
 
-    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] requesting detach object");
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] requesting detach object");
 
-    auto res = moveGroupClient->moveGroupClientInterface->detachObject(
-      *(graspingComponent->currentAttachedObjectName));
-    planningSceneInterface->removeCollisionObjects(
-      {*(graspingComponent->currentAttachedObjectName)});
+  auto res = moveGroupClient->moveGroupClientInterface->detachObject(
+    *(graspingComponent->currentAttachedObjectName));
+  planningSceneInterface->removeCollisionObjects({*(graspingComponent->currentAttachedObjectName)});
 
-    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] detach result: " << res);
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] detach result: " << res);
 
-    if (res)
-      this->postSuccessEvent();
-    else
-      this->postFailureEvent();
-  }
+  if (res)
+    this->postSuccessEvent();
+  else
+    this->postFailureEvent();
+}
 
-  void CbDetachObject::onExit() {}
+void CbDetachObject::onExit() {}
 }  // namespace cl_moveit2z

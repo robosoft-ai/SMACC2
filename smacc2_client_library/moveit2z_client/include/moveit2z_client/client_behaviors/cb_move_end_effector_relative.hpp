@@ -25,27 +25,27 @@
 
 namespace cl_moveit2z
 {
-  class CbMoveEndEffectorRelative : public smacc2::SmaccAsyncClientBehavior
-  {
-  public:
-    geometry_msgs::msg::Transform transform_;
+class CbMoveEndEffectorRelative : public smacc2::SmaccAsyncClientBehavior
+{
+public:
+  geometry_msgs::msg::Transform transform_;
 
-    std::optional<std::string> group_;
+  std::optional<std::string> group_;
 
-    CbMoveEndEffectorRelative();
+  CbMoveEndEffectorRelative();
 
-    CbMoveEndEffectorRelative(geometry_msgs::msg::Transform transform);
+  CbMoveEndEffectorRelative(geometry_msgs::msg::Transform transform);
 
-    virtual void onEntry() override;
+  virtual void onEntry() override;
 
-    virtual void onExit() override;
+  virtual void onExit() override;
 
-  protected:
-    void moveRelative(
-      moveit::planning_interface::MoveGroupInterface & moveGroupinterface,
-      geometry_msgs::msg::Transform & transformOffset);
+protected:
+  void moveRelative(
+    moveit::planning_interface::MoveGroupInterface & moveGroupinterface,
+    geometry_msgs::msg::Transform & transformOffset);
 
-    ClMoveit2z * movegroupClient_;
-  };
+  ClMoveit2z * movegroupClient_;
+};
 
 }  // namespace cl_moveit2z

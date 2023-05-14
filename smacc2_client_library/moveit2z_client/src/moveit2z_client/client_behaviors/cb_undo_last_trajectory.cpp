@@ -23,44 +23,43 @@
 
 namespace cl_moveit2z
 {
-  CbUndoLastTrajectory::CbUndoLastTrajectory() {}
+CbUndoLastTrajectory::CbUndoLastTrajectory() {}
 
-  CbUndoLastTrajectory::CbUndoLastTrajectory(int backIndex) : backIndex_(backIndex) {}
+CbUndoLastTrajectory::CbUndoLastTrajectory(int backIndex) : backIndex_(backIndex) {}
 
-  CbUndoLastTrajectory::~CbUndoLastTrajectory() {}
+CbUndoLastTrajectory::~CbUndoLastTrajectory() {}
 
-  void CbUndoLastTrajectory::generateTrajectory() {}
+void CbUndoLastTrajectory::generateTrajectory() {}
 
-  void CbUndoLastTrajectory::onEntry()
+void CbUndoLastTrajectory::onEntry()
+{
+  CpTrajectoryHistory * trajectoryHistory;
+  this->requiresComponent(trajectoryHistory);
+  this->requiresClient(movegroupClient_);
+
+  if (trajectoryHistory->getLastTrajectory(backIndex_, trajectory))
   {
-    CpTrajectoryHistory * trajectoryHistory;
-    this->requiresComponent(trajectoryHistory);
-    this->requiresClient(movegroupClient_);
+    RCLCPP_WARN_STREAM(
+      getLogger(), "[" << getName() << "] reversing last trajectory [" << backIndex_ << "]");
 
-    if (trajectoryHistory->getLastTrajectory(backIndex_, trajectory))
+    auto initialTime = trajectory.joint_trajectory.points.back().time_from_start;
+
+    reversed = trajectory;
+
+    std::reverse(reversed.joint_trajectory.points.begin(), reversed.joint_trajectory.points.end());
+
+    for (auto & jp : reversed.joint_trajectory.points)
     {
-      RCLCPP_WARN_STREAM(
-        getLogger(), "[" << getName() << "] reversing last trajectory [" << backIndex_ << "]");
-
-      auto initialTime = trajectory.joint_trajectory.points.back().time_from_start;
-
-      reversed = trajectory;
-
-      std::reverse(
-        reversed.joint_trajectory.points.begin(), reversed.joint_trajectory.points.end());
-
-      for (auto & jp : reversed.joint_trajectory.points)
-      {
-        jp.time_from_start = rclcpp::Duration(initialTime) - rclcpp::Duration(jp.time_from_start);
-      }
-
-      this->executeJointSpaceTrajectory(reversed);
+      jp.time_from_start = rclcpp::Duration(initialTime) - rclcpp::Duration(jp.time_from_start);
     }
-    else
-    {
-      RCLCPP_WARN_STREAM(
-        getLogger(), "[" << getName() << "] could not undo last trajectory, trajectory not found.");
-    }
+
+    this->executeJointSpaceTrajectory(reversed);
   }
+  else
+  {
+    RCLCPP_WARN_STREAM(
+      getLogger(), "[" << getName() << "] could not undo last trajectory, trajectory not found.");
+  }
+}
 
 }  // namespace cl_moveit2z

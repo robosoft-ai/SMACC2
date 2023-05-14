@@ -23,52 +23,50 @@
 
 namespace cl_moveit2z
 {
-  CbAttachObject::CbAttachObject(std::string targetObjectName) : targetObjectName_(targetObjectName)
+CbAttachObject::CbAttachObject(std::string targetObjectName) : targetObjectName_(targetObjectName)
+{
+}
+
+CbAttachObject::CbAttachObject() {}
+
+void CbAttachObject::onEntry()
+{
+  cl_moveit2z::ClMoveit2z * moveGroup;
+  this->requiresClient(moveGroup);
+
+  cl_moveit2z::CpGraspingComponent * graspingComponent;
+  this->requiresComponent(graspingComponent);
+
+  // auto cubepos = cubeinfo->pose_->toPoseStampedMsg();
+
+  moveit_msgs::msg::CollisionObject targetCollisionObject;
+
+  bool found = graspingComponent->getGraspingObject(targetObjectName_, targetCollisionObject);
+
+  if (found)
   {
+    targetCollisionObject.operation = moveit_msgs::msg::CollisionObject::ADD;
+    targetCollisionObject.header.stamp = getNode()->now();
+
+    moveGroup->planningSceneInterface->applyCollisionObject(targetCollisionObject);
+    // collisionObjects.push_back(cubeCollision);
+
+    graspingComponent->currentAttachedObjectName = targetObjectName_;
+    moveGroup->moveGroupClientInterface->attachObject(
+      targetObjectName_, graspingComponent->gripperLink_, graspingComponent->fingerTipNames);
+
+    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Grasping objectfound. attach request.");
+
+    this->postSuccessEvent();
   }
-
-  CbAttachObject::CbAttachObject() {}
-
-  void CbAttachObject::onEntry()
+  else
   {
-    cl_moveit2z::ClMoveit2z * moveGroup;
-    this->requiresClient(moveGroup);
+    RCLCPP_WARN_STREAM(
+      getLogger(), "[" << getName() << "] Grasping object was not found. Ignoring attach request.");
 
-    cl_moveit2z::CpGraspingComponent * graspingComponent;
-    this->requiresComponent(graspingComponent);
-
-    // auto cubepos = cubeinfo->pose_->toPoseStampedMsg();
-
-    moveit_msgs::msg::CollisionObject targetCollisionObject;
-
-    bool found = graspingComponent->getGraspingObject(targetObjectName_, targetCollisionObject);
-
-    if (found)
-    {
-      targetCollisionObject.operation = moveit_msgs::msg::CollisionObject::ADD;
-      targetCollisionObject.header.stamp = getNode()->now();
-
-      moveGroup->planningSceneInterface->applyCollisionObject(targetCollisionObject);
-      // collisionObjects.push_back(cubeCollision);
-
-      graspingComponent->currentAttachedObjectName = targetObjectName_;
-      moveGroup->moveGroupClientInterface->attachObject(
-        targetObjectName_, graspingComponent->gripperLink_, graspingComponent->fingerTipNames);
-
-      RCLCPP_INFO_STREAM(
-        getLogger(), "[" << getName() << "] Grasping objectfound. attach request.");
-
-      this->postSuccessEvent();
-    }
-    else
-    {
-      RCLCPP_WARN_STREAM(
-        getLogger(),
-        "[" << getName() << "] Grasping object was not found. Ignoring attach request.");
-
-      this->postFailureEvent();
-    }
+    this->postFailureEvent();
   }
+}
 
-  void CbAttachObject::onExit() {}
+void CbAttachObject::onExit() {}
 }  // namespace cl_moveit2z

@@ -23,47 +23,47 @@
 
 namespace cl_moveit2z
 {
-  CbMoveLastTrajectoryInitialState::CbMoveLastTrajectoryInitialState() {}
+CbMoveLastTrajectoryInitialState::CbMoveLastTrajectoryInitialState() {}
 
-  CbMoveLastTrajectoryInitialState::CbMoveLastTrajectoryInitialState(int backIndex)
-  : backIndex_(backIndex)
+CbMoveLastTrajectoryInitialState::CbMoveLastTrajectoryInitialState(int backIndex)
+: backIndex_(backIndex)
+{
+}
+
+CbMoveLastTrajectoryInitialState::~CbMoveLastTrajectoryInitialState() {}
+
+void CbMoveLastTrajectoryInitialState::onEntry()
+{
+  CpTrajectoryHistory * trajectoryHistory;
+  this->requiresComponent(trajectoryHistory);
+
+  if (trajectoryHistory != nullptr)
   {
-  }
+    moveit_msgs::msg::RobotTrajectory trajectory;
 
-  CbMoveLastTrajectoryInitialState::~CbMoveLastTrajectoryInitialState() {}
+    bool trajectoryFound = trajectoryHistory->getLastTrajectory(backIndex_, trajectory);
 
-  void CbMoveLastTrajectoryInitialState::onEntry()
-  {
-    CpTrajectoryHistory * trajectoryHistory;
-    this->requiresComponent(trajectoryHistory);
-
-    if (trajectoryHistory != nullptr)
+    if (trajectoryFound)
     {
-      moveit_msgs::msg::RobotTrajectory trajectory;
+      trajectory_msgs::msg::JointTrajectoryPoint & initialPoint =
+        trajectory.joint_trajectory.points.front();
 
-      bool trajectoryFound = trajectoryHistory->getLastTrajectory(backIndex_, trajectory);
-
-      if (trajectoryFound)
+      std::stringstream ss;
+      for (size_t i = 0; i < trajectory.joint_trajectory.joint_names.size(); i++)
       {
-        trajectory_msgs::msg::JointTrajectoryPoint & initialPoint =
-          trajectory.joint_trajectory.points.front();
+        auto & name = trajectory.joint_trajectory.joint_names[i];
 
-        std::stringstream ss;
-        for (size_t i = 0; i < trajectory.joint_trajectory.joint_names.size(); i++)
-        {
-          auto & name = trajectory.joint_trajectory.joint_names[i];
-
-          jointValueTarget_[name] = initialPoint.positions[i];
-          ss << name << ": " << jointValueTarget_[name] << std::endl;
-        }
-        RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "]" << std::endl << ss.str());
-
-        RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] move joint onEntry");
-        CbMoveJoints::onEntry();
-        RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] move joint onEntry finished");
+        jointValueTarget_[name] = initialPoint.positions[i];
+        ss << name << ": " << jointValueTarget_[name] << std::endl;
       }
-    }
+      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "]" << std::endl << ss.str());
 
-    //call base OnEntry
+      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] move joint onEntry");
+      CbMoveJoints::onEntry();
+      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] move joint onEntry finished");
+    }
   }
+
+  //call base OnEntry
+}
 }  // namespace cl_moveit2z

@@ -22,55 +22,54 @@
 
 namespace cl_moveit2z
 {
-  bool CpTrajectoryHistory::getLastTrajectory(
-    int backIndex, moveit_msgs::msg::RobotTrajectory & trajectory)
+bool CpTrajectoryHistory::getLastTrajectory(
+  int backIndex, moveit_msgs::msg::RobotTrajectory & trajectory)
+{
+  if (trajectoryHistory_.size() == 0)
   {
-    if (trajectoryHistory_.size() == 0)
-    {
-      RCLCPP_WARN_STREAM(
-        getLogger(), "[" << getName() << "] requested index: " << backIndex
-                         << ", history size: " << trajectoryHistory_.size());
-      return false;
-    }
-
-    if (backIndex < 0)
-
-    {
-      backIndex = 0;
-    }
-    else if ((size_t)backIndex >= this->trajectoryHistory_.size())
-    {
-      RCLCPP_WARN_STREAM(
-        getLogger(), "[" << getName() << "] requested index: " << backIndex
-                         << ", history size: " << trajectoryHistory_.size());
-      return false;
-    }
-
-    trajectory =
-      this->trajectoryHistory_[this->trajectoryHistory_.size() - 1 - backIndex].trajectory;
-    return true;
+    RCLCPP_WARN_STREAM(
+      getLogger(), "[" << getName() << "] requested index: " << backIndex
+                       << ", history size: " << trajectoryHistory_.size());
+    return false;
   }
 
-  bool CpTrajectoryHistory::getLastTrajectory(moveit_msgs::msg::RobotTrajectory & trajectory)
+  if (backIndex < 0)
+
   {
-    return getLastTrajectory(-1, trajectory);
+    backIndex = 0;
+  }
+  else if ((size_t)backIndex >= this->trajectoryHistory_.size())
+  {
+    RCLCPP_WARN_STREAM(
+      getLogger(), "[" << getName() << "] requested index: " << backIndex
+                       << ", history size: " << trajectoryHistory_.size());
+    return false;
   }
 
-  void CpTrajectoryHistory::pushTrajectory(
-    std::string name, const moveit_msgs::msg::RobotTrajectory & trajectory,
-    moveit_msgs::msg::MoveItErrorCodes result)
-  {
-    RCLCPP_INFO_STREAM(
-      getLogger(), "[" << getName() << "] adding a new trajectory to the history ( "
-                       << trajectory.joint_trajectory.points.size() << " poses)");
+  trajectory = this->trajectoryHistory_[this->trajectoryHistory_.size() - 1 - backIndex].trajectory;
+  return true;
+}
 
-    TrajectoryHistoryEntry entry;
-    this->trajectoryHistory_.push_back(entry);
+bool CpTrajectoryHistory::getLastTrajectory(moveit_msgs::msg::RobotTrajectory & trajectory)
+{
+  return getLastTrajectory(-1, trajectory);
+}
 
-    auto & last = this->trajectoryHistory_.back();
-    last.trajectory = trajectory;
-    last.result = result;
-    last.name = name;
-  }
+void CpTrajectoryHistory::pushTrajectory(
+  std::string name, const moveit_msgs::msg::RobotTrajectory & trajectory,
+  moveit_msgs::msg::MoveItErrorCodes result)
+{
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[" << getName() << "] adding a new trajectory to the history ( "
+                     << trajectory.joint_trajectory.points.size() << " poses)");
+
+  TrajectoryHistoryEntry entry;
+  this->trajectoryHistory_.push_back(entry);
+
+  auto & last = this->trajectoryHistory_.back();
+  last.trajectory = trajectory;
+  last.result = result;
+  last.name = name;
+}
 
 }  // namespace cl_moveit2z

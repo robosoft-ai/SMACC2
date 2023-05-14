@@ -25,23 +25,23 @@
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 namespace cl_moveit2z
 {
-  class CbMoveEndEffector : public smacc2::SmaccAsyncClientBehavior
-  {
-  public:
-    geometry_msgs::msg::PoseStamped targetPose;
-    std::string tip_link_;
-    std::optional<std::string> group_;
+class CbMoveEndEffector : public smacc2::SmaccAsyncClientBehavior
+{
+public:
+  geometry_msgs::msg::PoseStamped targetPose;
+  std::string tip_link_;
+  std::optional<std::string> group_;
 
-    CbMoveEndEffector();
-    CbMoveEndEffector(geometry_msgs::msg::PoseStamped target_pose, std::string tip_link = "");
+  CbMoveEndEffector();
+  CbMoveEndEffector(geometry_msgs::msg::PoseStamped target_pose, std::string tip_link = "");
 
-    virtual void onEntry() override;
+  virtual void onEntry() override;
 
-  protected:
-    bool moveToAbsolutePose(
-      moveit::planning_interface::MoveGroupInterface & moveGroupInterface,
-      geometry_msgs::msg::PoseStamped & targetObjectPose);
+protected:
+  bool moveToAbsolutePose(
+    moveit::planning_interface::MoveGroupInterface & moveGroupInterface,
+    geometry_msgs::msg::PoseStamped & targetObjectPose);
 
-    ClMoveit2z * movegroupClient_;
-  };
+  ClMoveit2z * movegroupClient_;
+};
 }  // namespace cl_moveit2z
