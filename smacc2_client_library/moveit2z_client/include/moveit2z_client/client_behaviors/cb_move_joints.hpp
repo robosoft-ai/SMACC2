@@ -32,20 +32,20 @@
 
 namespace cl_moveit2z
 {
-class CbMoveJoints : public smacc2::SmaccAsyncClientBehavior
-{
-public:
-  std::optional<double> scalingFactor_;
-  std::map<std::string, double> jointValueTarget_;
-  std::optional<std::string> group_;
+  class CbMoveJoints : public smacc2::SmaccAsyncClientBehavior
+  {
+  public:
+    std::optional<double> scalingFactor_;
+    std::map<std::string, double> jointValueTarget_;
+    std::optional<std::string> group_;
 
-  CbMoveJoints();
-  CbMoveJoints(const std::map<std::string, double> & jointValueTarget);
-  virtual void onEntry() override;
-  virtual void onExit() override;
+    CbMoveJoints();
+    CbMoveJoints(const std::map<std::string, double> & jointValueTarget);
+    virtual void onEntry() override;
+    virtual void onExit() override;
 
-protected:
-  void moveJoints(moveit::planning_interface::MoveGroupInterface & moveGroupInterface);
-  ClMoveit2z * movegroupClient_;
-};
+  protected:
+    void moveJoints(moveit::planning_interface::MoveGroupInterface & moveGroupInterface);
+    ClMoveit2z * movegroupClient_;
+  };
 }  // namespace cl_moveit2z

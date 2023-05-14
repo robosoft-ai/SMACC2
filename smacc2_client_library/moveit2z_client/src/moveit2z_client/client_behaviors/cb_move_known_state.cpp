@@ -30,108 +30,109 @@
 
 namespace cl_moveit2z
 {
-CbMoveKnownState::CbMoveKnownState(std::string pkg, std::string config_path)
-: pkg_(pkg), config_path_(config_path)
-{
-}
+  CbMoveKnownState::CbMoveKnownState(std::string pkg, std::string config_path)
+  : pkg_(pkg), config_path_(config_path)
+  {
+  }
 
-CbMoveKnownState::~CbMoveKnownState() {}
+  CbMoveKnownState::~CbMoveKnownState() {}
 
-void CbMoveKnownState::onEntry()
-{
-  jointValueTarget_ = loadJointStatesFromFile(pkg_, config_path_);
-  CbMoveJoints::onEntry();
-}
+  void CbMoveKnownState::onEntry()
+  {
+    jointValueTarget_ = loadJointStatesFromFile(pkg_, config_path_);
+    CbMoveJoints::onEntry();
+  }
 
 #define HAVE_NEW_YAMLCPP
-std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(
-  std::string pkg, std::string filepath)
-{
-  //auto pkgpath = ros::package::getPath(pkg);
-  std::string pkgpath = ament_index_cpp::get_package_share_directory(pkg);
-
-  std::map<std::string, double> jointStates;
-
-  if (pkgpath == "")
+  std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(
+    std::string pkg, std::string filepath)
   {
-    RCLCPP_ERROR_STREAM(
-      getLogger(), "[" << getName() << "] package not found for the known poses file: " << pkg
-                       << std::endl
-                       << " [IGNORING BEHAVIOR]");
-    return jointStates;
-  }
+    //auto pkgpath = ros::package::getPath(pkg);
+    std::string pkgpath = ament_index_cpp::get_package_share_directory(pkg);
 
-  filepath = pkgpath + "/" + filepath;
+    std::map<std::string, double> jointStates;
 
-  RCLCPP_INFO_STREAM(
-    getLogger(), "[" << getName() << "] Opening file with joint known state: " << filepath);
-
-  if (std::filesystem::exists(filepath))
-  {
-    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] known state file exists: " << filepath);
-  }
-  else
-  {
-    RCLCPP_ERROR_STREAM(
-      getLogger(), "[" << getName() << "] known state file does not exists: " << filepath);
-  }
-
-  std::ifstream ifs(filepath.c_str(), std::ifstream::in);
-  if (ifs.good() == false)
-  {
-    RCLCPP_ERROR_STREAM(
-      getLogger(),
-      "[" << getName() << "] Error opening file with joint known states: " << filepath);
-    throw std::string("joint state files not found");
-  }
-
-  try
-  {
-#ifdef HAVE_NEW_YAMLCPP
-    YAML::Node node = YAML::Load(ifs);
-#else
-    YAML::Parser parser(ifs);
-    parser.GetNextDocument(node);
-#endif
-
-#ifdef HAVE_NEW_YAMLCPP
-    const YAML::Node & wp_node_tmp = node["joint_states"];
-    const YAML::Node * wp_node = wp_node_tmp ? &wp_node_tmp : NULL;
-#else
-    const YAML::Node * wp_node = node.FindValue("waypoints");
-#endif
-
-    if (wp_node != NULL)
+    if (pkgpath == "")
     {
-      try
-      {
-        for (YAML::const_iterator it = wp_node->begin(); it != wp_node->end(); ++it)
-        {
-          std::string key = it->first.as<std::string>();
-          double value = it->second.as<double>();
-          RCLCPP_DEBUG_STREAM(getLogger(), " joint - " << key << ": " << value);
-          jointStates[key] = value;
-        }
+      RCLCPP_ERROR_STREAM(
+        getLogger(), "[" << getName() << "] package not found for the known poses file: " << pkg
+                         << std::endl
+                         << " [IGNORING BEHAVIOR]");
+      return jointStates;
+    }
 
-        return jointStates;
-      }
-      catch (std::exception & ex)
-      {
-        RCLCPP_ERROR(getLogger(), "trying to convert to map, failed, errormsg: %s", ex.what());
-      }
+    filepath = pkgpath + "/" + filepath;
 
-      RCLCPP_INFO_STREAM(getLogger(), "Parsed " << jointStates.size() << " joint entries.");
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] Opening file with joint known state: " << filepath);
+
+    if (std::filesystem::exists(filepath))
+    {
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << getName() << "] known state file exists: " << filepath);
     }
     else
     {
-      RCLCPP_WARN_STREAM(getLogger(), "Couldn't find any jointStates in the provided yaml file.");
+      RCLCPP_ERROR_STREAM(
+        getLogger(), "[" << getName() << "] known state file does not exists: " << filepath);
     }
+
+    std::ifstream ifs(filepath.c_str(), std::ifstream::in);
+    if (ifs.good() == false)
+    {
+      RCLCPP_ERROR_STREAM(
+        getLogger(),
+        "[" << getName() << "] Error opening file with joint known states: " << filepath);
+      throw std::string("joint state files not found");
+    }
+
+    try
+    {
+#ifdef HAVE_NEW_YAMLCPP
+      YAML::Node node = YAML::Load(ifs);
+#else
+      YAML::Parser parser(ifs);
+      parser.GetNextDocument(node);
+#endif
+
+#ifdef HAVE_NEW_YAMLCPP
+      const YAML::Node & wp_node_tmp = node["joint_states"];
+      const YAML::Node * wp_node = wp_node_tmp ? &wp_node_tmp : NULL;
+#else
+      const YAML::Node * wp_node = node.FindValue("waypoints");
+#endif
+
+      if (wp_node != NULL)
+      {
+        try
+        {
+          for (YAML::const_iterator it = wp_node->begin(); it != wp_node->end(); ++it)
+          {
+            std::string key = it->first.as<std::string>();
+            double value = it->second.as<double>();
+            RCLCPP_DEBUG_STREAM(getLogger(), " joint - " << key << ": " << value);
+            jointStates[key] = value;
+          }
+
+          return jointStates;
+        }
+        catch (std::exception & ex)
+        {
+          RCLCPP_ERROR(getLogger(), "trying to convert to map, failed, errormsg: %s", ex.what());
+        }
+
+        RCLCPP_INFO_STREAM(getLogger(), "Parsed " << jointStates.size() << " joint entries.");
+      }
+      else
+      {
+        RCLCPP_WARN_STREAM(getLogger(), "Couldn't find any jointStates in the provided yaml file.");
+      }
+    }
+    catch (const YAML::ParserException & ex)
+    {
+      RCLCPP_ERROR_STREAM(
+        getLogger(), "Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
+    }
+    return jointStates;
   }
-  catch (const YAML::ParserException & ex)
-  {
-    RCLCPP_ERROR_STREAM(
-      getLogger(), "Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
-  }
-  return jointStates;
-}
 }  // namespace cl_moveit2z

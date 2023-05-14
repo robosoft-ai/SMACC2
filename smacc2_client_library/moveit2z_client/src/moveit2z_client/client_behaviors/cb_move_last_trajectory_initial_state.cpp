@@ -28,47 +28,47 @@
 
 namespace cl_moveit2z
 {
-CbMoveLastTrajectoryInitialState::CbMoveLastTrajectoryInitialState() {}
+  CbMoveLastTrajectoryInitialState::CbMoveLastTrajectoryInitialState() {}
 
-CbMoveLastTrajectoryInitialState::CbMoveLastTrajectoryInitialState(int backIndex)
-: backIndex_(backIndex)
-{
-}
-
-CbMoveLastTrajectoryInitialState::~CbMoveLastTrajectoryInitialState() {}
-
-void CbMoveLastTrajectoryInitialState::onEntry()
-{
-  CpTrajectoryHistory * trajectoryHistory;
-  this->requiresComponent(trajectoryHistory);
-
-  if (trajectoryHistory != nullptr)
+  CbMoveLastTrajectoryInitialState::CbMoveLastTrajectoryInitialState(int backIndex)
+  : backIndex_(backIndex)
   {
-    moveit_msgs::msg::RobotTrajectory trajectory;
-
-    bool trajectoryFound = trajectoryHistory->getLastTrajectory(backIndex_, trajectory);
-
-    if (trajectoryFound)
-    {
-      trajectory_msgs::msg::JointTrajectoryPoint & initialPoint =
-        trajectory.joint_trajectory.points.front();
-
-      std::stringstream ss;
-      for (size_t i = 0; i < trajectory.joint_trajectory.joint_names.size(); i++)
-      {
-        auto & name = trajectory.joint_trajectory.joint_names[i];
-
-        jointValueTarget_[name] = initialPoint.positions[i];
-        ss << name << ": " << jointValueTarget_[name] << std::endl;
-      }
-      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "]" << std::endl << ss.str());
-
-      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] move joint onEntry");
-      CbMoveJoints::onEntry();
-      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] move joint onEntry finished");
-    }
   }
 
-  //call base OnEntry
-}
+  CbMoveLastTrajectoryInitialState::~CbMoveLastTrajectoryInitialState() {}
+
+  void CbMoveLastTrajectoryInitialState::onEntry()
+  {
+    CpTrajectoryHistory * trajectoryHistory;
+    this->requiresComponent(trajectoryHistory);
+
+    if (trajectoryHistory != nullptr)
+    {
+      moveit_msgs::msg::RobotTrajectory trajectory;
+
+      bool trajectoryFound = trajectoryHistory->getLastTrajectory(backIndex_, trajectory);
+
+      if (trajectoryFound)
+      {
+        trajectory_msgs::msg::JointTrajectoryPoint & initialPoint =
+          trajectory.joint_trajectory.points.front();
+
+        std::stringstream ss;
+        for (size_t i = 0; i < trajectory.joint_trajectory.joint_names.size(); i++)
+        {
+          auto & name = trajectory.joint_trajectory.joint_names[i];
+
+          jointValueTarget_[name] = initialPoint.positions[i];
+          ss << name << ": " << jointValueTarget_[name] << std::endl;
+        }
+        RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "]" << std::endl << ss.str());
+
+        RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] move joint onEntry");
+        CbMoveJoints::onEntry();
+        RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] move joint onEntry finished");
+      }
+    }
+
+    //call base OnEntry
+  }
 }  // namespace cl_moveit2z

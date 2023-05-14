@@ -30,24 +30,24 @@
 
 namespace cl_moveit2z
 {
-class CbUndoLastTrajectory : public CbMoveEndEffectorTrajectory
-{
-public:
-  CbUndoLastTrajectory();
+  class CbUndoLastTrajectory : public CbMoveEndEffectorTrajectory
+  {
+  public:
+    CbUndoLastTrajectory();
 
-  CbUndoLastTrajectory(int backIndex);
+    CbUndoLastTrajectory(int backIndex);
 
-  virtual ~CbUndoLastTrajectory();
+    virtual ~CbUndoLastTrajectory();
 
-  virtual void onEntry() override;
+    virtual void onEntry() override;
 
-  virtual void generateTrajectory();
+    virtual void generateTrajectory();
 
-private:
-  int backIndex_ = -1;
+  private:
+    int backIndex_ = -1;
 
-  moveit_msgs::msg::RobotTrajectory trajectory;
-  moveit_msgs::msg::RobotTrajectory reversed;
-};
+    moveit_msgs::msg::RobotTrajectory trajectory;
+    moveit_msgs::msg::RobotTrajectory reversed;
+  };
 
 }  // namespace cl_moveit2z

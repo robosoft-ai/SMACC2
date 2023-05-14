@@ -29,16 +29,16 @@
 
 namespace cl_moveit2z
 {
-class CbExecuteLastTrajectory : public CbMoveEndEffectorTrajectory
-{
-public:
-  CbExecuteLastTrajectory();
+  class CbExecuteLastTrajectory : public CbMoveEndEffectorTrajectory
+  {
+  public:
+    CbExecuteLastTrajectory();
 
-  virtual ~CbExecuteLastTrajectory();
+    virtual ~CbExecuteLastTrajectory();
 
-  virtual void generateTrajectory();
+    virtual void generateTrajectory();
 
-  virtual void onEntry() override;
-};
+    virtual void onEntry() override;
+  };
 
 }  // namespace cl_moveit2z

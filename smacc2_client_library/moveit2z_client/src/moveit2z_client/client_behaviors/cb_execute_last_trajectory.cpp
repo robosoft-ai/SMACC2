@@ -28,37 +28,37 @@
 
 namespace cl_moveit2z
 {
-CbExecuteLastTrajectory::CbExecuteLastTrajectory() {}
+  CbExecuteLastTrajectory::CbExecuteLastTrajectory() {}
 
-CbExecuteLastTrajectory::~CbExecuteLastTrajectory() {}
+  CbExecuteLastTrajectory::~CbExecuteLastTrajectory() {}
 
-void CbExecuteLastTrajectory::generateTrajectory() {}
+  void CbExecuteLastTrajectory::generateTrajectory() {}
 
-void CbExecuteLastTrajectory::onEntry()
-{
-  this->requiresClient(movegroupClient_);
-
-  CpTrajectoryHistory * trajectoryHistory;
-  this->requiresComponent(trajectoryHistory);
-
-  // this->generateTrajectory();
-  // endEffectorTrajectory_ =
-
-  // if (this->endEffectorTrajectory_.size() == 0)
-  // {
-  //     RCLCPP_WARN_STREAM(getLogger(), "[" << smacc2::demangleSymbol(typeid(*this).name()) << "] No points in the trajectory. Skipping behavior.");
-  //     return;
-  // }
-
-  //this->createMarkers();
-  //markersInitialized_ = true;
-
-  moveit_msgs::msg::RobotTrajectory trajectory;
-
-  if (trajectoryHistory->getLastTrajectory(trajectory))
+  void CbExecuteLastTrajectory::onEntry()
   {
-    this->executeJointSpaceTrajectory(trajectory);
+    this->requiresClient(movegroupClient_);
+
+    CpTrajectoryHistory * trajectoryHistory;
+    this->requiresComponent(trajectoryHistory);
+
+    // this->generateTrajectory();
+    // endEffectorTrajectory_ =
+
+    // if (this->endEffectorTrajectory_.size() == 0)
+    // {
+    //     RCLCPP_WARN_STREAM(getLogger(), "[" << smacc2::demangleSymbol(typeid(*this).name()) << "] No points in the trajectory. Skipping behavior.");
+    //     return;
+    // }
+
+    //this->createMarkers();
+    //markersInitialized_ = true;
+
+    moveit_msgs::msg::RobotTrajectory trajectory;
+
+    if (trajectoryHistory->getLastTrajectory(trajectory))
+    {
+      this->executeJointSpaceTrajectory(trajectory);
+    }
   }
-}
 
 }  // namespace cl_moveit2z

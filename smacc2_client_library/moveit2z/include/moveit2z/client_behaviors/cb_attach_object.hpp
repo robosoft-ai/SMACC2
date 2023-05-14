@@ -29,19 +29,19 @@
 
 namespace cl_moveit2z
 {
-class CbAttachObject : public smacc2::SmaccAsyncClientBehavior
-{
-public:
-  CbAttachObject(std::string targetObjectName);
+  class CbAttachObject : public smacc2::SmaccAsyncClientBehavior
+  {
+  public:
+    CbAttachObject(std::string targetObjectName);
 
-  CbAttachObject();
+    CbAttachObject();
 
-  virtual void onEntry() override;
+    virtual void onEntry() override;
 
-  virtual void onExit() override;
+    virtual void onExit() override;
 
-  std::string targetObjectName_;
+    std::string targetObjectName_;
 
-private:
-};
+  private:
+  };
 }  // namespace cl_moveit2z

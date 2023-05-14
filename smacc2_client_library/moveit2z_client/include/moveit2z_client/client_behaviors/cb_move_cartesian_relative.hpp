@@ -29,30 +29,30 @@
 
 namespace cl_moveit2z
 {
-// Performs a relative motion from the current end effector pose
-// keeping the same orientation and just moving an offset in the position
-class CbMoveCartesianRelative : public smacc2::SmaccAsyncClientBehavior
-{
-public:
-  geometry_msgs::msg::Vector3 offset_;
+  // Performs a relative motion from the current end effector pose
+  // keeping the same orientation and just moving an offset in the position
+  class CbMoveCartesianRelative : public smacc2::SmaccAsyncClientBehavior
+  {
+  public:
+    geometry_msgs::msg::Vector3 offset_;
 
-  std::optional<double> scalingFactor_;
+    std::optional<double> scalingFactor_;
 
-  std::optional<std::string> group_;
+    std::optional<std::string> group_;
 
-  CbMoveCartesianRelative();
+    CbMoveCartesianRelative();
 
-  CbMoveCartesianRelative(geometry_msgs::msg::Vector3 offset);
+    CbMoveCartesianRelative(geometry_msgs::msg::Vector3 offset);
 
-  virtual void onEntry() override;
+    virtual void onEntry() override;
 
-  virtual void onExit() override;
+    virtual void onExit() override;
 
-  void moveRelativeCartesian(
-    moveit::planning_interface::MoveGroupInterface * movegroupClient,
-    geometry_msgs::msg::Vector3 & offset);
+    void moveRelativeCartesian(
+      moveit::planning_interface::MoveGroupInterface * movegroupClient,
+      geometry_msgs::msg::Vector3 & offset);
 
-public:
-  ClMoveit2z * moveGroupSmaccClient_;
-};
+  public:
+    ClMoveit2z * moveGroupSmaccClient_;
+  };
 }  // namespace cl_moveit2z

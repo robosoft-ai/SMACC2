@@ -32,20 +32,20 @@
 
 namespace cl_moveit2z
 {
-//named targets are configured in the urdf file
-class CbMoveNamedTarget : public smacc2::SmaccAsyncClientBehavior
-{
-protected:
-  ClMoveit2z * movegroupClient_;
-  std::string namedTarget_;
+  //named targets are configured in the urdf file
+  class CbMoveNamedTarget : public smacc2::SmaccAsyncClientBehavior
+  {
+  protected:
+    ClMoveit2z * movegroupClient_;
+    std::string namedTarget_;
 
-public:
-  CbMoveNamedTarget(std::string namedtarget);
+  public:
+    CbMoveNamedTarget(std::string namedtarget);
 
-  virtual void onEntry() override;
+    virtual void onEntry() override;
 
-  virtual void onExit() override;
+    virtual void onExit() override;
 
-  std::map<std::string, double> getNamedTargetValues();
-};
+    std::map<std::string, double> getNamedTargetValues();
+  };
 }  // namespace cl_moveit2z
