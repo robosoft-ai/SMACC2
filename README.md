@@ -195,7 +195,7 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
 <<<<<<< HEAD
 - `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`nav2z_client`), MoveIt2 (`moveit2z_client`).
 =======
-- `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`nav2z_client`), MoveIt2 (`moveit2z`).
+- `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`nav2z_client`), MoveIt2 (`moveit2z_client`).
 >>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f
 - `smacc2_event_generators` - ...
 - `smacc2_msgs` - ROS 2 messages for SMACC2 framework.

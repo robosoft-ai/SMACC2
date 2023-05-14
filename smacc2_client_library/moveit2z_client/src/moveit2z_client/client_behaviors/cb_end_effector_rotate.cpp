@@ -24,9 +24,9 @@
 #include <moveit2z_client/client_behaviors/cb_end_effector_rotate.hpp>
 #include <moveit2z_client/common.hpp>
 =======
-#include <moveit2z/client_behaviors/cb_end_effector_rotate.hpp>
-#include <moveit2z/common.hpp>
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z/src/moveit2z/client_behaviors/cb_end_effector_rotate.cpp
+#include <moveit2z_client/client_behaviors/cb_end_effector_rotate.hpp>
+#include <moveit2z_client/common.hpp>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z_client/src/moveit2z_client/client_behaviors/cb_end_effector_rotate.cpp
 
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 

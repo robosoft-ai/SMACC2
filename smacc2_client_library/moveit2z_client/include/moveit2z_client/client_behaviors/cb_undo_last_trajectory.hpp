@@ -24,9 +24,9 @@
 #include <moveit2z_client/client_behaviors/cb_move_end_effector_trajectory.hpp>
 #include <moveit2z_client/components/cp_trajectory_history.hpp>
 =======
-#include <moveit2z/client_behaviors/cb_move_end_effector_trajectory.hpp>
-#include <moveit2z/components/cp_trajectory_history.hpp>
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z/include/moveit2z/client_behaviors/cb_undo_last_trajectory.hpp
+#include <moveit2z_client/client_behaviors/cb_move_end_effector_trajectory.hpp>
+#include <moveit2z_client/components/cp_trajectory_history.hpp>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z_client/include/moveit2z_client/client_behaviors/cb_undo_last_trajectory.hpp
 
 namespace cl_moveit2z
 {

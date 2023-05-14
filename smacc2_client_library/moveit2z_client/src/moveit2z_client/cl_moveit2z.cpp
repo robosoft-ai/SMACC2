@@ -23,8 +23,8 @@
 <<<<<<< HEAD:smacc2_client_library/moveit2z_client/src/moveit2z_client/cl_moveit2z.cpp
 #include <moveit2z_client/cl_moveit2z.hpp>
 =======
-#include <moveit2z/cl_moveit2z.hpp>
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z/src/moveit2z/cl_moveit2z.cpp
+#include <moveit2z_client/cl_moveit2z.hpp>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z_client/src/moveit2z_client/cl_moveit2z.cpp
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 using namespace std::chrono_literals;

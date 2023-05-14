@@ -21,8 +21,8 @@
 <<<<<<< HEAD:smacc2_client_library/moveit2z_client/src/moveit2z_client/components/cp_grasping_objects.cpp
 #include <moveit2z_client/components/cp_grasping_objects.hpp>
 =======
-#include <moveit2z/components/cp_grasping_objects.hpp>
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z/src/moveit2z/components/cp_grasping_objects.cpp
+#include <moveit2z_client/components/cp_grasping_objects.hpp>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z_client/src/moveit2z_client/components/cp_grasping_objects.cpp
 
 namespace cl_moveit2z
 {

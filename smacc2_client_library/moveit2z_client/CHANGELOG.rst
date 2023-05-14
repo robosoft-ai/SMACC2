@@ -2,8 +2,8 @@
 <<<<<<< HEAD:smacc2_client_library/moveit2z_client/CHANGELOG.rst
 Changelog for package moveit2z_client
 =======
-Changelog for package moveit2z
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z/CHANGELOG.rst
+Changelog for package moveit2z_client
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z_client/CHANGELOG.rst
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 2.3.6 (2023-03-12)

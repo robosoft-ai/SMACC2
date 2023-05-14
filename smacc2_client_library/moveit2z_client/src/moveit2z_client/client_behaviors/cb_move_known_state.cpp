@@ -25,8 +25,8 @@
 <<<<<<< HEAD:smacc2_client_library/moveit2z_client/src/moveit2z_client/client_behaviors/cb_move_known_state.cpp
 #include <moveit2z_client/client_behaviors/cb_move_known_state.hpp>
 =======
-#include <moveit2z/client_behaviors/cb_move_known_state.hpp>
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z/src/moveit2z/client_behaviors/cb_move_known_state.cpp
+#include <moveit2z_client/client_behaviors/cb_move_known_state.hpp>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z_client/src/moveit2z_client/client_behaviors/cb_move_known_state.cpp
 
 namespace cl_moveit2z
 {

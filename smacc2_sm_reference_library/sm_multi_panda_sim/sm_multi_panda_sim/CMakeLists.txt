@@ -18,7 +18,7 @@ find_package(Boost COMPONENTS thread REQUIRED)
 <<<<<<< HEAD
 find_package(moveit2z_client REQUIRED)
 =======
-find_package(moveit2z REQUIRED)
+find_package(moveit2z_client REQUIRED)
 >>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f
 
 find_package(sr_all_events_go REQUIRED)
@@ -31,7 +31,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
 <<<<<<< HEAD
   moveit2z_client
 =======
-  moveit2z
+  moveit2z_client
 >>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f
   sr_all_events_go
   ros_publisher_client

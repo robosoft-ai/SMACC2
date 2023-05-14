@@ -21,8 +21,8 @@
 <<<<<<< HEAD:smacc2_client_library/moveit2z_client/src/moveit2z_client/client_behaviors/cb_move_named_target.cpp
 #include <moveit2z_client/client_behaviors/cb_move_named_target.hpp>
 =======
-#include <moveit2z/client_behaviors/cb_move_named_target.hpp>
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z/src/moveit2z/client_behaviors/cb_move_named_target.cpp
+#include <moveit2z_client/client_behaviors/cb_move_named_target.hpp>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z_client/src/moveit2z_client/client_behaviors/cb_move_named_target.cpp
 
 namespace cl_moveit2z
 {

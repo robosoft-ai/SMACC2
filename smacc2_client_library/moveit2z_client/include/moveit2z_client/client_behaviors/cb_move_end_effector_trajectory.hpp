@@ -24,8 +24,8 @@
 <<<<<<< HEAD:smacc2_client_library/moveit2z_client/include/moveit2z_client/client_behaviors/cb_move_end_effector_trajectory.hpp
 #include <moveit2z_client/cl_moveit2z.hpp>
 =======
-#include <moveit2z/cl_moveit2z.hpp>
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z/include/moveit2z/client_behaviors/cb_move_end_effector_trajectory.hpp
+#include <moveit2z_client/cl_moveit2z.hpp>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z_client/include/moveit2z_client/client_behaviors/cb_move_end_effector_trajectory.hpp
 #include <moveit_msgs/srv/get_position_ik.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>

@@ -22,8 +22,8 @@
 <<<<<<< HEAD:smacc2_client_library/moveit2z_client/src/moveit2z_client/client_behaviors/cb_circular_pivot_motion.cpp
 #include <moveit2z_client/client_behaviors/cb_circular_pivot_motion.hpp>
 =======
-#include <moveit2z/client_behaviors/cb_circular_pivot_motion.hpp>
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z/src/moveit2z/client_behaviors/cb_circular_pivot_motion.cpp
+#include <moveit2z_client/client_behaviors/cb_circular_pivot_motion.hpp>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z_client/src/moveit2z_client/client_behaviors/cb_circular_pivot_motion.cpp
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 using namespace std::chrono_literals;

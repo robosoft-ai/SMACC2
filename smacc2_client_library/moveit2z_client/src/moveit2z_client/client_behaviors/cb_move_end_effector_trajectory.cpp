@@ -26,10 +26,10 @@
 #include <moveit2z_client/common.hpp>
 #include <moveit2z_client/components/cp_trajectory_history.hpp>
 =======
-#include <moveit2z/client_behaviors/cb_move_end_effector_trajectory.hpp>
-#include <moveit2z/common.hpp>
-#include <moveit2z/components/cp_trajectory_history.hpp>
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z/src/moveit2z/client_behaviors/cb_move_end_effector_trajectory.cpp
+#include <moveit2z_client/client_behaviors/cb_move_end_effector_trajectory.hpp>
+#include <moveit2z_client/common.hpp>
+#include <moveit2z_client/components/cp_trajectory_history.hpp>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z_client/src/moveit2z_client/client_behaviors/cb_move_end_effector_trajectory.cpp
 #include <moveit_msgs/srv/get_position_ik.hpp>
 
 #include <visualization_msgs/msg/marker_array.hpp>

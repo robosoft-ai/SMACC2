@@ -23,10 +23,10 @@
 #include <moveit2z_client/client_behaviors/cb_pouring_motion.hpp>
 #include <moveit2z_client/common.hpp>
 =======
-#include <moveit2z/client_behaviors/cb_circular_pivot_motion.hpp>
-#include <moveit2z/client_behaviors/cb_pouring_motion.hpp>
-#include <moveit2z/common.hpp>
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z/src/moveit2z/client_behaviors/cb_pouring_motion.cpp
+#include <moveit2z_client/client_behaviors/cb_circular_pivot_motion.hpp>
+#include <moveit2z_client/client_behaviors/cb_pouring_motion.hpp>
+#include <moveit2z_client/common.hpp>
+>>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z_client/src/moveit2z_client/client_behaviors/cb_pouring_motion.cpp
 
 namespace cl_moveit2z
 {

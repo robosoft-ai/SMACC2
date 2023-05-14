@@ -21,9 +21,9 @@
 #include <moveit2z_client/components/cp_trajectory_history.hpp>
 #include <moveit2z_client/components/cp_grasping_objects.hpp>
 =======
-#include <moveit2z/cl_moveit2z.hpp>
-#include <moveit2z/components/cp_trajectory_history.hpp>
-#include <moveit2z/components/cp_grasping_objects.hpp>
+#include <moveit2z_client/cl_moveit2z.hpp>
+#include <moveit2z_client/components/cp_trajectory_history.hpp>
+#include <moveit2z_client/components/cp_grasping_objects.hpp>
 >>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f
 
 #include "ros_timer_client/cl_ros_timer.hpp"
