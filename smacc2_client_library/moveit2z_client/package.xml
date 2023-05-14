@@ -1,17 +1,10 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-<<<<<<< HEAD:smacc2_client_library/moveit2z_client/package.xml
   <name>moveit2z_client</name>
   <version>2.3.14</version>
 
   <description>The moveit2z_client package</description>
-=======
-  <name>moveit2z</name>
-  <version>2.3.14</version>
-
-  <description>The moveit2z package</description>
->>>>>>> 056c654b26293282493ab9a4aaec5399f25f061f:smacc2_client_library/moveit2z/package.xml
   <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
   <license>BSD-3</license>
 
