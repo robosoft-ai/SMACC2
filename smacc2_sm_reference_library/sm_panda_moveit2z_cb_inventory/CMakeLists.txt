@@ -15,12 +15,12 @@ find_package(ament_cmake REQUIRED)
 find_package(ros_timer_client REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
-find_package(moveit2z REQUIRED)
+find_package(moveit2z_client REQUIRED)
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   ros_timer_client
   smacc2
-  moveit2z
+  moveit2z_client
 )
 
 include_directories(

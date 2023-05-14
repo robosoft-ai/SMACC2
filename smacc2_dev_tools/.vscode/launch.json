@@ -248,10 +248,6 @@
             ]
         },
         {
-<<<<<<< HEAD:.vscode/launch.json
-<<<<<<< HEAD
-=======
-=======
             "name": "(gdb) sm_atomic_mode_states",
             "type": "cppdbg",
             "request": "launch",

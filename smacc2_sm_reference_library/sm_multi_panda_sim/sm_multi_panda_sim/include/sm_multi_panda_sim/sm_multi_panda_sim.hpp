@@ -51,8 +51,8 @@
 #include "orthogonals/or_updatable_publisher.hpp"
 
 // CLIENTS
-#include <moveit2z/cl_moveit2z.hpp>
-#include <moveit2z/client_behaviors.hpp>
+#include <moveit2z_client/cl_moveit2z.hpp>
+#include <moveit2z_client/client_behaviors.hpp>
 
 // CLIENT BEHAVIORS
 #include <smacc2/client_behaviors/cb_wait_topic_message.hpp>
