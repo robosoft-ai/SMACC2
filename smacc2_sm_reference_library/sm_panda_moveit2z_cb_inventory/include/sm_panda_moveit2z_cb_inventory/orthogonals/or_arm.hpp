@@ -32,7 +32,7 @@ class OrArm : public smacc2::Orthogonal<OrArm>
 public:
   void onInitialize() override
   {
-    auto move_group_client = this->createClient<cl_moveit2z::ClMoveit2z>("ur_manipulator"); //ur_manipulator
+    auto move_group_client = this->createClient<cl_moveit2z::ClMoveit2z>("panda_arm"); //ur_manipulator
     move_group_client->createComponent<cl_moveit2z::CpTrajectoryHistory>();
     auto graspingComponent = move_group_client->createComponent<cl_moveit2z::CpGraspingComponent>();
 

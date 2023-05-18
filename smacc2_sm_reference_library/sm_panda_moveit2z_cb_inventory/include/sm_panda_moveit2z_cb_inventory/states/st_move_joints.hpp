@@ -38,6 +38,7 @@ struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmPandaMoveit2zCbInventor
   // TRANSITION TABLE
   typedef boost::mpl::list<
     Transition<EvCbSuccess<CbMoveJoints, OrArm>, StMoveEndEffector, SUCCESS>
+    ,Transition<EvCbFailure<CbMoveJoints, OrArm>, StMoveJoints, ABORT>
 
     >
     reactions;
@@ -46,11 +47,19 @@ struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmPandaMoveit2zCbInventor
   static void staticConfigure()
   {
     std::map<std::string, double> jointValues{
-      {"shoulder_lift_joint", 0.0},
-      {"shoulder_pan_joint", 0.0},
-      {"wrist_1_joint", M_PI / 4},
-      {"wrist_2_joint", 0.0},
-      {"wrist_3_joint", 0.0}};
+      {"panda_joint1", 0.0},
+      {"panda_joint2", 0.0},
+      {"panda_joint3", 0.0},
+      {"panda_joint4", -M_PI/2},
+      {"panda_joint5", 0.0},
+      {"panda_joint6", M_PI/2},
+      {"panda_joint7", 0.0}
+      };
+
+    // panda_joint6:
+    // panda_joint7:
+    // panda_finger_joint1:
+    // panda_finger_joint2:
 
     configure_orthogonal<OrArm, CbMoveJoints>(jointValues);
   };
