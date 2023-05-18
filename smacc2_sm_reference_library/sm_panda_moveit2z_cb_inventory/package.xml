@@ -18,9 +18,18 @@
   <depend>controller_manager</depend>
   <depend>moveit_resources_panda_moveit_config</depend>
   <depend>robot_state_publisher</depend>
+  <depend>moveit_visual_tools</depend>
+  <depend>moveit_planners_chomp</depend>
+  <depend>pilz_industrial_motion_planner</depend>
+  <depend>joint_state_broadcaster</depend>
+  <depend>moveit_simple_controller_manager</depend>
+  <depend>moveit_planners_ompl</depend>
+  <depend>moveit_plugins</depend>
+  <depend>moveit_ros_robot_interaction</depend>
+  <depend>moveit</depend>
+
 
   <exec_depend>joint_trajectory_controller</exec_depend>
-
 
   <export>
     <build_type>ament_cmake</build_type>
