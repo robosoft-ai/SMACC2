@@ -56,11 +56,11 @@ struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmPandaMoveit2zCbInventor
       {"panda_joint7", 0.0}
       };
 
-    // panda_joint6:    
+    // panda_joint6:
     // panda_joint7:
     // panda_finger_joint1:
     // panda_finger_joint2:
-    
+
     configure_orthogonal<OrArm, CbMoveJoints>(jointValues);
   };
 

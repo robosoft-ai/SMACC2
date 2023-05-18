@@ -21,9 +21,7 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription(
-        declared_arguments + [OpaqueFunction(function=launch_setup)]
-    )
+    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
 
 
 def launch_setup(context, *args, **kwargs):
@@ -35,9 +33,7 @@ def launch_setup(context, *args, **kwargs):
         .planning_scene_monitor(
             publish_robot_description=True, publish_robot_description_semantic=True
         )
-        .planning_pipelines(
-            pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"]
-        )
+        .planning_pipelines(pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"])
         .to_moveit_configs()
     )
 
@@ -120,10 +116,12 @@ def launch_setup(context, *args, **kwargs):
         arguments=["panda_arm_controller", "-c", "/controller_manager"],
     )
 
-    smacc_state_machine_spawner = Node(package= "sm_panda_moveit2z_cb_inventory",
-                                       executable="sm_panda_moveit2z_cb_inventory_node",
-                                       prefix="xterm -hold -e",
-                                        output="screen")
+    smacc_state_machine_spawner = Node(
+        package="sm_panda_moveit2z_cb_inventory",
+        executable="sm_panda_moveit2z_cb_inventory_node",
+        prefix="xterm -hold -e",
+        output="screen",
+    )
 
     hand_controller_spawner = Node(
         package="controller_manager",
