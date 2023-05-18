@@ -23,14 +23,24 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
 WORKDIR "/home/ros2_ws/src"
 
 RUN echo "copying current code version to docker image:"
-ADD . /home/ros2_ws/src/SMACC2
+
+# # -------- moveit ----------
+# RUN git clone https://github.com/ros-planning/moveit2_tutorials.git -b humble src/moveit2_tutorials
+# RUN vcs import < src/moveit2_tutorials/moveit2_tutorials.repos
+
+# RUN apt-get update
+# RUN rosdep install --from-paths src --ignore-src -r -y
+RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
+
 WORKDIR "/home/ros2_ws"
+#ADD . /home/ros2_ws/src/SMACC2
+RUN git clone https://github.com/robosoft-ai/SMACC2.git -b humble src/SMACC2
 
 # install dependencies and build
 RUN vcs import  src --skip-existing --input src/SMACC2/.github/SMACC2-not-released.$ROS_DISTRO.repos
 RUN ls src
-
 RUN rosdep install --from-paths src --ignore-src -r -y
-RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
 
-RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && colcon build --merge-install --packages-skip moveit_servo"
+RUN git clone https://github.com/ros2/ros_testing.git src/ros_testing
+
+RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && colcon build --merge-install --parallel-workers 1"

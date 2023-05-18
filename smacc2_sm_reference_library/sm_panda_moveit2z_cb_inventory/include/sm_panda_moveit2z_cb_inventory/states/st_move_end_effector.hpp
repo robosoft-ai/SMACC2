@@ -47,16 +47,16 @@ struct StMoveEndEffector : smacc2::SmaccState<StMoveEndEffector, SmPandaMoveit2z
   static void staticConfigure()
   {
     geometry_msgs::msg::PoseStamped target_pose;
-    target_pose.header.frame_id = "world";
-    target_pose.pose.position.x = 0.137;
-    target_pose.pose.position.y = -0.630;
+    target_pose.header.frame_id = "panda_link0";
+    target_pose.pose.position.x = 0.4;
+    target_pose.pose.position.y = 0;
     target_pose.pose.position.z = 0.467;
 
-    target_pose.pose.orientation.x = 0.498;
-    target_pose.pose.orientation.y = 0.470;
-    target_pose.pose.orientation.z = 0.715;
+    target_pose.pose.orientation.x = 0;
+    target_pose.pose.orientation.y = 0;
+    target_pose.pose.orientation.z = 0;
 
-    target_pose.pose.orientation.w = 0.141;
+    target_pose.pose.orientation.w = 1;
 
     //target_pose.pose.position.z = 0.579;
 
@@ -71,7 +71,7 @@ struct StMoveEndEffector : smacc2::SmaccState<StMoveEndEffector, SmPandaMoveit2z
     // target_pose.pose.orientation.z = 0;
     // target_pose.pose.orientation.w = -0.4480736 ;
 
-    configure_orthogonal<OrArm, CbMoveEndEffector>(target_pose, "tool0");
+    configure_orthogonal<OrArm, CbMoveEndEffector>(target_pose, "panda_link8");
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveEndEffector"); }
