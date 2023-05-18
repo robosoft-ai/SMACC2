@@ -30,6 +30,7 @@ WORKDIR "/home/ros2_ws"
 RUN vcs import  src --skip-existing --input src/SMACC2/.github/SMACC2-not-released.$ROS_DISTRO.repos
 RUN ls src
 
+RUN apt update
 RUN rosdep install --from-paths src --ignore-src -r -y
 RUN apt-get update && apt-get install -q -y --no-install-recommends xterm
 
