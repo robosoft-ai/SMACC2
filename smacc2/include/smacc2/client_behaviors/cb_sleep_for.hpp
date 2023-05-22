@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <rclcpp/rclcpp.hpp>
 #include <rclcpp/duration.hpp>
+#include <rclcpp/rclcpp.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace smacc2::client_behaviors
@@ -31,9 +31,7 @@ using namespace std::chrono_literals;
 class CbSleepFor : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbSleepFor(rclcpp::Duration sleeptime) : sleeptime_(sleeptime)
-  {
-  }
+  CbSleepFor(rclcpp::Duration sleeptime) : sleeptime_(sleeptime) {}
 
   void onEntry() override
   {
@@ -41,9 +39,7 @@ public:
     this->postSuccessEvent();
   }
 
-  void onExit() override
-  {
-  }
+  void onExit() override {}
 
 private:
   rclcpp::Duration sleeptime_;
