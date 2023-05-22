@@ -22,6 +22,7 @@
 #pragma once
 
 #include <sensor_msgs/msg/joint_state.h>
+#include <smacc2/client_behaviors/cb_sleep_for.hpp>
 
 namespace sm_panda_moveit2z_cb_inventory
 {
@@ -32,6 +33,8 @@ using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
 using namespace cl_moveit2z;
 using smacc2::client_behaviors::CbWaitTopicMessage;
+using smacc2::client_behaviors::CbSleepFor;
+using namespace std::chrono_literals;
 
 // STATE DECLARATION
 struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmPandaMoveit2zCbInventory>
@@ -48,6 +51,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmPandaMoveit2zCb
   static void staticConfigure()
   {
     configure_orthogonal<OrArm, CbWaitTopicMessage<sensor_msgs::msg::JointState>>("/joint_states");
+    configure_orthogonal<OrArm, CbSleepFor>(5s);
   };
 
   void runtimeConfigure() {}

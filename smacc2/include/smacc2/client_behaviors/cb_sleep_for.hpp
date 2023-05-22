@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <functional>
+#include <rclcpp/duration.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
@@ -28,18 +28,20 @@ namespace smacc2::client_behaviors
 {
 using namespace std::chrono_literals;
 
-// Asynchronous behavior that waits to a topic message to send EvCbSuccess event
-// a guard function can be set to use conditions on the contents
-class CbWaitNode : public smacc2::SmaccAsyncClientBehavior
+class CbSleepFor : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbWaitNode(std::string nodeName);
+  CbSleepFor(rclcpp::Duration sleeptime) : sleeptime_(sleeptime) {}
 
-  void onEntry() override;
+  void onEntry() override
+  {
+    rclcpp::sleep_for(std::chrono::nanoseconds(sleeptime_.nanoseconds()));
+    this->postSuccessEvent();
+  }
 
-protected:
-  std::string nodeName_;
+  void onExit() override {}
 
-  rclcpp::Rate rate_;
+private:
+  rclcpp::Duration sleeptime_;
 };
 }  // namespace smacc2::client_behaviors
