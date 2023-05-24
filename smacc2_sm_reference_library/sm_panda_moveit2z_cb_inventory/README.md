@@ -5,7 +5,7 @@ First, source your chosen ros2 distro.
 source /opt/ros/rolling/setup.bash
 ```
 ```
-source /opt/ros/galactic/setup.bash
+source /opt/ros/humble/setup.bash
 ```
 
 Before you build, make sure you've installed all the dependencies...
@@ -24,7 +24,7 @@ colcon build
 After you built the project don't forget to setup your environment: First source the gazebo setup via
 
 ```
-source /opt/ros/galactic/share/gazebo_ros/local_setup.bash
+source /opt/ros/humble/share/gazebo_ros/local_setup.bash
 ```
 Then source the proper install folder...
 
