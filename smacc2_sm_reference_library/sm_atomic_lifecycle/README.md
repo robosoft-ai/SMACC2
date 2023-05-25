@@ -35,7 +35,7 @@ source ~/workspace/humble_ws/install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_atomic_lifecycle sm_atomic_lifecycle.launch
+ros2 launch sm_atomic_lifecycle sm_atomic_lifecycle.py
 ```
 
  <h2>Viewer Instructions</h2>
