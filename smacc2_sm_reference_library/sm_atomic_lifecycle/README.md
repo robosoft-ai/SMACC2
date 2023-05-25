@@ -1,8 +1,8 @@
  <h2>State Machine Diagram</h2>
 
- ![sm_atomic_lifecycle](docs/SmAtomicLifecycle_2021-10-18_93942.svg)
+ ![sm_atomic_lifecycle](docs/SmAtomicLifecycle_2023-5-25_72845.svg)
 
- <h2>Description</h2> A completely minimal state machine example.<br></br>
+ <h2>Description</h2> A completely minimal state machine example that also demonstartes the capabilities of the new SMACC Lifecycle Client Behavior Library<br></br>
 
  <h2>Build Instructions</h2>
 

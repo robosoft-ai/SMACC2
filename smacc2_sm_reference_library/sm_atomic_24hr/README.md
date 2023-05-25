@@ -1,8 +1,8 @@
  <h2>State Machine Diagram</h2>
 
- ! New Image required
+![sm_atomic_24hr](docs/SmAtomic24Hr_2023-5-25_72056.svg)
 
- <h2>Description</h2> A completely minimal state machine example.<br></br>
+ <h2>Description</h2> A completely minimal state machine example designed to run for 24 hours.<br></br>
 
  <h2>Build Instructions</h2>
 
