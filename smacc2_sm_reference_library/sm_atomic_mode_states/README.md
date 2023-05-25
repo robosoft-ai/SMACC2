@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ![sm_atomic_mode_states](docs/SmAtomic_2021-10-18_93942.svg)
+ ![sm_atomic_mode_states](docs/SmAtomicModeStates_2023-5-25_94327.svg)
 
  <h2>Description</h2> A completely minimal state machine example.<br></br>
 

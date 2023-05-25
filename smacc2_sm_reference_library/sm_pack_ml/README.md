@@ -1,8 +1,8 @@
  <h2>State Machine Diagram</h2>
 
- ![sm_pack_ml](docs/SmPackMl1_2021-11-29_0916.svg)
+ ![sm_pack_ml](docs/SmPackMl1_2023-5-25_9483.svg)
 
- <h2>Description</h2> A large multi stage state machine that demonstrates that the NxN problem is not as formidable as some would have you believe.<br></br>
+ <h2>Description</h2> A large multi stage state machine that implements the PackML mode design.<br></br>
 
  <h2>Build Instructions</h2>
 
