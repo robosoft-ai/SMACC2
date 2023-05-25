@@ -3,7 +3,6 @@
  ![sm_atomic_mode_states](docs/SmAtomic_2021-10-18_93942.svg)
 
  <h2>Description</h2> A completely minimal state machine example.<br></br>
-<a href="https://robosoft-ai.github.io/smacc2_doxygen/master/html/namespacesm__atomic.html">Doxygen Namespace & Class Reference</a>
 
  <h2>Build Instructions</h2>
 

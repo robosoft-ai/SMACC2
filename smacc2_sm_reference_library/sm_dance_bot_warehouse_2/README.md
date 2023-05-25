@@ -4,7 +4,6 @@
 
  <h2>Description</h2> A full-featured state machine example, that highlights the capabilities of SMACC2 & the ROS2 Navigation Stack via the MoveBaseZ Client.
 .<br></br>
-<a href="https://robosoft-ai.github.io/smacc2_doxygen/master/html/namespacesm__dance__bot__warehouse__2.html">Doxygen Namespace & Class Reference</a>
 
  <h2>Build Instructions</h2>
 
