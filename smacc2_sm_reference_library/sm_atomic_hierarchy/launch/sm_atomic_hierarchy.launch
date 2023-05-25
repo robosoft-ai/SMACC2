@@ -1,5 +1,0 @@
-<launch>
-    <node pkg="sm_atomic_hierarchy" exec="sm_atomic_hierarchy_node" name="sm_atomic_hierarchy">
-        <param from="$(find-pkg-share sm_atomic_hierarchy)/config/sm_atomic_config.yaml"/>
-    </node>
-</launch>

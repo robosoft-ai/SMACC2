@@ -35,7 +35,7 @@ source ~/workspace/humble_ws/install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_atomic_mode_states sm_atomic_mode_states.launch
+ros2 launch sm_atomic_mode_states sm_atomic_mode_states.py
 ```
 
  <h2>Viewer Instructions</h2>

@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ![sm_atomic_lifecycle](docs/SmAtomicLifecycle_2021-10-18_93942.svg)
+ ![sm_atomic_lifecycle](docs/SmAtomicLifecycle_2023-5-25_72845.svg)
 
  <h2>Description</h2> A completely minimal state machine example.<br></br>
 
@@ -35,7 +35,7 @@ source ~/workspace/humble_ws/install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_atomic_lifecycle sm_atomic_lifecycle.launch
+ros2 launch sm_atomic_lifecycle sm_atomic_lifecycle.py
 ```
 
  <h2>Viewer Instructions</h2>
