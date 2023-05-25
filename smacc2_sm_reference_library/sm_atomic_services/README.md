@@ -35,7 +35,7 @@ source ~/workspace/humble_ws/install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_atomic sm_atomic.launch
+ros2 launch sm_atomic_services sm_atomic_services.py
 ```
 
  <h2>Viewer Instructions</h2>
