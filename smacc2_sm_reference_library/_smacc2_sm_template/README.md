@@ -5,7 +5,7 @@ First, source your chosen ros2 distro.
 source /opt/ros/rolling/setup.bash
 ```
 ```
-source /opt/ros/galactic/setup.bash
+source /opt/ros/humble/setup.bash
 ```
 
 Before you build, make sure you've installed all the dependencies...
