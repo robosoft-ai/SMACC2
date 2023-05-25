@@ -2,7 +2,7 @@
 
  ![sm_advanced_recovery](docs/SmAdvancedRecovery1_2021-11-27_15045.svg)
 
- <h2>Description</h2> A state machine demonstrating SMACC's advanced recovery capabilities via deep history<br></br>
+ <h2>Description</h2> A state machine demonstrating SMACC's advanced recovery capabilities via deep history.<br></br>
 
  <h2>Build Instructions</h2>
 
