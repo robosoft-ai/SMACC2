@@ -28,7 +28,7 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
 
 ## Getting started - ROS Humble
 
-1. [Install ROS 2 Galactic](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html).
+1. [Install ROS 2 Humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html).
 
 2. Make sure that `colcon`, its extensions and `vcs` are installed:
    ```
