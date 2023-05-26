@@ -177,7 +177,7 @@ WaypointNavigator::sendNextGoal(
 
     // configuring goal
     goal.pose.header.frame_id = p->getReferenceFrame();
-    goal.pose.header.stamp = getNode()->now();
+    //goal.pose.header.stamp = getNode()->now();
     goal.pose.pose = next;
 
     auto plannerSwitcher = client_->getComponent<PlannerSwitcher>();

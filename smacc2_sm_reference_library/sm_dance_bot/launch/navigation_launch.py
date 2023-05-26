@@ -34,7 +34,7 @@ def generate_launch_description():
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
     map_subscribe_transient_local = LaunchConfiguration("map_subscribe_transient_local")
 
-    lifecycle_nodes = ["controller_server", "planner_server", "recoveries_server", "bt_navigator"]
+    lifecycle_nodes = ["controller_server", "planner_server", "behavior_server", "bt_navigator"]
 
     # Map fully qualified names to relative ones so the node's namespace can be prepended.
     # In case of the transforms (tf), currently, there doesn't seem to be a better alternative
@@ -125,10 +125,11 @@ def generate_launch_description():
                 arguments=["--ros-args", "--log-level", "INFO"],
             ),
             Node(
-                package="nav2_recoveries",
-                executable="recoveries_server",
-                name="recoveries_server",
+                package="nav2_behaviors",
+                executable="behavior_server",
+                name="behavior_server",
                 output="screen",
+                prefix=xtermprefix,
                 parameters=[configured_params],
                 remappings=remappings,
                 arguments=["--ros-args", "--log-level", "INFO"],

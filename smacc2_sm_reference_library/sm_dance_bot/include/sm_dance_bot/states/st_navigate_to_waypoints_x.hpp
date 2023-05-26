@@ -57,7 +57,10 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
     configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
     configure_orthogonal<OrNavigation, CbResumeSlam>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+  }
 
+  void onEntry()
+  {
   }
 
   void runtimeConfigure() {}

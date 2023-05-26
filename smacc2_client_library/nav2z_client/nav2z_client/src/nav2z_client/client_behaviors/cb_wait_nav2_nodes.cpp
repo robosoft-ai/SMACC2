@@ -104,7 +104,7 @@ std::string toString(Nav2Nodes value)
     case Nav2Nodes::ControllerServer:
       return "controller_server";
     case Nav2Nodes::RecoveriesServer:
-      return "recoveries_server";
+      return "behavior_server";
     case Nav2Nodes::BtNavigator:
       return "bt_navigator";
     case Nav2Nodes::MapServer:
@@ -120,7 +120,7 @@ Nav2Nodes fromString(std::string id)
     return Nav2Nodes::PlannerServer;
   else if (id == "controller_server")
     return Nav2Nodes::ControllerServer;
-  else if (id == "recoveries_server")
+  else if (id == "behavior_server")
     return Nav2Nodes::RecoveriesServer;
   else if (id == "bt_navigator")
     return Nav2Nodes::BtNavigator;

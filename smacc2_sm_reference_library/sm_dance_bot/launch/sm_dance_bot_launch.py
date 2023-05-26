@@ -37,6 +37,8 @@ def generate_launch_description():
     use_namespace = LaunchConfiguration("use_namespace")
     map_yaml_file = LaunchConfiguration("map")
     use_sim_time = LaunchConfiguration("use_sim_time")
+    gazebo_headless = LaunchConfiguration("headless")
+
     params_file = LaunchConfiguration("params_file")
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
     autostart = LaunchConfiguration("autostart")
@@ -81,6 +83,12 @@ def generate_launch_description():
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
         "use_sim_time", default_value="true", description="Use simulation (Gazebo) clock if true"
+    )
+
+    declare_gazebo_headless_cmd = DeclareLaunchArgument(
+        "headless",
+        default_value="false",
+        description="Use headless Gazebo if true",
     )
 
     declare_params_file_cmd = DeclareLaunchArgument(
@@ -161,7 +169,7 @@ def generate_launch_description():
 
     gazebo_simulator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, "gazebo_launch.py")),
-        launch_arguments={"show_gz_lidar": show_gz_lidar}.items(),
+        launch_arguments={"show_gz_lidar": show_gz_lidar, "headless": gazebo_headless}.items(),
     )
 
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
@@ -219,6 +227,7 @@ def generate_launch_description():
     ld.add_action(declare_slam_cmd)
     ld.add_action(declare_map_yaml_cmd)
     ld.add_action(declare_use_sim_time_cmd)
+    ld.add_action(declare_gazebo_headless_cmd)
     ld.add_action(declare_params_file_cmd)
     ld.add_action(declare_bt_xml_cmd)
     ld.add_action(declare_autostart_cmd)

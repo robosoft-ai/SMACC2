@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ![sm_dance_bot_warehouse_2](docs/SmDanceBot_2021-10-18_94410.svg)
+ ![sm_dance_bot_warehouse_2](docs/SmDanceBotWareHouse2_2023-5-26_152719.svg)
 
  <h2>Description</h2> A full-featured state machine example, that highlights the capabilities of SMACC2 & the ROS2 Navigation Stack via the MoveBaseZ Client.
 .<br></br>
@@ -38,7 +38,12 @@ And then run the launch file...
 ```
 ros2 launch sm_dance_bot_warehouse_2 sm_dance_bot_warehouse_2_launch.py
 ```
+<h2>Headless launch</h2>
 
+Alternatively, you can also launch the gazebo simulator in headless mode:
+```
+ros2 launch sm_dance_bot_warehouse_2 sm_dance_bot_warehouse_2_launch.py headless:=True
+```
  <h2>Viewer Instructions</h2>
 If you have the SMACC2 Runtime Analyzer installed then type...
 

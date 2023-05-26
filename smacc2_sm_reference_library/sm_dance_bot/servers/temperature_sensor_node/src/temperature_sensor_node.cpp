@@ -20,7 +20,7 @@ int main(int argc, char ** argv)
   rclcpp::init(argc, argv);
 
   auto nh = rclcpp::Node::make_shared("temperature_sensor_node");
-  auto pub = nh->create_publisher<sensor_msgs::msg::Temperature>("/temperature", rclcpp::QoS(1));
+  auto pub = nh->create_publisher<sensor_msgs::msg::Temperature>("/temperature", 1);
 
   rclcpp::Rate r(10);
 

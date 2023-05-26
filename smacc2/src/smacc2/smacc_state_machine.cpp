@@ -42,8 +42,7 @@ ISmaccStateMachine::ISmaccStateMachine(
   // TODO(henningkayser): remove once all parameters are declared inside the components
   // node_options.automatically_declare_parameters_from_overrides(true);
 
-  nh_ = rclcpp::Node::make_shared(
-    stateMachineName, nodeOptions.automatically_declare_parameters_from_overrides(true));  //
+  nh_ = rclcpp::Node::make_shared(stateMachineName, nodeOptions);  //
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "Creating State Machine Base: " << nh_->get_fully_qualified_name());
 
