@@ -26,6 +26,59 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
 
 1. Source build - also core ROS packages are build from source. It shows potential issues in the mid future.
 
+## Getting started - ROS Humble
+
+1. [Install ROS 2 Humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html).
+
+2. Make sure that `colcon`, its extensions and `vcs` are installed:
+   ```
+   sudo apt install python3-colcon-common-extensions python3-vcstool
+   ```
+3. Create a new ROS 2 workspace if necessary:
+   ```
+   export COLCON_WS=~/workspace/humble_ws
+   mkdir -p $COLCON_WS/src
+   ```
+4. Or just navigate to your workspace source folder:
+   ```
+   cd ~/workspace/humble_ws/src
+   ```
+5. Clone the repo:
+   ```
+   git clone https://github.com/robosoft-ai/SMACC2.git
+   ```
+6. Checkout the Humble branch:
+   ```
+   cd ~/workspace/humble_ws/src/SMACC2
+   git checkout humble
+   ```
+7. Navigate to the workspace:
+   ```
+   cd ~/workspace/humble_ws
+   ```
+8. Update System:
+   ```
+   sudo apt update
+   sudo apt upgrade
+   ```
+9. Source the workspace:
+   ```
+   source /opt/ros/humble/setup.bash
+   ```
+10. Update dependencies:
+   ```
+   rosdep update
+   ```
+11. Pull relevant packages and install dependencies:
+   ```
+   vcs import src --skip-existing --input src/SMACC2/.github/SMACC2.humble.repos
+   rosdep install --ignore-src --from-paths src -y -r
+   ```
+12. Compile:
+   ```
+   colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
+   ```
+
 ## Getting started - ROS Galactic
 
 1. [Install ROS 2 Galactic](https://docs.ros.org/en/galactic/Installation/Ubuntu-Install-Debians.html).
@@ -132,7 +185,7 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
    ```
 
-## Getting started - ROS Rolling + Ubuntu 20.04 (Focal)
+## Getting started - ROS Rolling
 
 1. [Install ROS 2 Rolling](https://index.ros.org/doc/ros2/Installation/Rolling/Linux-Install-Debians/).
 
