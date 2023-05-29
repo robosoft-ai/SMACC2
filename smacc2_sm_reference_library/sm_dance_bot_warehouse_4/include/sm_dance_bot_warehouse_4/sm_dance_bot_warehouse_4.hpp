@@ -86,20 +86,15 @@ class StNavigateUndoMotion;
 class StNavigateToWaypoint1;
 class StNavigateToWaypoint1Recovery;
 class StNavigateToWaypointsX;
-class StNavigateToWaypointsX2;
 class StInitialSpinning;
 
 class StRotateDegrees1;
 class StRotateDegrees2;
 class StRotateDegrees3;
-class StRotateDegrees4;
-class StRotateDegrees5;
-class StRotateDegrees6;
 
 class StNavigateReverse1;
 class StNavigateReverse2;
 class StNavigateReverse3;
-class StForwardAisle;
 class StNavigateUndoMotionLeaf;
 
 //SUPERSTATE FORWARD DECLARATIONS
@@ -170,19 +165,16 @@ struct SmDanceBotWarehouse4 : public smacc2::SmaccStateMachineBase<SmDanceBotWar
 #include <sm_dance_bot_warehouse_4/states/st_event_count_down.hpp>
 
 #include <sm_dance_bot_warehouse_4/states/st_navigate_to_waypoints_x.hpp>
-#include <sm_dance_bot_warehouse_4/states/st_navigate_to_waypoints_x_2.hpp>
 
 #include <sm_dance_bot_warehouse_4/states/st_navigate_undo_motion.hpp>
 #include <sm_dance_bot_warehouse_4/states/st_navigate_undo_motion_leaf.hpp>
 #include <sm_dance_bot_warehouse_4/states/st_navigate_reverse_1.hpp>
 #include <sm_dance_bot_warehouse_4/states/st_navigate_reverse_2.hpp>
 #include <sm_dance_bot_warehouse_4/states/st_navigate_reverse_3.hpp>
-#include <sm_dance_bot_warehouse_4/states/st_forward_aisle.hpp>
 #include <sm_dance_bot_warehouse_4/states/st_navigate_to_waypoint_1.hpp>
 #include <sm_dance_bot_warehouse_4/states/st_initial_spinning.hpp>
 
 #include <sm_dance_bot_warehouse_4/states/st_rotate_degrees_1.hpp>
 #include <sm_dance_bot_warehouse_4/states/st_rotate_degrees_2.hpp>
 #include <sm_dance_bot_warehouse_4/states/st_rotate_degrees_3.hpp>
-#include <sm_dance_bot_warehouse_4/states/st_rotate_degrees_4.hpp>
 #include <sm_dance_bot_warehouse_4/states/st_navigate_to_waypoint_1_recovery.hpp>
