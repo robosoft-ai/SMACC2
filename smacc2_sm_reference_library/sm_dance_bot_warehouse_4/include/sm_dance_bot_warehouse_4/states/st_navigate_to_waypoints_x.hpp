@@ -127,22 +127,22 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
     Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_1>,
     Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_2>,
     Transition<EvWaypoint2<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_3>,
-    Transition<EvWaypoint3<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_3>,
-    Transition<EvWaypoint4<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_3>,
-    Transition<EvWaypoint5<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_3>,
-    Transition<EvWaypoint6<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_4>,
-    Transition<EvWaypoint7<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_5>,
+    Transition<EvWaypoint3<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_4>,
+    Transition<EvWaypoint4<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_5>,
+    Transition<EvWaypoint5<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_6>,
+    Transition<EvWaypoint6<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_7>,
+    Transition<EvWaypoint7<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_8>,
 
-    Transition<EvWaypoint8<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_5>,
-    Transition<EvWaypoint9<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_5>,
-    Transition<EvWaypoint10<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_6>,
-    Transition<EvWaypoint11<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_7>,
-    Transition<EvWaypoint12<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_8>,
-    Transition<EvWaypoint13<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_8>,
-    Transition<EvWaypoint14<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_9>,
-    Transition<EvWaypoint15<ClNav2Z, OrNavigation>, StNavigateToWaypointsX2, TRANSITION_10>,
+    Transition<EvWaypoint8<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_9>,
+    Transition<EvWaypoint9<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_10>,
+    Transition<EvWaypoint10<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_11>,
+    Transition<EvWaypoint11<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_12>,
+    Transition<EvWaypoint12<ClNav2Z, OrNavigation>, StRotateDegrees1, TRANSITION_13>,
+    Transition<EvWaypoint13<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_14>,
+    Transition<EvWaypoint14<ClNav2Z, OrNavigation>, StRotateDegrees2, TRANSITION_15>,
+    Transition<EvWaypoint15<ClNav2Z, OrNavigation>, StNavigateToWaypoint1, TRANSITION_16>,
 
-    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointsX>
+    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, SS1::SsRadialPattern1>
     >
     reactions;
 
