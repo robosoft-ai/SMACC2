@@ -29,7 +29,7 @@
 #include <mutex>
 #include <thread>
 
-namespace cl_move_base_z
+namespace cl_moveit2z
 {
 struct TfPoseTrack
 {
@@ -96,4 +96,4 @@ private:
   std::mutex m_mutex_;
   std::list<std::shared_ptr<TfPoseTrack>> poseTracks_;
 };
-}  // namespace cl_move_base_z
+}  // namespace cl_moveit2z
