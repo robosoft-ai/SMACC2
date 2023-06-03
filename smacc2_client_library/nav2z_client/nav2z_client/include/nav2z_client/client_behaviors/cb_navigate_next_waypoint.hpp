@@ -38,7 +38,7 @@ public:
   void onExit() override;
 
 protected:
-  WaypointNavigator * waypointsNavigator_;
+  CpWaypointNavigator * waypointsNavigator_;
 
   NavigateNextWaypointOptions options_;
 

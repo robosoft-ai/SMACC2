@@ -135,10 +135,10 @@ void CbNavigateForward::onEntry()
     odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
   }
 
-  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
   plannerSwitcher->setForwardPlanner();
 
-  auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("forward_goal_checker");
 
   this->sendGoal(goal);

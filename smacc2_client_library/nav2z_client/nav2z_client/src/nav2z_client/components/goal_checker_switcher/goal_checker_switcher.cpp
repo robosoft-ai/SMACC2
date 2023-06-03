@@ -21,16 +21,16 @@
 
 namespace cl_nav2z
 {
-GoalCheckerSwitcher::GoalCheckerSwitcher(
+CpGoalCheckerSwitcher::CpGoalCheckerSwitcher(
   std::string goal_checker_selector_topic, std::string default_goal_checker_name)
 : goal_checker_selector_topic_(goal_checker_selector_topic),
   default_goal_checker_name_(default_goal_checker_name)
 {
 }
 
-GoalCheckerSwitcher::~GoalCheckerSwitcher() {}
+CpGoalCheckerSwitcher::~CpGoalCheckerSwitcher() {}
 
-void GoalCheckerSwitcher::onInitialize()
+void CpGoalCheckerSwitcher::onInitialize()
 {
   rclcpp::QoS qos(rclcpp::KeepLast(1));
   qos.transient_local().reliable();
@@ -39,14 +39,15 @@ void GoalCheckerSwitcher::onInitialize()
     getNode()->create_publisher<std_msgs::msg::String>(goal_checker_selector_topic_, qos);
 }
 
-void GoalCheckerSwitcher::setDefaultGoalChecker()
+void CpGoalCheckerSwitcher::setDefaultGoalChecker()
 {
   setGoalCheckerId(default_goal_checker_name_);  // default id in navigation2 stack
 }
 
-void GoalCheckerSwitcher::setGoalCheckerId(std::string goalcheckerid)
+void CpGoalCheckerSwitcher::setGoalCheckerId(std::string goalcheckerid)
 {
-  RCLCPP_INFO_STREAM(getLogger(), "[GoalCheckerSwitcher] Setting goal checker: " << goalcheckerid);
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[CpGoalCheckerSwitcher] Setting goal checker: " << goalcheckerid);
 
   // controller_server_node_->wait_for_service();
   // std::vector<rclcpp::Parameter> params{ rclcpp::Parameter("current_goal_checker", goalcheckerid) };
@@ -59,13 +60,13 @@ void GoalCheckerSwitcher::setGoalCheckerId(std::string goalcheckerid)
   // int i = 0;
   // for (auto& res : futureResults.get())
   // {
-  //   RCLCPP_INFO_STREAM(getLogger(), "[GoalCheckerSwitcher] parameter result: "
+  //   RCLCPP_INFO_STREAM(getLogger(), "[CpGoalCheckerSwitcher] parameter result: "
   //                                                   << params[i].get_name() << "=" << params[i].as_string()
   //                                                   << ". Result: " << res.successful);
   //   i++;
 
   //   if (!res.successful)
-  //     RCLCPP_ERROR_STREAM(this->getLogger(), "[GoalCheckerSwitcher] goal checker could not properly
+  //     RCLCPP_ERROR_STREAM(this->getLogger(), "[CpGoalCheckerSwitcher] goal checker could not properly
   //     switch "
   //                                                        "the goal checker of the controller_server");
   // }

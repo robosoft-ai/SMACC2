@@ -46,7 +46,7 @@ struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, MsDance
 
   void onExit()
   {
-    WaypointNavigator* waypointsNavigator;
+    CpWaypointNavigator* waypointsNavigator;
     this->requiresComponent(waypointsNavigator);
 
     //waypointsNavigator->currentWaypoint_ = 11;

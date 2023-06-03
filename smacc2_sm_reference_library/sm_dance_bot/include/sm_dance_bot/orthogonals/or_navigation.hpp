@@ -47,10 +47,10 @@ public:
     nav2zClient->createComponent<cl_nav2z::Pose>();
 
     // create planner switcher
-    nav2zClient->createComponent<PlannerSwitcher>();
+    nav2zClient->createComponent<CpPlannerSwitcher>();
 
     // create goal checker switcher
-    nav2zClient->createComponent<cl_nav2z::GoalCheckerSwitcher>();
+    nav2zClient->createComponent<cl_nav2z::CpGoalCheckerSwitcher>();
 
     // create odom tracker
     nav2zClient->createComponent<cl_nav2z::odom_tracker::OdomTracker>();
@@ -59,14 +59,14 @@ public:
     nav2zClient->createComponent<cl_nav2z::CpSlamToolbox>();
 
     // create waypoints navigator component
-    auto waypointsNavigator = nav2zClient->createComponent<WaypointNavigator>();
+    auto waypointsNavigator = nav2zClient->createComponent<CpWaypointNavigator>();
     loadWaypointsFromYaml(waypointsNavigator);
 
     // change this to skip some points of the yaml file, default = 0
     waypointsNavigator->currentWaypoint_ = 0;
   }
 
-  void loadWaypointsFromYaml(WaypointNavigator * waypointsNavigator)
+  void loadWaypointsFromYaml(CpWaypointNavigator * waypointsNavigator)
   {
     // if it is the first time and the waypoints navigator is not configured
     std::string planfilepath;

@@ -37,7 +37,7 @@ void CbRotate::onEntry()
 {
   double angle_increment_degree = rotateDegree;
 
-  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
 
   if (spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning)
   {

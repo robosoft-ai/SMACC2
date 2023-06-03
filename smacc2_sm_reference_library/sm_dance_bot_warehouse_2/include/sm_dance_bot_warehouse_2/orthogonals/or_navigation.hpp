@@ -39,7 +39,7 @@ namespace sm_dance_bot_warehouse_2
 using namespace std::chrono_literals;
 
 using ::cl_nav2z::Pose;
-using ::cl_nav2z::GoalCheckerSwitcher;
+using ::cl_nav2z::CpGoalCheckerSwitcher;
 using ::cl_nav2z::odom_tracker::OdomTracker;
 using ::cl_nav2z::CpSlamToolbox;
 using cl_nav2z::CpSquareShapeBoundary;
@@ -55,10 +55,10 @@ public:
     nav2zClient->createComponent<Pose>();
 
     // create planner switcher
-    nav2zClient->createComponent<PlannerSwitcher>();
+    nav2zClient->createComponent<CpPlannerSwitcher>();
 
     // create goal checker switcher
-    nav2zClient->createComponent<GoalCheckerSwitcher>();
+    nav2zClient->createComponent<CpGoalCheckerSwitcher>();
 
     // create odom tracker
     nav2zClient->createComponent<OdomTracker>();
@@ -67,7 +67,7 @@ public:
     nav2zClient->createComponent<CpSlamToolbox>();
 
     // create waypoints navigator component
-    auto waypointsNavigator = nav2zClient->createComponent<WaypointNavigator>();
+    auto waypointsNavigator = nav2zClient->createComponent<CpWaypointNavigator>();
     loadWaypointsFromYaml(waypointsNavigator);
 
     // change this to skip some points of the yaml file, default = 0
@@ -76,7 +76,7 @@ public:
     nav2zClient->createComponent<CpSquareShapeBoundary>(2.5);
   }
 
-  void loadWaypointsFromYaml(WaypointNavigator * waypointsNavigator)
+  void loadWaypointsFromYaml(CpWaypointNavigator * waypointsNavigator)
   {
     // if it is the first time and the waypoints navigator is not configured
     std::string planfilepath;

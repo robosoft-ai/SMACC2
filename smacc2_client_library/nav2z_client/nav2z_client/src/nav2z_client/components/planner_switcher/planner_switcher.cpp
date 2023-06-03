@@ -24,9 +24,9 @@ namespace cl_nav2z
 {
 using namespace std::chrono_literals;
 
-PlannerSwitcher::PlannerSwitcher() {}
+CpPlannerSwitcher::CpPlannerSwitcher() {}
 
-void PlannerSwitcher::onInitialize()
+void CpPlannerSwitcher::onInitialize()
 {
   rclcpp::QoS qos(rclcpp::KeepLast(1));
   qos.transient_local().reliable();
@@ -37,19 +37,19 @@ void PlannerSwitcher::onInitialize()
     getNode()->create_publisher<std_msgs::msg::String>("controller_selector", qos);
 }
 
-void PlannerSwitcher::setDesiredGlobalPlanner(std::string plannerName)
+void CpPlannerSwitcher::setDesiredGlobalPlanner(std::string plannerName)
 {
   desired_planner_ = plannerName;
 }
 
-void PlannerSwitcher::setDesiredController(std::string controllerName)
+void CpPlannerSwitcher::setDesiredController(std::string controllerName)
 {
   desired_controller_ = controllerName;
 }
 
-void PlannerSwitcher::setUndoPathBackwardPlanner(bool commit)
+void CpPlannerSwitcher::setUndoPathBackwardPlanner(bool commit)
 {
-  RCLCPP_INFO(getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
+  RCLCPP_INFO(getLogger(), "[CpPlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
 
   desired_planner_ = "UndoPathGlobalPlanner";
   desired_controller_ = "BackwardLocalPlanner";
@@ -57,9 +57,9 @@ void PlannerSwitcher::setUndoPathBackwardPlanner(bool commit)
   if (commit) commitPublish();
 }
 
-void PlannerSwitcher::setBackwardPlanner(bool commit)
+void CpPlannerSwitcher::setBackwardPlanner(bool commit)
 {
-  RCLCPP_INFO(getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
+  RCLCPP_INFO(getLogger(), "[CpPlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
 
   desired_planner_ = "BackwardGlobalPlanner";
   desired_controller_ = "BackwardLocalPlanner";
@@ -67,9 +67,9 @@ void PlannerSwitcher::setBackwardPlanner(bool commit)
   if (commit) commitPublish();
 }
 
-void PlannerSwitcher::setForwardPlanner(bool commit)
+void CpPlannerSwitcher::setForwardPlanner(bool commit)
 {
-  RCLCPP_INFO(getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set ForwardPlanner");
+  RCLCPP_INFO(getLogger(), "[CpPlannerSwitcher] Planner Switcher: Trying to set ForwardPlanner");
 
   desired_planner_ = "ForwardGlobalPlanner";
   desired_controller_ = "ForwardLocalPlanner";
@@ -77,9 +77,10 @@ void PlannerSwitcher::setForwardPlanner(bool commit)
   if (commit) commitPublish();
 }
 
-void PlannerSwitcher::setPureSpinningPlanner(bool commit)
+void CpPlannerSwitcher::setPureSpinningPlanner(bool commit)
 {
-  RCLCPP_INFO(getLogger(), "[PlannerSwitcher] Planner Switcher: Trying to set PureSpinningPlanner");
+  RCLCPP_INFO(
+    getLogger(), "[CpPlannerSwitcher] Planner Switcher: Trying to set PureSpinningPlanner");
 
   desired_planner_ = "ForwardGlobalPlanner";
   desired_controller_ = "PureSpinningLocalPlanner";
@@ -87,7 +88,7 @@ void PlannerSwitcher::setPureSpinningPlanner(bool commit)
   if (commit) commitPublish();
 }
 
-void PlannerSwitcher::setDefaultPlanners(bool commit)
+void CpPlannerSwitcher::setDefaultPlanners(bool commit)
 {
   desired_planner_ = "GridBased";
   desired_controller_ = "FollowPath";
@@ -95,7 +96,7 @@ void PlannerSwitcher::setDefaultPlanners(bool commit)
   if (commit) commitPublish();
 }
 
-void PlannerSwitcher::commitPublish()
+void CpPlannerSwitcher::commitPublish()
 {
   std_msgs::msg::String planner_msg;
   planner_msg.data = desired_planner_;

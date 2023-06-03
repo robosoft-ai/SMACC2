@@ -24,11 +24,11 @@
 
 namespace cl_nav2z
 {
-class Amcl : public smacc2::ISmaccComponent
+class CpAmcl : public smacc2::ISmaccComponent
 {
 public:
-  Amcl();
-  virtual ~Amcl();
+  CpAmcl();
+  virtual ~CpAmcl();
 
   std::string getName() const override;
 

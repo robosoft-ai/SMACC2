@@ -28,14 +28,14 @@
 namespace cl_nav2z
 {
 // this class is used to switch the current goal checker of the remote navigation2 stack controller
-class GoalCheckerSwitcher : public smacc2::ISmaccComponent
+class CpGoalCheckerSwitcher : public smacc2::ISmaccComponent
 {
 public:
-  GoalCheckerSwitcher(
+  CpGoalCheckerSwitcher(
     std::string goal_checker_selector_topic = "goal_checker_selector",
     std::string default_goal_checker_name = "goal_checker");
   void onInitialize() override;
-  virtual ~GoalCheckerSwitcher();
+  virtual ~CpGoalCheckerSwitcher();
   void setDefaultGoalChecker();
   void setGoalCheckerId(std::string goal_checker_id);
 

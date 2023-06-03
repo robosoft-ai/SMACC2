@@ -52,14 +52,14 @@ struct NavigateNextWaypointOptions
 // This component contains a list of waypoints. These waypoints can
 // be iterated in the different states using CbNextWaiPoint
 // waypoint index is only incremented if the current waypoint is successfully reached
-class WaypointNavigator : public smacc2::ISmaccComponent
+class CpWaypointNavigator : public smacc2::ISmaccComponent
 {
 public:
   WaypointEventDispatcher waypointsEventDispatcher;
 
   ClNav2Z * client_;
 
-  WaypointNavigator();
+  CpWaypointNavigator();
 
   void onInitialize() override;
 

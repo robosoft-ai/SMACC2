@@ -23,19 +23,19 @@
 
 namespace cl_nav2z
 {
-Amcl::Amcl() {}
+CpAmcl::CpAmcl() {}
 
-Amcl::~Amcl() {}
+CpAmcl::~CpAmcl() {}
 
-std::string Amcl::getName() const { return "AMCL"; }
+std::string CpAmcl::getName() const { return "AMCL"; }
 
-void Amcl::onInitialize()
+void CpAmcl::onInitialize()
 {
   initalPosePub_ = getNode()->create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>(
     "initialpose", rclcpp::QoS(10));
 }
 
-void Amcl::setInitialPose(const geometry_msgs::msg::PoseWithCovarianceStamped & initialpose)
+void CpAmcl::setInitialPose(const geometry_msgs::msg::PoseWithCovarianceStamped & initialpose)
 {
   initalPosePub_->publish(initialpose);
 }

@@ -33,7 +33,7 @@ void CbSeekWaypoint::onEntry()
 {
   cl_nav2z::ClNav2Z * nav2zClient_;
   this->requiresClient(nav2zClient_);
-  waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
+  waypointsNavigator_ = nav2zClient_->getComponent<CpWaypointNavigator>();
 
   if (count_)
   {
