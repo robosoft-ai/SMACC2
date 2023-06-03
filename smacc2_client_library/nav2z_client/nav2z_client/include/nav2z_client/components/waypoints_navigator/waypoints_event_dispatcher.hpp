@@ -23,6 +23,8 @@
 #include <smacc2/smacc.hpp>
 
 namespace cl_nav2z
+
+/// @cond
 {
 template <typename TSource, typename TOrthogonal>
 struct EvWaypoint0 : sc::event<EvWaypoint0<TSource, TOrthogonal>>
@@ -1560,6 +1562,8 @@ struct EvWaypoint255 : sc::event<EvWaypoint255<TSource, TOrthogonal>>
   int waypointIndex;
 };
 
+/// @endcond
+
 template <typename TSource, typename TOrthogonal>
 struct EvWaypoint256 : sc::event<EvWaypoint256<TSource, TOrthogonal>>
 {
@@ -1590,6 +1594,7 @@ void configurePostEvWaypoint(std::function<void()> * fntarget, ClNav2Z * client,
 template <typename TDerived, typename TOrthogonal>
 void WaypointEventDispatcher::initialize(ClNav2Z * client)
 {
+  /// @cond
   configurePostEvWaypoint<EvWaypoint0<TDerived, TOrthogonal>>(postWaypointFn, client, 0);
   configurePostEvWaypoint<EvWaypoint1<TDerived, TOrthogonal>>(postWaypointFn, client, 1);
   configurePostEvWaypoint<EvWaypoint2<TDerived, TOrthogonal>>(postWaypointFn, client, 2);
@@ -1846,6 +1851,7 @@ void WaypointEventDispatcher::initialize(ClNav2Z * client)
   configurePostEvWaypoint<EvWaypoint253<TDerived, TOrthogonal>>(postWaypointFn, client, 253);
   configurePostEvWaypoint<EvWaypoint254<TDerived, TOrthogonal>>(postWaypointFn, client, 254);
   configurePostEvWaypoint<EvWaypoint255<TDerived, TOrthogonal>>(postWaypointFn, client, 255);
+  /// @endcond
   configurePostEvWaypoint<EvWaypoint256<TDerived, TOrthogonal>>(postWaypointFn, client, 256);
 }
 
