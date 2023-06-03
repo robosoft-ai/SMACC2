@@ -46,7 +46,8 @@ void CpGoalCheckerSwitcher::setDefaultGoalChecker()
 
 void CpGoalCheckerSwitcher::setGoalCheckerId(std::string goalcheckerid)
 {
-  RCLCPP_INFO_STREAM(getLogger(), "[CpGoalCheckerSwitcher] Setting goal checker: " << goalcheckerid);
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[CpGoalCheckerSwitcher] Setting goal checker: " << goalcheckerid);
 
   // controller_server_node_->wait_for_service();
   // std::vector<rclcpp::Parameter> params{ rclcpp::Parameter("current_goal_checker", goalcheckerid) };
