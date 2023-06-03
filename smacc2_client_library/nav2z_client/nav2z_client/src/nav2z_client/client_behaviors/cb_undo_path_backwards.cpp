@@ -42,7 +42,7 @@ void CbUndoPathBackwards::onEntry()
 
   odomTracker->logStateString(false);
 
-  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
 
   nav_msgs::msg::Path forwardpath = odomTracker->getPath();
   // RCLCPP_INFO_STREAM(getLogger(),"[UndoPathBackward] Current path backwards: " << forwardpath);
@@ -51,7 +51,7 @@ void CbUndoPathBackwards::onEntry()
 
   ClNav2Z::Goal goal;
 
-  auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
 
   if (options_ && options_->goalCheckerId_)
   {

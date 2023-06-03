@@ -57,7 +57,7 @@ void CbNavigateGlobalPosition::onEntry()
   auto pose = nav2zClient_->getComponent<cl_nav2z::Pose>()->toPoseMsg();
   auto * odomTracker = nav2zClient_->getComponent<OdomTracker>();
 
-  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
 
   plannerSwitcher->setDefaultPlanners(false);
 
@@ -68,7 +68,7 @@ void CbNavigateGlobalPosition::onEntry()
 
   plannerSwitcher->commitPublish();
 
-  auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("goal_checker");
 
   auto pathname = this->getCurrentState()->getName() + " - " + getName();

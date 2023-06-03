@@ -28,10 +28,10 @@ namespace cl_nav2z
 {
 // this component is used to switch the current planner and controller interacting
 // with the remote navigation2 stack nodes (bt_navigator, planner_server, controller_server)
-class PlannerSwitcher : public smacc2::ISmaccComponent
+class CpPlannerSwitcher : public smacc2::ISmaccComponent
 {
 public:
-  PlannerSwitcher();
+  CpPlannerSwitcher();
 
   void onInitialize() override;
 

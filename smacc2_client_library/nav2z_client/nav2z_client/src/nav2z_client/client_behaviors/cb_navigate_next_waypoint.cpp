@@ -31,7 +31,7 @@ CbNavigateNextWaypoint::~CbNavigateNextWaypoint() {}
 
 void CbNavigateNextWaypoint::onEntry()
 {
-  waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
+  waypointsNavigator_ = nav2zClient_->getComponent<CpWaypointNavigator>();
 
   this->navigationCallback_ = std::make_shared<cl_nav2z::ClNav2Z::SmaccNavigateResultSignal>();
 

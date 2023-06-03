@@ -34,7 +34,7 @@ class ClNav2Z;
 class CpWaypointsVisualizer : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdatable
 {
 public:
-  cl_nav2z::WaypointNavigator * waypointsNavigator_;
+  cl_nav2z::CpWaypointNavigator * waypointsNavigator_;
 
   CpWaypointsVisualizer(rclcpp::Duration duration);
 

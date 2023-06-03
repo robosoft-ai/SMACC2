@@ -70,7 +70,7 @@ public:
     RCLCPP_INFO(
       getLogger(), "[%s] Propagating success event from action server", getName().c_str());
 
-    waypointsNavigator_ = nav2zClient_->getComponent<WaypointNavigator>();
+    waypointsNavigator_ = nav2zClient_->getComponent<CpWaypointNavigator>();
 
     auto current_waypoint_name = waypointsNavigator_->getCurrentWaypointName();
 

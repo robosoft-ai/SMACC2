@@ -47,7 +47,7 @@ void CbAbsoluteRotate::onEntry()
 
   RCLCPP_INFO_STREAM(getLogger(), "[CbAbsoluteRotate] Absolute yaw Angle:" << goal_angle);
 
-  auto plannerSwitcher = this->nav2zClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = this->nav2zClient_->getComponent<CpPlannerSwitcher>();
   // this should work better with a coroutine and await
   // this->plannerSwitcher_->setForwardPlanner();
 
@@ -85,7 +85,7 @@ void CbAbsoluteRotate::onEntry()
     odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
   }
 
-  auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("absolute_rotate_goal_checker");
 
   RCLCPP_INFO_STREAM(
