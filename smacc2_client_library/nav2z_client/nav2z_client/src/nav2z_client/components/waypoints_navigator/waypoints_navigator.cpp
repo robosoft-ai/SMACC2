@@ -219,7 +219,7 @@ CpWaypointNavigator::sendNextGoal(
     // rclcpp::sleep_for(5s);
 
     RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Getting odom tracker");
-    auto odomTracker = client_->getComponent<cl_nav2z::odom_tracker::OdomTracker>();
+    auto odomTracker = client_->getComponent<cl_nav2z::odom_tracker::CpOdomTracker>();
     if (odomTracker != nullptr)
     {
       RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Storing path in odom tracker");

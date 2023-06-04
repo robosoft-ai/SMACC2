@@ -18,22 +18,22 @@
  *
  ******************************************************************************************************************/
 #include <actionlib/server/simple_action_server.h>
-#include <odom_tracker/OdomTrackerAction.h>
+#include <odom_tracker/CpOdomTrackerAction.h>
 #include <memory>
 #include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
 
-typedef actionlib::SimpleActionServer<odom_tracker::OdomTrackerAction> Server;
+typedef actionlib::SimpleActionServer<odom_tracker::CpOdomTrackerAction> Server;
 
 using namespace odom_tracker;
 using namespace cl_nav2z::odom_tracker;
 
-class OdomTrackerActionServer
+class CpOdomTrackerActionServer
 {
 public:
   std::shared_ptr<Server> as_;
-  OdomTracker odomTracker;
+  CpOdomTracker odomTracker;
 
-  OdomTrackerActionServer() : odomTracker("move_base") {}
+  CpOdomTrackerActionServer() : odomTracker("move_base") {}
 
   /**
 ******************************************************************************************************************
@@ -41,37 +41,37 @@ public:
 ******************************************************************************************************************
 */
   void execute(
-    const OdomTrackerGoalConstPtr & goal)  // Note: "Action" is not appended to DoDishes here
+    const CpOdomTrackerGoalConstPtr & goal)  // Note: "Action" is not appended to DoDishes here
   {
     try
     {
       switch (goal->command)
       {
-        case OdomTrackerGoal::RECORD_PATH:
+        case CpOdomTrackerGoal::RECORD_PATH:
           odomTracker.setWorkingMode(WorkingMode::RECORD_PATH);
           break;
 
-        case OdomTrackerGoal::CLEAR_PATH:
+        case CpOdomTrackerGoal::CLEAR_PATH:
           odomTracker.setWorkingMode(WorkingMode::CLEAR_PATH);
           break;
 
-        case OdomTrackerGoal::IDLE:
+        case CpOdomTrackerGoal::IDLE:
           odomTracker.setWorkingMode(WorkingMode::IDLE);
           break;
 
-        case OdomTrackerGoal::START_BROADCAST_PATH:
+        case CpOdomTrackerGoal::START_BROADCAST_PATH:
           odomTracker.setPublishMessages(true);
           break;
 
-        case OdomTrackerGoal::STOP_BROADCAST_PATH:
+        case CpOdomTrackerGoal::STOP_BROADCAST_PATH:
           odomTracker.setPublishMessages(false);
           break;
 
-        case OdomTrackerGoal::PUSH_PATH:
+        case CpOdomTrackerGoal::PUSH_PATH:
           odomTracker.pushPath();
           break;
 
-        case OdomTrackerGoal::POP_PATH:
+        case CpOdomTrackerGoal::POP_PATH:
           odomTracker.popPath();
           break;
 
@@ -104,9 +104,9 @@ public:
     RCLCPP_INFO(getLogger(), "Creating odom tracker action server");
 
     as_ = std::make_shared<Server>(
-      n, "odom_tracker", std::bind(&OdomTrackerActionServer::execute, this, std::placeholders::_1),
+      n, "odom_tracker", std::bind(&CpOdomTrackerActionServer::execute, this, std::placeholders::_1),
       false);
-    RCLCPP_INFO(getLogger(), "Starting OdomTracker Action Server");
+    RCLCPP_INFO(getLogger(), "Starting CpOdomTracker Action Server");
 
     as_->start();
 
@@ -117,7 +117,7 @@ public:
 int main(int argc, char ** argv)
 {
   ros::init(argc, argv, "odom_tracker_node");
-  OdomTrackerActionServer as;
+  CpOdomTrackerActionServer as;
 
   as.run();
 }

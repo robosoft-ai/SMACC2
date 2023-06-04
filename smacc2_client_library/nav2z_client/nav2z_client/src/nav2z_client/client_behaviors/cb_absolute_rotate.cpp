@@ -76,7 +76,7 @@ void CbAbsoluteRotate::onEntry()
   q.setRPY(0, 0, targetAngle);
   goal.pose.pose.orientation = tf2::toMsg(q);
 
-  auto odomTracker_ = nav2zClient_->getComponent<odom_tracker::OdomTracker>();
+  auto odomTracker_ = nav2zClient_->getComponent<odom_tracker::CpOdomTracker>();
   if (odomTracker_ != nullptr)
   {
     auto pathname = this->getCurrentState()->getName() + " - " + getName();

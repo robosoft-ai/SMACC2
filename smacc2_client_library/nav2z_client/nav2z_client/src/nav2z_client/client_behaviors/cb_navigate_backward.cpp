@@ -72,7 +72,7 @@ void CbNavigateBackwards::onEntry()
   currentStampedPoseMsg.header.stamp = getNode()->now();
   tf2::toMsg(currentPose, currentStampedPoseMsg.pose);
 
-  odomTracker_ = nav2zClient_->getComponent<OdomTracker>();
+  odomTracker_ = nav2zClient_->getComponent<CpOdomTracker>();
   if (odomTracker_ != nullptr)
   {
     this->odomTracker_->clearPath();

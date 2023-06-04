@@ -25,7 +25,7 @@
 
 namespace cl_nav2z
 {
-using odom_tracker::OdomTracker;
+using odom_tracker::CpOdomTracker;
 
 template <typename TCbRelativeMotion>
 class CbRetry : public TCbRelativeMotion
@@ -34,7 +34,7 @@ public:
   CbRetry() {}
   void onEntry() override
   {
-    odomTracker_ = this->nav2zClient_->template getComponent<OdomTracker>();
+    odomTracker_ = this->nav2zClient_->template getComponent<CpOdomTracker>();
     auto goal = odomTracker_->getCurrentMotionGoal();
 
     if (goal)
@@ -46,6 +46,6 @@ public:
   }
 
 private:
-  OdomTracker * odomTracker_;
+  CpOdomTracker * odomTracker_;
 };
 }  // namespace cl_nav2z

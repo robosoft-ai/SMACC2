@@ -39,7 +39,7 @@ public:
 
   std::optional<std::string> goalChecker_;
 
-  cl_nav2z::odom_tracker::OdomTracker * odomTracker_;
+  cl_nav2z::odom_tracker::CpOdomTracker * odomTracker_;
 
   CbNavigateBackwards(float backwardDistanceMeters);
 

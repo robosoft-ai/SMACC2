@@ -26,7 +26,7 @@
 
 namespace cl_nav2z
 {
-using ::cl_nav2z::odom_tracker::OdomTracker;
+using ::cl_nav2z::odom_tracker::CpOdomTracker;
 
 struct CbUndoPathBackwardsOptions
 {
@@ -49,7 +49,7 @@ public:
 private:
   std::shared_ptr<tf2_ros::Buffer> listener;
 
-  OdomTracker * odomTracker;
+  CpOdomTracker * odomTracker;
 
   std::optional<CbUndoPathBackwardsOptions> options_;
 };

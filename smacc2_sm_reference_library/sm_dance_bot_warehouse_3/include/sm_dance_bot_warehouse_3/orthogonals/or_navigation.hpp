@@ -41,7 +41,7 @@ using namespace std::chrono_literals;
 
 using ::cl_nav2z::Pose;
 using ::cl_nav2z::CpGoalCheckerSwitcher;
-using ::cl_nav2z::odom_tracker::OdomTracker;
+using ::cl_nav2z::odom_tracker::CpOdomTracker;
 using ::cl_nav2z::CpSlamToolbox;
 using cl_nav2z::CpSquareShapeBoundary;
 
@@ -62,7 +62,7 @@ public:
     nav2zClient->createComponent<CpGoalCheckerSwitcher>();
 
     // create odom tracker
-    nav2zClient->createComponent<OdomTracker>();
+    nav2zClient->createComponent<CpOdomTracker>();
 
     // create odom tracker
     nav2zClient->createComponent<CpSlamToolbox>();
