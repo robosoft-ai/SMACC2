@@ -44,7 +44,8 @@ void parameterDeclareAndtryGetOrSet(
 {
   if (!node->get_parameter(param_name, value))
   {
-    RCLCPP_INFO_STREAM(node->get_logger(), "[CpOdomTracker] autoset " << param_name << ": " << value);
+    RCLCPP_INFO_STREAM(
+      node->get_logger(), "[CpOdomTracker] autoset " << param_name << ": " << value);
     node->declare_parameter(param_name, value);
   }
   else
@@ -159,8 +160,8 @@ void CpOdomTracker::pushPath(std::string pathname)
 
   RCLCPP_INFO_STREAM(
     getLogger(), "[CpOdomTracker] currentPathName: " << pathname
-                                                   << "  size: " << baseTrajectory_.poses.size()
-                                                   << "  current motion goal: " << goalPose);
+                                                     << "  size: " << baseTrajectory_.poses.size()
+                                                     << "  current motion goal: " << goalPose);
 
   currentPathName_ = pathname;
 
@@ -391,8 +392,8 @@ bool CpOdomTracker::updateClearPath(const nav_msgs::msg::Odometry & odom)
       clearingError = lastpointdist > 2 * clearPointDistanceThreshold_;
       RCLCPP_DEBUG_STREAM(
         getLogger(), "[CpOdomTracker] clearing (accepted: " << acceptBackward
-                                                          << ") linerr: " << lastpointdist
-                                                          << ", anglerr: " << goalAngleOffset);
+                                                            << ") linerr: " << lastpointdist
+                                                            << ", anglerr: " << goalAngleOffset);
     }
 
     // RCLCPP_INFO(getLogger(),"Backwards, last distance: %lf < %lf accept: %d", dist,
