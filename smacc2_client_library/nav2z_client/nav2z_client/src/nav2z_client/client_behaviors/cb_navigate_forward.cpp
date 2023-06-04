@@ -27,7 +27,7 @@
 
 namespace cl_nav2z
 {
-using ::cl_nav2z::odom_tracker::OdomTracker;
+using ::cl_nav2z::odom_tracker::CpOdomTracker;
 using ::cl_nav2z::odom_tracker::WorkingMode;
 
 using ::cl_nav2z::Pose;
@@ -125,7 +125,7 @@ void CbNavigateForward::onEntry()
   currentStampedPoseMsg.header.stamp = getNode()->now();
   tf2::toMsg(currentPose, currentStampedPoseMsg.pose);
 
-  odomTracker_ = nav2zClient_->getComponent<OdomTracker>();
+  odomTracker_ = nav2zClient_->getComponent<CpOdomTracker>();
   if (odomTracker_ != nullptr)
   {
     auto pathname = this->getCurrentState()->getName() + " - " + getName();

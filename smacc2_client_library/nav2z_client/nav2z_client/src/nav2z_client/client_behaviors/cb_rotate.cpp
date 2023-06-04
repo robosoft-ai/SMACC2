@@ -55,7 +55,7 @@ void CbRotate::onEntry()
   tf2::Transform currentPose;
   tf2::fromMsg(currentPoseMsg, currentPose);
 
-  auto odomTracker = nav2zClient_->getComponent<odom_tracker::OdomTracker>();
+  auto odomTracker = nav2zClient_->getComponent<odom_tracker::CpOdomTracker>();
   ClNav2Z::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
   goal.pose.header.stamp = getNode()->now();

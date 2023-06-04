@@ -50,12 +50,12 @@ enum class WorkingMode : uint8_t
 
 /// This object tracks and saves the trajectories performed by the vehicle
 /// so that they can be used later to execute operations such as "undo motions"
-class OdomTracker : public smacc2::ISmaccComponent
+class CpOdomTracker : public smacc2::ISmaccComponent
 {
 public:
   // by default, the component start in record_path mode and publishing the
   // current path
-  OdomTracker(std::string odomtopicName = "/odom", std::string odomFrame = "odom");
+  CpOdomTracker(std::string odomtopicName = "/odom", std::string odomFrame = "odom");
 
   // threadsafe
   /// odom callback: Updates the path - this must be called periodically for each odometry message.

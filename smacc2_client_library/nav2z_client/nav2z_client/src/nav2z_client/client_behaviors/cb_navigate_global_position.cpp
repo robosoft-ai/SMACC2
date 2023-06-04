@@ -55,7 +55,7 @@ void CbNavigateGlobalPosition::onEntry()
   RCLCPP_INFO(getLogger(), "Component requirements completed");
 
   auto pose = nav2zClient_->getComponent<cl_nav2z::Pose>()->toPoseMsg();
-  auto * odomTracker = nav2zClient_->getComponent<OdomTracker>();
+  auto * odomTracker = nav2zClient_->getComponent<CpOdomTracker>();
 
   auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
 
