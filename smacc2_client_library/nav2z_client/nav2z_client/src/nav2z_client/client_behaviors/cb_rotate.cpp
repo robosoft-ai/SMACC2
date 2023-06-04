@@ -21,7 +21,7 @@
 
 #include <nav2z_client/client_behaviors/cb_rotate.hpp>
 #include <nav2z_client/common.hpp>
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
 
 namespace cl_nav2z

@@ -22,7 +22,7 @@
 
 #include <nav2z_client/client_behaviors/cb_navigate_forward.hpp>
 #include <nav2z_client/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
 
 namespace cl_nav2z

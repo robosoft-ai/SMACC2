@@ -66,9 +66,9 @@ add_library(${PROJECT_NAME} SHARED
 
   # COMPONENTS
   src/${PROJECT_NAME}/components/costmap_switch/cp_costmap_switch.cpp
-  #src/${PROJECT_NAME}/components/odom_tracker/odom_tracker_node.cpp
+  #src/${PROJECT_NAME}/components/odom_tracker/cp_odom_tracker_node.cpp
 
-  src/${PROJECT_NAME}/components/odom_tracker/odom_tracker.cpp
+  src/${PROJECT_NAME}/components/odom_tracker/cp_odom_tracker.cpp
   src/${PROJECT_NAME}/components/planner_switcher/cp_planner_switcher.cpp
   src/${PROJECT_NAME}/components/goal_checker_switcher/cp_goal_checker_switcher.cpp
   src/${PROJECT_NAME}/components/pose/cp_pose.cpp

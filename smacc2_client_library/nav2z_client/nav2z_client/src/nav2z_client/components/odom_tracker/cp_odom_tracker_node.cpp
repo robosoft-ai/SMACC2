@@ -20,7 +20,7 @@
 #include <actionlib/server/simple_action_server.h>
 #include <odom_tracker/CpOdomTrackerAction.h>
 #include <memory>
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 
 typedef actionlib::SimpleActionServer<odom_tracker::CpOdomTrackerAction> Server;
 
