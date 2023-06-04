@@ -27,7 +27,7 @@
 #include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 #include <nav2z_client/components/planner_switcher/cp_planner_switcher.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
-#include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
+#include <nav2z_client/components/waypoints_navigator/cp_waypoints_navigator.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include <rclcpp/rclcpp.hpp>
 
