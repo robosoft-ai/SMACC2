@@ -18,7 +18,7 @@
  *
  ******************************************************************************************************************/
 
-#include <nav2z_client/components/waypoints_navigator/waypoints_event_dispatcher.hpp>
+#include <nav2z_client/components/waypoints_navigator/cp_waypoints_event_dispatcher.hpp>
 
 namespace cl_nav2z
 {

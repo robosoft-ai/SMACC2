@@ -72,9 +72,9 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/components/planner_switcher/cp_planner_switcher.cpp
   src/${PROJECT_NAME}/components/goal_checker_switcher/cp_goal_checker_switcher.cpp
   src/${PROJECT_NAME}/components/pose/cp_pose.cpp
-  src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_event_dispatcher.cpp
-  src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_navigator.cpp
-  src/${PROJECT_NAME}/components/waypoints_navigator/waypoints_visualizer.cpp
+  src/${PROJECT_NAME}/components/waypoints_navigator/cp_waypoints_event_dispatcher.cpp
+  src/${PROJECT_NAME}/components/waypoints_navigator/cp_waypoints_navigator.cpp
+  src/${PROJECT_NAME}/components/waypoints_navigator/cp_waypoints_visualizer.cpp
   src/${PROJECT_NAME}/components/amcl/cp_amcl.cpp
   src/${PROJECT_NAME}/components/slam_toolbox/cp_slam_toolbox.cpp
 )

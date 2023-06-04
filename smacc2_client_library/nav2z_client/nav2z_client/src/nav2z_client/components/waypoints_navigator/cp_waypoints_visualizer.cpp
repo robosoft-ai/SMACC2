@@ -18,7 +18,7 @@
  *
  ******************************************************************************************************************/
 
-#include <nav2z_client/components/waypoints_navigator/waypoints_visualizer.hpp>
+#include <nav2z_client/components/waypoints_navigator/cp_waypoints_visualizer.hpp>
 
 namespace cl_nav2z
 {

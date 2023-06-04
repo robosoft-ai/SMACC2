@@ -19,7 +19,7 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <nav2z_client/components/waypoints_navigator/waypoints_event_dispatcher.hpp>
+#include <nav2z_client/components/waypoints_navigator/cp_waypoints_event_dispatcher.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include <smacc2/smacc.hpp>
 

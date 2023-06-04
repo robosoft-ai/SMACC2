@@ -23,7 +23,7 @@
 
 #include <optional>
 
-#include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
+#include <nav2z_client/components/waypoints_navigator/cp_waypoints_navigator.hpp>
 #include "cb_nav2z_client_behavior_base.hpp"
 
 namespace cl_nav2z
