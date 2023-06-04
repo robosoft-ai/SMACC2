@@ -24,7 +24,7 @@
 #include <fstream>
 #include <nav2z_client/common.hpp>
 #include <nav2z_client/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 #include <nav2z_client/components/planner_switcher/cp_planner_switcher.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
 #include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>

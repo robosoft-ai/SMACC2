@@ -21,7 +21,7 @@
 
 #include <tf2_ros/buffer.h>
 
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 #include "cb_nav2z_client_behavior_base.hpp"
 
 namespace cl_nav2z

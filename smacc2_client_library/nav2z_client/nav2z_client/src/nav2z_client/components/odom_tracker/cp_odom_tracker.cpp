@@ -21,7 +21,7 @@
 
 #include <angles/angles.h>
 #include <tf2/utils.h>
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 
 #include <boost/range/adaptor/reversed.hpp>
 
