@@ -25,7 +25,7 @@
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
 
-#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
+#include <nav2z_client/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
 #include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
 #include <nav2z_client/components/slam_toolbox/cp_slam_toolbox.hpp>

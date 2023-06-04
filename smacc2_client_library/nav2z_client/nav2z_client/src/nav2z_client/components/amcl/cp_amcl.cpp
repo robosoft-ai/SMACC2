@@ -17,7 +17,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <nav2z_client/components/amcl/amcl.hpp>
+#include <nav2z_client/components/amcl/cp_amcl.hpp>
 
 #include <string>
 

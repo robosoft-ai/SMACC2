@@ -19,7 +19,7 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <nav2z_client/components/planner_switcher/planner_switcher.hpp>
+#include <nav2z_client/components/planner_switcher/cp_planner_switcher.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
