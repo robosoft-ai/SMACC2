@@ -20,8 +20,8 @@
 
 #include <nav2z_client/client_behaviors/cb_undo_path_backwards.hpp>
 #include <nav2z_client/common.hpp>
-#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
-#include <nav2z_client/components/planner_switcher/planner_switcher.hpp>
+#include <nav2z_client/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
+#include <nav2z_client/components/planner_switcher/cp_planner_switcher.hpp>
 
 namespace cl_nav2z
 {

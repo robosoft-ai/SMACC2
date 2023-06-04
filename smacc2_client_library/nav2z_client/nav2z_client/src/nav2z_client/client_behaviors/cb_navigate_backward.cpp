@@ -22,7 +22,7 @@
 #include <geometry_msgs/msg/quaternion_stamped.hpp>
 #include <nav2z_client/client_behaviors/cb_navigate_backwards.hpp>
 #include <nav2z_client/common.hpp>
-#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
+#include <nav2z_client/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
 #include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
