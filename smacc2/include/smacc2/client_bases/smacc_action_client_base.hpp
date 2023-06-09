@@ -289,7 +289,9 @@ public:
 
       if (resultCallbackPtr != nullptr)
       {
-        RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "]  Result CB calling user callback");
+        RCLCPP_INFO_STREAM(
+          getLogger(), "[" << getName() << "]  Result CB calling user callback:"
+                           << demangleSymbol(typeid(*resultCallbackPtr).name()));
         (*resultCallbackPtr)(result);
       }
       else

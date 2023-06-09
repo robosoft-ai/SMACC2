@@ -63,7 +63,7 @@ void CbNavigateBackwards::onEntry()
 
   ClNav2Z::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
-  goal.pose.header.stamp = getNode()->now();
+  //goal.pose.header.stamp = getNode()->now();
   tf2::toMsg(targetPose, goal.pose.pose);
   RCLCPP_INFO_STREAM(getLogger(), "[CbNavigateBackwards] TARGET POSE BACKWARDS: " << goal.pose);
 

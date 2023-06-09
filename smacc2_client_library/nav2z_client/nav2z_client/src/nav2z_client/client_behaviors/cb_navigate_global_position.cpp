@@ -89,7 +89,7 @@ void CbNavigateGlobalPosition::execute()
   RCLCPP_INFO(getLogger(), "Sending Goal to MoveBase");
   ClNav2Z::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
-  goal.pose.header.stamp = getNode()->now();
+  //goal.pose.header.stamp = getNode()->now();
 
   goal.pose.pose.position = goalPosition;
   tf2::Quaternion q;
