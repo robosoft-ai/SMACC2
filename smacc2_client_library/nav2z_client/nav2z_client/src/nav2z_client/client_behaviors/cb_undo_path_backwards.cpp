@@ -20,12 +20,12 @@
 
 #include <nav2z_client/client_behaviors/cb_undo_path_backwards.hpp>
 #include <nav2z_client/common.hpp>
-#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
-#include <nav2z_client/components/planner_switcher/planner_switcher.hpp>
+#include <nav2z_client/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
+#include <nav2z_client/components/planner_switcher/cp_planner_switcher.hpp>
 
 namespace cl_nav2z
 {
-using ::cl_nav2z::odom_tracker::OdomTracker;
+using ::cl_nav2z::odom_tracker::CpOdomTracker;
 using ::cl_nav2z::odom_tracker::WorkingMode;
 
 using namespace std::chrono_literals;
@@ -38,11 +38,11 @@ CbUndoPathBackwards::CbUndoPathBackwards(std::optional<CbUndoPathBackwardsOption
 void CbUndoPathBackwards::onEntry()
 {
   listener = std::make_shared<tf2_ros::Buffer>(this->getNode()->get_clock());
-  odomTracker = nav2zClient_->getComponent<OdomTracker>();
+  odomTracker = nav2zClient_->getComponent<CpOdomTracker>();
 
   odomTracker->logStateString(false);
 
-  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
 
   nav_msgs::msg::Path forwardpath = odomTracker->getPath();
   // RCLCPP_INFO_STREAM(getLogger(),"[UndoPathBackward] Current path backwards: " << forwardpath);
@@ -51,7 +51,7 @@ void CbUndoPathBackwards::onEntry()
 
   ClNav2Z::Goal goal;
 
-  auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
 
   if (options_ && options_->goalCheckerId_)
   {
@@ -98,7 +98,7 @@ void CbUndoPathBackwards::onExit()
     RCLCPP_INFO_STREAM(
       getLogger(), getName() << " - [CbUndoPathBackwards] Exiting: undo navigation successful, "
                                 "popping odom tracker path");
-    odomTracker = nav2zClient_->getComponent<OdomTracker>();
+    odomTracker = nav2zClient_->getComponent<CpOdomTracker>();
     odomTracker->popPath();
 
     odomTracker->logStateString(false);
@@ -109,7 +109,7 @@ void CbUndoPathBackwards::onExit()
       getLogger(), getName() << " - [CbUndoPathBackwards] Exiting: undo navigation abort, avoiding "
                                 "popping current path");
 
-    odomTracker = nav2zClient_->getComponent<OdomTracker>();
+    odomTracker = nav2zClient_->getComponent<CpOdomTracker>();
     odomTracker->logStateString(false);
     // navigation interrupted or aborted. The path may be not totally undone.
     // We keep the odom tracker in its current state, probably in the middle of the undoing process.

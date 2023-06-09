@@ -16,30 +16,30 @@
 
 namespace cl_nav2z
 {
-std::array<std::string, 4> CostmapSwitch::layerNames = {
+std::array<std::string, 4> CpCostmapSwitch::layerNames = {
   "global_costmap/obstacles_layer",
   "local_costmap/obstacles_layer"
   "global_costmap/inflater_layer",
   "local_costmap/inflater_layer"};
 
-void CostmapSwitch::registerProxyFromDynamicReconfigureServer(
+void CpCostmapSwitch::registerProxyFromDynamicReconfigureServer(
   std::string costmapName, std::string enablePropertyName)
 {
-  RCLCPP_INFO(getLogger(), "[CostmapSwitch] registering costmap type: %s", costmapName.c_str());
-  auto proxy = std::make_shared<CostmapProxy>(
+  RCLCPP_INFO(getLogger(), "[CpCostmapSwitch] registering costmap type: %s", costmapName.c_str());
+  auto proxy = std::make_shared<CpCostmapProxy>(
     this->nav2zClient_->getName() + "/" + costmapName, enablePropertyName, getNode());
   costmapProxies[costmapName] = proxy;
 }
 
-CostmapSwitch::CostmapSwitch() {}
+CpCostmapSwitch::CpCostmapSwitch() {}
 
-void CostmapSwitch::onInitialize()
+void CpCostmapSwitch::onInitialize()
 {
   this->nav2zClient_ = dynamic_cast<cl_nav2z::ClNav2Z *>(owner_);
 
   if (this->nav2zClient_ == nullptr)
   {
-    RCLCPP_ERROR(getLogger(), "the owner of the CostmapSwitch must be a ClNav2Z");
+    RCLCPP_ERROR(getLogger(), "the owner of the CpCostmapSwitch must be a ClNav2Z");
   }
 
   registerProxyFromDynamicReconfigureServer(
@@ -52,12 +52,12 @@ void CostmapSwitch::onInitialize()
     getStandardCostmapName(StandardLayers::LOCAL_INFLATED_LAYER));
 }
 
-std::string CostmapSwitch::getStandardCostmapName(StandardLayers layertype)
+std::string CpCostmapSwitch::getStandardCostmapName(StandardLayers layertype)
 {
-  return CostmapSwitch::layerNames[(int)layertype];
+  return CpCostmapSwitch::layerNames[(int)layertype];
 }
 
-bool CostmapSwitch::exists(std::string layerName)
+bool CpCostmapSwitch::exists(std::string layerName)
 {
   if (!this->costmapProxies.count(layerName))
   {
@@ -67,55 +67,55 @@ bool CostmapSwitch::exists(std::string layerName)
   return true;
 }
 
-void CostmapSwitch::enable(std::string layerName)
+void CpCostmapSwitch::enable(std::string layerName)
 {
-  RCLCPP_INFO(getLogger(), "[CostmapSwitch] enabling %s", layerName.c_str());
+  RCLCPP_INFO(getLogger(), "[CpCostmapSwitch] enabling %s", layerName.c_str());
 
   if (!exists(layerName))
   {
-    RCLCPP_ERROR(getLogger(), "[CostmapSwitch] costmap %s does not exist", layerName.c_str());
+    RCLCPP_ERROR(getLogger(), "[CpCostmapSwitch] costmap %s does not exist", layerName.c_str());
     return;
   }
   else
   {
     RCLCPP_INFO(
-      getLogger(), "[CostmapSwitch] costmap %s found. Calling dynamic reconfigure server.",
+      getLogger(), "[CpCostmapSwitch] costmap %s found. Calling dynamic reconfigure server.",
       layerName.c_str());
     costmapProxies[layerName]->setCostmapEnabled(true);
   }
 }
 
-void CostmapSwitch::enable(StandardLayers layerType)
+void CpCostmapSwitch::enable(StandardLayers layerType)
 {
   this->enable(getStandardCostmapName(layerType));
 }
 
-void CostmapSwitch::disable(std::string layerName)
+void CpCostmapSwitch::disable(std::string layerName)
 {
-  RCLCPP_INFO(getLogger(), "[CostmapSwitch] disabling %s", layerName.c_str());
+  RCLCPP_INFO(getLogger(), "[CpCostmapSwitch] disabling %s", layerName.c_str());
 
   if (!exists(layerName))
   {
-    RCLCPP_ERROR(getLogger(), "[CostmapSwitch] costmap %s does not exist", layerName.c_str());
+    RCLCPP_ERROR(getLogger(), "[CpCostmapSwitch] costmap %s does not exist", layerName.c_str());
     return;
   }
   else
   {
     RCLCPP_INFO(
-      getLogger(), "[CostmapSwitch] costmap %s found. Calling dynamic reconfigure server.",
+      getLogger(), "[CpCostmapSwitch] costmap %s found. Calling dynamic reconfigure server.",
       layerName.c_str());
     costmapProxies[layerName]->setCostmapEnabled(false);
   }
 }
 
-void CostmapSwitch::disable(StandardLayers layerType)
+void CpCostmapSwitch::disable(StandardLayers layerType)
 {
   this->disable(getStandardCostmapName(layerType));
 }
 
 //-------------------------------------------------------------------------
 
-CostmapProxy::CostmapProxy(
+CpCostmapProxy::CpCostmapProxy(
   std::string /*costmap_name*/, std::string /*enablePropertyName*/, rclcpp::Node::SharedPtr nh)
 : nh_(nh)
 {
@@ -131,7 +131,7 @@ CostmapProxy::CostmapProxy(
   RCLCPP_ERROR(nh->get_logger(), "costmap switch not implemented %s", costmapName_.c_str());
 }
 
-void CostmapProxy::setCostmapEnabled(bool /*value*/)
+void CpCostmapProxy::setCostmapEnabled(bool /*value*/)
 {
   // dynamic_reconfigure::ReconfigureRequest srv_req;
   // dynamic_reconfigure::ReconfigureResponse srv_resp;
@@ -154,7 +154,7 @@ void CostmapProxy::setCostmapEnabled(bool /*value*/)
   RCLCPP_ERROR(nh_->get_logger(), "costmap switch not implemented %s", costmapName_.c_str());
 }
 
-// void CostmapProxy::dynreconfCallback(const dynamic_reconfigure::Config::ConstPtr &configuration_update)
+// void CpCostmapProxy::dynreconfCallback(const dynamic_reconfigure::Config::ConstPtr &configuration_update)
 // {
 //     // auto gp = std::find_if(configuration_update->strs.begin(), configuration_update->strs.begin(),
 //     //                        [&](const dynamic_reconfigure::StrParameter &p) { return p.name == "base_global_planner" && p.value == desired_global_planner_; });

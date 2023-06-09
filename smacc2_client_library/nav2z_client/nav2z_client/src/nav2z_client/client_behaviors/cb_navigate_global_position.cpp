@@ -20,9 +20,9 @@
 #include <nav2z_client/common.hpp>
 
 #include <nav2z_client/client_behaviors/cb_navigate_global_position.hpp>
-#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
-#include <nav2z_client/components/planner_switcher/planner_switcher.hpp>
+#include <nav2z_client/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
+#include <nav2z_client/components/planner_switcher/cp_planner_switcher.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
 
 namespace cl_nav2z
@@ -55,9 +55,9 @@ void CbNavigateGlobalPosition::onEntry()
   RCLCPP_INFO(getLogger(), "Component requirements completed");
 
   auto pose = nav2zClient_->getComponent<cl_nav2z::Pose>()->toPoseMsg();
-  auto * odomTracker = nav2zClient_->getComponent<OdomTracker>();
+  auto * odomTracker = nav2zClient_->getComponent<CpOdomTracker>();
 
-  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
 
   plannerSwitcher->setDefaultPlanners(false);
 
@@ -68,7 +68,7 @@ void CbNavigateGlobalPosition::onEntry()
 
   plannerSwitcher->commitPublish();
 
-  auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("goal_checker");
 
   auto pathname = this->getCurrentState()->getName() + " - " + getName();

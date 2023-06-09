@@ -21,7 +21,7 @@
 
 #include <nav2z_client/client_behaviors/cb_rotate.hpp>
 #include <nav2z_client/common.hpp>
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
 
 namespace cl_nav2z
@@ -37,7 +37,7 @@ void CbRotate::onEntry()
 {
   double angle_increment_degree = rotateDegree;
 
-  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
 
   if (spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning)
   {
@@ -55,7 +55,7 @@ void CbRotate::onEntry()
   tf2::Transform currentPose;
   tf2::fromMsg(currentPoseMsg, currentPose);
 
-  auto odomTracker = nav2zClient_->getComponent<odom_tracker::OdomTracker>();
+  auto odomTracker = nav2zClient_->getComponent<odom_tracker::CpOdomTracker>();
   ClNav2Z::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
   goal.pose.header.stamp = getNode()->now();

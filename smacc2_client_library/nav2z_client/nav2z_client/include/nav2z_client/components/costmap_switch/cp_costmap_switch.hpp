@@ -36,9 +36,9 @@
 
 namespace cl_nav2z
 {
-class CostmapProxy;
+class CpCostmapProxy;
 
-class CostmapSwitch : public smacc2::ISmaccComponent
+class CpCostmapSwitch : public smacc2::ISmaccComponent
 {
 public:
   enum class StandardLayers
@@ -51,7 +51,7 @@ public:
 
   static std::array<std::string, 4> layerNames;
 
-  CostmapSwitch();
+  CpCostmapSwitch();
 
   void onInitialize() override;
 
@@ -71,14 +71,14 @@ public:
     std::string costmapName, std::string enablePropertyName = "enabled");
 
 private:
-  std::map<std::string, std::shared_ptr<CostmapProxy>> costmapProxies;
+  std::map<std::string, std::shared_ptr<CpCostmapProxy>> costmapProxies;
   cl_nav2z::ClNav2Z * nav2zClient_;
 };
 //-------------------------------------------------------------------------
-class CostmapProxy
+class CpCostmapProxy
 {
 public:
-  CostmapProxy(
+  CpCostmapProxy(
     std::string costmap_name, std::string enablePropertyName, rclcpp::Node::SharedPtr nh);
 
   void setCostmapEnabled(bool value);

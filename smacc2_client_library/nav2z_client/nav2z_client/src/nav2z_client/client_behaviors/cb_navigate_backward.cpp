@@ -22,8 +22,8 @@
 #include <geometry_msgs/msg/quaternion_stamped.hpp>
 #include <nav2z_client/client_behaviors/cb_navigate_backwards.hpp>
 #include <nav2z_client/common.hpp>
-#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
@@ -72,7 +72,7 @@ void CbNavigateBackwards::onEntry()
   currentStampedPoseMsg.header.stamp = getNode()->now();
   tf2::toMsg(currentPose, currentStampedPoseMsg.pose);
 
-  odomTracker_ = nav2zClient_->getComponent<OdomTracker>();
+  odomTracker_ = nav2zClient_->getComponent<CpOdomTracker>();
   if (odomTracker_ != nullptr)
   {
     this->odomTracker_->clearPath();
@@ -80,10 +80,10 @@ void CbNavigateBackwards::onEntry()
     this->odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
   }
 
-  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
   plannerSwitcher->setBackwardPlanner();
 
-  auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("backward_goal_checker");
 
   this->sendGoal(goal);

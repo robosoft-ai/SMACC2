@@ -19,7 +19,7 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
+#include <nav2z_client/components/waypoints_navigator/cp_waypoints_navigator.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 #include "cb_nav2z_client_behavior_base.hpp"
 #include "cb_navigate_next_waypoint.hpp"
@@ -38,7 +38,7 @@ public:
 
   void onExit() override;
 
-  WaypointNavigator * waypointsNavigator_;
+  CpWaypointNavigator * waypointsNavigator_;
 
   std::string waypointname_;
 };

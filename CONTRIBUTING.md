@@ -1,5 +1,5 @@
 # Contributing Guidelines
-Thank you for your interest in contributing to `smacc`.
+Thank you for your interest in contributing to `smacc2`.
 Whether it's a bug report, new feature, correction, or additional
 documentation, we greatly value feedback and contributions from our community.
 
@@ -35,7 +35,7 @@ To send us a pull request, please:
 1. Fork the repository.
 2. Modify the source; please focus on the specific change you are contributing.
   If you also reformat all the code, it will be hard for us to focus on your change.
-3. Ensure local tests pass. (`colcon test` and `pre-commit run` (requires you to install pre-commit by `pip3 install pre-commit`)
+3. Ensure local tests pass. (`colcon test` and `pre-commit run -a` (requires you to install pre-commit by `pip3 install pre-commit`)
 4. Commit to your fork using clear commit messages.
 5. Send a pull request, answering any default questions in the pull request interface.
 6. Pay attention to any automated CI failures reported in the pull request, and stay involved in the conversation.

@@ -19,11 +19,11 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 
 #include <optional>
 
-#include <nav2z_client/components/waypoints_navigator/waypoints_navigator.hpp>
+#include <nav2z_client/components/waypoints_navigator/cp_waypoints_navigator.hpp>
 #include "cb_nav2z_client_behavior_base.hpp"
 
 namespace cl_nav2z
@@ -39,7 +39,7 @@ public:
 
   std::optional<std::string> goalChecker_;
 
-  cl_nav2z::odom_tracker::OdomTracker * odomTracker_;
+  cl_nav2z::odom_tracker::CpOdomTracker * odomTracker_;
 
   CbNavigateBackwards(float backwardDistanceMeters);
 

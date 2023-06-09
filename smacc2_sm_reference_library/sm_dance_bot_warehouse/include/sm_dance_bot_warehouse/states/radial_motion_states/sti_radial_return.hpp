@@ -22,7 +22,7 @@ namespace sm_dance_bot_warehouse
 {
 namespace radial_motion_states
 {
-  using ::cl_nav2z::odom_tracker::OdomTracker;
+  using ::cl_nav2z::odom_tracker::CpOdomTracker;
 
 
 // STATE DECLARATION
@@ -51,7 +51,7 @@ struct StiRadialReturn : smacc2::SmaccState<StiRadialReturn, SS>
     ClNav2Z * moveBase;
     this->requiresClient(moveBase);
 
-    auto odomTracker = moveBase->getComponent<OdomTracker>();
+    auto odomTracker = moveBase->getComponent<CpOdomTracker>();
     odomTracker->clearPath();
   }
 };

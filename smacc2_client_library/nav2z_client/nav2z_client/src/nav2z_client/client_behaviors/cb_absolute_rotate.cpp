@@ -20,8 +20,8 @@
 
 #include <nav2z_client/client_behaviors/cb_absolute_rotate.hpp>
 #include <nav2z_client/common.hpp>
-#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
 #include <nav2z_client/nav2z_client.hpp>
 
@@ -47,7 +47,7 @@ void CbAbsoluteRotate::onEntry()
 
   RCLCPP_INFO_STREAM(getLogger(), "[CbAbsoluteRotate] Absolute yaw Angle:" << goal_angle);
 
-  auto plannerSwitcher = this->nav2zClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = this->nav2zClient_->getComponent<CpPlannerSwitcher>();
   // this should work better with a coroutine and await
   // this->plannerSwitcher_->setForwardPlanner();
 
@@ -76,7 +76,7 @@ void CbAbsoluteRotate::onEntry()
   q.setRPY(0, 0, targetAngle);
   goal.pose.pose.orientation = tf2::toMsg(q);
 
-  auto odomTracker_ = nav2zClient_->getComponent<odom_tracker::OdomTracker>();
+  auto odomTracker_ = nav2zClient_->getComponent<odom_tracker::CpOdomTracker>();
   if (odomTracker_ != nullptr)
   {
     auto pathname = this->getCurrentState()->getName() + " - " + getName();
@@ -85,7 +85,7 @@ void CbAbsoluteRotate::onEntry()
     odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
   }
 
-  auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("absolute_rotate_goal_checker");
 
   RCLCPP_INFO_STREAM(

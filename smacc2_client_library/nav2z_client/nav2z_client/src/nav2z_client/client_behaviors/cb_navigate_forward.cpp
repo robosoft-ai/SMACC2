@@ -21,13 +21,13 @@
 #include <nav2z_client/common.hpp>
 
 #include <nav2z_client/client_behaviors/cb_navigate_forward.hpp>
-#include <nav2z_client/components/goal_checker_switcher/goal_checker_switcher.hpp>
-#include <nav2z_client/components/odom_tracker/odom_tracker.hpp>
+#include <nav2z_client/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
 
 namespace cl_nav2z
 {
-using ::cl_nav2z::odom_tracker::OdomTracker;
+using ::cl_nav2z::odom_tracker::CpOdomTracker;
 using ::cl_nav2z::odom_tracker::WorkingMode;
 
 using ::cl_nav2z::Pose;
@@ -125,7 +125,7 @@ void CbNavigateForward::onEntry()
   currentStampedPoseMsg.header.stamp = getNode()->now();
   tf2::toMsg(currentPose, currentStampedPoseMsg.pose);
 
-  odomTracker_ = nav2zClient_->getComponent<OdomTracker>();
+  odomTracker_ = nav2zClient_->getComponent<CpOdomTracker>();
   if (odomTracker_ != nullptr)
   {
     auto pathname = this->getCurrentState()->getName() + " - " + getName();
@@ -135,10 +135,10 @@ void CbNavigateForward::onEntry()
     odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
   }
 
-  auto plannerSwitcher = nav2zClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
   plannerSwitcher->setForwardPlanner();
 
-  auto goalCheckerSwitcher = nav2zClient_->getComponent<GoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("forward_goal_checker");
 
   this->sendGoal(goal);
