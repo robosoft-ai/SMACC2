@@ -58,7 +58,7 @@ void CbRotate::onEntry()
   auto odomTracker = nav2zClient_->getComponent<odom_tracker::OdomTracker>();
   ClNav2Z::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
-  goal.pose.header.stamp = getNode()->now();
+  //goal.pose.header.stamp = getNode()->now();
 
   auto currentAngle = tf2::getYaw(currentPoseMsg.orientation);
   auto targetAngle = currentAngle + angle_increment_degree * M_PI / 180.0;

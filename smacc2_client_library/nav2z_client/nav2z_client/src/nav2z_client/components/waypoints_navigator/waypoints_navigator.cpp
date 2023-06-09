@@ -38,21 +38,21 @@ WaypointNavigator::WaypointNavigator() : currentWaypoint_(0), waypoints_(0) {}
 
 void WaypointNavigator::onInitialize() { client_ = dynamic_cast<ClNav2Z *>(owner_); }
 
-void WaypointNavigator::onGoalCancelled(ClNav2Z::WrappedResult & /*res*/)
+void WaypointNavigator::onGoalCancelled(const ClNav2Z::WrappedResult & /*res*/)
 {
   stopWaitingResult();
 
   this->onNavigationRequestCancelled();
 }
 
-void WaypointNavigator::onGoalAborted(ClNav2Z::WrappedResult & /*res*/)
+void WaypointNavigator::onGoalAborted(const ClNav2Z::WrappedResult & /*res*/)
 {
   stopWaitingResult();
 
   this->onNavigationRequestAborted();
 }
 
-void WaypointNavigator::onGoalReached(ClNav2Z::WrappedResult & /*res*/)
+void WaypointNavigator::onGoalReached(const ClNav2Z::WrappedResult & /*res*/)
 {
   waypointsEventDispatcher.postWaypointEvent(currentWaypoint_);
   currentWaypoint_++;
@@ -177,7 +177,7 @@ WaypointNavigator::sendNextGoal(
 
     // configuring goal
     goal.pose.header.frame_id = p->getReferenceFrame();
-    goal.pose.header.stamp = getNode()->now();
+    //goal.pose.header.stamp = getNode()->now();
     goal.pose.pose = next;
 
     auto plannerSwitcher = client_->getComponent<PlannerSwitcher>();
@@ -230,17 +230,22 @@ WaypointNavigator::sendNextGoal(
     }
 
     // SEND GOAL
-    if (!succeddedNav2ZClientConnection_.connected())
-    {
-      this->succeddedNav2ZClientConnection_ =
-        client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
-      this->cancelledNav2ZClientConnection_ =
-        client_->onAborted(&WaypointNavigator::onGoalCancelled, this);
-      this->abortedNav2ZClientConnection_ =
-        client_->onCancelled(&WaypointNavigator::onGoalAborted, this);
-    }
+    // if (!succeddedNav2ZClientConnection_.connected())
+    // {
+    //   this->succeddedNav2ZClientConnection_ =
+    //     client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
+    //   this->cancelledNav2ZClientConnection_ =
+    //     client_->onAborted(&WaypointNavigator::onGoalCancelled, this);
+    //   this->abortedNav2ZClientConnection_ =
+    //     client_->onCancelled(&WaypointNavigator::onGoalAborted, this);
+    // }
+
+    auto callbackptr = resultCallback.lock();
+    succeddedNav2ZClientConnection_ = this->getStateMachine()->createSignalConnection(
+      *callbackptr, &WaypointNavigator::onNavigationResult, this);
 
     return client_->sendGoal(goal, resultCallback);
+    //return client_->sendGoal(goal);
   }
   else
   {
@@ -250,6 +255,26 @@ WaypointNavigator::sendNextGoal(
   }
 
   return std::nullopt;
+}
+
+void WaypointNavigator::onNavigationResult(const ClNav2Z::WrappedResult & r)
+{
+  if (r.code == rclcpp_action::ResultCode::SUCCEEDED)
+  {
+    this->onGoalReached(r);
+  }
+  else if (r.code == rclcpp_action::ResultCode::ABORTED)
+  {
+    this->onGoalAborted(r);
+  }
+  else if (r.code == rclcpp_action::ResultCode::CANCELED)
+  {
+    this->onGoalCancelled(r);
+  }
+  else
+  {
+    this->onGoalAborted(r);
+  }
 }
 
 void WaypointNavigator::insertWaypoint(int index, geometry_msgs::msg::Pose & newpose)
