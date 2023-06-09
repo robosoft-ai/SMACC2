@@ -109,9 +109,11 @@ private:
 
   void removeWaypoint(int index);
 
-  void onGoalReached(ClNav2Z::WrappedResult & res);
-  void onGoalCancelled(ClNav2Z::WrappedResult & /*res*/);
-  void onGoalAborted(ClNav2Z::WrappedResult & /*res*/);
+  void onNavigationResult(const ClNav2Z::WrappedResult & r);
+
+  void onGoalReached(const ClNav2Z::WrappedResult & res);
+  void onGoalCancelled(const ClNav2Z::WrappedResult & /*res*/);
+  void onGoalAborted(const ClNav2Z::WrappedResult & /*res*/);
 
   std::vector<geometry_msgs::msg::Pose> waypoints_;
 

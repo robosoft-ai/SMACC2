@@ -25,6 +25,8 @@ CbNav2ZClientBehaviorBase::~CbNav2ZClientBehaviorBase() {}
 
 void CbNav2ZClientBehaviorBase::sendGoal(ClNav2Z::Goal & goal)
 {
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Creating sending goal callback signal.");
+
   this->navigationCallback_ = std::make_shared<cl_nav2z::ClNav2Z::SmaccNavigateResultSignal>();
 
   this->getStateMachine()->createSignalConnection(

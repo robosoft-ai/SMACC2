@@ -196,6 +196,8 @@ protected:
   // orthogonals
   std::map<std::string, std::shared_ptr<smacc2::ISmaccOrthogonal>> orthogonals_;
 
+  std::vector<boost::signals2::scoped_connection> longLivedSignalConnections_;
+
 protected:
   std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo_;
 
