@@ -433,6 +433,13 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(
     std::is_base_of<ISmaccOrthogonal, TSmaccObjectType>::value ||
     std::is_base_of<ISmaccStateMachine, TSmaccObjectType>::value)
   {
+    RCLCPP_INFO(
+      getLogger(),
+      "[StateMachine] long life-time smacc signal subscription created. Subscriber is %s. Callback "
+      "is: %s",
+      demangledTypeName<TSmaccObjectType>().c_str(),
+      demangleSymbol(typeid(callback).name()).c_str());
+
     connection = binder.bindaux(signal, callback, object, nullptr);
   }
   else if (

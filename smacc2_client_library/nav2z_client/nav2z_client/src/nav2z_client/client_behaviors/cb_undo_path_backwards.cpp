@@ -72,11 +72,15 @@ void CbUndoPathBackwards::onEntry()
   if (forwardpath.poses.size() > 0)
   {
     goal.pose = forwardpath.poses.front();
-    goal.pose.header.stamp = getNode()->now();
+    //goal.pose.header.stamp = getNode()->now();
+    goal.pose.header.stamp = rclcpp::Time(0);
 
-    if (options_->undoControllerName_)
+    if (options_ && options_->undoControllerName_)
     {
       plannerSwitcher->setUndoPathBackwardPlanner(false);
+      RCLCPP_INFO_STREAM(
+        getLogger(),
+        "[" << getName() << "] Undoing path with controller: " << *options_->undoControllerName_);
       plannerSwitcher->setDesiredController(*options_->undoControllerName_);
       plannerSwitcher->commitPublish();
     }

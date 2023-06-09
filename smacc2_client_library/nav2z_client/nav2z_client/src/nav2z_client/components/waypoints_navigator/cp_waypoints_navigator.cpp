@@ -38,21 +38,21 @@ CpWaypointNavigator::CpWaypointNavigator() : currentWaypoint_(0), waypoints_(0) 
 
 void CpWaypointNavigator::onInitialize() { client_ = dynamic_cast<ClNav2Z *>(owner_); }
 
-void CpWaypointNavigator::onGoalCancelled(ClNav2Z::WrappedResult & /*res*/)
+void CpWaypointNavigator::onGoalCancelled(const ClNav2Z::WrappedResult & /*res*/)
 {
   stopWaitingResult();
 
   this->onNavigationRequestCancelled();
 }
 
-void CpWaypointNavigator::onGoalAborted(ClNav2Z::WrappedResult & /*res*/)
+void CpWaypointNavigator::onGoalAborted(const ClNav2Z::WrappedResult & /*res*/)
 {
   stopWaitingResult();
 
   this->onNavigationRequestAborted();
 }
 
-void CpWaypointNavigator::onGoalReached(ClNav2Z::WrappedResult & /*res*/)
+void CpWaypointNavigator::onGoalReached(const ClNav2Z::WrappedResult & /*res*/)
 {
   waypointsEventDispatcher.postWaypointEvent(currentWaypoint_);
   currentWaypoint_++;
@@ -232,15 +232,19 @@ CpWaypointNavigator::sendNextGoal(
     }
 
     // SEND GOAL
-    if (!succeddedNav2ZClientConnection_.connected())
-    {
-      this->succeddedNav2ZClientConnection_ =
-        client_->onSucceeded(&CpWaypointNavigator::onGoalReached, this);
-      this->cancelledNav2ZClientConnection_ =
-        client_->onAborted(&CpWaypointNavigator::onGoalCancelled, this);
-      this->abortedNav2ZClientConnection_ =
-        client_->onCancelled(&CpWaypointNavigator::onGoalAborted, this);
-    }
+    // if (!succeddedNav2ZClientConnection_.connected())
+    // {
+    //   this->succeddedNav2ZClientConnection_ =
+    //     client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
+    //   this->cancelledNav2ZClientConnection_ =
+    //     client_->onAborted(&WaypointNavigator::onGoalCancelled, this);
+    //   this->abortedNav2ZClientConnection_ =
+    //     client_->onCancelled(&WaypointNavigator::onGoalAborted, this);
+    // }
+
+    auto callbackptr = resultCallback.lock();
+    succeddedNav2ZClientConnection_ = this->getStateMachine()->createSignalConnection(
+      *callbackptr, &CpWaypointNavigator::onNavigationResult, this);
 
     return client_->sendGoal(goal, resultCallback);
   }
@@ -248,10 +252,30 @@ CpWaypointNavigator::sendNextGoal(
   {
     RCLCPP_WARN(
       getLogger(),
-      "[WaypointsNavigator] All waypoints were consumed. There is no more waypoints available.");
+      "[CpWaypointsNavigator] All waypoints were consumed. There is no more waypoints available.");
   }
 
   return std::nullopt;
+}
+
+void CpWaypointNavigator::onNavigationResult(const ClNav2Z::WrappedResult & r)
+{
+  if (r.code == rclcpp_action::ResultCode::SUCCEEDED)
+  {
+    this->onGoalReached(r);
+  }
+  else if (r.code == rclcpp_action::ResultCode::ABORTED)
+  {
+    this->onGoalAborted(r);
+  }
+  else if (r.code == rclcpp_action::ResultCode::CANCELED)
+  {
+    this->onGoalCancelled(r);
+  }
+  else
+  {
+    this->onGoalAborted(r);
+  }
 }
 
 void CpWaypointNavigator::insertWaypoint(int index, geometry_msgs::msg::Pose & newpose)
@@ -361,7 +385,7 @@ void CpWaypointNavigator::loadWayPointsFromFile(std::string filepath)
 
     if (wp_node != NULL)
     {
-      for (unsigned int i = 0; i < wp_node->size(); ++i)
+      for (uint64_t i = 0; i < wp_node->size(); ++i)
       {
         // Parse waypoint entries on YAML
         geometry_msgs::msg::Pose wp;
@@ -434,7 +458,7 @@ void CpWaypointNavigator::loadWayPointsFromFile2(std::string filepath)
 
     if (wp_node != NULL)
     {
-      for (unsigned int i = 0; i < wp_node->size(); ++i)
+      for (uint64_t i = 0; i < wp_node->size(); ++i)
       {
         // Parse waypoint entries on YAML
         geometry_msgs::msg::Pose wp;
