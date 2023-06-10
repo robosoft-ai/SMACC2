@@ -57,7 +57,7 @@ def generate_launch_description():
     )
 
     declare_slam_cmd = DeclareLaunchArgument(
-        "slam", default_value="False", description="Whether run a SLAM"
+        "slam", default_value="true", description="Whether run a SLAM"
     )
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
@@ -98,18 +98,6 @@ def generate_launch_description():
                     "use_sim_time": use_sim_time,
                     "autostart": autostart,
                     "params_file": params_file,
-                }.items(),
-            ),
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(os.path.join(launch_dir, "localization_launch.py")),
-                condition=IfCondition(PythonExpression(["not ", slam])),
-                launch_arguments={
-                    "namespace": namespace,
-                    "map": map_yaml_file,
-                    "use_sim_time": use_sim_time,
-                    "autostart": autostart,
-                    "params_file": params_file,
-                    "use_lifecycle_mgr": "false",
                 }.items(),
             ),
             IncludeLaunchDescription(
