@@ -24,7 +24,7 @@ from launch.substitutions import LaunchConfiguration, PythonExpression
 
 def generate_launch_description():
     declare_use_simulator_cmd = DeclareLaunchArgument(
-        "use_simulator", default_value="False", description="Whether to execute gzclient)"
+        "use_simulator", default_value="false", description="Whether to execute gzclient)"
     )
 
     use_simulator = LaunchConfiguration("use_simulator")
@@ -36,11 +36,11 @@ def generate_launch_description():
     launch_dir = os.path.join(sm_dance_bot_dir, "launch")
 
     declare_use_simulator_cmd = DeclareLaunchArgument(
-        "use_simulator", default_value="True", description="Whether to start the simulator"
+        "use_simulator", default_value="true", description="Whether to start the simulator"
     )
 
     declare_simulator_cmd = DeclareLaunchArgument(
-        "headless", default_value="False", description="Whether to execute gzclient)"
+        "headless", default_value="false", description="Whether to execute gzclient)"
     )
 
     declare_show_gz_lidar = DeclareLaunchArgument(
@@ -83,7 +83,8 @@ def generate_launch_description():
     )
 
     start_gazebo_client_cmd = ExecuteProcess(
-        condition=IfCondition(PythonExpression([use_simulator, " and not ", headless])),
+        # condition=IfCondition(PythonExpression([use_simulator, " and not ", headless])),
+        condition=UnlessCondition(headless),
         cmd=["gzclient"],
         cwd=[launch_dir],
         env=gzenv,
