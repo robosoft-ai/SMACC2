@@ -223,8 +223,8 @@ local_costmap:
       robot_base_frame: base_link
       use_sim_time: True
       rolling_window: true
-      width: 3
-      height: 3
+      width: 6
+      height: 6
       resolution: 0.05
       robot_radius: 0.22
       plugins: ["voxel_layer", "inflation_layer"]
@@ -265,6 +265,8 @@ local_costmap:
 global_costmap:
   global_costmap:
     ros__parameters:
+      width: 8
+      height: 8
       update_frequency: 1.0
       publish_frequency: 1.0
       transform_tolerance: 5.0

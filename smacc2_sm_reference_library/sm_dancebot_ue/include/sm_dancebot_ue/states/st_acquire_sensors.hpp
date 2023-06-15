@@ -25,6 +25,8 @@
 namespace sm_dancebot_ue
 {
 using namespace smacc2::default_events;
+using smacc2::client_behaviors::CbSleepFor;
+using namespace std::chrono_literals;
 
 // STATE DECLARATION
 struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, MsDanceBotRunMode>
@@ -47,19 +49,22 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, MsDanceBotRunMode
   static void staticConfigure()
   {
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
-    configure_orthogonal<OrStringPublisher, CbStringPublisher>("Hello World!");
-    configure_orthogonal<OrTemperatureSensor, CbConditionTemperatureSensor>();
-    configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
-    configure_orthogonal<OrUpdatablePublisher, cl_ros_publisher::CbDefaultPublishLoop>();
+    // configure_orthogonal<OrStringPublisher, CbStringPublisher>("Hello World!");
+    // configure_orthogonal<OrTemperatureSensor, CbConditionTemperatureSensor>();
+    // configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
+    // configure_orthogonal<OrUpdatablePublisher, cl_ros_publisher::CbDefaultPublishLoop>();
     configure_orthogonal<OrNavigation, CbWaitPose>();
+    configure_orthogonal<OrNavigation,CbSleepFor>(5s);
 
     // Create State Reactor
     auto srAllSensorsReady = static_createStateReactor<
       SrAllEventsGo, smacc2::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>,
       mpl::list<
         EvTopicMessage<CbLidarSensor, OrObstaclePerception>,
-        EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>,
-        EvCbSuccess<CbWaitPose, OrNavigation>>>();
+        // EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>,
+        EvCbSuccess<CbWaitPose, OrNavigation>,
+        EvCbSuccess<CbSleepFor, OrNavigation>
+        >>();
   }
 };
 }  // namespace sm_dancebot_ue

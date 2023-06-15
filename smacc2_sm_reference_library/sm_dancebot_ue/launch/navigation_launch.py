@@ -25,7 +25,7 @@ from nav2_common.launch import RewrittenYaml
 
 def generate_launch_description():
     # Get the launch directory
-    sm_dance_bot_dir = get_package_share_directory("sm_dance_bot")
+    sm_dance_bot_dir = get_package_share_directory("sm_dancebot_ue")
 
     namespace = LaunchConfiguration("namespace")
     use_sim_time = LaunchConfiguration("use_sim_time")
@@ -78,7 +78,7 @@ def generate_launch_description():
             DeclareLaunchArgument(
                 "use_sim_time",
                 default_value="false",
-                description="Use simulation (Gazebo) clock if true",
+                description="Use simulation clock if true",
             ),
             DeclareLaunchArgument(
                 "autostart",

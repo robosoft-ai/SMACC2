@@ -28,7 +28,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get the launch directory
-    sm_dance_bot_dir = get_package_share_directory("sm_dance_bot")
+    sm_dance_bot_dir = get_package_share_directory("sm_dancebot_ue")
     sm_dance_bot_launch_dir = os.path.join(sm_dance_bot_dir, "launch")
 
     # Create the launch configuration variables
@@ -82,7 +82,7 @@ def generate_launch_description():
     )
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
-        "use_sim_time", default_value="true", description="Use simulation (Gazebo) clock if true"
+        "use_sim_time", default_value="true", description="Use simulation clock if true"
     )
 
     declare_gazebo_headless_cmd = DeclareLaunchArgument(
@@ -167,22 +167,17 @@ def generate_launch_description():
         }.items(),
     )
 
-    gazebo_simulator = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, "gazebo_launch.py")),
-        launch_arguments={"show_gz_lidar": show_gz_lidar, "headless": gazebo_headless}.items(),
-    )
-
     xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
 
     sm_dance_bot_node = Node(
-        package="sm_dance_bot",
-        executable="sm_dance_bot_node",
+        package="sm_dancebot_ue",
+        executable="sm_dancebot_ue_node",
         name="SmDanceBot",
         output="screen",
         prefix=xtermprefix,
         parameters=[
             os.path.join(
-                get_package_share_directory("sm_dance_bot"),
+                get_package_share_directory("sm_dancebot_ue"),
                 "params/sm_dance_bot_config.yaml",
             )
         ],
@@ -195,21 +190,21 @@ def generate_launch_description():
     )
 
     led_action_server_node = Node(
-        package="sm_dance_bot",
+        package="sm_dancebot_ue",
         executable="led_action_server_node",
         output="screen",
         prefix=xtermprefix,
     )
 
     temperature_action_server = Node(
-        package="sm_dance_bot",
+        package="sm_dancebot_ue",
         executable="temperature_sensor_node",
         output="screen",
         prefix=xtermprefix,
     )
 
     service3_node = Node(
-        package="sm_dance_bot",
+        package="sm_dancebot_ue",
         executable="service_node_3.py",
         output="screen",
         prefix=xtermprefix,
@@ -237,7 +232,6 @@ def generate_launch_description():
     ld.add_action(declare_rviz_config_file_cmd)
     ld.add_action(declare_use_robot_state_pub_cmd)
     ld.add_action(declare_use_rviz_cmd)
-    ld.add_action(gazebo_simulator)
 
     ld.add_action(sm_dance_bot_node)
     ld.add_action(service3_node)

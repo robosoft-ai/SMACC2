@@ -1,5 +1,5 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package sm_dance_bot
+Changelog for package sm_dancebot_ue
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 2.3.6 (2023-03-12)
@@ -210,7 +210,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -244,7 +244,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -264,7 +264,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -276,14 +276,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -292,7 +292,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -353,35 +353,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -481,7 +481,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -822,7 +822,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -856,7 +856,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -876,7 +876,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -888,14 +888,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -904,7 +904,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -965,35 +965,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -1093,7 +1093,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -1471,7 +1471,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -1505,7 +1505,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -1525,7 +1525,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -1537,14 +1537,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -1553,7 +1553,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -1614,35 +1614,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -1742,7 +1742,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -2124,7 +2124,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -2158,7 +2158,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -2178,7 +2178,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -2190,14 +2190,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -2206,7 +2206,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -2267,35 +2267,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -2395,7 +2395,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -2780,7 +2780,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -2814,7 +2814,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -2834,7 +2834,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -2846,14 +2846,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -2862,7 +2862,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -2923,35 +2923,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -3051,7 +3051,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -3435,7 +3435,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -3469,7 +3469,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -3489,7 +3489,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -3501,14 +3501,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -3517,7 +3517,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -3578,35 +3578,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -3706,7 +3706,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -4097,7 +4097,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -4131,7 +4131,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -4151,7 +4151,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -4163,14 +4163,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -4179,7 +4179,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -4240,35 +4240,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -4368,7 +4368,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -4590,7 +4590,7 @@ Changelog for package sm_dance_bot
   * more on backport
   * more on backport
   * disappeared ur_msgs denis repo
-  * fixing sm_dance_bot examples
+  * fixing sm_dancebot_ue examples
   * working on fix of image messages for husky_barrel demo
   Co-authored-by: Denis Štogl <denis@stogl.de>
   Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
@@ -4811,7 +4811,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -4845,7 +4845,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -4865,7 +4865,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -4877,14 +4877,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -4893,7 +4893,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -4954,35 +4954,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -5082,7 +5082,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -5423,7 +5423,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -5457,7 +5457,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -5477,7 +5477,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -5489,14 +5489,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -5505,7 +5505,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -5566,35 +5566,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -5694,7 +5694,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -6072,7 +6072,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -6106,7 +6106,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -6126,7 +6126,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -6138,14 +6138,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -6154,7 +6154,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -6215,35 +6215,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -6343,7 +6343,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -6725,7 +6725,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -6759,7 +6759,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -6779,7 +6779,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -6791,14 +6791,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -6807,7 +6807,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -6868,35 +6868,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -6996,7 +6996,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -7381,7 +7381,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -7415,7 +7415,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -7435,7 +7435,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -7447,14 +7447,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -7463,7 +7463,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -7524,35 +7524,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -7652,7 +7652,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -8036,7 +8036,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -8070,7 +8070,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -8090,7 +8090,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -8102,14 +8102,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -8118,7 +8118,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -8179,35 +8179,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -8307,7 +8307,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -8698,7 +8698,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -8732,7 +8732,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -8752,7 +8752,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -8764,14 +8764,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -8780,7 +8780,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -8841,35 +8841,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -8969,7 +8969,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -9191,7 +9191,7 @@ Changelog for package sm_dance_bot
   * more on backport
   * more on backport
   * disappeared ur_msgs denis repo
-  * fixing sm_dance_bot examples
+  * fixing sm_dancebot_ue examples
   * working on fix of image messages for husky_barrel demo
   Co-authored-by: Denis Štogl <denis@stogl.de>
   Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
@@ -9347,7 +9347,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -9381,7 +9381,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -9401,7 +9401,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -9413,14 +9413,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -9429,7 +9429,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -9490,35 +9490,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -9618,7 +9618,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -9957,7 +9957,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -9991,7 +9991,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -10011,7 +10011,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -10023,14 +10023,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -10039,7 +10039,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -10100,35 +10100,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -10228,7 +10228,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -10590,7 +10590,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -10624,7 +10624,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -10644,7 +10644,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -10656,14 +10656,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -10672,7 +10672,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -10733,35 +10733,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -10861,7 +10861,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -11243,7 +11243,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -11277,7 +11277,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -11297,7 +11297,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -11309,14 +11309,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -11325,7 +11325,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -11386,35 +11386,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -11514,7 +11514,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -11897,7 +11897,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -11931,7 +11931,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -11951,7 +11951,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -11963,14 +11963,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -11979,7 +11979,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -12040,35 +12040,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)
@@ -12168,7 +12168,7 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/aws navigation sm dance bot (#174)
   * repo dependency
-  * husky launch file in sm_dance_bot
+  * husky launch file in sm_dancebot_ue
   * Add dependencies for husky simulation.
   * Fix formatting.
   * Update dependencies for husky in rolling and galactic.
@@ -12569,7 +12569,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * Feature/sm aws warehouse (#94)
   * base for the sm_aws_aarehouse navigation
@@ -12603,7 +12603,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * minor format
@@ -12623,7 +12623,7 @@ Changelog for package sm_dance_bot
   * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
   * progress in aws navigation demo
   * minor format
-  * navigation parameters fixes on sm_dance_bot
+  * navigation parameters fixes on sm_dancebot_ue
   * minor format
   * minor
   * formatting
@@ -12635,14 +12635,14 @@ Changelog for package sm_dance_bot
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Rename doxygen deployment workflow (#100)
   * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
+  * sm_dancebot_ue visualizing turtlebot3 (#101)
   * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
   * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -12651,7 +12651,7 @@ Changelog for package sm_dance_bot
   * sm_multi_stage_1 doubling (#103)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
+  * sm_dancebot_ue visualizing turtlebot3
   * cleaning and lidar show/hide option
   * cleaning files and making formatting work
   * more fixes
@@ -12712,35 +12712,35 @@ Changelog for package sm_dance_bot
   * Remove merge markers from a python file. (#119)
   * Feature/slam toggle and smacc deep history (#122)
   * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
+  * going forward in testing sm_dancebot_ue introducing slam pausing/resuming funcionality
   * feature/more_sm_dance_bot_fixes
   * minor format
   * minor (#124)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
+  * more changes in sm_dancebot_ue (#125)
   * Move method after the method it calls. Otherwise recursion could happen. (#126)
   * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
   * noticed typo
   Finnaly > Finally
   * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
+  * more changes in sm_dancebot_ue
+  * polishing sm_dancebot_ue and s-pattern
+  * more refinement in sm_dancebot_ue
   * First working version of sm template and template generator. (#127)
   * minor tweaks (#130)
   Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
   * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
+  * more changes in sm_dancebot_ue
   * minor
   * build fix
   * waypoints navigator bug (#133)
   * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
+  * progress in the sm_dancebot_ue tests (#135)
   * some more progress on markers cleanup
   * minor format issues (#134)
   * sm_dance_bot_lite (#136)

@@ -31,7 +31,7 @@ def generate_launch_description():
     # params_file = LaunchConfiguration("params_file")
     use_sim_time = LaunchConfiguration("use_sim_time")
     # autostart = LaunchConfiguration("autostart")
-    # sm_dance_bot_dir = get_package_share_directory("sm_dance_bot")
+    # sm_dance_bot_dir = get_package_share_directory("sm_dancebot_ue")
 
     # Variables
     # lifecycle_nodes = ["slam_toolbox"]

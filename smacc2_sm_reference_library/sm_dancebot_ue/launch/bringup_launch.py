@@ -31,7 +31,7 @@ from launch_ros.actions import PushRosNamespace
 
 def generate_launch_description():
     # Get the launch directory
-    sm_dance_bot_dir = get_package_share_directory("sm_dance_bot")
+    sm_dance_bot_dir = get_package_share_directory("sm_dancebot_ue")
     launch_dir = os.path.join(sm_dance_bot_dir, "launch")
 
     # Create the launch configuration variables
@@ -65,7 +65,7 @@ def generate_launch_description():
     )
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
-        "use_sim_time", default_value="false", description="Use simulation (Gazebo) clock if true"
+        "use_sim_time", default_value="false", description="Use simulation clock if true"
     )
 
     declare_params_file_cmd = DeclareLaunchArgument(

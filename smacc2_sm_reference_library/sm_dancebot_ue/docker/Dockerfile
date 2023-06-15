@@ -65,6 +65,7 @@ RUN git clone --recurse-submodules https://github.com/rapyuta-robotics/turtlebot
 WORKDIR "/home/$USER/src/turtlebot3-UE"
 RUN git-lfs pull && git submodule foreach git-lfs pull
 ENV UE5_DIR=/home/$USER/src/UE5.1/UnrealEngine
+RUN ls && echo ${UE5_DIR}
 RUN ./update_project_files.sh
 ENV UE5_DIR=/home/$USER/src/UE5.1
 RUN sudo apt-get install nano
@@ -106,6 +107,7 @@ COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/run_e
 RUN touch /home/$USER/src/turtlebot3-UE/COLCON_IGNORE
 RUN touch /home/$USER/src/UE5.1/COLCON_IGNORE
 WORKDIR "/home/$USER/"
+RUN sudo apt-get install -y ros-humble-nav2-bringup ros-humble-rviz2
 RUN bash -c "source /opt/ros/humble/setup.bash && colcon build --symlink-install"
 
 WORKDIR "/home/$USER/src/turtlebot3-UE"
