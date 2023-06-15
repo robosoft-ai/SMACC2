@@ -23,8 +23,8 @@ namespace smacc2
 {
 namespace state_reactors
 {
-template <typename TSource, typename TObjectTag = EmptyObjectTag>
-struct EvConditionalTrue : sc::event<EvConditionalTrue<TSource, TObjectTag>>
+template <typename TReactorType, typename TReactorTag = EmptyObjectTag>
+struct EvConditionalTrue : sc::event<EvConditionalTrue<TReactorType, TReactorTag>>
 {
 };
 
