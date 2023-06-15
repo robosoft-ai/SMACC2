@@ -23,8 +23,8 @@ namespace smacc2
 {
 namespace state_reactors
 {
-template <typename TSource, typename TObjectTag = EmptyObjectTag>
-struct EvAllGo : sc::event<EvAllGo<TSource, TObjectTag>>
+template <typename TReactorType, typename TReactorTag = EmptyObjectTag>
+struct EvAllGo : sc::event<EvAllGo<TReactorType, TReactorTag>>
 {
 };
 
