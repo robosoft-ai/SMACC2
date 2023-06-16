@@ -38,7 +38,7 @@ def generate_launch_description():
 
     # Getting directories and launch-files
     # bringup_dir = get_package_share_directory("nav2_bringup")
-    #slam_toolbox_dir = get_package_share_directory("slam_toolbox")
+    # slam_toolbox_dir = get_package_share_directory("slam_toolbox")
     # slam_launch_file = os.path.join(sm_dance_bot_dir, 'launch', 'online_sync_launch.py')
     slam_launch_file = os.path.join(sm_dance_bot_dir, "launch", "online_sync_launch.py")
 
