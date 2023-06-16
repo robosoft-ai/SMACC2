@@ -80,7 +80,6 @@ ENV UE5_DIR=/home/$USER/src/UE5.1/UnrealEngine
 RUN make turtlebot3
 RUN make turtlebot3Editor
 
-
 # COPY smacc2 /home/$USER/src/SMACC2/smacc2
 RUN mkdir -p /home/$USER/src/SMACC2/
 WORKDIR "/home/$USER/src/SMACC2"
@@ -93,25 +92,19 @@ COPY --chown=$USER:$USER smacc2_dev_tools /home/$USER/src/SMACC2/smacc2_dev_tool
 COPY --chown=$USER:$USER smacc2_msgs /home/$USER/src/SMACC2/smacc2_msgs                     
 #smacc2_sm_reference_library  
 
-# ADD smacc2_client_library /home/$USER/src/SMACC2_ws/src/SMACC2/smacc2_client_library
-# ADD smacc2_state_reactor_library /home/$USER/src/SMACC2_ws/src/SMACC2/smacc2_state_reactor_library
-# ADD smacc2_event_generator_library /home/$USER/src/SMACC2_ws/src/SMACC2/smacc2_event_generator_library
-#RUN sudo chown -R $USER:$USER /home/$USER
-
 #RUN git clone 
 RUN rosdep update
 RUN rosdep install --ignore-src --from-paths . -y -r
+RUN sudo apt-get install -y ros-humble-nav2-bringup ros-humble-rviz2
 
+RUN sudo apt-get install -y openvpn
 COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/run_editor_smacc.sh /home/$USER/src/turtlebot3-UE/run_editor_smacc.sh
 
 RUN touch /home/$USER/src/turtlebot3-UE/COLCON_IGNORE
 RUN touch /home/$USER/src/UE5.1/COLCON_IGNORE
 WORKDIR "/home/$USER/"
-RUN sudo apt-get install -y ros-humble-nav2-bringup ros-humble-rviz2
 RUN bash -c "source /opt/ros/humble/setup.bash && colcon build --symlink-install"
 
 WORKDIR "/home/$USER/src/turtlebot3-UE"
+
 ENTRYPOINT /home/$USER/src/turtlebot3-UE/run_editor_smacc.sh
-
-
-
