@@ -105,6 +105,9 @@ RUN touch /home/$USER/src/UE5.1/COLCON_IGNORE
 WORKDIR "/home/$USER/"
 RUN bash -c "source /opt/ros/humble/setup.bash && colcon build --symlink-install"
 
+RUN mkdir /home/$USER/ovpnconfig
+
+CMD openvpn --daemon --config /home/$USER/ovpnconfig/ovpnconfig.ovpn --auth-user-pass /home/$USER/ovpnconfig/login.txt --askpass /home/$USER/ovpnconfig/password.conf
 WORKDIR "/home/$USER/src/turtlebot3-UE"
 
-ENTRYPOINT /home/$USER/src/turtlebot3-UE/run_editor_smacc.sh
+#ENTRYPOINT /home/$USER/src/turtlebot3-UE/run_editor_smacc.sh
