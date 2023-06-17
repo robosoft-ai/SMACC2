@@ -7,7 +7,7 @@ This repository provides a prebuilt Docker image containing Unreal Engine. Follo
 Use the provided link to download the prebuilt Docker image for Unreal Engine:
 
 ```
-wget https://www.dropbox.com/scl/fi/73dcb6whgy290xgpuduwj/unreal_editor_smacc-16th-Jun-2023.tar?dl=0&rlkey=60ueyxvtwtdmz2ujirkukjfy5 -O ue_editor_rclue.tar
+wget -O ue_editor_rclue.tar 'https://www.dropbox.com/scl/fi/73dcb6whgy290xgpuduwj/unreal_editor_smacc-16th-Jun-2023.tar?dl=0&rlkey=60ueyxvtwtdmz2ujirkukjfy5'
 ```
 
 ### Loading the Docker Image
