@@ -92,10 +92,11 @@ COPY --chown=$USER:$USER smacc2_dev_tools /home/$USER/src/SMACC2/smacc2_dev_tool
 COPY --chown=$USER:$USER smacc2_msgs /home/$USER/src/SMACC2/smacc2_msgs                     
 #smacc2_sm_reference_library  
 
-#RUN git clone 
+#RUN git clone
+RUN sudo apt-get update 
 RUN rosdep update
 RUN rosdep install --ignore-src --from-paths . -y -r
-RUN sudo apt-get install -y ros-humble-nav2-bringup ros-humble-rviz2
+RUN sudo apt-get update && sudo apt-get install -y ros-humble-nav2-bringup ros-humble-rviz2
 
 RUN sudo apt-get install -y openvpn
 COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/run_editor_smacc.sh /home/$USER/src/turtlebot3-UE/run_editor_smacc.sh
@@ -110,4 +111,5 @@ RUN mkdir /home/$USER/ovpnconfig
 CMD openvpn --daemon --config /home/$USER/ovpnconfig/ovpnconfig.ovpn --auth-user-pass /home/$USER/ovpnconfig/login.txt --askpass /home/$USER/ovpnconfig/password.conf
 WORKDIR "/home/$USER/src/turtlebot3-UE"
 
+ENV LD_LIBRARY_PATH=/home/ros2_ws/src/turtlebot3-UE/Plugins/rclUE/ThirdParty/ros/lib/:/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:
 #ENTRYPOINT /home/$USER/src/turtlebot3-UE/run_editor_smacc.sh
