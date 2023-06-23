@@ -4,11 +4,8 @@ This repository provides a prebuilt Docker image containing Unreal Engine. Follo
 
 ### Downloading the Prebuilt Image
 
-Use the provided link to download the prebuilt Docker image for Unreal Engine:
+Download the prebuilt Docker image for Unreal Engine:
 
-```
-wget -O ue_editor_rclue.tar 'https://www.dropbox.com/scl/fi/73dcb6whgy290xgpuduwj/unreal_editor_smacc-16th-Jun-2023.tar?dl=0&rlkey=60ueyxvtwtdmz2ujirkukjfy5'
-```
 
 ### Loading the Docker Image
 
@@ -27,6 +24,21 @@ To run the Docker image, first, download the current SMACC2 repository. Then, na
 ```
 
 This will start a new container, and the Unreal Engine editor will automatically open in "edition mode." By clicking the "play" button, you can launch the simulation with Turtlebot topics accessible from both the container and the host computer.
+
+```
+cd ~/
+```
+```
+source /opt/ros/humble/setup.bash
+```
+```
+colcon build
+```
+```
+source install/setup.bash
+```
+
+
 
 To run your current demo, follow these steps after executing `colcon build`:
 
