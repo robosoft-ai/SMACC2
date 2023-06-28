@@ -45,7 +45,7 @@ Load the downloaded image into your Docker image database using the following co
 sudo docker load -i ue_editor_rclue.tar
 ```
 
-### Running/Creating a new container from the smacc2_editor_ue docker image
+### Running/Creating a new container from the ue_editor_rcl docker image
 
 To run the Docker image, first, download the current SMACC2 repository. Then, navigate to the Docker folder and execute the following command:
 
@@ -53,11 +53,7 @@ To run the Docker image, first, download the current SMACC2 repository. Then, na
 ./run_docker_container_bash.sh
 ```
 
-This will start a new container, but the editor will not be open yet
-
-### Open the unreal engine editor
-
-Assuming the container is already running execute the following:
+This will create and start a new container as a daemon (should be available on restarting). This container is able to open de unreal engine editor with ROS2, but the editor will not open until you run the following command:
 
 ```
 ./join_editor.sh
@@ -65,16 +61,41 @@ Assuming the container is already running execute the following:
 
 The Unreal Engine editor will automatically open in "edition mode." By clicking the "play" button, you can launch the simulation with Turtlebot topics accessible from both the container and the host computer.
 
+
+
+### Start/stop an already existing container from the ue_editor_rcl docker image
+
+```
+./start_container.sh
+```
+
+```
+./stop_container.sh
+```
 ### Join to the container via bash
+You may need to enter into the docker container to debug, or test stuff from commandline.
+Then you can use the following command:
 
 ```
 ./join_bash.sh
 ```
-### Optionally Stop running container and remove
+### Optionally Stopping and removing running container
+
+You may want to reset everyting if you messed the container. Before you create a new container you need
+to stop and remove the existing one.
 
 ```
 ./stop_container.sh
 ./remove_container.sh
+```
+
+### Optionally Stopping and removing running container
+
+In the case you want to change the docker image via Dockerfile you will need to rebuild the docker image.
+You can do it like this:
+
+```
+./build_docker_humble.sh
 ```
 
 ### Optionally Rebuild and run a smacc state machine inside the container
@@ -105,3 +126,6 @@ ros2 launch sm_dancebot_ue sm_dancebot_ue_launch.py
 ```
 
 Enjoy experimenting with Unreal Engine in your Docker environment!
+
+### Connecting the container to VPN
+Prototype already done -> todo DOC
