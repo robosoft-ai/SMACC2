@@ -50,7 +50,7 @@ sudo docker load -i ue_editor_rclue.tar
 To run the Docker image, first, download the current SMACC2 repository. Then, navigate to the Docker folder and execute the following command:
 
 ```
-run_docker_container_bash.sh
+./run_docker_container_bash.sh
 ```
 
 This will start a new container, but the editor will not be open yet
@@ -60,7 +60,7 @@ This will start a new container, but the editor will not be open yet
 Assuming the container is already running execute the following:
 
 ```
-join_editor.sh
+./join_editor.sh
 ```
 
 The Unreal Engine editor will automatically open in "edition mode." By clicking the "play" button, you can launch the simulation with Turtlebot topics accessible from both the container and the host computer.
@@ -68,7 +68,7 @@ The Unreal Engine editor will automatically open in "edition mode." By clicking 
 ### Join to the container via bash
 
 ```
-join_bash.sh
+./join_bash.sh
 ```
 ### Optionally Stop running container and remove
 
@@ -77,7 +77,14 @@ join_bash.sh
 ./remove_container.sh
 ```
 
-### Optionally Run a smacc state machine inside the container
+### Optionally Rebuild and run a smacc state machine inside the container
+
+Notice that ue_editor_rcl containers are run mapping the current smacc2 source folder so it is possible to do a mixed development between the host (to develop from vscode) and the container (to compile and run the state machines).
+
+Smacc2 source code is already prebuilt inside the image consecuently it is available to any container.
+You could need to modify smacc2 code or examples and rebuilt it. 
+
+If that is the case you can do the following:
 
 ```
 cd ~/
