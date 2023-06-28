@@ -39,6 +39,7 @@ if dpkg -s "$package_name" >/dev/null 2>&1; then
         echo "Package $package_name-$package_version is already installed."
     else
         echo "WARNING: Package $package_name is installed, but it does not have the same debian package version $package_version."
+        DO_INSTALL=1
     fi
 else
     echo "Package $package_name is not installed."
@@ -48,7 +49,7 @@ fi
 if [ "$DO_INSTALL" == "1" ]; then
     echo "Attempting to install package $package_name-$package_version."
     # Attempt to install the package
-    sudo apt-get install -y "$package_name=$package_version" >/dev/null 2>&1
+    sudo apt-get install -y "$package_name"
     
     # Check if the installation was successful
     if dpkg -s "$package_name" >/dev/null 2>&1; then

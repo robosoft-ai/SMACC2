@@ -45,7 +45,7 @@ Load the downloaded image into your Docker image database using the following co
 sudo docker load -i ue_editor_rclue.tar
 ```
 
-### Running a New Container from the Image
+### Running/Creating a new container from the smacc2_editor_ue docker image
 
 To run the Docker image, first, download the current SMACC2 repository. Then, navigate to the Docker folder and execute the following command:
 
@@ -62,6 +62,7 @@ Assuming the container is already running execute the following:
 ```
 join_editor.sh
 ```
+
 The Unreal Engine editor will automatically open in "edition mode." By clicking the "play" button, you can launch the simulation with Turtlebot topics accessible from both the container and the host computer.
 
 ### Join to the container via bash
