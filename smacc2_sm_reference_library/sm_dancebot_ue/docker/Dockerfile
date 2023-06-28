@@ -100,6 +100,7 @@ RUN sudo apt-get update && sudo apt-get install -y ros-humble-nav2-bringup ros-h
 
 RUN sudo apt-get install -y openvpn
 COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/run_editor_smacc.sh /home/$USER/src/turtlebot3-UE/run_editor_smacc.sh
+COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/nvidia-driver-check.sh /home/$USER/src/turtlebot3-UE/nvidia-driver-check.sh
 
 RUN touch /home/$USER/src/turtlebot3-UE/COLCON_IGNORE
 RUN touch /home/$USER/src/UE5.1/COLCON_IGNORE
