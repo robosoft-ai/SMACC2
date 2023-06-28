@@ -1,3 +1,21 @@
+# SMACC2 and UNREAL ENGINE EDITOR
+The README.md file provides a comprehensive guide for setting up and utilizing the Unreal Engine Docker environment. The document covers the necessary prerequisites, such as installing Docker and NVIDIA-Docker2, and provides step-by-step instructions for downloading and loading the prebuilt Docker image containing Unreal Engine. Additionally, it explains how to run the Unreal Editor within the container, create new containers for debugging purposes, and connect the container to a VPN if required. The README.md also includes important notes and optional instructions for rebuilding and running SMACC state machines inside the container. Whether you are new to Docker or an experienced user, this document will help you navigate the process of working with Unreal Engine in a Docker environment effectively.
+
+## Important Notes about the Solution
+
+Here are some important notes regarding the solution:
+
+**Repos Versioning:** Not all versions of `rclUE`, `turtlebot3Editor`, and `RapyputaPlugins` are compatible with each other. Ensuring consistency among them can be challenging, especially when considering that the container maps/volumes some volumes with external contents. The container is already designed to have a correct combination of all of them, but this is hardcoded in the Dockerfile and can be improved.
+
+**DDS Configuration:** There may be communication issues between the Docker container nodes and host nodes. As a workaround, we currently use `cyclonedds` on the host (until a uniform solution using `fastrtps` is found). To set this up, add the following line to the `.bashrc` file on the host:
+```
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+```
+
+***Automatic container nvidia driver update***
+The host and the container must have the same nvidia-driver in order to run the ue editor and simulation. 
+There is a mechanism implemented to automatically sync the driver. The current driver version is passed from the host to the container and then it is updated in the container if that is required. That is done in the nvidia-check.sh script.
+
 ## Pre-Requisites
 Before proceeding with the instructions, ensure that you have the necessary prerequisites installed on your system.
 
@@ -176,25 +194,35 @@ To enter the Docker container and debug or test things from the command line, us
 ./join_bash.sh
 ```
 
-## Important Notes about the Solution
-
-Here are some important notes regarding the solution:
-
-**Repos Versioning:** Not all versions of `rclUE`, `turtlebot3Editor`, and `RapyputaPlugins` are compatible with each other. Ensuring consistency among them can be challenging, especially when considering that the container maps/volumes some volumes with external contents. The container is already designed to have a correct combination of all of them, but this is hardcoded in the Dockerfile and can be improved.
-
-**DDS Configuration:** There may be communication issues between the Docker container nodes and host nodes. As a workaround, we currently use `cyclonedds` on the host (until a uniform solution using `fastrtps` is found). To set this up, add the following line to the `.bashrc` file on the host:
-```
-export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-```
-
-### Optionally Rebuilding and Running a SMACC State Machine inside the Container
-
-Note that the `ue_editor_rcl` containers are run by mapping the current `smacc2` source folder, enabling mixed development between the host (using
-
-### Automatic driver update
-The host and the container must have the same nvidia-driver in order to run the ue editor and simulation. 
-There is a mechanism implemented to automatically sync the driver. The current driver version is passed from the host to the container and then it is updated in the container if that is required. That is done in the nvidia-check.sh script.
-
 ### Connecting the Container to VPN
 
 The prototype for connecting the container to a VPN has already been completed. For detailed instructions, please refer to the relevant documentation.
+
+### Optionally Rebuilding and Running a SMACC State Machine inside the Container
+
+Note that the `ue_editor_rcl` containers are run by mapping the current `smacc2` source folder, allowing for mixed development between the host (using VSCode) and the container (for compiling and running the state machines).
+
+The SMACC2 source code is already prebuilt inside the image, making it available to any container. However, if you need to modify the `smacc2` code or examples and rebuild it, follow these steps:
+
+1. Change to the home directory:
+   ```
+   cd ~/
+   ```
+
+2. Source the Humble ROS 2 installation:
+   ```
+   source /opt/ros/humble/setup.bash
+   ```
+
+3. Build the `smacc2` code:
+   ```
+   colcon build
+   ```
+
+4. To run your current demo, execute the following commands after building:
+   ```
+   source install/setup.bash
+   ros2 launch sm_dancebot_ue sm_dancebot_ue_launch.py
+   ```
+
+Enjoy experimenting with Unreal Engine in your Docker environment!
