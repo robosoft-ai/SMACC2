@@ -2,6 +2,7 @@
 # Copyright 2020-2022 Rapyuta Robotics Co., Ltd.
 
 export LD_LIBRARY_PATH=$(echo "$LD_LIBRARY_PATH" | sed 's#/opt/ros/humble/lib:##')
+echo "UPDATED LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
         
 if [ -z "${UE5_DIR}" ]; then
         printf "Please set UE5_DIR to path of UE5 folder\n"

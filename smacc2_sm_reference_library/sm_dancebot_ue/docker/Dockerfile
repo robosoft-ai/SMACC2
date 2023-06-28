@@ -63,6 +63,10 @@ RUN sudo apt install -y code git-lfs # or code-insiders
 
 RUN git clone --recurse-submodules https://github.com/rapyuta-robotics/turtlebot3-UE.git -b jammy
 WORKDIR "/home/$USER/src/turtlebot3-UE"
+RUN git checkout abdf483ce14f477d8f255fe19f3527975b3a9dbb
+RUN cd Plugins/rclUE && git checkout bae993fa
+RUN cd Plugins/RapyutaSimulationPlugins && git checkout bfac015
+
 RUN git-lfs pull && git submodule foreach git-lfs pull
 ENV UE5_DIR=/home/$USER/src/UE5.1/UnrealEngine
 RUN ls && echo ${UE5_DIR}
@@ -113,4 +117,5 @@ CMD openvpn --daemon --config /home/$USER/ovpnconfig/ovpnconfig.ovpn --auth-user
 WORKDIR "/home/$USER/src/turtlebot3-UE"
 
 ENV LD_LIBRARY_PATH=/home/ros2_ws/src/turtlebot3-UE/Plugins/rclUE/ThirdParty/ros/lib/:/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:
+
 #ENTRYPOINT /home/$USER/src/turtlebot3-UE/run_editor_smacc.sh

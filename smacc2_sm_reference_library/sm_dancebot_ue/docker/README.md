@@ -45,9 +45,43 @@ Load the downloaded image into your Docker image database using the following co
 sudo docker load -i ue_editor_rclue.tar
 ```
 
+
+### (Alternative) Building docker image locally
+
+In the case you want to change the docker image via Dockerfile you will need to rebuild the docker image.
+Before doing that you need to make a link to the UE5.1 folder into sm_dancebot_ue/docker folder.
+
+```
+mount --bind <UE5.1DIR> UE5.1/UnrealEngine
+```
+
+Then you can build the image locally. You can do that like this:
+
+```
+./build_docker_humble.sh
+```
+
+## Using the docker Image
+
 ### Running/Creating a new container from the ue_editor_rcl docker image
 
-To run the Docker image, first, download the current SMACC2 repository. Then, navigate to the Docker folder and execute the following command:
+To run the unreal editor inside the container we will need some auxiliar scripts that are located in the sm_dancebot_ue example, first, download the current SMACC2 repository. Then, navigate to the `sm_dancebot_ue/docker` folder and execute the following command:
+
+```
+./run_docker_container_editor.sh
+```
+
+The Unreal Engine editor will automatically open in "edition mode." By clicking the "play" button, you can launch the simulation with Turtlebot topics accessible from both the container and the host computer.
+
+When you close the editor, the container also will finish, but the container "keeps installed", you can reopen again the editor using the command:
+
+```
+./start_container.sh
+```
+
+### (Alternative) Running/Creating a new container for container debugging
+
+There is a secondary way of creating the container in a daemon mode so that the lifetime of the container is not tied to the unreal editor window. This is useful specially for developing new features for the container. To create the container in this mode you have to run:
 
 ```
 ./run_docker_container_bash.sh
@@ -62,24 +96,7 @@ This will create and start a new container as a daemon (should be available on r
 The Unreal Engine editor will automatically open in "edition mode." By clicking the "play" button, you can launch the simulation with Turtlebot topics accessible from both the container and the host computer.
 
 
-
-### Start/stop an already existing container from the ue_editor_rcl docker image
-
-```
-./start_container.sh
-```
-
-```
-./stop_container.sh
-```
-### Join to the container via bash
-You may need to enter into the docker container to debug, or test stuff from commandline.
-Then you can use the following command:
-
-```
-./join_bash.sh
-```
-### Optionally Stopping and removing running container
+### Stopping and removing running container
 
 You may want to reset everyting if you messed the container. Before you create a new container you need
 to stop and remove the existing one.
@@ -89,14 +106,37 @@ to stop and remove the existing one.
 ./remove_container.sh
 ```
 
-### Optionally Stopping and removing running container
 
-In the case you want to change the docker image via Dockerfile you will need to rebuild the docker image.
-You can do it like this:
+### Join to the container via bash
+You may need to enter into the docker container to debug, or test stuff from commandline.
+Then you can use the following command:
 
 ```
-./build_docker_humble.sh
+./join_bash.sh
 ```
+
+
+## Connecting the container to VPN
+Prototype already done -> todo DOC
+
+
+### Important notes about the solution
+
+*Repos versioning*
+Not all the versions of rclUE turtlebot3Editor and RapyputaPlugins are compatible to each other. 
+Keeping them consistent is not always easy, specially taking into account that the container maps/volumes some volumes with external contents.
+
+The container is already designed to have a correct combination of all of them, however this is hardcoded in the Dockerfile and it could be improved.
+
+*DDS Configuration*
+We noticed problems communicating the docker container nodes with host nodes. At the current moment the workaround we  have for a correct
+communication is using in the host cyclonedds (Until we find the causes and the solution to have everything uniform using fastrpts).
+To do that, add to the .bashrc file in the host the following line:
+
+```
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+```
+
 
 ### Optionally Rebuild and run a smacc state machine inside the container
 
@@ -127,5 +167,3 @@ ros2 launch sm_dancebot_ue sm_dancebot_ue_launch.py
 
 Enjoy experimenting with Unreal Engine in your Docker environment!
 
-### Connecting the container to VPN
-Prototype already done -> todo DOC
