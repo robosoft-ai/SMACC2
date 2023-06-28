@@ -134,19 +134,21 @@ To run the Unreal Editor inside the container, you need to use some auxiliary sc
 
 ### (Alternative) Running/Creating a New Container for Container Debugging
 
-There is an alternative way to create the container in daemon mode, where the lifetime of the container is not tied to the Unreal Editor window. This is useful, especially for developing new features for the container. To create the container in this mode, follow these steps:
+There is an alternative way to create the container in daemon mode, where the lifetime of the container is not tied to the Unreal Editor window. This is useful, especially for developing new features for the container. To create the container in this mode,:
 
 1. Execute the following command:
    ```
    ./run_docker_container_bash.sh
    ```
 
-   This will create and start a new container as a daemon. The container will be available even after restarting. It is capable of opening the Unreal Engine editor with ROS2, but the editor will not open until you run the following command:
+   This will create and start a new container as a daemon. The container will be available even after restarting. It is capable of opening the Unreal Engine editor with ROS2, but the editor will not open automatically.
+
+2. Execute the editor proccess:
    ```
    ./join_editor.sh
    ```
 
-2. The Unreal Engine editor will automatically open in "edition mode." You can launch the simulation with Turtlebot topics accessible from both the container and the host computer by clicking the "play" button.
+The Unreal Engine editor will automatically open in "edition mode." You can launch the simulation with Turtlebot topics accessible from both the container and the host computer by clicking the "play" button.
 
 ### Stopping and Removing a Running Container
 
@@ -174,11 +176,7 @@ To enter the Docker container and debug or test things from the command line, us
 ./join_bash.sh
 ```
 
-## Connecting the Container to VPN
-
-The prototype for connecting the container to a VPN has already been completed. For detailed instructions, please refer to the relevant documentation.
-
-### Important Notes about the Solution
+## Important Notes about the Solution
 
 Here are some important notes regarding the solution:
 
@@ -192,3 +190,11 @@ export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 ### Optionally Rebuilding and Running a SMACC State Machine inside the Container
 
 Note that the `ue_editor_rcl` containers are run by mapping the current `smacc2` source folder, enabling mixed development between the host (using
+
+### Automatic driver update
+The host and the container must have the same nvidia-driver in order to run the ue editor and simulation. 
+There is a mechanism implemented to automatically sync the driver. The current driver version is passed from the host to the container and then it is updated in the container if that is required. That is done in the nvidia-check.sh script.
+
+### Connecting the Container to VPN
+
+The prototype for connecting the container to a VPN has already been completed. For detailed instructions, please refer to the relevant documentation.
