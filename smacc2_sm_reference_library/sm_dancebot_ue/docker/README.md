@@ -226,3 +226,70 @@ The SMACC2 source code is already prebuilt inside the image, making it available
    ```
 
 Enjoy experimenting with Unreal Engine in your Docker environment!
+
+
+
+# Brett's runtime notes
+
+You'll need to open three terminals for this demo.
+   One for the container where you'll run Unreal Engine
+   One to run the state machine (on the host)
+   One for the RTA (on the host)
+
+### Terminal 1 - For UE5 Simulation in the container
+
+1. Download the current SMACC2 repository.
+   ```
+   cd ~/workspace/humble_ws/src
+   git clone https://github.com/robosoft-ai/SMACC2.git
+
+   ```
+2. Build the workspace
+
+   ```
+   cd ~/workspace/humble_ws/
+   source /opt/ros/humble/setup.bash
+   colcon build
+   
+   ```
+   Once everything is done building...
+3. Navigate to the `sm_dancebot_ue/docker` folder.
+   
+   ```
+   cd ~/workspace/humble_ws/src/SMACC2/smacc2_sm_reference_library/sm_dancebot_ue/docker
+   ```
+4. Execute the following command:
+   ```
+   ./run_docker_container_editor.sh
+   ```
+   This will create and start a new container as a daemon. The container will be available even after restarting. It is capable of opening the Unreal Engine editor with ROS2, but the editor will not open automatically.
+   The Unreal Engine editor will automatically open in "edition mode." You can launch the simulation with Turtlebot topics accessible from both the container and the host computer by clicking the "play" button.
+
+### Terminal 2 - for the state machine on the host
+
+1. Add the following line to the `.bashrc` file on the host:
+   ```
+   export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+   ```
+2. Source the workspace you just built
+   ```
+   source ~/workspace/humble_ws/install/setup.bash
+   ```
+3. Launch the state machine
+  ```
+   ros2 launch sm_dancebot_ue sm_dancebot_ue_launch.py
+  ```
+  This will launch the state machine application, rviz and other required nodes.
+
+### Terminal 3 - for the SMACC2_RTA on the host
+1. Source the install
+   ```
+   source /opt/ros/humble/setup.bash
+   ```
+2. Launch the SMACC2_RTA
+   ```
+   ros2 run smacc2_rta smacc2_rta
+   ```
+3. Once the RTA is launched, in the upper left corner select State Machine/Available State Machines/SmDanceBotUE
+
+And you should be all set.
