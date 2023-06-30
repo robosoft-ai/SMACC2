@@ -143,6 +143,13 @@ def generate_launch_description():
         arguments=[urdf],
     )
 
+    # static_transform_publisher = Node(
+    #     package="tf2_ros",
+    #     executable="static_transform_publisher",
+    #     name="static_transform_publisher",
+    #     output="screen",
+    #     arguments=["0", "0", "0", "0", "0", "0", "basel_link", "odom"],
+
     rviz_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, "rviz_launch.py")),
         condition=IfCondition(use_rviz),
