@@ -40,8 +40,9 @@ struct StNavigateToWaypointsX : smacc2::SmaccState<StNavigateToWaypointsX, MsDan
   // TRANSITION TABLE
   typedef mpl::list<
     Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StNavigateToWaypointsX, TRANSITION_1>,
-    Transition<EvWaypoint1<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_2>,
-    Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_3>
+    Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypointsX, TRANSITION_2>,
+    Transition<EvWaypoint1<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_3>,
+    Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_4>
     
     >reactions;
 

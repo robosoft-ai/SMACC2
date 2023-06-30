@@ -10,6 +10,7 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
     use_sim_time = LaunchConfiguration("use_sim_time")
     slam_params_file = LaunchConfiguration("slam_params_file")
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
 
     declare_use_sim_time_argument = DeclareLaunchArgument(
         "use_sim_time", default_value="true", description="Use simulation/Gazebo clock"
@@ -17,7 +18,9 @@ def generate_launch_description():
     declare_slam_params_file_cmd = DeclareLaunchArgument(
         "slam_params_file",
         default_value=os.path.join(
-            get_package_share_directory("slam_toolbox"), "config", "mapper_params_online_sync.yaml"
+            #get_package_share_directory("slam_toolbox"), "config", "mapper_params_online_sync.yaml"
+            get_package_share_directory("sm_dancebot_ue"), "params", "mapper_params_online_sync.yaml"
+        
         ),
         description="Full path to the ROS2 parameters file to use for the slam_toolbox node",
     )
@@ -28,6 +31,7 @@ def generate_launch_description():
         executable="sync_slam_toolbox_node",
         name="slam_toolbox",
         output="screen",
+        prefix= xtermprefix
     )
 
     ld = LaunchDescription()

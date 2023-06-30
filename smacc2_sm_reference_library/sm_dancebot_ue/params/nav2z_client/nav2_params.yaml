@@ -52,7 +52,7 @@ bt_navigator:
     use_sim_time: True
     global_frame: map
     robot_base_frame: base_link
-    odom_topic: /odom2
+    odom_topic: /odom
     enable_groot_monitoring: True
     groot_zmq_publisher_port: 1666
     groot_zmq_server_port: 1667
@@ -115,8 +115,8 @@ controller_server:
     # Goal checker parameters
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.457
-      yaw_goal_tolerance: 0.265 # almost free orientation
+      xy_goal_tolerance: 0.257
+      yaw_goal_tolerance: 0.165 # almost free orientation
       stateful: True
     backward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
@@ -145,20 +145,20 @@ controller_server:
       debug_trajectory_details: True
       min_vel_x: 0.0
       min_vel_y: 0.0
-      max_vel_x: 0.2
+      max_vel_x: 0.3
       max_vel_y: 0.0
-      max_vel_theta: 0.2
+      max_vel_theta: 1.0
       min_speed_xy: 0.0
-      max_speed_xy: 0.2
+      max_speed_xy: 0.3
       min_speed_theta: 0.0
       # Add high threshold velocity for turtlebot 3 issue.
       # https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/75
-      acc_lim_x: 2.0
+      acc_lim_x: 2.5
       acc_lim_y: 0.0
-      acc_lim_theta: 1.2
+      acc_lim_theta: 3.2
       decel_lim_x: -2.5
       decel_lim_y: 0.0
-      decel_lim_theta: -1.2
+      decel_lim_theta: -3.2
       vx_samples: 20
       vy_samples: 5
       vtheta_samples: 20
@@ -191,7 +191,7 @@ controller_server:
       carrot_distance: 0.3 #meters default 0.5
       carrot_angular_distance: 0.3 # no constraint, max 3.1416
       pure_spinning_straight_line_mode: true
-      max_linear_x_speed: 0.2
+      max_linear_x_speed: 0.25
     ForwardLocalPlanner:
       plugin: "cl_nav2z::forward_local_planner::ForwardLocalPlanner"
       transform_tolerance: 0.5
@@ -200,7 +200,7 @@ controller_server:
       k_betta: -1.0
       carrot_distance: 0.2 #meters
       carrot_angular_distance: 0.5 # no constraint, max 3.1416
-      max_linear_x_speed: 0.2
+      max_linear_x_speed: 0.3
       max_angular_z_speed: 0.2
     PureSpinningLocalPlanner:
       plugin: "pure_spinning_local_planner::PureSpinningLocalPlanner"
@@ -217,8 +217,8 @@ controller_server_rclcpp_node:
 local_costmap:
   local_costmap:
     ros__parameters:
-      update_frequency: 10.0
-      publish_frequency: 5.0
+      update_frequency: 5.0
+      publish_frequency: 2.0
       global_frame: odom
       robot_base_frame: base_link
       use_sim_time: True
@@ -230,8 +230,8 @@ local_costmap:
       plugins: ["voxel_layer", "inflation_layer"]
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 2.0
-        inflation_radius: 0.25
+        cost_scaling_factor: 3.0
+        inflation_radius: 0.55
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
@@ -268,39 +268,22 @@ global_costmap:
       update_frequency: 2.0
       publish_frequency: 1.0
       transform_tolerance: 5.0
-      global_frame: odom
+      width: 16
+      height: 16
+      global_frame: map
       robot_base_frame: base_link
       use_sim_time: True
       rolling_window: true
+
       robot_radius: 0.22
       resolution: 0.1
       width: 8
       height: 8
       track_unknown_space: true
-      plugins: ["voxel_layer", "inflation_layer"]  #"static_layer"
+      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
-        observation_sources: scan
-        scan:
-          topic: /scan
-          max_obstacle_height: 2.0
-          clearing: True
-          marking: True
-          data_type: "LaserScan"
-          raytrace_max_range: 15.0
-          raytrace_min_range: 0.0
-          obstacle_max_range: 15.5
-          obstacle_min_range: 0.0
-      voxel_layer:
-        plugin: "nav2_costmap_2d::VoxelLayer"
-        enabled: True
-        publish_voxel_map: True
-        origin_z: 0.0
-        z_resolution: 0.05
-        z_voxels: 16
-        max_obstacle_height: 2.0
-        mark_threshold: 0
         observation_sources: scan
         scan:
           topic: /scan
@@ -317,8 +300,8 @@ global_costmap:
         map_subscribe_transient_local: True
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 2.0
-        inflation_radius: 0.25
+        cost_scaling_factor: 1.0
+        inflation_radius: 0.55
       always_send_full_costmap: True
   global_costmap_client:
     ros__parameters:

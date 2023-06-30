@@ -27,6 +27,9 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
+
+    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
+
     # Get the launch directory
     sm_dance_bot_dir = get_package_share_directory("sm_dancebot_ue")
     sm_dance_bot_launch_dir = os.path.join(sm_dance_bot_dir, "launch")
@@ -91,6 +94,8 @@ def generate_launch_description():
         description="Use headless Gazebo if true",
     )
 
+    
+
     declare_params_file_cmd = DeclareLaunchArgument(
         "params_file",
         default_value=os.path.join(sm_dance_bot_dir, "params", "nav2z_client", "nav2_params.yaml"),
@@ -143,12 +148,25 @@ def generate_launch_description():
         arguments=[urdf],
     )
 
-    # static_transform_publisher = Node(
-    #     package="tf2_ros",
-    #     executable="static_transform_publisher",
-    #     name="static_transform_publisher",
-    #     output="screen",
-    #     arguments=["0", "0", "0", "0", "0", "0", "basel_link", "odom"],
+    static_transform_publisher = Node(
+         package="sm_dancebot_ue",
+         executable="transform_publisher.py",
+         name="static_transform_publisherxx",
+         output="screen",
+         #arguments=["-0.064", "0", "0.122", "0", "0", "0", "base_scan", "base_link"],
+         prefix= xtermprefix,
+         parameters=[{"use_sim_time": use_sim_time}],
+
+    )
+
+    static_transform_publisher_2 = Node(
+         package="tf2_ros",
+         executable="static_transform_publisher",
+         name="static_transform_publisher",
+         output="screen",
+         arguments=["0", "0", "0", "0", "0", "0", "base_link", "base_footprint"],
+         prefix= xtermprefix,
+    )
 
     rviz_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, "rviz_launch.py")),
@@ -174,7 +192,6 @@ def generate_launch_description():
         }.items(),
     )
 
-    xtermprefix = "xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e"
 
     sm_dance_bot_node = Node(
         package="sm_dancebot_ue",
@@ -220,6 +237,8 @@ def generate_launch_description():
         ],
     )
 
+    
+
     # Create the launch description and populate
     ld = LaunchDescription()
 
@@ -244,6 +263,9 @@ def generate_launch_description():
     ld.add_action(service3_node)
     ld.add_action(temperature_action_server)
     ld.add_action(led_action_server_node)
+    ld.add_action(static_transform_publisher)
+    #ld.add_action(static_transform_publisher_2)
+    
 
     # # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)
