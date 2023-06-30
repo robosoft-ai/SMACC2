@@ -236,7 +236,7 @@ You'll need to open three terminals for this demo.
    One to run the state machine (on the host)
    One for the RTA (on the host)
 
-# Terminal 1 - For UE5 Simulation in the container
+### Terminal 1 - For UE5 Simulation in the container
 
 1. Download the current SMACC2 repository.
    ```
@@ -265,7 +265,7 @@ You'll need to open three terminals for this demo.
    This will create and start a new container as a daemon. The container will be available even after restarting. It is capable of opening the Unreal Engine editor with ROS2, but the editor will not open automatically.
    The Unreal Engine editor will automatically open in "edition mode." You can launch the simulation with Turtlebot topics accessible from both the container and the host computer by clicking the "play" button.
 
-# Terminal 2 - for the state machine on the host
+### Terminal 2 - for the state machine on the host
 
 1. Add the following line to the `.bashrc` file on the host:
    ```
@@ -281,7 +281,7 @@ You'll need to open three terminals for this demo.
   ```
   This will launch the state machine application, rviz and other required nodes.
 
-# Terminal 3 - for the SMACC2_RTA on the host
+### Terminal 3 - for the SMACC2_RTA on the host
 1. Source the install
    ```
    source /opt/ros/humble/setup.bash
