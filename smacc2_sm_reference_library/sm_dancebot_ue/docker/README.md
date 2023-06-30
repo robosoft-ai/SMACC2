@@ -256,7 +256,7 @@ You'll need to open three terminals for this demo.
 3. Navigate to the `sm_dancebot_ue/docker` folder.
    
    ```
-  cd ~/workspace/humble_ws/src/SMACC2/smacc2_sm_reference_library/sm_dancebot_ue/docker
+   cd ~/workspace/humble_ws/src/SMACC2/smacc2_sm_reference_library/sm_dancebot_ue/docker
    ```
 4. Execute the following command:
    ```
