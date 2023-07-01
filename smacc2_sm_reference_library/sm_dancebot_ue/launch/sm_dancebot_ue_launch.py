@@ -40,12 +40,10 @@ def generate_launch_description():
     use_namespace = LaunchConfiguration("use_namespace")
     map_yaml_file = LaunchConfiguration("map")
     use_sim_time = LaunchConfiguration("use_sim_time")
-    gazebo_headless = LaunchConfiguration("headless")
 
     params_file = LaunchConfiguration("params_file")
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
     autostart = LaunchConfiguration("autostart")
-    show_gz_lidar = LaunchConfiguration("show_gz_lidar")
 
     # Launch configuration variables specific to simulation
     rviz_config_file = LaunchConfiguration("rviz_config_file")
@@ -93,8 +91,6 @@ def generate_launch_description():
         default_value="false",
         description="Use headless Gazebo if true",
     )
-
-    
 
     declare_params_file_cmd = DeclareLaunchArgument(
         "params_file",
@@ -149,24 +145,23 @@ def generate_launch_description():
     )
 
     static_transform_publisher = Node(
-         package="sm_dancebot_ue",
-         executable="transform_publisher.py",
-         name="static_transform_publisherxx",
-         output="screen",
-         #arguments=["-0.064", "0", "0.122", "0", "0", "0", "base_scan", "base_link"],
-         prefix= xtermprefix,
-         parameters=[{"use_sim_time": use_sim_time}],
-
+        package="sm_dancebot_ue",
+        executable="transform_publisher.py",
+        name="static_transform_publisherxx",
+        output="screen",
+        # arguments=["-0.064", "0", "0.122", "0", "0", "0", "base_scan", "base_link"],
+        prefix=xtermprefix,
+        parameters=[{"use_sim_time": use_sim_time}],
     )
 
-    static_transform_publisher_2 = Node(
-         package="tf2_ros",
-         executable="static_transform_publisher",
-         name="static_transform_publisher",
-         output="screen",
-         arguments=["0", "0", "0", "0", "0", "0", "base_link", "base_footprint"],
-         prefix= xtermprefix,
-    )
+    # static_transform_publisher_2 = Node(
+    #     package="tf2_ros",
+    #     executable="static_transform_publisher",
+    #     name="static_transform_publisher",
+    #     output="screen",
+    #     arguments=["0", "0", "0", "0", "0", "0", "base_link", "base_footprint"],
+    #     prefix=xtermprefix,
+    # )
 
     rviz_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, "rviz_launch.py")),
@@ -191,7 +186,6 @@ def generate_launch_description():
             "default_nav_to_pose_bt_xml": default_nav_to_pose_bt_xml,
         }.items(),
     )
-
 
     sm_dance_bot_node = Node(
         package="sm_dancebot_ue",
@@ -237,8 +231,6 @@ def generate_launch_description():
         ],
     )
 
-    
-
     # Create the launch description and populate
     ld = LaunchDescription()
 
@@ -264,8 +256,7 @@ def generate_launch_description():
     ld.add_action(temperature_action_server)
     ld.add_action(led_action_server_node)
     ld.add_action(static_transform_publisher)
-    #ld.add_action(static_transform_publisher_2)
-    
+    # ld.add_action(static_transform_publisher_2)
 
     # # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)

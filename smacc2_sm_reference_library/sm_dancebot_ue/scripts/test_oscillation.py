@@ -1,13 +1,26 @@
 #!/usr/bin/env python3
+
+# Copyright (c) 2018 Intel Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from tf2_ros import TransformListener
 from tf2_ros import Buffer
-from tf2_ros import TransformStamped
 import math
 import tf_transformations
-import time
 import std_msgs.msg
 
 
@@ -48,7 +61,10 @@ class RotationOscillation(Node):
     def oscillate_rotation(self):
         rate = self.create_rate(1)
         angle = math.radians(25)
-        timeout = rclpy.duration.Duration(seconds=1.0)  # Timeout for waiting on transforms
+        # timeout = rclpy.duration.Duration(seconds=1.0)  # Timeout for waiting on transforms
+
+        fixed_frame = "odom"
+        base_link_frame = "base_footprint"
 
         print(f'Waiting for transform from "{fixed_frame}" to "{base_link_frame}"...')
         while rclpy.ok():
