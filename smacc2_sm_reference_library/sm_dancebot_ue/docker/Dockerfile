@@ -62,7 +62,7 @@ RUN sudo apt update
 RUN sudo apt install -y code git-lfs # or code-insiders
 
 #RUN git clone --recurse-submodules https://github.com/rapyuta-robotics/turtlebot3-UE.git -b jammy
-RUN git clone --recurse-submodules https://github.com/robosoft-ai/turtlebot3-UE.git -b jammy
+RUN git clone --recurse-submodules https://github.com/robosoft-ai/turtlebot3-UE.git -b feature/smacc2_tests
 
 WORKDIR "/home/$USER/src/turtlebot3-UE"
 RUN git checkout abdf483ce14f477d8f255fe19f3527975b3a9dbb
