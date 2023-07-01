@@ -33,7 +33,6 @@ class StaticTransformPublisher(Node):
         self.transform.transform.translation.y = xyz[1]
         self.transform.transform.translation.z = xyz[2]
 
-
         self.transform.transform.rotation.x = 0.0
         self.transform.transform.rotation.y = 0.0
         self.transform.transform.rotation.z = 0.0
@@ -49,18 +48,17 @@ def main(args=None):
 
     # Create the first instance of StaticTransformPublisher
     node1 = StaticTransformPublisher(
-        'static_transform_publisher_1',
-        'base_footprint',
-        'base_link',
+        "static_transform_publisher_1",
+        "base_footprint",
+        "base_link",
     )
 
     # Create the second instance of StaticTransformPublisher
     node2 = StaticTransformPublisher(
-        'static_transform_publisher_2',
-        'base_link',
-        'base_scan',
+        "static_transform_publisher_2",
+        "base_link",
+        "base_scan",
         xyz=[-0.064, 0.0, 0.122],
-
     )
 
     try:
@@ -76,6 +74,5 @@ def main(args=None):
     rclpy.shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-
