@@ -65,6 +65,8 @@ RUN git clone --recurse-submodules https://github.com/rapyuta-robotics/turtlebot
 WORKDIR "/home/$USER/src/turtlebot3-UE"
 RUN git checkout abdf483ce14f477d8f255fe19f3527975b3a9dbb
 RUN cd Plugins/rclUE && git checkout bae993fa
+
+RUN rm -rf Plugins/RapyutaSimulationPlugins && git clone https://github.com/robosoft-ai/UE-Plugins.git Plugins/RapyutaSimulationPlugins
 RUN cd Plugins/RapyutaSimulationPlugins && git checkout bfac015
 
 RUN git-lfs pull && git submodule foreach git-lfs pull

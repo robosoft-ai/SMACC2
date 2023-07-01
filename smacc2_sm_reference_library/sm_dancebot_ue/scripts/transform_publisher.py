@@ -25,7 +25,7 @@ class StaticTransformPublisher(Node):
         super().__init__(name)
         self.transform_broadcaster = tf2_ros.TransformBroadcaster(self)
 
-        self.timer = self.create_timer(0.05, self.publish_transform)
+        self.timer = self.create_timer(0.01, self.publish_transform)
         self.transform = TransformStamped()
         self.transform.header.frame_id = parent_frame
         self.transform.child_frame_id = child_frame
@@ -39,7 +39,7 @@ class StaticTransformPublisher(Node):
         self.transform.transform.rotation.w = 1.0
 
     def publish_transform(self):
-        self.transform.header.stamp = self.get_clock().now().to_msg()
+        self.transform.header.stamp = rclpy.time.Time(0)
         self.transform_broadcaster.sendTransform(self.transform)
 
 

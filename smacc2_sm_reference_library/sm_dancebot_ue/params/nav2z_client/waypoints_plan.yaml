@@ -1,8 +1,8 @@
 waypoints:
   # POINT 0
   - position:
-      x: 1.8
-      y: 2.8
+      x: 1.5
+      y: 2.5
       z: 0.0
     orientation:
       x: 0.0

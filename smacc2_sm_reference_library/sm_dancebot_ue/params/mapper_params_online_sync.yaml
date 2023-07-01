@@ -23,13 +23,13 @@ slam_toolbox:
     #map_start_pose: [0.0, 0.0, 0.0]
     #map_start_at_dock: true
 
-    debug_logging: false
+    debug_logging: true
     throttle_scans: 1
     transform_publish_period: 0.02 #if 0 never publishes odometry
     map_update_interval: 0.05
-    resolution: 0.03
-    max_laser_range: 20.0 #for rastering images
-    minimum_time_interval: 0.5
+    resolution: 0.04
+    max_laser_range: 16.0 #for rastering images
+    minimum_time_interval: 0.3
     transform_timeout: 0.2
     tf_buffer_duration: 30.
     stack_size_to_use: 40000000 #// program needs a larger stack size to serialize large maps
