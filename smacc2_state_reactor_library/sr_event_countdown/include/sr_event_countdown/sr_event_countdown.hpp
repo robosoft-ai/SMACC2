@@ -23,8 +23,8 @@ namespace smacc2
 {
 namespace state_reactors
 {
-template <typename TSource, typename TObjectTag = EmptyObjectTag>
-struct EvCountdownEnd : sc::event<EvCountdownEnd<TSource, TObjectTag>>
+template <typename TReactorType, typename TReactorTag = EmptyObjectTag>
+struct EvCountdownEnd : sc::event<EvCountdownEnd<TReactorType, TReactorTag>>
 {
 };
 
