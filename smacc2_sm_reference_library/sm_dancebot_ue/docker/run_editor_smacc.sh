@@ -21,7 +21,7 @@ TB3_UE_DIR=${2:-"${CURRENT_DIR}"}
 # fi
 
 #change default level, generating DefautlEngine.ini
-DEFAULT_LEVEL=${LEVEL_NAME:-"LargeGround"}
+DEFAULT_LEVEL=${LEVEL_NAME:-"Default"}
 DEFAULT_RATE=${FIXED_FRAME_RATE:-"100.0"}
 DEFAULT_RTF=${TARGET_RTF:-"1.0"}
 sed -e 's/${LEVEL_NAME}/'${DEFAULT_LEVEL}'/g' Config/DefaultEngineBase.ini > Config/DefaultEngine.ini
