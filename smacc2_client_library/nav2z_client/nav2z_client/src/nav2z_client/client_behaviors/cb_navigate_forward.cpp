@@ -113,7 +113,7 @@ void CbNavigateForward::onEntry()
   // action goal
   ClNav2Z::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
-  goal.pose.header.stamp = getNode()->now();
+  //goal.pose.header.stamp = getNode()->now();
   tf2::toMsg(targetPose, goal.pose.pose);
   RCLCPP_INFO_STREAM(
     getLogger(), "[" << getName() << "]"
@@ -122,7 +122,9 @@ void CbNavigateForward::onEntry()
   // current pose
   geometry_msgs::msg::PoseStamped currentStampedPoseMsg;
   currentStampedPoseMsg.header.frame_id = referenceFrame;
-  currentStampedPoseMsg.header.stamp = getNode()->now();
+  currentStampedPoseMsg.header.stamp =
+    getNode()->now();  // probably it is better avoid setting that goal timestamp
+
   tf2::toMsg(currentPose, currentStampedPoseMsg.pose);
 
   odomTracker_ = nav2zClient_->getComponent<CpOdomTracker>();

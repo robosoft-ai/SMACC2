@@ -68,7 +68,7 @@ void CbAbsoluteRotate::onEntry()
 
   ClNav2Z::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
-  goal.pose.header.stamp = getNode()->now();
+  //goal.pose.header.stamp = getNode()->now();
 
   auto targetAngle = goal_angle * M_PI / 180.0;
   goal.pose.pose.position = currentPoseMsg.position;
