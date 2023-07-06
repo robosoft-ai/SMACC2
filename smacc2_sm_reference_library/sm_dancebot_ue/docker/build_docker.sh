@@ -18,4 +18,4 @@ echo "ubuntu version: $UBUNTU_VERSION"
 echo "root path: $ROOT_DIR"
 
 cd $ROOT_DIR
-sudo docker build --build-arg ROS_DISTRO=$ROS_DISTRO --build-arg GIT_BRANCH=$GIT_BRANCH --build-arg UBUNTU_VERSION=$UBUNTU_VERSION -t ue_editor_rclue:$ROS_DISTRO --progress string -f $ROOT_DIR/smacc2_sm_reference_library/sm_dancebot_ue/docker/Dockerfile . $NOCACHE
+sudo docker build --build-arg ROS_DISTRO=$ROS_DISTRO --build-arg GIT_BRANCH=$GIT_BRANCH --build-arg UBUNTU_VERSION=$UBUNTU_VERSION -t ue_editor_rclue:$ROS_DISTRO -f $ROOT_DIR/smacc2_sm_reference_library/sm_dancebot_ue/docker/Dockerfile . $NOCACHE
