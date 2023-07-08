@@ -10,7 +10,7 @@ on:
 
 jobs:
   bloom-release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container:
       image: osrf/ros:humble-desktop
     env:
@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - shell: bash
         run: |
