@@ -33,10 +33,10 @@ jobs:
 
       # BLOOM RELEASE
       - name: bloom release
-        uses: pabloinigoblasco/bloom-release-action@master
+        uses: at-wat/bloom-release-action@v0
         with:
           ros_distro: ${{ env.ROS_DISTRO }}
-          github_token_bloom: ${{ secrets.GITTOKEN_BLOOM }}
+          github_token_bloom: ${{ secrets.GITTOKEN_BLOOM2 }}
           github_user: pabloinigoblasco
           git_user: pabloinigoblasco
           git_email: pablo@ibrobotics.com
