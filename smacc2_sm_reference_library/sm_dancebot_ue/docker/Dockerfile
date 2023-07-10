@@ -52,6 +52,10 @@ RUN echo "copying current code version to docker image:"
 
 COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/UE5.1/UnrealEngine /home/$USER/src/UE5.1/UnrealEngine
 
+ENV UE5_DIR=/home/$USER/src/UE5.1/UnrealEngine
+ENV PROJECT_BRANCH=smacc2_devel_stable
+ENV PROJECT_NAME=ue_project_1
+
 RUN sudo apt-get install -y wget gpg
 RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor > packages.microsoft.gpg
 RUN sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
@@ -61,10 +65,10 @@ RUN sudo apt install -y apt-transport-https
 RUN sudo apt update
 RUN sudo apt install -y code git-lfs # or code-insiders
 
-#RUN git clone --recurse-submodules https://github.com/rapyuta-robotics/turtlebot3-UE.git -b jammy
-RUN git clone --recurse-submodules https://github.com/robosoft-ai/ue_project_1.git -b smacc2_devel
+# smacc2_devel
+RUN git clone --recurse-submodules https://github.com/robosoft-ai/${PROJECT_NAME}.git -b $PROJECT_BRANCH
 
-WORKDIR "/home/$USER/src/ue_project_1"
+WORKDIR "/home/$USER/src/${PROJECT_NAME}"
 # RUN git checkout abdf483ce14f477d8f255fe19f3527975b3a9dbb
 # RUN cd Plugins/rclUE && git checkout bae993fa
 
@@ -72,7 +76,6 @@ WORKDIR "/home/$USER/src/ue_project_1"
 #RUN cd Plugins/RapyutaSimulationPlugins && git checkout bfac015
 
 RUN git-lfs pull && git submodule foreach git-lfs pull
-ENV UE5_DIR=/home/$USER/src/UE5.1/UnrealEngine
 RUN ls && echo ${UE5_DIR}
 RUN ./update_project_files.sh
 ENV UE5_DIR=/home/$USER/src/UE5.1
@@ -82,13 +85,16 @@ RUN wget http://security.ubuntu.com/ubuntu/pool/universe/t/tinyxml2/libtinyxml2-
 RUN wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb
 RUN sudo dpkg -i libtinyxml2-6a_7.0.0+dfsg-1build1_amd64.deb
 RUN sudo dpkg -i libssl1.1_1.1.0g-2ubuntu4_amd64.deb
-ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/home/$USER/src/ue_project_1/Plugins/rclUE/ThirdParty/ros/lib/
+
+ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/home/$USER/src/${PROJECT_NAME}/Plugins/rclUE/ThirdParty/ros/lib/
 ENV UE5_DIR=/home/$USER/src/UE5.1/UnrealEngine
 
-RUN make turtlebot3
-RUN make turtlebot3Editor
+COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/nvidia-driver-check.sh /home/$USER/src/${PROJECT_NAME}/nvidia-driver-check.sh
+RUN cat Makefile
 
-# COPY smacc2 /home/$USER/src/SMACC2/smacc2
+RUN make $PROJECT_NAME
+
+ # COPY smacc2 /home/$USER/src/SMACC2/smacc2
 RUN mkdir -p /home/$USER/src/SMACC2/
 WORKDIR "/home/$USER/src/SMACC2"
 COPY --chown=$USER:$USER smacc2_client_library /home/$USER/src/SMACC2/smacc2_client_library
@@ -107,19 +113,20 @@ RUN rosdep install --ignore-src --from-paths . -y -r
 RUN sudo apt-get update && sudo apt-get install -y ros-humble-nav2-bringup ros-humble-rviz2
 
 RUN sudo apt-get install -y openvpn
-COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/run_editor_smacc.sh /home/$USER/src/ue_project_1/run_editor_smacc.sh
-COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/nvidia-driver-check.sh /home/$USER/src/ue_project_1/nvidia-driver-check.sh
+#COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/run_editor_smacc.sh /home/$USER/src/${PROJECT_NAME}/run_editor_smacc.sh
 
-RUN touch /home/$USER/src/ue_project_1/COLCON_IGNORE
+
+RUN touch /home/$USER/src/${PROJECT_NAME}/COLCON_IGNORE
 RUN touch /home/$USER/src/UE5.1/COLCON_IGNORE
 WORKDIR "/home/$USER/"
 RUN bash -c "source /opt/ros/humble/setup.bash && colcon build --symlink-install"
 
 RUN mkdir /home/$USER/ovpnconfig
 
+# BASIC VPN FRAMEWORK ---
 CMD openvpn --daemon --config /home/$USER/ovpnconfig/ovpnconfig.ovpn --auth-user-pass /home/$USER/ovpnconfig/login.txt --askpass /home/$USER/ovpnconfig/password.conf
-WORKDIR "/home/$USER/src/ue_project_1"
+WORKDIR "/home/$USER/src/${PROJECT_NAME}"
 
-ENV LD_LIBRARY_PATH=/home/ros2_ws/src/ue_project_1/Plugins/rclUE/ThirdParty/ros/lib/:/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:
+#ENV LD_LIBRARY_PATH=/home/ros2_ws/src/ue_project_1/Plugins/rclUE/ThirdParty/ros/lib/:/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:
 
 #ENTRYPOINT /home/$USER/src/ue_project_1/run_editor_smacc.sh
