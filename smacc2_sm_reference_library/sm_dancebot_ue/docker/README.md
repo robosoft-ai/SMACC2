@@ -117,8 +117,9 @@ If you want to modify the Docker image using a Dockerfile and rebuild it, follow
 
 1. Create a link to the UE5.1 folder inside the `sm_dancebot_ue/docker` folder:
    ```
-   mount --bind <UE5.1DIR> UE5.1/UnrealEngine/Engine
+   mount --bind <UE5.1DIR> UE5.1/UnrealEngine
    ```
+ * Recall the <UE5.1DIR> must contain the following folders: `Engine`,  `FeaturePacks` and `Template`
 
 2. Build the image locally by running the following command:
    ```
