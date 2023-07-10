@@ -7,4 +7,5 @@ if [ -z "$OUTPUT_PATH" ]; then
     exit 1
 fi
 
-docker save -o "$OUTPUT_PATH/unreal_editor_smacc_${date +%Y%m%d_%H%M%S}.tar" ue_editor_rclue:humble
+DATE_SUFFIX=`date +%Y%m%d_%H%M%S`
+docker save -o "$OUTPUT_PATH/unreal_editor_smacc_$DATE_SUFFIX.tar" ue_editor_rclue:humble
