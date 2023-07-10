@@ -63,7 +63,7 @@ RUN sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/pa
 
 RUN sudo apt install -y apt-transport-https
 RUN sudo apt update
-RUN sudo apt install -y code git-lfs # or code-insiders
+RUN sudo apt install -y code git-lfs nano # or code-insiders
 
 # smacc2_devel
 RUN git clone --recurse-submodules https://github.com/robosoft-ai/${PROJECT_NAME}.git -b $PROJECT_BRANCH
@@ -79,8 +79,8 @@ RUN git-lfs pull && git submodule foreach git-lfs pull
 RUN ls && echo ${UE5_DIR}
 RUN ./update_project_files.sh
 ENV UE5_DIR=/home/$USER/src/UE5.1
-RUN sudo apt-get install nano
 
+# installing Dependencies
 RUN wget http://security.ubuntu.com/ubuntu/pool/universe/t/tinyxml2/libtinyxml2-6a_7.0.0+dfsg-1build1_amd64.deb
 RUN wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb
 RUN sudo dpkg -i libtinyxml2-6a_7.0.0+dfsg-1build1_amd64.deb
@@ -91,42 +91,41 @@ ENV UE5_DIR=/home/$USER/src/UE5.1/UnrealEngine
 
 COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/nvidia-driver-check.sh /home/$USER/src/${PROJECT_NAME}/nvidia-driver-check.sh
 RUN cat Makefile
+RUN ./update_project_files.sh
+#RUN bash
 
-RUN make $PROJECT_NAME
+RUN make ${PROJECT_NAME}Editor
 
- # COPY smacc2 /home/$USER/src/SMACC2/smacc2
-RUN mkdir -p /home/$USER/src/SMACC2/
-WORKDIR "/home/$USER/src/SMACC2"
-COPY --chown=$USER:$USER smacc2_client_library /home/$USER/src/SMACC2/smacc2_client_library
-COPY --chown=$USER:$USER smacc2_event_generator_library /home/$USER/src/SMACC2/smacc2_event_generator_library
-COPY --chown=$USER:$USER smacc2_performance_tools /home/$USER/src/SMACC2/smacc2_performance_tools
-COPY --chown=$USER:$USER smacc2_state_reactor_library /home/$USER/src/SMACC2/smacc2_state_reactor_library
-COPY --chown=$USER:$USER smacc2 /home/$USER/src/SMACC2/smacc2
-COPY --chown=$USER:$USER smacc2_dev_tools /home/$USER/src/SMACC2/smacc2_dev_tools       
-COPY --chown=$USER:$USER smacc2_msgs /home/$USER/src/SMACC2/smacc2_msgs                     
-#smacc2_sm_reference_library  
+#  # COPY smacc2 /home/$USER/src/SMACC2/smacc2
+# RUN mkdir -p /home/$USER/src/SMACC2/
+# WORKDIR "/home/$USER/src/SMACC2"
+# COPY --chown=$USER:$USER smacc2_client_library /home/$USER/src/SMACC2/smacc2_client_library
+# COPY --chown=$USER:$USER smacc2_event_generator_library /home/$USER/src/SMACC2/smacc2_event_generator_library
+# COPY --chown=$USER:$USER smacc2_performance_tools /home/$USER/src/SMACC2/smacc2_performance_tools
+# COPY --chown=$USER:$USER smacc2_state_reactor_library /home/$USER/src/SMACC2/smacc2_state_reactor_library
+# COPY --chown=$USER:$USER smacc2 /home/$USER/src/SMACC2/smacc2
+# COPY --chown=$USER:$USER smacc2_dev_tools /home/$USER/src/SMACC2/smacc2_dev_tools       
+# COPY --chown=$USER:$USER smacc2_msgs /home/$USER/src/SMACC2/smacc2_msgs                     
+# #smacc2_sm_reference_library  
 
-#RUN git clone
-RUN sudo apt-get update 
-RUN rosdep update
-RUN rosdep install --ignore-src --from-paths . -y -r
-RUN sudo apt-get update && sudo apt-get install -y ros-humble-nav2-bringup ros-humble-rviz2
+# #RUN git clone
+# RUN sudo apt-get update 
+# RUN rosdep update
+# RUN rosdep install --ignore-src --from-paths . -y -r
+# RUN sudo apt-get update && sudo apt-get install -y ros-humble-nav2-bringup ros-humble-rviz2
 
-RUN sudo apt-get install -y openvpn
-#COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/run_editor_smacc.sh /home/$USER/src/${PROJECT_NAME}/run_editor_smacc.sh
+# RUN sudo apt-get install -y openvpn
+# #COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/run_editor_smacc.sh /home/$USER/src/${PROJECT_NAME}/run_editor_smacc.sh
 
 
-RUN touch /home/$USER/src/${PROJECT_NAME}/COLCON_IGNORE
-RUN touch /home/$USER/src/UE5.1/COLCON_IGNORE
-WORKDIR "/home/$USER/"
-RUN bash -c "source /opt/ros/humble/setup.bash && colcon build --symlink-install"
+# RUN touch /home/$USER/src/${PROJECT_NAME}/COLCON_IGNORE
+# RUN touch /home/$USER/src/UE5.1/COLCON_IGNORE
+# WORKDIR "/home/$USER/"
+# RUN bash -c "source /opt/ros/humble/setup.bash && colcon build --symlink-install"
 
+# # BASIC VPN FRAMEWORK ---
 RUN mkdir /home/$USER/ovpnconfig
 
-# BASIC VPN FRAMEWORK ---
-CMD openvpn --daemon --config /home/$USER/ovpnconfig/ovpnconfig.ovpn --auth-user-pass /home/$USER/ovpnconfig/login.txt --askpass /home/$USER/ovpnconfig/password.conf
 WORKDIR "/home/$USER/src/${PROJECT_NAME}"
 
-#ENV LD_LIBRARY_PATH=/home/ros2_ws/src/ue_project_1/Plugins/rclUE/ThirdParty/ros/lib/:/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:
-
-#ENTRYPOINT /home/$USER/src/ue_project_1/run_editor_smacc.sh
+# #ENV LD_LIBRARY_PATH=/home/ros2_ws/src/ue_project_1/Plugins/rclUE/ThirdParty/ros/lib/:/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:
