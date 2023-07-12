@@ -12,18 +12,18 @@ class CbHttpRequest : public smacc2::SmaccClientBehavior {
  public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation() {
-    triggerTranstition = []() {
+    triggerTranstition = [this]() {
       auto event = new EvHttp<TSourceObject, TOrthogonal>();
       this->postEvent(event);
-    }
+    };
   }
 
   void runtimeConfigure() override {
     this->requiresClient(cl_http_);
-    cl_http->onResponseReceived(&CbHttpRequest::onResponseReceived, this);
+    cl_http_->onResponseReceived(&CbHttpRequest::onResponseReceived, this);
   }
 
-  void onResponseReceived() { triggerTranstition(); }
+  void onResponseReceived(const std::string& response) { triggerTranstition(); }
 
   void onEntry() override {
     RCLCPP_INFO(getLogger(), "On Entry!");
@@ -36,6 +36,6 @@ class CbHttpRequest : public smacc2::SmaccClientBehavior {
  private:
   smacc2::client_bases::SmaccHttpClient* cl_http_;
 
-  std::function<void(const std::string&)> triggerTranstition;
+  std::function<void()> triggerTranstition;
 };
 }  // namespace sm_atomic_http
