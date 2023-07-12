@@ -26,19 +26,16 @@
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
 #include <iostream>
+#include <memory>
 #include <optional>
 #include <smacc2/smacc_client.hpp>
 #include <string>
 #include <thread>
+#include <unordered_map>
 
 namespace smacc2 {
 namespace client_bases {
 class SmaccHttpClient : public smacc2::ISmaccClient {
-  enum class HTTP_REQUEST_TYPE {
-    GET = 0,
-    POST,
-  };
-
   class http_session : public std::enable_shared_from_this<http_session> {
     boost::asio::ip::tcp::resolver resolver_;
     boost::beast::tcp_stream stream_;
@@ -59,11 +56,12 @@ class SmaccHttpClient : public smacc2::ISmaccClient {
           onResponse{response} {}
 
     // Start the asynchronous operation
-    void run(const std::string &host, const std::string &port,
-             const std::string &target, const int &version) {
-      // Set up an HTTP GET request message
+    void run(const std::string &host, const std::string &target,
+             const std::string &port,
+             const boost::beast::http::verb http_method, const int &version) {
+      // Set up an HTTP request
       req_.version(version);
-      req_.method(boost::beast::http::verb::get);
+      req_.method(http_method);
       req_.target(target);
       req_.set(boost::beast::http::field::host, host);
       req_.set(boost::beast::http::field::user_agent,
@@ -147,6 +145,11 @@ class SmaccHttpClient : public smacc2::ISmaccClient {
   };
 
  public:
+  enum class kHttpRequestMethod {
+    GET = static_cast<int>(boost::beast::http::verb::get),
+    POST = static_cast<int>(boost::beast::http::verb::post),
+  };
+
   explicit SmaccHttpClient(const std::string &server, const int &timeout = 1500)
       : worker_guard_{boost::asio::make_work_guard(io_context_)},
         initialized_{false},
@@ -179,9 +182,11 @@ class SmaccHttpClient : public smacc2::ISmaccClient {
                                                            callback, object);
   }
 
-  void makeRequest(const std::string &path = "/") {
+  void makeRequest(const kHttpRequestMethod http_method,
+                   const std::string &path = "/") {
     std::make_shared<http_session>(io_context_, callbackHandler)
-        ->run(server_name_, is_ssl_ ? "443" : "80", path, HTTP_VERSION);
+        ->run(server_name_, path, is_ssl_ ? "443" : "80",
+              static_cast<boost::beast::http::verb>(http_method), HTTP_VERSION);
   }
 
  private:
@@ -199,7 +204,7 @@ class SmaccHttpClient : public smacc2::ISmaccClient {
 
   std::function<void(http_session::TResponse)> callbackHandler;
 
-  smacc2::SmaccSignal<void(const std::string&)> onResponseReceived_;
+  smacc2::SmaccSignal<void(const std::string &)> onResponseReceived_;
 };
 }  // namespace client_bases
 }  // namespace smacc2
