@@ -2,6 +2,16 @@
 Changelog for package backward_global_planner
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'humble' of https://github.com/robosoft-ai/SMACC2 into humble
+* Brettpac branch (`#518 <https://github.com/robosoft-ai/SMACC2/issues/518>`_)
+  * Attempt to fix weird issue with ros buildfarm
+  * More on this buildfarm issue
+  ---------
+  Co-authored-by: brettpac <brettpac@pop-os.localdomain>
+* Contributors: brettpac, pabloinigoblasco
+
 2.3.6 (2023-03-12)
 ------------------
 
