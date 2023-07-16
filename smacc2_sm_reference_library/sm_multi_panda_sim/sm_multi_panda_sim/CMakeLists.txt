@@ -33,7 +33,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
 include_directories(
   include
   ${smacc2_INCLUDE_DIRS}
-  ${move_group_interface_client_INCLUDE_DIRS}
+  ${moveit2z_client_INCLUDE_DIRS}
 )
 
 add_executable(${PROJECT_NAME}_node
@@ -44,7 +44,7 @@ target_link_libraries(${PROJECT_NAME}_node
   ${smacc2_LIBRARIES}
   ${ros_timer_client_LIBRARIES}
   ${Boost_LIBRARIES}
-  ${move_group_interface_client_LIBRARIES}
+  ${moveit2z_client_LIBRARIES}
 )
 
 ament_target_dependencies(${PROJECT_NAME}_node ${THIS_PACKAGE_INCLUDE_DEPENDS})
