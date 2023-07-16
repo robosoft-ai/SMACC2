@@ -2,8 +2,8 @@
 Changelog for package sm_panda_moveit2z_cb_inventory
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.16 (2023-07-16)
+-------------------
 * Merge branch 'humble' of https://github.com/robosoft-ai/SMACC2 into humble
 * Brettpac branch (`#518 <https://github.com/robosoft-ai/SMACC2/issues/518>`_)
   * Attempt to fix weird issue with ros buildfarm

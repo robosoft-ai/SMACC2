@@ -12,8 +12,8 @@ Changelog for package smacc2_msgs
 * Initial release of SMACC2 core
 * Contributors: Brett Aldrich, Pablo Inigo Blasco, Denis Štogl
 
-Forthcoming
------------
+2.3.16 (2023-07-16)
+-------------------
 * Merge branch 'humble' of https://github.com/robosoft-ai/SMACC2 into humble
 * Brettpac branch (`#518 <https://github.com/robosoft-ai/SMACC2/issues/518>`_)
   * Attempt to fix weird issue with ros buildfarm
