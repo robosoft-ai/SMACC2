@@ -10,7 +10,7 @@ on:
 
 jobs:
   bloom-release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container:
       image: osrf/ros:humble-desktop
     env:
@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - shell: bash
         run: |
@@ -33,10 +33,10 @@ jobs:
 
       # BLOOM RELEASE
       - name: bloom release
-        uses: pabloinigoblasco/bloom-release-action@master
+        uses: at-wat/bloom-release-action@v0
         with:
           ros_distro: ${{ env.ROS_DISTRO }}
-          github_token_bloom: ${{ secrets.GITTOKEN_BLOOM }}
+          github_token_bloom: ${{ secrets.GITTOKEN_BLOOM2 }}
           github_user: pabloinigoblasco
           git_user: pabloinigoblasco
           git_email: pablo@ibrobotics.com
