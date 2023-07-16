@@ -5,7 +5,6 @@
   <version>2.3.15</version>
   <description>The lifecyclenode_client package implements SMACC Action Client Plugin for the ROS Navigation State - move_base node.  Developed by Reel Robotics.</description>
 
-  <author email="pablo@ibrobotics.com">Pablo Inigo Blasco</author>
   <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
 
   <license>BSDv3</license>
