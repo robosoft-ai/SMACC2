@@ -17,11 +17,6 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(action_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  ament_lint_auto_find_test_dependencies()
-endif()
-
 set(msg_files
   msg/SmaccSMCommand.msg
   msg/SmaccStatus.msg
