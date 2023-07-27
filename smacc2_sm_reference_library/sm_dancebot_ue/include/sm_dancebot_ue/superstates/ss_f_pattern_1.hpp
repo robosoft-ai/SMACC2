@@ -56,7 +56,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateReverse4, ENDLOOP>  //,
+    // Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateReverse4, ENDLOOP>  //,
 
     >reactions;
 
@@ -73,7 +73,6 @@ public:
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
   void runtimeConfigure() { iteration_count = 0; }

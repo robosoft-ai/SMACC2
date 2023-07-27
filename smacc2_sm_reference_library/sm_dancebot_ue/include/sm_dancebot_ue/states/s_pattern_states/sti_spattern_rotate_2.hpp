@@ -47,7 +47,6 @@ struct StiSPatternRotate2 : smacc2::SmaccState<StiSPatternRotate2, SS>
 
     configure_orthogonal<OrNavigation, CbAbsoluteRotate>(angle);
     configure_orthogonal<OrNavigation, CbResumeSlam>();
-    configure_orthogonal<OrLED, CbLEDOff>();
   }
 
   void runtimeConfigure()

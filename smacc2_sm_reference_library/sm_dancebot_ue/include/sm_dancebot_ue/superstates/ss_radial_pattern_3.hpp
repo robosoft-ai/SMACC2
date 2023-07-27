@@ -47,14 +47,13 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees4, ENDLOOP>
+    // Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees4, ENDLOOP>
 
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
   int iteration_count;

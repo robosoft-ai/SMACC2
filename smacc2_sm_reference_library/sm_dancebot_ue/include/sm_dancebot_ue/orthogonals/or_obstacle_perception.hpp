@@ -20,7 +20,6 @@
 
 #pragma once
 
-#include <sm_dancebot_ue/clients/cl_lidar/cl_lidar.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_dancebot_ue
@@ -31,10 +30,10 @@ class OrObstaclePerception : public smacc2::Orthogonal<OrObstaclePerception>
 public:
   void onInitialize() override
   {
-    auto lidarClient = this->createClient<ClLidarSensor>();
+    // auto lidarClient = this->createClient<ClLidarSensor>();
 
-    lidarClient->topicName = "/scan";
-    lidarClient->timeout_ = rclcpp::Duration(10s);
+    // lidarClient->topicName = "/scan";
+    // lidarClient->timeout_ = rclcpp::Duration(10s);
   }
 };
 }  // namespace sm_dancebot_ue

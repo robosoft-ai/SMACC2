@@ -41,7 +41,6 @@ struct StiRadialEndPoint : smacc2::SmaccState<StiRadialEndPoint, SS>
     //RCLCPP_INFO(getLogger(),"ssr radial end point, distance in meters: %lf", SS::ray_length_meters());
     configure_orthogonal<OrNavigation, CbNavigateForward>(SS::ray_length_meters());
     configure_orthogonal<OrNavigation, CbPauseSlam>();
-    configure_orthogonal<OrLED, CbLEDOn>();
   }
 
   void runtimeConfigure() {}

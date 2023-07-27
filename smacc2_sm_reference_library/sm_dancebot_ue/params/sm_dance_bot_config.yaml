@@ -1,9 +1,0 @@
-SmDanceBot:
-    ros__parameters:
-        use_sim_time: true
-        signal_detector_loop_freq: 20.0
-        clear_angular_distance_threshold: 0.1 # 0.05
-        clear_point_distance_threshold:  0.4 #0.1
-        record_angular_distance_threshold: 0.005
-        record_point_distance_threshold: 0.1
-        waypoints_plan: $(pkg_share)/params/nav2z_client/waypoints_plan.yaml

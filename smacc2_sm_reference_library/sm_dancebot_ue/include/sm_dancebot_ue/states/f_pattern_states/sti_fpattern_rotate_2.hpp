@@ -52,7 +52,6 @@ struct StiFPatternRotate2 : smacc2::SmaccState<StiFPatternRotate2<SS>, SS>
     //TSti::template configure_orthogonal<OrNavigation, CbRotate>(angle);
     TSti::template configure_orthogonal<OrNavigation, CbAbsoluteRotate>(
       0 + offset);  // absolute horizontal
-    TSti::template configure_orthogonal<OrLED, CbLEDOff>();
 
     TSti::template configure_orthogonal<OrNavigation, CbResumeSlam>();
   }

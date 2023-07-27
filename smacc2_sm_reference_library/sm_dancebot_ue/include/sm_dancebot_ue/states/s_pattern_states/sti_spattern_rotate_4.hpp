@@ -54,7 +54,6 @@ struct StiSPatternRotate4 : smacc2::SmaccState<StiSPatternRotate4, SS>
 
     this->configure<OrNavigation, CbAbsoluteRotate>(angle);
     this->configure<OrNavigation, CbResumeSlam>();
-    this->configure<OrLED, CbLEDOff>();
   }
 };
 }  // namespace s_pattern_states

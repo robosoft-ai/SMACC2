@@ -40,7 +40,6 @@ struct StiRadialReturn : smacc2::SmaccState<StiRadialReturn, SS>
   {
     configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
     configure_orthogonal<OrNavigation, CbPauseSlam>();
-    configure_orthogonal<OrLED, CbLEDOff>();
   }
 
   void onExit()

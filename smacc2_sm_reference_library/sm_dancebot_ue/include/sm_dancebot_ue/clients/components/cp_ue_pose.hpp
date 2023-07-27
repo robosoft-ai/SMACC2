@@ -13,36 +13,44 @@
 // limitations under the License.
 
 /*****************************************************************************************************************
- *
+ *-2020
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-
 #pragma once
 
-#include <smacc2/smacc.hpp>
+#include <mutex>
+
+#include <geometry_msgs/msg/pose_stamped.h>
+#include <tf2/transform_datatypes.h>
+#include <tf2/utils.h>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
+#include <geometry_msgs/msg/quaternion_stamped.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+
+#include <smacc2/component.hpp>
+#include <smacc2/smacc_updatable.hpp>
+#include <ue_msgs/msg/entity_state.hpp>
+#include <geometry_msgs/msg/pose.hpp>
+#include <smacc2/client_base_components/cp_topic_subscriber.hpp>
+
 namespace sm_dancebot_ue
 {
-// STATE DECLARATION
-struct StRotateDegrees4 : smacc2::SmaccState<StRotateDegrees4, MsDanceBotRunMode>
+
+class CpUEPose : public smacc2::components::CpTopicSubscriber<ue_msgs::msg::EntityState>
 {
-  using SmaccState::SmaccState;
+public:
+  CpUEPose(std::string topicname);
 
-  // TRANSITION TABLE
-  typedef mpl::list<
+  void onInitialize() override;
+  
+  void onPoseMessageReceived(const ue_msgs::msg::EntityState& msg);
 
-    Transition<EvCbSuccess<CbRotate, OrNavigation>, StNavigateReverse2>,
-    Transition<EvCbFailure<CbRotate, OrNavigation>, StNavigateToWaypointsX>
+  geometry_msgs::msg::Pose toPoseMsg();
 
-    >reactions;
+private:
+  ue_msgs::msg::EntityState entityStateMsg_;
 
-  // STATE FUNCTIONS
-  static void staticConfigure()
-  {
-    configure_orthogonal<OrNavigation, CbRotate>(/*30*/ -180);
-    configure_orthogonal<OrNavigation, CbResumeSlam>();
-    configure_orthogonal<OrLED, CbLEDOff>();
-    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
-  }
 };
 }  // namespace sm_dancebot_ue

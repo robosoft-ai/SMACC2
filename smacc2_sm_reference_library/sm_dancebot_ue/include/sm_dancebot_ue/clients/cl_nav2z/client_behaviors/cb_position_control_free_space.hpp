@@ -18,40 +18,44 @@
  *
  ******************************************************************************************************************/
 
-#include <sm_dancebot_ue/clients/cl_service3/cl_service3.hpp>
-#include <smacc2/smacc_client_behavior.hpp>
+#pragma once 
+
+#include <angles/angles.h>
+#include <geometry_msgs/msg/twist.hpp>
+#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>
+#include <nav2z_client/components/pose/cp_pose.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace sm_dancebot_ue
 {
-namespace cl_service3
-{
-enum class Service3Command
-{
-  SERVICE3_ON,
-  SERVICE3_OFF
-};
-
-class CbService3 : public smacc2::SmaccClientBehavior
+struct CbPositionControlFreeSpace : public smacc2::SmaccAsyncClientBehavior
 {
 private:
-  ClService3 * serviceClient_;
-  Service3Command value_;
+  double targetYaw_;
+  bool goalReached_;
+  double k_betta_;
+  double max_angular_yaw_speed_;
+
+  double threshold_distance_;
+  double prev_error_linear_ = 0.0;
+  double prev_error_angular_ = 0.0;
+  double integral_linear_ = 0.0;
+  double integral_angular_ = 0.0;
+
+  rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_pub_;
 
 public:
-  CbService3(Service3Command value) { value_ = value; }
+  double yaw_goal_tolerance_rads_;
 
-  void onEntry() override
-  {
-    this->requiresClient(serviceClient_);
+  geometry_msgs::msg::Pose target_pose_;
 
-    auto req = std::make_shared<std_srvs::srv::SetBool::Request>();
-    if (value_ == Service3Command::SERVICE3_ON)
-      req->data = true;
-    else
-      req->data = false;
+  CbPositionControlFreeSpace();
 
-    serviceClient_->call(req);
-  }
+  void updateParameters();
+
+  void onEntry() override;
+
+  void onExit() override;
+
 };
-}  // namespace cl_service3
 }  // namespace sm_dancebot_ue

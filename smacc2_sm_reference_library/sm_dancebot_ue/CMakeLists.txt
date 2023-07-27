@@ -28,6 +28,7 @@ find_package(sr_conditional REQUIRED)
 find_package(ros_timer_client REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
+find_package(ue_msgs REQUIRED)
 
 set(dependencies
   smacc2
@@ -41,6 +42,7 @@ set(dependencies
   sr_conditional
   ros_timer_client
   visualization_msgs
+  ue_msgs
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}
@@ -54,8 +56,9 @@ include_directories(include
 
 add_executable(${PROJECT_NAME}_node
   src/${PROJECT_NAME}/sm_dancebot_ue.cpp
-  src/${PROJECT_NAME}/clients/cl_led/cl_led.cpp
-)
+  src/${PROJECT_NAME}/clients/client_behaviors/nav2z_client/cb_position_control_free_space.cpp
+  src/${PROJECT_NAME}/clients/components/cp_ue_pose.cpp
+  )
 
 add_executable(temperature_sensor_node_${PROJECT_NAME} servers/temperature_sensor_node/src/temperature_sensor_node.cpp)
 add_executable(led_action_server_node_${PROJECT_NAME} servers/led_action_server/src/led_action_server_node.cpp)

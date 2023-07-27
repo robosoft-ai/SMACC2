@@ -24,26 +24,44 @@
 
 namespace sm_dancebot_ue
 {
+
 // STATE DECLARATION
-struct StNavigateReverse4 : smacc2::SmaccState<StNavigateReverse4, MsDanceBotRunMode>
+struct StInitialRoadWaypointsX : smacc2::SmaccState<StInitialRoadWaypointsX, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
+  // CUSTOM TRANSITION TAGS
+  struct TRANSITION_1 : SUCCESS{};
+  struct TRANSITION_2 : SUCCESS{};
+  struct TRANSITION_3 : SUCCESS{};
+  struct TRANSITION_4 : SUCCESS{};
+  struct TRANSITION_5 : SUCCESS{};
+  struct TRANSITION_6 : SUCCESS{};
+
   // TRANSITION TABLE
   typedef mpl::list<
-
-    Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StRotateDegrees5>,
-    Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StNavigateToWaypointsX>
-
+    Transition<EvCbSuccess<CbNavigateNextWaypointFree, OrNavigation>, StInitialRoadWaypointsX, TRANSITION_1>
+    // Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypointsX, TRANSITION_2>,
+    // Transition<EvWaypoint1<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_3>,
+    // Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_4>
+    
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbNavigateBackwards>(0.5);
-    configure_orthogonal<OrNavigation, CbPauseSlam>();
-    configure_orthogonal<OrLED, CbLEDOff>();
-    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+      // configure_orthogonal<OrNavigation, CbPositionControlFreeSpace>();
+      configure_orthogonal<OrNavigation, CbNavigateNextWaypointFree>();
+  }
+
+  void onEntry()
+  {
+  }
+
+  void runtimeConfigure() {}
+
+  void onExit(ABORT)
+  {
   }
 };
 }  // namespace sm_dancebot_ue

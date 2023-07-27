@@ -53,8 +53,6 @@ struct StiSPatternRotate1 : smacc2::SmaccState<StiSPatternRotate1, SS>
       // - offset because we are looking to the south and we have to turn counter-clockwise
       this->configure<OrNavigation, CbAbsoluteRotate>(180 + offset);
     }
-
-    this->configure<OrLED, CbLEDOff>();
   }
 };
 }  // namespace s_pattern_states

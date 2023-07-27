@@ -42,7 +42,6 @@ struct StiFPatternReturn1 : smacc2::SmaccState<StiFPatternReturn1<SS>, SS>
   {
     TSti::template configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
     TSti::template configure_orthogonal<OrNavigation, CbPauseSlam>();
-    TSti::template configure_orthogonal<OrLED, CbLEDOn>();
   }
 
   void runtimeConfigure() {}

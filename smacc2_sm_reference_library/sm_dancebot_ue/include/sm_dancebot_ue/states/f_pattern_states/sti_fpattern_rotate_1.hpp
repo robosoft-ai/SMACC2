@@ -52,7 +52,6 @@ struct StiFPatternRotate1 : smacc2::SmaccState<StiFPatternRotate1<SS>, SS>
     //TSti::template configure_orthogonal<OrNavigation, CbRotate>(angle);
     TSti::template configure_orthogonal<OrNavigation, CbAbsoluteRotate>(
       angle);  // absolute aligned to the y-axis
-    TSti::template configure_orthogonal<OrLED, CbLEDOff>();
   }
 
   void runtimeConfigure() {}

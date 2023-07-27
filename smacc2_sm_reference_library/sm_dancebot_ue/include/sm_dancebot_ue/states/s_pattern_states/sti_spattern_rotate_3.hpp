@@ -66,7 +66,6 @@ struct StiSPatternRotate3 : smacc2::SmaccState<StiSPatternRotate3, SS>
     }
 
     this->configure<OrNavigation, CbResumeSlam>();
-    this->configure<OrLED, CbLEDOff>();
   }
 };
 }  // namespace s_pattern_states

@@ -20,26 +20,44 @@
 
 #pragma once
 
-#include <smacc2/smacc_orthogonal.hpp>
-
 #include <nav2z_client/components/waypoints_navigator/cp_waypoints_navigator_base.hpp>
-#include <sm_dancebot_ue/clients/components/cp_ue_pose.hpp>
+#include <smacc2/smacc_client_behavior.hpp>
 
 namespace sm_dancebot_ue
 {
-using namespace ::cl_nav2z;
-using namespace std::chrono_literals;
-
-class OrNavigation : public smacc2::Orthogonal<OrNavigation>
+struct CbLoadWaypointsFile : public smacc2::SmaccClientBehavior
 {
 public:
-  void onInitialize() override
+  CbLoadWaypointsFile(std::string filepath) : filepath_(filepath) {}
+
+  CbLoadWaypointsFile(std::string parameter_name, std::string packagenamesapce)
+  : 
+    parameterName_(parameter_name), 
+    packagenamesapce_(packagenamesapce)
   {
-    auto nav2zClient = this->createClient<smacc2::ISmaccClient>();
-
-    nav2zClient->createComponent<sm_dancebot_ue::CpUEPose>("/ue_ros/map_origin_entity_state");
-
-    auto waypointsNavigator = nav2zClient->createComponent<::cl_nav2z::CpWaypointNavigatorBase>();
   }
+
+  void onEntry() override
+  {
+    requiresComponent(waypointsNavigator_);  // this is a component from the nav2z_client library
+
+    if (filepath_)
+      this->waypointsNavigator_->loadWayPointsFromFile(filepath_.value());
+    else
+      this->waypointsNavigator_->loadWaypointsFromYamlParameter(
+        parameterName_.value(), packagenamesapce_.value());
+
+    // change this to skip some points of the yaml file, default = 0
+    waypointsNavigator_->currentWaypoint_ = 0;
+  }
+
+  void onExit() override {}
+
+  std::optional<std::string> filepath_;
+
+  std::optional<std::string> parameterName_;
+  std::optional<std::string> packagenamesapce_;
+
+  cl_nav2z::CpWaypointNavigatorBase * waypointsNavigator_;
 };
 }  // namespace sm_dancebot_ue

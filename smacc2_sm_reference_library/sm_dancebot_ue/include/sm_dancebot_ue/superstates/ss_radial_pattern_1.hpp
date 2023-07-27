@@ -49,7 +49,7 @@ public:
   typedef mpl::list<
 
     // Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees1, ENDLOOP>
-    Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateReverse1, ENDLOOP>
+    // Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateReverse1, ENDLOOP>
 
     >reactions;
 
@@ -62,7 +62,6 @@ public:
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
   void runtimeConfigure() {}
