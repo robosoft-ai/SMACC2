@@ -60,7 +60,7 @@ rclcpp::Node::SharedPtr SignalDetector::getNode() { return this->smaccStateMachi
 void SignalDetector::initialize(ISmaccStateMachine * stateMachine)
 {
   smaccStateMachine_ = stateMachine;
-  lastState_ = std::numeric_limits<uint64_t>::quiet_NaN();
+  lastState_ = std::numeric_limits<int64_t>::quiet_NaN();
   findUpdatableClientsAndComponents();
   this->getNode()->declare_parameter("signal_detector_loop_freq", this->loop_rate_hz);
 

@@ -752,7 +752,7 @@ void ISmaccStateMachine::buildStateMachineInfo()
   this->checkStateMachineConsistence();
 }
 
-uint64_t ISmaccStateMachine::getCurrentStateCounter() const { return this->stateSeqCounter_; }
+int64_t ISmaccStateMachine::getCurrentStateCounter() const { return this->stateSeqCounter_; }
 
 ISmaccState * ISmaccStateMachine::getCurrentState() const { return this->currentState_.back(); }
 
