@@ -16,7 +16,7 @@
 
 namespace cl_ros_timer
 {
-CbTimerCountdownLoop::CbTimerCountdownLoop(uint64_t triggerTickCount)
+CbTimerCountdownLoop::CbTimerCountdownLoop(int64_t triggerTickCount)
 : tickTriggerCount_(triggerTickCount), tickCounter_(0)
 {
 }

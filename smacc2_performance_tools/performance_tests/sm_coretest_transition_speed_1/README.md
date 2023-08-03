@@ -1,11 +1,8 @@
  <h2>Build Instructions</h2>
 
-First, source your chosen ros2 distro.
+First, source your ros2 installation.
 ```
-source /opt/ros/rolling/setup.bash
-```
-```
-source /opt/ros/galactic/setup.bash
+source /opt/ros/humble/setup.bash
 ```
 
 Before you build, make sure you've installed all the dependencies...
@@ -20,10 +17,10 @@ Then build with colcon build...
 colcon build
 ```
   <h2>Operating Instructions</h2>
-After you build, remember to source the proper install folder...
+After you build, remember to source the proper workspace...
 
 ```
-source ~/<ros2_ws>/install/setup.bash
+source ~/workspace/humble_ws/install/setup.sh
 ```
 
 And then run the launch file...

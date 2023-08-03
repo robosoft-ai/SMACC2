@@ -385,7 +385,7 @@ void CpWaypointNavigator::loadWayPointsFromFile(std::string filepath)
 
     if (wp_node != NULL)
     {
-      for (uint64_t i = 0; i < wp_node->size(); ++i)
+      for (int64_t i = 0; i < wp_node->size(); ++i)
       {
         // Parse waypoint entries on YAML
         geometry_msgs::msg::Pose wp;
@@ -458,7 +458,7 @@ void CpWaypointNavigator::loadWayPointsFromFile2(std::string filepath)
 
     if (wp_node != NULL)
     {
-      for (uint64_t i = 0; i < wp_node->size(); ++i)
+      for (int64_t i = 0; i < wp_node->size(); ++i)
       {
         // Parse waypoint entries on YAML
         geometry_msgs::msg::Pose wp;
