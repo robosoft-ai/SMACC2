@@ -28,15 +28,8 @@
 namespace sm_dancebot_ue
 {
 CbPositionControlFreeSpace::CbPositionControlFreeSpace()
-: targetYaw_(0), k_betta_(1.0), max_angular_yaw_speed_(1.0), yaw_goal_tolerance_rads_(0.03)
+: targetYaw_(0), k_betta_(1.0), max_angular_yaw_speed_(1.0)
 {
-  // Set the target pose (modify this according to your desired goal)
-  // target_pose_.position.x = 3.0;
-  // target_pose_.position.y = 2.0;
-  // target_pose_.orientation.w = 1.0;  // No rotation in this example
-
-  // Set the threshold distance for goal achievement (modify this according to your needs)
-  threshold_distance_ = 2.0;  // 10 centimeters
 }
 
 void CbPositionControlFreeSpace::updateParameters() {}
@@ -127,9 +120,6 @@ void CbPositionControlFreeSpace::onEntry()
       double cmd_angular_z = kp_angular * yaw_error + ki_angular * integral_angular_ +
                              kd_angular * (yaw_error - prev_error_angular_);
 
-      // Limit the maximum linear velocity and angular velocity to avoid sudden movements
-      double max_linear_velocity = 0.5;   // Adjust this value according to your needs
-      double max_angular_velocity = 1.0;  // Adjust this value according to your needs
 
       if (cmd_linear_x > max_linear_velocity)
         cmd_linear_x = max_linear_velocity;

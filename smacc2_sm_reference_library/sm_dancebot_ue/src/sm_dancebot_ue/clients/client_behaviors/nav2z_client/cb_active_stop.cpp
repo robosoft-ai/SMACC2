@@ -1,5 +1,4 @@
-// Copyright 2021 RobosoftAI Inc.
-//
+
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -18,28 +17,37 @@
  *
  ******************************************************************************************************************/
 
-#pragma once
+#include <angles/angles.h>
+#include <geometry_msgs/msg/twist.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
-#include <smacc2/smacc_orthogonal.hpp>
-
-#include <nav2z_client/components/waypoints_navigator/cp_waypoints_navigator_base.hpp>
+#include <sm_dancebot_ue/clients/cl_nav2z/client_behaviors/cb_active_stop.hpp>
 #include <sm_dancebot_ue/clients/components/cp_ue_pose.hpp>
 
 namespace sm_dancebot_ue
 {
-using namespace ::cl_nav2z;
-using namespace std::chrono_literals;
+CbActiveStop::CbActiveStop() {}
 
-class OrNavigation : public smacc2::Orthogonal<OrNavigation>
+void CbActiveStop::onEntry()
 {
-public:
-  void onInitialize() override
+  auto nh = this->getNode();
+  cmd_vel_pub_ = nh->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", rclcpp::QoS(1));
+
+  rclcpp::Rate loop_rate(5);
+  geometry_msgs::msg::Twist cmd_vel_msg;
+  while (!this->isShutdownRequested())
   {
-    auto nav2zClient = this->createClient<smacc2::ISmaccClient>();
+    cmd_vel_msg.linear.x = 0;
+    cmd_vel_msg.angular.z = 0;
 
-    nav2zClient->createComponent<sm_dancebot_ue::CpUEPose>("/ue_ros/map_origin_entity_state");
-
-    /*auto waypointsNavigator = */nav2zClient->createComponent<::cl_nav2z::CpWaypointNavigatorBase>();
+    cmd_vel_pub_->publish(cmd_vel_msg);
+    loop_rate.sleep();
   }
-};
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Finished behavior execution");
+
+  this->postSuccessEvent();
+}
+
+void CbActiveStop::onExit() {}
+
 }  // namespace sm_dancebot_ue

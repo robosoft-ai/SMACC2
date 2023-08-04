@@ -20,27 +20,27 @@
 
 #pragma once
 
-#include <smacc2/smacc.hpp>
+#include <angles/angles.h>
+#include <geometry_msgs/msg/twist.hpp>
+#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>
+#include <nav2z_client/components/pose/cp_pose.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace sm_dancebot_ue
 {
-// STATE DECLARATION
-struct StEventCountDown : smacc2::SmaccState<StEventCountDown, MsDanceBotRunMode>
+struct CbActiveStop : public smacc2::SmaccAsyncClientBehavior
 {
-  using SmaccState::SmaccState;
+private:
 
-  // TRANSITION TABLE
-  typedef mpl::list<
 
-    // Transition<EvCountdownEnd<SrEventCountdown>, StNavigateToWaypointsX>,
-    Transition<EvGlobalError, MsDanceBotRecoveryMode>
+  rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_pub_;
 
-    >reactions;
+public:
 
-  // STATE FUNCTIONS
-  static void staticConfigure()
-  {
+  CbActiveStop();
 
-  }
+  void onEntry() override;
+
+  void onExit() override;
 };
 }  // namespace sm_dancebot_ue

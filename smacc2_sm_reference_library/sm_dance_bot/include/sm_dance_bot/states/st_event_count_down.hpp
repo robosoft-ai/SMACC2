@@ -22,42 +22,37 @@
 
 #include <smacc2/smacc.hpp>
 
-namespace sm_dancebot_ue
+namespace sm_dance_bot
 {
-
 // STATE DECLARATION
-struct StNavigateFieldWaypointsX : smacc2::SmaccState<StNavigateFieldWaypointsX, MsDanceBotRunMode>
+struct StEventCountDown : smacc2::SmaccState<StEventCountDown, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
-  // CUSTOM TRANSITION TAGS
-  struct TRANSITION_1 : SUCCESS{};
-  struct TRANSITION_2 : SUCCESS{};
-  struct TRANSITION_3 : SUCCESS{};
-  struct TRANSITION_4 : SUCCESS{};
-  struct TRANSITION_5 : SUCCESS{};
-  struct TRANSITION_6 : SUCCESS{};
-
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvCbSuccess<CbNavigateNextWaypointFree, OrNavigation>, StNavigateFieldWaypointsX, TRANSITION_1>    
+
+    Transition<EvCountdownEnd<SrEventCountdown>, StNavigateToWaypointsX>,
+    Transition<EvGlobalError, MsDanceBotRecoveryMode>
+
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-      // configure_orthogonal<OrNavigation, CbPositionControlFreeSpace>();
-      configure_orthogonal<OrNavigation, CbNavigateNextWaypointFree>();
-  }
+    //   configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+    //   configure_orthogonal<OrStringPublisher, CbStringPublisher>("Hello World!");
+    //   configure_orthogonal<OrTemperatureSensor, CbConditionTemperatureSensor>();
+    //   configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
 
-  void onEntry()
-  {
-  }
+    // Create State Reactor
 
-  void runtimeConfigure() {}
+    //auto srCountdown = static_createStateReactor<SrEventCountdown>(5);
+    //srCountdown->addInputEvent<EvTimer<ClRosTimer, OrTimer>>();
+    //srCountdown->setOutputEvent<EvCountdownEnd<SrEventCountdown>>();
 
-  void onExit(ABORT)
-  {
+    auto srCountdown = static_createStateReactor<
+      SrEventCountdown, EvCountdownEnd<SrEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(5);
   }
 };
-}  // namespace sm_dancebot_ue
+}  // namespace sm_dance_bot

@@ -33,8 +33,8 @@
 #include <sm_dancebot_ue/clients/cl_nav2z/client_behaviors/cb_position_control_free_space.hpp>
 #include <sm_dancebot_ue/clients/cl_nav2z/client_behaviors/cb_navigate_next_waypoint_free.hpp>
 #include <sm_dancebot_ue/clients/cl_nav2z/client_behaviors/cb_load_waypoints_file.hpp>
-
-using namespace cl_nav2z;
+#include <sm_dancebot_ue/clients/cl_nav2z/client_behaviors/cb_pure_spinning.hpp>
+#include <sm_dancebot_ue/clients/cl_nav2z/client_behaviors/cb_active_stop.hpp>
 
 #include <ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp>
 #include <ros_publisher_client/client_behaviors/cb_muted_behavior.hpp>
@@ -47,21 +47,23 @@ using namespace cl_nav2z;
 #include <sr_conditional/sr_conditional.hpp>
 #include <sr_event_countdown/sr_event_countdown.hpp>
 
-using namespace smacc2::state_reactors;
 
 // ORTHOGONALS
 #include <sm_dancebot_ue/orthogonals/or_navigation.hpp>
 #include <sm_dancebot_ue/orthogonals/or_obstacle_perception.hpp>
 
+using namespace cl_nav2z;
+using namespace smacc2::state_reactors;
+
 namespace sm_dancebot_ue
 {
 //STATE FORWARD DECLARATIONS
 class StAcquireSensors;
-class StEventCountDown;
-
 class StInitialRoadWaypointsX;
 class StNavigateFieldWaypointsX;
 class StBackOnRoadWaypointsX;
+class StTurnAround;
+class StFinalState;
 
 //SUPERSTATE FORWARD DECLARATIONS
 //MODE STATES FORWARD DECLARATIONS
@@ -110,9 +112,6 @@ namespace sm_dancebot_ue
 ///  for the development of state machines
 struct SmDanceBot : public smacc2::SmaccStateMachineBase<SmDanceBot, MsDanceBotRunMode>
 {
-  int counter_1;
-  bool rt_ready_flag;
-
   typedef mpl::bool_<false> shallow_history;
   typedef mpl::bool_<false> deep_history;
   typedef mpl::bool_<false> inherited_deep_history;
@@ -121,9 +120,6 @@ struct SmDanceBot : public smacc2::SmaccStateMachineBase<SmDanceBot, MsDanceBotR
 
   void onInitialize() override
   {
-    this->setGlobalSMData("counter_1", counter_1);
-    this->setGlobalSMData("rt_ready_flag", rt_ready_flag);
-
     this->createOrthogonal<OrNavigation>();
     this->createOrthogonal<OrObstaclePerception>();
   }
@@ -145,8 +141,9 @@ struct SmDanceBot : public smacc2::SmaccStateMachineBase<SmDanceBot, MsDanceBotR
 
 //STATES
 #include <sm_dancebot_ue/states/st_acquire_sensors.hpp>
-#include <sm_dancebot_ue/states/st_event_count_down.hpp>
 
 #include <sm_dancebot_ue/states/st_inital_road_waypoints_x.hpp>
 #include <sm_dancebot_ue/states/st_navigate_field_waypoints_x.hpp>
 #include <sm_dancebot_ue/states/st_back_on_road_waypoints_x.hpp>
+#include <sm_dancebot_ue/states/st_turn_around.hpp>
+#include <sm_dancebot_ue/states/st_final_state.hpp>

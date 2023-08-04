@@ -18,7 +18,7 @@
  *
  ******************************************************************************************************************/
 
-#pragma once 
+#pragma once
 
 #include <angles/angles.h>
 #include <geometry_msgs/msg/twist.hpp>
@@ -36,16 +36,21 @@ private:
   double k_betta_;
   double max_angular_yaw_speed_;
 
-  double threshold_distance_;
   double prev_error_linear_ = 0.0;
   double prev_error_angular_ = 0.0;
   double integral_linear_ = 0.0;
   double integral_angular_ = 0.0;
 
+  // Limit the maximum linear velocity and angular velocity to avoid sudden movements
+  double max_linear_velocity = 1.0;   // Adjust this value according to your needs
+  double max_angular_velocity = 1.0;  // Adjust this value according to your needs
+
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_pub_;
 
 public:
-  double yaw_goal_tolerance_rads_;
+  double yaw_goal_tolerance_rads_=0.1;
+
+  double threshold_distance_ = 3.0;  
 
   geometry_msgs::msg::Pose target_pose_;
 
@@ -56,6 +61,5 @@ public:
   void onEntry() override;
 
   void onExit() override;
-
 };
 }  // namespace sm_dancebot_ue

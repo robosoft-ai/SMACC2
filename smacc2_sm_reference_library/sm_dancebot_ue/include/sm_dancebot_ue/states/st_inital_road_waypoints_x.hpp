@@ -40,17 +40,14 @@ struct StInitialRoadWaypointsX : smacc2::SmaccState<StInitialRoadWaypointsX, MsD
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvCbSuccess<CbNavigateNextWaypointFree, OrNavigation>, StInitialRoadWaypointsX, TRANSITION_1>
-    // Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypointsX, TRANSITION_2>,
-    // Transition<EvWaypoint1<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_3>,
-    // Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_4>
-    
+    Transition<cl_nav2z::EvWaypointFinal, StTurnAround, TRANSITION_1>,
+    //Transition<EvWaypoint24<ISmaccClient, OrNavigation>, StTurnAround, TRANSITION_1>,
+    Transition<EvCbSuccess<CbNavigateNextWaypointFree, OrNavigation>, StInitialRoadWaypointsX, TRANSITION_2>
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-      // configure_orthogonal<OrNavigation, CbPositionControlFreeSpace>();
       configure_orthogonal<OrNavigation, CbNavigateNextWaypointFree>();
   }
 

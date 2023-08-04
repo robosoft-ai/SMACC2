@@ -27,7 +27,6 @@
 
 namespace cl_nav2z
 {
-
 struct Pose2D
 {
   Pose2D(double x, double y, double yaw)
@@ -76,7 +75,6 @@ public:
   geometry_msgs::msg::Pose getPose(int index) const;
   geometry_msgs::msg::Pose getCurrentPose() const;
 
-
   long getCurrentWaypointIndex() const;
   std::optional<std::string> getCurrentWaypointName() const;
 
@@ -87,7 +85,10 @@ public:
   void forward(int count);
   void seekName(std::string name);
 
-  void loadWaypointsFromYamlParameter(std::string parameter_name, std::string yaml_file_package_name);
+  void loadWaypointsFromYamlParameter(
+    std::string parameter_name, std::string yaml_file_package_name);
+
+  void notifyGoalReached();
 
 protected:
   void insertWaypoint(int index, geometry_msgs::msg::Pose & newpose);

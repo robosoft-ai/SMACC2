@@ -68,6 +68,8 @@ void CpWaypointNavigator::onGoalReached(const ClNav2Z::WrappedResult & /*res*/)
     currentWaypoint_);
   stopWaitingResult();
 
+  this->notifyGoalReached();
+
   onNavigationRequestSucceded();
 }
 
@@ -283,6 +285,16 @@ CpWaypointNavigator::sendNextGoal(
   }
 
   return std::nullopt;
+}
+
+void CpWaypointNavigatorBase::notifyGoalReached()
+{
+  // when it is the last waypoint post an finalization EOF event
+  if (currentWaypoint_ == (long)waypoints_.size() - 1)
+  {
+    RCLCPP_WARN(getLogger(), "[CpWaypointNavigator] Last waypoint reached, posting EOF event. ");
+    this->postEvent<EvWaypointFinal>();
+  }
 }
 
 void CpWaypointNavigator::onNavigationResult(const ClNav2Z::WrappedResult & r)

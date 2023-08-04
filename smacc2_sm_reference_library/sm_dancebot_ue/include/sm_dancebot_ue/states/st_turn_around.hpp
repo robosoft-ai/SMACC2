@@ -24,45 +24,31 @@
 
 namespace sm_dancebot_ue
 {
+using namespace smacc2::default_events;
+using smacc2::client_behaviors::CbSleepFor;
+using namespace std::chrono_literals;
 
 // STATE DECLARATION
-struct StBackOnRoadWaypointsX : smacc2::SmaccState<StBackOnRoadWaypointsX, MsDanceBotRunMode>
+struct StTurnAround : smacc2::SmaccState<StTurnAround, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
-  // CUSTOM TRANSITION TAGS
-  struct TRANSITION_1 : SUCCESS{};
-  struct TRANSITION_2 : SUCCESS{};
-  struct TRANSITION_3 : SUCCESS{};
-  struct TRANSITION_4 : SUCCESS{};
-  struct TRANSITION_5 : SUCCESS{};
-  struct TRANSITION_6 : SUCCESS{};
-
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<cl_nav2z::EvWaypointFinal, StFinalState, SUCCESS>,
-    Transition<EvCbSuccess<CbNavigateNextWaypointFree, OrNavigation>, StBackOnRoadWaypointsX, TRANSITION_1>
-    // Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypointsX, TRANSITION_2>,
-    // Transition<EvWaypoint1<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_3>,
-    // Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_4>
+    Transition<EvCbSuccess<CbPureSpinning, OrNavigation>, StBackOnRoadWaypointsX, SUCCESS>
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-      // configure_orthogonal<OrNavigation, CbPositionControlFreeSpace>();
-      configure_orthogonal<OrNavigation, CbLoadWaypointsFile>("waypoints_plan_back_on_road", "sm_dancebot_ue");
-      configure_orthogonal<OrNavigation, CbNavigateNextWaypointFree>();
+    configure_orthogonal<OrNavigation, CbPureSpinning>(M_PI, 0.8);
   }
 
-  void onEntry()
+  void runtimeConfigure()
   {
-  }
-
-  void runtimeConfigure() {}
-
-  void onExit(ABORT)
-  {
+    auto spinningBehavior = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbPureSpinning>();
+    spinningBehavior->yaw_goal_tolerance_rads_ = 0.2;
+    
   }
 };
 }  // namespace sm_dancebot_ue

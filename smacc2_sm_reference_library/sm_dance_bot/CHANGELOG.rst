@@ -2,6 +2,11 @@
 Changelog for package sm_dance_bot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.3.16 (2023-07-16)
+-------------------
+* minor
+* Contributors: pabloinigoblasco
+
 2.3.6 (2023-03-12)
 ------------------
 

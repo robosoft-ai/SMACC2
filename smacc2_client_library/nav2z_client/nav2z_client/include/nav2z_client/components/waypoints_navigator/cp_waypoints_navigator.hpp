@@ -30,6 +30,10 @@ namespace cl_nav2z
 {
 class ClNav2Z;
 
+struct EvWaypointFinal : sc::event<EvWaypointFinal>
+{
+};
+
 struct NavigateNextWaypointOptions
 {
   std::optional<std::string> controllerName_;
