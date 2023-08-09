@@ -399,6 +399,31 @@
             ]
         },
         {
+            "name": "(gdb) SmDanceBotArtGalleryUE",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../install/sm_dancebot_artgallery_ue/lib/sm_dancebot_artgallery_ue/sm_dancebot_artgallery_ue_node",
+            "args": [
+                "--ros-args",
+                "-r",
+                "__node:=SmDanceBotArtGalleryUE",
+                "--params-file",
+                "${workspaceFolder}/../install/sm_dancebot_artgallery_ue/share/sm_dancebot_artgallery_ue/params/sm_dancebot_artgallery_ue_config.yaml"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "name": "(gdb) SmDanceBotWarehouse2",
             "type": "cppdbg",
             "request": "launch",
