@@ -42,10 +42,19 @@ public:
     requiresComponent(waypointsNavigator_);  // this is a component from the nav2z_client library
 
     if (filepath_)
+    {
+      RCLCPP_INFO_STREAM(
+        getNode()->get_logger(), "[CbLoadWaypointsFile] Loading waypoints from file: " << *filepath_);
       this->waypointsNavigator_->loadWayPointsFromFile(filepath_.value());
+    }
     else
+    {
+      RCLCPP_INFO_STREAM(
+        getNode()->get_logger(), "[CbLoadWaypointsFile] Loading waypoints from parameter: "
+                                   << parameterName_.value() << " in package: " << packagenamesapce_.value());
       this->waypointsNavigator_->loadWaypointsFromYamlParameter(
         parameterName_.value(), packagenamesapce_.value());
+        }
 
     // change this to skip some points of the yaml file, default = 0
     waypointsNavigator_->currentWaypoint_ = 0;

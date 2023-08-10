@@ -159,7 +159,14 @@ void CpWaypointNavigatorBase::loadWaypointsFromYamlParameter(
   {
     std::string package_share_directory =
       ament_index_cpp::get_package_share_directory(yaml_file_package_name);
+
+    RCLCPP_INFO(getLogger(), "file macro path: %s", planfilepath.c_str());
+    
     boost::replace_all(planfilepath, "$(pkg_share)", package_share_directory);
+
+    RCLCPP_INFO(getLogger(), "package share path: %s", package_share_directory.c_str());
+    RCLCPP_INFO(getLogger(), "waypoints plan file: %s", planfilepath.c_str());
+
     this->loadWayPointsFromFile(planfilepath);
     RCLCPP_INFO(getLogger(), "waypoints plan: %s", planfilepath.c_str());
   }

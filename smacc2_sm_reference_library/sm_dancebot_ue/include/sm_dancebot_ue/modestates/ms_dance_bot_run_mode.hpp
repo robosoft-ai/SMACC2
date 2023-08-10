@@ -22,7 +22,7 @@
 namespace sm_dancebot_ue
 {
 // STATE DECLARATION
-class MsDanceBotRunMode : public smacc2::SmaccState<MsDanceBotRunMode, SmDanceBot, StAcquireSensors>
+class MsDanceBotRunMode : public smacc2::SmaccState<MsDanceBotRunMode, SmDanceBotUE, StAcquireSensors>
 {
 public:
   using SmaccState::SmaccState;

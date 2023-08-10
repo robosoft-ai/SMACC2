@@ -1,4 +1,4 @@
-SmDanceBot:
+SmDanceBotUE:
     ros__parameters:
         use_sim_time: true
         signal_detector_loop_freq: 20.0

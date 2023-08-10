@@ -190,7 +190,7 @@ def generate_launch_description():
     sm_dance_bot_node = Node(
         package="sm_dancebot_ue",
         executable="sm_dancebot_ue_node",
-        name="SmDanceBot",
+        name="SmDanceBotUE",
         output="screen",
         prefix=xtermprefix,
         parameters=[

@@ -110,7 +110,7 @@ namespace sm_dancebot_ue
 {
 /// \brief Advanced example of state machine with smacc that shows multiple techniques
 ///  for the development of state machines
-struct SmDanceBot : public smacc2::SmaccStateMachineBase<SmDanceBot, MsDanceBotRunMode>
+struct SmDanceBotUE : public smacc2::SmaccStateMachineBase<SmDanceBotUE, MsDanceBotRunMode>
 {
   typedef mpl::bool_<false> shallow_history;
   typedef mpl::bool_<false> deep_history;
