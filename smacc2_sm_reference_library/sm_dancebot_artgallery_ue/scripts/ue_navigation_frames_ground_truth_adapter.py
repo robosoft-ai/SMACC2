@@ -84,5 +84,4 @@ def main(args=None):
 if __name__ == "__main__":
     import sys
     print("Starting static transform publisher")
-
     main()
