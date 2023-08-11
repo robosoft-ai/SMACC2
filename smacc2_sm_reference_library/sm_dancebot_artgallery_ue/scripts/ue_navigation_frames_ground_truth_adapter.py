@@ -22,14 +22,14 @@ import rosgraph_msgs.msg
 import ue_msgs.msg
 
 
-class StaticTransformPublisher:
+class UENavigationFramesGroundTruthAdapter:
     def __init__(self, parent_frame, child_frame):
         self.node = rclpy.create_node("static_transform_publisher_1")
-        self.transform_broadcaster = tf2_ros.TransformBroadcaster(node)
+        self.transform_broadcaster = tf2_ros.TransformBroadcaster(self.node)
         self.clock_msg = None
         print("Initializing static transform publisher")
 
-        self.uemsgs_sub = node.create_subscription(
+        self.uemsgs_sub = self.node.create_subscription(
             ue_msgs.msg.EntityState,
             "/ue_ros/model_state",
             self.uemsgs_callback,
@@ -38,7 +38,7 @@ class StaticTransformPublisher:
             rclpy.qos.qos_profile_services_default
         )
 
-        self.clock_sub = node.create_subscription(
+        self.clock_sub = self.node.create_subscription(
             rosgraph_msgs.msg.Clock,
             "/clock",
             self.clock_callback,
@@ -48,15 +48,36 @@ class StaticTransformPublisher:
     def clock_callback(self, msg):
         clock_msg = msg
 
-    def clock_callback(self, msg):
-        self.clock_msg = msg
+    def uemsgs_callback(self, msg):
+        if self.clock_msg is None:
+            return
+
+        t = TransformStamped()
+        t.header.stamp = self.clock_msg.clock
+        t.header.frame_id = self.parent_frame
+
+        t.child_frame_id = self.child_frame
+        t.transform.translation.x = msg.pose.position.x
+        t.transform.translation.y = msg.pose.position.y
+        t.transform.translation.z = msg.pose.position.z
+
+        t.transform.rotation.x = msg.pose.orientation.x
+        t.transform.rotation.y = msg.pose.orientation.y
+        t.transform.rotation.z = msg.pose.orientation.z
+        t.transform.rotation.w = msg.pose.orientation.w
+
+    def spin(self):
+        rclpy.spin(self.node)
 
 
 def main(args=None):
     print("Initializing static transform publisher")
     rclpy.init()
 
-    rclpy.spin(node)
+    ue_navigation_frames_ground_truth_adapter = UENavigationFramesGroundTruthAdapter(
+        "odom", "base_footprint"
+    )
+    ue_navigation_frames_ground_truth_adapter.spin()
     rclpy.shutdown()
 
 

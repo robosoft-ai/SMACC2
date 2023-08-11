@@ -100,6 +100,7 @@ install(TARGETS
 install(FILES
         servers/service_node_3/service_node_3.py
         scripts/transform_publisher.py
+        scripts/ue_navigation_frames_ground_truth_adapter.py
         DESTINATION
         lib/${PROJECT_NAME}
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
