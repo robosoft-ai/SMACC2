@@ -42,7 +42,7 @@ struct StInitialRoadWaypointsX : smacc2::SmaccState<StInitialRoadWaypointsX, MsD
   typedef mpl::list<
     Transition<cl_nav2z::EvWaypointFinal, StTurnAround, TRANSITION_1>,
     //Transition<EvWaypoint24<ISmaccClient, OrNavigation>, StTurnAround, TRANSITION_1>,
-    Transition<EvCbSuccess<CbNavigateNextWaypointFree, OrNavigation>, StInitialRoadWaypointsX, TRANSITION_2>
+    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StInitialRoadWaypointsX, TRANSITION_2>
     >reactions;
 
   // STATE FUNCTIONS
