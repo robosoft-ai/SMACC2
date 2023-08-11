@@ -79,7 +79,7 @@ def generate_launch_description():
     )
 
     declare_slam_cmd = DeclareLaunchArgument(
-        "slam", default_value="True", description="Whether run a SLAM"
+        "slam", default_value="False", description="Whether run a SLAM"
     )
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
@@ -208,29 +208,15 @@ def generate_launch_description():
         arguments=["--ros-args", "--log-level", "INFO"],
     )
 
-    led_action_server_node = Node(
+
+    gt_transform_publisher = Node(
         package="sm_dancebot_artgallery_ue",
-        executable="led_action_server_node",
+        executable="ue_navigation_frames_ground_truth_adapter.py",
         output="screen",
         prefix=xtermprefix,
+        parameters=[{"use_sim_time": use_sim_time}],
     )
 
-    temperature_action_server = Node(
-        package="sm_dancebot_artgallery_ue",
-        executable="temperature_sensor_node",
-        output="screen",
-        prefix=xtermprefix,
-    )
-
-    service3_node = Node(
-        package="sm_dancebot_artgallery_ue",
-        executable="service_node_3.py",
-        output="screen",
-        prefix=xtermprefix,
-        parameters=[
-            {"autostart": True, "node_names": ["ss", "dfa"]},
-        ],
-    )
 
     # Create the launch description and populate
     ld = LaunchDescription()
@@ -253,12 +239,9 @@ def generate_launch_description():
     ld.add_action(declare_use_rviz_cmd)
 
     ld.add_action(sm_dance_bot_node)
-    # ld.add_action(service3_node)
-    # ld.add_action(temperature_action_server)
-    # ld.add_action(led_action_server_node)
     ld.add_action(static_transform_publisher)
-    # ld.add_action(static_transform_publisher_2)
-
+    ld.add_action(gt_transform_publisher)
+    
     # # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)

@@ -147,9 +147,9 @@ controller_server:
       min_vel_y: 0.0
       max_vel_x: 0.3
       max_vel_y: 0.0
-      max_vel_theta: 0.5
+      max_vel_theta: 1.5
       min_speed_xy: 0.0
-      max_speed_xy: 0.05
+      max_speed_xy: 1.0
       min_speed_theta: 0.0
       # Add high threshold velocity for turtlebot 3 issue.
       # https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/75
@@ -269,8 +269,8 @@ global_costmap:
       update_frequency: 2.0
       publish_frequency: 1.0
       transform_tolerance: 15.0
-      width: 16
-      height: 16
+      width: 60
+      height: 60
       global_frame: map
       robot_base_frame: base_footprint
       use_sim_time: True
@@ -278,10 +278,8 @@ global_costmap:
 
       robot_radius: 0.22
       resolution: 0.1
-      width: 8
-      height: 8
       track_unknown_space: true
-      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+      plugins: ["obstacle_layer", "inflation_layer"] # "static_layer"
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True

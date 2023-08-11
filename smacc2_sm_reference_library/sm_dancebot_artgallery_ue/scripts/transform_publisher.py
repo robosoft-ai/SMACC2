@@ -22,13 +22,15 @@ import rosgraph_msgs.msg
 
 tfbrod = None
 clock_msg = None
+
+
 class StaticTransformPublisher:
     def __init__(self, node, parent_frame, child_frame, xyz=[0.0, 0.0, 0.0], rpy=[0.0, 0.0, 0.0]):
         self.node = node
         global tfbrod
         print("Initializing static transform publisher")
 
-        self.transform_broadcaster =tfbrod
+        self.transform_broadcaster = tfbrod
         print("xyz: ", xyz)
 
         try:
@@ -49,23 +51,24 @@ class StaticTransformPublisher:
 
         self.timer = node.create_timer(0.1, self.publish_transform)
 
-
     def publish_transform(self):
         global clock_msg
         if clock_msg is None:
             return
-        
-        time = rclpy.time.Time(seconds = clock_msg.clock.sec, nanoseconds = clock_msg.clock.nanosec)
-        #time = time + rclpy.time.Duration(seconds=0.01)
+
+        time = rclpy.time.Time(seconds=clock_msg.clock.sec,
+                               nanoseconds=clock_msg.clock.nanosec)
+        # time = time + rclpy.time.Duration(seconds=0.01)
         self.transform.header.stamp = time.to_msg()
         self.transform_broadcaster.sendTransform(self.transform)
-        self.node.get_logger().info("Publishing transform from %s to %s" % (self.transform.header.frame_id, self.transform.child_frame_id))
+        self.node.get_logger().info("Publishing transform from %s to %s" %
+                                    (self.transform.header.frame_id, self.transform.child_frame_id))
 
 
 def main(args=None):
     print("Initializing static transform publisher")
     rclpy.init()
-   
+
     node = rclpy.create_node("static_transform_publisher_1")
 
     global tfbrod
@@ -75,7 +78,6 @@ def main(args=None):
     def callback(msg):
         global clock_msg
         clock_msg = msg
-
 
     clock_sub = node.create_subscription(
         rosgraph_msgs.msg.Clock,
@@ -87,13 +89,13 @@ def main(args=None):
     print("Creating static transform publisher nodes")
     # Create the first instance of StaticTransformPublisher
     node1 = StaticTransformPublisher(
-        node, 
+        node,
         "base_footprint",
         "base_link",
     )
 
     #
-     # Create the second instance of StaticTransformPublisher
+    # Create the second instance of StaticTransformPublisher
     node2 = StaticTransformPublisher(
         node,
         "base_link",
@@ -101,11 +103,12 @@ def main(args=None):
         xyz=[-0.064, 0.0, 0.122],
     )
 
-    # node3 = StaticTransformPublisher(
-    #     node,
-    #     "map",
-    #     "odom"
-    # )
+    node3 = StaticTransformPublisher(
+        node,
+        "map",
+        "odom",
+        xyz=[0.0, 0.0, 0.0],
+    )
 
     rclpy.spin(node)
     rclpy.shutdown()
@@ -114,5 +117,5 @@ def main(args=None):
 if __name__ == "__main__":
     import sys
     print("Starting static transform publisher")
-    
+
     main()

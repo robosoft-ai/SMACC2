@@ -27,6 +27,10 @@ class UENavigationFramesGroundTruthAdapter:
         self.node = rclpy.create_node("static_transform_publisher_1")
         self.transform_broadcaster = tf2_ros.TransformBroadcaster(self.node)
         self.clock_msg = None
+
+        self.parent_frame = parent_frame
+        self.child_frame = child_frame
+
         print("Initializing static transform publisher")
 
         self.uemsgs_sub = self.node.create_subscription(
@@ -46,11 +50,15 @@ class UENavigationFramesGroundTruthAdapter:
         )
 
     def clock_callback(self, msg):
-        clock_msg = msg
+        self.clock_msg = msg
 
     def uemsgs_callback(self, msg):
+        
+        self.node.get_logger().info("uemsgs_callback" + str(msg))
+
         if self.clock_msg is None:
             return
+
 
         t = TransformStamped()
         t.header.stamp = self.clock_msg.clock
@@ -65,6 +73,10 @@ class UENavigationFramesGroundTruthAdapter:
         t.transform.rotation.y = msg.pose.orientation.y
         t.transform.rotation.z = msg.pose.orientation.z
         t.transform.rotation.w = msg.pose.orientation.w
+
+        self.node.get_logger().info("uemsgs_callback" + str(t))
+
+        self.transform_broadcaster.sendTransform(t)
 
     def spin(self):
         rclpy.spin(self.node)
