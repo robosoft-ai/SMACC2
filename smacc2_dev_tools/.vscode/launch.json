@@ -381,7 +381,7 @@
             "args": [
                 "--ros-args",
                 "-r",
-                "__node:=SmDanceBot",
+                "__node:=SmDanceBotUE",
                 "--params-file",
                 "${workspaceFolder}/../install/sm_dancebot_ue/share/sm_dancebot_ue/params/sm_dancebot_ue_config.yaml"
             ],
