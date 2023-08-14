@@ -48,9 +48,18 @@ struct StiFPatternForward1 : public smacc2::SmaccState<StiFPatternForward1<SS>, 
 
   void runtimeConfigure()
   {
-    // auto &superstate = TSti::template context<SS>();
-    // RCLCPP_INFO(this->getLogger(),"[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d",
-    // superstate.iteration_count, SS::total_iterations());
+    cl_nav2z::odom_tracker::CpOdomTracker * odomTracker;
+    this->requiresComponent(odomTracker);
+    auto* cbForwardMotion = this->template getOrthogonal<OrNavigation>()->template getClientBehavior<CbNavigateForward>();
+    auto previousGoal = odomTracker->getCurrentMotionGoal();
+
+    if (previousGoal)
+    {
+      cbForwardMotion->options.forceInitialOrientation = previousGoal->pose.orientation;
+      RCLCPP_ERROR_STREAM(this->getLogger(), "Previous goal orientation: " << previousGoal->pose.orientation.x << ", " << previousGoal->pose.orientation.y << ", " << previousGoal->pose.orientation.z << ", " << previousGoal->pose.orientation.w);   
+    };
+    
+    RCLCPP_ERROR_STREAM(this->getLogger(), "..");
   }
 };
 }  // namespace f_pattern_states

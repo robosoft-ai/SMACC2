@@ -42,19 +42,22 @@ struct StiFPatternRotate1 : smacc2::SmaccState<StiFPatternRotate1<SS>, SS>
   static void staticConfigure()
   {
     float angle = 0;
-    double offset = -1.5;  // for a better behaving
+    double offset = 0; //-1.5;  // for a better behaving
 
     if (SS::direction() == TDirection::LEFT)
       angle = 90 + offset;
     else
       angle = -90 - offset;
-
+    
     //TSti::template configure_orthogonal<OrNavigation, CbRotate>(angle);
     TSti::template configure_orthogonal<OrNavigation, CbAbsoluteRotate>(
       angle);  // absolute aligned to the y-axis
   }
 
-  void runtimeConfigure() {}
+  void runtimeConfigure() 
+  {
+  
+  }
 };
 }  // namespace f_pattern_states
 }  // namespace sm_dancebot_artgallery_ue

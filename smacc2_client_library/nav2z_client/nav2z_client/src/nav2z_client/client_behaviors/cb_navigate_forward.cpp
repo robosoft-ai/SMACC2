@@ -68,15 +68,13 @@ void CbNavigateForward::onEntry()
   auto p = nav2zClient_->getComponent<Pose>();
   auto referenceFrame = p->getReferenceFrame();
   auto currentPoseMsg = p->toPoseMsg();
-  tf2::Transform currentPose;
-  tf2::fromMsg(currentPoseMsg, currentPose);
 
   RCLCPP_INFO_STREAM(
     getLogger(), "[" << getName() << "]"
                      << "current pose: " << currentPoseMsg);
 
   // force global orientation if it is requested
-  if (options.forwardSpeed)
+  if (options.forceInitialOrientation)
   {
     currentPoseMsg.orientation = *(options.forceInitialOrientation);
     RCLCPP_WARN_STREAM(
@@ -84,6 +82,9 @@ void CbNavigateForward::onEntry()
       "[" << getName() << "]"
           << "Forcing initial straight motion orientation: " << currentPoseMsg.orientation);
   }
+
+  tf2::Transform currentPose;
+  tf2::fromMsg(currentPoseMsg, currentPose);
 
   tf2::Transform targetPose;
   if (goalPose_)

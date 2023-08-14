@@ -1,1 +1,1 @@
-sudo docker exec -it smacc_ue  ./run_editor_smacc.sh
+sudo docker exec -it ue_editor_rclue  ./run_editor_smacc.sh

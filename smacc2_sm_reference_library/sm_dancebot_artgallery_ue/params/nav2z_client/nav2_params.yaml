@@ -120,12 +120,12 @@ controller_server:
       stateful: True
     backward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 1.3 #0.9
-      yaw_goal_tolerance: 0.1 #0.05
+      xy_goal_tolerance: 0.25 #0.9
+      yaw_goal_tolerance: 0.05 #0.05
       stateful: True
     forward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 1.3 #0.09
+      xy_goal_tolerance: 0.08 #0.09
       yaw_goal_tolerance: 0.1 #0.05
       stateful: True
     absolute_rotate_goal_checker:
@@ -135,8 +135,8 @@ controller_server:
       stateful: True
     undo_path_backwards_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.04 # 4 cm
-      yaw_goal_tolerance: 0.14
+      xy_goal_tolerance: 0.02 # 4 cm
+      yaw_goal_tolerance: 0.34
       stateful: True
 
     # DWB parameters
@@ -186,27 +186,28 @@ controller_server:
       plugin: "backward_local_planner::BackwardLocalPlanner"
       transform_tolerance: 0.5
       k_rho: -1.4 # linear distance to the goal gain, default = -1.0 (related with carrot distance)
-      k_alpha: -0.1 #-0.1
-      k_betta: -0.1 # -1.0
-      carrot_distance: 0.3 #meters default 0.5
+      k_alpha: -16.4 #-0.1
+      k_betta: -0.01 # -1.0
+      carrot_distance: 0.8 #meters default 0.5
       carrot_angular_distance: 0.3 # no constraint, max 3.1416
       pure_spinning_straight_line_mode: true
       max_linear_x_speed: 0.25
+      max_angular_z_speed: 0.4
     ForwardLocalPlanner:
       plugin: "cl_nav2z::forward_local_planner::ForwardLocalPlanner"
       transform_tolerance: 0.5
       k_rho: 2.5
-      k_alpha: -0.4
-      k_betta: -1.0
-      carrot_distance: 0.5 #meters
+      k_alpha: -2.4
+      k_betta: -0.1
+      carrot_distance: 0.8 #meters
       carrot_angular_distance: 0.5 # no constraint, max 3.1416
       max_linear_x_speed: 0.3
-      max_angular_z_speed: 0.2
+      max_angular_z_speed: 0.4
     PureSpinningLocalPlanner:
       plugin: "pure_spinning_local_planner::PureSpinningLocalPlanner"
       transform_tolerance: 0.5
-      k_betta: 10.0
-      max_angular_z_speed: 0.2
+      k_betta: 25.0
+      max_angular_z_speed: 0.3
       use_shortest_angular_distance: true
 
 

@@ -28,6 +28,7 @@
 
 #include <nav2z_client/client_behaviors.hpp>
 #include <nav2z_client/nav2z_client.hpp>
+#include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 
 // #include <sm_dancebot_artgallery_ue/clients/nav2z_client/client_behaviors/cb_navigate_next_waypoint.hpp>
 #include <sm_dancebot_artgallery_ue/clients/cl_nav2z/client_behaviors/cb_position_control_free_space.hpp>
@@ -46,7 +47,6 @@
 #include <sr_all_events_go/sr_all_events_go.hpp>
 #include <sr_conditional/sr_conditional.hpp>
 #include <sr_event_countdown/sr_event_countdown.hpp>
-
 
 // ORTHOGONALS
 #include <sm_dancebot_artgallery_ue/orthogonals/or_navigation.hpp>

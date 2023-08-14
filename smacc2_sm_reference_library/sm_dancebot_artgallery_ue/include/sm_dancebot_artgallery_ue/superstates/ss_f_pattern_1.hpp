@@ -66,9 +66,11 @@ public:
   static constexpr float pitch_lenght_meters() { return 0.75; }
   static constexpr int total_iterations() { return 8; }
   static constexpr TDirection direction() { return TDirection::RIGHT; }
-
+  
   // superstate state variables
   int iteration_count;
+
+  double last_goal_angle_rad;
 
   // STATE FUNCTIONS
   static void staticConfigure()
