@@ -1,1 +1,1 @@
-sudo docker rm smacc_ue
+sudo docker rm ue_editor_rclue

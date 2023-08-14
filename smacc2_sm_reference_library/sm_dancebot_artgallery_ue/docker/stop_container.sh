@@ -1,1 +1,1 @@
-sudo docker stop smacc_ue
+sudo docker stop ue_editor_rclue

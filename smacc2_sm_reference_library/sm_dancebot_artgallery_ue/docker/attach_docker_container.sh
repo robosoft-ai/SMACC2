@@ -1,1 +1,1 @@
-sudo docker attach smacc_ue
+sudo docker attach ue_editor_rclue

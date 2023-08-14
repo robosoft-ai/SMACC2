@@ -59,7 +59,7 @@ add_executable(${PROJECT_NAME}_node
   src/${PROJECT_NAME}/clients/client_behaviors/nav2z_client/cb_position_control_free_space.cpp
   src/${PROJECT_NAME}/clients/components/cp_ue_pose.cpp
   src/${PROJECT_NAME}/clients/client_behaviors/nav2z_client/cb_active_stop.cpp
-  )
+)
 
 add_executable(temperature_sensor_node_${PROJECT_NAME} servers/temperature_sensor_node/src/temperature_sensor_node.cpp)
 add_executable(led_action_server_node_${PROJECT_NAME} servers/led_action_server/src/led_action_server_node.cpp)
