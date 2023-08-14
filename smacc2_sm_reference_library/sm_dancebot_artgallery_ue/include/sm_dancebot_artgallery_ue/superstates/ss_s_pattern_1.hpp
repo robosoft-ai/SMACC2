@@ -59,6 +59,7 @@ public:
   typedef mpl::list<
 
     // Transition<EvLoopEnd<StiSPatternLoopStart>, StNavigateReverse3, ENDLOOP>
+    Transition<EvLoopEnd<StiSPatternLoopStart>, StNavigateArtGalleryWaypointsX, ENDLOOP>  //,
 
     >reactions;
 

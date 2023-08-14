@@ -142,7 +142,7 @@ def generate_launch_description():
         parameters=[{"use_sim_time": use_sim_time}],
         remappings=remappings,
         arguments=[urdf],
-        prefix = xtermprefix
+        prefix=xtermprefix,
     )
 
     static_transform_publisher = Node(
@@ -193,7 +193,7 @@ def generate_launch_description():
         executable="sm_dancebot_artgallery_ue_node",
         name="SmDanceBotArtGalleryUE",
         output="screen",
-        prefix=xtermprefix,
+        prefix=xtermprefix + " gdb -ex run --args",
         parameters=[
             os.path.join(
                 get_package_share_directory("sm_dancebot_artgallery_ue"),
@@ -208,7 +208,6 @@ def generate_launch_description():
         arguments=["--ros-args", "--log-level", "INFO"],
     )
 
-
     gt_transform_publisher = Node(
         package="sm_dancebot_artgallery_ue",
         executable="ue_navigation_frames_ground_truth_adapter.py",
@@ -216,7 +215,6 @@ def generate_launch_description():
         prefix=xtermprefix,
         parameters=[{"use_sim_time": use_sim_time}],
     )
-
 
     # Create the launch description and populate
     ld = LaunchDescription()
@@ -241,7 +239,7 @@ def generate_launch_description():
     ld.add_action(sm_dance_bot_node)
     ld.add_action(static_transform_publisher)
     ld.add_action(gt_transform_publisher)
-    
+
     # # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)

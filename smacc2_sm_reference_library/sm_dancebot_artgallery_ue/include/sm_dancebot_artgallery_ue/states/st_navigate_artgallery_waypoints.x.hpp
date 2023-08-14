@@ -26,7 +26,7 @@ namespace sm_dancebot_artgallery_ue
 {
 
 // STATE DECLARATION
-struct StBackOnRoadWaypointsX : smacc2::SmaccState<StBackOnRoadWaypointsX, MsDanceBotRunMode>
+struct StNavigateArtGalleryWaypointsX : smacc2::SmaccState<StNavigateArtGalleryWaypointsX, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
@@ -41,9 +41,12 @@ struct StBackOnRoadWaypointsX : smacc2::SmaccState<StBackOnRoadWaypointsX, MsDan
   // TRANSITION TABLE
   typedef mpl::list<
     Transition<cl_nav2z::EvWaypointFinal, StFinalState, SUCCESS>,
-    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StBackOnRoadWaypointsX, TRANSITION_1>
-    // Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToWaypointsX, TRANSITION_2>,
-    // Transition<EvWaypoint1<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_3>,
+    // Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS5::SsSPattern1, SUCCESS>,
+    Transition<EvWaypoint1<ClNav2Z, OrNavigation>, SS4::SsFPattern1, SUCCESS>,
+    Transition<EvWaypoint3<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, SUCCESS>,
+    Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateArtGalleryWaypointsX, SUCCESS>,
+    Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateArtGalleryWaypointsX, ABORT>, 
+    Transition<EvActionAborted<ClNav2Z, OrNavigation>, StNavigateArtGalleryWaypointsX, ABORT>
     // Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_4>
     >reactions;
 
@@ -51,7 +54,6 @@ struct StBackOnRoadWaypointsX : smacc2::SmaccState<StBackOnRoadWaypointsX, MsDan
   static void staticConfigure()
   {
       // configure_orthogonal<OrNavigation, CbPositionControlFreeSpace>();
-      configure_orthogonal<OrNavigation, CbLoadWaypointsFile>("waypoints_plan_back_on_road", "sm_dancebot_artgallery_ue");
       configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
   }
 

@@ -62,7 +62,7 @@ public:
     // create waypoints navigator component
     auto waypointsNavigator = nav2zClient->createComponent<CpWaypointNavigator>();
 
-    nav2zClient->createComponent<sm_dancebot_artgallery_ue::CpUEPose>("/ue_ros/map_origin_entity_state");
+    // nav2zClient->createComponent<sm_dancebot_artgallery_ue::CpUEPose>("/ue_ros/map_origin_entity_state");
 
     /*auto waypointsNavigator = */
     // nav2zClient->createComponent<::cl_nav2z::CpWaypointNavigatorBase>();

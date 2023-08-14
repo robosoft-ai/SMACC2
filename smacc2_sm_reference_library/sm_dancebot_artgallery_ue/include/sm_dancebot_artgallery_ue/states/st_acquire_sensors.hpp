@@ -41,7 +41,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, MsDanceBotRunMode
   typedef mpl::list<
 
     // 
-    Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StInitialRoadWaypointsX, ON_SENSORS_AVAILABLE>,
+    Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StNavigateArtGalleryWaypointsX, ON_SENSORS_AVAILABLE>,
     Transition<EvGlobalError, MsDanceBotRecoveryMode>
 
     >reactions;
@@ -49,15 +49,8 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, MsDanceBotRunMode
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // configure_orthogonal<OrStringPublisher, CbStringPublisher>("Hello World!");
-    // configure_orthogonal<OrTemperatureSensor, CbConditionTemperatureSensor>();
-    // configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
-    // configure_orthogonal<OrUpdatablePublisher, cl_ros_publisher::CbDefaultPublishLoop>();
-    // configure_orthogonal<OrNavigation, CbWaitPose>();
     configure_orthogonal<OrNavigation, sm_dancebot_artgallery_ue::CbLoadWaypointsFile>("waypoints_art_gallery_1", "sm_dancebot_artgallery_ue");
     configure_orthogonal<OrNavigation,CbSleepFor>(5s);
-
-
 
 
     // Create State Reactor

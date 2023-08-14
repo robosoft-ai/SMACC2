@@ -20,6 +20,7 @@ import tf2_ros
 from geometry_msgs.msg import TransformStamped
 import rosgraph_msgs.msg
 import ue_msgs.msg
+import nav_msgs.msg
 
 
 class UENavigationFramesGroundTruthAdapter:
@@ -37,9 +38,12 @@ class UENavigationFramesGroundTruthAdapter:
             ue_msgs.msg.EntityState,
             "/ue_ros/model_state",
             self.uemsgs_callback,
-
             # reliability reliable
-            rclpy.qos.qos_profile_services_default
+            rclpy.qos.qos_profile_services_default,
+        )
+
+        self.odom_pub = self.node.create_publisher(
+            nav_msgs.msg.Odometry, "/odom", rclpy.qos.qos_profile_services_default
         )
 
         self.clock_sub = self.node.create_subscription(
@@ -53,12 +57,9 @@ class UENavigationFramesGroundTruthAdapter:
         self.clock_msg = msg
 
     def uemsgs_callback(self, msg):
-        
-        self.node.get_logger().info("uemsgs_callback" + str(msg))
 
         if self.clock_msg is None:
             return
-
 
         t = TransformStamped()
         t.header.stamp = self.clock_msg.clock
@@ -74,9 +75,23 @@ class UENavigationFramesGroundTruthAdapter:
         t.transform.rotation.z = msg.pose.orientation.z
         t.transform.rotation.w = msg.pose.orientation.w
 
-        self.node.get_logger().info("uemsgs_callback" + str(t))
+        # self.node.get_logger().info("uemsgs_callback" + str(t))
 
         self.transform_broadcaster.sendTransform(t)
+
+        odom = nav_msgs.msg.Odometry()
+        odom.header.stamp = self.clock_msg.clock
+        odom.header.frame_id = self.parent_frame
+        odom.child_frame_id = self.child_frame
+        odom.pose.pose = msg.pose
+
+        # set covariance diagonal to 0.1
+        odom.pose.covariance = [0.1 if i % 7 == 0 else 0.0 for i in range(36)]
+
+        odom.twist.twist = msg.twist
+        odom.twist.covariance = [0.1 if i % 7 == 0 else 0.0 for i in range(36)]
+
+        self.odom_pub.publish(odom)
 
     def spin(self):
         rclpy.spin(self.node)
@@ -95,5 +110,6 @@ def main(args=None):
 
 if __name__ == "__main__":
     import sys
+
     print("Starting static transform publisher")
     main()

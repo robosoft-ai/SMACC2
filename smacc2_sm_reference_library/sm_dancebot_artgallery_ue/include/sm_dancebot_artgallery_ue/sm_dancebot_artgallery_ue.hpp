@@ -59,10 +59,7 @@ namespace sm_dancebot_artgallery_ue
 {
 //STATE FORWARD DECLARATIONS
 class StAcquireSensors;
-class StInitialRoadWaypointsX;
-class StNavigateFieldWaypointsX;
-class StBackOnRoadWaypointsX;
-class StTurnAround;
+class StNavigateArtGalleryWaypointsX;
 class StFinalState;
 
 //SUPERSTATE FORWARD DECLARATIONS
@@ -140,10 +137,8 @@ struct SmDanceBot : public smacc2::SmaccStateMachineBase<SmDanceBot, MsDanceBotR
 #include <sm_dancebot_artgallery_ue/superstates/ss_s_pattern_1.hpp>
 
 //STATES
+#include <sm_dancebot_artgallery_ue/states/st_navigate_artgallery_waypoints.x.hpp>
+
 #include <sm_dancebot_artgallery_ue/states/st_acquire_sensors.hpp>
 
-#include <sm_dancebot_artgallery_ue/states/st_inital_road_waypoints_x.hpp>
-#include <sm_dancebot_artgallery_ue/states/st_navigate_field_waypoints_x.hpp>
-#include <sm_dancebot_artgallery_ue/states/st_back_on_road_waypoints_x.hpp>
-#include <sm_dancebot_artgallery_ue/states/st_turn_around.hpp>
 #include <sm_dancebot_artgallery_ue/states/st_final_state.hpp>

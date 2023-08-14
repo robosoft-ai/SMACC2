@@ -116,17 +116,17 @@ controller_server:
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
       xy_goal_tolerance: 0.257
-      yaw_goal_tolerance: 0.165 # almost free orientation
+      yaw_goal_tolerance: 1.65 # almost free orientation
       stateful: True
     backward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.09
-      yaw_goal_tolerance: 0.05
+      xy_goal_tolerance: 1.3 #0.9
+      yaw_goal_tolerance: 0.1 #0.05
       stateful: True
     forward_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.09
-      yaw_goal_tolerance: 0.05
+      xy_goal_tolerance: 1.3 #0.09
+      yaw_goal_tolerance: 0.1 #0.05
       stateful: True
     absolute_rotate_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
@@ -135,8 +135,8 @@ controller_server:
       stateful: True
     undo_path_backwards_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.03 # 4 cm
-      yaw_goal_tolerance: 0.1
+      xy_goal_tolerance: 0.04 # 4 cm
+      yaw_goal_tolerance: 0.14
       stateful: True
 
     # DWB parameters
@@ -145,11 +145,11 @@ controller_server:
       debug_trajectory_details: True
       min_vel_x: 0.0
       min_vel_y: 0.0
-      max_vel_x: 0.3
+      max_vel_x: 0.4
       max_vel_y: 0.0
       max_vel_theta: 1.5
       min_speed_xy: 0.0
-      max_speed_xy: 1.0
+      max_speed_xy: 0.4
       min_speed_theta: 0.0
       # Add high threshold velocity for turtlebot 3 issue.
       # https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/75
@@ -198,7 +198,7 @@ controller_server:
       k_rho: 2.5
       k_alpha: -0.4
       k_betta: -1.0
-      carrot_distance: 0.2 #meters
+      carrot_distance: 0.5 #meters
       carrot_angular_distance: 0.5 # no constraint, max 3.1416
       max_linear_x_speed: 0.3
       max_angular_z_speed: 0.2

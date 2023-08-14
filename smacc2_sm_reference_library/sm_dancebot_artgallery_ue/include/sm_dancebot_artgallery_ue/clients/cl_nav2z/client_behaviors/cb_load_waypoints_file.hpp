@@ -33,7 +33,7 @@ public:
   CbLoadWaypointsFile(std::string parameter_name, std::string packagenamesapce)
   : 
     parameterName_(parameter_name), 
-    packagenamesapce_(packagenamesapce)
+    packageNamespace_(packagenamesapce)
   {
   }
 
@@ -42,10 +42,16 @@ public:
     requiresComponent(waypointsNavigator_);  // this is a component from the nav2z_client library
 
     if (filepath_)
+    {
       this->waypointsNavigator_->loadWayPointsFromFile(filepath_.value());
+    }
     else
+    {
+      RCLCPP_INFO(
+        getLogger(), "Loading waypoints from parameter %s", parameterName_.value().c_str());
       this->waypointsNavigator_->loadWaypointsFromYamlParameter(
-        parameterName_.value(), packagenamesapce_.value());
+        parameterName_.value(), packageNamespace_.value());
+    }
 
     // change this to skip some points of the yaml file, default = 0
     waypointsNavigator_->currentWaypoint_ = 0;
@@ -56,7 +62,7 @@ public:
   std::optional<std::string> filepath_;
 
   std::optional<std::string> parameterName_;
-  std::optional<std::string> packagenamesapce_;
+  std::optional<std::string> packageNamespace_;
 
   cl_nav2z::CpWaypointNavigatorBase * waypointsNavigator_;
 };

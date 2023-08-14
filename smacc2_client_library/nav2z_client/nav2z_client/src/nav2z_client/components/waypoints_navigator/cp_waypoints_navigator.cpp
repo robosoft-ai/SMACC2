@@ -154,7 +154,8 @@ void CpWaypointNavigatorBase::loadWaypointsFromYamlParameter(
 {
   // if it is the first time and the waypoints navigator is not configured
   std::string planfilepath;
-  getNode()->declare_parameter(parameter_name, planfilepath);
+  planfilepath = getNode()->declare_parameter(parameter_name, planfilepath);
+  RCLCPP_INFO(getLogger(), "waypoints plan parameter: %s", planfilepath.c_str());
   if (getNode()->get_parameter(parameter_name, planfilepath))
   {
     std::string package_share_directory =

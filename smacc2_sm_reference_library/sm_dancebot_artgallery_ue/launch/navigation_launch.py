@@ -112,7 +112,15 @@ def generate_launch_description():
                 prefix=xtermprefix,
                 parameters=[configured_params],
                 remappings=remappings,
-                arguments=["--ros-args", "--log-level", "INFO"],
+                arguments=[
+                    "--ros-args",
+                    "--log-level",
+                    "INFO",
+                    "--log-level",
+                    "custom_planners:=DEBUG",
+                    "--log-level",
+                    "controller_server:=DEBUG",
+                ],
             ),
             Node(
                 package="nav2_planner",

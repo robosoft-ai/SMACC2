@@ -49,20 +49,21 @@ class StaticTransformPublisher:
             print(e)
             self.node.get_logger().error("Exception in StaticTransformPublisher: %r" % e)
 
-        self.timer = node.create_timer(0.1, self.publish_transform)
+        self.timer = node.create_timer(0.05, self.publish_transform)
 
     def publish_transform(self):
         global clock_msg
         if clock_msg is None:
             return
 
-        time = rclpy.time.Time(seconds=clock_msg.clock.sec,
-                               nanoseconds=clock_msg.clock.nanosec)
+        time = rclpy.time.Time(seconds=clock_msg.clock.sec, nanoseconds=clock_msg.clock.nanosec)
         # time = time + rclpy.time.Duration(seconds=0.01)
         self.transform.header.stamp = time.to_msg()
         self.transform_broadcaster.sendTransform(self.transform)
-        self.node.get_logger().info("Publishing transform from %s to %s" %
-                                    (self.transform.header.frame_id, self.transform.child_frame_id))
+        self.node.get_logger().info(
+            "Publishing transform from %s to %s"
+            % (self.transform.header.frame_id, self.transform.child_frame_id)
+        )
 
 
 def main(args=None):
@@ -116,6 +117,7 @@ def main(args=None):
 
 if __name__ == "__main__":
     import sys
+
     print("Starting static transform publisher")
 
     main()
