@@ -42,8 +42,8 @@ struct StNavigateArtGalleryWaypointsX : smacc2::SmaccState<StNavigateArtGalleryW
   typedef mpl::list<
     Transition<cl_nav2z::EvWaypointFinal, StFinalState, SUCCESS>,
     Transition<EvWaypoint3<ClNav2Z, OrNavigation>, SS5::SsSPattern1, SUCCESS>,
-    Transition<EvWaypoint1<ClNav2Z, OrNavigation>, SS4::SsFPattern1, SUCCESS>,
-    Transition<EvWaypoint11<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, SUCCESS>,
+    Transition<EvWaypoint11<ClNav2Z, OrNavigation>, SS4::SsFPattern1, SUCCESS>,
+    Transition<EvWaypoint1<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, SUCCESS>,
     Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateArtGalleryWaypointsX, SUCCESS>,
     Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateArtGalleryWaypointsX, ABORT>, 
     Transition<EvActionAborted<ClNav2Z, OrNavigation>, StNavigateArtGalleryWaypointsX, ABORT>
