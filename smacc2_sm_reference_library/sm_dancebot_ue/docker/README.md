@@ -128,67 +128,50 @@ This section explains how to run and create a new container from the `ue_editor_
 
 To run the Unreal Editor inside the container, you need to use some auxiliary scripts located in the `sm_dancebot_ue` example. Follow these steps:
 
-1. Download the current SMACC2 repository.
+1. *Requirements* To run the docker container you need to download a few folders that will be mounted inside the container. These are: rclUE, UE-Plugins, SMACC2, ue_msgs, ue_poroject_1,... ue_project_n
+ 
+![image](https://github.com/robosoft-ai/SMACC2/assets/9130104/6151fac0-f0ba-4dd3-81fa-9bf1ca899142)
 
-2. Navigate to the `sm_dancebot_ue/docker` folder.
 
-3. Execute the following command:
+3. Navigate to the `sm_dancebot_ue/docker` folder.
+
+4. Execute the following command:
    ```
-   ./run_docker_container_editor.sh
-   ```
+    ./run_docker_container_bash_development.sh   ```
 
    This will run and create a new container using the `ue_editor_rcl` Docker image.
 
-4. The Unreal Engine editor will automatically open in "edition mode." You can launch the simulation with Turtlebot topics accessible from both the container and the host computer by clicking the "play" button.
+5. The Unreal Engine editor will automatically open in "edition mode." You can launch the simulation with Turtlebot topics accessible from both the container and the host computer by clicking the "play" button.
 
    Note: When you close the editor, the container will also be finished, but it will remain installed. You can reopen the editor using the command:
    ```
    ./start_container.sh
    ```
 
-### (Alternative) Running/Creating a New Container for Container Debugging
+### Joining, Stopping and Removing existing container
 
-There is an alternative way to create the container in daemon mode, where the lifetime of the container is not tied to the Unreal Editor window. This is useful, especially for developing new features for the container. To create the container in this mode,:
+1. To enter the Docker container and debug or test things from the command line, use the following command:
 
-1. Execute the following command:
-   ```
-   ./run_docker_container_bash.sh
-   ```
-
-   This will create and start a new container as a daemon. The container will be available even after restarting. It is capable of opening the Unreal Engine editor with ROS2, but the editor will not open automatically.
-
-2. Execute the editor proccess:
-   ```
-   ./join_editor.sh
-   ```
-
-The Unreal Engine editor will automatically open in "edition mode." You can launch the simulation with Turtlebot topics accessible from both the container and the host computer by clicking the "play" button.
-
-### Stopping and Removing a Running Container
+```
+./join_bash.sh
+```
 
 If you need to reset everything and remove the existing container, follow these steps:
 
-1. Execute the following command:
+2. Execute the following command:
    ```
    ./stop_container.sh
    ```
 
    This will stop the running container.
 
-2. Execute the following command:
+3. Execute the following command:
    ```
    ./remove_container.sh
    ```
 
    This will remove the existing container.
 
-### Joining the Container via Bash
-
-To enter the Docker container and debug or test things from the command line, use the following command:
-
-```
-./join_bash.sh
-```
 
 ### Connecting the Container to VPN
 
@@ -245,8 +228,9 @@ You'll need to open three terminals for this demo.
    ```
    cd ~/workspace/humble_ws/
    source /opt/ros/humble/setup.bash
-   colcon build
-   
+   colcon build --symlink-install --parallel-workers 4 
+   # optionally, to go faster to our project: --packages-up-to sm_dancebot_ue
+   # optionally, to build debug mode: --cmake-args -DCMAKE_BUILD_TYPE=Debug
    ```
    Once everything is done building...
 3. Navigate to the `sm_dancebot_ue/docker` folder.
