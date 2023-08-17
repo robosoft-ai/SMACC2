@@ -7,11 +7,6 @@ Here are some important notes regarding the solution:
 
 **Repos Versioning:** Not all versions of `rclUE`, `turtlebot3Editor`, and `RapyputaPlugins` are compatible with each other. Ensuring consistency among them can be challenging, especially when considering that the container maps/volumes some volumes with external contents. The container is already designed to have a correct combination of all of them, but this is hardcoded in the Dockerfile and can be improved.
 
-**DDS Configuration:** There may be communication issues between the Docker container nodes and host nodes. As a workaround, we currently use `cyclonedds` on the host (until a uniform solution using `fastrtps` is found). To set this up, add the following line to the `.bashrc` file on the host:
-```
-export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-```
-
 ***Automatic container nvidia driver update***
 The host and the container must have the same nvidia-driver in order to run the ue editor and simulation. 
 There is a mechanism implemented to automatically sync the driver. The current driver version is passed from the host to the container and then it is updated in the container if that is required. That is done in the nvidia-check.sh script.
