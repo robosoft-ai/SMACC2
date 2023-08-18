@@ -53,7 +53,7 @@ RUN echo "copying current code version to docker image:"
 COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/UE5.1/UnrealEngine /home/$USER/src/UE5.1/UnrealEngine
 
 ENV UE5_DIR=/home/$USER/src/UE5.1/UnrealEngine
-ENV PROJECT_BRANCH=smacc2_devel_stable
+ENV PROJECT_BRANCH=main
 ENV PROJECT_NAME=ue_project_1
 
 RUN sudo apt-get install -y wget gpg
@@ -77,7 +77,7 @@ WORKDIR "/home/$USER/src/${PROJECT_NAME}"
 
 RUN git-lfs pull && git submodule foreach git-lfs pull
 RUN ls && echo ${UE5_DIR}
-RUN ./update_project_files.sh
+COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/update_project_files.sh update_project_files.sh
 ENV UE5_DIR=/home/$USER/src/UE5.1
 
 # installing Dependencies
@@ -90,11 +90,13 @@ ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/pl
 ENV UE5_DIR=/home/$USER/src/UE5.1/UnrealEngine
 
 COPY --chown=$USER:$USER smacc2_sm_reference_library/sm_dancebot_ue/docker/nvidia-driver-check.sh /home/$USER/src/${PROJECT_NAME}/nvidia-driver-check.sh
-RUN cat Makefile
-RUN ./update_project_files.sh
-#RUN bash
+WORKDIR /home/$USER/src/${PROJECT_NAME}
+RUN echo "nvidia-driver-check.sh"
+# RUN cat update_project_files.sh
+# RUN ../UE5.1/UnrealEngine/Engine/Build/BatchFiles/Linux/GenerateProjectFiles.sh -CurrentPlatform ue_project_1.uproject
+# #RUN bash
 
-RUN make ${PROJECT_NAME}Editor
+# RUN make ${PROJECT_NAME}Editor
 
 #  # COPY smacc2 /home/$USER/src/SMACC2/smacc2
 # RUN mkdir -p /home/$USER/src/SMACC2/
