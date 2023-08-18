@@ -38,17 +38,16 @@ struct StiSPatternForward4 : public smacc2::SmaccState<StiSPatternForward4, SS>
   // STATE FUNCTIONS
   static void staticConfigure() 
   {
-    this->configure<OrNavigation, CbNavigateForward>(SS::pitch2_lenght_meters());
-    this->configure<OrNavigation, CbPauseSlam>();
+
+    configure_orthogonal<OrNavigation, CbNavigateForward>(SS::pitch2_lenght_meters());
+    configure_orthogonal<OrNavigation, CbPauseSlam>();
   }
 
-  // void runtimeConfigure()
-  // {
-  //   //auto &superstate = this->context<SS>();
+  void runtimeConfigure()
+  {
+    //auto &superstate = this->context<SS>();
 
-  //   this->configure<OrNavigation, CbNavigateForward>(SS::pitch2_lenght_meters());
-  //   this->configure<OrNavigation, CbPauseSlam>();
-  // }
+  }
 };
 }  // namespace s_pattern_states
 }  // namespace sm_dancebot_artgallery_ue

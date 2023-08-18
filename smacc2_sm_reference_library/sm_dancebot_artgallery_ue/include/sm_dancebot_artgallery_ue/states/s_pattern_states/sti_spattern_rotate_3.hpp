@@ -39,13 +39,18 @@ struct StiSPatternRotate3 : smacc2::SmaccState<StiSPatternRotate3, SS>
   static void staticConfigure() 
   {
     float offset = 0;
-    float angle = 0;
-    if (SS::direction() == TDirection::LEFT)
-      angle = 180 + offset;
-    else
-      angle = 0 - offset;
 
-    configure_orthogonal<OrNavigation, CbAbsoluteRotate>(angle);
+    if (SS::direction() == TDirection::RIGHT)
+    {
+      // - offset because we are looking to the north and we have to turn clockwise
+      configure_orthogonal<OrNavigation, CbAbsoluteRotate>(0 - offset);
+    }
+    else
+    {
+      // - offset because we are looking to the south and we have to turn counter-clockwise
+      configure_orthogonal<OrNavigation, CbAbsoluteRotate>(180 + offset);
+    }
+
     configure_orthogonal<OrNavigation, CbResumeSlam>();
   }
 
@@ -56,27 +61,7 @@ struct StiSPatternRotate3 : smacc2::SmaccState<StiSPatternRotate3, SS>
       getLogger(), "[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
       superstate.iteration_count, SS::total_iterations());
 
-    // float offset = 0;
-    // // float angle = 0;
-    // // if (superstate.direction() == TDirection::LEFT)
-    // //     angle = -90 - offset;
-    // // else
-    // //     angle = +90 + offset;
-
-    // // this->configure<OrNavigation, CbRotate>(angle);
-
-    // if (superstate.direction() == TDirection::RIGHT)
-    // {
-    //   // - offset because we are looking to the north and we have to turn clockwise
-    //   this->configure<OrNavigation, CbAbsoluteRotate>(0 - offset);
-    // }
-    // else
-    // {
-    //   // - offset because we are looking to the south and we have to turn counter-clockwise
-    //   this->configure<OrNavigation, CbAbsoluteRotate>(180 + offset);
-    // }
-
-    // this->configure<OrNavigation, CbResumeSlam>();
+    
   }
 };
 }  // namespace s_pattern_states
