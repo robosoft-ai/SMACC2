@@ -196,7 +196,7 @@ def generate_launch_description():
         parameters=[
             os.path.join(
                 get_package_share_directory("sm_dancebot_ue"),
-                "params/sm_dance_bot_config.yaml",
+                "params/sm_dancebot_ue_config.yaml",
             )
         ],
         remappings=[

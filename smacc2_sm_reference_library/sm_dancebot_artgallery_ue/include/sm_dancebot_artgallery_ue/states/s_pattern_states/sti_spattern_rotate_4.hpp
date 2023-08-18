@@ -36,7 +36,18 @@ struct StiSPatternRotate4 : smacc2::SmaccState<StiSPatternRotate4, SS>
     >reactions;
 
   // STATE FUNCTIONS
-  static void staticConfigure() {}
+  static void staticConfigure() 
+  {
+    float offset = 0;
+    float angle = 0;
+    if (SS::direction() == TDirection::LEFT)
+      angle = -90 - offset;
+    else
+      angle = 90 + offset;
+
+    configure_orthogonal<OrNavigation, CbAbsoluteRotate>(angle);
+    configure_orthogonal<OrNavigation, CbResumeSlam>();
+  }
 
   void runtimeConfigure()
   {
@@ -45,15 +56,15 @@ struct StiSPatternRotate4 : smacc2::SmaccState<StiSPatternRotate4, SS>
       getLogger(), "[SsrSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d",
       superstate.iteration_count, SS::total_iterations());
 
-    float offset = 0;
-    float angle = 0;
-    if (superstate.direction() == TDirection::LEFT)
-      angle = -90 - offset;
-    else
-      angle = 90 + offset;
+  //   float offset = 0;
+  //   float angle = 0;
+  //   if (superstate.direction() == TDirection::LEFT)
+  //     angle = -90 - offset;
+  //   else
+  //     angle = 90 + offset;
 
-    this->configure<OrNavigation, CbAbsoluteRotate>(angle);
-    this->configure<OrNavigation, CbResumeSlam>();
+  //   this->configure<OrNavigation, CbAbsoluteRotate>(angle);
+  //   this->configure<OrNavigation, CbResumeSlam>();
   }
 };
 }  // namespace s_pattern_states
