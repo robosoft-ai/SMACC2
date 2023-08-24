@@ -21,6 +21,7 @@
 #include <tf2/transform_datatypes.h>
 #include <yaml-cpp/yaml.h>
 
+#include <ament_index_cpp/get_package_share_directory.hpp>
 #include <fstream>
 #include <nav2z_client/common.hpp>
 #include <nav2z_client/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
@@ -34,7 +35,13 @@
 namespace cl_nav2z
 {
 using namespace std::chrono_literals;
-CpWaypointNavigator::CpWaypointNavigator() : currentWaypoint_(0), waypoints_(0) {}
+CpWaypointNavigatorBase::CpWaypointNavigatorBase() : currentWaypoint_(0), waypoints_(0) {}
+
+CpWaypointNavigatorBase::~CpWaypointNavigatorBase() {}
+
+CpWaypointNavigator::CpWaypointNavigator() {}
+
+void CpWaypointNavigatorBase::onInitialize() {}
 
 void CpWaypointNavigator::onInitialize() { client_ = dynamic_cast<ClNav2Z *>(owner_); }
 
@@ -61,23 +68,25 @@ void CpWaypointNavigator::onGoalReached(const ClNav2Z::WrappedResult & /*res*/)
     currentWaypoint_);
   stopWaitingResult();
 
+  this->notifyGoalReached();
+
   onNavigationRequestSucceded();
 }
 
-void CpWaypointNavigator::rewind(int /*count*/)
+void CpWaypointNavigatorBase::rewind(int /*count*/)
 {
   currentWaypoint_--;
   if (currentWaypoint_ < 0) currentWaypoint_ = 0;
 }
 
-void CpWaypointNavigator::forward(int /*count*/)
+void CpWaypointNavigatorBase::forward(int /*count*/)
 {
   currentWaypoint_++;
   if (currentWaypoint_ >= (long)waypoints_.size() - 1)
     currentWaypoint_ = (long)waypoints_.size() - 1;
 }
 
-void CpWaypointNavigator::seekName(std::string name)
+void CpWaypointNavigatorBase::seekName(std::string name)
 {
   bool found = false;
 
@@ -138,6 +147,34 @@ void CpWaypointNavigator::seekName(std::string name)
   RCLCPP_INFO(
     getLogger(), "[CpWaypointNavigator] seekName( %s), previous index: %ld, after index: %ld",
     name.c_str(), previousWaypoint, currentWaypoint_);
+}
+
+void CpWaypointNavigatorBase::loadWaypointsFromYamlParameter(
+  std::string parameter_name, std::string yaml_file_package_name)
+{
+  // if it is the first time and the waypoints navigator is not configured
+  std::string planfilepath;
+  planfilepath = getNode()->declare_parameter(parameter_name, planfilepath);
+  RCLCPP_INFO(getLogger(), "waypoints plan parameter: %s", planfilepath.c_str());
+  if (getNode()->get_parameter(parameter_name, planfilepath))
+  {
+    std::string package_share_directory =
+      ament_index_cpp::get_package_share_directory(yaml_file_package_name);
+
+    RCLCPP_INFO(getLogger(), "file macro path: %s", planfilepath.c_str());
+
+    boost::replace_all(planfilepath, "$(pkg_share)", package_share_directory);
+
+    RCLCPP_INFO(getLogger(), "package share path: %s", package_share_directory.c_str());
+    RCLCPP_INFO(getLogger(), "waypoints plan file: %s", planfilepath.c_str());
+
+    this->loadWayPointsFromFile(planfilepath);
+    RCLCPP_INFO(getLogger(), "waypoints plan: %s", planfilepath.c_str());
+  }
+  else
+  {
+    RCLCPP_ERROR(getLogger(), "waypoints plan file not found: NONE");
+  }
 }
 
 void CpWaypointNavigator::stopWaitingResult()
@@ -258,6 +295,16 @@ CpWaypointNavigator::sendNextGoal(
   return std::nullopt;
 }
 
+void CpWaypointNavigatorBase::notifyGoalReached()
+{
+  // when it is the last waypoint post an finalization EOF event
+  if (currentWaypoint_ == (long)waypoints_.size() - 1)
+  {
+    RCLCPP_WARN(getLogger(), "[CpWaypointNavigator] Last waypoint reached, posting EOF event. ");
+    this->postEvent<EvWaypointFinal>();
+  }
+}
+
 void CpWaypointNavigator::onNavigationResult(const ClNav2Z::WrappedResult & r)
 {
   if (r.code == rclcpp_action::ResultCode::SUCCEEDED)
@@ -278,7 +325,7 @@ void CpWaypointNavigator::onNavigationResult(const ClNav2Z::WrappedResult & r)
   }
 }
 
-void CpWaypointNavigator::insertWaypoint(int index, geometry_msgs::msg::Pose & newpose)
+void CpWaypointNavigatorBase::insertWaypoint(int index, geometry_msgs::msg::Pose & newpose)
 {
   if (index >= 0 && index <= (int)waypoints_.size())
   {
@@ -286,12 +333,12 @@ void CpWaypointNavigator::insertWaypoint(int index, geometry_msgs::msg::Pose & n
   }
 }
 
-void CpWaypointNavigator::setWaypoints(const std::vector<geometry_msgs::msg::Pose> & waypoints)
+void CpWaypointNavigatorBase::setWaypoints(const std::vector<geometry_msgs::msg::Pose> & waypoints)
 {
   this->waypoints_ = waypoints;
 }
 
-void CpWaypointNavigator::setWaypoints(const std::vector<Pose2D> & waypoints)
+void CpWaypointNavigatorBase::setWaypoints(const std::vector<Pose2D> & waypoints)
 {
   waypoints_.clear();
   waypointsNames_.clear();
@@ -311,7 +358,7 @@ void CpWaypointNavigator::setWaypoints(const std::vector<Pose2D> & waypoints)
   }
 }
 
-void CpWaypointNavigator::removeWaypoint(int index)
+void CpWaypointNavigatorBase::removeWaypoint(int index)
 {
   if (index >= 0 && index < (int)waypoints_.size())
   {
@@ -319,12 +366,36 @@ void CpWaypointNavigator::removeWaypoint(int index)
   }
 }
 
-const std::vector<geometry_msgs::msg::Pose> & CpWaypointNavigator::getWaypoints() const
+const std::vector<geometry_msgs::msg::Pose> & CpWaypointNavigatorBase::getWaypoints() const
 {
   return waypoints_;
 }
 
-std::optional<geometry_msgs::msg::Pose> CpWaypointNavigator::getNamedPose(std::string name) const
+geometry_msgs::msg::Pose CpWaypointNavigatorBase::getPose(int index) const
+{
+  if (index >= 0 && index < (int)waypoints_.size())
+  {
+    return waypoints_[index];
+  }
+  else
+  {
+    throw std::out_of_range("Waypoint index out of range");
+  }
+}
+geometry_msgs::msg::Pose CpWaypointNavigatorBase::getCurrentPose() const
+{
+  if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypoints_.size())
+  {
+    return waypoints_[currentWaypoint_];
+  }
+  else
+  {
+    throw std::out_of_range("Waypoint index out of range");
+  }
+}
+
+std::optional<geometry_msgs::msg::Pose> CpWaypointNavigatorBase::getNamedPose(
+  std::string name) const
 {
   if (this->waypointsNames_.size() > 0)
   {
@@ -340,12 +411,12 @@ std::optional<geometry_msgs::msg::Pose> CpWaypointNavigator::getNamedPose(std::s
   return std::nullopt;
 }
 
-const std::vector<std::string> & CpWaypointNavigator::getWaypointNames() const
+const std::vector<std::string> & CpWaypointNavigatorBase::getWaypointNames() const
 {
   return waypointsNames_;
 }
 
-std::optional<std::string> CpWaypointNavigator::getCurrentWaypointName() const
+std::optional<std::string> CpWaypointNavigatorBase::getCurrentWaypointName() const
 {
   if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypointsNames_.size())
   {
@@ -354,12 +425,12 @@ std::optional<std::string> CpWaypointNavigator::getCurrentWaypointName() const
   return std::nullopt;
 }
 
-long CpWaypointNavigator::getCurrentWaypointIndex() const { return currentWaypoint_; }
+long CpWaypointNavigatorBase::getCurrentWaypointIndex() const { return currentWaypoint_; }
 
 #define HAVE_NEW_YAMLCPP
-void CpWaypointNavigator::loadWayPointsFromFile(std::string filepath)
+void CpWaypointNavigatorBase::loadWayPointsFromFile(std::string filepath)
 {
-  RCLCPP_INFO_STREAM(getLogger(), "[CpWaypointNavigator] Loading file:" << filepath);
+  RCLCPP_INFO_STREAM(getLogger(), "[CpWaypointNavigatorBase] Loading file:" << filepath);
   this->waypoints_.clear();
   std::ifstream ifs(filepath.c_str(), std::ifstream::in);
   if (ifs.good() == false)
@@ -413,7 +484,7 @@ void CpWaypointNavigator::loadWayPointsFromFile(std::string filepath)
         }
         catch (...)
         {
-          RCLCPP_ERROR(getLogger(), "parsing waypoint file, syntax error in point %d", i);
+          RCLCPP_ERROR(getLogger(), "parsing waypoint file, syntax error in point %ld", i);
         }
       }
       RCLCPP_INFO_STREAM(getLogger(), "Parsed " << this->waypoints_.size() << " waypoints.");
@@ -430,7 +501,7 @@ void CpWaypointNavigator::loadWayPointsFromFile(std::string filepath)
   }
 }
 
-void CpWaypointNavigator::loadWayPointsFromFile2(std::string filepath)
+void CpWaypointNavigatorBase::loadWayPointsFromFile2(std::string filepath)
 {
   RCLCPP_INFO_STREAM(getLogger(), "[CpWaypointNavigator] Loading file:" << filepath);
   this->waypoints_.clear();
@@ -476,7 +547,7 @@ void CpWaypointNavigator::loadWayPointsFromFile2(std::string filepath)
         }
         catch (...)
         {
-          RCLCPP_ERROR(getLogger(), "parsing waypoint file, syntax error in point %d", i);
+          RCLCPP_ERROR(getLogger(), "parsing waypoint file, syntax error in point %ld", i);
         }
       }
       RCLCPP_INFO_STREAM(getLogger(), "Parsed " << this->waypoints_.size() << " waypoints.");

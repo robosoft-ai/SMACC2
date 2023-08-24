@@ -82,6 +82,7 @@ void CbAbsoluteRotate::onEntry()
     auto pathname = this->getCurrentState()->getName() + " - " + getName();
     odomTracker_->pushPath(pathname);
     odomTracker_->setStartPoint(p->toPoseStampedMsg());
+    odomTracker_->setCurrentMotionGoal(goal.pose);
     odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
   }
 

@@ -24,6 +24,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(bond REQUIRED)
 find_package(slam_toolbox REQUIRED)
+find_package(ament_index_cpp REQUIRED)
 
 set(dependencies
   smacc2
@@ -37,6 +38,7 @@ set(dependencies
   tf2_geometry_msgs
   bond
   slam_toolbox
+  ament_index_cpp
 )
 
 include_directories(include)
