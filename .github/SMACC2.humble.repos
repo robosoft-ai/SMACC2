@@ -1,1 +1,5 @@
 repositories:
+  ue_msgs:
+    type: git
+    url: https://github.com/rapyuta-robotics/UE_msgs.git
+    version: devel
