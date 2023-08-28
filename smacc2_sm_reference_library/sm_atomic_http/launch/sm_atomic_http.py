@@ -18,5 +18,5 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     return LaunchDescription(
-        cNode(package="sm_atomic_http", executable="sm_atomic_http_node", output="screen")]
+        [Node(package="sm_atomic_http", executable="sm_atomic_http_node", output="screen")]
     )
