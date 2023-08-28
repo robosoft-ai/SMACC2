@@ -332,7 +332,7 @@ public:
         << getName()
         << "] Action request "
         // << rclcpp_action::to_string(this->goalHandle_->get_goal_id()) <<". Goal sent to " << this->action_endpoint_
-        << "\": " << std::endl)
+        << "\": " << std::endl
         << goal);
 
     // if (client_->isServerConnected())
