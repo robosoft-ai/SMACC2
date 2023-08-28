@@ -1,19 +1,15 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>sm_atomic_http</name>
-  <version>2.3.14</version>
-  <description>The sm_atomic_http package</description>
-  <maintainer email="jaycee.lock@gmail.com">Jaycee Lock</maintainer>
+ <name>http_client</name>
+  <version>2.3.18</version>
+  <description>The http_client package</description>
+  <maintainer email="jaycee.lock@proton.me">Jaycee Lock</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>ros_timer_client</depend>
-  <depend>http_client</depend>
   <depend>smacc2</depend>
-
-  <exec_depend>xterm</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

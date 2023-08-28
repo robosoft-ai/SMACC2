@@ -14,11 +14,14 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(ros_timer_client REQUIRED)
+find_package(http_client REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
 include_directories(include
                     ${smacc2_INCLUDE_DIRS}
-                    ${ros_timer_client_INCLUDE_DIRS})
+                    ${ros_timer_client_INCLUDE_DIRS}
+                    ${http_client_INCLUDE_DIRS}
+)
 
 add_executable(${PROJECT_NAME}_node
                 src/sm_atomic_http/sm_atomic_http_node.cpp)
@@ -26,6 +29,7 @@ add_executable(${PROJECT_NAME}_node
 target_link_libraries(${PROJECT_NAME}_node
   ${smacc2_LIBRARIES}
   ${ros_timer_client_LIBRARIES}
+  ${http_client_LIBRARIES}
   ${Boost_LIBRARIES}
 )
 

@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <smacc2/client_bases/smacc_http_client.hpp>
+#pragma once
+
+#include <http_client/http_client.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace sm_atomic_http {
@@ -20,7 +22,7 @@ class OrHttp : public smacc2::Orthogonal<OrHttp> {
  public:
   void onInitialize() override {
     auto http_client =
-        this->createClient<smacc2::client_bases::SmaccHttpClient>(
+        this->createClient<cl_http::ClHttp>(
             "https://www.google.com");
   }
 };

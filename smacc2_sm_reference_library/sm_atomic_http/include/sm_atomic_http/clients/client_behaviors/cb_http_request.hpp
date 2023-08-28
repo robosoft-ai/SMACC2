@@ -1,7 +1,9 @@
 #pragma once
 
-#include <smacc2/client_bases/smacc_http_client.hpp>
+#include <http_client/http_client.hpp>
 #include <smacc2/smacc.hpp>
+
+#include <cstring>
 
 namespace sm_atomic_http {
 
@@ -29,13 +31,13 @@ class CbHttpRequest : public smacc2::SmaccClientBehavior {
     RCLCPP_INFO(getLogger(), "On Entry!");
 
     cl_http_->makeRequest(
-        smacc2::client_bases::SmaccHttpClient::kHttpRequestMethod::GET);
+        cl_http::ClHttp::kHttpRequestMethod::GET);
   }
 
   void onExit() override { RCLCPP_INFO(getLogger(), "Cb on exit!"); }
 
  private:
-  smacc2::client_bases::SmaccHttpClient* cl_http_;
+  cl_http::ClHttp* cl_http_;
 
   std::function<void()> triggerTranstition;
 };
