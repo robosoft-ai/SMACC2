@@ -35,7 +35,7 @@ def generate_launch_description():
     sm_dance_bot_launch_dir = os.path.join(sm_dance_bot_dir, "launch")
 
     # Create the launch configuration variables
-    slam = LaunchConfiguration("slam")
+    # slam = LaunchConfiguration("slam")
     namespace = LaunchConfiguration("namespace")
     use_namespace = LaunchConfiguration("use_namespace")
     map_yaml_file = LaunchConfiguration("map")
@@ -43,7 +43,7 @@ def generate_launch_description():
 
     params_file = LaunchConfiguration("params_file")
     default_nav_to_pose_bt_xml = LaunchConfiguration("default_nav_to_pose_bt_xml")
-    autostart = LaunchConfiguration("autostart")
+    # autostart = LaunchConfiguration("autostart")
 
     # Launch configuration variables specific to simulation
     rviz_config_file = LaunchConfiguration("rviz_config_file")
@@ -78,9 +78,9 @@ def generate_launch_description():
         description="Whether to apply a namespace to the navigation stack",
     )
 
-    declare_slam_cmd = DeclareLaunchArgument(
-        "slam", default_value="True", description="Whether run a SLAM"
-    )
+    # declare_slam_cmd = DeclareLaunchArgument(
+    #     "slam", default_value="True", description="Whether run a SLAM"
+    # )
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
         "use_sim_time", default_value="true", description="Use simulation clock if true"
@@ -92,23 +92,23 @@ def generate_launch_description():
         description="Use headless Gazebo if true",
     )
 
-    declare_params_file_cmd = DeclareLaunchArgument(
-        "params_file",
-        default_value=os.path.join(sm_dance_bot_dir, "params", "nav2z_client", "nav2_params.yaml"),
-        description="Full path to the ROS2 parameters file to use for all launched nodes",
-    )
+    # declare_params_file_cmd = DeclareLaunchArgument(
+    #     "params_file",
+    #     default_value=os.path.join(sm_dance_bot_dir, "params", "nav2z_client", "nav2_params.yaml"),
+    #     description="Full path to the ROS2 parameters file to use for all launched nodes",
+    # )
 
-    declare_bt_xml_cmd = DeclareLaunchArgument(
-        "default_nav_to_pose_bt_xml",
-        default_value=os.path.join(
-            sm_dance_bot_dir, "params", "nav2z_client", "navigation_tree.xml"
-        ),
-        description="Full path to the behavior tree xml file to use",
-    )
+    # declare_bt_xml_cmd = DeclareLaunchArgument(
+    #     "default_nav_to_pose_bt_xml",
+    #     default_value=os.path.join(
+    #         sm_dance_bot_dir, "params", "nav2z_client", "navigation_tree.xml"
+    #     ),
+    #     description="Full path to the behavior tree xml file to use",
+    # )
 
-    declare_autostart_cmd = DeclareLaunchArgument(
-        "autostart", default_value="true", description="Automatically startup the nav2 stack"
-    )
+    # declare_autostart_cmd = DeclareLaunchArgument(
+    #     "autostart", default_value="true", description="Automatically startup the nav2 stack"
+    # )
 
     declare_rviz_config_file_cmd = DeclareLaunchArgument(
         "rviz_config_file",
@@ -173,19 +173,19 @@ def generate_launch_description():
         }.items(),
     )
 
-    bringup_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, "bringup_launch.py")),
-        launch_arguments={
-            "namespace": namespace,
-            "use_namespace": use_namespace,
-            "autostart": autostart,
-            "params_file": params_file,
-            "slam": slam,
-            "map": map_yaml_file,
-            "use_sim_time": use_sim_time,
-            "default_nav_to_pose_bt_xml": default_nav_to_pose_bt_xml,
-        }.items(),
-    )
+    # bringup_cmd = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(os.path.join(sm_dance_bot_launch_dir, "bringup_launch.py")),
+    #     launch_arguments={
+    #         "namespace": namespace,
+    #         "use_namespace": use_namespace,
+    #         "autostart": autostart,
+    #         "params_file": params_file,
+    #         "slam": slam,
+    #         "map": map_yaml_file,
+    #         "use_sim_time": use_sim_time,
+    #         "default_nav_to_pose_bt_xml": default_nav_to_pose_bt_xml,
+    #     }.items(),
+    # )
 
     sm_dance_bot_node = Node(
         package="sm_dancebot_ue",
@@ -237,13 +237,13 @@ def generate_launch_description():
     # Declare the launch options
     ld.add_action(declare_namespace_cmd)
     ld.add_action(declare_use_namespace_cmd)
-    ld.add_action(declare_slam_cmd)
+    # ld.add_action(declare_slam_cmd)
     ld.add_action(declare_map_yaml_cmd)
     ld.add_action(declare_use_sim_time_cmd)
     ld.add_action(declare_gazebo_headless_cmd)
     ld.add_action(declare_params_file_cmd)
     ld.add_action(declare_bt_xml_cmd)
-    ld.add_action(declare_autostart_cmd)
+    # ld.add_action(declare_autostart_cmd)
     ld.add_action(declare_map_yaml_cmd)
     ld.add_action(declare_show_gz_lidar)
 
@@ -261,6 +261,6 @@ def generate_launch_description():
     # # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)
-    ld.add_action(bringup_cmd)
+    # ld.add_action(bringup_cmd)
 
     return ld
