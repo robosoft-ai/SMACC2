@@ -98,7 +98,7 @@ sudo nvidia-docker run --rm nvidia/cuda:10.2-base-ubuntu18.04 nvidia-smi
 This section provides instructions for downloading, loading, and running the prebuilt Docker image containing Unreal Engine.
 
 ### Downloading the Prebuilt Image
-Download the prebuilt Docker image for Unreal Engine from the provided source.
+To get the docker image, the best delivery mechanism we’ve got at the moment is to email brett@robosoft.ai with the subject line: DOCKER IMAGE REQUEST and I’ll send it over via a wetransfer. It’s kind of big (75gb) but it’s not that bad and we’re going to try to make it smaller going forward.
 
 ### Loading the Docker Image
 To load the downloaded image into your Docker image database, use the following command:
