@@ -8,3 +8,4 @@ SmDanceBotMineUE:
         record_point_distance_threshold: 0.1
 
         waypoints_mine: $(pkg_share)/params/nav2z_client/waypoints_mine.yaml
+        waypoints_mine_reverse: $(pkg_share)/params/nav2z_client/backwards_waypoints_mine.yaml

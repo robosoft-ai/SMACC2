@@ -60,6 +60,8 @@ namespace sm_dancebot_mine_ue
 //STATE FORWARD DECLARATIONS
 class StAcquireSensors;
 class StNavigateMineWaypointsX;
+class StNavigateReverseMineWaypointsX;
+class StTurnAround;
 class StFinalState;
 
 //SUPERSTATE FORWARD DECLARATIONS
@@ -137,7 +139,10 @@ struct SmDanceBot : public smacc2::SmaccStateMachineBase<SmDanceBot, MsDanceBotR
 #include <sm_dancebot_mine_ue/superstates/ss_s_pattern_1.hpp>
 
 //STATES
-#include <sm_dancebot_mine_ue/states/st_navigate_mine_waypoints.x.hpp>
+#include <sm_dancebot_mine_ue/states/st_navigate_mine_waypoints_x.hpp>
+#include <sm_dancebot_mine_ue/states/st_turn_around.hpp>
+#include <sm_dancebot_mine_ue/states/st_navigate_reverse_mine_waypoints_x.hpp>
+
 
 #include <sm_dancebot_mine_ue/states/st_acquire_sensors.hpp>
 

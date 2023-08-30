@@ -40,15 +40,9 @@ struct StNavigateMineWaypointsX : smacc2::SmaccState<StNavigateMineWaypointsX, M
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<cl_nav2z::EvWaypointFinal, StFinalState, SUCCESS>,
+    Transition<cl_nav2z::EvWaypointFinal, StTurnAround, SUCCESS>,
     Transition<EvCbSuccess<CbNavigateNextWaypointFree, OrNavigation>, StNavigateMineWaypointsX, TRANSITION_1>
-    // Transition<EvWaypoint3<ClNav2Z, OrNavigation>, SS5::SsSPattern1, SUCCESS>,
-    // Transition<EvWaypoint11<ClNav2Z, OrNavigation>, SS4::SsFPattern1, SUCCESS>,
-    // Transition<EvWaypoint1<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, SUCCESS>,
-    // Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StNavigateMineWaypointsX, SUCCESS>,
-    // Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateMineWaypointsX, ABORT>, 
-    // Transition<EvActionAborted<ClNav2Z, OrNavigation>, StNavigateMineWaypointsX, ABORT>
-    // // Transition<EvWaypoint2<ClNav2Z, OrNavigation>, SS2::SsRadialPattern2, TRANSITION_4>
+  
     >reactions;
 
   // STATE FUNCTIONS
@@ -57,7 +51,7 @@ struct StNavigateMineWaypointsX : smacc2::SmaccState<StNavigateMineWaypointsX, M
       // // configure_orthogonal<OrNavigation, CbPositionControlFreeSpace>();
       // configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
 
-      configure_orthogonal<OrNavigation, CbLoadWaypointsFile>("waypoints_mine", "sm_dancebot_mine_ue");
+      // configure_orthogonal<OrNavigation, CbLoadWaypointsFile>("waypoints_mine", "sm_dancebot_mine_ue");
       configure_orthogonal<OrNavigation, CbNavigateNextWaypointFree>();
   }
 

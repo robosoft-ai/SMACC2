@@ -227,7 +227,7 @@ def generate_launch_description():
     ld.add_action(declare_use_sim_time_cmd)
     ld.add_action(declare_gazebo_headless_cmd)
     ld.add_action(declare_params_file_cmd)
-    ld.add_action(declare_bt_xml_cmd)
+    # ld.add_action(declare_bt_xml_cmd)
     # ld.add_action(declare_autostart_cmd)
     ld.add_action(declare_map_yaml_cmd)
     ld.add_action(declare_show_gz_lidar)
@@ -243,6 +243,6 @@ def generate_launch_description():
     # # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)
-    ld.add_action(bringup_cmd)
+    # ld.add_action(bringup_cmd)
 
     return ld
