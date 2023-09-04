@@ -45,16 +45,20 @@ class CbHttpRequest : public smacc2::SmaccClientBehavior {
     cl_http_->onResponseReceived(&CbHttpRequest::onResponseReceived, this);
   }
 
-  void onResponseReceived(const std::string& response) { triggerTranstition(); }
+  void onResponseReceived(const cl_http::ClHttp::TResponse& response) {
+    RCLCPP_INFO_STREAM(this->getLogger(), "ON RESPONSE");
+    // RCLCPP_INFO_STREAM(this->getLogger(), response);
+    triggerTranstition();
+  }
 
   void onEntry() override {
-    RCLCPP_INFO(getLogger(), "On Entry!");
+    RCLCPP_INFO(this->getLogger(), "On Entry!");
 
     cl_http_->makeRequest(
         cl_http::ClHttp::kHttpRequestMethod::GET);
   }
 
-  void onExit() override { RCLCPP_INFO(getLogger(), "Cb on exit!"); }
+  void onExit() override { RCLCPP_INFO(this->getLogger(), "Cb on exit!"); }
 
  private:
   cl_http::ClHttp* cl_http_;

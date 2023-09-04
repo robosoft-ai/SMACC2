@@ -18,22 +18,21 @@
  *
  ******************************************************************************************************************/
 
-
 #include <http_client/http_client.hpp>
 
 namespace cl_http {
 
 ///////////////////////////
 // ClHttp implementation //
-// ////////////////////////
+///////////////////////////
 
 ClHttp::ClHttp(const std::string &server, const int &timeout)
     : initialized_{false},
       timeout_{timeout},
       server_name_{server},
-      worker_guard_{boost::asio::make_work_guard(io_context_)} {
+      worker_guard_{boost::asio::make_work_guard(io_context_.get_executor())} {
   // User explicitly using http
-  is_ssl_ = server.substr(0, 5).compare("https") ? true : false;
+  is_ssl_ = server.substr(0, 8).compare("https://") ? false : true;
 }
 
 ClHttp::~ClHttp() {
@@ -41,7 +40,7 @@ ClHttp::~ClHttp() {
   tcp_connection_runner_.join();
 }
 
-void ClHttp::configure() {
+void ClHttp::onInitialize() {
   if (!initialized_) {
     tcp_connection_runner_ = std::thread{[&]() { io_context_.run(); }};
     this->initialized_ = true;
@@ -50,6 +49,7 @@ void ClHttp::configure() {
 
 void ClHttp::makeRequest(const kHttpRequestMethod http_method,
                          const std::string &path) {
+  RCLCPP_INFO(this->getLogger(), "SSL? %d", is_ssl_);
   std::make_shared<http_session>(io_context_, callbackHandler)
       ->run(server_name_, path, is_ssl_ ? "443" : "80",
             static_cast<boost::beast::http::verb>(http_method), HTTP_VERSION);
@@ -60,10 +60,11 @@ void ClHttp::makeRequest(const kHttpRequestMethod http_method,
 /////////////////////////////////
 
 ClHttp::http_session::http_session(
-    boost::asio::io_context &ioc, const std::function<void(TResponse)> response)
+    boost::asio::io_context &ioc,
+    const std::function<void(const TResponse &)> response)
     : onResponse{response},
-      resolver_(boost::asio::make_strand(ioc)),
-      stream_(boost::asio::make_strand(ioc)) {}
+      resolver_{boost::asio::make_strand(ioc)},
+      stream_{boost::asio::make_strand(ioc)} {}
 
 void ClHttp::http_session::run(const std::string &host,
                                const std::string &target,
@@ -89,7 +90,7 @@ void ClHttp::http_session::on_resolve(
   if (ec) return fail(ec, "resolve");
 
   // Set a timeout on the operation
-  stream_.expires_after(std::chrono::seconds(30));
+  stream_.expires_after(std::chrono::seconds(1));
 
   // Make the connection on the IP address we get from a lookup
   stream_.async_connect(
@@ -97,6 +98,7 @@ void ClHttp::http_session::on_resolve(
                                                 shared_from_this()));
 }
 void ClHttp::http_session::fail(boost::beast::error_code ec, char const *what) {
+  std::cout << "Failure!..." << std::endl;
   std::cerr << what << ": " << ec.message() << "\n";
   res_.result(boost::beast::http::status::bad_request);
   res_.reason() = ec.message();
@@ -109,7 +111,7 @@ void ClHttp::http_session::on_connect(
   if (ec) return fail(ec, "connect");
 
   // Set a timeout on the operation
-  stream_.expires_after(std::chrono::seconds(30));
+  stream_.expires_after(std::chrono::seconds(1));
 
   // Send the HTTP request to the remote host
   boost::beast::http::async_write(

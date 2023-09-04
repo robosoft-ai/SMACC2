@@ -25,13 +25,11 @@
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
-
-#include <smacc2/smacc_client.hpp>
-#include <smacc2/smacc.hpp>
-
 #include <iostream>
 #include <memory>
 #include <optional>
+#include <smacc2/smacc.hpp>
+#include <smacc2/smacc_client.hpp>
 #include <string>
 #include <thread>
 #include <unordered_map>
@@ -41,12 +39,12 @@ class ClHttp : public smacc2::ISmaccClient {
   class http_session : public std::enable_shared_from_this<http_session> {
    public:
     using TResponse =
-        const boost::beast::http::response<boost::beast::http::string_body> &;
+        boost::beast::http::response<boost::beast::http::string_body>;
 
     // Objects are constructed with a strand to
     // ensure that handlers do not execute concurrently.
     http_session(boost::asio::io_context &ioc,
-                 const std::function<void(TResponse)> response);
+                 const std::function<void(const TResponse &)> response);
 
     // Start the asynchronous operation
     void run(const std::string &host, const std::string &target,
@@ -64,9 +62,7 @@ class ClHttp : public smacc2::ISmaccClient {
     void on_write(boost::beast::error_code ec, std::size_t bytes_transferred);
     void on_read(boost::beast::error_code ec, std::size_t bytes_transferred);
 
-    std::function<void(const boost::beast::http::response<
-                       boost::beast::http::string_body> &response)>
-        onResponse;
+    std::function<void(const TResponse &)> onResponse;
 
     boost::asio::ip::tcp::resolver resolver_;
     boost::beast::tcp_stream stream_;
@@ -79,11 +75,14 @@ class ClHttp : public smacc2::ISmaccClient {
   enum class kHttpRequestMethod {
     GET = static_cast<int>(boost::beast::http::verb::get),
     POST = static_cast<int>(boost::beast::http::verb::post),
+    PUT = static_cast<int>(boost::beast::http::verb::put),
   };
+
+  using TResponse = http_session::TResponse;
 
   template <typename T>
   boost::signals2::connection onResponseReceived(
-      void (T::*callback)(const std::string &), T *object) {
+      void (T::*callback)(const TResponse&), T *object) {
     return this->getStateMachine()->createSignalConnection(onResponseReceived_,
                                                            callback, object);
   }
@@ -92,7 +91,8 @@ class ClHttp : public smacc2::ISmaccClient {
 
   virtual ~ClHttp();
 
-  void configure();
+  void onInitialize() override;
+
   void makeRequest(const kHttpRequestMethod http_method,
                    const std::string &path = "/");
 
@@ -109,8 +109,10 @@ class ClHttp : public smacc2::ISmaccClient {
       worker_guard_;
   std::thread tcp_connection_runner_;
 
-  std::function<void(http_session::TResponse)> callbackHandler;
+  smacc2::SmaccSignal<void(const TResponse &)> onResponseReceived_;
 
-  smacc2::SmaccSignal<void(const std::string &)> onResponseReceived_;
+  std::function<void(TResponse)> callbackHandler = [&](const TResponse& res) {
+    onResponseReceived_(res);
+  };
 };
 }  // namespace cl_http

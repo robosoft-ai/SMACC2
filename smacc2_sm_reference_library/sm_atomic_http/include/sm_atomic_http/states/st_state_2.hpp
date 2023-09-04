@@ -21,12 +21,11 @@ struct State2 : smacc2::SmaccState<State2, SmAtomicHttp> {
 
   // TRANSITION TABLE
   typedef mpl::list<
-      Transition<EvTimer<CbHttpRequest, OrHttp>, State1, SUCCESS> >
+      Transition<EvHttp<CbHttpRequest, OrHttp>, State1, SUCCESS> >
       reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {
-    // EvTimer triggers once at 10 client ticks
     configure_orthogonal<OrHttp, CbHttpRequest>();
   }
 
