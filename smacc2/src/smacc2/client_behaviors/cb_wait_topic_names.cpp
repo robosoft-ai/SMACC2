@@ -18,44 +18,47 @@
  *
  ******************************************************************************************************************/
 
-#pragma once
-
-#include <smacc2/smacc_client.hpp>
-#include <smacc2/smacc_state_machine.hpp>
-
-#include <rclcpp_action/client.hpp>
-#include <thread>
+#include <smacc2/client_behaviors/cb_wait_topic.hpp>
 
 namespace smacc2
 {
-namespace client_bases
+namespace client_behaviors
 {
-class ClRosLaunch : public ISmaccClient
+CbWaitTopic::CbWaitTopic(std::string nodeName) : topicName_(nodeName), rate_(5) {}
+
+void CbWaitTopic::onEntry()
 {
-public:
-  ClRosLaunch(std::string packageName, std::string launchFilename);
+  bool found = false;
+  while (!this->isShutdownRequested() && !found)
+  {
+    std::stringstream ss;
+    auto topicnames = getNode()->get_topic_names_and_types();
 
-  virtual ~ClRosLaunch();
+    for (auto n : topicnames)
+    {
+      // ss << " - " << n << std::endl; // TODO: this is not working
 
-  void launch();
+      // if (n == topicName_) found = true;  // TODO: this is not working
+    }
 
-  void stop();
+    auto totalstr = ss.str();
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] on entry, listing topics (" << topicnames.size() << ")"
+                       << std::endl
+                       << totalstr);
 
-  static std::future<std::string> executeRosLaunch(
-    std::string packageName, std::string launchFilename, std::function<bool()> cancelCondition);
+    rate_.sleep();
+  }
 
-  std::string packageName_;
+  if (found)
+  {
+    this->postSuccessEvent();
+  }
+  else
+  {
+    this->postFailureEvent();
+  }
+}
 
-  std::string launchFileName_;
-
-protected:
-  std::future<std::string> result_;
-
-  typedef std::function<void> cancelCallback;
-
-  static std::map<std::future<void>, cancelCallback> detached_futures_;
-
-  std::atomic<bool> cancellationToken_ = ATOMIC_VAR_INIT(false);
-};
-}  // namespace client_bases
+}  // namespace client_behaviors
 }  // namespace smacc2

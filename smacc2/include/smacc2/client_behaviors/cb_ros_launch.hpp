@@ -26,10 +26,21 @@ namespace smacc2
 {
 namespace client_behaviors
 {
+enum class RosLaunchMode
+{
+  LAUNCH_DETTACHED,
+  LAUNCH_CLIENT_BEHAVIOR_LIFETIME
+};
+
 class CbRosLaunch : public smacc2::SmaccAsyncClientBehavior
 {
+private:
+  static std::vector<std::future<std::string>> detached_futures_;
+
 public:
   CbRosLaunch();
+
+  CbRosLaunch(std::string package, std::string launchfile, RosLaunchMode);
 
   // CbRosLaunch(std::string packageName, std::string launchFileName);
 
@@ -46,10 +57,14 @@ public:
   std::optional<std::string> packageName_;
   std::optional<std::string> launchFileName_;
 
+  RosLaunchMode launchMode_;
+
 protected:
   std::string result_;
 
   smacc2::client_bases::ClRosLaunch * client_;
+
+  std::future<std::string> future_;
 };
 }  // namespace client_behaviors
 }  // namespace smacc2

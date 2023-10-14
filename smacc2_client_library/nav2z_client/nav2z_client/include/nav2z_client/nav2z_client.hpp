@@ -23,7 +23,6 @@
 #include <smacc2/smacc.hpp>
 
 #include <nav2_msgs/action/navigate_to_pose.hpp>
-//#include <nav2z_client/components/planner_switcher/cp_planner_switcher.hpp>
 
 namespace cl_nav2z
 {

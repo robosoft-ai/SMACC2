@@ -35,7 +35,13 @@ public:
 
   void onEntry() override
   {
-    rclcpp::sleep_for(std::chrono::nanoseconds(sleeptime_.nanoseconds()));
+    auto starttime = getNode()->now();
+    while (!this->isShutdownRequested() && (getNode()->now() - starttime) < sleeptime_)
+    {
+      rclcpp::sleep_for(10ms);
+    }
+
+    //rclcpp::sleep_for(std::chrono::nanoseconds(sleeptime_.nanoseconds()));
     this->postSuccessEvent();
   }
 

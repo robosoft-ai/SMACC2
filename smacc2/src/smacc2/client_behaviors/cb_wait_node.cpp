@@ -33,6 +33,7 @@ void CbWaitNode::onEntry()
   {
     std::stringstream ss;
     auto nodenames = getNode()->get_node_names();
+
     for (auto n : nodenames)
     {
       ss << " - " << n << std::endl;

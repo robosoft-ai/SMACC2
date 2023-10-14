@@ -32,9 +32,14 @@ void CbWaitActionServer::onEntry()
 {
   if (client_ != nullptr)
   {
-    std::shared_ptr<rclcpp_action::ClientBase> client_base = client_->getClientBase();
-    RCLCPP_INFO(getLogger(), "[CbWaitActionServer] waiting action server..");
-    bool found = client_base->wait_for_action_server(timeout_);
+    bool found = false;
+    auto starttime = getNode()->now();
+    while (!this->isShutdownRequested() && !found && (getNode()->now() - starttime) < timeout_)
+    {
+      std::shared_ptr<rclcpp_action::ClientBase> client_base = client_->getClientBase();
+      RCLCPP_INFO(getLogger(), "[CbWaitActionServer] waiting action server..");
+      found = client_base->wait_for_action_server(std::chrono::milliseconds(1000));
+    }
 
     if (found)
     {
