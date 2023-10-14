@@ -57,6 +57,7 @@ class KeyboardPublisher(Node):
             msg = UInt16()
             msg.data = ord(key)
 
+            self.get_logger().info("key: {}".format(msg.data))
             self.pub.publish(msg)
 
         except Exception as e:
