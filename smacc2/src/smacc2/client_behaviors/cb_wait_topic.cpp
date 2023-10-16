@@ -31,19 +31,22 @@ void CbWaitTopic::onEntry()
   bool found = false;
   while (!this->isShutdownRequested() && !found)
   {
+    RCLCPP_INFO_STREAM_THROTTLE(getLogger(),*(getNode()->get_clock()), 1000, "[" << getName() << "] waiting topic: " << topicName_);
     std::stringstream ss;
     auto topicnames = getNode()->get_topic_names_and_types();
 
-    for (auto n : topicnames)
+    for (auto &t : topicnames)
     {
-      // ss << " - " << n << std::endl; // TODO: this is not working
-
-      // if (n == topicName_) found = true;  // TODO: this is not working
+      ss << t.first << std::endl;
+      if (t.first == topicName_)
+      {
+        found = true;
+      }
     }
 
     auto totalstr = ss.str();
-    RCLCPP_INFO_STREAM(
-      getLogger(), "[" << getName() << "] on entry, listing topics (" << topicnames.size() << ")"
+    RCLCPP_INFO_STREAM_THROTTLE(
+      getLogger(), *(getNode()->get_clock()), 5000, "[" << getName() << "] still waiting topic " << topicName_ << ", listing topics (" << topicnames.size() << ")"
                        << std::endl
                        << totalstr);
 
