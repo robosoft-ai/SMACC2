@@ -515,7 +515,9 @@ void CpOdomTracker::updateConfiguration()
  */
 void CpOdomTracker::processOdometryMessage(const nav_msgs::msg::Odometry::SharedPtr odom)
 {
-  RCLCPP_INFO_THROTTLE(getLogger(), *getNode()->get_clock(), 5000, "[odom_tracker] processing odom msg update heartbeat");
+  RCLCPP_INFO_THROTTLE(
+    getLogger(), *getNode()->get_clock(), 5000,
+    "[odom_tracker] processing odom msg update heartbeat");
   std::lock_guard<std::mutex> lock(m_mutex_);
 
   updateConfiguration();

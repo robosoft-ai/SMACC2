@@ -88,7 +88,9 @@ protected:
   /// until the onEntry thread finishes. This flag can be checked from the onEntry thread to force finishing the thread.
   // All asyncrhonous client behaviors should implement the ability of interrupting the onEntry thread.
   // to avoid blocking the state machine.
-  inline bool isShutdownRequested() { return isShutdownRequested_; }
+  
+  // inline bool isShutdownRequested() { return isShutdownRequested_; }
+  bool isShutdownRequested();
 
 private:
   void waitFutureIfNotFinished(std::optional<std::future<int>> & threadfut, bool requestFinish);

@@ -26,16 +26,23 @@ namespace client_behaviors
 {
 CbWaitTopic::CbWaitTopic(std::string nodeName) : topicName_(nodeName), rate_(5) {}
 
+CbWaitTopic::~CbWaitTopic()
+{
+
+}
+
 void CbWaitTopic::onEntry()
 {
   bool found = false;
   while (!this->isShutdownRequested() && !found)
   {
-    RCLCPP_INFO_STREAM_THROTTLE(getLogger(),*(getNode()->get_clock()), 1000, "[" << getName() << "] waiting topic: " << topicName_);
+    RCLCPP_INFO_STREAM_THROTTLE(
+      getLogger(), *(getNode()->get_clock()), 1000,
+      "[" << getName() << "] waiting topic: " << topicName_);
     std::stringstream ss;
     auto topicnames = getNode()->get_topic_names_and_types();
 
-    for (auto &t : topicnames)
+    for (auto & t : topicnames)
     {
       ss << t.first << std::endl;
       if (t.first == topicName_)
@@ -46,9 +53,10 @@ void CbWaitTopic::onEntry()
 
     auto totalstr = ss.str();
     RCLCPP_INFO_STREAM_THROTTLE(
-      getLogger(), *(getNode()->get_clock()), 5000, "[" << getName() << "] still waiting topic " << topicName_ << ", listing topics (" << topicnames.size() << ")"
-                       << std::endl
-                       << totalstr);
+      getLogger(), *(getNode()->get_clock()), 5000,
+      "[" << getName() << "] still waiting topic " << topicName_ << ", listing topics ("
+          << topicnames.size() << ")" << std::endl
+          << totalstr);
 
     rate_.sleep();
   }

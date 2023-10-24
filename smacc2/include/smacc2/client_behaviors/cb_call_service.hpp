@@ -60,10 +60,12 @@ public:
     RCLCPP_INFO_STREAM(
       getLogger(), "thread state: " << (int)status << " ok " << rclcpp::ok() << " shutdown "
                                     << this->isShutdownRequested() << "");
-                                    
+
     while (status != std::future_status::ready && rclcpp::ok() && !this->isShutdownRequested())
     {
-      RCLCPP_INFO_STREAM_THROTTLE(getLogger(),*getNode()->get_clock(), 1000, "[" << this->getName() << "] waiting response ");
+      RCLCPP_INFO_STREAM_THROTTLE(
+        getLogger(), *getNode()->get_clock(), 1000,
+        "[" << this->getName() << "] waiting response ");
       rclcpp::sleep_for(pollRate_);
       status = resultFuture_.wait_for(0s);
     }
