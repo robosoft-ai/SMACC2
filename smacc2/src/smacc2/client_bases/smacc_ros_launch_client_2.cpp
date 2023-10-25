@@ -17,21 +17,21 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <smacc2/client_bases/smacc_ros_launch_client_2.hpp>
-#include <iostream>
-#include <future>
-#include <thread>
-#include <cstring>
-#include <cstdio>
-#include <stdio.h>
-#include <unistd.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <cstdlib>
-#include <sys/wait.h>
-#include <poll.h>
-#include <fcntl.h>  // Agrega esta inclusión
 #include <errno.h>  // Agrega esta inclusión
+#include <fcntl.h>  // Agrega esta inclusión
+#include <poll.h>
+#include <signal.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <future>
+#include <iostream>
+#include <smacc2/client_bases/smacc_ros_launch_client_2.hpp>
+#include <thread>
 
 namespace smacc2
 {
@@ -39,7 +39,7 @@ namespace client_bases
 {
 using namespace std::chrono_literals;
 ClRosLaunch2::ClRosLaunch2(std::string packageName, std::string launchFilename)
-    : packageName_(packageName), launchFileName_(launchFilename), cancellationToken_(false)
+: packageName_(packageName), launchFileName_(launchFilename), cancellationToken_(false)
 {
 }
 
@@ -47,198 +47,206 @@ ClRosLaunch2::~ClRosLaunch2() {}
 
 void ClRosLaunch2::launch()
 {
-    // Iniciar el hilo para la ejecución del lanzamiento
-    this->result_ = /*std::async([this]()*/
-    // {
-        executeRosLaunch(packageName_, launchFileName_, [this]() { return cancellationToken_.load(); });
-    // });
+  // Iniciar el hilo para la ejecución del lanzamiento
+  this->result_ = /*std::async([this]()*/
+                  // {
+    executeRosLaunch(packageName_, launchFileName_, [this]() { return cancellationToken_.load(); });
+  // });
 }
 
 void ClRosLaunch2::stop()
 {
-    // Establecer la bandera de cancelación
-    cancellationToken_.store(true);
+  // Establecer la bandera de cancelación
+  cancellationToken_.store(true);
 }
 
-
-
 std::future<std::string> ClRosLaunch2::executeRosLaunch(
-    std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition)
+  std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition)
 // std::string ClRosLaunch2::executeRosLaunch(std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition)
 {
-    return std::async(
+  return std::async(
     std::launch::async,
     [=]()
     {
-        RCLCPP_WARN_STREAM(rclcpp::get_logger("smacc2"), "[ClRosLaunch2] Starting ros launch thread");
+      RCLCPP_WARN_STREAM(rclcpp::get_logger("smacc2"), "[ClRosLaunch2] Starting ros launch thread");
 
-        std::stringstream cmd;
-        cmd << "ros2 launch " << packageName << " " << launchFileName;
-        std::array<char, 128> buffer;
-        std::string result;
+      std::stringstream cmd;
+      cmd << "ros2 launch " << packageName << " " << launchFileName;
+      std::array<char, 128> buffer;
+      std::string result;
 
-        auto child = runProcess(cmd.str().c_str());
+      auto child = runProcess(cmd.str().c_str());
 
-        if (!child.pipe)
+      if (!child.pipe)
+      {
+        throw std::runtime_error("popen() failed!");
+      }
+
+      int fd = fileno(child.pipe);
+
+      int flags = fcntl(fd, F_GETFL, 0);
+      fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+
+      bool cancelled = false;
+
+      // while (!cancelCondition())
+      while (!cancelled)
+      {
+        cancelled = cancelCondition();
+        size_t bytesRead = fread(buffer.data(), 1, buffer.size(), /*data*/ child.pipe);
+
+        if (bytesRead > 0)
         {
-            throw std::runtime_error("popen() failed!");
+          result.append(buffer.data(), bytesRead);
         }
-
-        int fd = fileno(child.pipe);
-
-        int flags = fcntl(fd, F_GETFL, 0);
-        fcntl(fd, F_SETFL, flags | O_NONBLOCK);
-
-        bool cancelled = false;
-
-        // while (!cancelCondition())
-        while (!cancelled)
-        {   cancelled = cancelCondition();
-            size_t bytesRead = fread(buffer.data(), 1, buffer.size(), /*data*/child.pipe);
-
-            if (bytesRead > 0)
-            {
-                result.append(buffer.data(), bytesRead);
-            }
-            else if (bytesRead == 0)
-            {
-                // No se han leído más datos
-                std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Espera antes de intentar nuevamente
-            }
-            else
-            {
-                // Error de lectura
-                RCLCPP_ERROR(rclcpp::get_logger("smacc2"), "Error de lectura en pipe");
-                break;
-            }
-        }
-        
-        rclcpp::sleep_for(2s);
-        if (child.pid > 0) {
-            killGrandchildren(child.pid);
-            rclcpp::sleep_for(2s);
-        }
-
-        int status;
-        pid_t child_pid = child.pid;
-        if (waitpid(child_pid, &status, 0) != -1)
+        else if (bytesRead == 0)
         {
-            if (WIFEXITED(status))
-            {
-                int exit_status = WEXITSTATUS(status);
-                RCLCPP_INFO(rclcpp::get_logger("smacc2"), "Child process exited with status: %d", exit_status);
-            }
-            else if (WIFSIGNALED(status))
-            {
-                int term_signal = WTERMSIG(status);
-                RCLCPP_WARN(rclcpp::get_logger("smacc2"), "Child process terminated by signal: %d", term_signal);
-            }
+          // No se han leído más datos
+          std::this_thread::sleep_for(
+            std::chrono::milliseconds(100));  // Espera antes de intentar nuevamente
         }
         else
         {
-            RCLCPP_ERROR(rclcpp::get_logger("smacc2"), "Error waiting for child process.");
+          // Error de lectura
+          RCLCPP_ERROR(rclcpp::get_logger("smacc2"), "Error de lectura en pipe");
+          break;
         }
+      }
 
-        pclose(child.pipe);
-        close(child.pipe->_fileno); // Close pipe file descriptor but not processes
+      rclcpp::sleep_for(2s);
+      if (child.pid > 0)
+      {
+        killGrandchildren(child.pid);
+        rclcpp::sleep_for(2s);
+      }
 
-        RCLCPP_WARN_STREAM(rclcpp::get_logger("smacc2"), "[ClRosLaunch2] RESULT:\n" << result);
+      int status;
+      pid_t child_pid = child.pid;
+      if (waitpid(child_pid, &status, 0) != -1)
+      {
+        if (WIFEXITED(status))
+        {
+          int exit_status = WEXITSTATUS(status);
+          RCLCPP_INFO(
+            rclcpp::get_logger("smacc2"), "Child process exited with status: %d", exit_status);
+        }
+        else if (WIFSIGNALED(status))
+        {
+          int term_signal = WTERMSIG(status);
+          RCLCPP_WARN(
+            rclcpp::get_logger("smacc2"), "Child process terminated by signal: %d", term_signal);
+        }
+      }
+      else
+      {
+        RCLCPP_ERROR(rclcpp::get_logger("smacc2"), "Error waiting for child process.");
+      }
 
-        // Devuelve una std::future con el resultado
-        // return std::async(std::launch::async, [result]() { return result; });
-        return  result;
+      pclose(child.pipe);
+      close(child.pipe->_fileno);  // Close pipe file descriptor but not processes
+
+      RCLCPP_WARN_STREAM(rclcpp::get_logger("smacc2"), "[ClRosLaunch2] RESULT:\n" << result);
+
+      // Devuelve una std::future con el resultado
+      // return std::async(std::launch::async, [result]() { return result; });
+      return result;
     });
 }
 
 /**Aditional functions**/
 /////////////////////////////////////////////////////
 
-ProcessInfo runProcess(const char* command) {
-    ProcessInfo info;
-    info.pid = -1; // Inicializar el PID a -1 (indicando error)
-    info.pipe = nullptr;
+ProcessInfo runProcess(const char * command)
+{
+  ProcessInfo info;
+  info.pid = -1;  // Inicializar el PID a -1 (indicando error)
+  info.pipe = nullptr;
 
-    int pipefd[2]; // Descriptor de archivo para el pipe
+  int pipefd[2];  // Descriptor de archivo para el pipe
 
-    if (pipe(pipefd) == -1) {
-        perror("pipe");
-        return info;
-    }
-
-    pid_t pid = fork();
-
-    if (pid == 0) {
-        // Esto se ejecuta en el proceso hijo
-        close(pipefd[0]); // Cerramos el extremo de lectura del pipe en el proceso hijo
-        dup2(pipefd[1], STDOUT_FILENO); // Redireccionamos la salida estándar al pipe
-        close(pipefd[1]); // Cerramos el extremo de escritura del pipe en el proceso hijo
-
-        execl("/bin/sh", "/bin/sh", "-c", command, nullptr); // Ejecuta el comando dado
-
-        // Si execl retorna, significa que hubo un error
-        std::cerr << "Error al ejecutar el comando: " << command << std::endl;
-        _exit(1); // Usar _exit para evitar la ejecución de códigos de salida de manejo de errores
-    } else if (pid > 0) {
-        // Esto se ejecuta en el proceso padre
-        close(pipefd[1]); // Cerramos el extremo de escritura del pipe en el proceso padre
-        info.pid = pid;
-        info.pipe = fdopen(pipefd[0], "r"); // Abrir el descriptor de archivo de lectura en modo texto
-    } else {
-        std::cerr << "Error al crear el proceso hijo." << std::endl;
-    }
-
+  if (pipe(pipefd) == -1)
+  {
+    perror("pipe");
     return info;
+  }
+
+  pid_t pid = fork();
+
+  if (pid == 0)
+  {
+    // Esto se ejecuta en el proceso hijo
+    close(pipefd[0]);                // Cerramos el extremo de lectura del pipe en el proceso hijo
+    dup2(pipefd[1], STDOUT_FILENO);  // Redireccionamos la salida estándar al pipe
+    close(pipefd[1]);                // Cerramos el extremo de escritura del pipe en el proceso hijo
+
+    execl("/bin/sh", "/bin/sh", "-c", command, nullptr);  // Ejecuta el comando dado
+
+    // Si execl retorna, significa que hubo un error
+    std::cerr << "Error al ejecutar el comando: " << command << std::endl;
+    _exit(1);  // Usar _exit para evitar la ejecución de códigos de salida de manejo de errores
+  }
+  else if (pid > 0)
+  {
+    // Esto se ejecuta en el proceso padre
+    close(pipefd[1]);  // Cerramos el extremo de escritura del pipe en el proceso padre
+    info.pid = pid;
+    info.pipe = fdopen(pipefd[0], "r");  // Abrir el descriptor de archivo de lectura en modo texto
+  }
+  else
+  {
+    std::cerr << "Error al crear el proceso hijo." << std::endl;
+  }
+
+  return info;
 }
 
+void killProcessesRecursive(pid_t pid)
+{
+  std::string command = "pgrep -P " + std::to_string(pid);
+  FILE * pipe = popen(command.c_str(), "r");
 
+  if (!pipe)
+  {
+    std::cerr << "Error executing pgrep command." << std::endl;
+    return;
+  }
 
+  char buffer[128];
+  std::string result = "";
 
-void killProcessesRecursive(pid_t pid) {
-    std::string command = "pgrep -P " + std::to_string(pid);
-    FILE* pipe = popen(command.c_str(), "r");
+  while (fgets(buffer, sizeof(buffer), pipe) != NULL)
+  {
+    result += buffer;
+  }
 
-    if (!pipe) {
-        std::cerr << "Error executing pgrep command." << std::endl;
-        return;
-    }
+  pclose(pipe);
 
-    char buffer[128];
-    std::string result = "";
+  std::istringstream iss(result);
+  pid_t childPid;
+  std::vector<pid_t> childPids;
 
-    while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
-        result += buffer;
-    }
+  while (iss >> childPid)
+  {
+    childPids.push_back(childPid);
+  }
 
-    pclose(pipe);
+  // Kill child processes before killing the parent process
+  for (const pid_t & child : childPids)
+  {
+    killProcessesRecursive(child);
+  }
 
-    std::istringstream iss(result);
-    pid_t childPid;
-    std::vector<pid_t> childPids;
-
-    while (iss >> childPid) {
-        childPids.push_back(childPid);
-    }
-
-    // Kill child processes before killing the parent process
-    for (const pid_t& child : childPids) {
-        killProcessesRecursive(child);
-    }
-
-    // After killing all children, kill the parent process
-    int res = kill(pid, SIGTERM);
-    if (res == 0) {
-        RCLCPP_FATAL(rclcpp::get_logger("smacc2"), "Killed process %d", pid);
-    }
+  // After killing all children, kill the parent process
+  int res = kill(pid, SIGTERM);
+  if (res == 0)
+  {
+    RCLCPP_FATAL(rclcpp::get_logger("smacc2"), "Killed process %d", pid);
+  }
 }
 
-void killGrandchildren(pid_t originalPid) {
-    killProcessesRecursive(originalPid);
-}
+void killGrandchildren(pid_t originalPid) { killProcessesRecursive(originalPid); }
 }  // namespace client_bases
 }  // namespace smacc2
-
-
-
 
 /*=============DOCUMENTATION=================*/
 
@@ -253,11 +261,11 @@ void killGrandchildren(pid_t originalPid) {
 // kill_grandchildren() {
 //   local parent_pid=$1
 //   local children=$(pgrep -P $parent_pid)
-  
+
 //   for child in $children; do
 //     # Matar al hijo (nieto del proceso original)
 //     kill -9 $child
-    
+
 //     # Llamar a la función de manera recursiva para matar a los nietos
 //     kill_grandchildren $child
 //   done

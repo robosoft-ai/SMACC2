@@ -26,10 +26,7 @@ namespace client_behaviors
 {
 CbWaitTopic::CbWaitTopic(std::string nodeName) : topicName_(nodeName), rate_(5) {}
 
-CbWaitTopic::~CbWaitTopic()
-{
-
-}
+CbWaitTopic::~CbWaitTopic() {}
 
 void CbWaitTopic::onEntry()
 {

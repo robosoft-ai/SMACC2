@@ -30,13 +30,13 @@ namespace smacc2
 {
 namespace client_bases
 {
+struct ProcessInfo
+{
+  pid_t pid;    // PID del proceso hijo
+  FILE * pipe;  // Pipe para la salida del proceso hijo
+};
 
-struct ProcessInfo {
-    pid_t pid;      // PID del proceso hijo
-    FILE* pipe;     // Pipe para la salida del proceso hijo
-  };
-
-ProcessInfo runProcess(const char* command);
+ProcessInfo runProcess(const char * command);
 void killGrandchildren(pid_t originalPid);
 void killProcessesRecursive(pid_t pid);
 
@@ -60,8 +60,6 @@ public:
   std::string packageName_;
 
   std::string launchFileName_;
-  
-  
 
 protected:
   // std::future<std::string> result_;
@@ -72,7 +70,6 @@ protected:
   static std::map<std::future<void>, cancelCallback> detached_futures_;
 
   std::atomic<bool> cancellationToken_ = ATOMIC_VAR_INIT(false);
-  
 };
 }  // namespace client_bases
 }  // namespace smacc2

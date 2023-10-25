@@ -157,21 +157,25 @@ void SmaccAsyncClientBehavior::postFailureEvent() { postFailureEventFn_(); }
 void SmaccAsyncClientBehavior::requestForceFinish()
 {
   RCLCPP_FATAL_STREAM_THROTTLE(
-    getLogger(), *(getNode()->get_clock()), 1000, "[" << getName() << "] " << ((uint64_t) this ) << " requestForceFinish");
+    getLogger(), *(getNode()->get_clock()), 1000,
+    "[" << getName() << "] " << ((uint64_t)this) << " requestForceFinish");
   isShutdownRequested_ = true;
 }
 
-bool SmaccAsyncClientBehavior::isShutdownRequested() 
-{ 
+bool SmaccAsyncClientBehavior::isShutdownRequested()
+{
   std::string shut = "";
-  if(isShutdownRequested_){
+  if (isShutdownRequested_)
+  {
     shut = "True";
-  }else{
+  }
+  else
+  {
     shut = "False";
   }
   // RCLCPP_FATAL_STREAM_THROTTLE(
   //   getLogger(), *(getNode()->get_clock()), 1000, "[" << getName() << "] " << ((uint64_t) this ) << " Is requestForceFinish active? " << shut );
-  return isShutdownRequested_; 
+  return isShutdownRequested_;
 }
 
 }  // namespace smacc2

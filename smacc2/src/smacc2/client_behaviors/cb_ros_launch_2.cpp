@@ -56,8 +56,8 @@ void CbRosLaunch2::onEntry()
 
     if (launchMode_ == RosLaunchMode::LAUNCH_CLIENT_BEHAVIOR_LIFETIME)
     {
-      // breakfunction = [this]() -> bool { 
-      //   auto ret = this->isShutdownRequested(); 
+      // breakfunction = [this]() -> bool {
+      //   auto ret = this->isShutdownRequested();
       //   return ret;
       //   };
 
@@ -70,9 +70,10 @@ void CbRosLaunch2::onEntry()
 
     RCLCPP_INFO_STREAM(
       getLogger(), "[CbRosLaunch2] launching: " << *packageName_ << " , " << *launchFileName_
-                                               << "LaunchMode: " << (int)launchMode_);
+                                                << "LaunchMode: " << (int)launchMode_);
 
-    auto fut = smacc2::client_bases::ClRosLaunch2::executeRosLaunch(*packageName_, *launchFileName_, breakfunction);
+    auto fut = smacc2::client_bases::ClRosLaunch2::executeRosLaunch(
+      *packageName_, *launchFileName_, breakfunction);
 
     // if (launchMode_ == RosLaunchMode::LAUNCH_DETTACHED)
     //   detached_futures_.push_back(std::move(fut));
@@ -88,7 +89,7 @@ void CbRosLaunch2::onEntry()
     {
       RCLCPP_INFO_STREAM(
         getLogger(), "[CbRosLaunch2] launching from client: " << client_->packageName_ << " , "
-                                                             << client_->launchFileName_);
+                                                              << client_->launchFileName_);
 
       client_->launch();
     }
