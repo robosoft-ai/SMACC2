@@ -188,36 +188,7 @@ ProcessInfo runProcess(const char* command) {
     return info;
 }
 
-void findChildren(pid_t outPid){
-    int cont = 0;
-    std::string command = "pgrep -P " + std::to_string(outPid);
-    FILE* pipe = popen(command.c_str(), "r");
-    
-    if (!pipe) {
-        std::cerr << "Error executing pgrep command." << std::endl;
-        return;
-    }
-    
-    char buffer[128];
-    std::string result = "";
-    
-    while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
-        result += buffer;
-    }
 
-    std::istringstream iss(result);
-    pid_t childPid;    
-    std::vector<pid_t> childs; 
-
-    while(iss >> childPid){
-        childs.push_back(childPid);
-        cont++;
-    }
-
-    RCLCPP_FATAL(rclcpp::get_logger("smacc2"), "List of processes:\n %s", result.c_str());
-
-    pclose(pipe);
-}
 
 
 void killProcessesRecursive(pid_t pid) {
