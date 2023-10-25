@@ -61,12 +61,12 @@ void ClRosLaunch2::stop()
 }
 
 std::future<std::string> ClRosLaunch2::executeRosLaunch(
-  std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition)
+  std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition, ClRosLaunch2* client)
 // std::string ClRosLaunch2::executeRosLaunch(std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition)
 {
   return std::async(
     std::launch::async,
-    [=]()
+    [packageName, launchFileName, cancelCondition, client]()
     {
       RCLCPP_WARN_STREAM(rclcpp::get_logger("smacc2"), "[ClRosLaunch2] Starting ros launch thread");
 
@@ -81,6 +81,9 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
       {
         throw std::runtime_error("popen() failed!");
       }
+        if(client != nullptr){
+        client->launchPid_ = child.pid;
+        }
 
       int fd = fileno(child.pipe);
 
@@ -244,7 +247,9 @@ void killProcessesRecursive(pid_t pid)
   }
 }
 
-void killGrandchildren(pid_t originalPid) { killProcessesRecursive(originalPid); }
+void killGrandchildren(pid_t originalPid) { 
+    killProcessesRecursive(originalPid);
+}
 }  // namespace client_bases
 }  // namespace smacc2
 

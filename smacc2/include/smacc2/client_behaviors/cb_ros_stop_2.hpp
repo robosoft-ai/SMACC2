@@ -32,19 +32,19 @@ enum class RosLaunchMode
   LAUNCH_CLIENT_BEHAVIOR_LIFETIME
 };
 
-class CbRosLaunch2 : public smacc2::SmaccAsyncClientBehavior
+class CbRosStop2 : public smacc2::SmaccAsyncClientBehavior
 {
 private:
   static std::vector<std::future<std::string>> detached_futures_;
 
 public:
-  CbRosLaunch2();
+  CbRosStop2();
 
-  CbRosLaunch2(std::string package, std::string launchfile, RosLaunchMode);
+  CbRosStop2(pid_t launchPid);
 
-  // CbRosLaunch2(std::string packageName, std::string launchFileName);
+  // CbRosStop2(std::string packageName, std::string launchFileName);
 
-  virtual ~CbRosLaunch2();
+  virtual ~CbRosStop2();
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()

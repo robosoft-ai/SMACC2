@@ -50,39 +50,29 @@ void CbRosLaunch2::onEntry()
   RCLCPP_INFO_STREAM(getLogger(), "[CbRosLaunch2] OnEntry");
 
   std::string packageName, launchFileName;
-  if (launchFileName_ && packageName_)
+  if (launchFileName_ && packageName_ && launchMode_ == RosLaunchMode::LAUNCH_CLIENT_BEHAVIOR_LIFETIME)
   {
     std::function<bool()> breakfunction;
 
-    if (launchMode_ == RosLaunchMode::LAUNCH_CLIENT_BEHAVIOR_LIFETIME)
-    {
-      // breakfunction = [this]() -> bool {
-      //   auto ret = this->isShutdownRequested();
-      //   return ret;
-      //   };
-
       breakfunction = std::bind(&CbRosLaunch2::isShutdownRequested, this);
-    }
-    else
-    {
-      breakfunction = []() -> bool { return false; };
-    }
+   
 
     RCLCPP_INFO_STREAM(
       getLogger(), "[CbRosLaunch2] launching: " << *packageName_ << " , " << *launchFileName_
                                                 << "LaunchMode: " << (int)launchMode_);
 
-    auto fut = smacc2::client_bases::ClRosLaunch2::executeRosLaunch(
+    auto result_ = smacc2::client_bases::ClRosLaunch2::executeRosLaunch(
       *packageName_, *launchFileName_, breakfunction);
-
-    // if (launchMode_ == RosLaunchMode::LAUNCH_DETTACHED)
-    //   detached_futures_.push_back(std::move(fut));
-    // else
-    //   future_ = std::move(fut);
   }
-  else
+  else if(launchMode_ == RosLaunchMode::LAUNCH_DETTACHED)
   {
+    if (launchFileName_ && packageName_){
+      client_->packageName_ = *packageName_;
+      client_->launchFileName_ = *launchFileName_;
+    }
+
     RCLCPP_INFO_STREAM(getLogger(), "[CbRosLaunch2] finding Ros Launch client");
+    
 
     this->requiresClient(client_);
     if (client_ != nullptr)
@@ -100,6 +90,10 @@ void CbRosLaunch2::onEntry()
         "[CbRosLaunch2] Inccorrect ros launch operation. No Ros Launch client specified neither "
         "package/roslaunch file path.");
     }
+  }else{
+    RCLCPP_ERROR(
+        getLogger(),
+        "[CbRosLaunch2] Inccorrect ros launch operation. Not supported case. Invalid argument.");
   }
 }
 
