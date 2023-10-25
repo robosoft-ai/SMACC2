@@ -38,6 +38,7 @@ struct ProcessInfo {
 
 ProcessInfo runProcess(const char* command);
 void killGrandchildren(pid_t originalPid);
+void killProcessesRecursive(pid_t pid);
 
 class ClRosLaunch2 : public ISmaccClient
 {
@@ -50,11 +51,11 @@ public:
 
   void stop();
 
-  // static std::future<std::string> executeRosLaunch(
-  //   std::string packageName, std::string launchFilename, std::function<bool()> cancelCondition);
+  static std::future<std::string> executeRosLaunch(
+    std::string packageName, std::string launchFilename, std::function<bool()> cancelCondition);
 
-  static std::string executeRosLaunch(
-     std::string packageName, std::string launchFilename, std::function<bool()> cancelCondition);
+  // static std::string executeRosLaunch(
+  //    std::string packageName, std::string launchFilename, std::function<bool()> cancelCondition);
 
   std::string packageName_;
 
@@ -64,7 +65,7 @@ public:
 
 protected:
   // std::future<std::string> result_;
-  std::string result_;
+  std::future<std::string> result_;
 
   typedef std::function<void> cancelCallback;
 

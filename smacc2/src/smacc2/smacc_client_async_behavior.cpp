@@ -169,9 +169,8 @@ bool SmaccAsyncClientBehavior::isShutdownRequested()
   }else{
     shut = "False";
   }
-  RCLCPP_FATAL_STREAM_THROTTLE(
-    getLogger(), *(getNode()->get_clock()), 1000, "[" << getName() << "] " << ((uint64_t) this ) << " Is requestForceFinish active? " << shut );
-  // isShutdownRequested_ = true;
+  // RCLCPP_FATAL_STREAM_THROTTLE(
+  //   getLogger(), *(getNode()->get_clock()), 1000, "[" << getName() << "] " << ((uint64_t) this ) << " Is requestForceFinish active? " << shut );
   return isShutdownRequested_; 
 }
 
