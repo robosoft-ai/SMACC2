@@ -150,6 +150,8 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
     });
 }
 
+/**Aditional functions**/
+/////////////////////////////////////////////////////
 
 ProcessInfo runProcess(const char* command) {
     ProcessInfo info;
@@ -232,95 +234,16 @@ void killProcessesRecursive(pid_t pid) {
 void killGrandchildren(pid_t originalPid) {
     killProcessesRecursive(originalPid);
 }
-
-
-
-// void killGrandchildren(pid_t originalPid) {
-
-//     int cont = 0;
-
-//     do{
-//         cont = 0;
-//     std::string command = "pgrep -P " + std::to_string(originalPid);
-//     FILE* pipe = popen(command.c_str(), "r");
-    
-//     if (!pipe) {
-//         std::cerr << "Error executing pgrep command." << std::endl;
-//         return;
-//     }
-    
-//     char buffer[128];
-//     std::string result = "";
-    
-//     while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
-//         result += buffer;
-//     }
-
-//     RCLCPP_FATAL(rclcpp::get_logger("smacc2"), "Father PID: %s", std::to_string(static_cast<uint64_t>(originalPid)).c_str());
-
-//     RCLCPP_FATAL(rclcpp::get_logger("smacc2"), "List of processes to kill:\n %s", result.c_str());
-
-//     pclose(pipe);
-    
-//     std::istringstream iss(result);
-//     pid_t childPid;
-    
-//     std::vector<pid_t> childs; 
-//     while(iss >> childPid){
-//         childs.push_back(childPid);
-//         cont++;
-//     }
-
-//     for(int i = cont-1; i >= 0; i--){
-//         int res[] = {0,0,0};
-//         // kill(childs[i], SIGKILL);
-//         res[0] = kill(childs[i], SIGTERM);
-//         rclcpp::sleep_for(200ms);
-//         res[1] = kill(childs[i], SIGTERM);
-//         rclcpp::sleep_for(200ms);
-//         res[2] = kill(childs[i], SIGTERM);
-//         RCLCPP_FATAL(rclcpp::get_logger("smacc2"), "Kill signal sended to process %s with results %d/%d/%d", std::to_string(static_cast<uint64_t>(childs[i])).c_str(), res[0], res[1], res[2]);
-
-//     }
-    
-//     }while(cont > 0);
-
-//     kill(originalPid, SIGKILL);
-// }
-
 }  // namespace client_bases
 }  // namespace smacc2
 
 
 
 
+/*=============DOCUMENTATION=================*/
 
-
-//  do
-//     {
-//         error = false;
-
-//         while (iss >> childPid) {
-//             int res = kill(childPid, SIGKILL);
-//             RCLCPP_FATAL(rclcpp::get_logger("smacc2"), "Kill signal sended to process %s", std::to_string(static_cast<uint64_t>(childPid)).c_str());
-
-//             if(res!=0)
-//             {
-//                 error = true;
-//                 break;
-//             }
-//         }
-
-//     } while (error);
-// }
-
-// }  // namespace client_bases
-// }  // namespace smacc2
-
-
-
-/**************BASH VERSION*********************/
-/*************RECURSIVE KILL********************/
+/**************BASH VERSION*******************/
+/*************RECURSIVE KILL******************/
 // #!/bin/bash
 
 // # PID del proceso original (cambia esto al PID que desees)
