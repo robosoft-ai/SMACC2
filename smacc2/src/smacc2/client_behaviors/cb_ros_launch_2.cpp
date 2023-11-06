@@ -28,12 +28,13 @@ std::vector<std::future<std::string>> CbRosLaunch2::detached_futures_;
 CbRosLaunch2::CbRosLaunch2()
 : packageName_(std::nullopt),
   launchFileName_(std::nullopt),
-  launchMode_(RosLaunchMode::LAUNCH_CLIENT_BEHAVIOR_LIFETIME)
+  launchMode_(RosLaunchMode::LAUNCH_CLIENT_BEHAVIOR_LIFETIME),
+  client_(nullptr)
 {
 }
 
 CbRosLaunch2::CbRosLaunch2(std::string package, std::string launchfile, RosLaunchMode launchmode)
-: packageName_(package), launchFileName_(launchfile), launchMode_(launchmode)
+: packageName_(package), launchFileName_(launchfile), launchMode_(launchmode), client_(nullptr)
 {
 }
 
@@ -50,31 +51,34 @@ void CbRosLaunch2::onEntry()
   RCLCPP_INFO_STREAM(getLogger(), "[CbRosLaunch2] OnEntry");
 
   std::string packageName, launchFileName;
-  if (launchFileName_ && packageName_ && launchMode_ == RosLaunchMode::LAUNCH_CLIENT_BEHAVIOR_LIFETIME)
+  if (
+    launchFileName_ && packageName_ &&
+    launchMode_ == RosLaunchMode::LAUNCH_CLIENT_BEHAVIOR_LIFETIME)
   {
     std::function<bool()> breakfunction;
 
-      breakfunction = std::bind(&CbRosLaunch2::isShutdownRequested, this);
-   
+    breakfunction = std::bind(&CbRosLaunch2::isShutdownRequested, this);
 
     RCLCPP_INFO_STREAM(
       getLogger(), "[CbRosLaunch2] launching: " << *packageName_ << " , " << *launchFileName_
                                                 << "LaunchMode: " << (int)launchMode_);
 
     auto result_ = smacc2::client_bases::ClRosLaunch2::executeRosLaunch(
+      // this->result_ = smacc2::client_bases::ClRosLaunch2::executeRosLaunch(
       *packageName_, *launchFileName_, breakfunction);
   }
-  else if(launchMode_ == RosLaunchMode::LAUNCH_DETTACHED)
+  else if (launchMode_ == RosLaunchMode::LAUNCH_DETTACHED)
   {
-    if (launchFileName_ && packageName_){
+    this->requiresClient(client_);
+    if (launchFileName_ && packageName_)
+    {
       client_->packageName_ = *packageName_;
       client_->launchFileName_ = *launchFileName_;
     }
 
     RCLCPP_INFO_STREAM(getLogger(), "[CbRosLaunch2] finding Ros Launch client");
-    
 
-    this->requiresClient(client_);
+    // this->requiresClient(client_);
     if (client_ != nullptr)
     {
       RCLCPP_INFO_STREAM(
@@ -90,10 +94,12 @@ void CbRosLaunch2::onEntry()
         "[CbRosLaunch2] Inccorrect ros launch operation. No Ros Launch client specified neither "
         "package/roslaunch file path.");
     }
-  }else{
+  }
+  else
+  {
     RCLCPP_ERROR(
-        getLogger(),
-        "[CbRosLaunch2] Inccorrect ros launch operation. Not supported case. Invalid argument.");
+      getLogger(),
+      "[CbRosLaunch2] Inccorrect ros launch operation. Not supported case. Invalid argument.");
   }
 }
 

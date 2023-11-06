@@ -43,6 +43,8 @@ void killProcessesRecursive(pid_t pid);
 class ClRosLaunch2 : public ISmaccClient
 {
 public:
+  ClRosLaunch2();
+
   ClRosLaunch2(std::string packageName, std::string launchFilename);
 
   virtual ~ClRosLaunch2();
@@ -52,7 +54,8 @@ public:
   void stop();
 
   static std::future<std::string> executeRosLaunch(
-    std::string packageName, std::string launchFilename, std::function<bool()> cancelCondition,ClRosLaunch2* client=nullptr);
+    std::string packageName, std::string launchFilename, std::function<bool()> cancelCondition,
+    ClRosLaunch2 * client = nullptr);
 
   // static std::string executeRosLaunch(
   //    std::string packageName, std::string launchFilename, std::function<bool()> cancelCondition);

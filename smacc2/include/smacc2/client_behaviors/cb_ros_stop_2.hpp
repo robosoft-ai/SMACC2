@@ -26,12 +26,6 @@ namespace smacc2
 {
 namespace client_behaviors
 {
-enum class RosLaunchMode
-{
-  LAUNCH_DETTACHED,
-  LAUNCH_CLIENT_BEHAVIOR_LIFETIME
-};
-
 class CbRosStop2 : public smacc2::SmaccAsyncClientBehavior
 {
 private:
@@ -56,8 +50,6 @@ public:
 
   std::optional<std::string> packageName_;
   std::optional<std::string> launchFileName_;
-
-  RosLaunchMode launchMode_;
 
 protected:
   std::future<std::string> result_;

@@ -38,6 +38,11 @@ namespace smacc2
 namespace client_bases
 {
 using namespace std::chrono_literals;
+ClRosLaunch2::ClRosLaunch2(/*std::string packageName, std::string launchFilename*/)
+: /*packageName_(std::nullopt), launchFileName_(std::nullopt),*/ cancellationToken_(false)
+{
+}
+
 ClRosLaunch2::ClRosLaunch2(std::string packageName, std::string launchFilename)
 : packageName_(packageName), launchFileName_(launchFilename), cancellationToken_(false)
 {
@@ -47,6 +52,7 @@ ClRosLaunch2::~ClRosLaunch2() {}
 
 void ClRosLaunch2::launch()
 {
+  cancellationToken_.store(false);
   // Iniciar el hilo para la ejecución del lanzamiento
   this->result_ = /*std::async([this]()*/
                   // {
@@ -61,7 +67,8 @@ void ClRosLaunch2::stop()
 }
 
 std::future<std::string> ClRosLaunch2::executeRosLaunch(
-  std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition, ClRosLaunch2* client)
+  std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition,
+  ClRosLaunch2 * client)
 // std::string ClRosLaunch2::executeRosLaunch(std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition)
 {
   return std::async(
@@ -81,9 +88,10 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
       {
         throw std::runtime_error("popen() failed!");
       }
-        if(client != nullptr){
+      if (client != nullptr)
+      {
         client->launchPid_ = child.pid;
-        }
+      }
 
       int fd = fileno(child.pipe);
 
@@ -247,9 +255,7 @@ void killProcessesRecursive(pid_t pid)
   }
 }
 
-void killGrandchildren(pid_t originalPid) { 
-    killProcessesRecursive(originalPid);
-}
+void killGrandchildren(pid_t originalPid) { killProcessesRecursive(originalPid); }
 }  // namespace client_bases
 }  // namespace smacc2
 

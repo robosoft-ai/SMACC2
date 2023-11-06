@@ -25,13 +25,9 @@ namespace client_behaviors
 {
 std::vector<std::future<std::string>> CbRosStop2::detached_futures_;
 
-CbRosStop2::CbRosStop2()
-{
-}
+CbRosStop2::CbRosStop2() {}
 
-CbRosStop2::CbRosStop2(pid_t launchPid)
-{
-}
+CbRosStop2::CbRosStop2(pid_t launchPid) {}
 
 CbRosStop2::~CbRosStop2() {}
 
