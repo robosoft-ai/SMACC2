@@ -18,15 +18,30 @@
  *
  ******************************************************************************************************************/
 
-#include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.hpp>
+#pragma once
 
-namespace cl_keyboard
-{
-void CbDefaultKeyboardBehavior::onEntry()
-{
-  this->requiresClient(ClKeyboard_);
-  this->ClKeyboard_->OnKeyPress(&CbDefaultKeyboardBehavior::OnKeyPress, this);
-}
+#include <functional>
+#include <rclcpp/rclcpp.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
-void CbDefaultKeyboardBehavior::OnKeyPress(char character) { postEventKeyPress(character); }
-}  // namespace cl_keyboard
+namespace smacc2::client_behaviors
+{
+using namespace std::chrono_literals;
+
+// Asynchronous behavior that waits to a topic message to send EvCbSuccess event
+// a guard function can be set to use conditions on the contents
+class CbWaitTopic : public smacc2::SmaccAsyncClientBehavior
+{
+public:
+  CbWaitTopic(std::string topicName);
+
+  virtual ~CbWaitTopic();
+
+  void onEntry() override;
+
+protected:
+  std::string topicName_;
+
+  rclcpp::Rate rate_;
+};
+}  // namespace smacc2::client_behaviors

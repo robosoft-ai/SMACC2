@@ -23,12 +23,19 @@ namespace smacc2
 {
 namespace client_behaviors
 {
-CbRosLaunch::CbRosLaunch() {}
+std::vector<std::future<std::string>> CbRosLaunch::detached_futures_;
 
-// CbRosLaunch::CbRosLaunch(std::string packageName, std::string launchFileName)
-// : packageName_(packageName), launchFileName_(launchFileName)
-// {
-// }
+CbRosLaunch::CbRosLaunch()
+: packageName_(std::nullopt),
+  launchFileName_(std::nullopt),
+  launchMode_(RosLaunchMode::LAUNCH_CLIENT_BEHAVIOR_LIFETIME)
+{
+}
+
+CbRosLaunch::CbRosLaunch(std::string package, std::string launchfile, RosLaunchMode launchmode)
+: packageName_(package), launchFileName_(launchfile), launchMode_(launchmode)
+{
+}
 
 CbRosLaunch::~CbRosLaunch() {}
 
@@ -45,10 +52,28 @@ void CbRosLaunch::onEntry()
   std::string packageName, launchFileName;
   if (launchFileName_ && packageName_)
   {
+    std::function<bool()> breakfunction;
+
+    if (launchMode_ == RosLaunchMode::LAUNCH_CLIENT_BEHAVIOR_LIFETIME)
+    {
+      breakfunction = [this]() -> bool { return this->isShutdownRequested(); };
+    }
+    else
+    {
+      breakfunction = []() -> bool { return false; };
+    }
+
     RCLCPP_INFO_STREAM(
-      getLogger(), "[CbRosLaunch] launching: " << *packageName_ << " , " << *launchFileName_);
-    smacc2::client_bases::ClRosLaunch::executeRosLaunch(
-      *packageName_, *launchFileName_, [this]() { return this->isShutdownRequested(); });
+      getLogger(), "[CbRosLaunch] launching: " << *packageName_ << " , " << *launchFileName_
+                                               << "LaunchMode: " << (int)launchMode_);
+
+    auto fut = smacc2::client_bases::ClRosLaunch::executeRosLaunch(
+      *packageName_, *launchFileName_, breakfunction);
+
+    if (launchMode_ == RosLaunchMode::LAUNCH_DETTACHED)
+      detached_futures_.push_back(std::move(fut));
+    else
+      future_ = std::move(fut);
   }
   else
   {

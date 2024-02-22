@@ -17,16 +17,31 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+#include <smacc2/client_behaviors/cb_ros_stop_2.hpp>
 
-#include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.hpp>
+namespace smacc2
+{
+namespace client_behaviors
+{
+std::vector<std::future<std::string>> CbRosStop2::detached_futures_;
 
-namespace cl_keyboard
+CbRosStop2::CbRosStop2() {}
+
+CbRosStop2::CbRosStop2(pid_t launchPid) {}
+
+CbRosStop2::~CbRosStop2() {}
+
+template <typename TOrthogonal, typename TSourceObject>
+void onOrthogonalAllocation()
 {
-void CbDefaultKeyboardBehavior::onEntry()
-{
-  this->requiresClient(ClKeyboard_);
-  this->ClKeyboard_->OnKeyPress(&CbDefaultKeyboardBehavior::OnKeyPress, this);
+  smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 }
 
-void CbDefaultKeyboardBehavior::OnKeyPress(char character) { postEventKeyPress(character); }
-}  // namespace cl_keyboard
+void CbRosStop2::onEntry()
+{
+  this->requiresClient(client_);
+  client_->stop();
+}
+
+}  // namespace client_behaviors
+}  // namespace smacc2

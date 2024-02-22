@@ -62,10 +62,27 @@ std::future<std::string> ClRosLaunch::executeRosLaunch(
 
       std::stringstream ss;
       bool cancelled = false;
-      while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr &&
-             !(cancelled = cancelCondition()))
+      try
       {
-        ss << buffer.data();
+        while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr &&
+               !(cancelled = cancelCondition()))
+        {
+          ss << buffer.data();
+          if (cancelled)  // break_pipe
+          {
+            RCLCPP_WARN_STREAM(
+              rclcpp::get_logger("smacc2"), "[ClRosLaunch static] cancelling ros launch thread ");
+
+            // break pipe
+            pclose(pipe.release());
+
+            break;
+          }
+        }
+      }
+      catch (const std::exception & e)
+      {
+        std::cerr << e.what() << '\n';
       }
 
       result = ss.str();

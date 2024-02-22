@@ -19,7 +19,7 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc2/client_bases/smacc_ros_launch_client.hpp>
+#include <smacc2/client_bases/smacc_ros_launch_client_2.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace smacc2
@@ -32,19 +32,19 @@ enum class RosLaunchMode
   LAUNCH_CLIENT_BEHAVIOR_LIFETIME
 };
 
-class CbRosLaunch : public smacc2::SmaccAsyncClientBehavior
+class CbRosLaunch2 : public smacc2::SmaccAsyncClientBehavior
 {
 private:
   static std::vector<std::future<std::string>> detached_futures_;
 
 public:
-  CbRosLaunch();
+  CbRosLaunch2();
 
-  CbRosLaunch(std::string package, std::string launchfile, RosLaunchMode);
+  CbRosLaunch2(std::string package, std::string launchfile, RosLaunchMode);
 
-  // CbRosLaunch(std::string packageName, std::string launchFileName);
+  // CbRosLaunch2(std::string packageName, std::string launchFileName);
 
-  virtual ~CbRosLaunch();
+  virtual ~CbRosLaunch2();
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
@@ -60,9 +60,9 @@ public:
   RosLaunchMode launchMode_;
 
 protected:
-  std::string result_;
+  std::future<std::string> result_;
 
-  smacc2::client_bases::ClRosLaunch * client_;
+  smacc2::client_bases::ClRosLaunch2 * client_;
 
   std::future<std::string> future_;
 };

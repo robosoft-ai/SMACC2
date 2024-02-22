@@ -30,25 +30,44 @@ namespace smacc2
 {
 namespace client_bases
 {
-class ClRosLaunch : public ISmaccClient
+struct ProcessInfo
+{
+  pid_t pid;    // PID del proceso hijo
+  FILE * pipe;  // Pipe para la salida del proceso hijo
+};
+
+ProcessInfo runProcess(const char * command);
+void killGrandchildren(pid_t originalPid);
+void killProcessesRecursive(pid_t pid);
+
+class ClRosLaunch2 : public ISmaccClient
 {
 public:
-  ClRosLaunch(std::string packageName, std::string launchFilename);
+  ClRosLaunch2();
 
-  virtual ~ClRosLaunch();
+  ClRosLaunch2(std::string packageName, std::string launchFilename);
+
+  virtual ~ClRosLaunch2();
 
   void launch();
 
   void stop();
 
   static std::future<std::string> executeRosLaunch(
-    std::string packageName, std::string launchFilename, std::function<bool()> cancelCondition);
+    std::string packageName, std::string launchFilename, std::function<bool()> cancelCondition,
+    ClRosLaunch2 * client = nullptr);
+
+  // static std::string executeRosLaunch(
+  //    std::string packageName, std::string launchFilename, std::function<bool()> cancelCondition);
 
   std::string packageName_;
 
   std::string launchFileName_;
 
+  pid_t launchPid_;
+
 protected:
+  // std::future<std::string> result_;
   std::future<std::string> result_;
 
   typedef std::function<void> cancelCallback;

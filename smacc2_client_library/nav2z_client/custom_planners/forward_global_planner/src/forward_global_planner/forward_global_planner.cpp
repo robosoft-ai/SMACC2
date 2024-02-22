@@ -82,6 +82,8 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(
   RCLCPP_INFO(nh_->get_logger(), "[Forward Global Planner] planning");
 
   rclcpp::Duration ttol = rclcpp::Duration::from_seconds(transform_tolerance_);
+
+  RCLCPP_INFO(nh_->get_logger(), "[Forward Global Planner] getting start and goal poses");
   //---------------------------------------------------------------------
   geometry_msgs::msg::PoseStamped transformedStart;
   nav_2d_utils::transformPose(tf_, costmap_ros_->getGlobalFrameID(), start, transformedStart, ttol);
@@ -92,6 +94,7 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(
   transformedGoal.header.frame_id = costmap_ros_->getGlobalFrameID();
   //---------------------------------------------------------------------
 
+  RCLCPP_INFO(nh_->get_logger(), "[Forward Global Planner] creating plan vector");
   nav_msgs::msg::Path planMsg;
   std::vector<geometry_msgs::msg::PoseStamped> plan;
 
@@ -109,7 +112,7 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(
   if (length > skip_straight_motion_distance_)
   {
     // skip initial pure spinning and initial straight motion
-    // RCLCPP_INFO(nh_->get_logger(),"1 - heading to goal position pure spinning");
+    RCLCPP_INFO(nh_->get_logger(), "1 - heading to goal position pure spinning");
     double heading_direction = atan2(dy, dx);
     prevState = cl_nav2z::makePureSpinningSubPlan(
       transformedStart, heading_direction, plan, puresSpinningRadStep_);
@@ -123,7 +126,7 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(
     prevState = transformedStart;
   }
 
-  // RCLCPP_INFO(nh_->get_logger(),"3 - heading to goal orientation");
+  RCLCPP_INFO(nh_->get_logger(), "3 - heading to goal orientation");
   double goalOrientation = angles::normalize_angle(tf2::getYaw(transformedGoal.pose.orientation));
   cl_nav2z::makePureSpinningSubPlan(prevState, goalOrientation, plan, puresSpinningRadStep_);
   planMsg.poses = plan;

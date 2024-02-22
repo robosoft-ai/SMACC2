@@ -17,37 +17,46 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-
 #pragma once
 
-#include <rclcpp/duration.hpp>
-#include <rclcpp/rclcpp.hpp>
+#include <smacc2/client_bases/smacc_ros_launch_client_2.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
-namespace smacc2::client_behaviors
+namespace smacc2
 {
-using namespace std::chrono_literals;
+namespace client_behaviors
+{
+class CbRosStop2 : public smacc2::SmaccAsyncClientBehavior
+{
+private:
+  static std::vector<std::future<std::string>> detached_futures_;
 
-class CbSleepFor : public smacc2::SmaccAsyncClientBehavior
-{
 public:
-  CbSleepFor(rclcpp::Duration sleeptime) : sleeptime_(sleeptime) {}
+  CbRosStop2();
 
-  void onEntry() override
+  CbRosStop2(pid_t launchPid);
+
+  // CbRosStop2(std::string packageName, std::string launchFileName);
+
+  virtual ~CbRosStop2();
+
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
   {
-    auto starttime = getNode()->now();
-    while (!this->isShutdownRequested() && (getNode()->now() - starttime) < sleeptime_)
-    {
-      rclcpp::sleep_for(10ms);
-    }
-
-    //rclcpp::sleep_for(std::chrono::nanoseconds(sleeptime_.nanoseconds()));
-    this->postSuccessEvent();
+    smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 
-  void onExit() override {}
+  void onEntry() override;
 
-private:
-  rclcpp::Duration sleeptime_;
+  std::optional<std::string> packageName_;
+  std::optional<std::string> launchFileName_;
+
+protected:
+  std::future<std::string> result_;
+
+  smacc2::client_bases::ClRosLaunch2 * client_;
+
+  std::future<std::string> future_;
 };
-}  // namespace smacc2::client_behaviors
+}  // namespace client_behaviors
+}  // namespace smacc2

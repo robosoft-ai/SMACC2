@@ -45,38 +45,41 @@ public:
 
   void onEntry() override
   {
-    RCLCPP_DEBUG_STREAM(
+    RCLCPP_INFO_STREAM(
       getLogger(), "[" << this->getName() << "] creating ros service client: " << serviceName_);
 
     client_ = getNode()->create_client<ServiceType>(serviceName_);
 
-    RCLCPP_DEBUG_STREAM(
+    RCLCPP_INFO_STREAM(
       getLogger(), "[" << this->getName() << "] making service request to " << serviceName_);
 
     resultFuture_ = client_->async_send_request(request_).future.share();
 
     std::future_status status = resultFuture_.wait_for(0s);
 
-    RCLCPP_DEBUG_STREAM(
+    RCLCPP_INFO_STREAM(
       getLogger(), "thread state: " << (int)status << " ok " << rclcpp::ok() << " shutdown "
                                     << this->isShutdownRequested() << "");
+
     while (status != std::future_status::ready && rclcpp::ok() && !this->isShutdownRequested())
     {
-      RCLCPP_DEBUG_STREAM(getLogger(), "[" << this->getName() << "] waiting response ");
+      RCLCPP_INFO_STREAM_THROTTLE(
+        getLogger(), *getNode()->get_clock(), 1000,
+        "[" << this->getName() << "] waiting response ");
       rclcpp::sleep_for(pollRate_);
       status = resultFuture_.wait_for(0s);
     }
 
     if (status == std::future_status::ready)
     {
-      RCLCPP_DEBUG_STREAM(getLogger(), "[" << this->getName() << "] response received ");
+      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] response received ");
       result_ = resultFuture_.get();
       onServiceResponse(result_);
       this->postSuccessEvent();
     }
     else
     {
-      RCLCPP_DEBUG_STREAM(getLogger(), "[" << this->getName() << "] response not received ");
+      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] response not received ");
       this->postFailureEvent();
     }
   }
@@ -94,7 +97,7 @@ protected:
 
   virtual void onServiceResponse(std::shared_ptr<typename ServiceType::Response> /*result*/)
   {
-    RCLCPP_DEBUG_STREAM(getLogger(), "[" << this->getName() << "] response received ");
+    RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] response received ");
   }
 };
 

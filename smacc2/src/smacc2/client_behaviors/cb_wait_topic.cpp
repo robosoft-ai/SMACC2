@@ -18,34 +18,42 @@
  *
  ******************************************************************************************************************/
 
-#include <smacc2/client_behaviors/cb_wait_node.hpp>
+#include <smacc2/client_behaviors/cb_wait_topic.hpp>
 
 namespace smacc2
 {
 namespace client_behaviors
 {
-CbWaitNode::CbWaitNode(std::string nodeName) : nodeName_(nodeName), rate_(5) {}
+CbWaitTopic::CbWaitTopic(std::string nodeName) : topicName_(nodeName), rate_(5) {}
 
-void CbWaitNode::onEntry()
+CbWaitTopic::~CbWaitTopic() {}
+
+void CbWaitTopic::onEntry()
 {
   bool found = false;
   while (!this->isShutdownRequested() && !found)
   {
+    RCLCPP_INFO_STREAM_THROTTLE(
+      getLogger(), *(getNode()->get_clock()), 1000,
+      "[" << getName() << "] waiting topic: " << topicName_);
     std::stringstream ss;
-    auto nodenames = getNode()->get_node_names();
+    auto topicnames = getNode()->get_topic_names_and_types();
 
-    for (auto n : nodenames)
+    for (auto & t : topicnames)
     {
-      ss << " - " << n << std::endl;
-
-      if (n == nodeName_) found = true;
+      ss << t.first << std::endl;
+      if (t.first == topicName_)
+      {
+        found = true;
+      }
     }
 
     auto totalstr = ss.str();
-    RCLCPP_INFO_STREAM(
-      getLogger(), "[" << getName() << "] on entry, listing nodes (" << nodenames.size() << ")"
-                       << std::endl
-                       << totalstr);
+    RCLCPP_INFO_STREAM_THROTTLE(
+      getLogger(), *(getNode()->get_clock()), 5000,
+      "[" << getName() << "] still waiting topic " << topicName_ << ", listing topics ("
+          << topicnames.size() << ")" << std::endl
+          << totalstr);
 
     rate_.sleep();
   }

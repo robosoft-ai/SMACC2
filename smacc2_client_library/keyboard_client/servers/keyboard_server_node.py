@@ -14,6 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# *****************************************************************************************************************
+# *
+# * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+# *
+# ******************************************************************************************************************/
+
 import sys
 import select
 import termios
@@ -51,6 +57,7 @@ class KeyboardPublisher(Node):
             msg = UInt16()
             msg.data = ord(key)
 
+            self.get_logger().info(f"key: {msg.data}")
             self.pub.publish(msg)
 
         except Exception as e:
