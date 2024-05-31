@@ -100,6 +100,8 @@ public:
 
   std::optional<std::shared_future<typename GoalHandle::SharedPtr>> lastRequest_;
   // typename GoalHandle::SharedPtr goalHandle_;
+  std::optional<std::shared_future<typename CancelResponse::SharedPtr>> lastCancelResponse_;
+
 
   SmaccActionResultSignal onSucceeded_;
   SmaccActionResultSignal onAborted_;
@@ -217,8 +219,8 @@ public:
 
   virtual bool cancelGoal() override
   {
-    auto fut = this->client_->async_cancel_all_goals();
-    fut.wait();
+    lastCancelResponse_= this->client_->async_cancel_all_goals();
+
 
     // if (lastRequest_ && lastRequest_->valid())
     // {
