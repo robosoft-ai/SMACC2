@@ -1,5 +1,0 @@
-<launch>
-  <node pkg="$sm_name$" exec="$sm_name$_node" name="$sm_name$" args="--ros-args --log-level FATAL" output="screen">
-    <param from="$(find-pkg-share $sm_name$)/config/$sm_name$_config.yaml" />
-  </node>
-</launch>
