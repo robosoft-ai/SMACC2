@@ -25,6 +25,9 @@ find_package(pluginlib REQUIRED)
 find_package(bond REQUIRED)
 find_package(slam_toolbox REQUIRED)
 find_package(ament_index_cpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(nav2_util)
+
 
 set(dependencies
   smacc2
@@ -39,6 +42,8 @@ set(dependencies
   bond
   slam_toolbox
   ament_index_cpp
+  rclcpp_action
+  nav2_util
 )
 
 include_directories(include)
@@ -79,6 +84,13 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/components/waypoints_navigator/cp_waypoints_visualizer.cpp
   src/${PROJECT_NAME}/components/amcl/cp_amcl.cpp
   src/${PROJECT_NAME}/components/slam_toolbox/cp_slam_toolbox.cpp
+
+  src/${PROJECT_NAME}/client_behaviors/cb_active_stop.cpp 
+  src/${PROJECT_NAME}/client_behaviors/cb_load_waypoints_file.cpp 
+  src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint_free.cpp 
+  src/${PROJECT_NAME}/client_behaviors/cb_position_control_free_space.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_pure_spinning.cpp 
+  src/${PROJECT_NAME}/client_behaviors/cb_save_slam_map.cpp
 )
 
 ament_target_dependencies(${PROJECT_NAME}

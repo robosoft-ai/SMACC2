@@ -19,7 +19,10 @@
   <depend>yaml_cpp_vendor</depend>
   <depend>nav2_msgs</depend>
   <depend>pluginlib</depend>
+  <depend>rclcpp_action</depend>
   
+  <depend>nav2_util</depend>
+
   <depend>std_msgs</depend>
   <depend>std_srvs</depend>
   <depend>tf2_ros</depend>
