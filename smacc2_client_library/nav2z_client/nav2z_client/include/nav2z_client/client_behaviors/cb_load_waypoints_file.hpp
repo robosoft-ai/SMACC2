@@ -23,10 +23,12 @@
 #include <nav2z_client/components/waypoints_navigator/cp_waypoints_navigator_base.hpp>
 #include <smacc2/smacc_client_behavior.hpp>
 
-namespace cl_nav2z {
-struct CbLoadWaypointsFile : public smacc2::SmaccAsyncClientBehavior {
+namespace cl_nav2z
+{
+struct CbLoadWaypointsFile : public smacc2::SmaccAsyncClientBehavior
+{
 public:
-  CbLoadWaypointsFile(std::string filepath) ;
+  CbLoadWaypointsFile(std::string filepath);
 
   CbLoadWaypointsFile(std::string parameter_name, std::string packagenamesapce);
 
@@ -39,6 +41,6 @@ public:
   std::optional<std::string> parameterName_;
   std::optional<std::string> packageNamespace_;
 
-  cl_nav2z::CpWaypointNavigatorBase *waypointsNavigator_;
+  cl_nav2z::CpWaypointNavigatorBase * waypointsNavigator_;
 };
-} // namespace cl_nav2z
+}  // namespace cl_nav2z

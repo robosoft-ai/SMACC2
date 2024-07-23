@@ -23,8 +23,10 @@
 #include <geometry_msgs/msg/twist.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
-namespace cl_nav2z {
-struct CbActiveStop : public smacc2::SmaccAsyncClientBehavior {
+namespace cl_nav2z
+{
+struct CbActiveStop : public smacc2::SmaccAsyncClientBehavior
+{
 private:
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_pub_;
 
@@ -35,4 +37,4 @@ public:
 
   void onExit() override;
 };
-} // namespace cl_nav2z
+}  // namespace cl_nav2z

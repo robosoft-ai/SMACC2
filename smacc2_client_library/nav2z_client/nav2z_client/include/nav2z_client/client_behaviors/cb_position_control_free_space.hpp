@@ -24,8 +24,10 @@
 #include <nav2z_client/components/pose/cp_pose.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
-namespace cl_nav2z {
-struct CbPositionControlFreeSpace : public smacc2::SmaccAsyncClientBehavior {
+namespace cl_nav2z
+{
+struct CbPositionControlFreeSpace : public smacc2::SmaccAsyncClientBehavior
+{
 private:
   double targetYaw_;
   bool goalReached_;
@@ -39,9 +41,8 @@ private:
 
   // Limit the maximum linear velocity and angular velocity to avoid sudden
   // movements
-  double max_linear_velocity = 1.0; // Adjust this value according to your needs
-  double max_angular_velocity =
-      1.0; // Adjust this value according to your needs
+  double max_linear_velocity = 1.0;   // Adjust this value according to your needs
+  double max_angular_velocity = 1.0;  // Adjust this value according to your needs
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_pub_;
 
@@ -60,4 +61,4 @@ public:
 
   void onExit() override;
 };
-} // namespace cl_nav2z
+}  // namespace cl_nav2z

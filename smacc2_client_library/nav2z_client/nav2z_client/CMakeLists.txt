@@ -85,11 +85,11 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/components/amcl/cp_amcl.cpp
   src/${PROJECT_NAME}/components/slam_toolbox/cp_slam_toolbox.cpp
 
-  src/${PROJECT_NAME}/client_behaviors/cb_active_stop.cpp 
-  src/${PROJECT_NAME}/client_behaviors/cb_load_waypoints_file.cpp 
-  src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint_free.cpp 
+  src/${PROJECT_NAME}/client_behaviors/cb_active_stop.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_load_waypoints_file.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint_free.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_position_control_free_space.cpp
-  src/${PROJECT_NAME}/client_behaviors/cb_pure_spinning.cpp 
+  src/${PROJECT_NAME}/client_behaviors/cb_pure_spinning.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_save_slam_map.cpp
 )
 

@@ -23,25 +23,24 @@
 #include <memory>
 #include <nav2_msgs/srv/save_map.hpp>
 #include <slam_toolbox/srv/save_map.hpp>
-#include <slam_toolbox/srv/save_map.hpp>
 #include <smacc2/client_behaviors/cb_call_service.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
-
-namespace cl_nav2z {
+namespace cl_nav2z
+{
 using namespace std::chrono_literals;
 template <typename TService>
 using CbServiceCall = smacc2::client_behaviors::CbServiceCall<TService>;
 
-
-struct CbSaveSlamMap : public CbServiceCall<nav2_msgs::srv::SaveMap> {
-
-public:  
+struct CbSaveSlamMap : public CbServiceCall<nav2_msgs::srv::SaveMap>
+{
+public:
   CbSaveSlamMap();
   // void onEntry() override {}
 
   void onExit() override;
 
-  std::shared_ptr<nav2_msgs::srv::SaveMap::Request> getRequest(/*slam_toolbox::srv::SaveMap_Request_<std::allocator<void> >::_name_type saved_map_name*/) ;
+  std::shared_ptr<nav2_msgs::srv::SaveMap::Request> getRequest(
+    /*slam_toolbox::srv::SaveMap_Request_<std::allocator<void> >::_name_type saved_map_name*/);
 };
-} // namespace cl_nav2z
+}  // namespace cl_nav2z

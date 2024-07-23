@@ -24,29 +24,30 @@
 
 #include <nav2z_client/client_behaviors/cb_active_stop.hpp>
 
-namespace cl_nav2z {
+namespace cl_nav2z
+{
 CbActiveStop::CbActiveStop() {}
 
-void CbActiveStop::onEntry() {
+void CbActiveStop::onEntry()
+{
   auto nh = this->getNode();
-  cmd_vel_pub_ = nh->create_publisher<geometry_msgs::msg::Twist>(
-      "/cmd_vel", rclcpp::QoS(1));
+  cmd_vel_pub_ = nh->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", rclcpp::QoS(1));
 
   rclcpp::Rate loop_rate(5);
   geometry_msgs::msg::Twist cmd_vel_msg;
-  while (!this->isShutdownRequested()) {
+  while (!this->isShutdownRequested())
+  {
     cmd_vel_msg.linear.x = 0;
     cmd_vel_msg.angular.z = 0;
 
     cmd_vel_pub_->publish(cmd_vel_msg);
     loop_rate.sleep();
   }
-  RCLCPP_INFO_STREAM(getLogger(),
-                     "[" << getName() << "] Finished behavior execution");
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Finished behavior execution");
 
   this->postSuccessEvent();
 }
 
 void CbActiveStop::onExit() {}
 
-} // namespace cl_nav2z
+}  // namespace cl_nav2z

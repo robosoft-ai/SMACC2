@@ -19,40 +19,36 @@
  ******************************************************************************************************************/
 #include <nav2z_client/client_behaviors/cb_navigate_next_waypoint_free.hpp>
 
+namespace cl_nav2z
+{
 
-  namespace cl_nav2z {
-  
-  CbNavigateNextWaypointFree::CbNavigateNextWaypointFree() {}
+CbNavigateNextWaypointFree::CbNavigateNextWaypointFree() {}
 
-  CbNavigateNextWaypointFree::~CbNavigateNextWaypointFree() {}
+CbNavigateNextWaypointFree::~CbNavigateNextWaypointFree() {}
 
-  void CbNavigateNextWaypointFree::onEntry() {
-    requiresComponent(this->waypointsNavigator_);
-    this->target_pose_ = this->waypointsNavigator_->getCurrentPose();
+void CbNavigateNextWaypointFree::onEntry()
+{
+  requiresComponent(this->waypointsNavigator_);
+  this->target_pose_ = this->waypointsNavigator_->getCurrentPose();
 
-    this->onSuccess(&CbNavigateNextWaypointFree::CbNavigateNextWaypointFree::onSucessCallback, this);
-    RCLCPP_INFO_STREAM(
-        getLogger(),
-        "[CbNavigateNextWaypoint] initial load file target pose: x: "
-            << this->target_pose_.position.x
-            << ", y: " << this->target_pose_.position.y);
-    CbPositionControlFreeSpace::onEntry();
-  }
+  this->onSuccess(&CbNavigateNextWaypointFree::CbNavigateNextWaypointFree::onSucessCallback, this);
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[CbNavigateNextWaypoint] initial load file target pose: x: "
+                   << this->target_pose_.position.x << ", y: " << this->target_pose_.position.y);
+  CbPositionControlFreeSpace::onEntry();
+}
 
-  void CbNavigateNextWaypointFree::onSucessCallback() {
-    RCLCPP_INFO_STREAM(
-        getLogger(),
-        "[CbNavigateNextWaypoint] Success on planning to next waypoint");
-    this->waypointsNavigator_->notifyGoalReached();
-    this->waypointsNavigator_->forward(1);
-    RCLCPP_INFO_STREAM(
-        getLogger(), "[CbNavigateNextWaypoint] next position index: "
-                         << this->waypointsNavigator_->getCurrentWaypointIndex()
-                         << "/"
-                         << this->waypointsNavigator_->getWaypoints().size());
-  }
+void CbNavigateNextWaypointFree::onSucessCallback()
+{
+  RCLCPP_INFO_STREAM(getLogger(), "[CbNavigateNextWaypoint] Success on planning to next waypoint");
+  this->waypointsNavigator_->notifyGoalReached();
+  this->waypointsNavigator_->forward(1);
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[CbNavigateNextWaypoint] next position index: "
+                   << this->waypointsNavigator_->getCurrentWaypointIndex() << "/"
+                   << this->waypointsNavigator_->getWaypoints().size());
+}
 
-  void CbNavigateNextWaypointFree::onExit() {}
+void CbNavigateNextWaypointFree::onExit() {}
 
-
-} // namespace cl_nav2z
+}  // namespace cl_nav2z

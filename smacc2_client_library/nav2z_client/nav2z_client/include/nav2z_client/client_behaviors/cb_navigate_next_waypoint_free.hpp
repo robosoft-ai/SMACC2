@@ -18,13 +18,14 @@
  *
  ******************************************************************************************************************/
 #pragma once
-#include <nav2z_client/components/waypoints_navigator/cp_waypoints_navigator_base.hpp>
 #include <nav2z_client/client_behaviors/cb_position_control_free_space.hpp>
+#include <nav2z_client/components/waypoints_navigator/cp_waypoints_navigator_base.hpp>
 
-namespace cl_nav2z {
+namespace cl_nav2z
+{
 
-class CbNavigateNextWaypointFree
-    : public cl_nav2z::CbPositionControlFreeSpace {
+class CbNavigateNextWaypointFree : public cl_nav2z::CbPositionControlFreeSpace
+{
 public:
   CbNavigateNextWaypointFree();
 
@@ -37,7 +38,7 @@ public:
   void onExit() override;
 
 protected:
-  cl_nav2z::CpWaypointNavigatorBase *waypointsNavigator_;
+  cl_nav2z::CpWaypointNavigatorBase * waypointsNavigator_;
 };
 
-} // namespace cl_nav2z
+}  // namespace cl_nav2z

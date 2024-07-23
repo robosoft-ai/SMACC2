@@ -18,34 +18,40 @@
  *
  ******************************************************************************************************************/
 
-#include <smacc2/smacc_client_behavior.hpp>
+#include <nav2z_client/client_behaviors/cb_load_waypoints_file.hpp>
 #include <nav2z_client/components/waypoints_navigator/cp_waypoints_navigator_base.hpp>
-#include <nav2z_client/client_behaviors/cb_load_waypoints_file.hpp>           
+#include <smacc2/smacc_client_behavior.hpp>
 
-namespace cl_nav2z {
+namespace cl_nav2z
+{
 
-  CbLoadWaypointsFile::CbLoadWaypointsFile(std::string filepath) : filepath_(filepath) {}
+CbLoadWaypointsFile::CbLoadWaypointsFile(std::string filepath) : filepath_(filepath) {}
 
-  CbLoadWaypointsFile::CbLoadWaypointsFile(std::string parameter_name, std::string packagenamesapce)
-      : parameterName_(parameter_name), packageNamespace_(packagenamesapce) {}
+CbLoadWaypointsFile::CbLoadWaypointsFile(std::string parameter_name, std::string packagenamesapce)
+: parameterName_(parameter_name), packageNamespace_(packagenamesapce)
+{
+}
 
-  void CbLoadWaypointsFile::onEntry() {
-    requiresComponent(waypointsNavigator_); // this is a component from the
-                                            // nav2z_client library
+void CbLoadWaypointsFile::onEntry()
+{
+  requiresComponent(waypointsNavigator_);  // this is a component from the
+                                           // nav2z_client library
 
-    if (filepath_) {
-      this->waypointsNavigator_->loadWayPointsFromFile(filepath_.value());
-    } else {
-      RCLCPP_INFO(getLogger(), "Loading waypoints from parameter %s",
-                  parameterName_.value().c_str());
-      this->waypointsNavigator_->loadWaypointsFromYamlParameter(
-          parameterName_.value(), packageNamespace_.value());
-    }
-
-    // change this to skip some points of the yaml file, default = 0
-    waypointsNavigator_->currentWaypoint_ = 0;
-    this->postSuccessEvent();
+  if (filepath_)
+  {
+    this->waypointsNavigator_->loadWayPointsFromFile(filepath_.value());
+  }
+  else
+  {
+    RCLCPP_INFO(getLogger(), "Loading waypoints from parameter %s", parameterName_.value().c_str());
+    this->waypointsNavigator_->loadWaypointsFromYamlParameter(
+      parameterName_.value(), packageNamespace_.value());
   }
 
-  void CbLoadWaypointsFile::onExit() {}
-} // namespace cl_nav2z
+  // change this to skip some points of the yaml file, default = 0
+  waypointsNavigator_->currentWaypoint_ = 0;
+  this->postSuccessEvent();
+}
+
+void CbLoadWaypointsFile::onExit() {}
+}  // namespace cl_nav2z

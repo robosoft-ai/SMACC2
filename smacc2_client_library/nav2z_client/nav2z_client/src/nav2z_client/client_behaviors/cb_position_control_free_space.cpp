@@ -22,21 +22,24 @@
 #include <geometry_msgs/msg/twist.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
-#include <nav2z_client/components/pose/cp_pose.hpp>
 #include <nav2z_client/client_behaviors/cb_position_control_free_space.hpp>
+#include <nav2z_client/components/pose/cp_pose.hpp>
 
-namespace cl_nav2z {
+namespace cl_nav2z
+{
 CbPositionControlFreeSpace::CbPositionControlFreeSpace()
-    : targetYaw_(0), k_betta_(1.0), max_angular_yaw_speed_(1.0) {}
+: targetYaw_(0), k_betta_(1.0), max_angular_yaw_speed_(1.0)
+{
+}
 
 void CbPositionControlFreeSpace::updateParameters() {}
 
-void CbPositionControlFreeSpace::onEntry() {
+void CbPositionControlFreeSpace::onEntry()
+{
   auto nh = this->getNode();
-  cmd_vel_pub_ = nh->create_publisher<geometry_msgs::msg::Twist>(
-      "/cmd_vel", rclcpp::QoS(1));
+  cmd_vel_pub_ = nh->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", rclcpp::QoS(1));
 
-  cl_nav2z::Pose *pose;
+  cl_nav2z::Pose * pose;
 
   this->requiresComponent(pose);
 
@@ -58,18 +61,19 @@ void CbPositionControlFreeSpace::onEntry() {
   double ki_angular = 0.0;
   double kd_angular = 0.1;
 
-  while (rclcpp::ok() && !goalReached_) {
-    RCLCPP_INFO_STREAM_THROTTLE(getLogger(), *getNode()->get_clock(), 200,
-                                "CbPositionControlFreeSpace, current pose: "
-                                    << currentPose.position.x << ", "
-                                    << currentPose.position.y << ", "
-                                    << tf2::getYaw(currentPose.orientation));
+  while (rclcpp::ok() && !goalReached_)
+  {
+    RCLCPP_INFO_STREAM_THROTTLE(
+      getLogger(), *getNode()->get_clock(), 200,
+      "CbPositionControlFreeSpace, current pose: " << currentPose.position.x << ", "
+                                                   << currentPose.position.y << ", "
+                                                   << tf2::getYaw(currentPose.orientation));
 
-    RCLCPP_INFO_STREAM_THROTTLE(getLogger(), *getNode()->get_clock(), 200,
-                                "CbPositionControlFreeSpace, target pose: "
-                                    << target_pose_.position.x << ", "
-                                    << target_pose_.position.y << ", "
-                                    << tf2::getYaw(target_pose_.orientation));
+    RCLCPP_INFO_STREAM_THROTTLE(
+      getLogger(), *getNode()->get_clock(), 200,
+      "CbPositionControlFreeSpace, target pose: " << target_pose_.position.x << ", "
+                                                  << target_pose_.position.y << ", "
+                                                  << tf2::getYaw(target_pose_.orientation));
 
     tf2::Quaternion q;
     currentPose = pose->toPoseMsg();
@@ -82,15 +86,15 @@ void CbPositionControlFreeSpace::onEntry() {
     double error_y = target_pose_.position.y - currentPose.position.y;
 
     // Calculate the distance to the target pose
-    double distance_to_target =
-        std::sqrt(error_x * error_x + error_y * error_y);
+    double distance_to_target = std::sqrt(error_x * error_x + error_y * error_y);
 
-    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] distance to target: "
-                                        << distance_to_target << " ( th: "
-                                        << threshold_distance_ << ")");
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] distance to target: " << distance_to_target
+                       << " ( th: " << threshold_distance_ << ")");
 
     // Check if the robot has reached the target pose
-    if (distance_to_target < threshold_distance_) {
+    if (distance_to_target < threshold_distance_)
+    {
       RCLCPP_INFO(getLogger(), "Goal reached!");
       // Stop the robot by setting the velocity commands to zero
       geometry_msgs::msg::Twist cmd_vel_msg;
@@ -98,27 +102,24 @@ void CbPositionControlFreeSpace::onEntry() {
       cmd_vel_msg.angular.z = 0.0;
       cmd_vel_pub_->publish(cmd_vel_msg);
       break;
-    } else {
+    }
+    else
+    {
       // Calculate the desired orientation angle
       double desired_yaw = std::atan2(error_y, error_x);
 
       // Calculate the difference between the desired orientation and the
       // current orientation
-      double yaw_error =
-          desired_yaw - (tf2::getYaw(currentPose.orientation) + M_PI);
+      double yaw_error = desired_yaw - (tf2::getYaw(currentPose.orientation) + M_PI);
 
       // Ensure the yaw error is within the range [-pi, pi]
-      while (yaw_error > M_PI)
-        yaw_error -= 2 * M_PI;
-      while (yaw_error < -M_PI)
-        yaw_error += 2 * M_PI;
+      while (yaw_error > M_PI) yaw_error -= 2 * M_PI;
+      while (yaw_error < -M_PI) yaw_error += 2 * M_PI;
 
       // Calculate the control signals (velocity commands) using PID controllers
-      double cmd_linear_x =
-          kp_linear * distance_to_target + ki_linear * integral_linear_ +
-          kd_linear * (distance_to_target - prev_error_linear_);
-      double cmd_angular_z = kp_angular * yaw_error +
-                             ki_angular * integral_angular_ +
+      double cmd_linear_x = kp_linear * distance_to_target + ki_linear * integral_linear_ +
+                            kd_linear * (distance_to_target - prev_error_linear_);
+      double cmd_angular_z = kp_angular * yaw_error + ki_angular * integral_angular_ +
                              kd_angular * (yaw_error - prev_error_angular_);
 
       if (cmd_linear_x > max_linear_velocity)
@@ -188,12 +189,11 @@ void CbPositionControlFreeSpace::onEntry() {
     }
   }
 
-  RCLCPP_INFO_STREAM(getLogger(),
-                     "[" << getName() << "] Finished behavior execution");
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Finished behavior execution");
 
   this->postSuccessEvent();
 }
 
 void CbPositionControlFreeSpace::onExit() {}
 
-} // namespace cl_nav2z
+}  // namespace cl_nav2z
