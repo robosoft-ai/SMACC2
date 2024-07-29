@@ -30,18 +30,17 @@ class LidarProcessor(Node):
         self.logger.set_level(logging.INFO)
 
     def lidar_callback(self, msg):
-        #self.logger.info("Received message")
+        # self.logger.info("Received message")
         self.msg_buffer.append(msg)
         if len(self.msg_buffer) > 5:
-            #self.logger.info("Merging messages")
+            # self.logger.info("Merging messages")
             merged_msg = self.merge_lidar_msgs()
-            #self.msg_buffer.pop(0)
+            # self.msg_buffer.pop(0)
             self.msg_buffer = []
-            self.publisher.publish(merged_msg)  
-            
+            self.publisher.publish(merged_msg)
 
     def merge_lidar_msgs(self):
-        merged_ranges = [0.0] * len(self.msg_buffer[0].ranges)*len(self.msg_buffer)
+        merged_ranges = [0.0] * len(self.msg_buffer[0].ranges) * len(self.msg_buffer)
         # cont_inf = 0
         cont_tot = 0
         for i in range(len(self.msg_buffer)):
@@ -49,30 +48,32 @@ class LidarProcessor(Node):
                 # if self.msg_buffer[i].ranges[j] != float("inf"):
                 merged_ranges[cont_tot] = self.msg_buffer[i].ranges[j]
                 cont_tot += 1
-                #else:
+                # else:
                 #    cont_inf += 1
 
         # self.logger.info(f"Number of infinite values from total: {cont_inf}/{cont_tot}")
 
         merged_msg = LaserScan()
-        #merged_msg = copy.deepcopy(self.msg_buffer[-1])
+        # merged_msg = copy.deepcopy(self.msg_buffer[-1])
         merged_msg.header = self.msg_buffer[-1].header
 
         merged_msg.time_increment = self.msg_buffer[0].time_increment
 
         merged_msg.angle_increment = self.msg_buffer[0].angle_increment
         merged_msg.angle_min = self.msg_buffer[0].angle_min
-        merged_msg.angle_max = self.msg_buffer[0].angle_min + (len(merged_ranges)-1)*merged_msg.angle_increment
+        merged_msg.angle_max = (
+            self.msg_buffer[0].angle_min + (len(merged_ranges) - 1) * merged_msg.angle_increment
+        )
 
         # print(f"first angle_min: {self.msg_buffer[0].angle_min}")
         # print(f"angle_min: {merged_msg.angle_min}")
         # print(f"angle_max: {merged_msg.angle_max}")
-        
-        #merged_msg.angle_min = self.msg_buffer[0].angle_min - self.msg_buffer[0].angle_increment*len(self.msg_buffer)
-        #merged_msg.angle_max = merged_msg.angle_min + (len(merged_ranges)-1)*merged_msg.angle_increment
 
-        merged_msg.range_min = min([msg.range_min for msg in self.msg_buffer])
-        merged_msg.range_max = max([msg.range_max for msg in self.msg_buffer])
+        # merged_msg.angle_min = self.msg_buffer[0].angle_min - self.msg_buffer[0].angle_increment*len(self.msg_buffer)
+        # merged_msg.angle_max = merged_msg.angle_min + (len(merged_ranges)-1)*merged_msg.angle_increment
+
+        merged_msg.range_min = min(msg.range_min for msg in self.msg_buffer)
+        merged_msg.range_max = max(msg.range_max for msg in self.msg_buffer)
         merged_msg.ranges = merged_ranges
 
         return merged_msg
