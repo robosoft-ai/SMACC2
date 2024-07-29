@@ -112,4 +112,8 @@ install(DIRECTORY include/
   DESTINATION include/
 )
 
+install(FILES scripts/lidar_completion.py
+  DESTINATION lib/${PROJECT_NAME}/
+)
+
 ament_package()
