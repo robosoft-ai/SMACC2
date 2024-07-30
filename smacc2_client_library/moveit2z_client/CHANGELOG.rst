@@ -1,6 +1,18 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package moveit2z_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2.3.16 (2023-07-16)
+-------------------
+* Merge branch 'humble' of https://github.com/robosoft-ai/SMACC2 into humble
+* Brettpac branch (`#518 <https://github.com/robosoft-ai/SMACC2/issues/518>`_)
+  * Attempt to fix weird issue with ros buildfarm
+  * More on this buildfarm issue
+  ---------
+  Co-authored-by: brettpac <brett@robosoft.ai>
+* Contributors: brettpac, pabloinigoblasco
+
+2.3.6 (2023-03-12)
+------------------
 
 1.22.1 (2022-11-09)
 -------------------
