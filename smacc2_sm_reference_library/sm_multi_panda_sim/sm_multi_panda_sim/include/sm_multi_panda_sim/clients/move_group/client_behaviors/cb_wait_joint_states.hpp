@@ -70,7 +70,7 @@ public:
     }
 
 private:
-  void onMessageReceived(const sensor_msgs::msg::JointState & /*msg*/)
+  void onMessageReceived(const sensor_msgs::msg::JointState & msg)
   {
       RCLCPP_INFO(getLogger(), "CbWaitJointState::onMessageReceived, posting event");
       postSuccessEvent();

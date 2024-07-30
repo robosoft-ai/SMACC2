@@ -34,7 +34,7 @@ namespace cl_moveit2z
 class CbMoveSynchronizedLinkGoals : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbMoveSynchronizedLinkGoals(const std::vector<geometry_msgs::msg::PoseStamped>& /*poses*/, const std::vector<std::string>& /*names*/)
+  CbMoveSynchronizedLinkGoals(const std::vector<geometry_msgs::msg::PoseStamped>& poses, const std::vector<std::string>& names)
   {
 
   }
@@ -66,7 +66,7 @@ public:
     }
 
 private:
-  void onMessageReceived(const sensor_msgs::msg::JointState & /*msg*/)
+  void onMessageReceived(const sensor_msgs::msg::JointState & msg)
   {
       postSuccessEvent();
       mutex.unlock();
