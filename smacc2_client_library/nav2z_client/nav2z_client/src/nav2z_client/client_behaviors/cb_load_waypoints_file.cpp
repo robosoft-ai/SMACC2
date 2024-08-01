@@ -27,8 +27,8 @@ namespace cl_nav2z
 
 CbLoadWaypointsFile::CbLoadWaypointsFile(std::string filepath) : filepath_(filepath) {}
 
-CbLoadWaypointsFile::CbLoadWaypointsFile(std::string parameter_name, std::string packagenamesapce)
-: parameterName_(parameter_name), packageNamespace_(packagenamesapce)
+CbLoadWaypointsFile::CbLoadWaypointsFile(std::string parameter_name, std::string packagenamespace)
+: parameterName_(parameter_name), packageNamespace_(packagenamespace)
 {
 }
 

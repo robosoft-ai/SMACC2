@@ -30,7 +30,7 @@ struct CbLoadWaypointsFile : public smacc2::SmaccAsyncClientBehavior
 public:
   CbLoadWaypointsFile(std::string filepath);
 
-  CbLoadWaypointsFile(std::string parameter_name, std::string packagenamesapce);
+  CbLoadWaypointsFile(std::string parameter_name, std::string packagenamespace);
 
   void onEntry() override;
 
