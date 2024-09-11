@@ -123,7 +123,7 @@ public:
   void exit()
   {
     auto * derivedThis = static_cast<MostDerived *>(this);
-    this->getStateMachine().notifyOnStateExitting(derivedThis);
+    // this->getStateMachine().notifyOnStateExitting(derivedThis);
     {
       std::lock_guard<std::recursive_mutex> lock(this->getStateMachine().getMutex());
       this->getStateMachine().notifyOnStateExitting(derivedThis);
