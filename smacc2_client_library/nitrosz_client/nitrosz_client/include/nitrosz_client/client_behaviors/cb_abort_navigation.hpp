@@ -21,8 +21,8 @@
 
 #include <tf2_ros/buffer.h>
 
-#include "cb_nitrosz_client_behavior_base.hpp"
 #include "cb_navigate_global_position.hpp"
+#include "cb_nitrosz_client_behavior_base.hpp"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 
 namespace cl_nitrosz

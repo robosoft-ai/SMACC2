@@ -21,8 +21,8 @@
 
 #include <nitrosz_client/components/waypoints_navigator/cp_waypoints_navigator.hpp>
 #include <nitrosz_client/nitrosz_client.hpp>
-#include "cb_nitrosz_client_behavior_base.hpp"
 #include "cb_navigate_next_waypoint.hpp"
+#include "cb_nitrosz_client_behavior_base.hpp"
 
 namespace cl_nitrosz
 {
