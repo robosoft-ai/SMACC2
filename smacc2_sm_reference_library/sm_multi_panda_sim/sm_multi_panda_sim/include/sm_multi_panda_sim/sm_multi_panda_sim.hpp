@@ -77,49 +77,17 @@ class StLeftArmMoves;
 class StRightArmMoves;
 class StBothArmsMove;
 
-struct EvToDeep : sc::event<EvToDeep>
-{
-};
-
-struct EvFail : sc::event<EvFail>
-{
-};
-
-struct EvSc : sc::event<EvSc>
-{
-};
-
-struct EvStart : sc::event<EvStart>
-{
-};
-
-struct EvReset : sc::event<EvReset>
-{
-};
-
-struct EvSuspend : sc::event<EvSuspend>
-{
-};
-
-struct EvUnSuspend : sc::event<EvUnSuspend>
-{
-};
-
-struct EvHold : sc::event<EvHold>
-{
-};
-
-struct EvUnhold : sc::event<EvUnhold>
-{
-};
-
-struct EvStop : sc::event<EvStop>
-{
-};
-
-struct EvClear : sc::event<EvClear>
-{
-};
+struct EvToDeep : sc::event<EvToDeep>{};
+struct EvFail : sc::event<EvFail>{};
+struct EvSc : sc::event<EvSc>{};
+struct EvStart : sc::event<EvStart>{};
+struct EvReset : sc::event<EvReset>{};
+struct EvSuspend : sc::event<EvSuspend>{};
+struct EvUnSuspend : sc::event<EvUnSuspend>{};
+struct EvHold : sc::event<EvHold>{};
+struct EvUnhold : sc::event<EvUnhold>{};
+struct EvStop : sc::event<EvStop>{};
+struct EvClear : sc::event<EvClear>{};
 
 //--------------------------------------------------------------------
 // STATE_MACHINE
@@ -131,6 +99,7 @@ struct SmMultiPandaSim : public smacc2::SmaccStateMachineBase<SmMultiPandaSim, S
   {
     this->createOrthogonal<OrArmLeft>();
     this->createOrthogonal<OrArmRight>();
+    this->createOrthogonal<OrKeyboard>();
   }
 };
 

@@ -18,6 +18,7 @@ namespace sm_multi_panda_sim
 {
 using namespace std::chrono_literals;
 using smacc2::client_behaviors::CbSequence;
+using namespace cl_keyboard;
 
 // STATE DECLARATION
 struct StLeftArmMoves : smacc2::SmaccState<StLeftArmMoves, SmMultiPandaSim>
@@ -25,17 +26,17 @@ struct StLeftArmMoves : smacc2::SmaccState<StLeftArmMoves, SmMultiPandaSim>
   using SmaccState::SmaccState;
 
   // DECLARE CUSTOM OBJECT TAGS
-  struct start_sequence_a : SUCCESS
-  {
-  };
-  struct start_sequence_b : SUCCESS
-  {
-  };
+  struct start_sequence_a : SUCCESS{};
+  struct start_sequence_b : SUCCESS{};
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
 
   // TRANSITION TABLE
   typedef mpl::list<
-      smacc2::Transition<EvCbSuccess<CbMoveJoints, OrArmLeft>, StRightArmMoves, SUCCESS>
+      smacc2::Transition<EvCbSuccess<CbMoveJoints, OrArmLeft>, StRightArmMoves, SUCCESS>,
       // smacc2::Transition<EvCbSuccess<CbSleepFor, OrArmLeft>, StRightArmMoves, SUCCESS>
+
+      smacc2::Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StRightArmMoves, NEXT>
 
       >
       reactions;
@@ -54,6 +55,7 @@ struct StLeftArmMoves : smacc2::SmaccState<StLeftArmMoves, SmMultiPandaSim>
 
     configure_orthogonal<OrArmLeft, CbMoveJoints>(leftJointValues);
     // configure_orthogonal<OrArmLeft, CbSleepFor>(15s);
+    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   void runtimeConfigure()

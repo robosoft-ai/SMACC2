@@ -34,22 +34,30 @@ using namespace cl_moveit2z;
 using smacc2::client_behaviors::CbWaitTopicMessage;
 using namespace std::chrono_literals;
 using cl_moveit2z::CbWaitJointState;
+using namespace cl_keyboard;
 
 // STATE DECLARATION
 struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmMultiPandaSim>
 {
   using SmaccState::SmaccState;
 
+  // DECLARE CUSTOM OBJECT TAGS
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
+
   // TRANSITION TABLE
   typedef mpl::list<
       smacc2::Transition<EvStart, StLeftArmMoves, SUCCESS>,
-      smacc2::Transition<EvCbSuccess<CbWaitJointState, OrArmLeft>, StLeftArmMoves, SUCCESS>
+      smacc2::Transition<EvCbSuccess<CbWaitJointState, OrArmLeft>, StLeftArmMoves, SUCCESS>,
+
+      smacc2::Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StLeftArmMoves, NEXT>
     >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrArmLeft, CbWaitJointState>();
+    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   void runtimeConfigure() {}

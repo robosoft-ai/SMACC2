@@ -135,6 +135,15 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
     )
 
+    keyboard_client_node = Node(
+        package="keyboard_client",
+        executable="keyboard_server_node.py",
+        name="keyboard_client",
+        output="screen",
+        prefix="xterm -hold -e",
+        arguments=["--ros-args", "--log-level", "INFO"],
+    )
+
     hand_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -150,6 +159,7 @@ def launch_setup(context, *args, **kwargs):
         joint_state_broadcaster_spawner,
         arm_controller_spawner,
         hand_controller_spawner,
+        keyboard_client_node,
     ]
 
     return nodes_to_start
