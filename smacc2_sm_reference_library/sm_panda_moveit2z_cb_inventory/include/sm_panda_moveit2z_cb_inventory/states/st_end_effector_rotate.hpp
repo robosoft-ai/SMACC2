@@ -30,16 +30,25 @@ namespace sm_panda_moveit2z_cb_inventory
 using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
+using namespace cl_keyboard;
 
 // STATE DECLARATION
 struct StEndEffectorRotate : smacc2::SmaccState<StEndEffectorRotate, SmPandaMoveit2zCbInventory>
 {
   using SmaccState::SmaccState;
 
+  // DECLARE CUSTOM OBJECT TAGS
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
+
   // TRANSITION TABLE
   typedef boost::mpl::list<
-     Transition<EvCbSuccess<CbEndEffectorRotate, OrArm>, StUndoLastTrajectory, SUCCESS>,
-     Transition<EvCbFailure<CbEndEffectorRotate, OrArm>, StEndEffectorRotate, SUCCESS>
+
+    Transition<EvCbSuccess<CbEndEffectorRotate, OrArm>, StUndoLastTrajectory, SUCCESS>,
+    Transition<EvCbFailure<CbEndEffectorRotate, OrArm>, StEndEffectorRotate, SUCCESS>,
+
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveEndEffector, PREVIOUS>,  
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StUndoLastTrajectory, NEXT>  
 
     >
     reactions;
@@ -52,6 +61,7 @@ struct StEndEffectorRotate : smacc2::SmaccState<StEndEffectorRotate, SmPandaMove
       std::string tipLink = "wrist_3_link";
 
      configure_orthogonal<OrArm, CbEndEffectorRotate>(deltaRadians, tipLink);
+    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StEndEffectorRotate"); }

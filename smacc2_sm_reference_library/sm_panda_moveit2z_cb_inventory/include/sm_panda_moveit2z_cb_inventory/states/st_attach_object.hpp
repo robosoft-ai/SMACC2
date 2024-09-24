@@ -32,15 +32,21 @@ namespace sm_panda_moveit2z_cb_inventory
 using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
+using namespace cl_keyboard;
 
 // STATE DECLARATION
 struct StAttachObject : smacc2::SmaccState<StAttachObject, SmPandaMoveit2zCbInventory>
 {
   using SmaccState::SmaccState;
 
+  // DECLARE CUSTOM OBJECT TAGS
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
+
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbAttachObject, OrArm>, StDetatchObject, SUCCESS>
+    Transition<EvCbSuccess<CbAttachObject, OrArm>, StDetatchObject, SUCCESS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StDetatchObject, NEXT>  
     >
     reactions;
 
@@ -48,6 +54,7 @@ struct StAttachObject : smacc2::SmaccState<StAttachObject, SmPandaMoveit2zCbInve
   static void staticConfigure()
   {
     configure_orthogonal<OrArm, CbAttachObject>("virtualBox");
+    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   void runtimeConfigure()

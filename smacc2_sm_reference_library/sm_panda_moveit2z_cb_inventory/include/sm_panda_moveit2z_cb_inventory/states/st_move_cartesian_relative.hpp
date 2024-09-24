@@ -30,16 +30,23 @@ namespace sm_panda_moveit2z_cb_inventory
 using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
+using namespace cl_keyboard;
 
 // STATE DECLARATION
 struct StMoveCartesianRelative : smacc2::SmaccState<StMoveCartesianRelative, SmPandaMoveit2zCbInventory>
 {
   using SmaccState::SmaccState;
 
+  // DECLARE CUSTOM OBJECT TAGS
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
+
   // TRANSITION TABLE
   typedef boost::mpl::list<
     Transition<EvCbSuccess<CbMoveCartesianRelative, OrArm>, StAttachObject, SUCCESS> ,
-    Transition<EvCbFailure<CbMoveCartesianRelative, OrArm>, StAttachObject, ABORT>
+    Transition<EvCbFailure<CbMoveCartesianRelative, OrArm>, StAttachObject, ABORT>,
+
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StAttachObject, NEXT>  
     >
     reactions;
 
@@ -49,6 +56,7 @@ struct StMoveCartesianRelative : smacc2::SmaccState<StMoveCartesianRelative, SmP
     geometry_msgs::msg::Vector3 offset;
     offset.x = -0.01;
     configure_orthogonal<OrArm, CbMoveCartesianRelative>(offset);
+    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveCartesianRelative"); }

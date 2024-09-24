@@ -30,15 +30,24 @@ namespace sm_panda_moveit2z_cb_inventory
 using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
+using namespace cl_keyboard;
 
 // STATE DECLARATION
 struct StUndoLastTrajectory : smacc2::SmaccState<StUndoLastTrajectory, SmPandaMoveit2zCbInventory>
 {
   using SmaccState::SmaccState;
 
+  // DECLARE CUSTOM OBJECT TAGS
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
+
   // TRANSITION TABLE
   typedef boost::mpl::list<
-      Transition<EvCbSuccess<CbUndoLastTrajectory, OrArm>, StExecuteLastTrajectory, SUCCESS>
+      Transition<EvCbSuccess<CbUndoLastTrajectory, OrArm>, StExecuteLastTrajectory, SUCCESS>,
+
+      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StEndEffectorRotate, PREVIOUS>,  
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StExecuteLastTrajectory, NEXT>  
+
     >
     reactions;
 
@@ -46,6 +55,7 @@ struct StUndoLastTrajectory : smacc2::SmaccState<StUndoLastTrajectory, SmPandaMo
   static void staticConfigure()
   {
     configure_orthogonal<OrArm, CbUndoLastTrajectory>();
+    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StUndoLastTrajectory"); }

@@ -30,16 +30,24 @@ namespace sm_panda_moveit2z_cb_inventory
 using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
+using namespace cl_keyboard;
 
 // STATE DECLARATION
 struct StMoveKnownState : smacc2::SmaccState<StMoveKnownState, SmPandaMoveit2zCbInventory>
 {
   using SmaccState::SmaccState;
 
+  // DECLARE CUSTOM OBJECT TAGS
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
+
   // TRANSITION TABLE
   typedef boost::mpl::list<
       Transition<EvCbSuccess<CbMoveKnownState, OrArm>, StPouringMotion, SUCCESS>,
-      Transition<EvCbFailure<CbMoveKnownState, OrArm>, StPouringMotion, ABORT>
+      Transition<EvCbFailure<CbMoveKnownState, OrArm>, StPouringMotion, ABORT>,
+
+      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StExecuteLastTrajectory, PREVIOUS>,  
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPouringMotion, NEXT>  
     >
     reactions;
 
@@ -50,6 +58,7 @@ struct StMoveKnownState : smacc2::SmaccState<StMoveKnownState, SmPandaMoveit2zCb
     std::string filepath = "config/move_group_client/known_states/control_authority_posture.yaml";
 
     configure_orthogonal<OrArm, CbMoveKnownState>(pkg, filepath);
+    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveKnownState"); }

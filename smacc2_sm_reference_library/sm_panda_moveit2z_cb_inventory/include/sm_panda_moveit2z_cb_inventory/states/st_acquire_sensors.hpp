@@ -35,15 +35,23 @@ using namespace cl_moveit2z;
 using smacc2::client_behaviors::CbWaitTopicMessage;
 using smacc2::client_behaviors::CbSleepFor;
 using namespace std::chrono_literals;
+using namespace cl_keyboard;
 
 // STATE DECLARATION
 struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmPandaMoveit2zCbInventory>
 {
   using SmaccState::SmaccState;
 
+  // DECLARE CUSTOM OBJECT TAGS
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
+
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbWaitTopicMessage<sensor_msgs::msg::JointState>, OrArm>, StMoveJoints, SUCCESS>
+    Transition<EvCbSuccess<CbWaitTopicMessage<sensor_msgs::msg::JointState>, OrArm>, StMoveJoints, SUCCESS>,
+    
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveJoints, NEXT>  
+  
 
     > reactions;
 
@@ -52,6 +60,7 @@ struct StAcquireSensors : smacc2::SmaccState<StAcquireSensors, SmPandaMoveit2zCb
   {
     configure_orthogonal<OrArm, CbWaitTopicMessage<sensor_msgs::msg::JointState>>("/joint_states");
     configure_orthogonal<OrArm, CbSleepFor>(5s);
+    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   };
 
   void runtimeConfigure() {}

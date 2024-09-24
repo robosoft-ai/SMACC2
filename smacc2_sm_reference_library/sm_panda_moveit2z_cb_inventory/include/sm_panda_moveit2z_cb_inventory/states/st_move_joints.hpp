@@ -29,16 +29,24 @@ using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
 using namespace cl_moveit2z;
+using namespace cl_keyboard;
 
 // STATE DECLARATION
 struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmPandaMoveit2zCbInventory>
 {
   using SmaccState::SmaccState;
 
+  // DECLARE CUSTOM OBJECT TAGS
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
+
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbMoveJoints, OrArm>, StMoveEndEffector, SUCCESS>
-    ,Transition<EvCbFailure<CbMoveJoints, OrArm>, StMoveJoints, ABORT>
+    Transition<EvCbSuccess<CbMoveJoints, OrArm>, StMoveEndEffector, SUCCESS>,
+    Transition<EvCbFailure<CbMoveJoints, OrArm>, StMoveJoints, ABORT>,
+
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StAcquireSensors, PREVIOUS>,  
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveEndEffector, NEXT>  
 
     >
     reactions;
@@ -62,6 +70,7 @@ struct StMoveJoints : smacc2::SmaccState<StMoveJoints, SmPandaMoveit2zCbInventor
     // panda_finger_joint2:
 
     configure_orthogonal<OrArm, CbMoveJoints>(jointValues);
+    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   };
 
   void runtimeConfigure()

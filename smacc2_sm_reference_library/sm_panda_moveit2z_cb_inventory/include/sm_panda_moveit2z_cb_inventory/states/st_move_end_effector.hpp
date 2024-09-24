@@ -30,16 +30,24 @@ namespace sm_panda_moveit2z_cb_inventory
 using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
+using namespace cl_keyboard;
 
 // STATE DECLARATION
 struct StMoveEndEffector : smacc2::SmaccState<StMoveEndEffector, SmPandaMoveit2zCbInventory>
 {
   using SmaccState::SmaccState;
 
+  // DECLARE CUSTOM OBJECT TAGS
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
+
   // TRANSITION TABLE
   typedef boost::mpl::list<
     Transition<EvCbSuccess<CbMoveEndEffector, OrArm>, StEndEffectorRotate, SUCCESS>,
-    Transition<EvCbFailure<CbMoveEndEffector, OrArm>, StMoveEndEffector, ABORT>
+    Transition<EvCbFailure<CbMoveEndEffector, OrArm>, StMoveEndEffector, ABORT>,
+
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveJoints, PREVIOUS>,  
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StEndEffectorRotate, NEXT>  
     >
     reactions;
 
@@ -72,6 +80,7 @@ struct StMoveEndEffector : smacc2::SmaccState<StMoveEndEffector, SmPandaMoveit2z
     // target_pose.pose.orientation.w = -0.4480736 ;
 
     configure_orthogonal<OrArm, CbMoveEndEffector>(target_pose, "panda_link8");
+    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveEndEffector"); }

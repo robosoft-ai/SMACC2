@@ -28,9 +28,13 @@
 
 // ORTHOGONALS
 #include "sm_panda_moveit2z_cb_inventory/orthogonals/or_arm.hpp"
+#include "sm_panda_moveit2z_cb_inventory/orthogonals/or_keyboard.hpp"
 
 #include <moveit2z_client/cl_moveit2z.hpp>
 #include <moveit2z_client/client_behaviors.hpp>
+
+#include <keyboard_client/cl_keyboard.hpp>
+#include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.hpp>
 
 #include <smacc2/client_behaviors/cb_wait_topic_message.hpp>
 
@@ -39,6 +43,7 @@ namespace sm_panda_moveit2z_cb_inventory
 {
 
 using namespace cl_moveit2z;
+using namespace cl_keyboard;
 
 //STATES
 struct StAcquireSensors;
@@ -61,7 +66,10 @@ struct SmPandaMoveit2zCbInventory : public smacc2::SmaccStateMachineBase<SmPanda
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  void onInitialize() override { this->createOrthogonal<OrArm>(); }
+  void onInitialize() override { 
+    this->createOrthogonal<OrArm>(); 
+    this->createOrthogonal<OrKeyboard>();
+    }
 };
 
 }  // namespace sm_panda_moveit2z_cb_inventory

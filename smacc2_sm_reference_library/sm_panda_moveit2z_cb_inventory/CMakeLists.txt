@@ -16,11 +16,18 @@ find_package(ros_timer_client REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 find_package(moveit2z_client REQUIRED)
+find_package(keyboard_client REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(ros_publisher_client REQUIRED)
+
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   ros_timer_client
   smacc2
   moveit2z_client
+  keyboard_client
+  ros_publisher_client
+  rclcpp
 )
 
 include_directories(

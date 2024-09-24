@@ -30,15 +30,21 @@ namespace sm_panda_moveit2z_cb_inventory
 using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
+using namespace cl_keyboard;
 
 // STATE DECLARATION
 struct StDetatchObject : smacc2::SmaccState<StDetatchObject, SmPandaMoveit2zCbInventory>
 {
   using SmaccState::SmaccState;
 
+  // DECLARE CUSTOM OBJECT TAGS
+  struct NEXT : SUCCESS{};
+  struct PREVIOUS : ABORT{};
+
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbDetachObject, OrArm>, StEndEffectorRotate, SUCCESS>
+    Transition<EvCbSuccess<CbDetachObject, OrArm>, StEndEffectorRotate, SUCCESS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StEndEffectorRotate, NEXT>  
     >
     reactions;
 
@@ -46,6 +52,7 @@ struct StDetatchObject : smacc2::SmaccState<StDetatchObject, SmPandaMoveit2zCbIn
   static void staticConfigure()
   {
     configure_orthogonal<OrArm, CbDetachObject>();
+    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StDetatchObject"); }

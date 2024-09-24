@@ -32,7 +32,7 @@ source ~/workspace/humble_ws/install/setup.sh
 And then run the launch file...
 
 ```
-ros2 launch sm_panda_moveit2z_cb_inventory sm_panda_moveit2z_cb_inventory.launch.py
+ros2 launch sm_multi_panda_sim sm_multi_panda_sim.launch.py
 ```
 
 If the simulation is not starting up properly check if your GAZEBO_RESOURCE_PATH is set correctly (echo $GAZEBO_RESOURCE_PATH). Otherwise simply set it with:
