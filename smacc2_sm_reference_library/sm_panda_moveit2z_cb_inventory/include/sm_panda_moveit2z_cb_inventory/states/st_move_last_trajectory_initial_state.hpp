@@ -43,8 +43,8 @@ struct StMoveLastTrajectoryInitialState : smacc2::SmaccState<StMoveLastTrajector
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-      Transition<EvCbSuccess<CbMoveLastTrajectoryInitialState, OrArm>, StMoveLastTrajectoryInitialState, SUCCESS>,
-      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveLastTrajectoryInitialState, NEXT>  
+      Transition<EvCbSuccess<CbMoveLastTrajectoryInitialState, OrArm>, StUndoLastTrajectory, SUCCESS>,
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StUndoLastTrajectory, NEXT>  
     >
     reactions;
 
