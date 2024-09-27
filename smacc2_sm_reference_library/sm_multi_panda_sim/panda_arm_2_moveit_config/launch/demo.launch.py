@@ -67,6 +67,7 @@ def generate_launch_description():
         parameters=[
             panda_arm_2_moveit_config.to_dict() | {"ros_control_namespace": "/panda_arm_2"}
         ],
+        prefix="xterm -hold -e",
     )
 
     # RViz
@@ -95,6 +96,7 @@ def generate_launch_description():
         name="robot_state_publisher",
         output="both",
         parameters=[panda_arm_2_moveit_config.robot_description],
+        prefix="xterm -hold -e",
     )
 
     # ros2_control using FakeSystem as hardware
@@ -109,6 +111,7 @@ def generate_launch_description():
         parameters=[panda_arm_2_moveit_config.robot_description, ros2_controllers_path],
         output="both",
         # arguments = ["--ros-args", "--log-level", "debug"]
+        prefix="xterm -hold -e",
     )
 
     # Load controllers
