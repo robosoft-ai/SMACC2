@@ -41,4 +41,14 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription([panda_arm_1, panda_arm_2])
+    keyboard_server = IncludeLaunchDescription(
+        AnyLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("sm_multi_panda_sim"),
+                "launch",
+                "keyboard_server.launch.py",
+            )
+        )
+    )
+
+    return LaunchDescription([panda_arm_1, panda_arm_2, keyboard_server])
