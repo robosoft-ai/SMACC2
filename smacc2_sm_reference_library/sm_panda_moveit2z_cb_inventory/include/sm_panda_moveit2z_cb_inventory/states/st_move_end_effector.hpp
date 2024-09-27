@@ -46,7 +46,7 @@ struct StMoveEndEffector : smacc2::SmaccState<StMoveEndEffector, SmPandaMoveit2z
     Transition<EvCbSuccess<CbMoveEndEffector, OrArm>, StEndEffectorRotate, SUCCESS>,
     Transition<EvCbFailure<CbMoveEndEffector, OrArm>, StMoveEndEffector, ABORT>,
 
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveJoints, PREVIOUS>,  
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveJoints1, PREVIOUS>,  
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StEndEffectorRotate, NEXT>  
     >
     reactions;

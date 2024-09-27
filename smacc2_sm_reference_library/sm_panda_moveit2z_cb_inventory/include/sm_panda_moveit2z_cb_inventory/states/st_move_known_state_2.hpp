@@ -33,7 +33,7 @@ using namespace smacc2;
 using namespace cl_keyboard;
 
 // STATE DECLARATION
-struct StPouringMotion : smacc2::SmaccState<StPouringMotion, SmPandaMoveit2zCbInventory>
+struct StMoveKnownState2 : smacc2::SmaccState<StMoveKnownState2, SmPandaMoveit2zCbInventory>
 {
   using SmaccState::SmaccState;
 
@@ -43,28 +43,25 @@ struct StPouringMotion : smacc2::SmaccState<StPouringMotion, SmPandaMoveit2zCbIn
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-      Transition<EvCbSuccess<CbCircularPouringMotion, OrArm>, StMoveLastTrajectoryInitialState, SUCCESS>,
-      Transition<EvCbFailure<CbCircularPouringMotion, OrArm>, StMoveLastTrajectoryInitialState, ABORT>,
+      Transition<EvCbSuccess<CbMoveKnownState, OrArm>, StPouringMotion, SUCCESS>,
+      Transition<EvCbFailure<CbMoveKnownState, OrArm>, StPouringMotion, ABORT>,
 
-      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveKnownState1, PREVIOUS>,  
-      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveLastTrajectoryInitialState, NEXT>  
+      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StExecuteLastTrajectory, PREVIOUS>,  
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPouringMotion, NEXT>  
     >
     reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-   geometry_msgs::msg::Point relativePivotPoint;
-   relativePivotPoint.x = -0.01;
-   double deltaHeight = 0.05;
-   std::string tipLink = "panda_rightfinger";
-   std::string globalFrame = "panda_rightfinger";
+    std::string pkg = "sm_panda_moveit2z_cb_inventory";
+    std::string filepath = "config/move_group_client/known_states/control_authority_posture.yaml";
 
-    configure_orthogonal<OrArm, CbCircularPouringMotion>(relativePivotPoint, deltaHeight, tipLink, globalFrame);
+    configure_orthogonal<OrArm, CbMoveKnownState>(pkg, filepath);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StPouringMotion"); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveKnownState"); }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 
