@@ -46,7 +46,9 @@ struct StPouringMotion : smacc2::SmaccState<StPouringMotion, SmPandaMoveit2zCbIn
       Transition<EvCbSuccess<CbCircularPouringMotion, OrArm>, StMoveLastTrajectoryInitialState, SUCCESS>,
       Transition<EvCbFailure<CbCircularPouringMotion, OrArm>, StMoveLastTrajectoryInitialState, ABORT>,
 
+
       Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveKnownState1, PREVIOUS>,  
+
       Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveLastTrajectoryInitialState, NEXT>  
     >
     reactions;

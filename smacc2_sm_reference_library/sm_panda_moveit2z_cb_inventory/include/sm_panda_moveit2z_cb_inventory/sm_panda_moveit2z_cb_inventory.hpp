@@ -41,6 +41,7 @@
 using namespace cl_moveit2z;
 using namespace cl_keyboard;
 
+
 namespace sm_panda_moveit2z_cb_inventory
 {
 
@@ -71,7 +72,9 @@ struct StUndoLastTrajectory;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
+
 struct SmPandaMoveit2zCbInventory : public smacc2::SmaccStateMachineBase<SmPandaMoveit2zCbInventory, StPause1>
+
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -85,6 +88,7 @@ struct SmPandaMoveit2zCbInventory : public smacc2::SmaccStateMachineBase<SmPanda
 
 // STATES
 #include "states/st_acquire_sensors.hpp"
+<<<<<<< HEAD
 #include "states/st_pause_1.hpp"
 #include "states/st_pause_2.hpp"
 #include "states/st_pause_3.hpp"
@@ -95,6 +99,13 @@ struct SmPandaMoveit2zCbInventory : public smacc2::SmaccStateMachineBase<SmPanda
 #include "states/st_move_end_effector.hpp"
 #include "states/st_circular_pivot_motion.hpp"
 #include "states/st_move_joints_1.hpp"
+=======
+#include "states/st_acquire_sensors_3.hpp"
+#include "states/st_attach_object.hpp"
+#include "states/st_move_end_effector.hpp"
+#include "states/st_circular_pivot_motion.hpp"
+#include "states/st_move_joints.hpp"
+>>>>>>> humble
 #include "states/st_move_joints_2.hpp"
 #include "states/st_move_joints_3.hpp"
 #include "states/st_detach_object.hpp"

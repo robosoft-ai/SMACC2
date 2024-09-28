@@ -43,9 +43,11 @@ struct StMoveKnownState1 : smacc2::SmaccState<StMoveKnownState1, SmPandaMoveit2z
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
+
       Transition<EvCbSuccess<CbMoveKnownState, OrArm>, StPause2, SUCCESS>,
  
       Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause2, NEXT>  
+
     >
     reactions;
 

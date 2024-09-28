@@ -44,11 +44,13 @@ struct StEndEffectorRotate : smacc2::SmaccState<StEndEffectorRotate, SmPandaMove
   // TRANSITION TABLE
   typedef boost::mpl::list<
 
+
     Transition<EvCbSuccess<CbEndEffectorRotate, OrArm>, StMoveKnownState1, SUCCESS>,
     Transition<EvCbFailure<CbEndEffectorRotate, OrArm>, StEndEffectorRotate, SUCCESS>,
 
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveEndEffector, PREVIOUS>,  
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveKnownState1, NEXT>  
+
 
     >
     reactions;
@@ -59,7 +61,9 @@ struct StEndEffectorRotate : smacc2::SmaccState<StEndEffectorRotate, SmPandaMove
       double deltaRadians = -M_PI * 0.1;
       //std::string tipLink  = "tool0";
       //std::string tipLink = "wrist_3_link";
+
        std::string tipLink = "panda_link8";
+
 
      configure_orthogonal<OrArm, CbEndEffectorRotate>(deltaRadians, tipLink);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
