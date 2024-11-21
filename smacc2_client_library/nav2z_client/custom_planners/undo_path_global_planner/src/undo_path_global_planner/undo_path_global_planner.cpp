@@ -385,16 +385,13 @@ nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(
     nh_->get_logger(),
     "[UndoPathGlobalPlanner] last forward path msg size: " << lastForwardPathMsg_.poses.size());
 
-  if (lastForwardPathMsg_.poses.size() > 0)
-  {
-    RCLCPP_INFO_STREAM(
-      nh_->get_logger(), "[UndoPathGlobalPlanner] last forward path frame id: "
-                           << lastForwardPathMsg_.poses.front().header.frame_id);
-    RCLCPP_INFO_STREAM(
-      nh_->get_logger(), "[UndoPathGlobalPlanner] start pose frame id: " << start.header.frame_id);
-    RCLCPP_INFO_STREAM(
-      nh_->get_logger(), "[UndoPathGlobalPlanner] goal pose frame id: " << goal.header.frame_id);
-  }
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[UndoPathGlobalPlanner] last forward path frame id: "
+                         << lastForwardPathMsg_.poses.front().header.frame_id);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[UndoPathGlobalPlanner] start pose frame id: " << start.header.frame_id);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), "[UndoPathGlobalPlanner] goal pose frame id: " << goal.header.frame_id);
 
   if (lastForwardPathMsg_.poses.size() == 0)
   {
