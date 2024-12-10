@@ -31,6 +31,7 @@ ClNav2Z::ClNav2Z(std::string moveBaseName) : Base(moveBaseName)
 
 // Define Client destructor.
 ClNav2Z::~ClNav2Z() {}
+
 }  // namespace cl_nav2z
 
 // Export the ClNav2Z class as type smacc2::ISmaccClient as an implementation of the ISmaccClient interface.
