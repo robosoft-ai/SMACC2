@@ -20,23 +20,22 @@
 // Declare the namespace for the client library.
 namespace cl_nav2z
 {
-// Declare Client class, inherit from SmaccActionClientBase with the action type NavigateToPose.
+// Declare Client class, inherit from SmaccActionClientBase template with default action argument.
 class ClNav2Z
 : public smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>
 {
 public:
   // Bring the SmaccActionClientBase types into the current scope.
   using smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>::GoalHandle;
-  using smacc2::client_bases::SmaccActionClientBase<
-    nav2_msgs::action::NavigateToPose>::ResultCallback;
+  using smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>::ResultCallback;
 
   // Define "SmaccNavigateResultSignal" as a SmaccSignal that points to the WrappedResult type of SmaccActionClientBase.
   typedef smacc2::SmaccSignal<void(const WrappedResult &)> SmaccNavigateResultSignal;
 
-  // Declare Client constructor with string set to the right ROS action.
+  // Declare Client class constructor with string set to the right ROS action.
   ClNav2Z(std::string navigateToPoseAction = "/navigate_to_pose");
 
-  // Declare Client destructor
+  // Declare Client class destructor.
   virtual ~ClNav2Z();
 };
 

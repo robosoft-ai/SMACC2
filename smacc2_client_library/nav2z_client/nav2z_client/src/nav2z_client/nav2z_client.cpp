@@ -23,14 +23,15 @@ namespace cl_nav2z
 typedef smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose> Base;
 typedef Base::WrappedResult WrappedResult;
 
-// Define Client constructor.
+// Define Client class constructor.
 ClNav2Z::ClNav2Z(std::string moveBaseName) : Base(moveBaseName)
 {
   // RCLCPP_INFO(getLogger(),"Smacc Move Base Action Client");
 }
 
-// Define Client destructor.
+// Define Client class destructor.
 ClNav2Z::~ClNav2Z() {}
+
 
 }  // namespace cl_nav2z
 
