@@ -16,10 +16,9 @@
 #include <pluginlib/class_list_macros.hpp>
 #include <string>
 
-// Define the namespace for the client library.
 namespace cl_nav2z
 {
-// Define "Base" as a SmaccActionClientBase specialized for the NavigateToPose action, tie to WrappedResult.
+// Define "Base" as a SmaccActionClientBase arg  for the NavigateToPose action, tie to WrappedResult.
 typedef smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose> Base;
 typedef Base::WrappedResult WrappedResult;
 
@@ -31,7 +30,6 @@ ClNav2Z::ClNav2Z(std::string moveBaseName) : Base(moveBaseName)
 
 // Define Client class destructor.
 ClNav2Z::~ClNav2Z() {}
-
 
 }  // namespace cl_nav2z
 

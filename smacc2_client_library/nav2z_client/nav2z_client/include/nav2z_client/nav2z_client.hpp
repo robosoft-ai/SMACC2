@@ -17,7 +17,6 @@
 #include <smacc2/client_bases/smacc_action_client_base.hpp>
 #include <smacc2/smacc.hpp>
 
-// Declare the namespace for the client library.
 namespace cl_nav2z
 {
 // Declare Client class, inherit from SmaccActionClientBase template with default action argument.
@@ -27,7 +26,8 @@ class ClNav2Z
 public:
   // Bring the SmaccActionClientBase types into the current scope.
   using smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>::GoalHandle;
-  using smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>::ResultCallback;
+  using smacc2::client_bases::SmaccActionClientBase<
+    nav2_msgs::action::NavigateToPose>::ResultCallback;
 
   // Define "SmaccNavigateResultSignal" as a SmaccSignal that points to the WrappedResult type of SmaccActionClientBase.
   typedef smacc2::SmaccSignal<void(const WrappedResult &)> SmaccNavigateResultSignal;
