@@ -18,7 +18,7 @@
 
 namespace cl_nav2z
 {
-// Define "Base" as a SmaccActionClientBase arg  for the NavigateToPose action, tie to WrappedResult.
+// Define "Base" as a SmaccActionClientBase with NavigateToPose as action argument, tie to WrappedResult.
 typedef smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose> Base;
 typedef Base::WrappedResult WrappedResult;
 
