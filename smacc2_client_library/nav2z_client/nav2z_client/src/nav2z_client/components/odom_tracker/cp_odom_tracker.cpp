@@ -99,7 +99,6 @@ void CpOdomTracker::onInitialize()
  */
 void CpOdomTracker::setWorkingMode(WorkingMode workingMode)
 {
-  // RCLCPP_INFO(getLogger(),"odom_tracker m_mutex acquire");
   std::lock_guard<std::mutex> lock(m_mutex_);
 
   switch (workingMode)
@@ -126,6 +125,14 @@ void CpOdomTracker::setWorkingMode(WorkingMode workingMode)
       RCLCPP_INFO_STREAM(getLogger(), "[CpOdomTracker] setting working mode to <UNKNOWN>");
   }
 
+  if (this->odomSub_->get_publisher_count() == 0)
+  {
+    RCLCPP_ERROR_STREAM(
+      getLogger(),
+      "[CpOdomTracker] Odom tracker cannot record the path because there is no publisher to the "
+      "odometry topic");
+  }
+
   workingMode_ = workingMode;
   // RCLCPP_INFO(getLogger(),"odom_tracker m_mutex release");
 }
@@ -150,7 +157,15 @@ void CpOdomTracker::pushPath(std::string pathname)
 {
   RCLCPP_INFO(getLogger(), "odom_tracker m_mutex acquire");
   std::lock_guard<std::mutex> lock(m_mutex_);
+
   this->logStateString(false);
+  if (this->odomSub_->get_publisher_count() == 0)
+  {
+    RCLCPP_ERROR_STREAM(
+      getLogger(),
+      "[CpOdomTracker] Odom tracker cannot record the path because there is no publisher to the "
+      "odometry topic");
+  }
 
   pathInfos_.push_back({currentPathName_, this->currentMotionGoal_});
   pathStack_.push_back(baseTrajectory_);
@@ -181,6 +196,14 @@ void CpOdomTracker::popPath(int popCount, bool keepPreviousPath)
 
   RCLCPP_INFO(getLogger(), "POP PATH ENTRY");
   this->logStateString();
+
+  if (this->odomSub_->get_publisher_count() == 0)
+  {
+    RCLCPP_ERROR_STREAM(
+      getLogger(),
+      "[CpOdomTracker] Odom tracker cannot record the path because there is no publisher to the "
+      "odometry topic");
+  }
 
   if (!keepPreviousPath)
   {
@@ -238,6 +261,14 @@ void CpOdomTracker::logStateString(bool debug)
     i++;
   }
   ss << "---";
+
+  if (this->odomSub_->get_publisher_count() == 0)
+  {
+    ss << std::endl
+       << "[CpOdomTracker] Odom tracker cannot record the path because there is no publisher to "
+          "the odometry topic"
+       << std::endl;
+  }
 
   if (debug)
     RCLCPP_DEBUG(getLogger(), ss.str().c_str());

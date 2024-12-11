@@ -26,7 +26,7 @@
 
 namespace cl_keyboard
 {
-//----------------- TIMER sc::event DEFINITION ----------------------------------------------
+//----------------- KEYBOARD EVENT DEFINITIONS ----------------------------------------------
 template <typename TSource, typename TOrthogonal>
 struct EvKeyPressA : sc::event<EvKeyPressA<TSource, TOrthogonal>>
 {
