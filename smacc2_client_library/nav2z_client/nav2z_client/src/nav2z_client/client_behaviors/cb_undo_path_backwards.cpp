@@ -53,20 +53,6 @@ void CbUndoPathBackwards::onEntry()
 
   auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
 
-  if (options_ && options_->goalCheckerId_)
-  {
-    goalCheckerSwitcher->setGoalCheckerId(*options_->goalCheckerId_);
-  }
-  else
-  {
-    goalCheckerSwitcher->setGoalCheckerId("undo_path_backwards_goal_checker");
-  }
-
-  // WARNING: There might be some race condition with the remote undo global planner were the global path was not
-  // received yet
-  // TODO: waiting notification from global planner that it is loaded
-  rclcpp::sleep_for(1s);
-
   // this line is used to flush/reset backward planner in the case it were already there
   // plannerSwitcher->setDefaultPlanners();
   if (forwardpath.poses.size() > 0)
@@ -87,6 +73,27 @@ void CbUndoPathBackwards::onEntry()
     else
     {
       plannerSwitcher->setUndoPathBackwardPlanner();
+    }
+
+    // WARNING: There might be some race condition with the remote undo global planner/controller were the global path was not
+    // received yet, thee goal switcher
+    // TODO: waiting notification from global planner that it is loaded
+
+    RCLCPP_ERROR_STREAM(
+      getLogger(), "[" << getName()
+                       << "] Waiting for 5 seconds to get planer/controller and wait goal checker "
+                          "ready");
+
+    // rclcpp::sleep_for(5s);
+    RCLCPP_ERROR_STREAM(getLogger(), "[" << getName() << "] activating undo navigation planner");
+
+    if (options_ && options_->goalCheckerId_)
+    {
+      goalCheckerSwitcher->setGoalCheckerId(*options_->goalCheckerId_);
+    }
+    else
+    {
+      goalCheckerSwitcher->setGoalCheckerId("undo_path_backwards_goal_checker");
     }
 
     this->sendGoal(goal);

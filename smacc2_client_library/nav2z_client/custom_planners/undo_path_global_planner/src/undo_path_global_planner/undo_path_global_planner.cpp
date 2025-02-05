@@ -112,9 +112,10 @@ void UndoPathGlobalPlanner::configure(
 void UndoPathGlobalPlanner::onForwardTrailMsg(const nav_msgs::msg::Path::SharedPtr forwardPath)
 {
   lastForwardPathMsg_ = *forwardPath;
-  RCLCPP_INFO_STREAM(
-    nh_->get_logger(), "[UndoPathGlobalPlanner] received backward path msg poses ["
-                         << lastForwardPathMsg_.poses.size() << "]");
+  RCLCPP_INFO_STREAM_THROTTLE(
+    nh_->get_logger(), *nh_, 1000,
+    "[UndoPathGlobalPlanner] received backward path msg poses [" << lastForwardPathMsg_.poses.size()
+                                                                 << "]");
 }
 
 /**
@@ -450,6 +451,9 @@ nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(
       break;
     }
   }
+
+  // if(planMsg.poses.size() == 1)
+  //   planMsg.poses.clear();
 
   //--------  PUBLISHING RESULTS ---------------------------------------
   RCLCPP_INFO_STREAM(

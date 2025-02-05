@@ -62,6 +62,7 @@ public:
 
   inline geometry_msgs::msg::PoseStamped toPoseStampedMsg()
   {
+    RCLCPP_INFO_STREAM(getLogger(), "[Pose] ToPoseMsg ");
     std::lock_guard<std::mutex> guard(m_mutex_);
     return this->pose_;
   }
@@ -73,11 +74,21 @@ public:
   float getY();
   float getZ();
 
+  inline void setReferenceFrame(std::string referenceFrame) { referenceFrame_ = referenceFrame; }
+
   inline const std::string & getReferenceFrame() const { return referenceFrame_; }
 
   inline const std::string & getFrameId() const { return poseFrameName_; }
 
   bool isInitialized;
+
+  std::optional<rclcpp::Time> frozenReferenceFrameTime;
+  void freezeReferenceFrame()
+  {
+    frozenReferenceFrameTime = getNode()->now() - rclcpp::Duration::from_seconds(1);
+  }
+
+  void unfreezeReferenceFrame() { frozenReferenceFrameTime = std::nullopt; }
 
 private:
   geometry_msgs::msg::PoseStamped pose_;

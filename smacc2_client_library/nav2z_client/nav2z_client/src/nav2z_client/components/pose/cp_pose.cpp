@@ -98,6 +98,7 @@ void Pose::waitTransformUpdate(rclcpp::Rate r)
         std::lock_guard<std::mutex> guard(m_mutex_);
         tf2::toMsg(transform, this->pose_.pose);
         this->pose_.header.stamp = tf2_ros::toRclcpp(transform.stamp_);
+        this->pose_.header.frame_id = referenceFrame_;
         found = true;
         this->isInitialized = true;
       }
@@ -126,18 +127,34 @@ void Pose::update()
   tf2::Stamped<tf2::Transform> transform;
   try
   {
+    if (!frozenReferenceFrameTime)
     {
       std::lock_guard<std::mutex> lock(listenerMutex_);
-      RCLCPP_DEBUG(getLogger(), "[pose] looking up transform");
+      RCLCPP_INFO(
+        getLogger(), "[pose] looking up transform: %s -> %s", referenceFrame_.c_str(),
+        poseFrameName_.c_str());
       auto transformstamped =
         tfBuffer_->lookupTransform(referenceFrame_, poseFrameName_, rclcpp::Time(0));
       tf2::fromMsg(transformstamped, transform);
+      RCLCPP_INFO(getLogger(), "[pose] transform found");
+    }
+    else
+    {
+      RCLCPP_INFO(
+        getLogger(), "[pose] looking up transform: %s -> %s", referenceFrame_.c_str(),
+        poseFrameName_.c_str());
+      auto transformstamped = tfBuffer_->lookupTransform(
+        referenceFrame_, *frozenReferenceFrameTime, poseFrameName_, rclcpp::Time(0),
+        referenceFrame_, 1s);
+      tf2::fromMsg(transformstamped, transform);
+      RCLCPP_INFO(getLogger(), "[pose] transform found");
     }
 
     {
       std::lock_guard<std::mutex> guard(m_mutex_);
       tf2::toMsg(transform, this->pose_.pose);
       this->pose_.header.stamp = tf2_ros::toRclcpp(transform.stamp_);
+      this->pose_.header.frame_id = referenceFrame_;
       this->isInitialized = true;
     }
   }

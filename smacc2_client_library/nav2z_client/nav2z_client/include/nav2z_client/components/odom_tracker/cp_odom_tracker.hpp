@@ -35,6 +35,7 @@
 #include <nav_msgs/msg/odometry.hpp>
 #include <nav_msgs/msg/path.hpp>
 
+#include <nav2z_client/components/pose/cp_pose.hpp>
 #include <std_msgs/msg/header.hpp>
 
 namespace cl_nav2z
@@ -48,6 +49,12 @@ enum class WorkingMode : uint8_t
   IDLE = 2
 };
 
+enum class OdomTrackerStrategy
+{
+  ODOMETRY_SUBSCRIBER,
+  POSE_COMPONENT
+};
+
 /// This object tracks and saves the trajectories performed by the vehicle
 /// so that they can be used later to execute operations such as "undo motions"
 class CpOdomTracker : public smacc2::ISmaccComponent
@@ -55,12 +62,18 @@ class CpOdomTracker : public smacc2::ISmaccComponent
 public:
   // by default, the component start in record_path mode and publishing the
   // current path
-  CpOdomTracker(std::string odomtopicName = "/odom", std::string odomFrame = "odom");
+  CpOdomTracker(
+    std::string odomtopicName = "/odom", std::string odomFrame = "odom",
+    OdomTrackerStrategy strategy = OdomTrackerStrategy::ODOMETRY_SUBSCRIBER);
 
   // threadsafe
   /// odom callback: Updates the path - this must be called periodically for each odometry message.
   // The odom parameters is the main input of this tracker
-  virtual void processOdometryMessage(const nav_msgs::msg::Odometry::SharedPtr odom);
+  virtual void processNewPose(const geometry_msgs::msg::PoseStamped & odom);
+
+  virtual void odomMessageCallback(const nav_msgs::msg::Odometry::SharedPtr odom);
+
+  virtual void update();
 
   // ------ CONTROL COMMANDS ---------------------
   // threadsafe
@@ -100,6 +113,15 @@ public:
 
   void logStateString(bool debug = true);
 
+  // parameters update callback
+  void updateParameters();
+
+  inline void setOdomFrame(std::string odomFrame)
+  {
+    odomFrame_ = odomFrame;
+    getNode()->set_parameter(rclcpp::Parameter("odom_frame", odomFrame));
+  }
+
 protected:
   void onInitialize() override;
 
@@ -108,10 +130,10 @@ protected:
   virtual void rtPublishPaths(rclcpp::Time timestamp);
 
   // this is called when a new odom message is received in record path mode
-  virtual bool updateRecordPath(const nav_msgs::msg::Odometry & odom);
+  virtual bool updateRecordPath(const geometry_msgs::msg::PoseStamped & odom);
 
   // this is called when a new odom message is received in clear path mode
-  virtual bool updateClearPath(const nav_msgs::msg::Odometry & odom);
+  virtual bool updateClearPath(const geometry_msgs::msg::PoseStamped & odom);
 
   void updateAggregatedStackPath();
 
@@ -123,6 +145,9 @@ protected:
   // optional, this class can be used directly calling the odomProcessing method
   // without any subscriber
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odomSub_;
+
+  cl_nav2z::Pose * robotPose_;
+  rclcpp::TimerBase::SharedPtr robotPoseTimer_;
 
   // -------------- PARAMETERS ----------------------
   /// How much distance there is between two points of the path
@@ -162,11 +187,15 @@ protected:
 
   nav_msgs::msg::Path aggregatedStackPathMsg_;
 
-  // subscribes to topic on init if true
-  bool subscribeToOdometryTopic_;
+  OdomTrackerStrategy strategy_;
 
   std::optional<geometry_msgs::msg::PoseStamped> currentMotionGoal_;
   std::string currentPathName_;
+
+  rcl_interfaces::msg::SetParametersResult parametersCallback(
+    const std::vector<rclcpp::Parameter> & parameters);
+
+  rclcpp::node_interfaces::OnSetParametersCallbackHandle::SharedPtr param_callback_handle_;
 
   std::mutex m_mutex_;
 };
