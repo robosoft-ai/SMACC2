@@ -21,7 +21,7 @@ find_package(moveit2z_client REQUIRED)
 find_package(keyboard_client REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(ros_publisher_client REQUIRED)
-
+find_package(yaml-cpp REQUIRED)
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   ros_timer_client
@@ -32,6 +32,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   keyboard_client
   ros_publisher_client
   rclcpp
+  yaml-cpp
 )
 
 include_directories(
@@ -44,14 +45,9 @@ add_executable(${PROJECT_NAME}_node
   src/${PROJECT_NAME}/${PROJECT_NAME}_node.cpp
 )
 
-target_link_libraries(${PROJECT_NAME}_node
-  ${smacc2_LIBRARIES}
-  ${ros_timer_client_LIBRARIES}
-  ${moveit2z_LIBRARIES}
-  ${Boost_LIBRARIES}
-)
-
 ament_target_dependencies(${PROJECT_NAME}_node ${THIS_PACKAGE_INCLUDE_DEPENDS})
+
+target_link_libraries(${PROJECT_NAME}_node ${YAML_CPP_LIBRARIES})
 
 install(
   DIRECTORY include/

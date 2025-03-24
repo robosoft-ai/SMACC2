@@ -13,7 +13,7 @@ find_package(smacc2 REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
-find_package(yaml_cpp_vendor REQUIRED)
+find_package(yaml-cpp REQUIRED)
 
 #set(YAML_CPP_LIBRARIES yaml-cpp)
 
@@ -23,7 +23,7 @@ tf2
 tf2_ros
 smacc2
 tf2_geometry_msgs
-yaml_cpp_vendor
+yaml-cpp
 )
 
 include_directories(include)
@@ -52,8 +52,6 @@ add_library(${PROJECT_NAME}
   src/moveit2z_client/client_behaviors/cb_attach_object.cpp
   src/moveit2z_client/client_behaviors/cb_move_last_trajectory_initial_state.cpp
 )
-
-target_link_libraries(${PROJECT_NAME} ${YAML_CPP_LIBRARIES})
 
 ament_target_dependencies(${PROJECT_NAME}
                           ${dependencies})

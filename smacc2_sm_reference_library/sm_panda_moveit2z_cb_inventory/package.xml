@@ -30,6 +30,7 @@
   <depend>keyboard_client</depend>
   <depend>rclcpp</depend>
   <depend>ros_publisher_client</depend>
+  <depend>yaml-cpp</depend>
 
 
   <exec_depend>joint_trajectory_controller</exec_depend>
