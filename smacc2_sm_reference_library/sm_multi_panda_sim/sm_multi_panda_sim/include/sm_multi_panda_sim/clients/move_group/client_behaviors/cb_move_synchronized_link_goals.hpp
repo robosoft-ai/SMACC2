@@ -45,7 +45,7 @@ public:
     requiresClient(movegroupClient_);
 
     //auto group_name = movegroupClient_->getOptions().group_name_;
-    std::string ns =  movegroupClient_->getOptions().move_group_namespace_;
+    std::string ns =  movegroupClient_->getOptions().move_group_namespace;
 
     //auto topicname = "/joint_state_broadcaster_"UR5PREFIX"/joint_states";
 

@@ -40,7 +40,7 @@ ClMoveit2z::~ClMoveit2z() {}
 void ClMoveit2z::onInitialize()
 {
   moveGroupClientInterface = std::make_shared<MoveGroupInterface>(getNode(), options_);
-  planningSceneInterface = std::make_shared<PlanningSceneInterface>(options_.move_group_namespace_);
+  planningSceneInterface = std::make_shared<PlanningSceneInterface>(options_.move_group_namespace);
 }
 
 void ClMoveit2z::postEventMotionExecutionSucceded()

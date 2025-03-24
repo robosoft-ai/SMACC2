@@ -92,7 +92,6 @@ void CbMoveCartesianRelative::moveRelativeCartesian(
   double fraction = movegroupClient->computeCartesianPath(
     waypoints,
     0.01,  // eef_step
-    0.00,  // jump_threshold
     trajectory);
 
   moveit::core::MoveItErrorCode behaviorResult;
@@ -114,7 +113,7 @@ void CbMoveCartesianRelative::moveRelativeCartesian(
     moveit::planning_interface::MoveGroupInterface::Plan grasp_pose_plan;
 
     // grasp_pose_plan.start_state_ = *(moveGroupInterface.getCurrentState());
-    grasp_pose_plan.trajectory_ = trajectory;
+    grasp_pose_plan.trajectory = trajectory;
     behaviorResult = movegroupClient->execute(grasp_pose_plan);
   }
 
