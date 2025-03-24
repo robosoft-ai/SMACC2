@@ -28,9 +28,8 @@
   <depend>tf2</depend>
 
 
-  <exec_depend>gazebo_ros</exec_depend>
-  <exec_depend>gazebo</exec_depend>
-  <exec_depend>gazebo_plugins</exec_depend>
+  <exec_depend>ros_gz</exec_depend>
+  <exec_depend>gz_plugin_vendor</exec_depend>
 
   <buildtool_depend>rosidl_default_generators</buildtool_depend>
   <depend>action_msgs</depend>
