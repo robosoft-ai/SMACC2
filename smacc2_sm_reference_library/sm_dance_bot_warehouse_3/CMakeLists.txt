@@ -28,6 +28,7 @@ find_package(sr_conditional REQUIRED)
 find_package(ros_timer_client REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
 set(dependencies
   smacc2
