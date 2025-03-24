@@ -71,7 +71,7 @@ public:
    * @return      The sequence of poses to get from start to goal, if any
    */
   virtual nav_msgs::msg::Path createPlan(
-    const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal);
+    const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal, std::function<bool()> cancel_checker);
 
 private:
   // rclcpp::Node::SharedPtr nh_;

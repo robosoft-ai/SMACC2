@@ -374,7 +374,7 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(
  ******************************************************************************************************************
  */
 nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(
-  const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal)
+  const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal, std::function<bool()> cancel_checker)
 {
   // -------------- BASIC CHECKS ---------------------
 

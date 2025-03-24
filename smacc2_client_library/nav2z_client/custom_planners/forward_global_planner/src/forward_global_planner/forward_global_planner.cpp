@@ -77,7 +77,7 @@ void ForwardGlobalPlanner::deactivate()
 }
 
 nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(
-  const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal)
+  const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal, std::function<bool()> cancel_checker)
 {
   RCLCPP_INFO(nh_->get_logger(), "[Forward Global Planner] planning");
 
