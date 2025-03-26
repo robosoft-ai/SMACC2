@@ -12,7 +12,7 @@ jobs:
     name: Format
     runs-on: ubuntu-latest
     container:
-      image: osrf/ros:humble-desktop
+      image: osrf/ros:jazzy-desktop
 
     steps:
     - uses: actions/checkout@v2
@@ -20,11 +20,11 @@ jobs:
     - name: Install clang-format
       run: |
        apt update
-       apt install -y python3-pip clang-format ros-humble-ament-cppcheck
+       apt install -y python3-pip clang-format ros-jazzy-ament-cppcheck
        git config --global --add safe.directory `pwd`
        pip install pre-commit
     - name: pre-commit
       shell: bash
       run: |
-        source /opt/ros/humble/setup.bash
+        source /opt/ros/jazzy/setup.bash
         pre-commit run -a

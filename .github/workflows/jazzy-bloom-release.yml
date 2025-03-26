@@ -1,20 +1,20 @@
-name: Humble bloom-release
+name: Jazzy bloom-release
 
 on:
   push:
     paths:
        - package.xml
        - '*/package.xml'
-    branches: humble
+    branches: jazzy
   workflow_dispatch:
 
 jobs:
   bloom-release:
     runs-on: ubuntu-latest
     container:
-      image: osrf/ros:humble-desktop
+      image: osrf/ros:jazzy-desktop
     env:
-      ROS_DISTRO: humble
+      ROS_DISTRO: jazzy
       PRERELEASE: true
       BASEDIR: ${{ github.workspace }}/.work
 
@@ -26,7 +26,7 @@ jobs:
         run: |
           apt-get update
           apt-get install -y python3-colcon-* python3-colcon-coveragepy-result
-          source /opt/ros/humble/setup.bash
+          source /opt/ros/jazzy/setup.bash
           rosdep update
           rosdep install --from-paths . --ignore-src -r -y --skip-keys warehouse_ros_mongo
           colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-up-to smacc2 smacc2_msgs

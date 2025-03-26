@@ -1,20 +1,20 @@
-name: Humble Semi-Binary Build
+name: Jazzy Semi-Binary Build
 on:
    pull_request:
       branches:
-         - humble
+         - jazzy
    push:
       branches:
-         - humble
+         - jazzy
    schedule: # Run every morning to detect flakiness and broken dependencies
          - cron: '43 3 * * *'
 
 jobs:
   ci:
-    name: humble semi-binary build
+    name: jazzy semi-binary build
     runs-on: ubuntu-22.04
     container:
-        image: osrf/ros:humble-desktop
+        image: osrf/ros:jazzy-desktop
 
     steps:
         - uses: actions/checkout@v1
@@ -26,8 +26,8 @@ jobs:
                 rm /etc/ros/rosdep/sources.list.d/20-default.list
                 rosdep init
                 rosdep update
-                vcs import < .github/SMACC2.humble.repos
+                vcs import < .github/SMACC2.jazzy.repos
                 rosdep install --from-paths . --ignore-src -r -y
-                source /opt/ros/humble/setup.bash
+                source /opt/ros/jazzy/setup.bash
 
                 colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-skip sm_multi_ur5_sim sm_atomic_hierarchy sm_aws_warehouse_navigation  sm_dance_bot_warehouse_2 sm_multi_ur5_sim sm_three_some sm_atomic_lifecycle sm_branching sm_dance_bot_warehouse_3 sm_pack_ml sm_advanced_recovery_1 sm_atomic_mode_states sm_dance_bot sm_ferrari sm_pubsub_1 sm_atomic sm_atomic_services sm_dance_bot_strikes_back sm_multi_panda_sim sm_respira_1 sm_atomic_24hr sm_autoware_avp sm_dance_bot_warehouse sm_multi_stage_1 sm_panda_moveit2z_cb_inventory
