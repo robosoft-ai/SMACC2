@@ -113,8 +113,8 @@ void ISmaccStateMachine::updateStatusMessage()
   if (currentStateInfo_ != nullptr)
   {
     RCLCPP_WARN_STREAM(
-      nh_->get_logger(), "[StateMachine] setting state active "
-                           << ": " << currentStateInfo_->getFullPath());
+      nh_->get_logger(),
+      "[StateMachine] setting state active " << ": " << currentStateInfo_->getFullPath());
 
     if (runMode_ == SMRunMode::DEBUG)
     {

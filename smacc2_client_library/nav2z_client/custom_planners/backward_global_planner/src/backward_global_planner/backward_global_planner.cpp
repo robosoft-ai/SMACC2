@@ -226,7 +226,8 @@ void BackwardGlobalPlanner::createDefaultBackwardPath(
 ******************************************************************************************************************
 */
 nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(
-  const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal, std::function<bool()> cancel_checker)
+  const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal,
+  std::function<bool()> cancel_checker)
 {
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "[BackwardGlobalPlanner] goal frame id: "

@@ -29,7 +29,10 @@
 
 void TRACETOOLS_TRACEPOINT(spinOnce) { CONDITIONAL_TP(spinOnce); }
 
-void TRACETOOLS_TRACEPOINT(smacc2_event, const char * event_type) { CONDITIONAL_TP(smacc2_event, event_type); }
+void TRACETOOLS_TRACEPOINT(smacc2_event, const char * event_type)
+{
+  CONDITIONAL_TP(smacc2_event, event_type);
+}
 
 void TRACETOOLS_TRACEPOINT(smacc2_state_update_start, const char * updatable_element_name)
 {
