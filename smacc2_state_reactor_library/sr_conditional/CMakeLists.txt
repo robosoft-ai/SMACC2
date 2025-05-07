@@ -21,7 +21,7 @@ include_directories(include)
 add_library(${PROJECT_NAME} SHARED
             src/${PROJECT_NAME}/sr_conditional.cpp)
 
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${dependencies})
 
 ament_export_dependencies(${dependencies})
 ament_export_include_directories(include)

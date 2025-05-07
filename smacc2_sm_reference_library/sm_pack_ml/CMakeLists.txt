@@ -45,7 +45,7 @@ include_directories(include
 
 add_executable(${PROJECT_NAME}_node src/sm_pack_ml_node.cpp)
 
-ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
+target_link_libraries(${PROJECT_NAME}_node PUBLIC ${dependencies})
 ament_export_include_directories(include)
 
 target_link_libraries(${PROJECT_NAME}_node

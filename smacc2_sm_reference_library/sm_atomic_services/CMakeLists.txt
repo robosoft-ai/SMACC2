@@ -34,7 +34,7 @@ target_link_libraries(${PROJECT_NAME}_node
   ${std_srvs_LIBRARIES}
 )
 
-ament_target_dependencies(${PROJECT_NAME}_node smacc2)
+target_link_libraries(${PROJECT_NAME}_node PUBLIC smacc2)
 
 install(
   DIRECTORY include/

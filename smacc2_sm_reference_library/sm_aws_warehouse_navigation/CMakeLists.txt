@@ -30,7 +30,7 @@ target_link_libraries(${PROJECT_NAME}_node
 )
 
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/sm_aws_warehouse_navigation.dsv.in")
-ament_target_dependencies(${PROJECT_NAME}_node smacc2)
+target_link_libraries(${PROJECT_NAME}_node PUBLIC smacc2)
 
 install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY models DESTINATION share/${PROJECT_NAME})

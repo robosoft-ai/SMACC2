@@ -26,7 +26,7 @@ add_library(${PROJECT_NAME} SHARED
 )
 
 target_link_libraries(${PROJECT_NAME} ${smacc2_LIBRARIES})
-ament_target_dependencies(${PROJECT_NAME} smacc2)
+target_link_libraries(${PROJECT_NAME} PUBLIC smacc2)
 
 ament_export_dependencies(smacc2)
 ament_export_include_directories(include)

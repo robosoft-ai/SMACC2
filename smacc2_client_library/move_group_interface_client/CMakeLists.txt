@@ -55,8 +55,9 @@ add_library(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME} ${YAML_CPP_LIBRARIES})
 
-ament_target_dependencies(${PROJECT_NAME}
-                          ${dependencies})
+target_link_libraries(${PROJECT_NAME} PUBLIC
+                          ${dependencies}
+)
 
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})

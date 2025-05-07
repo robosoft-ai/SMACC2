@@ -30,7 +30,7 @@ add_library(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME} ${smacc2_LIBRARIES} ${std_msgs_LIBRARIES})
-ament_target_dependencies(${PROJECT_NAME} smacc2 std_msgs)
+target_link_libraries(${PROJECT_NAME} PUBLIC smacc2 std_msgs)
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 

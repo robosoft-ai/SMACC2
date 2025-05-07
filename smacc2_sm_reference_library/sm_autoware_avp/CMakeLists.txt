@@ -42,7 +42,7 @@ target_link_libraries(${PROJECT_NAME}_node
   ${Boost_LIBRARIES}
 )
 
-ament_target_dependencies(${PROJECT_NAME}_node ${THIS_PACKAGE_INCLUDE_DEPENDS})
+target_link_libraries(${PROJECT_NAME}_node PUBLIC ${THIS_PACKAGE_INCLUDE_DEPENDS})
 
 install(
   DIRECTORY include/

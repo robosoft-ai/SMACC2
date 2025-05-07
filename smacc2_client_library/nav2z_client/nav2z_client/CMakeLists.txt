@@ -79,8 +79,9 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/components/slam_toolbox/cp_slam_toolbox.cpp
 )
 
-ament_target_dependencies(${PROJECT_NAME}
-                          ${dependencies})
+target_link_libraries(${PROJECT_NAME} PUBLIC
+                          ${dependencies}
+)
 
 target_link_libraries(${PROJECT_NAME})
 

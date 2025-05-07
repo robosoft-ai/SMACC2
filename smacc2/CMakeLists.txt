@@ -38,7 +38,7 @@ set_source_files_properties(
   COMPILE_FLAGS "-Wno-unused-parameter"
 )
 
-ament_target_dependencies(smacc2 ${dependencies})
+target_link_libraries(smacc2 PUBLIC ${dependencies})
 target_link_libraries(smacc2
   ${Boost_LIBRARIES}
   ${LTTNGUST_LIBRARIES}

@@ -60,14 +60,14 @@ add_executable(${PROJECT_NAME}_node
 add_executable(temperature_sensor_node_${PROJECT_NAME} servers/temperature_sensor_node/src/temperature_sensor_node.cpp)
 add_executable(led_action_server_node_${PROJECT_NAME} servers/led_action_server/src/led_action_server_node.cpp)
 
-ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
+target_link_libraries(${PROJECT_NAME}_node PUBLIC ${dependencies})
 target_link_libraries(${PROJECT_NAME}_node ${Boost_LIBS} ${PROJECT_NAME}__rosidl_typesupport_cpp)
 
-ament_target_dependencies(led_action_server_node_${PROJECT_NAME} ${dependencies})
+target_link_libraries(led_action_server_node_${PROJECT_NAME} PUBLIC ${dependencies})
 set_target_properties(led_action_server_node_${PROJECT_NAME} PROPERTIES OUTPUT_NAME "led_action_server_node")
 target_link_libraries(led_action_server_node_${PROJECT_NAME} ${Boost_LIBS} ${PROJECT_NAME}__rosidl_typesupport_cpp)
 
-ament_target_dependencies(temperature_sensor_node_${PROJECT_NAME} ${dependencies})
+target_link_libraries(temperature_sensor_node_${PROJECT_NAME} PUBLIC ${dependencies})
 set_target_properties(temperature_sensor_node_${PROJECT_NAME} PROPERTIES OUTPUT_NAME "temperature_sensor_node")
 
 ament_export_include_directories(include)

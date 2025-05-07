@@ -24,7 +24,7 @@ include_directories(include)
 add_library(${PROJECT_NAME} SHARED
             src/${PROJECT_NAME}/cl_multirole_sensor.cpp)
 
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${dependencies})
 
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})

@@ -36,7 +36,7 @@ include_directories(include)
 add_library(${PROJECT_NAME} SHARED
             src/${PROJECT_NAME}/common.cpp)
 
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${dependencies})
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 ament_export_include_directories(include)

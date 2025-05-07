@@ -62,7 +62,7 @@ add_executable(${PROJECT_NAME}_node
   src/${PROJECT_NAME}/sm_husky_barrel_search_1_node.cpp
 )
 
-ament_target_dependencies(${PROJECT_NAME}_node ${dependencies})
+target_link_libraries(${PROJECT_NAME}_node PUBLIC ${dependencies})
 target_link_libraries(${PROJECT_NAME}_node
   boost_thread
   boost_system
@@ -88,8 +88,10 @@ add_library(controllable_led_plugin SHARED
 
  target_include_directories(controllable_led_plugin PUBLIC include ${gazebo_ros_INCLUDE_DIRS})
 
- ament_target_dependencies(controllable_led_plugin
-   "std_msgs" ${dependencies})
+ target_link_libraries(controllable_led_plugin PUBLIC
+   "std_msgs"
+   ${dependencies}
+)
 
  target_link_libraries(controllable_led_plugin
  #/usr/lib/x86_64-linux-gnu/gazebo-11/plugins/libFlashLightPlugin.so
@@ -108,7 +110,7 @@ add_library(controllable_led_plugin SHARED
 add_executable(opencv_perception_node
   servers/opencv_perception_node/opencv_perception_node.cpp
 )
-ament_target_dependencies(opencv_perception_node ${dependencies})
+target_link_libraries(opencv_perception_node PUBLIC ${dependencies})
 
 target_link_libraries(opencv_perception_node
                         boost_thread

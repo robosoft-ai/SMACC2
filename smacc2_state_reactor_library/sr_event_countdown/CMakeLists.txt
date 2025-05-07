@@ -23,7 +23,7 @@ include_directories(include)
 add_library(${PROJECT_NAME}
             src/${PROJECT_NAME}/sr_event_countdown.cpp)
 
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${dependencies})
 
 ament_export_dependencies(${dependencies})
 ament_export_include_directories(include)

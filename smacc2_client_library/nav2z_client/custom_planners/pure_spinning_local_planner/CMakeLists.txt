@@ -44,7 +44,7 @@ add_library(${PROJECT_NAME} SHARED
 # prevent pluginlib from using boost
 target_compile_definitions(${PROJECT_NAME} PUBLIC "PLUGINLIB__DISABLE_BOOST_FUNCTIONS")
 pluginlib_export_plugin_description_file(nav2_core pslp_plugin.xml)
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${dependencies})
 
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})

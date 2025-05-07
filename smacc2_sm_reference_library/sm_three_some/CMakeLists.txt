@@ -37,7 +37,7 @@ set(dependencies
 
 add_executable(${PROJECT_NAME}_node src/sm_three_some_node.cpp)
 target_include_directories(${PROJECT_NAME}_node PUBLIC include)
-ament_target_dependencies(${PROJECT_NAME}_node
+target_link_libraries(${PROJECT_NAME}_node PUBLIC
   ${dependencies}
 )
 target_link_libraries(${PROJECT_NAME}_node

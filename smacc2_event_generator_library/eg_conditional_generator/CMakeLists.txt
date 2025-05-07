@@ -21,7 +21,7 @@ include_directories(include)
 add_library(${PROJECT_NAME} SHARED
             src/eg_conditional_generator/eg_conditional_generator.cpp)
 
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${dependencies})
 
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
