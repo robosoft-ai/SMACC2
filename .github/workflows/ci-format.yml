@@ -15,7 +15,7 @@ jobs:
       image: osrf/ros:humble-desktop
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Install clang-format
       run: |
