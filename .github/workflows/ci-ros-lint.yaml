@@ -6,6 +6,8 @@ jobs:
   ament_lint:
     name: ament_${{ matrix.linter }}
     runs-on: ubuntu-latest
+    container:
+      image: ubuntu:noble
     strategy:
       fail-fast: false
       matrix:
