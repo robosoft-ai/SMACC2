@@ -4,17 +4,15 @@ on:
 
 jobs:
   ament_lint:
-    #name: ament_${{ matrix.linter }}
+    name: ament_${{ matrix.linter }}
     runs-on: ubuntu-latest
-    container:
-      image: ubuntu:noble
     strategy:
       fail-fast: false
       matrix:
         linter: [copyright, cppcheck, lint_cmake]
     steps:
     - uses: actions/checkout@v4
-    - uses: ros-tooling/setup-ros@v0.7
+    - uses: ros-tooling/setup-ros@v0.6
     - uses: ros-tooling/action-ros-lint@master
       with:
         distribution: humble
