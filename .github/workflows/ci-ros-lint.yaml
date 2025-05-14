@@ -13,9 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: ros-tooling/setup-ros@v0.7
-    - uses: ros-tooling/action-ros-lint@v0.1.4
+    - uses: ros-tooling/action-ros-lint@master
       with:
-        distribution: galactic
+        distribution: humble
         linter: ${{ matrix.linter }}
         package-name:
           smacc2
