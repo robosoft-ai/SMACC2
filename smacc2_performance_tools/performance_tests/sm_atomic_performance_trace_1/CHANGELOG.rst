@@ -1,3834 +1,2212 @@
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package sm_atomic_performance_trace_1
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+======================================================
 
 2.3.16 (2023-07-16)
 -------------------
-* Merge branch 'humble' of https://github.com/robosoft-ai/SMACC2 into humble
-* Brettpac branch (`#518 <https://github.com/robosoft-ai/SMACC2/issues/518>`_)
-  * Attempt to fix weird issue with ros buildfarm
-  * More on this buildfarm issue
-  ---------
-  Co-authored-by: brettpac <brettpac@pop-os.localdomain>
-* Contributors: brettpac, pabloinigoblasco
+### Added
+- Merged branch 'humble' from `robosoft-ai/SMACC2` repository
+- Brettpac branch (`#518 <https://github.com/robosoft-ai/SMACC2/issues/518>`_)
+  - Attempted fix for ros buildfarm issue
+
+### Contributors
+- brettpac
+- pabloinigoblasco
 
 2.3.6 (2023-03-12)
 ------------------
+No changes.
 
 1.22.1 (2022-11-09)
 -------------------
-* pre-release
-* Contributors: pabloinigoblasco
+### Added
+- Pre-release
 
-* Revert "Ignore packages which should not be released."
-  This reverts commit dec14a936a877b2ef722a6a32f1bf3df09312542.
-* Contributors: Denis Štogl
+### Contributors
+- pabloinigoblasco
 
 0.3.0 (2022-04-04)
 ------------------
+No changes.
 
 0.0.0 (2022-11-09)
 ------------------
-* Revert "Ignore packages which should not be released."
-  This reverts commit dec14a936a877b2ef722a6a32f1bf3df09312542.
-* Ignore packages which should not be released.
-* Feature/master rolling to galactic backport (#236)
-  * updated mentions of SMACC/ROS to SMACC2/ROS2
-  * some progress on navigation rolling
-  * renamed folders, deleted tracing.md, edited README.md
-  * added smacc2_performance_tools
-  * performance tests improvements
-  * more on performance and other issues
-  * sm_respira_1 format cleanup
-  * sm_respira_1 format cleanup pre-commit
-  * sm_respira_test_2
-  * sm_respira_test_2
-  * more changes on performance tests
-  * Do not execute clang-format on smacc2_sm_reference_library package.
-  * sm_reference_library reformatting
-  * Correct trailing spaces.
-  * sm_atomic_24hr
-  * sm_atomic_performance_trace_1
-  * Update smacc2_rta command across readmes
-  * Clean up of sm_atomic_24hr
-  * more sm_atomic_24hr cleanup
-  * Optimized deps in move_base_z_planners_common.
-  * Renaming of event generator library
-  * minor formatting
-  * Add galactic CI setup and rename rolling files. (#58)
-  * Fix source CI and correct README overview. (#62)
-  * Update c_cpp_properties.json
-  * changed launch command to ros2 launch sm_respira_1 sm_respira_1.launch (#69)
-  also noticed a note I had made while producing these that was not removed
-  * update doxygen links (#70)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More Readme Updates (#72)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More Readme (#74)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * created new sm from sm_respira_1 (#76)
-  * Feature/core and navigation fixes (#78)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * Feature/aws demo progress (#80)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * sm_advanced_recovery_1 reworked (#83)
-  * sm_advanced_recovery_1 reworked
-  * fix pre-commit
-  * Trying to fix Pre-Commit
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more sm_advanced_recovery_1 (#84)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More sm_advanced_recovery_1 work (#85)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_advanced_recovery_1 round 4 (#86)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#87)
-  * sm_atomic_performance_test_a_2
-  * sm_atomic_performance_test_a_1
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_atomic_performance_test_c_1 (#88)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * modifying sm_atomic_performance_test_a_2 (#89)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_multi_stage_1 (#90)
-  * sm_multi_stage_1
-  * fixing precommit
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more sm_multi_stage_1 (#91)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Update README.md
-  updated launch command
-  * Wait topic message client behavior (#81)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * attempting precommit fixes
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Feature/wait nav2 nodes client behavior (#82)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * Correct all linters and formaters.
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Feature/aws demo progress (#92)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * Feature/sm dance bot fixes (#93)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * Feature/sm aws warehouse (#94)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * merge and progress
-  * fix format
-  * Feature/sm dance bot fixes (#95)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * minor
-  * minor format
-  * Remove some compile warnings. (#96)
-  * Feature/cb pause slam (#98)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * minor
-  * formatting
-  * cb pause slam client behavior
-  * sm_dance_bot_lite (#99)
-  * sm_dance_bot_lite
-  * precommit
-  * Updates yaml
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Rename doxygen deployment workflow (#100)
-  * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
-  * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * gazebo fixes, to show the robot and the lidar
-  * format fixes
-  * sm_multi_stage_1 doubling (#103)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * gazebo fixes, to show the robot and the lidar
-  * format fixes
-  * gazebo fixes for sm_dance_bot_strikes_back
-  * precommit cleanup run (#106)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * aws demo (#108)
-  * aws demo
-  * format
-  * got sm_multi_stage_1 working (barely) (#109)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#110)
-  * got sm_multi_stage_1 working (barely)
-  * gaining traction sm_multi_stage_1
-  * more
-  * don't remember
-  * making progress
-  * More
-  * keep hammering
-  * two stages
-  * 3 part
-  * 4th stage
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#111)
-  * got sm_multi_stage_1 working (barely)
-  * gaining traction sm_multi_stage_1
-  * more
-  * don't remember
-  * making progress
-  * More
-  * keep hammering
-  * two stages
-  * 3 part
-  * 4th stage
-  * 5th stage
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * a3 (#113)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Remove neo_simulation2 package. (#112)
-  * Remove neo_simulation2 package.
-  * Correct formatting.
-  * Enable source build on PR for testing.
-  * Adjust build packages of source CI
-  * more sm_multi_stage_1 (#114)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * mm (#115)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * diverse improvements navigation and performance (#116)
-  * diverse improvements navigation and performance
-  * minor
-  Co-authored-by: pabloinigoblasco <pablo@ibrobotics.com>
-  * Feature/diverse improvemets navigation performance (#117)
-  * diverse improvements navigation and performance
-  * minor
-  * additional linting and formatting
-  * Remove merge markers from a python file. (#119)
-  * Feature/slam toggle and smacc deep history (#122)
-  * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
-  * feature/more_sm_dance_bot_fixes
-  * minor format
-  * minor (#124)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
-  * Move method after the method it calls. Otherwise recursion could happen. (#126)
-  * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * noticed typo
-  Finnaly > Finally
-  * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
-  * First working version of sm template and template generator. (#127)
-  * minor tweaks (#130)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
-  * minor
-  * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
-  * minor
-  * build fix
-  * waypoints navigator bug (#133)
-  * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
-  * some more progress on markers cleanup
-  * minor format issues (#134)
-  * sm_dance_bot_lite (#136)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Resolve compile wanings (#137)
-  * Add SM core test (#138)
-  * minor navigation improvements (#141)
-  * using local action msgs (#139)
-  * using local action msgs
-  * removing sm_dance_bot_msgs
-  * pending references
-  * Feature/nav2z renaming (#144)
-  * using local action msgs
-  * removing sm_dance_bot_msgs
-  * pending references
-  * navigation 2 stack renaming
-  * formatting
-  * added SVGs to READMEs of atomic, dance_bot, and others (#140)
-  * added remaining SVGs to READMEs (#145)
-  * added remaining SVGs to READMEs
-  * precommit cleanup
-  * Update package list. (#142)
-  * removing parameters smacc (#147)
-  * removing parameters smacc
-  * workflows update
-  * workflow
-  * Noticed launch command was incorrect in README.md
-  fixed launch command for sm_dance_bot_strikes_back and removed some comments I had made in the past.
-  * Fix CI: format fix python version (#148)
-  * Add SM Atomic SM generator. (#143)
-  * Remove node creation and create only a logger. (#149)
-  * Rolling Docker environment to be executed from any environment (#154)
-  * Feature/sm dance bot strikes back refactoring (#152)
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * slight waypoint 4 and iterations changes so robot can complete course (#155)
-  * Feature/migration moveit client (#151)
-  * initial migration to smacc2
-  * fixing some errors introduced on formatting
-  * missing dependency
-  * fixing some more linting warnings
-  * minor
-  * removing test from main moveit cmake
-  * test ur5
-  * progressing in the moveit migration testing
-  * updating format
-  * adding .reps dependencies and also fixing some build errors
-  * repos dependency
-  * adding dependency to ur5 client
-  * docker refactoring
-  * minor
-  * progress on move_it PR
-  * minor dockerfile test workaround
-  * improving dockerfile for building local tests
-  * minor
-  * fixing compiling issues
-  * update readme (#164)
-  * update readme
-  * more readme updates
-  * more
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * initial state machine transition timestamp (#165)
-  * moved reference library SMs to smacc2_performance_tools (#166)
-  * moved reference library SMs to smacc2_performance_tools
-  * pre-commit cleanup
-  * Add QOS durability to SmaccPublisherClient (#163)
-  * feat: add qos durability to SmaccPublisherClient
-  * fix: add a missing colon
-  * refactor: remove line
-  * feat: add reliability qos config
-  * Feature/testing moveit behaviors (#167)
-  * more testing on moveit
-  * progress on moveit
-  * more testing on moveit behaviors
-  * minor configuration
-  * fixing pipeline error
-  * fixing broken master build
-  * sm_pubsub_1 (#169)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_pubsub_1 part 2 (#170)
-  * sm_pubsub_1 part 2
-  * sm_pubsub_1 part 2
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_advanced_recovery_1 renaming (#171)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_multi_stage_1 reworking (#172)
-  * multistage modes
-  * sm_multi_stage sequences
-  * sm_multi_state_1 steps
-  * sm_multi_stage_1 sequence d
-  * sm_multi_stage_1 c sequence
-  * mode_5_sequence_b
-  * mode_4_sequence_b
-  * sm_multi_stage_1 most
-  * finishing touches 1
-  * readme
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/aws navigation sm dance bot (#174)
-  * repo dependency
-  * husky launch file in sm_dance_bot
-  * Add dependencies for husky simulation.
-  * Fix formatting.
-  * Update dependencies for husky in rolling and galactic.
-  * minor
-  * progress on aws navigation and some other refactorings on navigation clients and behaviors
-  * more on aws demo
-  * fixing broken build
-  * minor
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * minor changes
-  * minor changes (#175)
-  * warehouse2 (#177)
-  * Waypoint Inputs (#178)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * wharehouse2 progress (#179)
-  * format (#180)
-  * sm_dance_bot_warehouse_3 (#181)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm warehouse 2 13 dec 2 (#182)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * Brettpac branch (#184)
-  * sm_dance_bot_warehouse_3
-  * Redoing sm_dance_bot_warehouse_3 waypoints
-  * More Waypoints
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * SrConditional fixes and formatting (#168)
-  * fix: some formatting and templating on SrConditional
-  * fix: move trigger logic into headers
-  * fix: lint
-  * Feature/wharehouse2 dec 14 (#185)
-  * warehouse2
-  * minor
-  * Feature/sm warehouse 2 13 dec 2 (#186)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * finetuning waypoints (#187)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/cb pure spinning (#188)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * Feature/cb pure spinning (#189)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * pure spinning behavior missing files
-  * minor changes (#190)
-  * Feature/planner changes 16 12 (#191)
-  * minor changes
-  * more fixes
-  * minor
-  * minor
-  * replanning for all our examples
-  * Feature/replanning 16 dec (#193)
-  * minor changes
-  * replanning for all our examples
-  * several fixes (#194)
-  * minor changes (#195)
-  * Feature/undo motion 20 12 (#196)
-  * minor changes
-  * replanning for all our examples
-  * improving undo motion navigation warehouse2
-  * minor
-  * tuning warehouse3 (#197)
-  * Feature/undo motion 20 12 (#198)
-  * minor changes
-  * replanning for all our examples
-  * improving undo motion navigation warehouse2
-  * minor
-  * undo tuning and errors
-  * format
-  * Feature/sync 21 12 (#199)
-  * minor changes
-  * replanning for all our examples
-  * format issues
-  * Feature/warehouse2 22 12 (#200)
-  * minor changes
-  * replanning for all our examples
-  * format issues
-  * finishing warehouse2
-  * Feature/warehouse2 23 12 (#201)
-  * minor changes
-  * replanning for all our examples
-  * tuning and fixes (#202)
-  * Feature/minor tune (#203)
-  * tuning and fixes
-  * minor tune
-  * fixing warehouse 3 problems, and other core improvements (#204)
-  * fixing warehouse 3 problems, and other core improvements to remove dead lock, also making continuous integration green
-  * weird moveit not downloaded repo
-  * added missing file from warehouse2 (#205)
-  * backport to foxy
-  * minor format
-  * minor linking errors foxy
-  * Foxy backport (#206)
-  * minor formatting fixes
-  * Fix trailing spaces.
-  * Correct codespell.
-  * Correct python linters warnings.
-  * Add galactic CI build because Navigation2 is broken in rolling.
-  * Add partial changes for ament_cpplint.
-  * Add tf2_ros as dependency to find include.
-  * Disable ament_cpplint.
-  * Disable some packages and update workflows.
-  * Bump ccache version.
-  * Ignore further packages
-  * Satisfy ament_lint_cmake
-  * Add missing licences.
-  * Disable cpplint and cppcheck linters.
-  * Correct formatters.
-  * branching example
-  * Disable disabled packages
-  * Update ci-build-source.yml
-  * Change extension
-  * Change extension of imports.
-  * Enable cppcheck
-  * Correct formatting of python file.
-  * Included necessary package and edited Threesome launch
-  Changed...
-  ros2 launch sm_three_some sm_three_some
-  to
-  ros2 launch sm_three_some sm_three_some.launch
-  Added:
-  First ensure you have the necessary package installed.
+### Added
+- Ignored packages not meant for release
+- Feature/master rolling to galactic backport (#236)
+  - Updated references from SMACC/ROS to SMACC2/ROS2
+  - Various improvements in performance testing
+  - Cleaned up formatting in several packages
+  - Added new performance tools
+  - Optimized dependencies in move_base_z_planners_common
+  - Renamed event generator library
+  - Updated CI setup and renamed rolling files
+  - Corrected README overview
+  - Updated launch command to `ros2 launch sm_respira_1 sm_respira_1.launch`
+  - Added new feature for asynchronous client behavior
+  - Added new client behavior for nav2
+
+### Contributors
+- brettpac
+- Denis Štogl
+- Ubuntu 20-04-02-amd64
+
+### Co-authored
+- brettpac
+- Denis Štogl
+
+```rst
+Section_2
+=========
+
+Added
+-----
+
+- New feature: `cb_wait_topic_message`, an asynchronous client behavior that waits for a topic message and optionally checks its contents for success.
+- New client behavior for `nav2`: `add` behavior waits for `nav2` nodes to subscribe to the `/bond` topic and ensures they are alive. Optional node selection available.
+- Progress in AWS navigation demo.
+- Base for the `sm_aws_aarehouse` navigation.
+- `cb_pause_slam` client behavior.
+- `sm_dance_bot_lite` visualizing `turtlebot3`.
+- `dance bot launch gz lidar choice`: cleaning and lidar show/hide option.
+- `sm_dance_bot_strikes_back` gazebo fixes.
+- `aws demo`.
+- `sm_multi_stage_1` doubling.
+- Diverse improvements in navigation and performance.
+
+Changed
+-------
+
+- Navigation parameters fixes on `sm_dance_bot`.
+
+Fixed
+-----
+
+- Remove some compile warnings.
+- Minor hotfix.
+- Format fixes.
+
+Removed
+-------
+
+- `neo_simulation2` package.
+
+Contributors
+------------
+
+- Pablo Iñigo Blasco
+- Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
+```
+
+Section_3
+==========
+
+Added
+-----
+- Diverse improvements in navigation and performance.
+- Additional linting and formatting.
+- Progress in navigation, slam toggle client behaviors, and slam_toolbox components.
+- Introducing slam pausing/resuming functionality in sm_dance_bot.
+- First working version of sm template and template generator.
+- Added SVGs to READMEs of atomic, dance_bot, and others.
+- Rolling Docker environment to be executed from any environment.
+- Initial migration to smacc2 in moveit client.
+- Added QOS durability to SmaccPublisherClient.
+- Progress on AWS navigation and some other refactorings on navigation clients and behaviors.
+- Waypoint Inputs.
+
+Changed
+-------
+- Move method after the method it calls to prevent recursion.
+- Renamed reference library SMs to smacc2_performance_tools.
+- Minor configuration changes.
+- Husky launch file in sm_dance_bot.
+- Update dependencies for husky in rolling and galactic.
+
+Fixed
+-----
+- Resolved compile warnings.
+- Fixed launch command in README.md for sm_dance_bot_strikes_back.
+- Fix CI: format fix python version.
+- Fixed compiling issues.
+
+Removed
+-------
+- Removed merge markers from a python file.
+- Removed parameters smacc.
+- Removed test from main moveit cmake.
+- Removed node creation and create only a logger.
+
+Co-authored-by: pabloinigoblasco <pablo@ibrobotics.com>
+Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
+Co-authored-by: DecDury <declandury@gmail.com>
+Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
+Co-authored-by: Denis Štogl <denis@stogl.de>
+
+```rst
+Section 4
+=========
+
+Added
+-----
+- Added Brettpac branch (#184) with improvements on sm_dance_bot_warehouse_3 waypoints.
+- Added Feature/wharehouse2 dec 14 (#185) for warehouse2 enhancements.
+- Added Feature/sm warehouse 2 13 dec 2 (#186) with format improvements.
+- Added Feature/cb pure spinning (#188) for pure spinning behavior enhancements.
+- Added Feature/replanning 16 dec (#193) with replanning improvements.
+- Added Feature/undo motion 20 12 (#196) for undo motion navigation enhancements.
+- Added Feature/sync 21 12 (#199) with format fixes.
+- Added Feature/warehouse2 22 12 (#200) with format fixes and warehouse2 completion.
+- Added Feature/warehouse2 23 12 (#201) with tuning and fixes.
+- Added Feature/minor tune (#203) with tuning and fixes.
+- Added fixes (#204) for warehouse 3 problems and core improvements.
+- Added Foxy backport (#206) with minor formatting fixes.
+
+Changed
+-------
+- Changed ros2 launch sm_three_some sm_three_some to ros2 launch sm_three_some sm_three_some.launch.
+- Changed wording "smacc application" to "SMACC2 library".
+
+Fixed
+-----
+- Fixed SrConditional (#168) with formatting and logic improvements.
+- Fixed several linting issues.
+- Fixed minor changes (#190).
+- Fixed minor changes (#195).
+- Fixed trailing spaces, codespell, and python linters warnings.
+- Fixed formatters and corrected formatting of python files.
+- Fixed missing files in warehouse2 (#205).
+- Fixed minor linking errors in Foxy backport (#206).
+- Fixed bug in smacc2 component.
+
+Removed
+-------
+- Removed manual installation of ros-rolling-ros2trace, now automated in setupTracing.sh.
+
+Collaborators
+-------------
+- Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai> for improvements in waypoints.
+- Co-authored-by: Denis Štogl <destogl@users.noreply.github.com> for Dockerfile and tracing enhancements.
+```
+
+*pabloinigoblasco*
+
+```rst
+Section_5
+=========
+
+Added
+-----
+- Added smacc2_performance_tools.
+- Added galactic CI setup and renamed rolling files. (#58)
+- Added new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success.
+- Added new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. You optionally can select the nodes to wait.
+
+Changed
+-------
+- Updated mentions of SMACC/ROS to SMACC2/ROS2.
+- Renamed folders, deleted tracing.md, and edited README.md.
+- Updated launch command to ros2 launch sm_respira_1 sm_respira_1.launch (#69).
+- Updated smacc2_rta command across readmes.
+- Corrected trailing spaces.
+- Optimized dependencies in move_base_z_planners_common.
+- Renamed event generator library.
+- Changed launch command to ros2 launch sm_respira_1 sm_respira_1.launch (#69).
+- Updated README.md.
+- Corrected all linters and formatters.
+
+Fixed
+-----
+- Do not execute clang-format on smacc2_sm_reference_library package.
+- Fixed source CI and corrected README overview. (#62).
+- Attempted pre-commit fixes.
+
+Removed
+-------
+- Removed galactic builds from master and kept only rolling.
+- Removed submodules and used .repos file.
+
+Other
+-----
+- Some progress on navigation rolling.
+- More changes on performance tests.
+- Minor formatting.
+- Several core improvements during navigation testing.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation demo.
+
+```rst
+Section_6
+=========
+
+Added
+-----
+
+- New client behavior `cb_wait_topic_message` added for nav2, allowing nodes to subscribe to the `/bond` topic and wait for them to be alive. Optional node selection available.
+- New feature `sm_aws_warehouse` (#94) introduced as a base for AWS navigation.
+- Asynchronous client behavior `cb_pause_slam` added.
+- `sm_dance_bot_lite` (#99) and `sm_dance_bot_strikes_back` (#105) gazebo fixes implemented for visualizing TurtleBot3 and lidar show/hide options.
+- Progress made in AWS navigation demo.
+- `sm_multi_stage_1` (#103) improvements and fixes.
+- `smacc2::deep_history` syntax introduced for navigating and slam toggle client behaviors.
+- `sm_dance_bot_s_pattern` (#128) feature added.
+
+Changed
+-------
+
+- Navigation parameters fixed for `sm_dance_bot`.
+- Formatting and core improvements made during navigation testing.
+- Minor format changes and cleanup.
+- `sm_multi_stage_1` (#114) enhancements.
+
+Fixed
+-----
+
+- Compile warnings removed (#96).
+- `neo_simulation2` package removed (#112).
+- Recursion issue fixed by moving method after the one it calls (#126).
+- Merge markers removed from a Python file (#119).
+
+Removed
+-------
+
+- `neo_simulation2` package removed.
+
+Collaborators
+-------------
+
+- Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
+- Co-authored-by: pabloinigoblasco <pablo@ibrobotics.com>
+```
+
+```rst
+Section_7
+=========
+
+Added
+-----
+
+- First working version of sm template and template generator. (#127)
+- Feature/dance bot s pattern (#129)
+- Feature/sm dance bot refine (#131)
+- Feature/sm dance bot refine 2 (#132)
+- Feature/nav2z renaming (#144)
+- Added SM Atomic SM generator. (#143)
+- Rolling Docker environment to be executed from any environment (#154)
+- Add QOS durability to SmaccPublisherClient (#163)
+- Feature/testing moveit behaviors (#167)
+- Feature/aws navigation sm dance bot (#174)
+- Feature/wharehouse2 dec 14 (#185)
+- Feature/cb pure spinning (#188)
+- Feature/cb pure spinning (#189)
+
+Changed
+-------
+
+- Minor tweaks (#130)
+- Minor navigation improvements (#141)
+- Using local action msgs (#139)
+- Update package list. (#142)
+- Update readme (#164)
+- Moved reference library SMs to smacc2_performance_tools (#166)
+- Finetuning waypoints (#187)
+
+Fixed
+-----
+
+- Waypoints navigator bug (#133)
+- Fix CI: format fix python version (#148)
+- Remove node creation and create only a logger. (#149)
+- Fixing pipeline error
+- Fixing broken master build
+- SrConditional fixes and formatting (#168)
+
+Removed
+-------
+
+- Removing sm_dance_bot_msgs
+- Removing parameters smacc
+- Removing test from main moveit cmake
+
+Collaborators
+-------------
+
+- Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
+- Co-authored-by: DecDury <declandury@gmail.com>
+- Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
+- Co-authored-by: Denis Štogl <denis@stogl.de>
+```
+
+```rst
+Section_8
+=========
+
+Added
+-----
+- Feature/planner changes 16 12 (#191)
+- Feature/replanning 16 dec (#193)
+- Feature/undo motion 20 12 (#196)
+- Feature/undo motion 20 12 (#198)
+- Feature/sync 21 12 (#199)
+- Feature/warehouse2 22 12 (#200)
+- Feature/warehouse2 23 12 (#201)
+- Feature/minor tune (#203)
+- Merging code from backport foxy and updates about autoware (#208)
+- Foxy backport (#206)
+- Add galactic CI build because Navigation2 is broken in rolling
+- Add partial changes for ament_cpplint
+- Add tf2_ros as dependency to find include
+- Create workflow for testing prerelease builds
+- Use docs/ as source folder for documentation
+- Use docs/ as output directory
+- Rename to smacc2 and smacc2_msgs
+- Update name of package and package.xml to pass liter
+- Update changelogs
+- Revert "Ignore all packages except smacc2 and smacc2_msgs"
+- Update description table
+- Update table
+- Copy initial docs
+- Dockerfile w/ ROS distro as argument
+- Opened new folder for additional tracing contents
+- Moved tracing.md to tracing directory
+- Added setupTracing.sh
+- Created alternative ManualTracing
+- Added new sm markdowns
+- Added a dockerfile for Rolling and Galactic
+- Enable Navigation2 for semi-binary build
+
+Changed
+-------
+- Renamed "smacc application" to "SMACC2 library"
+
+Fixed
+-----
+- Several fixes (#194)
+- Tuning warehouse3 (#197)
+- Tuning and fixes (#202)
+- Fix trailing spaces
+- Correct codespell
+- Correct python linters warnings
+- Disable ament_cpplint
+- Disable some packages and update workflows
+- Bump ccache version
+- Ignore further packages
+- Satisfy ament_lint_cmake
+- Add missing licences
+- Disable cpplint and cppcheck linters
+- Correct formatters
+- Enable cppcheck
+- Correct formatting of python file
+- Reactivating smacc2 nav clients for rolling via submodules
+- Bug in smacc2 component
+- Enable build of missing rolling repositories
+
+Removed
+-------
+- Delete tracing directory
+- Reverted markdowns to html
+- Additional cleanup
+- Cleanup
+```
+
+*pabloinigoblasco*
+
+```rst
+Section_9
+=========
+
+Added
+-----
+- Added smacc2_performance_tools.
+- Added galactic CI setup and renamed rolling files. (#58).
+- Added new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success.
+- Added new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. You optionally can select the nodes to wait.
+
+Changed
+-------
+- Updated mentions of SMACC/ROS to SMACC2/ROS2.
+- Renamed folders, deleted tracing.md, and edited README.md.
+- Updated launch command to ros2 launch sm_respira_1 sm_respira_1.launch (#69).
+- Updated doxygen links (#70).
+- Updated c_cpp_properties.json.
+- Updated README.md.
+
+Fixed
+-----
+- Corrected trailing spaces.
+- Fixed source CI and corrected README overview. (#62).
+- Corrected all linters and formatters.
+
+Removed
+-------
+- Removed galactic builds from master and kept only rolling.
+- Removed submodules and used .repos file.
+- Do not execute clang-format on smacc2_sm_reference_library package.
+
+Other
+-----
+- Some progress on navigation rolling.
+- Performance tests improvements.
+- More changes on performance tests.
+- Optimized dependencies in move_base_z_planners_common.
+- Renamed event generator library.
+- Minor formatting improvements.
+- Noticed a note that was not removed.
+- Several core improvements during navigation testing.
+- Progress in AWS navigation demo.
+- Progress in AWS navigation.
+- Progressing in AWS navigation.
+- Base for the sm_aws_aarehouse navigation.
+- Formatting improvements.
+- More on navigation.
+- Format improvements.
+- Attempting pre-commit fixes.
+- Fixing pre-commit.
+- Minor format fixes.
+``` 
+
+*pabloinigoblasco*
+
+```rst
+Section_10
+==========
+
+Added
+~~~~~
+- New feature: cb_wait_topic_message, an asynchronous client behavior that waits for a topic message and optionally checks its contents for success.
+- New client behavior for nav2: wait for nav2 nodes to subscribe to the /bond topic and ensure they are alive, with the option to select nodes to wait for.
+- Base for the sm_aws_warehouse navigation.
+- cb_pause_slam client behavior.
+- sm_dance_bot_lite.
+- sm_dance_bot visualizing turtlebot3.
+- Feature: dance bot launch gz lidar choice, with cleaning and lidar show/hide options.
+- gazebo fixes to show the robot and the lidar for sm_dance_bot, sm_dance_bot_lite, and sm_dance_bot_strikes_back.
+- Progress in navigation, slam toggle client behaviors, and slam_toolbox components.
+- smacc2::deep_history syntax introduced.
+- Feature: dance bot s pattern.
+
+Changed
+~~~~~~~
+- Navigation parameters fixes on sm_dance_bot.
+- Minor formatting improvements.
+- Remove some compile warnings.
+- Minor hotfix.
+- Correct formatting.
+- Enable source build on PR for testing.
+- Adjust build packages of source CI.
+- Additional linting and formatting.
+- Move method after the method it calls to prevent recursion.
+
+Fixed
+~~~~
+- Several core improvements during navigation testing.
+
+Removed
+~~~~~~~
+- Removed neo_simulation2 package.
+
+Collaborators
+~~~~~~~~~~~~~
+- Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
+- Co-authored-by: pabloinigoblasco <pablo@ibrobotics.com>
+```
+
+# Section 11
+
+## Added
+- First working version of sm template and template generator. (#127)
+- Minor tweaks (#130)
+- Feature/sm dance bot refine (#131)
+- Feature/sm dance bot refine 2 (#132)
+- Waypoints navigator bug (#133)
+- Sm_dance_bot_lite (#136)
+- Resolve compile warnings (#137)
+- Add SM core test (#138)
+- Minor navigation improvements (#141)
+- Using local action messages (#139)
+- Feature/nav2z renaming (#144)
+- Added SVGs to READMEs of atomic, dance_bot, and others (#140)
+- Added remaining SVGs to READMEs (#145)
+- Update package list (#142)
+- Add SM Atomic SM generator (#143)
+- Rolling Docker environment to be executed from any environment (#154)
+- Feature/sm dance bot strikes back refactoring (#152)
+- Initial migration to smacc2 (#151)
+- Add QOS durability to SmaccPublisherClient (#163)
+- Feature/testing moveit behaviors (#167)
+- Sm_pubsub_1 (#169)
+- Sm_pubsub_1 part 2 (#170)
+- Sm_advanced_recovery_1 renaming (#171)
+- Sm_multi_stage_1 reworking (#172)
+- Feature/aws navigation sm dance bot (#174)
+- Warehouse2 (#177)
+- Waypoint Inputs (#178)
+- Sm_dance_bot_warehouse_3 (#181)
+- Feature/sm warehouse 2 13 dec 2 (#182)
+- Brettpac branch (#184)
+- SrConditional fixes and formatting (#168)
+- Feature/wharehouse2 dec 14 (#185)
+- Feature/cb pure spinning (#188)
+- Feature/cb pure spinning (#189)
+
+## Changed
+- Minor format issues (#134)
+- Update readme (#164)
+- Initial state machine transition timestamp (#165)
+- Moved reference library SMs to smacc2_performance_tools (#166)
+- Finetuning waypoints (#187)
+
+## Fixed
+- Fix CI: format fix python version (#148)
+- Remove node creation and create only a logger (#149)
+- Fixing some errors introduced on formatting
+- Fixing some more linting warnings
+- Fixing pipeline error
+- Fixing broken master build
+
+## Removed
+- Removing sm_dance_bot_msgs
+- Removing parameters smacc
+
+## Authors
+- Pablo Iñigo Blasco (pabloinigoblasco)
+- Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
+- Co-authored-by: DecDury <declandury@gmail.com>
+- Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
+- Co-authored-by: Denis Štogl <denis@stogl.de>
+
+```rst
+Section_12
+==========
+
+Added
+-----
+
+- Feature/planner changes 16 12 (#191)
+- Feature/replanning 16 dec (#193)
+- Feature/undo motion 20 12 (#196)
+- Feature/undo motion 20 12 (#198)
+- Feature/sync 21 12 (#199)
+- Feature/warehouse2 22 12 (#200)
+- Feature/warehouse2 23 12 (#201)
+- Feature/minor tune (#203)
+- Fix rolling builds (#222)
+- Foxy backport (#206)
+- Add Autoware Auto Msgs into not-released dependencies. (#220)
+- Add mergify rules file.
+- Try fixing CI for rolling. (#209)
+- Remove example things from Foxy CI setup. (#214)
+- Add galactic CI build because Navigation2 is broken in rolling.
+- Add partial changes for ament_cpplint.
+- Add tf2_ros as dependency to find include.
+- Disable ament_cpplint.
+- Disable some packages and update workflows.
+- Bump ccache version.
+- Ignore further packages
+- Satisfy ament_lint_cmake
+- Add missing licences.
+- Disable cpplint and cppcheck linters.
+- Correct formatters.
+- branching example
+- Disable disabled packages
+- Update ci-build-source.yml
+- Change extension
+- Change extension of imports.
+- Enable cppcheck
+- Correct formatting of python file.
+- Included necessary package and edited Threesome launch
+- Rename header files and correct format.
+- Add workflow for checking doc build.
+- Update doxygen-check-build.yml
+- Create doxygen-deploy.yml
+- Use manual deployment for now.
+- Create workflow for testing prerelease builds
+- Use docs/ as source folder for documentation
+- Use docs/ as output directory.
+- Rename to smacc2 and smacc2_msgs
+- Correct GitHub branch reference.
+- Update name of package and package.xml to pass liter.
+- Execute on master update
+- Reset all versions to 0.0.0
+- Ignore all packages except smacc2 and smacc2_msgs
+- Update changelogs
+- Revert "Ignore all packages except smacc2 and smacc2_msgs"
+- Update description table.
+- Update table
+- Copy initial docs
+- Dockerfile w/ ROS distro as argument
+- Opened new folder for additional tracing contents
+- Delete tracing directory
+- Moved tracing.md to tracing directory
+- added setupTracing.sh
+- Removed manual installation of ros-rolling-ros2trace
+- Created alternative ManualTracing
+- added new sm markdowns
+- added a dockerfile for Rolling and Galactic
+
+Changed
+-------
+
+- several fixes (#194)
+- tuning and fixes (#202)
+- fixing warehouse 3 problems, and other core improvements to remove dead lock, also making continuous integration green
+- weird moveit not downloaded repo
+- updating subscriber publisher components
+- progress in autowarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrre machine
+- refining cp subscriber cp publisher
+- improvements in smacc core adding more components mostly developed for autoware demo
+- autoware demo
+- minor broken build
+- some reordering fixes
+- Fix trailing spaces.
+- Correct codespell.
+- Correct python linters warnings.
+- minor formatting fixes
+
+Removed
+-------
+
+- default values
+- pure spinning behavior missing files
+- more fixes
+- undo tuning and errors
+- format issues
+- finishing warehouse2
+- tuning and fixes
+- fixing warehouse 3 problems, and other core improvements to remove dead lock, also making continuous integration green
+- removing warnings (#213)
+- backport to foxy
+- minor format
+- minor linking errors foxy
+- minor broken build
+- minor format
+- minor linking errors foxy
+
+Co-authored-by
+-------------
+
+- Denis Štogl <denis@stogl.de>
+- Denis Štogl <destogl@users.noreply.github.com>
+- Declan Dury <44791484+DecDury@users.noreply.github.com>
+- DecDury <declandury@gmail.com>
+- reelrbtx <brett2@reelrobotics.com>
+- brettpac <brett@robosoft.ai>
+- David Revay <MrBlenny@users.noreply.github.com>
+- pabloinigoblasco <pabloinigoblasco@ibrobotics.com>
+```
+
+```rst
+Section_13
+==========
+
+Added
+~~~~~
+- Reactivated smacc2 nav clients for rolling via submodules.
+- Added README tutorial for Dockerfile.
+- Added smacc2_performance_tools.
+- Added new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success.
+- Added new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. You optionally can select the nodes to wait.
+
+Changed
+~~~~~~~
+- Changed wording "smacc application" to "SMACC2 library".
+- Updated mentions of SMACC/ROS to SMACC2/ROS2.
+- Renamed tracing events.
+- Renamed folders.
+- Renamed event generator library.
+- Updated launch command to ros2 launch sm_respira_1 sm_respira_1.launch.
+- Cleaned up sm_atomic_24hr.
+- Optimized dependencies in move_base_z_planners_common.
+- Corrected trailing spaces.
+- Reformatted sm_reference_library.
+- Minor formatting improvements.
+
+Fixed
+~~~~
+- Fixed bug in smacc2 component.
+- Fixed source CI and corrected README overview.
+- Fixed several core improvements during navigation testing.
+- Fixed formatting issues.
+- Corrected all linters and formatters.
+
+Removed
+~~~~~~~
+- Removed galactic builds from master and kept only rolling.
+- Removed submodules and used .repos file.
+- Deleted tracing.md.
+
+Authors
+~~~~~~~
+- Pablo Iñigo Blasco
+- Denis Štogl <destogl@users.noreply.github.com>
+- Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
+```
+
+```rst
+Section_14
+==========
+
+Added
+-----
+- New feature: `cb_wait_topic_message`: asynchronous client behavior that waits for a topic message and optionally checks its contents for success
+- New client behavior for `nav2`: wait for nav2 nodes subscribing to the `/bond` topic and ensure they are alive (optional node selection)
+- Base for the `sm_aws_warehouse` navigation
+- `cb_pause_slam` client behavior
+- `sm_dance_bot_lite` visualizing TurtleBot3
+- `sm_multi_stage_1` doubling
+- `sm_dance_bot_strikes_back` gazebo fixes
+- AWS demo
+
+Changed
+-------
+- Progress in AWS navigation demo
+- Navigation parameters fixes on `sm_dance_bot`
+- Minor format improvements
+- Format fixes for gazebo to show the robot and the lidar
+- Format fixes for `sm_dance_bot_strikes_back`
+
+Fixed
+-----
+- Remove some compile warnings
+- Correct formatting for `neo_simulation2` package removal
+- Enable source build on PR for testing
+- Adjust build packages of source CI
+- Diverse improvements in navigation and performance
+
+Removed
+-------
+- Remove `neo_simulation2` package
+
+Contributors
+------------
+- Pablo Iñigo Blasco
+- Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
+```
+
+# Changelog
+
+## [Unreleased]
+
+### Added
+- Added SM Atomic SM generator. (#143)
+- Added QOS durability to SmaccPublisherClient (#163)
+- Added SVGs to READMEs of atomic, dance_bot, and others (#140)
+- Added remaining SVGs to READMEs (#145)
+- Added dependencies for husky in rolling and galactic in AWS navigation sm dance bot (#174)
+- Added dependencies for husky simulation in AWS navigation sm dance bot (#174)
+- Added warehouse2 (#177)
+- Added waypoint inputs (#178)
+
+### Changed
+- Moved reference library SMs to smacc2_performance_tools (#166)
+- Renamed sm_advanced_recovery_1 (#171)
+- Reworked sm_multi_stage_1 (#172)
+- Renamed sm_multi_stage_1 (#171)
+- Renamed sm_multi_stage_1 to sm_multi_stage sequences (#172)
+- Renamed sm_multi_stage_1 to sm_multi_state_1 steps (#172)
+- Renamed sm_multi_stage_1 sequence d (#172)
+- Renamed sm_multi_stage_1 c sequence (#172)
+- Renamed mode_5_sequence_b (#172)
+- Renamed mode_4_sequence_b (#172)
+- Renamed sm_multi_stage_1 most (#172)
+- Renamed finishing touches 1 (#172)
+
+### Fixed
+- Fix CI: format fix python version (#148)
+- Fix compiling issues (#164)
+- Fix broken master build in testing moveit behaviors (#167)
+- Fix broken build in AWS navigation sm dance bot (#174)
+- Fix formatting in AWS navigation sm dance bot (#174)
+- Fix launch command in README.md for sm_dance_bot_strikes_back (#147)
+- Fix warehouse2 progress (#179)
+
+### Removed
+- Removed node creation and create only a logger (#149)
+- Removed parameters smacc (#147)
+- Removed sm_dance_bot_msgs in nav2z renaming (#144)
+- Removed test from main moveit cmake in migration moveit client (#151)
+- Removed some comments in the past in launch command for sm_dance_bot_strikes_back (#147)
+
+### Miscellaneous
+- Co-authored-by: pabloinigoblasco <pablo@ibrobotics.com>
+- Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
+- Co-authored-by: DecDury <declandury@gmail.com>
+- Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
+- Co-authored-by: Denis Štogl <denis@stogl.de>
+
+```rst
+Section_16
+==========
+
+Added
+-----
+- Brettpac branch (#184)
+- Redoing sm_dance_bot_warehouse_3 waypoints
+- More Waypoints
+- SrConditional fixes and formatting (#168)
+- Feature/wharehouse2 dec 14 (#185)
+- Feature/sm warehouse 2 13 dec 2 (#186)
+- Finetuning waypoints (#187)
+- Feature/cb pure spinning (#188, #189)
+- Pure spinning behavior missing files
+- Feature/planner changes 16 12 (#191)
+- Feature/replanning 16 dec (#193)
+- Several fixes (#194)
+- Feature/undo motion 20 12 (#196, #198)
+- Improving undo motion navigation warehouse2
+- Tuning warehouse3 (#197)
+- Feature/sync 21 12 (#199)
+- Feature/warehouse2 22 12 (#200)
+- Finishing warehouse2
+- Feature/warehouse2 23 12 (#201)
+- Tuning and fixes (#202)
+- Feature/minor tune (#203)
+- Fixing warehouse 3 problems, and other core improvements (#204)
+- Added missing file from warehouse2 (#205)
+- Docker build files for all versions (#225)
+- Fix code generators (#221)
+- Feature/retry behavior warehouse 1 (#226)
+- Foxy backport (#206)
+
+Changed
+-------
+- Update SM template and make example code clearly visible.
+- Remove use of node in the sm performance template.
+- Updated templated to use Blackboard storage.
+- Update template to resolve the global data correctly.
+- Update sm_name.hpp
+- Correct codespell.
+- Correct python linters warnings.
+- Add galactic CI build because Navigation2 is broken in rolling.
+- Add partial changes for ament_cpplint.
+- Add tf2_ros as dependency to find include.
+- Disable ament_cpplint.
+- Disable some packages and update workflows.
+- Bump ccache version.
+- Ignore further packages
+- Satisfy ament_lint_cmake
+- Add missing licences.
+- Disable cpplint and cppcheck linters.
+- Correct formatters.
+- Change extension of imports.
+- Enable cppcheck
+- Correct formatting of python file.
+- Included necessary package and edited Threesome launch
+- Rename header files and correct format.
+- Add workflow for checking doc build.
+- Update doxygen-check-build.yml
+- Create doxygen-deploy.yml
+- Use manual deployment for now.
+- Create workflow for testing prerelease builds
+- Use docs/ as source folder for documentation
+- Use docs/ as output directory.
+- Rename to smacc2 and smacc2_msgs
+- Correct GitHub branch reference.
+- Update name of package and package.xml to pass liter.
+- Execute on master update
+- Reset all versions to 0.0.0
+- Ignore all packages except smacc2 and smacc2_msgs
+- Update changelogs
+- 0.1.0
+
+Removed
+-------
+- Some reordering fixes
+- Minor broken build
+- Minor linking errors foxy
+- Disable disabled packages
+- Change extension
+- Disable some packages
+```
+
+```rst
+Section_17
+==========
+
+Added
+-----
+- Added setupTracing.sh script for installing necessary packages and configuring tracing group.
+- Added README tutorial for Dockerfile.
+- Added smacc2_performance_tools.
+- Added new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success.
+- Added galactic CI setup and renamed rolling files. (#58)
+- Added source CI and corrected README overview. (#62)
+- Added more Readme Updates (#72) and More Readme (#74).
+- Created new sm from sm_respira_1 (#76).
+- Added base for the sm_aws_aarehouse navigation.
+- Added sm_atomic_performance_test_a_2, sm_atomic_performance_test_a_1, sm_atomic_performance_test_c_1, sm_atomic_performance_test_a_2, sm_multi_stage_1.
+- Added sm_atomic_24hr, sm_atomic_performance_trace_1, sm_advanced_recovery_1.
+- Added sm_advanced_recovery_1 round 4, sm_advanced_recovery_1 work, sm_advanced_recovery_1 reworked.
+- Added sm_multi_stage_1, sm_atomic_performance_test_c_1, sm_atomic_performance_test_a_2, sm_atomic_performance_test_a_1.
+- Added sm_multi_stage_1, sm_atomic_performance_test_c_1, sm_atomic_performance_test_a_2, sm_atomic_performance_test_a_1.
+
+Changed
+-------
+- Updated description table.
+- Updated table.
+- Changed wording "smacc application" to "SMACC2 library".
+- Renamed tracing events.
+- Renamed folders, deleted tracing.md, edited README.md.
+- Updated mentions of SMACC/ROS to SMACC2/ROS2.
+- Updated smacc2_rta command across readmes.
+- Updated launch command to ros2 launch sm_respira_1 sm_respira_1.launch (#69).
+- Updated doxygen links (#70).
+- Updated c_cpp_properties.json.
+- Optimized dependencies in move_base_z_planners_common.
+- Renamed event generator library.
+- Corrected trailing spaces.
+- Enabled build of missing rolling repositories.
+- Enabled Navigation2 for semi-binary build.
+- Removed galactic builds from master and kept only rolling. Removed submodules and used .repos file.
+- Reactivated smacc2 nav clients for rolling via submodules.
+- Reverted markdowns to html.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited smacc_sm_reference_library/sm_atomic/README.md from html to markdown syntax.
+- Edited tracing/ManualTracing.md.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+- Edited tracing.md to reflect new tracing event names.
+
+```rst
+Section_18
+==========
+
+Added
+~~~~~
+- New feature: `cb_wait_topic_message`, an asynchronous client behavior that waits for a topic message and optionally checks its contents for success.
+- New client behavior for `nav2`: `add`, waits for nav2 nodes subscribing to the `/bond` topic and ensures they are alive. Optional node selection.
+- Base for the `sm_aws_aarehouse` navigation.
+- Progress in AWS navigation demo.
+- New client behavior: `cb_pause_slam`.
+- Visualizing `turtlebot3` in `sm_dance_bot_lite`.
+- `sm_multi_stage_1` doubling.
+- `sm_dance_bot_strikes_back` gazebo fixes.
+
+Changed
+~~~~~~~
+- Corrected all linters and formatters.
+- Navigation parameters fixes on `sm_dance_bot`.
+- Minor formatting improvements.
+- Merge and progress.
+- Minor hotfix.
+- Cleaning and lidar show/hide option.
+- Cleaning files and formatting work.
+- Gazebo fixes to show the robot and the lidar.
+- Precommit cleanup run.
+
+Fixed
+~~~~
+- Removed some compile warnings.
+
+Removed
+~~~~~~~
+- Compile warnings.
+
+Collaborators
+~~~~~~~~~~~~~
+- Co-authored-by: Denis Štogl <denis@stogl.de>
+- Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
+- Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
+```
+
+Section 19
+-----------
+
+Added
+~~~~~
+- Added multistage modes to sm_multi_stage_1 (#172).
+- Added sequences and steps to sm_multi_stage_1.
+- Added finishing touches to sm_multi_stage_1.
+- Added AWS navigation to sm_dance_bot (#174).
+
+Changed
+~~~~~~~
+- Renamed sm_advanced_recovery_1 (#171).
+- Reworked sm_multi_stage_1 for improved functionality.
+
+Fixed
+~~~~
+- Fixed waypoint and iteration changes for course completion (#155).
+- Fixed CI formatting for Python version (#148).
+
+Removed
+~~~~~~~
+- Removed neo_simulation2 package (#112).
+- Removed redundant sm_dance_bot_msgs package.
+- Removed unnecessary parameters from smacc (#147).
+- Removed node creation in favor of logger (#149).
+
+Other
+~~~~~
+- Co-authored commits by Ubuntu 20-04-02-amd64, Brett (brett@robosoft.ai), DecDury (declandury@gmail.com), and Denis Štogl (destogl@users.noreply.github.com).
+- Various minor improvements, linting, and formatting changes.
+- Updated README files and added SVGs for better documentation.
+- Docker environment now executable from any environment.
+- Added QOS durability to SmaccPublisherClient.
+- Moved reference library SMs to smacc2_performance_tools.
+- Progress made in moveit migration testing.
+- Husky launch file dependencies added for husky simulation.
+- Workflows and launch commands updated for accuracy.
+- Improved navigation and performance in various components.
+- Ongoing progress in testing and refining sm_dance_bot functionality.
+
+```rst
+Section_20
+==========
+
+Added
+-----
+- Update dependencies for husky in rolling and galactic.
+- Progress on aws navigation and refactorings on navigation clients and behaviors.
+- More on aws demo.
+- Warehouse2 progress.
+- Waypoint Inputs.
+- Wharehouse2 progress.
+- Format.
+- Sm_dance_bot_warehouse_3.
+- Feature/sm warehouse 2 13 dec 2.
+- Finetuning waypoints.
+- Feature/cb pure spinning.
+- Feature/planner changes 16 12.
+- Feature/replanning 16 dec.
+- Feature/undo motion 20 12.
+- Tuning warehouse3.
+- Feature/warehouse2 22 12.
+- Feature/warehouse2 23 12.
+- Feature/minor tune.
+- Fixing warehouse 3 problems and other core improvements.
+- Added missing file from warehouse2.
+- Updating subscriber publisher components.
+- Progress in autoware machine.
+- Refining cp subscriber cp publisher.
+- Improvements in smacc core adding more components.
+- Autoware demo.
+- Docker files for different revisions.
+- Retry behavior warehouse 1.
+- Update file for fake hardware simulation and add file for gazebo simulation.
+- Multiple controllable leds plugin.
+- Progress in husky demo.
+- Add ignition file and update repos files.
+- Improving navigation behaviors.
+- Add galactic CI build because Navigation2 is broken in rolling.
+- Add partial changes for ament_cpplint.
+- Add tf2_ros as dependency to find include.
+- Barrel demo.
+- Barrel search build fix and warehouse3.
+- Progress in barrel husky.
+- Barrel search updates.
+- Making models local.
+- Red picuup.
+- Foxy backport.
+- Correct Focal-Rolling builds by fixing the version of rosdep yaml.
+- Fix trailing spaces.
+- Correct codespell.
+- Correct python linters warnings.
+
+Changed
+-------
+- Fix formatting.
+- Minor changes.
+- Merge.
+- Headless and other fixes.
+- Default values.
+- Several fixes.
+- Format issues.
+- Tuning and fixes.
+
+Fixed
+-----
+- Fixing broken build.
+- Fix: some formatting and templating on SrConditional.
+- Fix: move trigger logic into headers.
+- Fix: lint.
+- Fix broken source build.
+- Fix trailing spaces.
+- Correct codespell.
+- Correct python linters warnings.
+
+Removed
+-------
+- Pure spinning behavior missing files.
+- Weird moveit not downloaded repo.
+- Missing file.
+- Some reordering fixes.
+- Warnings removal and more testing on navigation.
+- Fixing docker for foxy and galactic.
+```
+
+```rst
+Section_21
+==========
+
+Added
+-----
+- First ensure you have the necessary package installed:
   ```
   sudo apt-get install ros-rolling-ros2trace
   ```
-  Then run this command.
-  * Rename header files and correct format.
-  * Add workflow for checking doc build.
-  * Update doxygen-check-build.yml
-  * Create doxygen-deploy.yml
-  * Use manual deployment for now.
-  * Create workflow for testing prerelease builds
-  * Use docs/ as source folder for documentation
-  * Use docs/ as output directory.
-  * Rename to smacc2 and smacc2_msgs
-  * Correct GitHub branch reference.
-  * Update name of package and package.xml to pass liter.
-  * Execute on master update
-  * Reset all versions to 0.0.0
-  * Ignore all packages except smacc2 and smacc2_msgs
-  * Update changelogs
-  * 0.1.0
-  * Revert "Ignore all packages except smacc2 and smacc2_msgs"
-  This reverts commit f603166a4b3ccdfe96c64d9f9fb9d8b49fbf0e61.
-  * Update description table.
-  * Update table
-  * Copy initial docs
-  * Dockerfile w/ ROS distro as argument
-  use this command "sudo docker build --build-arg ROS2_DISTRO=(desiredRosTag) (directoryHoldingDockerfile)/"
-  * Opened new folder for additional tracing contents
-  * Delete tracing directory
-  * Moved tracing.md to tracing directory
-  * added setupTracing.sh
+- Add workflow for checking doc build.
+- Create doxygen-deploy.yml.
+- Create workflow for testing prerelease builds.
+- Use docs/ as source folder and output directory for documentation.
+- Added setupTracing.sh:
   Installs necessary packages and configures tracing group.
-  * Removed manual installation of ros-rolling-ros2trace
-  This is now automated in setupTracing.sh
-  location of sh file assumed if user follows README.md under "Getting started"
-  * Created alternative ManualTracing
-  * added new sm markdowns
-  * added a dockerfile for Rolling and Galactic
-  * Update smacc2_ci/docker/ros_rollingAndGalactic_ubuntu_20.04/buildGalactic.sh
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Update tracing/ManualTracing.md
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * changed wording "smacc application" to "SMACC2 library"
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Update smacc_sm_reference_library/sm_atomic/README.md
-  edit from html to markdown syntax
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * reactivating smacc2 nav clients for rolling via submodules
-  * renamed tracing events after
-  * bug in smacc2 component
-  * reverted markdowns to html
-  * added README tutorial for Dockerfile
-  * additional cleanup
-  * cleanup
-  * cleanup
-  * edited tracing.md to reflect new tracing event names
-  * Enable build of missing rolling repositories.
-  * Enable Navigation2 for semi-binary build.
-  * Remove galactic builds from master and kepp only rolling. Remove submodules and use .repos file
-  * updated mentions of SMACC/ROS to SMACC2/ROS2
-  * some progress on navigation rolling
-  * renamed folders, deleted tracing.md, edited README.md
-  * added smacc2_performance_tools
-  * performance tests improvements
-  * more on performance and other issues
-  * sm_respira_1 format cleanup
-  * sm_respira_1 format cleanup pre-commit
-  * sm_respira_test_2
-  * sm_respira_test_2
-  * more changes on performance tests
-  * Do not execute clang-format on smacc2_sm_reference_library package.
-  * sm_reference_library reformatting
-  * Correct trailing spaces.
-  * sm_atomic_24hr
-  * sm_atomic_performance_trace_1
-  * Update smacc2_rta command across readmes
-  * Clean up of sm_atomic_24hr
-  * more sm_atomic_24hr cleanup
-  * Optimized deps in move_base_z_planners_common.
-  * Renaming of event generator library
-  * minor formatting
-  * Add galactic CI setup and rename rolling files. (#58)
-  * Fix source CI and correct README overview. (#62)
-  * Update c_cpp_properties.json
-  * changed launch command to ros2 launch sm_respira_1 sm_respira_1.launch (#69)
-  also noticed a note I had made while producing these that was not removed
-  * update doxygen links (#70)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More Readme Updates (#72)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More Readme (#74)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * created new sm from sm_respira_1 (#76)
-  * Feature/core and navigation fixes (#78)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * Feature/aws demo progress (#80)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * sm_advanced_recovery_1 reworked (#83)
-  * sm_advanced_recovery_1 reworked
-  * fix pre-commit
-  * Trying to fix Pre-Commit
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more sm_advanced_recovery_1 (#84)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More sm_advanced_recovery_1 work (#85)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_advanced_recovery_1 round 4 (#86)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#87)
-  * sm_atomic_performance_test_a_2
-  * sm_atomic_performance_test_a_1
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_atomic_performance_test_c_1 (#88)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * modifying sm_atomic_performance_test_a_2 (#89)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_multi_stage_1 (#90)
-  * sm_multi_stage_1
-  * fixing precommit
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more sm_multi_stage_1 (#91)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Update README.md
-  updated launch command
-  * Wait topic message client behavior (#81)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * attempting precommit fixes
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Feature/wait nav2 nodes client behavior (#82)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * Correct all linters and formaters.
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Feature/aws demo progress (#92)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * Feature/sm dance bot fixes (#93)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * Feature/sm aws warehouse (#94)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * merge and progress
-  * fix format
-  * Feature/sm dance bot fixes (#95)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * minor
-  * minor format
-  * Remove some compile warnings. (#96)
-  * Feature/cb pause slam (#98)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * minor
-  * formatting
-  * cb pause slam client behavior
-  * sm_dance_bot_lite (#99)
-  * sm_dance_bot_lite
-  * precommit
-  * Updates yaml
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Rename doxygen deployment workflow (#100)
-  * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
-  * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * gazebo fixes, to show the robot and the lidar
-  * format fixes
-  * sm_multi_stage_1 doubling (#103)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * gazebo fixes, to show the robot and the lidar
-  * format fixes
-  * gazebo fixes for sm_dance_bot_strikes_back
-  * precommit cleanup run (#106)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * aws demo (#108)
-  * aws demo
-  * format
-  * got sm_multi_stage_1 working (barely) (#109)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#110)
-  * got sm_multi_stage_1 working (barely)
-  * gaining traction sm_multi_stage_1
-  * more
-  * don't remember
-  * making progress
-  * More
-  * keep hammering
-  * two stages
-  * 3 part
-  * 4th stage
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#111)
-  * got sm_multi_stage_1 working (barely)
-  * gaining traction sm_multi_stage_1
-  * more
-  * don't remember
-  * making progress
-  * More
-  * keep hammering
-  * two stages
-  * 3 part
-  * 4th stage
-  * 5th stage
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * a3 (#113)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Remove neo_simulation2 package. (#112)
-  * Remove neo_simulation2 package.
-  * Correct formatting.
-  * Enable source build on PR for testing.
-  * Adjust build packages of source CI
-  * more sm_multi_stage_1 (#114)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * mm (#115)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * diverse improvements navigation and performance (#116)
-  * diverse improvements navigation and performance
-  * minor
-  Co-authored-by: pabloinigoblasco <pablo@ibrobotics.com>
-  * Feature/diverse improvemets navigation performance (#117)
-  * diverse improvements navigation and performance
-  * minor
-  * additional linting and formatting
-  * Remove merge markers from a python file. (#119)
-  * Feature/slam toggle and smacc deep history (#122)
-  * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
-  * feature/more_sm_dance_bot_fixes
-  * minor format
-  * minor (#124)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
-  * Move method after the method it calls. Otherwise recursion could happen. (#126)
-  * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * noticed typo
-  Finnaly > Finally
-  * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
-  * First working version of sm template and template generator. (#127)
-  * minor tweaks (#130)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
-  * minor
-  * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
-  * minor
-  * build fix
-  * waypoints navigator bug (#133)
-  * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
-  * some more progress on markers cleanup
-  * minor format issues (#134)
-  * sm_dance_bot_lite (#136)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Resolve compile wanings (#137)
-  * Add SM core test (#138)
-  * minor navigation improvements (#141)
-  * using local action msgs (#139)
-  * using local action msgs
-  * removing sm_dance_bot_msgs
-  * pending references
-  * Feature/nav2z renaming (#144)
-  * using local action msgs
-  * removing sm_dance_bot_msgs
-  * pending references
-  * navigation 2 stack renaming
-  * formatting
-  * added SVGs to READMEs of atomic, dance_bot, and others (#140)
-  * added remaining SVGs to READMEs (#145)
-  * added remaining SVGs to READMEs
-  * precommit cleanup
-  * Update package list. (#142)
-  * removing parameters smacc (#147)
-  * removing parameters smacc
-  * workflows update
-  * workflow
-  * Noticed launch command was incorrect in README.md
-  fixed launch command for sm_dance_bot_strikes_back and removed some comments I had made in the past.
-  * Fix CI: format fix python version (#148)
-  * Add SM Atomic SM generator. (#143)
-  * Remove node creation and create only a logger. (#149)
-  * Rolling Docker environment to be executed from any environment (#154)
-  * Feature/sm dance bot strikes back refactoring (#152)
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * slight waypoint 4 and iterations changes so robot can complete course (#155)
-  * Feature/migration moveit client (#151)
-  * initial migration to smacc2
-  * fixing some errors introduced on formatting
-  * missing dependency
-  * fixing some more linting warnings
-  * minor
-  * removing test from main moveit cmake
-  * test ur5
-  * progressing in the moveit migration testing
-  * updating format
-  * adding .reps dependencies and also fixing some build errors
-  * repos dependency
-  * adding dependency to ur5 client
-  * docker refactoring
-  * minor
-  * progress on move_it PR
-  * minor dockerfile test workaround
-  * improving dockerfile for building local tests
-  * minor
-  * fixing compiling issues
-  * update readme (#164)
-  * update readme
-  * more readme updates
-  * more
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * initial state machine transition timestamp (#165)
-  * moved reference library SMs to smacc2_performance_tools (#166)
-  * moved reference library SMs to smacc2_performance_tools
-  * pre-commit cleanup
-  * Add QOS durability to SmaccPublisherClient (#163)
-  * feat: add qos durability to SmaccPublisherClient
-  * fix: add a missing colon
-  * refactor: remove line
-  * feat: add reliability qos config
-  * Feature/testing moveit behaviors (#167)
-  * more testing on moveit
-  * progress on moveit
-  * more testing on moveit behaviors
-  * minor configuration
-  * fixing pipeline error
-  * fixing broken master build
-  * sm_pubsub_1 (#169)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_pubsub_1 part 2 (#170)
-  * sm_pubsub_1 part 2
-  * sm_pubsub_1 part 2
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_advanced_recovery_1 renaming (#171)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_multi_stage_1 reworking (#172)
-  * multistage modes
-  * sm_multi_stage sequences
-  * sm_multi_state_1 steps
-  * sm_multi_stage_1 sequence d
-  * sm_multi_stage_1 c sequence
-  * mode_5_sequence_b
-  * mode_4_sequence_b
-  * sm_multi_stage_1 most
-  * finishing touches 1
-  * readme
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/aws navigation sm dance bot (#174)
-  * repo dependency
-  * husky launch file in sm_dance_bot
-  * Add dependencies for husky simulation.
-  * Fix formatting.
-  * Update dependencies for husky in rolling and galactic.
-  * minor
-  * progress on aws navigation and some other refactorings on navigation clients and behaviors
-  * more on aws demo
-  * fixing broken build
-  * minor
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * minor changes (#175)
-  * warehouse2 (#177)
-  * Waypoint Inputs (#178)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * wharehouse2 progress (#179)
-  * format (#180)
-  * sm_dance_bot_warehouse_3 (#181)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm warehouse 2 13 dec 2 (#182)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * Brettpac branch (#184)
-  * sm_dance_bot_warehouse_3
-  * Redoing sm_dance_bot_warehouse_3 waypoints
-  * More Waypoints
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * SrConditional fixes and formatting (#168)
-  * fix: some formatting and templating on SrConditional
-  * fix: move trigger logic into headers
-  * fix: lint
-  * Feature/wharehouse2 dec 14 (#185)
-  * warehouse2
-  * minor
-  * Feature/sm warehouse 2 13 dec 2 (#186)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * finetuning waypoints (#187)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/cb pure spinning (#188)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * Feature/cb pure spinning (#189)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * pure spinning behavior missing files
-  * minor changes (#190)
-  * Feature/planner changes 16 12 (#191)
-  * minor changes
-  * more fixes
-  * minor
-  * minor
-  * Feature/replanning 16 dec (#193)
-  * minor changes
-  * replanning for all our examples
-  * several fixes (#194)
-  * minor changes (#195)
-  * Feature/undo motion 20 12 (#196)
-  * minor changes
-  * replanning for all our examples
-  * improving undo motion navigation warehouse2
-  * minor
-  * tuning warehouse3 (#197)
-  * Feature/undo motion 20 12 (#198)
-  * minor changes
-  * replanning for all our examples
-  * improving undo motion navigation warehouse2
-  * minor
-  * undo tuning and errors
-  * format
-  * Feature/sync 21 12 (#199)
-  * minor changes
-  * replanning for all our examples
-  * format issues
-  * Feature/warehouse2 22 12 (#200)
-  * minor changes
-  * replanning for all our examples
-  * format issues
-  * finishing warehouse2
-  * Feature/warehouse2 23 12 (#201)
-  * minor changes
-  * replanning for all our examples
-  * tuning and fixes (#202)
-  * Feature/minor tune (#203)
-  * tuning and fixes
-  * minor tune
-  * fixing warehouse 3 problems, and other core improvements (#204)
-  * fixing warehouse 3 problems, and other core improvements to remove dead lock, also making continuous integration green
-  * weird moveit not downloaded repo
-  * added missing file from warehouse2 (#205)
-  * backport to foxy
-  * minor format
-  * minor linking errors foxy
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  Co-authored-by: Declan Dury <44791484+DecDury@users.noreply.github.com>
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: reelrbtx <brett2@reelrobotics.com>
-  Co-authored-by: brettpac <brett@robosoft.ai>
-  Co-authored-by: David Revay <MrBlenny@users.noreply.github.com>
-  * missing
-  * missing sm
-  * updating subscriber publisher components
-  * progress in autowarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrre machine
-  * refining cp subscriber cp publisher
-  * Update cb_navigate_global_position.hpp
-  * improvements in smacc core adding more components mostly developed for autoware demo
-  * autoware demo
-  * missing
-  * foxy ci
-  * fix
-  * minor broken build
-  * Merging code from backport foxy and updates about autoware (#208)
-  * minor changes
-  * replanning for all our examples
-  * backport to foxy
-  * minor format
-  * minor linking errors foxy
-  * Foxy backport (#206)
-  * minor formatting fixes
-  * Fix trailing spaces.
-  * Correct codespell.
-  * Correct python linters warnings.
-  * Add galactic CI build because Navigation2 is broken in rolling.
-  * Add partial changes for ament_cpplint.
-  * Add tf2_ros as dependency to find include.
-  * Disable ament_cpplint.
-  * Disable some packages and update workflows.
-  * Bump ccache version.
-  * Ignore further packages
-  * Satisfy ament_lint_cmake
-  * Add missing licences.
-  * Disable cpplint and cppcheck linters.
-  * Correct formatters.
-  * branching example
-  * Disable disabled packages
-  * Update ci-build-source.yml
-  * Change extension
-  * Change extension of imports.
-  * Enable cppcheck
-  * Correct formatting of python file.
-  * Included necessary package and edited Threesome launch
-  Changed...
-  ros2 launch sm_three_some sm_three_some
-  to
-  ros2 launch sm_three_some sm_three_some.launch
-  Added:
-  First ensure you have the necessary package installed.
-  ```
-  sudo apt-get install ros-rolling-ros2trace
-  ```
-  Then run this command.
-  * Rename header files and correct format.
-  * Add workflow for checking doc build.
-  * Update doxygen-check-build.yml
-  * Create doxygen-deploy.yml
-  * Use manual deployment for now.
-  * Create workflow for testing prerelease builds
-  * Use docs/ as source folder for documentation
-  * Use docs/ as output directory.
-  * Rename to smacc2 and smacc2_msgs
-  * Correct GitHub branch reference.
-  * Update name of package and package.xml to pass liter.
-  * Execute on master update
-  * Reset all versions to 0.0.0
-  * Ignore all packages except smacc2 and smacc2_msgs
-  * Update changelogs
-  * 0.1.0
-  * Revert "Ignore all packages except smacc2 and smacc2_msgs"
-  This reverts commit f603166a4b3ccdfe96c64d9f9fb9d8b49fbf0e61.
-  * Update description table.
-  * Update table
-  * Copy initial docs
-  * Dockerfile w/ ROS distro as argument
-  use this command "sudo docker build --build-arg ROS2_DISTRO=(desiredRosTag) (directoryHoldingDockerfile)/"
-  * Opened new folder for additional tracing contents
-  * Delete tracing directory
-  * Moved tracing.md to tracing directory
-  * added setupTracing.sh
-  Installs necessary packages and configures tracing group.
-  * Removed manual installation of ros-rolling-ros2trace
-  This is now automated in setupTracing.sh
-  location of sh file assumed if user follows README.md under "Getting started"
-  * Created alternative ManualTracing
-  * added new sm markdowns
-  * added a dockerfile for Rolling and Galactic
-  * Update smacc2_ci/docker/ros_rollingAndGalactic_ubuntu_20.04/buildGalactic.sh
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Update tracing/ManualTracing.md
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * changed wording "smacc application" to "SMACC2 library"
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Update smacc_sm_reference_library/sm_atomic/README.md
-  edit from html to markdown syntax
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * reactivating smacc2 nav clients for rolling via submodules
-  * renamed tracing events after
-  * bug in smacc2 component
-  * reverted markdowns to html
-  * added README tutorial for Dockerfile
-  * additional cleanup
-  * cleanup
-  * cleanup
-  * edited tracing.md to reflect new tracing event names
-  * Enable build of missing rolling repositories.
-  * Enable Navigation2 for semi-binary build.
-  * Remove galactic builds from master and kepp only rolling. Remove submodules and use .repos file
-  * updated mentions of SMACC/ROS to SMACC2/ROS2
-  * some progress on navigation rolling
-  * renamed folders, deleted tracing.md, edited README.md
-  * added smacc2_performance_tools
-  * performance tests improvements
-  * more on performance and other issues
-  * sm_respira_1 format cleanup
-  * sm_respira_1 format cleanup pre-commit
-  * sm_respira_test_2
-  * sm_respira_test_2
-  * more changes on performance tests
-  * Do not execute clang-format on smacc2_sm_reference_library package.
-  * sm_reference_library reformatting
-  * Correct trailing spaces.
-  * sm_atomic_24hr
-  * sm_atomic_performance_trace_1
-  * Update smacc2_rta command across readmes
-  * Clean up of sm_atomic_24hr
-  * more sm_atomic_24hr cleanup
-  * Optimized deps in move_base_z_planners_common.
-  * Renaming of event generator library
-  * minor formatting
-  * Add galactic CI setup and rename rolling files. (#58)
-  * Fix source CI and correct README overview. (#62)
-  * Update c_cpp_properties.json
-  * changed launch command to ros2 launch sm_respira_1 sm_respira_1.launch (#69)
-  also noticed a note I had made while producing these that was not removed
-  * update doxygen links (#70)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More Readme Updates (#72)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More Readme (#74)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * created new sm from sm_respira_1 (#76)
-  * Feature/core and navigation fixes (#78)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * Feature/aws demo progress (#80)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * sm_advanced_recovery_1 reworked (#83)
-  * sm_advanced_recovery_1 reworked
-  * fix pre-commit
-  * Trying to fix Pre-Commit
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more sm_advanced_recovery_1 (#84)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More sm_advanced_recovery_1 work (#85)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_advanced_recovery_1 round 4 (#86)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#87)
-  * sm_atomic_performance_test_a_2
-  * sm_atomic_performance_test_a_1
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_atomic_performance_test_c_1 (#88)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * modifying sm_atomic_performance_test_a_2 (#89)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_multi_stage_1 (#90)
-  * sm_multi_stage_1
-  * fixing precommit
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more sm_multi_stage_1 (#91)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Update README.md
-  updated launch command
-  * Wait topic message client behavior (#81)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * attempting precommit fixes
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Feature/wait nav2 nodes client behavior (#82)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * Correct all linters and formaters.
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Feature/aws demo progress (#92)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * Feature/sm dance bot fixes (#93)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * Feature/sm aws warehouse (#94)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * merge and progress
-  * fix format
-  * Feature/sm dance bot fixes (#95)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * minor
-  * minor format
-  * Remove some compile warnings. (#96)
-  * Feature/cb pause slam (#98)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * minor
-  * formatting
-  * cb pause slam client behavior
-  * sm_dance_bot_lite (#99)
-  * sm_dance_bot_lite
-  * precommit
-  * Updates yaml
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Rename doxygen deployment workflow (#100)
-  * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
-  * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * gazebo fixes, to show the robot and the lidar
-  * format fixes
-  * sm_multi_stage_1 doubling (#103)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * gazebo fixes, to show the robot and the lidar
-  * format fixes
-  * gazebo fixes for sm_dance_bot_strikes_back
-  * precommit cleanup run (#106)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * aws demo (#108)
-  * aws demo
-  * format
-  * got sm_multi_stage_1 working (barely) (#109)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#110)
-  * got sm_multi_stage_1 working (barely)
-  * gaining traction sm_multi_stage_1
-  * more
-  * don't remember
-  * making progress
-  * More
-  * keep hammering
-  * two stages
-  * 3 part
-  * 4th stage
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#111)
-  * got sm_multi_stage_1 working (barely)
-  * gaining traction sm_multi_stage_1
-  * more
-  * don't remember
-  * making progress
-  * More
-  * keep hammering
-  * two stages
-  * 3 part
-  * 4th stage
-  * 5th stage
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * a3 (#113)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Remove neo_simulation2 package. (#112)
-  * Remove neo_simulation2 package.
-  * Correct formatting.
-  * Enable source build on PR for testing.
-  * Adjust build packages of source CI
-  * more sm_multi_stage_1 (#114)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * mm (#115)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * diverse improvements navigation and performance (#116)
-  * diverse improvements navigation and performance
-  * minor
-  Co-authored-by: pabloinigoblasco <pablo@ibrobotics.com>
-  * Feature/diverse improvemets navigation performance (#117)
-  * diverse improvements navigation and performance
-  * minor
-  * additional linting and formatting
-  * Remove merge markers from a python file. (#119)
-  * Feature/slam toggle and smacc deep history (#122)
-  * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
-  * feature/more_sm_dance_bot_fixes
-  * minor format
-  * minor (#124)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
-  * Move method after the method it calls. Otherwise recursion could happen. (#126)
-  * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * noticed typo
-  Finnaly > Finally
-  * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
-  * First working version of sm template and template generator. (#127)
-  * minor tweaks (#130)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
-  * minor
-  * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
-  * minor
-  * build fix
-  * waypoints navigator bug (#133)
-  * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
-  * some more progress on markers cleanup
-  * minor format issues (#134)
-  * sm_dance_bot_lite (#136)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Resolve compile wanings (#137)
-  * Add SM core test (#138)
-  * minor navigation improvements (#141)
-  * using local action msgs (#139)
-  * using local action msgs
-  * removing sm_dance_bot_msgs
-  * pending references
-  * Feature/nav2z renaming (#144)
-  * using local action msgs
-  * removing sm_dance_bot_msgs
-  * pending references
-  * navigation 2 stack renaming
-  * formatting
-  * added SVGs to READMEs of atomic, dance_bot, and others (#140)
-  * added remaining SVGs to READMEs (#145)
-  * added remaining SVGs to READMEs
-  * precommit cleanup
-  * Update package list. (#142)
-  * removing parameters smacc (#147)
-  * removing parameters smacc
-  * workflows update
-  * workflow
-  * Noticed launch command was incorrect in README.md
-  fixed launch command for sm_dance_bot_strikes_back and removed some comments I had made in the past.
-  * Fix CI: format fix python version (#148)
-  * Add SM Atomic SM generator. (#143)
-  * Remove node creation and create only a logger. (#149)
-  * Rolling Docker environment to be executed from any environment (#154)
-  * Feature/sm dance bot strikes back refactoring (#152)
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * slight waypoint 4 and iterations changes so robot can complete course (#155)
-  * Feature/migration moveit client (#151)
-  * initial migration to smacc2
-  * fixing some errors introduced on formatting
-  * missing dependency
-  * fixing some more linting warnings
-  * minor
-  * removing test from main moveit cmake
-  * test ur5
-  * progressing in the moveit migration testing
-  * updating format
-  * adding .reps dependencies and also fixing some build errors
-  * repos dependency
-  * adding dependency to ur5 client
-  * docker refactoring
-  * minor
-  * progress on move_it PR
-  * minor dockerfile test workaround
-  * improving dockerfile for building local tests
-  * minor
-  * fixing compiling issues
-  * update readme (#164)
-  * update readme
-  * more readme updates
-  * more
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * initial state machine transition timestamp (#165)
-  * moved reference library SMs to smacc2_performance_tools (#166)
-  * moved reference library SMs to smacc2_performance_tools
-  * pre-commit cleanup
-  * Add QOS durability to SmaccPublisherClient (#163)
-  * feat: add qos durability to SmaccPublisherClient
-  * fix: add a missing colon
-  * refactor: remove line
-  * feat: add reliability qos config
-  * Feature/testing moveit behaviors (#167)
-  * more testing on moveit
-  * progress on moveit
-  * more testing on moveit behaviors
-  * minor configuration
-  * fixing pipeline error
-  * fixing broken master build
-  * sm_pubsub_1 (#169)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_pubsub_1 part 2 (#170)
-  * sm_pubsub_1 part 2
-  * sm_pubsub_1 part 2
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_advanced_recovery_1 renaming (#171)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_multi_stage_1 reworking (#172)
-  * multistage modes
-  * sm_multi_stage sequences
-  * sm_multi_state_1 steps
-  * sm_multi_stage_1 sequence d
-  * sm_multi_stage_1 c sequence
-  * mode_5_sequence_b
-  * mode_4_sequence_b
-  * sm_multi_stage_1 most
-  * finishing touches 1
-  * readme
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/aws navigation sm dance bot (#174)
-  * repo dependency
-  * husky launch file in sm_dance_bot
-  * Add dependencies for husky simulation.
-  * Fix formatting.
-  * Update dependencies for husky in rolling and galactic.
-  * minor
-  * progress on aws navigation and some other refactorings on navigation clients and behaviors
-  * more on aws demo
-  * fixing broken build
-  * minor
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * minor changes (#175)
-  * warehouse2 (#177)
-  * Waypoint Inputs (#178)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * wharehouse2 progress (#179)
-  * format (#180)
-  * sm_dance_bot_warehouse_3 (#181)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm warehouse 2 13 dec 2 (#182)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * Brettpac branch (#184)
-  * sm_dance_bot_warehouse_3
-  * Redoing sm_dance_bot_warehouse_3 waypoints
-  * More Waypoints
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * SrConditional fixes and formatting (#168)
-  * fix: some formatting and templating on SrConditional
-  * fix: move trigger logic into headers
-  * fix: lint
-  * Feature/wharehouse2 dec 14 (#185)
-  * warehouse2
-  * minor
-  * Feature/sm warehouse 2 13 dec 2 (#186)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * finetuning waypoints (#187)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/cb pure spinning (#188)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * Feature/cb pure spinning (#189)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * pure spinning behavior missing files
-  * minor changes (#190)
-  * Feature/planner changes 16 12 (#191)
-  * minor changes
-  * more fixes
-  * minor
-  * minor
-  * Feature/replanning 16 dec (#193)
-  * minor changes
-  * replanning for all our examples
-  * several fixes (#194)
-  * minor changes (#195)
-  * Feature/undo motion 20 12 (#196)
-  * minor changes
-  * replanning for all our examples
-  * improving undo motion navigation warehouse2
-  * minor
-  * tuning warehouse3 (#197)
-  * Feature/undo motion 20 12 (#198)
-  * minor changes
-  * replanning for all our examples
-  * improving undo motion navigation warehouse2
-  * minor
-  * undo tuning and errors
-  * format
-  * Feature/sync 21 12 (#199)
-  * minor changes
-  * replanning for all our examples
-  * format issues
-  * Feature/warehouse2 22 12 (#200)
-  * minor changes
-  * replanning for all our examples
-  * format issues
-  * finishing warehouse2
-  * Feature/warehouse2 23 12 (#201)
-  * minor changes
-  * replanning for all our examples
-  * tuning and fixes (#202)
-  * Feature/minor tune (#203)
-  * tuning and fixes
-  * minor tune
-  * fixing warehouse 3 problems, and other core improvements (#204)
-  * fixing warehouse 3 problems, and other core improvements to remove dead lock, also making continuous integration green
-  * weird moveit not downloaded repo
-  * added missing file from warehouse2 (#205)
-  * backport to foxy
-  * minor format
-  * minor linking errors foxy
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  Co-authored-by: Declan Dury <44791484+DecDury@users.noreply.github.com>
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: reelrbtx <brett2@reelrobotics.com>
-  Co-authored-by: brettpac <brett@robosoft.ai>
-  Co-authored-by: David Revay <MrBlenny@users.noreply.github.com>
-  * missing
-  * missing sm
-  * updating subscriber publisher components
-  * progress in autowarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrre machine
-  * refining cp subscriber cp publisher
-  * improvements in smacc core adding more components mostly developed for autoware demo
-  * autoware demo
-  * missing
-  * foxy ci
-  * fix
-  * minor broken build
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  Co-authored-by: Declan Dury <44791484+DecDury@users.noreply.github.com>
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: reelrbtx <brett2@reelrobotics.com>
-  Co-authored-by: brettpac <brett@robosoft.ai>
-  Co-authored-by: David Revay <MrBlenny@users.noreply.github.com>
-  Co-authored-by: pabloinigoblasco <pabloinigoblasco@ibrobotics.com>
-  * Add mergify rules file.
-  * Try fixing CI for rolling. (#209)
-  Merging to get backport working.
-  * some reordering fixes
-  * Remove example things from Foxy CI setup. (#214)
-  * Add Autoware Auto Msgs into not-released dependencies. (#220)
-  * Fix rolling builds (#222)
-  * do not merge yet - Feature/odom tracker improvements and retry motion (#223)
-  * odom tracker improvements
-  * adding forward behavior retry funcionality
-  * minor
-  * docker files for different revisions, warnings removval and more testing on navigation
-  * fixing docker for foxy and galactic
-  * removing warnings (#213)
-  * minor changes
-  * replanning for all our examples
-  * backport to foxy
-  * minor format
-  * minor linking errors foxy
-  * Foxy backport (#206)
-  * minor formatting fixes
-  * Fix trailing spaces.
-  * Correct codespell.
-  * Correct python linters warnings.
-  * Add galactic CI build because Navigation2 is broken in rolling.
-  * Add partial changes for ament_cpplint.
-  * Add tf2_ros as dependency to find include.
-  * Disable ament_cpplint.
-  * Disable some packages and update workflows.
-  * Bump ccache version.
-  * Ignore further packages
-  * Satisfy ament_lint_cmake
-  * Add missing licences.
-  * Disable cpplint and cppcheck linters.
-  * Correct formatters.
-  * branching example
-  * Disable disabled packages
-  * Update ci-build-source.yml
-  * Change extension
-  * Change extension of imports.
-  * Enable cppcheck
-  * Correct formatting of python file.
-  * Included necessary package and edited Threesome launch
-  Changed...
-  ros2 launch sm_three_some sm_three_some
-  to
-  ros2 launch sm_three_some sm_three_some.launch
-  Added:
-  First ensure you have the necessary package installed.
-  ```
-  sudo apt-get install ros-rolling-ros2trace
-  ```
-  Then run this command.
-  * Rename header files and correct format.
-  * Add workflow for checking doc build.
-  * Update doxygen-check-build.yml
-  * Create doxygen-deploy.yml
-  * Use manual deployment for now.
-  * Create workflow for testing prerelease builds
-  * Use docs/ as source folder for documentation
-  * Use docs/ as output directory.
-  * Rename to smacc2 and smacc2_msgs
-  * Correct GitHub branch reference.
-  * Update name of package and package.xml to pass liter.
-  * Execute on master update
-  * Reset all versions to 0.0.0
-  * Ignore all packages except smacc2 and smacc2_msgs
-  * Update changelogs
-  * 0.1.0
-  * Revert "Ignore all packages except smacc2 and smacc2_msgs"
-  This reverts commit f603166a4b3ccdfe96c64d9f9fb9d8b49fbf0e61.
-  * Update description table.
-  * Update table
-  * Copy initial docs
-  * Dockerfile w/ ROS distro as argument
-  use this command "sudo docker build --build-arg ROS2_DISTRO=(desiredRosTag) (directoryHoldingDockerfile)/"
-  * Opened new folder for additional tracing contents
-  * Delete tracing directory
-  * Moved tracing.md to tracing directory
-  * added setupTracing.sh
-  Installs necessary packages and configures tracing group.
-  * Removed manual installation of ros-rolling-ros2trace
-  This is now automated in setupTracing.sh
-  location of sh file assumed if user follows README.md under "Getting started"
-  * Created alternative ManualTracing
-  * added new sm markdowns
-  * added a dockerfile for Rolling and Galactic
-  * Update smacc2_ci/docker/ros_rollingAndGalactic_ubuntu_20.04/buildGalactic.sh
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Update tracing/ManualTracing.md
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * changed wording "smacc application" to "SMACC2 library"
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Update smacc_sm_reference_library/sm_atomic/README.md
-  edit from html to markdown syntax
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * reactivating smacc2 nav clients for rolling via submodules
-  * renamed tracing events after
-  * bug in smacc2 component
-  * reverted markdowns to html
-  * added README tutorial for Dockerfile
-  * additional cleanup
-  * cleanup
-  * cleanup
-  * edited tracing.md to reflect new tracing event names
-  * Enable build of missing rolling repositories.
-  * Enable Navigation2 for semi-binary build.
-  * Remove galactic builds from master and kepp only rolling. Remove submodules and use .repos file
-  * updated mentions of SMACC/ROS to SMACC2/ROS2
-  * some progress on navigation rolling
-  * renamed folders, deleted tracing.md, edited README.md
-  * added smacc2_performance_tools
-  * performance tests improvements
-  * more on performance and other issues
-  * sm_respira_1 format cleanup
-  * sm_respira_1 format cleanup pre-commit
-  * sm_respira_test_2
-  * sm_respira_test_2
-  * more changes on performance tests
-  * Do not execute clang-format on smacc2_sm_reference_library package.
-  * sm_reference_library reformatting
-  * Correct trailing spaces.
-  * sm_atomic_24hr
-  * sm_atomic_performance_trace_1
-  * Update smacc2_rta command across readmes
-  * Clean up of sm_atomic_24hr
-  * more sm_atomic_24hr cleanup
-  * Optimized deps in move_base_z_planners_common.
-  * Renaming of event generator library
-  * minor formatting
-  * Add galactic CI setup and rename rolling files. (#58)
-  * Fix source CI and correct README overview. (#62)
-  * Update c_cpp_properties.json
-  * changed launch command to ros2 launch sm_respira_1 sm_respira_1.launch (#69)
-  also noticed a note I had made while producing these that was not removed
-  * update doxygen links (#70)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More Readme Updates (#72)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More Readme (#74)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * created new sm from sm_respira_1 (#76)
-  * Feature/core and navigation fixes (#78)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * Feature/aws demo progress (#80)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * sm_advanced_recovery_1 reworked (#83)
-  * sm_advanced_recovery_1 reworked
-  * fix pre-commit
-  * Trying to fix Pre-Commit
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more sm_advanced_recovery_1 (#84)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More sm_advanced_recovery_1 work (#85)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_advanced_recovery_1 round 4 (#86)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#87)
-  * sm_atomic_performance_test_a_2
-  * sm_atomic_performance_test_a_1
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_atomic_performance_test_c_1 (#88)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * modifying sm_atomic_performance_test_a_2 (#89)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_multi_stage_1 (#90)
-  * sm_multi_stage_1
-  * fixing precommit
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more sm_multi_stage_1 (#91)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Update README.md
-  updated launch command
-  * Wait topic message client behavior (#81)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * attempting precommit fixes
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Feature/wait nav2 nodes client behavior (#82)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * Correct all linters and formaters.
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Feature/aws demo progress (#92)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * Feature/sm dance bot fixes (#93)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * Feature/sm aws warehouse (#94)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * merge and progress
-  * fix format
-  * Feature/sm dance bot fixes (#95)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * minor
-  * minor format
-  * Remove some compile warnings. (#96)
-  * Feature/cb pause slam (#98)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * minor
-  * formatting
-  * cb pause slam client behavior
-  * sm_dance_bot_lite (#99)
-  * sm_dance_bot_lite
-  * precommit
-  * Updates yaml
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Rename doxygen deployment workflow (#100)
-  * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
-  * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * gazebo fixes, to show the robot and the lidar
-  * format fixes
-  * sm_multi_stage_1 doubling (#103)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * gazebo fixes, to show the robot and the lidar
-  * format fixes
-  * gazebo fixes for sm_dance_bot_strikes_back
-  * precommit cleanup run (#106)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * aws demo (#108)
-  * aws demo
-  * format
-  * got sm_multi_stage_1 working (barely) (#109)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#110)
-  * got sm_multi_stage_1 working (barely)
-  * gaining traction sm_multi_stage_1
-  * more
-  * don't remember
-  * making progress
-  * More
-  * keep hammering
-  * two stages
-  * 3 part
-  * 4th stage
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#111)
-  * got sm_multi_stage_1 working (barely)
-  * gaining traction sm_multi_stage_1
-  * more
-  * don't remember
-  * making progress
-  * More
-  * keep hammering
-  * two stages
-  * 3 part
-  * 4th stage
-  * 5th stage
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * a3 (#113)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Remove neo_simulation2 package. (#112)
-  * Remove neo_simulation2 package.
-  * Correct formatting.
-  * Enable source build on PR for testing.
-  * Adjust build packages of source CI
-  * more sm_multi_stage_1 (#114)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * mm (#115)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * diverse improvements navigation and performance (#116)
-  * diverse improvements navigation and performance
-  * minor
-  Co-authored-by: pabloinigoblasco <pablo@ibrobotics.com>
-  * Feature/diverse improvemets navigation performance (#117)
-  * diverse improvements navigation and performance
-  * minor
-  * additional linting and formatting
-  * Remove merge markers from a python file. (#119)
-  * Feature/slam toggle and smacc deep history (#122)
-  * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
-  * feature/more_sm_dance_bot_fixes
-  * minor format
-  * minor (#124)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
-  * Move method after the method it calls. Otherwise recursion could happen. (#126)
-  * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * noticed typo
-  Finnaly > Finally
-  * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
-  * First working version of sm template and template generator. (#127)
-  * minor tweaks (#130)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
-  * minor
-  * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
-  * minor
-  * build fix
-  * waypoints navigator bug (#133)
-  * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
-  * some more progress on markers cleanup
-  * minor format issues (#134)
-  * sm_dance_bot_lite (#136)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Resolve compile wanings (#137)
-  * Add SM core test (#138)
-  * minor navigation improvements (#141)
-  * using local action msgs (#139)
-  * using local action msgs
-  * removing sm_dance_bot_msgs
-  * pending references
-  * Feature/nav2z renaming (#144)
-  * using local action msgs
-  * removing sm_dance_bot_msgs
-  * pending references
-  * navigation 2 stack renaming
-  * formatting
-  * added SVGs to READMEs of atomic, dance_bot, and others (#140)
-  * added remaining SVGs to READMEs (#145)
-  * added remaining SVGs to READMEs
-  * precommit cleanup
-  * Update package list. (#142)
-  * removing parameters smacc (#147)
-  * removing parameters smacc
-  * workflows update
-  * workflow
-  * Noticed launch command was incorrect in README.md
-  fixed launch command for sm_dance_bot_strikes_back and removed some comments I had made in the past.
-  * Fix CI: format fix python version (#148)
-  * Add SM Atomic SM generator. (#143)
-  * Remove node creation and create only a logger. (#149)
-  * Rolling Docker environment to be executed from any environment (#154)
-  * Feature/sm dance bot strikes back refactoring (#152)
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * slight waypoint 4 and iterations changes so robot can complete course (#155)
-  * Feature/migration moveit client (#151)
-  * initial migration to smacc2
-  * fixing some errors introduced on formatting
-  * missing dependency
-  * fixing some more linting warnings
-  * minor
-  * removing test from main moveit cmake
-  * test ur5
-  * progressing in the moveit migration testing
-  * updating format
-  * adding .reps dependencies and also fixing some build errors
-  * repos dependency
-  * adding dependency to ur5 client
-  * docker refactoring
-  * minor
-  * progress on move_it PR
-  * minor dockerfile test workaround
-  * improving dockerfile for building local tests
-  * minor
-  * fixing compiling issues
-  * update readme (#164)
-  * update readme
-  * more readme updates
-  * more
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * initial state machine transition timestamp (#165)
-  * moved reference library SMs to smacc2_performance_tools (#166)
-  * moved reference library SMs to smacc2_performance_tools
-  * pre-commit cleanup
-  * Add QOS durability to SmaccPublisherClient (#163)
-  * feat: add qos durability to SmaccPublisherClient
-  * fix: add a missing colon
-  * refactor: remove line
-  * feat: add reliability qos config
-  * Feature/testing moveit behaviors (#167)
-  * more testing on moveit
-  * progress on moveit
-  * more testing on moveit behaviors
-  * minor configuration
-  * fixing pipeline error
-  * fixing broken master build
-  * sm_pubsub_1 (#169)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_pubsub_1 part 2 (#170)
-  * sm_pubsub_1 part 2
-  * sm_pubsub_1 part 2
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_advanced_recovery_1 renaming (#171)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_multi_stage_1 reworking (#172)
-  * multistage modes
-  * sm_multi_stage sequences
-  * sm_multi_state_1 steps
-  * sm_multi_stage_1 sequence d
-  * sm_multi_stage_1 c sequence
-  * mode_5_sequence_b
-  * mode_4_sequence_b
-  * sm_multi_stage_1 most
-  * finishing touches 1
-  * readme
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/aws navigation sm dance bot (#174)
-  * repo dependency
-  * husky launch file in sm_dance_bot
-  * Add dependencies for husky simulation.
-  * Fix formatting.
-  * Update dependencies for husky in rolling and galactic.
-  * minor
-  * progress on aws navigation and some other refactorings on navigation clients and behaviors
-  * more on aws demo
-  * fixing broken build
-  * minor
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * minor changes (#175)
-  * warehouse2 (#177)
-  * Waypoint Inputs (#178)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * wharehouse2 progress (#179)
-  * format (#180)
-  * sm_dance_bot_warehouse_3 (#181)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm warehouse 2 13 dec 2 (#182)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * Brettpac branch (#184)
-  * sm_dance_bot_warehouse_3
-  * Redoing sm_dance_bot_warehouse_3 waypoints
-  * More Waypoints
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * SrConditional fixes and formatting (#168)
-  * fix: some formatting and templating on SrConditional
-  * fix: move trigger logic into headers
-  * fix: lint
-  * Feature/wharehouse2 dec 14 (#185)
-  * warehouse2
-  * minor
-  * Feature/sm warehouse 2 13 dec 2 (#186)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * finetuning waypoints (#187)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/cb pure spinning (#188)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * Feature/cb pure spinning (#189)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * pure spinning behavior missing files
-  * minor changes (#190)
-  * Feature/planner changes 16 12 (#191)
-  * minor changes
-  * more fixes
-  * minor
-  * minor
-  * Feature/replanning 16 dec (#193)
-  * minor changes
-  * replanning for all our examples
-  * several fixes (#194)
-  * minor changes (#195)
-  * Feature/undo motion 20 12 (#196)
-  * minor changes
-  * replanning for all our examples
-  * improving undo motion navigation warehouse2
-  * minor
-  * tuning warehouse3 (#197)
-  * Feature/undo motion 20 12 (#198)
-  * minor changes
-  * replanning for all our examples
-  * improving undo motion navigation warehouse2
-  * minor
-  * undo tuning and errors
-  * format
-  * Feature/sync 21 12 (#199)
-  * minor changes
-  * replanning for all our examples
-  * format issues
-  * Feature/warehouse2 22 12 (#200)
-  * minor changes
-  * replanning for all our examples
-  * format issues
-  * finishing warehouse2
-  * Feature/warehouse2 23 12 (#201)
-  * minor changes
-  * replanning for all our examples
-  * tuning and fixes (#202)
-  * Feature/minor tune (#203)
-  * tuning and fixes
-  * minor tune
-  * fixing warehouse 3 problems, and other core improvements (#204)
-  * fixing warehouse 3 problems, and other core improvements to remove dead lock, also making continuous integration green
-  * weird moveit not downloaded repo
-  * added missing file from warehouse2 (#205)
-  * backport to foxy
-  * minor format
-  * minor linking errors foxy
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  Co-authored-by: Declan Dury <44791484+DecDury@users.noreply.github.com>
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: reelrbtx <brett2@reelrobotics.com>
-  Co-authored-by: brettpac <brett@robosoft.ai>
-  Co-authored-by: David Revay <MrBlenny@users.noreply.github.com>
-  * missing
-  * missing sm
-  * updating subscriber publisher components
-  * progress in autowarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrre machine
-  * refining cp subscriber cp publisher
-  * improvements in smacc core adding more components mostly developed for autoware demo
-  * autoware demo
-  * missing
-  * foxy ci
-  * fix
-  * minor broken build
-  * some reordering fixes
-  * minor
-  * docker files for different revisions, warnings removval and more testing on navigation
-  * fixing docker for foxy and galactic
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  Co-authored-by: Declan Dury <44791484+DecDury@users.noreply.github.com>
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: reelrbtx <brett2@reelrobotics.com>
-  Co-authored-by: brettpac <brett@robosoft.ai>
-  Co-authored-by: David Revay <MrBlenny@users.noreply.github.com>
-  Co-authored-by: pabloinigoblasco <pabloinigoblasco@ibrobotics.com>
-  * docker build files for all versions
-  * dockerfiles (#225)
-  * Fix code generators (#221)
-  * Fix other build issues.
-  * Update SM template and make example code clearly visible.
-  * Remove use of node in the sm performance template.
-  * Updated templated to use Blackboard storage.
-  * Update template to resolve the global data correctly.
-  * Update sm_name.hpp
-  Co-authored-by: Pablo Iñigo Blasco <pablo@ibrobotics.com>
-  * Feature/retry behavior warehouse 1 (#226)
-  * minor changes
-  * replanning for all our examples
-  * backport to foxy
-  * minor format
-  * minor linking errors foxy
-  * Foxy backport (#206)
-  * minor formatting fixes
-  * Fix trailing spaces.
-  * Correct codespell.
-  * Correct python linters warnings.
-  * Add galactic CI build because Navigation2 is broken in rolling.
-  * Add partial changes for ament_cpplint.
-  * Add tf2_ros as dependency to find include.
-  * Disable ament_cpplint.
-  * Disable some packages and update workflows.
-  * Bump ccache version.
-  * Ignore further packages
-  * Satisfy ament_lint_cmake
-  * Add missing licences.
-  * Disable cpplint and cppcheck linters.
-  * Correct formatters.
-  * branching example
-  * Disable disabled packages
-  * Update ci-build-source.yml
-  * Change extension
-  * Change extension of imports.
-  * Enable cppcheck
-  * Correct formatting of python file.
-  * Included necessary package and edited Threesome launch
-  Changed...
-  ros2 launch sm_three_some sm_three_some
-  to
-  ros2 launch sm_three_some sm_three_some.launch
-  Added:
-  First ensure you have the necessary package installed.
-  ```
-  sudo apt-get install ros-rolling-ros2trace
-  ```
-  Then run this command.
-  * Rename header files and correct format.
-  * Add workflow for checking doc build.
-  * Update doxygen-check-build.yml
-  * Create doxygen-deploy.yml
-  * Use manual deployment for now.
-  * Create workflow for testing prerelease builds
-  * Use docs/ as source folder for documentation
-  * Use docs/ as output directory.
-  * Rename to smacc2 and smacc2_msgs
-  * Correct GitHub branch reference.
-  * Update name of package and package.xml to pass liter.
-  * Execute on master update
-  * Reset all versions to 0.0.0
-  * Ignore all packages except smacc2 and smacc2_msgs
-  * Update changelogs
-  * 0.1.0
-  * Revert "Ignore all packages except smacc2 and smacc2_msgs"
-  This reverts commit f603166a4b3ccdfe96c64d9f9fb9d8b49fbf0e61.
-  * Update description table.
-  * Update table
-  * Copy initial docs
-  * Dockerfile w/ ROS distro as argument
-  use this command "sudo docker build --build-arg ROS2_DISTRO=(desiredRosTag) (directoryHoldingDockerfile)/"
-  * Opened new folder for additional tracing contents
-  * Delete tracing directory
-  * Moved tracing.md to tracing directory
-  * added setupTracing.sh
-  Installs necessary packages and configures tracing group.
-  * Removed manual installation of ros-rolling-ros2trace
-  This is now automated in setupTracing.sh
-  location of sh file assumed if user follows README.md under "Getting started"
-  * Created alternative ManualTracing
-  * added new sm markdowns
-  * added a dockerfile for Rolling and Galactic
-  * Update smacc2_ci/docker/ros_rollingAndGalactic_ubuntu_20.04/buildGalactic.sh
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Update tracing/ManualTracing.md
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * changed wording "smacc application" to "SMACC2 library"
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Update smacc_sm_reference_library/sm_atomic/README.md
-  edit from html to markdown syntax
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * reactivating smacc2 nav clients for rolling via submodules
-  * renamed tracing events after
-  * bug in smacc2 component
-  * reverted markdowns to html
-  * added README tutorial for Dockerfile
-  * additional cleanup
-  * cleanup
-  * cleanup
-  * edited tracing.md to reflect new tracing event names
-  * Enable build of missing rolling repositories.
-  * Enable Navigation2 for semi-binary build.
-  * Remove galactic builds from master and kepp only rolling. Remove submodules and use .repos file
-  * updated mentions of SMACC/ROS to SMACC2/ROS2
-  * some progress on navigation rolling
-  * renamed folders, deleted tracing.md, edited README.md
-  * added smacc2_performance_tools
-  * performance tests improvements
-  * more on performance and other issues
-  * sm_respira_1 format cleanup
-  * sm_respira_1 format cleanup pre-commit
-  * sm_respira_test_2
-  * sm_respira_test_2
-  * more changes on performance tests
-  * Do not execute clang-format on smacc2_sm_reference_library package.
-  * sm_reference_library reformatting
-  * Correct trailing spaces.
-  * sm_atomic_24hr
-  * sm_atomic_performance_trace_1
-  * Update smacc2_rta command across readmes
-  * Clean up of sm_atomic_24hr
-  * more sm_atomic_24hr cleanup
-  * Optimized deps in move_base_z_planners_common.
-  * Renaming of event generator library
-  * minor formatting
-  * Add galactic CI setup and rename rolling files. (#58)
-  * Fix source CI and correct README overview. (#62)
-  * Update c_cpp_properties.json
-  * changed launch command to ros2 launch sm_respira_1 sm_respira_1.launch (#69)
-  also noticed a note I had made while producing these that was not removed
-  * update doxygen links (#70)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More Readme Updates (#72)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More Readme (#74)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * created new sm from sm_respira_1 (#76)
-  * Feature/core and navigation fixes (#78)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * Feature/aws demo progress (#80)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * sm_advanced_recovery_1 reworked (#83)
-  * sm_advanced_recovery_1 reworked
-  * fix pre-commit
-  * Trying to fix Pre-Commit
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more sm_advanced_recovery_1 (#84)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More sm_advanced_recovery_1 work (#85)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_advanced_recovery_1 round 4 (#86)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#87)
-  * sm_atomic_performance_test_a_2
-  * sm_atomic_performance_test_a_1
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_atomic_performance_test_c_1 (#88)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * modifying sm_atomic_performance_test_a_2 (#89)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_multi_stage_1 (#90)
-  * sm_multi_stage_1
-  * fixing precommit
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more sm_multi_stage_1 (#91)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Update README.md
-  updated launch command
-  * Wait topic message client behavior (#81)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * attempting precommit fixes
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Feature/wait nav2 nodes client behavior (#82)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * Correct all linters and formaters.
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Feature/aws demo progress (#92)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * Feature/sm dance bot fixes (#93)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * Feature/sm aws warehouse (#94)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * merge and progress
-  * fix format
-  * Feature/sm dance bot fixes (#95)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * minor
-  * minor format
-  * Remove some compile warnings. (#96)
-  * Feature/cb pause slam (#98)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * minor
-  * formatting
-  * cb pause slam client behavior
-  * sm_dance_bot_lite (#99)
-  * sm_dance_bot_lite
-  * precommit
-  * Updates yaml
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Rename doxygen deployment workflow (#100)
-  * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
-  * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * gazebo fixes, to show the robot and the lidar
-  * format fixes
-  * sm_multi_stage_1 doubling (#103)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * gazebo fixes, to show the robot and the lidar
-  * format fixes
-  * gazebo fixes for sm_dance_bot_strikes_back
-  * precommit cleanup run (#106)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * aws demo (#108)
-  * aws demo
-  * format
-  * got sm_multi_stage_1 working (barely) (#109)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#110)
-  * got sm_multi_stage_1 working (barely)
-  * gaining traction sm_multi_stage_1
-  * more
-  * don't remember
-  * making progress
-  * More
-  * keep hammering
-  * two stages
-  * 3 part
-  * 4th stage
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#111)
-  * got sm_multi_stage_1 working (barely)
-  * gaining traction sm_multi_stage_1
-  * more
-  * don't remember
-  * making progress
-  * More
-  * keep hammering
-  * two stages
-  * 3 part
-  * 4th stage
-  * 5th stage
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * a3 (#113)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Remove neo_simulation2 package. (#112)
-  * Remove neo_simulation2 package.
-  * Correct formatting.
-  * Enable source build on PR for testing.
-  * Adjust build packages of source CI
-  * more sm_multi_stage_1 (#114)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * mm (#115)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * diverse improvements navigation and performance (#116)
-  * diverse improvements navigation and performance
-  * minor
-  Co-authored-by: pabloinigoblasco <pablo@ibrobotics.com>
-  * Feature/diverse improvemets navigation performance (#117)
-  * diverse improvements navigation and performance
-  * minor
-  * additional linting and formatting
-  * Remove merge markers from a python file. (#119)
-  * Feature/slam toggle and smacc deep history (#122)
-  * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
-  * feature/more_sm_dance_bot_fixes
-  * minor format
-  * minor (#124)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
-  * Move method after the method it calls. Otherwise recursion could happen. (#126)
-  * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * noticed typo
-  Finnaly > Finally
-  * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
-  * First working version of sm template and template generator. (#127)
-  * minor tweaks (#130)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
-  * minor
-  * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
-  * minor
-  * build fix
-  * waypoints navigator bug (#133)
-  * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
-  * some more progress on markers cleanup
-  * minor format issues (#134)
-  * sm_dance_bot_lite (#136)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Resolve compile wanings (#137)
-  * Add SM core test (#138)
-  * minor navigation improvements (#141)
-  * using local action msgs (#139)
-  * using local action msgs
-  * removing sm_dance_bot_msgs
-  * pending references
-  * Feature/nav2z renaming (#144)
-  * using local action msgs
-  * removing sm_dance_bot_msgs
-  * pending references
-  * navigation 2 stack renaming
-  * formatting
-  * added SVGs to READMEs of atomic, dance_bot, and others (#140)
-  * added remaining SVGs to READMEs (#145)
-  * added remaining SVGs to READMEs
-  * precommit cleanup
-  * Update package list. (#142)
-  * removing parameters smacc (#147)
-  * removing parameters smacc
-  * workflows update
-  * workflow
-  * Noticed launch command was incorrect in README.md
-  fixed launch command for sm_dance_bot_strikes_back and removed some comments I had made in the past.
-  * Fix CI: format fix python version (#148)
-  * Add SM Atomic SM generator. (#143)
-  * Remove node creation and create only a logger. (#149)
-  * Rolling Docker environment to be executed from any environment (#154)
-  * Feature/sm dance bot strikes back refactoring (#152)
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * slight waypoint 4 and iterations changes so robot can complete course (#155)
-  * Feature/migration moveit client (#151)
-  * initial migration to smacc2
-  * fixing some errors introduced on formatting
-  * missing dependency
-  * fixing some more linting warnings
-  * minor
-  * removing test from main moveit cmake
-  * test ur5
-  * progressing in the moveit migration testing
-  * updating format
-  * adding .reps dependencies and also fixing some build errors
-  * repos dependency
-  * adding dependency to ur5 client
-  * docker refactoring
-  * minor
-  * progress on move_it PR
-  * minor dockerfile test workaround
-  * improving dockerfile for building local tests
-  * minor
-  * fixing compiling issues
-  * update readme (#164)
-  * update readme
-  * more readme updates
-  * more
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * initial state machine transition timestamp (#165)
-  * moved reference library SMs to smacc2_performance_tools (#166)
-  * moved reference library SMs to smacc2_performance_tools
-  * pre-commit cleanup
-  * Add QOS durability to SmaccPublisherClient (#163)
-  * feat: add qos durability to SmaccPublisherClient
-  * fix: add a missing colon
-  * refactor: remove line
-  * feat: add reliability qos config
-  * Feature/testing moveit behaviors (#167)
-  * more testing on moveit
-  * progress on moveit
-  * more testing on moveit behaviors
-  * minor configuration
-  * fixing pipeline error
-  * fixing broken master build
-  * sm_pubsub_1 (#169)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_pubsub_1 part 2 (#170)
-  * sm_pubsub_1 part 2
-  * sm_pubsub_1 part 2
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_advanced_recovery_1 renaming (#171)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_multi_stage_1 reworking (#172)
-  * multistage modes
-  * sm_multi_stage sequences
-  * sm_multi_state_1 steps
-  * sm_multi_stage_1 sequence d
-  * sm_multi_stage_1 c sequence
-  * mode_5_sequence_b
-  * mode_4_sequence_b
-  * sm_multi_stage_1 most
-  * finishing touches 1
-  * readme
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/aws navigation sm dance bot (#174)
-  * repo dependency
-  * husky launch file in sm_dance_bot
-  * Add dependencies for husky simulation.
-  * Fix formatting.
-  * Update dependencies for husky in rolling and galactic.
-  * minor
-  * progress on aws navigation and some other refactorings on navigation clients and behaviors
-  * more on aws demo
-  * fixing broken build
-  * minor
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * minor changes (#175)
-  * warehouse2 (#177)
-  * Waypoint Inputs (#178)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * wharehouse2 progress (#179)
-  * format (#180)
-  * sm_dance_bot_warehouse_3 (#181)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm warehouse 2 13 dec 2 (#182)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * Brettpac branch (#184)
-  * sm_dance_bot_warehouse_3
-  * Redoing sm_dance_bot_warehouse_3 waypoints
-  * More Waypoints
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * SrConditional fixes and formatting (#168)
-  * fix: some formatting and templating on SrConditional
-  * fix: move trigger logic into headers
-  * fix: lint
-  * Feature/wharehouse2 dec 14 (#185)
-  * warehouse2
-  * minor
-  * Feature/sm warehouse 2 13 dec 2 (#186)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * finetuning waypoints (#187)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/cb pure spinning (#188)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * Feature/cb pure spinning (#189)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * pure spinning behavior missing files
-  * minor changes (#190)
-  * Feature/planner changes 16 12 (#191)
-  * minor changes
-  * more fixes
-  * minor
-  * minor
-  * Feature/replanning 16 dec (#193)
-  * minor changes
-  * replanning for all our examples
-  * several fixes (#194)
-  * minor changes (#195)
-  * Feature/undo motion 20 12 (#196)
-  * minor changes
-  * replanning for all our examples
-  * improving undo motion navigation warehouse2
-  * minor
-  * tuning warehouse3 (#197)
-  * Feature/undo motion 20 12 (#198)
-  * minor changes
-  * replanning for all our examples
-  * improving undo motion navigation warehouse2
-  * minor
-  * undo tuning and errors
-  * format
-  * Feature/sync 21 12 (#199)
-  * minor changes
-  * replanning for all our examples
-  * format issues
-  * Feature/warehouse2 22 12 (#200)
-  * minor changes
-  * replanning for all our examples
-  * format issues
-  * finishing warehouse2
-  * Feature/warehouse2 23 12 (#201)
-  * minor changes
-  * replanning for all our examples
-  * tuning and fixes (#202)
-  * Feature/minor tune (#203)
-  * tuning and fixes
-  * minor tune
-  * fixing warehouse 3 problems, and other core improvements (#204)
-  * fixing warehouse 3 problems, and other core improvements to remove dead lock, also making continuous integration green
-  * weird moveit not downloaded repo
-  * added missing file from warehouse2 (#205)
-  * backport to foxy
-  * minor format
-  * minor linking errors foxy
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  Co-authored-by: Declan Dury <44791484+DecDury@users.noreply.github.com>
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: reelrbtx <brett2@reelrobotics.com>
-  Co-authored-by: brettpac <brett@robosoft.ai>
-  Co-authored-by: David Revay <MrBlenny@users.noreply.github.com>
-  * missing
-  * missing sm
-  * updating subscriber publisher components
-  * progress in autowarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrre machine
-  * refining cp subscriber cp publisher
-  * improvements in smacc core adding more components mostly developed for autoware demo
-  * autoware demo
-  * missing
-  * foxy ci
-  * fix
-  * minor broken build
-  * some reordering fixes
-  * minor
-  * docker files for different revisions, warnings removval and more testing on navigation
-  * fixing docker for foxy and galactic
-  * Update file for fake hardware simulation and add file for gazebo simulation.
-  * docker build files for all versions
-  * retry behavior warehouse 1
-  * missing file
-  * minor format fix
-  * other minor changes
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  Co-authored-by: Declan Dury <44791484+DecDury@users.noreply.github.com>
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: reelrbtx <brett2@reelrobotics.com>
-  Co-authored-by: brettpac <brett@robosoft.ai>
-  Co-authored-by: David Revay <MrBlenny@users.noreply.github.com>
-  Co-authored-by: pabloinigoblasco <pabloinigoblasco@ibrobotics.com>
-  * barrel demo
-  * barrel search build fix and warehouse3
-  * fixing startup problems in warehouse 3
-  * fix broken source build (#227)
-  * fixing format and minor
-  * minor
-  * progress in barrel husky
-  * minor
-  * Only rolling version should be pre-released on on master. (#230)
-  * barrel demo
-  * minor
-  * barrel search updates
-  * making models local
-  * red picuup
-  * Correct Focal-Rolling builds by fixing the version of rosdep yaml (#234)
-  * multiple controllable leds plugin
-  * progress in husky demo
-  * Update file for fake hardware simulation and add file for gazebo simulation. (#224)
-  * Update file for fake hardware simulation and add file for gazebo simulation.
-  * Add ignition file and update repos files.
-  * progressing in husky demo
-  * improving navigation behaviors
-  * Feature/improvements warehouse3 (#228)
-  * minor changes
-  * replanning for all our examples
-  * backport to foxy
-  * minor format
-  * minor linking errors foxy
-  * Foxy backport (#206)
-  * minor formatting fixes
-  * Fix trailing spaces.
-  * Correct codespell.
-  * Correct python linters warnings.
-  * Add galactic CI build because Navigation2 is broken in rolling.
-  * Add partial changes for ament_cpplint.
-  * Add tf2_ros as dependency to find include.
-  * Disable ament_cpplint.
-  * Disable some packages and update workflows.
-  * Bump ccache version.
-  * Ignore further packages
-  * Satisfy ament_lint_cmake
-  * Add missing licences.
-  * Disable cpplint and cppcheck linters.
-  * Correct formatters.
-  * branching example
-  * Disable disabled packages
-  * Update ci-build-source.yml
-  * Change extension
-  * Change extension of imports.
-  * Enable cppcheck
-  * Correct formatting of python file.
-  * Included necessary package and edited Threesome launch
-  Changed...
-  ros2 launch sm_three_some sm_three_some
-  to
-  ros2 launch sm_three_some sm_three_some.launch
-  Added:
-  First ensure you have the necessary package installed.
-  ```
-  sudo apt-get install ros-rolling-ros2trace
-  ```
-  Then run this command.
-  * Rename header files and correct format.
-  * Add workflow for checking doc build.
-  * Update doxygen-check-build.yml
-  * Create doxygen-deploy.yml
-  * Use manual deployment for now.
-  * Create workflow for testing prerelease builds
-  * Use docs/ as source folder for documentation
-  * Use docs/ as output directory.
-  * Rename to smacc2 and smacc2_msgs
-  * Correct GitHub branch reference.
-  * Update name of package and package.xml to pass liter.
-  * Execute on master update
-  * Reset all versions to 0.0.0
-  * Ignore all packages except smacc2 and smacc2_msgs
-  * Update changelogs
-  * 0.1.0
-  * Revert "Ignore all packages except smacc2 and smacc2_msgs"
-  This reverts commit f603166a4b3ccdfe96c64d9f9fb9d8b49fbf0e61.
-  * Update description table.
-  * Update table
-  * Copy initial docs
-  * Dockerfile w/ ROS distro as argument
-  use this command "sudo docker build --build-arg ROS2_DISTRO=(desiredRosTag) (directoryHoldingDockerfile)/"
-  * Opened new folder for additional tracing contents
-  * Delete tracing directory
-  * Moved tracing.md to tracing directory
-  * added setupTracing.sh
-  Installs necessary packages and configures tracing group.
-  * Removed manual installation of ros-rolling-ros2trace
-  This is now automated in setupTracing.sh
-  location of sh file assumed if user follows README.md under "Getting started"
-  * Created alternative ManualTracing
-  * added new sm markdowns
-  * added a dockerfile for Rolling and Galactic
-  * Update smacc2_ci/docker/ros_rollingAndGalactic_ubuntu_20.04/buildGalactic.sh
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Update tracing/ManualTracing.md
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * changed wording "smacc application" to "SMACC2 library"
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Update smacc_sm_reference_library/sm_atomic/README.md
-  edit from html to markdown syntax
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * reactivating smacc2 nav clients for rolling via submodules
-  * renamed tracing events after
-  * bug in smacc2 component
-  * reverted markdowns to html
-  * added README tutorial for Dockerfile
-  * additional cleanup
-  * cleanup
-  * cleanup
-  * edited tracing.md to reflect new tracing event names
-  * Enable build of missing rolling repositories.
-  * Enable Navigation2 for semi-binary build.
-  * Remove galactic builds from master and kepp only rolling. Remove submodules and use .repos file
-  * updated mentions of SMACC/ROS to SMACC2/ROS2
-  * some progress on navigation rolling
-  * renamed folders, deleted tracing.md, edited README.md
-  * added smacc2_performance_tools
-  * performance tests improvements
-  * more on performance and other issues
-  * sm_respira_1 format cleanup
-  * sm_respira_1 format cleanup pre-commit
-  * sm_respira_test_2
-  * sm_respira_test_2
-  * more changes on performance tests
-  * Do not execute clang-format on smacc2_sm_reference_library package.
-  * sm_reference_library reformatting
-  * Correct trailing spaces.
-  * sm_atomic_24hr
-  * sm_atomic_performance_trace_1
-  * Update smacc2_rta command across readmes
-  * Clean up of sm_atomic_24hr
-  * more sm_atomic_24hr cleanup
-  * Optimized deps in move_base_z_planners_common.
-  * Renaming of event generator library
-  * minor formatting
-  * Add galactic CI setup and rename rolling files. (#58)
-  * Fix source CI and correct README overview. (#62)
-  * Update c_cpp_properties.json
-  * changed launch command to ros2 launch sm_respira_1 sm_respira_1.launch (#69)
-  also noticed a note I had made while producing these that was not removed
-  * update doxygen links (#70)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More Readme Updates (#72)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More Readme (#74)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * created new sm from sm_respira_1 (#76)
-  * Feature/core and navigation fixes (#78)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * Feature/aws demo progress (#80)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * sm_advanced_recovery_1 reworked (#83)
-  * sm_advanced_recovery_1 reworked
-  * fix pre-commit
-  * Trying to fix Pre-Commit
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more sm_advanced_recovery_1 (#84)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * More sm_advanced_recovery_1 work (#85)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_advanced_recovery_1 round 4 (#86)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#87)
-  * sm_atomic_performance_test_a_2
-  * sm_atomic_performance_test_a_1
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_atomic_performance_test_c_1 (#88)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * modifying sm_atomic_performance_test_a_2 (#89)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_multi_stage_1 (#90)
-  * sm_multi_stage_1
-  * fixing precommit
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more sm_multi_stage_1 (#91)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Update README.md
-  updated launch command
-  * Wait topic message client behavior (#81)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * attempting precommit fixes
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Feature/wait nav2 nodes client behavior (#82)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * Correct all linters and formaters.
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * Feature/aws demo progress (#92)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * Feature/sm dance bot fixes (#93)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * Feature/sm aws warehouse (#94)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * merge and progress
-  * fix format
-  * Feature/sm dance bot fixes (#95)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * minor
-  * minor format
-  * Remove some compile warnings. (#96)
-  * Feature/cb pause slam (#98)
-  * base for the sm_aws_aarehouse navigation
-  * progressing in aws navigation
-  * minor
-  * several core improvements during navigation testing
-  * formatting improvements
-  * progress in aws navigation demo
-  * format improvements
-  * format improvements
-  * more on navigation
-  * new feature, cb_wait_topic_message: asynchronous client behavior that waits a topic message and optionally checks its contents to success
-  * formatting
-  * adding new client behavior add for nav2, wait nav2 nodes subscribing to the /bond topic and waiting they are alive. you optionally can select the nodes to wait
-  * progress in aws navigation demo
-  * minor format
-  * navigation parameters fixes on sm_dance_bot
-  * minor format
-  * minor
-  * formatting
-  * cb pause slam client behavior
-  * sm_dance_bot_lite (#99)
-  * sm_dance_bot_lite
-  * precommit
-  * Updates yaml
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Rename doxygen deployment workflow (#100)
-  * minor hotfix
-  * sm_dance_bot visualizing turtlebot3 (#101)
-  * Feature/dance bot launch gz lidar choice (#102)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * Feature/sm dance bot lite gazebo fixes (#104)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * gazebo fixes, to show the robot and the lidar
-  * format fixes
-  * sm_multi_stage_1 doubling (#103)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm dance bot strikes back gazebo fixes (#105)
-  * sm_dance_bot visualizing turtlebot3
-  * cleaning and lidar show/hide option
-  * cleaning files and making formatting work
-  * more fixes
-  * gazebo fixes, to show the robot and the lidar
-  * format fixes
-  * gazebo fixes for sm_dance_bot_strikes_back
-  * precommit cleanup run (#106)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * aws demo (#108)
-  * aws demo
-  * format
-  * got sm_multi_stage_1 working (barely) (#109)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#110)
-  * got sm_multi_stage_1 working (barely)
-  * gaining traction sm_multi_stage_1
-  * more
-  * don't remember
-  * making progress
-  * More
-  * keep hammering
-  * two stages
-  * 3 part
-  * 4th stage
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Brettpac branch (#111)
-  * got sm_multi_stage_1 working (barely)
-  * gaining traction sm_multi_stage_1
-  * more
-  * don't remember
-  * making progress
-  * More
-  * keep hammering
-  * two stages
-  * 3 part
-  * 4th stage
-  * 5th stage
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * a3 (#113)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Remove neo_simulation2 package. (#112)
-  * Remove neo_simulation2 package.
-  * Correct formatting.
-  * Enable source build on PR for testing.
-  * Adjust build packages of source CI
-  * more sm_multi_stage_1 (#114)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * mm (#115)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * diverse improvements navigation and performance (#116)
-  * diverse improvements navigation and performance
-  * minor
-  Co-authored-by: pabloinigoblasco <pablo@ibrobotics.com>
-  * Feature/diverse improvemets navigation performance (#117)
-  * diverse improvements navigation and performance
-  * minor
-  * additional linting and formatting
-  * Remove merge markers from a python file. (#119)
-  * Feature/slam toggle and smacc deep history (#122)
-  * progress in navigation, slam toggle client behaviors and slam_toolbox components. Also smacc2::deep_history syntax
-  * going forward in testing sm_dance_bot introducing slam pausing/resuming funcionality
-  * feature/more_sm_dance_bot_fixes
-  * minor format
-  * minor (#124)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * more changes in sm_dance_bot (#125)
-  * Move method after the method it calls. Otherwise recursion could happen. (#126)
-  * Feature/dance bot s pattern (#128)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * noticed typo
-  Finnaly > Finally
-  * Feature/dance bot s pattern (#129)
-  * more changes in sm_dance_bot
-  * polishing sm_dance_bot and s-pattern
-  * more refinement in sm_dance_bot
-  * First working version of sm template and template generator. (#127)
-  * minor tweaks (#130)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm dance bot refine (#131)
-  * more changes in sm_dance_bot
-  * minor
-  * Feature/sm dance bot refine 2 (#132)
-  * more changes in sm_dance_bot
-  * minor
-  * build fix
-  * waypoints navigator bug (#133)
-  * minor tuning to mitigate overshot issue cases
-  * progress in the sm_dance_bot tests (#135)
-  * some more progress on markers cleanup
-  * minor format issues (#134)
-  * sm_dance_bot_lite (#136)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Resolve compile wanings (#137)
-  * Add SM core test (#138)
-  * minor navigation improvements (#141)
-  * using local action msgs (#139)
-  * using local action msgs
-  * removing sm_dance_bot_msgs
-  * pending references
-  * Feature/nav2z renaming (#144)
-  * using local action msgs
-  * removing sm_dance_bot_msgs
-  * pending references
-  * navigation 2 stack renaming
-  * formatting
-  * added SVGs to READMEs of atomic, dance_bot, and others (#140)
-  * added remaining SVGs to READMEs (#145)
-  * added remaining SVGs to READMEs
-  * precommit cleanup
-  * Update package list. (#142)
-  * removing parameters smacc (#147)
-  * removing parameters smacc
-  * workflows update
-  * workflow
-  * Noticed launch command was incorrect in README.md
-  fixed launch command for sm_dance_bot_strikes_back and removed some comments I had made in the past.
-  * Fix CI: format fix python version (#148)
-  * Add SM Atomic SM generator. (#143)
-  * Remove node creation and create only a logger. (#149)
-  * Rolling Docker environment to be executed from any environment (#154)
-  * Feature/sm dance bot strikes back refactoring (#152)
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * slight waypoint 4 and iterations changes so robot can complete course (#155)
-  * Feature/migration moveit client (#151)
-  * initial migration to smacc2
-  * fixing some errors introduced on formatting
-  * missing dependency
-  * fixing some more linting warnings
-  * minor
-  * removing test from main moveit cmake
-  * test ur5
-  * progressing in the moveit migration testing
-  * updating format
-  * adding .reps dependencies and also fixing some build errors
-  * repos dependency
-  * adding dependency to ur5 client
-  * docker refactoring
-  * minor
-  * progress on move_it PR
-  * minor dockerfile test workaround
-  * improving dockerfile for building local tests
-  * minor
-  * fixing compiling issues
-  * update readme (#164)
-  * update readme
-  * more readme updates
-  * more
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * initial state machine transition timestamp (#165)
-  * moved reference library SMs to smacc2_performance_tools (#166)
-  * moved reference library SMs to smacc2_performance_tools
-  * pre-commit cleanup
-  * Add QOS durability to SmaccPublisherClient (#163)
-  * feat: add qos durability to SmaccPublisherClient
-  * fix: add a missing colon
-  * refactor: remove line
-  * feat: add reliability qos config
-  * Feature/testing moveit behaviors (#167)
-  * more testing on moveit
-  * progress on moveit
-  * more testing on moveit behaviors
-  * minor configuration
-  * fixing pipeline error
-  * fixing broken master build
-  * sm_pubsub_1 (#169)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_pubsub_1 part 2 (#170)
-  * sm_pubsub_1 part 2
-  * sm_pubsub_1 part 2
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_advanced_recovery_1 renaming (#171)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * sm_multi_stage_1 reworking (#172)
-  * multistage modes
-  * sm_multi_stage sequences
-  * sm_multi_state_1 steps
-  * sm_multi_stage_1 sequence d
-  * sm_multi_stage_1 c sequence
-  * mode_5_sequence_b
-  * mode_4_sequence_b
-  * sm_multi_stage_1 most
-  * finishing touches 1
-  * readme
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/aws navigation sm dance bot (#174)
-  * repo dependency
-  * husky launch file in sm_dance_bot
-  * Add dependencies for husky simulation.
-  * Fix formatting.
-  * Update dependencies for husky in rolling and galactic.
-  * minor
-  * progress on aws navigation and some other refactorings on navigation clients and behaviors
-  * more on aws demo
-  * fixing broken build
-  * minor
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  * minor changes (#175)
-  * warehouse2 (#177)
-  * Waypoint Inputs (#178)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * wharehouse2 progress (#179)
-  * format (#180)
-  * sm_dance_bot_warehouse_3 (#181)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/sm warehouse 2 13 dec 2 (#182)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * Brettpac branch (#184)
-  * sm_dance_bot_warehouse_3
-  * Redoing sm_dance_bot_warehouse_3 waypoints
-  * More Waypoints
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * SrConditional fixes and formatting (#168)
-  * fix: some formatting and templating on SrConditional
-  * fix: move trigger logic into headers
-  * fix: lint
-  * Feature/wharehouse2 dec 14 (#185)
-  * warehouse2
-  * minor
-  * Feature/sm warehouse 2 13 dec 2 (#186)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * finetuning waypoints (#187)
-  Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
-  * Feature/cb pure spinning (#188)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * Feature/cb pure spinning (#189)
-  * format
-  * more changes and headless
-  * merge
-  * headless and other fixes
-  * default values
-  * minor
-  * pure spinning behavior missing files
-  * minor changes (#190)
-  * Feature/planner changes 16 12 (#191)
-  * minor changes
-  * more fixes
-  * minor
-  * minor
-  * Feature/replanning 16 dec (#193)
-  * minor changes
-  * replanning for all our examples
-  * several fixes (#194)
-  * minor changes (#195)
-  * Feature/undo motion 20 12 (#196)
-  * minor changes
-  * replanning for all our examples
-  * improving undo motion navigation warehouse2
-  * minor
-  * tuning warehouse3 (#197)
-  * Feature/undo motion 20 12 (#198)
-  * minor changes
-  * replanning for all our examples
-  * improving undo motion navigation warehouse2
-  * minor
-  * undo tuning and errors
-  * format
-  * Feature/sync 21 12 (#199)
-  * minor changes
-  * replanning for all our examples
-  * format issues
-  * Feature/warehouse2 22 12 (#200)
-  * minor changes
-  * replanning for all our examples
-  * format issues
-  * finishing warehouse2
-  * Feature/warehouse2 23 12 (#201)
-  * minor changes
-  * replanning for all our examples
-  * tuning and fixes (#202)
-  * Feature/minor tune (#203)
-  * tuning and fixes
-  * minor tune
-  * fixing warehouse 3 problems, and other core improvements (#204)
-  * fixing warehouse 3 problems, and other core improvements to remove dead lock, also making continuous integration green
-  * weird moveit not downloaded repo
-  * added missing file from warehouse2 (#205)
-  * backport to foxy
-  * minor format
-  * minor linking errors foxy
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  Co-authored-by: Declan Dury <44791484+DecDury@users.noreply.github.com>
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: reelrbtx <brett2@reelrobotics.com>
-  Co-authored-by: brettpac <brett@robosoft.ai>
-  Co-authored-by: David Revay <MrBlenny@users.noreply.github.com>
-  * missing
-  * missing sm
-  * updating subscriber publisher components
-  * progress in autowarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrre machine
-  * refining cp subscriber cp publisher
-  * improvements in smacc core adding more components mostly developed for autoware demo
-  * autoware demo
-  * missing
-  * foxy ci
-  * fix
-  * minor broken build
-  * some reordering fixes
-  * minor
-  * docker files for different revisions, warnings removval and more testing on navigation
-  * fixing docker for foxy and galactic
-  * docker build files for all versions
-  * barrel demo
-  * barrel search build fix and warehouse3
-  * fixing startup problems in warehouse 3
-  * fixing format and minor
-  * minor
-  * progress in barrel husky
-  * minor
-  * barrel demo
-  * progress
-  * fixing broken build
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  Co-authored-by: Declan Dury <44791484+DecDury@users.noreply.github.com>
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: reelrbtx <brett2@reelrobotics.com>
-  Co-authored-by: brettpac <brett@robosoft.ai>
-  Co-authored-by: David Revay <MrBlenny@users.noreply.github.com>
-  Co-authored-by: pabloinigoblasco <pabloinigoblasco@ibrobotics.com>
-  * more merge
-  * docker improvements
-  * master rolling to galactic backport
-  * fixing build
-  * testing dance bot demos
-  * updating galactic repos
-  * runtime dependency
-  * restoring ur dependency
-  Co-authored-by: DecDury <declandury@gmail.com>
-  Co-authored-by: reelrbtx <brett2@reelrobotics.com>
-  Co-authored-by: brettpac <brett@robosoft.ai>
-  Co-authored-by: Denis Štogl <denis@stogl.de>
-  Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
-  Co-authored-by: Declan Dury <44791484+DecDury@users.noreply.github.com>
-  Co-authored-by: David Revay <MrBlenny@users.noreply.github.com>
-  Co-authored-by: pabloinigoblasco <pabloinigoblasco@ibrobotics.com>
-* Contributors: Denis Štogl, Pablo Iñigo Blasco
+- Added README tutorial for Dockerfile.
+- Added smacc2_performance_tools.
+- Performance tests improvements.
+- More on performance and other issues.
+- Added sm_respira_test_2.
+- Added sm_atomic_performance_test_a_1 and sm_atomic_performance_test_a_2.
+- Added sm_atomic_performance_test_c_1.
+
+Changed
+-------
+- Change extension of imports.
+- Rename header files and correct format.
+- Update name of package and package.xml to pass liter.
+- Update smacc2_rta command across readmes.
+- Clean up of sm_atomic_24hr.
+- Optimized deps in move_base_z_planners_common.
+- Renaming of event generator library.
+- Update c_cpp_properties.json.
+- Changed launch command to ros2 launch sm_respira_1 sm_respira_1.launch.
+- Update doxygen links.
+- Update description table.
+- Update table.
+- Update changelogs.
+- Update ci-build-source.yml.
+- Update doxygen-check-build.yml.
+- Update smacc2_ci/docker/ros_rollingAndGalactic_ubuntu_20.04/buildGalactic.sh.
+- Update tracing/ManualTracing.md.
+- Update smacc_sm_reference_library/sm_atomic/README.md.
+- Update smacc2_sm_reference_library/sm_atomic/README.md.
+- Update sm_three_some to ros2 launch sm_three_some sm_three_some.launch.
+- Update smacc2 and smacc2_msgs references.
+- Update GitHub branch reference.
+- Update name of package and package.xml.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and smacc2_msgs references.
+- Update smacc2 and
+
+```rst
+Section_22
+==========
+
+Added
+-----
+
+- New feature: cb_wait_topic_message, an asynchronous client behavior that waits for a topic message and optionally checks its contents for success.
+- New client behavior for nav2: wait for nav2 nodes to subscribe to the /bond topic and wait for them to be alive, with optional node selection.
+- New feature: cb pause slam client behavior.
+- New feature: sm_dance_bot_lite.
+
+Changed
+-------
+
+- Updated launch command.
+- Corrected all linters and formatters.
+- Navigation parameters fixes on sm_dance_bot.
+- Minor hotfixes.
+- Progress in aws navigation demo.
+- Merge and progress.
+
+Fixed
+-----
+
+- Fixed precommit issues.
+- Removed some compile warnings.
+
+Authors
+-------
+
+- Pablo Iñigo Blasco
+- Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
+- Co-authored-by: Denis Štogl <denis@stogl.de>
+- Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
+```
+
+Section_23
+==========
+
+Added
+-----
+- Added visualization of turtlebot3 in sm_dance_bot.
+- Added lidar show/hide option for cleaning.
+- Added gazebo fixes for showing the robot and lidar in sm_dance_bot.
+- Added AWS demo functionality.
+- Added support for 5 stages in sm_multi_stage_1.
+- Added source build enablement for testing.
+- Added progress in navigation, slam toggle client behaviors, and slam_toolbox components in Feature/slam toggle and smacc deep history.
+- Added smacc2::deep_history syntax support.
+- Added slam pausing/resuming functionality in sm_dance_bot.
+- Added s-pattern refinement in sm_dance_bot.
+- Added first working version of sm template and template generator.
+- Added SM core test.
+- Added local action messages usage.
+- Added navigation 2 stack renaming.
+- Added SVGs to READMEs of atomic, dance_bot, and others.
+- Added remaining SVGs to READMEs.
+- Added rolling Docker environment execution from any environment.
+- Added progress in moveit migration testing.
+
+Changed
+-------
+- Improved navigation and performance.
+- Updated format in Feature/slam toggle and smacc deep history.
+- Updated launch command in README.md for sm_dance_bot_strikes_back.
+- Updated format for CI in Fix CI: format fix python version.
+- Updated Dockerfile for building local tests.
+- Updated readme with more information.
+
+Fixed
+-----
+- Fixed recursion issue in method calls.
+- Fixed overshot issue cases in waypoints navigator.
+- Fixed minor format issues.
+- Fixed compile warnings.
+- Fixed node creation in SM Atomic SM generator.
+- Fixed format errors in migration to smacc2.
+- Fixed linting warnings.
+- Fixed build errors.
+- Fixed compiling issues.
+
+Removed
+-------
+- Removed neo_simulation2 package.
+- Removed sm_dance_bot_msgs.
+- Removed parameters in smacc.
+- Removed test from main moveit cmake.
+
+Collaborators
+-------------
+- Co-authored-by: Ubuntu 20-04-02-amd64 <brett@robosoft.ai>
+- Co-authored-by: DecDury <declandury@gmail.com>
+- Co-authored-by: Denis Štogl <destogl@users.noreply.github.com>
+- Co-authored-by: pabloinigoblasco <pablo@ibrobotics.com>
+
+Section_24
+-----------
+
+Added
+~~~~~
+
+- Added QOS durability to SmaccPublisherClient (#163)
+- Added reliability QOS config
+- Added feature for testing moveit behaviors (#167)
+- Added feature for AWS navigation sm dance bot (#174)
+- Added dependencies for husky simulation
+- Added Waypoint Inputs (#178)
+- Added progress on AWS navigation and refactorings on navigation clients and behaviors
+- Added warehouse2 progress (#179)
+- Added progress on sm_dance_bot_warehouse_3
+- Added more waypoints to sm_dance_bot_warehouse_3
+- Added finetuning waypoints (#187)
+- Added pure spinning behavior missing files
+- Added several fixes (#194)
+- Added improving undo motion navigation warehouse2
+- Added tuning warehouse3 (#197)
+- Added tuning and fixes (#202)
+- Added minor tune (#203)
+- Added fixing warehouse 3 problems and other core improvements (#204)
+- Added backport to foxy
+- Added missing file from warehouse2 (#205)
+- Added progress in autoware machine
+- Added refining cp subscriber cp publisher
+- Added improvements in smacc core for autoware demo
+- Added autoware demo
+- Added docker files for different revisions, warnings removal, and more testing on navigation
+- Added fixing docker for foxy and galactic
+- Added docker build files for all versions
+- Added barrel demo
+- Added barrel search build fix and warehouse3
+- Added fixing startup problems in warehouse 3
+- Added progress in barrel husky
+
+Changed
+~~~~~~~
+
+- Changed pre-commit cleanup
+- Changed reference library SMs to smacc2_performance_tools
+- Changed adding a missing colon
+- Changed removing a line
+- Changed repo dependency
+- Changed husky launch file in sm_dance_bot
+- Changed update dependencies for husky in rolling and galactic
+- Changed default values
+- Changed merge
+- Changed headless and other fixes
+- Changed some formatting and templating on SrConditional
+- Changed move trigger logic into headers
+- Changed lint
+- Changed format issues
+
+Fixed
+~~~~~
+
+- Fixed fixing pipeline error
+- Fixed fixing broken master build
+- Fixed fixing broken build
+- Fixed minor changes
+- Fixed minor format
+- Fixed minor linking errors for foxy
+- Fixed minor broken build
+- Fixed some reordering fixes
+- Fixed fixing broken build
+
+Removed
+~~~~~~~
+
+- Removed weird moveit not downloaded repo
+
+```rst
+Section_25 (Unreleased)
+=======================
+
+Added
+-----
+- Docker improvements.
+- Testing dance bot demos.
+- Updating galactic repos.
+- Runtime dependency.
+- Restoring UR dependency.
+
+Changed
+-------
+- Master rolling to galactic backport.
+
+Fixed
+-----
+- Fixing build.
+
+Contributors
+------------
+- Denis Štogl
+- Pablo Iñigo Blasco
+
+Co-authored-by
+--------------
+- reelrbtx <brett2@reelrobotics.com>
+- brettpac <brett@robosoft.ai>
+- David Revay <MrBlenny@users.noreply.github.com>
+- pabloinigoblasco <pabloinigoblasco@ibrobotics.com>
+- DecDury <declandury@gmail.com>
+- Denis Štogl <denis@stogl.de>
+- Denis Štogl <destogl@users.noreply.github.com>
+- Declan Dury <44791484+DecDury@users.noreply.github.com>
+```

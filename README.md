@@ -11,6 +11,7 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
 **Foxy** | [`foxy`](https://github.com/robosoft-ai/SMACC2/tree/foxy) | [![Foxy Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-binary-build.yml/badge.svg?branch=foxy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-binary-build.yml?branch=foxy) <br /> [![Foxy Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-semi-binary-build.yml/badge.svg?branch=foxy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/foxy-semi-binary-build.yml?branch=foxy) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/smacc2_doxygen/foxy/html/namespaces.html) | [![ROS Build Farm](https://build.ros2.org/job/Hsrc_uJ__smacc2__ubuntu_jammy__source/badge/icon?style=plastic&subject=ros-buildfarm&status=E.O.L&color=lightgray)](http://docs.ros.org/en/humble/Releases/End-of-Life.html) <br/>[SMACC2](https://index.ros.org/p/smacc2/github-robosoft-ai-SMACC2/#foxy)
 **Galactic** | [`galactic`](https://github.com/robosoft-ai/SMACC2/tree/galactic) | [![Galactic Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-binary-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-binary-build.yml?branch=galactic) <br /> [![Galactic Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-semi-binary-build.yml/badge.svg?branch=galactic)](https://github.com/robosoft-ai/SMACC2/actions/workflows/galactic-semi-binary-build.yml?branch=galactic) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/smacc2_doxygen/galactic/html/namespaces.html) |  [![Build Status](https://build.ros2.org/job/Hsrc_uJ__smacc2__ubuntu_jammy__source/badge/icon?style=plastic&subject=ros-buildfarm&status=E.O.L&color=lightgray)](http://docs.ros.org/en/humble/Releases/End-of-Life.html)<br/> [SMACC2](https://index.ros.org/p/smacc2/github-robosoft-ai-SMACC2/#galactic)
 **Humble** | [`humble`](https://github.com/robosoft-ai/SMACC2/tree/humble) | [![Humble Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/humble-binary-build.yml/badge.svg?branch=humble)](https://github.com/robosoft-ai/SMACC2/actions/workflows/humble-binary-build.yml?branch=humble)<br/> [![Humble Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/humble-semi-binary-build.yml/badge.svg?branch=humble)](https://github.com/robosoft-ai/SMACC2/actions/workflows/humble-semi-binary-build.yml?branch=humble) | [![Doxygen Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg?branch=humble)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/smacc2_doxygen/humble/html/namespaces.html)| [![Build Status](https://build.ros2.org/job/Hsrc_uJ__smacc2__ubuntu_jammy__source/badge/icon?subject=ros-buildfarm)](https://build.ros2.org/job/Hsrc_uJ__smacc2__ubuntu_jammy__source/)<br/> [SMACC2](https://index.ros.org/p/smacc2/github-robosoft-ai-SMACC2/#humble)
+**Jazzy** | [`jazzy`](https://github.com/robosoft-ai/SMACC2/tree/jazzy) | [![Jazzy Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/jazzy-binary-build.yml/badge.svg?branch=jazzy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/jazzy-binary-build.yml?branch=jazzy) <br /> [![Jazzy Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/jazzy-semi-binary-build.yml/badge.svg?branch=jazzy)](https://github.com/robosoft-ai/SMACC2/actions/workflows/jazzy-semi-binary-build.yml?branch=jazzy) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/smacc2_doxygen/jazzy/html/namespaces.html) | [![Build Status](https://build.ros2.org/job/Jsrc_uJ__smacc2__ubuntu_noble__source/badge/icon?subject=ros-buildfarm)](https://build.ros2.org/job/Jsrc_uJ__smacc2__ubuntu_noble__source/)<br/> [SMACC2](https://index.ros.org/p/smacc2/github-robosoft-ai-SMACC2/#jazzy)
 **Rolling** | [`rolling`](https://github.com/robosoft-ai/SMACC2/tree/rolling) | [![Rolling Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-binary-build.yml/badge.svg?branch=rolling)](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-binary-build.yml?branch=rolling) <br /> [![Rolling Semi-Binary Build](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-semi-binary-build.yml/badge.svg?branch=rolling)](https://github.com/robosoft-ai/SMACC2/actions/workflows/rolling-semi-binary-build.yml?branch=rolling) | [![Doxygen Doc Deployment](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml/badge.svg)](https://github.com/robosoft-ai/SMACC2/actions/workflows/doxygen-deploy.yml) <br /> [Generated Doc](https://robosoft-ai.github.io/smacc2_doxygen/master/html/namespaces.html) |  [![Build Status](https://build.ros2.org/job/Rdev__SMACC2__ubuntu_jammy_amd64/badge/icon?subject=ros-buildfarm)](https://build.ros2.org/job/Rdev__SMACC2__ubuntu_jammy_amd64/)
 
 **NOTE**: There are three build stages checking current and future compatibility of the package.
@@ -28,7 +29,7 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
 
 ## Getting started - ROS Humble
 
-1. [Install ROS 2 Humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html).
+1. [Install ROS 2 jazzy](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debians.html).
 
 2. Make sure that `colcon`, its extensions and `vcs` are installed:
    ```
@@ -36,25 +37,25 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
    ```
 3. Create a new ROS 2 workspace if necessary:
    ```
-   export COLCON_WS=~/workspace/humble_ws
+   export COLCON_WS=~/workspace/jazzy_ws
    mkdir -p $COLCON_WS/src
    ```
 4. Or just navigate to your workspace source folder:
    ```
-   cd ~/workspace/humble_ws/src
+   cd ~/workspace/jazzy_ws/src
    ```
 5. Clone the repo:
    ```
    git clone https://github.com/robosoft-ai/SMACC2.git
    ```
-6. Checkout the Humble branch:
+6. Checkout the jazzy branch:
    ```
-   cd ~/workspace/humble_ws/src/SMACC2
-   git checkout humble
+   cd ~/workspace/jazzy_ws/src/SMACC2
+   git checkout jazzy
    ```
 7. Navigate to the workspace:
    ```
-   cd ~/workspace/humble_ws
+   cd ~/workspace/jazzy_ws
    ```
 8. Update System:
    ```
@@ -63,7 +64,7 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
    ```
 9. Source the workspace:
    ```
-   source /opt/ros/humble/setup.bash
+   source /opt/ros/jazzy/setup.bash
    ```
 10. Update dependencies:
    ```
@@ -71,7 +72,7 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
    ```
 11. Pull relevant packages and install dependencies:
    ```
-   vcs import src --skip-existing --input src/SMACC2/.github/SMACC2.humble.repos
+   vcs import src --skip-existing --input src/SMACC2/.github/SMACC2.jazzy.repos
    rosdep install --ignore-src --from-paths src -y -r
    ```
 12. Compile:

@@ -1,4 +1,4 @@
-name: Jazzy Binary Build
+name: jazzy Binary Build
 on:
    pull_request:
       branches:
