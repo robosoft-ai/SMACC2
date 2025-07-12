@@ -24,16 +24,6 @@ namespace cl_ros_timer
 template <typename TSource, typename TOrthogonal>
 struct EvTimer : sc::event<EvTimer<TSource, TOrthogonal>>
 {
-  /*
-    ClRosTimer *sender;
-    rclcpp::TimerEvent timedata;
-
-    EvTimer(ClRosTimer *sender, const rclcpp::TimerEvent &timedata)
-    {
-        this->sender = sender;
-        this->timedata = timedata;
-    }
-    */
 };
 
 class ClRosTimer : public smacc2::ISmaccClient
