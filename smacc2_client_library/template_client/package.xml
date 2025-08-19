@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>template_client</name>
+  <version>2.4.4</version>
+  <description>
+    Template SMACC2 client package for creating custom clients.
+    This package provides a comprehensive template and examples for developing
+    new SMACC2 clients with behaviors and components following SMACC2 patterns.
+  </description>
+  
+  <!-- Maintainer information -->
+  <maintainer email="your.email@organization.com">Your Name</maintainer>
+  
+  <!-- License information -->
+  <license>Apache-2.0</license>
+  
+  <!-- Author information -->
+  <author email="your.email@organization.com">Your Name</author>
+  
+  <!-- Build tool dependencies -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_ros</buildtool_depend>
+  
+  <!-- Core SMACC2 dependencies -->
+  <depend>smacc2</depend>
+  
+  <!-- ROS2 core dependencies -->
+  <depend>rclcpp</depend>
+  <depend>rclcpp_action</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  
+  <!-- External library dependencies -->
+  <depend>yaml-cpp</depend>
+  
+  <!-- Build and export information -->
+  <build_depend>ament_cmake</build_depend>
+  
+  <!-- Testing dependencies -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+  
+  <!-- Optional dependencies for advanced features -->
+  <build_depend condition="$ROS_PYTHON_VERSION == 3">python3-yaml</build_depend>
+  <exec_depend condition="$ROS_PYTHON_VERSION == 3">python3-yaml</exec_depend>
+  
+  <!-- Package group memberships -->
+  <member_of_group>rosidl_interface_packages</member_of_group>
+  
+  <!-- Export information -->
+  <export>
+    <build_type>ament_cmake</build_type>
+    
+    <!-- Additional export tags for documentation -->
+    <doc_depend>doxygen</doc_depend>
+    <doc_depend>graphviz</doc_depend>
+  </export>
+  
+  <!-- 
+  Usage Instructions:
+  ===================
+  
+  To use this template client:
+  
+  1. Copy this entire directory to your desired location
+  2. Rename the directory from 'template_client' to your client name (e.g., 'my_custom_client')
+  3. Update this package.xml:
+     - Change the package name
+     - Update maintainer, author, and description
+     - Modify dependencies as needed
+  4. Update CMakeLists.txt:
+     - Change project name
+     - Update source file names if renamed
+  5. Rename and modify source files:
+     - Rename cl_template.hpp/cpp to your client name
+     - Update namespace from 'cl_template' to your namespace
+     - Rename behavior and component files as needed
+  6. Update include guards and namespaces in all header files
+  7. Build and test your new client
+  
+  Client Types Supported:
+  ======================
+  - Topic-based clients (publishers/subscribers)
+  - Action-based clients (action servers)
+  - Service-based clients (service servers)
+  
+  Behavior Types Included:
+  =======================
+  - Basic behaviors with event posting
+  - Asynchronous behaviors with threading
+  - Periodic behaviors with timers
+  - Conditional behaviors with state checking
+  
+  Component Types Included:
+  ========================
+  - Data storage component
+  - State tracking component
+  - Transform management component
+  - Configuration management component
+  
+  For more information, see the SMACC2 documentation at:
+  https://github.com/robosoft-ai/SMACC2
+  -->
+</package>
