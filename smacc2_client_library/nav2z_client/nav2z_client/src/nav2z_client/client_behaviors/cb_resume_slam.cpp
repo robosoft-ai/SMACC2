@@ -38,7 +38,7 @@ void CbResumeSlam::onEntry()
       getLogger(), "[CbResumeSlam] calling pause service to toggle from paused to resumed");
     this->request_ = std::make_shared<slam_toolbox::srv::Pause::Request>();
     smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>::onEntry();
-    this->slam_->toogleState();
+    this->slam_->toggleState();
   }
   else
   {

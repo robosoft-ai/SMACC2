@@ -42,7 +42,7 @@ public:
 
   inline SlamToolboxState getState() { return state_; }
 
-  void toogleState();
+  void toggleState();
 
 private:
   SlamToolboxState state_;

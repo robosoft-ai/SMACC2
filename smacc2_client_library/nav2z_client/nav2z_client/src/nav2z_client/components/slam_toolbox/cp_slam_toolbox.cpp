@@ -25,7 +25,7 @@ namespace cl_nav2z
 CpSlamToolbox::CpSlamToolbox() : state_(SlamToolboxState::Resumed) {}
 CpSlamToolbox::~CpSlamToolbox() {}
 
-void CpSlamToolbox::toogleState()
+void CpSlamToolbox::toggleState()
 {
   if (state_ == SlamToolboxState::Paused)
   {
