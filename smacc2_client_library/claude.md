@@ -253,7 +253,8 @@ private:
 
  ### 6. STATE/MISSION TRACKING CLIENTS
 
-  Used for: High-level mission state, decision making, and workflow coordinationFeatures:
+  Used for: High-level mission state, decision making, and workflow coordination
+  Features:
   - Mission state management
   - Decision counters and logic
   - Workflow coordination
@@ -419,7 +420,7 @@ private:
 
   Sensor Monitoring:
   - cb_default_multirole_sensor_behavior - Multi-sensor data streaming
-  - cb_battery_decission - Battery monitoring for mission control
+  - cb_battery_decision - Battery monitoring for mission control
 
 #### Common C++ Structure:
  

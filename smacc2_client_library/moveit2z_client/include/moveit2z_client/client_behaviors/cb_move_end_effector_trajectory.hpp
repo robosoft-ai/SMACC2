@@ -47,7 +47,7 @@ enum class ComputeJointTrajectoryErrorCode
   JOINT_TRAJECTORY_DISCONTINUITY
 };
 
-// this is a base behavior to define any kind of parametrized family of trajectories or motions
+// this is a base behavior to define any kind of parameterized family of trajectories or motions
 class CbMoveEndEffectorTrajectory : public smacc2::SmaccAsyncClientBehavior,
                                     public smacc2::ISmaccUpdatable
 {

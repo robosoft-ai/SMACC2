@@ -145,7 +145,7 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
 - `smacc2_client_library` - client libraries for SMACC2, e.g., Navigation2 (`nav2z_client`), MoveIt2 (`moveit2z_client`).
 - `smacc2_event_generators` - ...
 - `smacc2_msgs` - ROS 2 messages for SMACC2 framework.
-- `smacc2_sm_reference_library` - libraries with reference implementations of state-machines used for demonstaration and testing of functionalities.
+- `smacc2_sm_reference_library` - libraries with reference implementations of state-machines used for demonstration and testing of functionalities.
 - `↓smacc2_state_reactor_library` - ...
 - `smacc2_performance_tools` - ...
 
@@ -162,9 +162,7 @@ Each state machine in the reference library comes with it's own README.md file, 
 
   *  If you are looking for a minimal example but with a looping superstate, try [sm_three_some](smacc2_sm_reference_library/sm_three_some).
 
-  *  If you want to get started with the ROS Navigation stack right away, try [sm_dance_bot](smacc2_sm_reference_library/sm_dance_bot).
-
-  *  If you want to get started with ROS Navigation and exploring the orthogonal read-write cycle, then try [sm_dance_bot_strikes_back](smacc2_sm_reference_library/sm_dance_bot_strikes_back).
+  *  If you want to get started with the ROS Navigation stack right away, try [sm_nav2_test_7](https://github.com/robosoft-ai/nova_carter_sm_library/tree/main/sm_nav2_test_7).
 
 Operating instructions can be found in each reference state machines readme file.
 

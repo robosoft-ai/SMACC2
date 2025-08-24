@@ -17,7 +17,7 @@ Changelog for package http_client
   * Fixed commit errors
   * Renamed instantiation of HTTP request CB to something more specific to OpenAI
 * Moved HTTP client behaviour to client library. Also added GET and POS… (`#549 <https://github.com/robosoft-ai/SMACC2/issues/549>`_)
-  * Moved HTTP client behaviour to client library. Also added GET and POST-specific versions of the smae HTTP client behaviour to make them easier to use
+  * Moved HTTP client behaviour to client library. Also added GET and POST-specific versions of the smacc HTTP client behaviour to make them easier to use
   * Added copyrights
   * Fixed typos
 * Http client (`#522 <https://github.com/robosoft-ai/SMACC2/issues/522>`_)
