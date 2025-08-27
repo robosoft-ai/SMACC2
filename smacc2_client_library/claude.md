@@ -1,17 +1,3 @@
-///////////////////////////////////////////////////////
-
-# Bash
-
-### Sourcing the workspace
-source /opt/ros/humble/setup.bash
-source ~/workspace/isaac_ros-dev/install/setup.bash
-
-### Rosdep
-rosdep update
-rosdep install --ignore-src --from-paths src -y -rclcpp
-
-### Compilation commands
-colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF
 
 ///////////////////////////////////////////////////////
 
@@ -66,28 +52,22 @@ The SMACC2 Client Library provides modular, reusable clients for robot behaviors
 | `moveit2z_client` | Manipulation with MoveIt2 | Direct API calls |
 | `keyboard_client` | Keyboard input handling | Subscriber-based |
 | `ros_timer_client` | Timer-based behaviors | Timer callbacks |
-| `ros_publisher_client` | Publishing messages | Publisher-based |
 | `http_client` | HTTP requests | Custom protocol |
-| `multirole_sensor_client` | Sensor data management | Subscriber-based |
 | `lifecyclenode_client` | ROS2 lifecycle management | Service calls |
 
 ## Architecture Patterns
 
 ### Core Components
 
-Every SMACC2 client follows a three-layer architecture:
+Every SMACC2 client follows an architecture with 3 object types:
 
-1. **Client Layer** (`cl_*.hpp/cpp`)
-   - Inherits from SMACC2 base classes
-   - Manages ROS2 communication
-   - Provides public API
+1. **Client Objects** 
+   - Usually, a Client is an entity that is a counterpart of a remote node, in a form of client server relationship. But this is not always the case.
 
-2. **Client Behavior Layer** (`client_behaviors/cb_*.hpp/cpp`)
+2. **Client Behavior Objects**
    - Implements specific actions/behaviors
-   - Handles state transitions via events
-   - Manages behavior lifecycle
 
-3. **Component Layer** (`components/cp_*.hpp/cpp`)
+3. **Component Objects**
    - Provides reusable functionality
    - Manages internal state and data
    - Offers utility services
@@ -101,13 +81,10 @@ class ClExample : public smacc2::client_bases::SmaccActionClientBase<ActionType>
 // For general clients
 class ClExample : public smacc2::ISmaccClient
 
-// For subscriber clients  
-class ClExample : public smacc2::client_bases::SmaccSubscriberClient<MessageType>
-
-// For synchronous behaviors
+// For synchronous client behaviors
 class CbSyncBehavior1 : public smacc2::SmaccClientBehavior
 
-// For asynchronous behaviors
+// For asynchronous client behaviors
 class CbAsyncBehavior1 : public smacc2::SmaccAsyncClientBehavior
 
 // For components
@@ -150,6 +127,12 @@ public:
    - Publisher/Subscriber pattern
    - Signal-based event communication
    - Thread-safe state management
+
+Publishing is easy. Subscribing to topics, and throwing events based on that subscription is the main challenge.
+There are two styles of this client type used to accomplish this.
+
+#### 1. Using the Client, which means using main ISmaccClient Base Class
+
 **Example:** `keyboard_client` subscribing to key events
 
 ```cpp
@@ -165,6 +148,15 @@ private:
   void onKeyPress(const std_msgs::msg::UInt16::SharedPtr msg);
 };
 ```
+#### 2. Using a Component, which means using the CpTopicSubscriber Base Class
+
+**Examples:** 
+
+- [ClAprilTagDetector/CpAprilVisualization](https://github.com/robosoft-ai/nova_carter_sm_library/blob/main/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_april_tag_detector/components/cp_april_visualization.hpp)
+
+- [ClNav2Z/CpWaypointsVisualizer](https://github.com/robosoft-ai/SMACC2/blob/humble/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_visualizer.hpp)
+
+In general, using a Component is preferred because you get the ability to create events for the subscription out of the box.
 
 ### 3. SERVICE-BASED CLIENTS
 
@@ -205,86 +197,13 @@ private:
   rclcpp::TimerBase::SharedPtr timer_;
 };
 ```
+### 5. API-BASED CLIENTS
 
-### 5. PERCEPTION-BASED CLIENTS
+**Used for:** Wrapping an API
+**Example:** `moveit2z_client` 
 
-  Used for: Computer vision, sensor data processing, and object detection
-  Features:
-  - Real-time sensor data processing
-  - Object detection and tracking
-  - Transform-based spatial reasoning
-  - Event generation on detection
+- [ClMoveit2Z](https://github.com/robosoft-ai/SMACC2/blob/humble/smacc2_client_library/moveit2z_client/include/moveit2z_client/cl_moveit2z.hpp)
 
-  Examples from nova_carter:
-  - cl_april_tag_detector - AprilTag detection and spatial tracking
-  - cl_foundationpose - 3D object pose estimation and tracking
-  - cl_lidar (specialized) - LiDAR-based obstacle detection and mapping
-
-  Common C++ Structure:
-  class ClPerceptionClient : public smacc2::ISmaccClient
-  {
-  public:
-    // Signal for detection events
-    smacc2::SmaccSignal<void(const DetectionMsg::SharedPtr)> onObjectDetected_;
-
-    // Template-based signal registration
-    template <typename T>
-    boost::signals2::connection onObjectDetected(
-        void (T::*callback)(const DetectionMsg::SharedPtr &), T *object);
-
-  private:
-    // Subscription to sensor data
-    rclcpp::Subscription<SensorMsg>::SharedPtr subscription_;
-
-    // TF for spatial transforms
-    std::shared_ptr<tf2_ros::Buffer> tfBuffer_;
-    std::shared_ptr<tf2_ros::TransformListener> tfListener_;
-
-    // Detection state tracking
-    std::map<std::string, DetectedObject> detectedObjects_;
-    std::mutex detectionMutex_;
-  };
-
-  Key Patterns:
-  - TF2 integration for spatial reasoning (cl_april_tag_detector.hpp:49-50)
-  - Thread-safe detection databases with mutexes (cl_april_tag_detector.hpp:82)
-  - Signal-based event generation for detections (cl_april_tag_detector.hpp:41-43)
-  - Template-based generic sensor message handling
-
- ### 6. STATE/MISSION TRACKING CLIENTS
-
-  Used for: High-level mission state, decision making, and workflow coordination
-  Features:
-  - Mission state management
-  - Decision counters and logic
-  - Workflow coordination
-  - Event-driven state transitions
-
-  Examples from nova_carter:
-  - cl_mission_tracker - Mission decision making and battery management
-
-  Common C++ Structure:
-  class ClMissionClient : public smacc2::ISmaccClient
-  {
-  private:
-    int state_counter_;
-    MissionState current_state_;
-
-  public:
-    // State progression methods
-    void nextState() { state_counter_++; }
-    int getStateCounter() { return state_counter_; }
-
-    // Event templates for different mission events
-    template <typename AsyncCB, typename Orthogonal>
-    struct EvMissionEvent : sc::event<EvMissionEvent<AsyncCB, Orthogonal>> {};
-  };
-
-  Key Patterns:
-  - Simple counter-based state tracking (cl_mission_tracker.hpp:49-54)
-  - Template-based event definitions (cl_mission_tracker.hpp:30-44)
-  - Minimal state with decision logic
-  - Event generation for state machine coordination
 
 
 ///////////////////////////////////////////////////////
@@ -321,6 +240,7 @@ private:
 
 #### Common C++ Structure:
 
+```cpp
   class CbActionBehavior : public CbNav2ZClientBehaviorBase  // or SmaccAsyncClientBehavior
   {
   public:
@@ -345,6 +265,7 @@ private:
     virtual void onActionSuccess(const Result&);
     virtual void onActionAbort(const Result&);
   };
+  ```
 
   Key Commonalities:
   - Inherit from SmaccAsyncClientBehavior or specialized base classes like CbNav2ZClientBehaviorBase
@@ -374,7 +295,7 @@ private:
   - cb_ros_timer - Generic timer-based events
 
 ####  Common C++ Structure:
-
+```cpp
   class CbEventBehavior : public smacc2::SmaccClientBehavior
   {
   public:
@@ -397,6 +318,7 @@ private:
 
     void onCallbackMethod(const CallbackData& data);  // Process external input
   };
+  ```
 
   Key Commonalities:
   - Template-based onOrthogonalAllocation() for type-safe event posting
@@ -424,6 +346,7 @@ private:
 
 #### Common C++ Structure:
  
+ ```cpp
   class CbContinuousBehavior : public smacc2::SmaccClientBehavior,
                               public smacc2::ISmaccUpdatable
   {
@@ -446,6 +369,7 @@ private:
     SomeClient* client_;             // or Component* component_;
     ConfigParams params_;            // Tracking parameters
   };
+```
 
   Key Commonalities:
   - Multiple inheritance: SmaccClientBehavior + ISmaccUpdatable
@@ -478,6 +402,7 @@ private:
   
  #### Common C++ Structure:
   
+  ```cpp
   class CbLifecycleBehavior : public smacc2::SmaccAsyncClientBehavior
   {
   public:
@@ -502,6 +427,7 @@ private:
   private:
     ClLifecycleNode* lifecycleClient_;
   };
+  ```
 
   Key Commonalities:
   - Async behavior inheritance for non-blocking operations
@@ -531,6 +457,8 @@ private:
   
   
 ####  Common C++ Structure:
+  
+  ```cpp
   class CbMotionBehavior : public CbNav2ZClientBehaviorBase  // or SmaccAsyncClientBehavior
   {
   public:
@@ -547,6 +475,7 @@ private:
     std::shared_ptr<tf2_ros::Buffer> tfBuffer_;  // Transform data
     // or MoveitClient* moveitClient_;
   };
+```
 
   Key Commonalities:
   - Motion parameter members (angles, distances, speeds)
@@ -578,6 +507,7 @@ private:
  
  #### Common C++ Structure:
   
+  ```cpp
   class CbCommunicationBehavior : public smacc2::SmaccClientBehavior
   {
   public:
@@ -604,6 +534,7 @@ private:
     std::function<void()> deferredOperation_;  // Template-safe operation storage
     CommunicationClient* client_;
   };
+```
 
   Key Commonalities:
   - Template-based message handling
@@ -654,15 +585,6 @@ private:
 
 ###  1. PUBLISHER-SUBSCRIBER PATTERN COMPONENTS
 
-  Core Communication Infrastructure
-
-  - CpTopicSubscriber<MessageType> (smacc2/core)
-    - Generic ROS topic subscription with event generation
-    - Features: Configurable QoS, first message tracking, signal-slot integration
-  - CpTopicPublisher<MessageType> (smacc2/core)
-    - ROS topic publishing infrastructure
-    - Features: Template-based message publishing, periodic publishing support
-
   Navigation Publishers
 
   - CpAmcl (nav2z_client)
@@ -680,37 +602,17 @@ private:
     - Update Pattern: Implements ISmaccUpdatable
     - Thread Safety: Mutex-protected transform data
 
-####  Core C++ Design Patterns of Publisher-Subscriber Components: (NEEDS TO BE REVIEWED! ARE WE USING THE BASE CLASSES?)
+####  Core C++ Design Patterns of Publisher-Subscriber Components: 
+  
+  Core Communication Infrastructure
 
-//// UNDER REVIEW
-  Template-Based Generic Design:
-  // Reference: smacc2/include/smacc2/client_base_components/cp_topic_subscriber.hpp:34-52
-  template <typename MessageType>
-  class CpTopicSubscriber : public smacc2::ISmaccComponent
-  {
-  public:
-    typedef MessageType TMessageType;
-    std::optional<int> queueSize;
+  - CpTopicSubscriber<MessageType> (smacc2/core)
+    - Generic ROS topic subscription with event generation
+    - Features: Configurable QoS, first message tracking, signal-slot integration
+  - CpTopicPublisher<MessageType> (smacc2/core)
+    - ROS topic publishing infrastructure
+    - Features: Template-based message publishing, periodic publishing support
 
-    // Signal-slot pattern for event handling
-    smacc2::SmaccSignal<void(const MessageType &)> onMessageReceived_;
-    std::function<void(const MessageType &)> postMessageEvent;
-  };
-
-  Common C++ Patterns:
-  - Template Specialization: Generic message type handling via MessageType template parameter
-  - Optional Configuration: std::optional<> for configurable parameters (QoS, queue size)
-  - Signal-Slot Pattern: SmaccSignal<> for decoupled event communication
-  - Function Objects: std::function<> for callback registration
-  - RAII Initialization: Lazy initialization in onInitialize() with boolean guards
-  - Shared Pointer Management: rclcpp::Publisher<>::SharedPtr for ROS resource management
-
-// UNDER REVIEW
-
-  Inheritance Commonalities:
-  - Base: smacc2::ISmaccComponent
-  - Lifecycle: Mandatory onInitialize() override
-  - Naming: Consistent getName() pattern for identification
 
 ###  2. STATE TRACKING PATTERN COMPONENTS
 
@@ -732,6 +634,8 @@ private:
 
   Enumeration State Management:
   // Reference: nav2z_client/include/nav2z_client/components/slam_toolbox/cp_slam_toolbox.hpp:37-43
+  
+  ```cpp
   class CpSlamToolbox : public smacc2::ISmaccComponent
   {
   public:
@@ -755,6 +659,7 @@ private:
     std::optional<std::string> currentAttachedObjectName;
     bool getGraspingObject(std::string name, ObjectType& object);
   };
+```
 
   Common C++ Patterns:
   - Strongly Typed Enums: enum class for type-safe state representation
@@ -794,6 +699,8 @@ private:
 
   Publisher-Based Configuration Broadcasting:
   // Reference: nav2z_client/include/nav2z_client/components/planner_switcher/cp_planner_switcher.hpp:57-67
+
+  ```cpp
   class CpPlannerSwitcher : public smacc2::ISmaccComponent
   {
   private:
@@ -817,6 +724,7 @@ private:
 
     if (commit) commitPublish();
   }
+  ```
 
   Common C++ Patterns:
   - Builder Pattern: Multiple setters for configuration assembly
@@ -854,6 +762,8 @@ private:
 
   Vector-Based Historical Storage:
   // Reference: moveit2z_client/include/moveit2z_client/components/cp_trajectory_history.hpp:30-49
+
+  ```cpp
   class CpTrajectoryHistory : public smacc2::ISmaccComponent
   {
   private:
@@ -884,6 +794,7 @@ private:
     void pushPath(std::string pathname);
     void popPath(int pathCount = 1, bool keepPreviousPath = false);
   };
+  ```
 
   Common C++ Patterns:
   - Vector-Based Storage: std::vector<> for sequential data storage
@@ -927,6 +838,7 @@ private:
 
   Static Resource Sharing:
   // Reference: nav2z_client/include/nav2z_client/components/pose/cp_pose.hpp:96-104
+  ```cpp
   class Pose : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdatable
   {
   private:
@@ -950,6 +862,7 @@ private:
     void update() override;  // Real-time processing
     std::optional<geometry_msgs::msg::PoseStamped> updateAndGetGlobalPose(const std::string& frame_id);
   };
+```
 
   Common C++ Patterns:
   - Static Resource Sharing: Singleton-like pattern for expensive TF resources
@@ -983,6 +896,7 @@ private:
 
   Abstract Base Template Method:
   // Reference: nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_navigator_base.hpp:38-45
+```cpp
   class CpWaypointNavigatorBase : public smacc2::ISmaccComponent
   {
   protected:
@@ -1006,6 +920,7 @@ private:
     void onGoalReached(const ClNav2Z::WrappedResult& res);
     boost::signals2::connection succeddedNav2ZClientConnection_;
   };
+```
 
   Common C++ Patterns:
   - Template Method Pattern: Abstract base with concrete implementations
