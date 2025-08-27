@@ -43,7 +43,7 @@ struct StState3 : smacc2::SmaccState<StState3, MsRun>
     // configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
     configure_orthogonal<OrSubscriber, CbMySubscriberBehavior>();
 
-    // configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+    // 
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 

@@ -14,7 +14,6 @@
   <depend>std_msgs</depend>
 
   <depend>ros_timer_client</depend>
-  <depend>ros_publisher_client</depend>
   <depend>keyboard_client</depend>
   <depend>xterm</depend>
 

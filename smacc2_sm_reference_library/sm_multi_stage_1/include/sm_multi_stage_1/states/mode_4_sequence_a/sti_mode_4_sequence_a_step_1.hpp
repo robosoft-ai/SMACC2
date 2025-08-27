@@ -44,7 +44,7 @@ struct StiMode4SequenceAStep1 : smacc2::SmaccState<StiMode4SequenceAStep1, SsMod
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(20);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
-    configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+    
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 

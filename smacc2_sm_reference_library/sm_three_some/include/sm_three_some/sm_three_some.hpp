@@ -24,18 +24,14 @@
 #include <sm_three_some/orthogonals/or_keyboard.hpp>
 #include <sm_three_some/orthogonals/or_subscriber.hpp>
 #include <sm_three_some/orthogonals/or_timer.hpp>
-#include <sm_three_some/orthogonals/or_updatable_publisher.hpp>
 
 using namespace cl_ros_timer;
-using namespace cl_ros_publisher;
 using namespace cl_keyboard;
 using namespace sm_three_some::cl_subscriber;
 
 // CLIENT BEHAVIORS
 #include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.hpp>
-#include <ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp>
-#include <ros_publisher_client/client_behaviors/cb_muted_behavior.hpp>
-#include <ros_publisher_client/client_behaviors/cb_publish_once.hpp>
+
 #include <sm_three_some/clients/cl_subscriber/client_behaviors/cb_default_subscriber_behavior.hpp>
 #include <sm_three_some/clients/cl_subscriber/client_behaviors/cb_watchdog_subscriber_behavior.hpp>
 
@@ -88,7 +84,6 @@ struct SmThreeSome : public smacc2::SmaccStateMachineBase<SmThreeSome, MsRun>
   void onInitialize() override
   {
     this->createOrthogonal<OrTimer>();
-    this->createOrthogonal<OrUpdatablePublisher>();
     this->createOrthogonal<OrKeyboard>();
     this->createOrthogonal<OrSubscriber>();
   }

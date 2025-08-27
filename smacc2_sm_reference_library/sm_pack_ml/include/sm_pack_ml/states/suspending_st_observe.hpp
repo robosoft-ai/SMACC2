@@ -41,7 +41,7 @@ struct SuspendingStObserve : smacc2::SmaccState<SuspendingStObserve, MsSuspendin
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
-    configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+    
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 

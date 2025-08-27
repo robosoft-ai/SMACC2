@@ -41,7 +41,7 @@ struct Mode5StObserve : smacc2::SmaccState<Mode5StObserve, MsMode5>
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
-    configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+    
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 

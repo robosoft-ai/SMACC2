@@ -40,7 +40,6 @@ struct StiState3 : smacc2::SmaccState<StiState3, SS>
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
-    configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 

@@ -38,7 +38,7 @@ struct ExecuteStObserve : smacc2::SmaccState<ExecuteStObserve, MsExecute>
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
-    configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+    
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 

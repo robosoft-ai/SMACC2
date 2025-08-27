@@ -47,7 +47,7 @@ struct StState2 : smacc2::SmaccState<StState2, MsRun>, smacc2::ISmaccUpdatable
     // configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
     // configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
     configure_orthogonal<OrSubscriber, CbMySubscriberBehavior>();
-    // configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+    // 
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
 
     // Create State Reactor

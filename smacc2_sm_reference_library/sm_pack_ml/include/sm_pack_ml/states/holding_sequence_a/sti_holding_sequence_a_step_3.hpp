@@ -43,7 +43,7 @@ struct StiHoldingSequenceAStep3 : smacc2::SmaccState<StiHoldingSequenceAStep3, S
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(20);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
-    configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+    
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 

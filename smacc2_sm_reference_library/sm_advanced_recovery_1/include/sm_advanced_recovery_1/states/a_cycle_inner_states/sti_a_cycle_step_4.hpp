@@ -44,7 +44,6 @@ struct StiACycleStep4 : smacc2::SmaccState<StiACycleStep4, SsACycle>
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(40);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
-    configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 

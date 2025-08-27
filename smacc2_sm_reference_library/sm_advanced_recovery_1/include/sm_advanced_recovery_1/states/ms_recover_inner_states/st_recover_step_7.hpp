@@ -36,7 +36,6 @@ struct StRecoverStep7 : smacc2::SmaccState<StRecoverStep7, MsRecover>
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(50);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
-    configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
