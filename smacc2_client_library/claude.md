@@ -58,7 +58,6 @@ The SMACC2 Client Library provides modular, reusable clients for robot behaviors
 ## Architecture Patterns
 
 ### Core Components
-
 Every SMACC2 client follows an architecture with 3 object types:
 
 1. **Client Objects** 
@@ -85,6 +84,7 @@ class ClExample : public smacc2::ISmaccClient
 class CbSyncBehavior1 : public smacc2::SmaccClientBehavior
 
 // For asynchronous client behaviors
+
 class CbAsyncBehavior1 : public smacc2::SmaccAsyncClientBehavior
 
 // For components
@@ -148,6 +148,7 @@ private:
   void onKeyPress(const std_msgs::msg::UInt16::SharedPtr msg);
 };
 ```
+
 #### 2. Using a Component, which means using the CpTopicSubscriber Base Class
 
 **Examples:** 
@@ -157,6 +158,7 @@ private:
 - [ClNav2Z/CpWaypointsVisualizer](https://github.com/robosoft-ai/SMACC2/blob/humble/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_visualizer.hpp)
 
 In general, using a Component is preferred because you get the ability to create events for the subscription out of the box.
+
 
 ### 3. SERVICE-BASED CLIENTS
 
@@ -197,6 +199,7 @@ private:
   rclcpp::TimerBase::SharedPtr timer_;
 };
 ```
+
 ### 5. API-BASED CLIENTS
 
 **Used for:** Wrapping an API
@@ -241,6 +244,7 @@ private:
 #### Common C++ Structure:
 
 ```cpp
+
   class CbActionBehavior : public CbNav2ZClientBehaviorBase  // or SmaccAsyncClientBehavior
   {
   public:
@@ -295,6 +299,7 @@ private:
   - cb_ros_timer - Generic timer-based events
 
 ####  Common C++ Structure:
+
 ```cpp
   class CbEventBehavior : public smacc2::SmaccClientBehavior
   {
@@ -585,6 +590,7 @@ private:
 
 ###  1. PUBLISHER-SUBSCRIBER PATTERN COMPONENTS
 
+
   Navigation Publishers
 
   - CpAmcl (nav2z_client)
@@ -612,7 +618,6 @@ private:
   - CpTopicPublisher<MessageType> (smacc2/core)
     - ROS topic publishing infrastructure
     - Features: Template-based message publishing, periodic publishing support
-
 
 ###  2. STATE TRACKING PATTERN COMPONENTS
 
