@@ -269,9 +269,9 @@ private:
 
   Key Commonalities:
   - Inherit from SmaccAsyncClientBehavior or specialized base classes like CbNav2ZClientBehaviorBase
-  file:///home/brettpac/workspace/humble_ws/src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_nav2z_client_behavior_base.hpp#L28
+  file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_nav2z_client_behavior_base.hpp#L28
   - Configuration options structs (e.g., CbNavigateForwardOptions
-  file:///home/brettpac/workspace/humble_ws/src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_navigate_forward.hpp#L33)
+  file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_navigate_forward.hpp#L33)
   - Goal parameter members (poses, distances, joint targets)
   - Action client pointers with typed results
   - Async result handling via callbacks
@@ -322,11 +322,11 @@ private:
 
   Key Commonalities:
   - Template-based onOrthogonalAllocation() for type-safe event posting
-  file:///home/brettpac/workspace/humble_ws/src/SMACC2/smacc2_client_library/keyboard_client/include/keyboard_client/client_behaviors/cb_default_keyboard_behavior.hpp#L32
+  file:///src/SMACC2/smacc2_client_library/keyboard_client/include/keyboard_client/client_behaviors/cb_default_keyboard_behavior.hpp#L32
   - Event posting lambda functions stored as members
-  file:///home/brettpac/workspace/humble_ws/src/SMACC2/smacc2_client_library/ros_timer_client/include/ros_timer_client/client_behaviors/cb_timer_countdown_loop.hpp#L49
+  file:///src/SMACC2/smacc2_client_library/ros_timer_client/include/ros_timer_client/client_behaviors/cb_timer_countdown_loop.hpp#L49
   - Callback registration in onEntry()
-  file:///home/brettpac/workspace/humble_ws/src/nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_april_tag_detector/client_behaviors/cb_detect_apriltag.hpp#L47
+  file:///src/nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_april_tag_detector/client_behaviors/cb_detect_apriltag.hpp#L47
   - Counter/state tracking variables (tick counters, detection flags)
   
   
@@ -373,9 +373,9 @@ private:
 
   Key Commonalities:
   - Multiple inheritance: SmaccClientBehavior + ISmaccUpdatable
-  file:///home/brettpac/workspace/humble_ws/src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L26
+  file:///src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L26
   - Required update() method for continuous operation
-  file:///home/brettpac/workspace/humble_ws/src/nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_foundationpose/client_behaviors/cb_track_object_pose.hpp#L64
+  file:///src/nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_foundationpose/client_behaviors/cb_track_object_pose.hpp#L64
   - Enable/disable state management in onEntry()/onExit()
   - Deferred operation functions (lambdas for templated operations)
   
@@ -431,9 +431,9 @@ private:
 
   Key Commonalities:
   - Async behavior inheritance for non-blocking operations
-  file:///home/brettpac/workspace/humble_ws/src/SMACC2/smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/client_behaviors/cb_activate.hpp#L28
+  file:///src/SMACC2/smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/client_behaviors/cb_activate.hpp#L28
   - Signal-based result handling (success/failure events)
-  file:///home/brettpac/workspace/humble_ws/src/SMACC2/smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/client_behaviors/cb_activate.hpp#L41
+  file:///src/SMACC2/smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/client_behaviors/cb_activate.hpp#L41
   - Lifecycle client references
   - Standard postSuccessEvent()/postFailureEvent() methods
   
@@ -479,8 +479,8 @@ private:
 
   Key Commonalities:
   - Motion parameter members (angles, distances, speeds)
-  file:///home/brettpac/workspace/humble_ws/src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_rotate.hpp#L31
-  - Optional planner/controller selection file:///home/brettpac/workspace/humble_ws/src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_rotate.hpp#L35
+  file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_rotate.hpp#L31
+  - Optional planner/controller selection file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_rotate.hpp#L35
   - Transform buffer access for coordinate calculations
   - Goal checker configuration options
   - Immediate motion execution in onEntry()
@@ -538,10 +538,10 @@ private:
 
   Key Commonalities:
   - Template-based message handling
-  file:///home/brettpac/workspace/humble_ws/src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L35
+  file:///src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L35
   - Deferred operation lambdas for type erasure
-  file:///home/brettpac/workspace/humble_ws/src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L44
-  - Response callback virtual methods file:///home/brettpac/workspace/humble_ws/src/SMACC2/smacc2_client_library/http_client/include/http_client/client_behaviors/cb_http_request.hpp#L49
+  file:///src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L44
+  - Response callback virtual methods file:///src/SMACC2/smacc2_client_library/http_client/include/http_client/client_behaviors/cb_http_request.hpp#L49
   - Communication client references
   - Request method enumeration/configuration
 
