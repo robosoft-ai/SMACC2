@@ -85,6 +85,7 @@ class ClExample : public smacc2::ISmaccClient
 class CbSyncBehavior1 : public smacc2::SmaccClientBehavior
 
 // For asynchronous client behaviors
+
 class CbAsyncBehavior1 : public smacc2::SmaccAsyncClientBehavior
 
 // For components
@@ -148,6 +149,7 @@ private:
   void onKeyPress(const std_msgs::msg::UInt16::SharedPtr msg);
 };
 ```
+
 #### 2. Using a Component, which means using the CpTopicSubscriber Base Class
 
 **Examples:** 
@@ -197,6 +199,7 @@ private:
   rclcpp::TimerBase::SharedPtr timer_;
 };
 ```
+
 ### 5. API-BASED CLIENTS
 
 **Used for:** Wrapping an API
@@ -272,6 +275,7 @@ private:
   file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_nav2z_client_behavior_base.hpp#L28
   - Configuration options structs (e.g., CbNavigateForwardOptions
   file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_navigate_forward.hpp#L33)
+
   - Goal parameter members (poses, distances, joint targets)
   - Action client pointers with typed results
   - Async result handling via callbacks
@@ -295,6 +299,7 @@ private:
   - cb_ros_timer - Generic timer-based events
 
 ####  Common C++ Structure:
+
 ```cpp
   class CbEventBehavior : public smacc2::SmaccClientBehavior
   {
@@ -376,6 +381,7 @@ private:
   file:///src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L26
   - Required update() method for continuous operation
   file:///src/nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_foundationpose/client_behaviors/cb_track_object_pose.hpp#L64
+
   - Enable/disable state management in onEntry()/onExit()
   - Deferred operation functions (lambdas for templated operations)
   
@@ -434,6 +440,7 @@ private:
   file:///src/SMACC2/smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/client_behaviors/cb_activate.hpp#L28
   - Signal-based result handling (success/failure events)
   file:///src/SMACC2/smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/client_behaviors/cb_activate.hpp#L41
+
   - Lifecycle client references
   - Standard postSuccessEvent()/postFailureEvent() methods
   
@@ -481,6 +488,7 @@ private:
   - Motion parameter members (angles, distances, speeds)
   file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_rotate.hpp#L31
   - Optional planner/controller selection file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_rotate.hpp#L35
+
   - Transform buffer access for coordinate calculations
   - Goal checker configuration options
   - Immediate motion execution in onEntry()
@@ -542,6 +550,7 @@ private:
   - Deferred operation lambdas for type erasure
   file:///src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L44
   - Response callback virtual methods file:///src/SMACC2/smacc2_client_library/http_client/include/http_client/client_behaviors/cb_http_request.hpp#L49
+
   - Communication client references
   - Request method enumeration/configuration
 
