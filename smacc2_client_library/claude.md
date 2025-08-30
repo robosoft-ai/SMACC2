@@ -849,9 +849,11 @@ private:
     geometry_msgs::msg::PoseStamped pose_;
     std::mutex m_mutex_;
   };
-
+ ```
+ 
   Real-Time Update Pattern:
   // Reference: nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_foundationpose/components/cp_object_tracker_tf.hpp:31-44
+   ```cpp
   class CpObjectTrackerTf : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdatable
   {
   private:
