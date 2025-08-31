@@ -291,4 +291,3 @@ SMACC2 uses what can be referred to as event-queue-mediated concurrency: async o
 
   ## Boost ASIO Source Code
   https://github.com/boostorg/asio
-
