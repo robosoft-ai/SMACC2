@@ -939,22 +939,22 @@ private:
   Universal Patterns:
 
   1. Base Class Hierarchy: All inherit from smacc2::ISmaccComponent
-  2. Lifecycle Management: Mandatory onInitialize() override pattern
-  3. RAII Resource Management: Automatic cleanup via destructors and smart pointers
-  4. Thread Safety: std::mutex protection for shared data
-  5. Optional Configuration: std::optional<> for configurable parameters
-  6. Signal-Slot Communication: smacc2::SmaccSignal<> for decoupled messaging
-  7. String-Based Identification: Consistent naming and identification patterns
-  8. Template-Based Generics: Type-safe generic programming where applicable
+  2. Lifecycle Management: Recommended onInitialize() override pattern.
+  3. RAII Resource Management: Automatic cleanup via destructors and smart pointers.
+  4. Thread Safety: std::mutex protection for shared data.
+  5. Optional Configuration: std::optional<> for configurable parameters.
+  6. Signal-Slot Communication: smacc2::SmaccSignal<> for decoupled messaging.
+  7. String-Based Identification: Consistent naming and identification patterns.
+  8. Template-Based Generics: Type-safe generic programming where applicable.
 
   Specialized Patterns by Category:
 
-  - Publisher-Subscriber: Template specialization, QoS configuration
-  - State Tracking: Enum classes, map-based databases
-  - Configuration: Builder pattern, deferred execution
-  - Data Buffers: Vector storage, index-based access, bounds checking
-  - Transform Management: Static resource sharing, real-time updates
-  - Mission Control: Abstract base classes, event aggregation
+  - Publisher-Subscriber: Template specialization, QoS configuration.
+  - State Tracking: Enum classes, map-based databases.
+  - Configuration: Builder pattern, deferred execution.
+  - Data Buffers: Vector storage, index-based access, bounds checking.
+  - Transform Management: Static resource sharing, real-time updates.
+  - Mission Control: Abstract base classes, event aggregation.
   ---
 
 
@@ -973,4 +973,5 @@ https://robosoft-ai.github.io/smacc2_doxygen/humble/html/index.html
 
 ## Documentation
 https://smacc2.robosoft.ai/
+
 
