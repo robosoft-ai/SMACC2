@@ -943,7 +943,6 @@ private:
 ```
  <sup>nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_navigator.hpp:70-83</sup>
 
-
  ##### Common C++ Patterns:
   - Template Method Pattern: Abstract base with concrete implementations
   - Signal Aggregation: Multiple SmaccSignal<> for different event types

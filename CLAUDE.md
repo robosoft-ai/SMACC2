@@ -6,11 +6,13 @@ State machine-scoped objects persist throughout the entire state machine
 execution, while state-scoped objects are dynamically created and destroyed with
 state transitions.
   
+
   ### State Scoped Objects (Lifetime tied to individual states)
   - States (St)
   - Client Behaviors (Cb)
   - State Reactors (Sr)
   - Event Generators (Eg)
+
 
   ### State Machine Scoped Objects (Lifetime tied to the State Machine)
   - State Machines (Sm) 
