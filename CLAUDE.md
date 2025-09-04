@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 
 # SMACC2 Object Lifetimes
 SMACC2 runtime objects can be categorized according to object lifetimes. 
@@ -7,18 +7,18 @@ execution, while state-scoped objects are dynamically created and destroyed with
 state transitions.
   
   ## State Scoped Objects (Lifetime tied to individual states)
-  - States (St) - Define state behavior
-  - Client Behaviors (Cb) - Execute behaviors within states
-  - State Reactors (Sr) - React to events within states
-  - Event Generators (Eg) - Generate events during state execution
+  - States (St)
+  - Client Behaviors (Cb)
+  - State Reactors (Sr)
+  - Event Generators (Eg)
 
   ## State Machine Scoped Objects (Lifetime tied to the State Machine)
-  - State Machines (Sm) - Root container
-  - Orthogonals (Or) - Parallel execution channels
-  - Clients (Cl) - Interfaces to external ROS2 services
-  - Components (Cp) - Reusable functional modules
+  - State Machines (Sm) 
+  - Orthogonals (Or)
+  - Clients (Cl)
+  - Components (Cp)
 
-///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 
 # SMACC Signals
 SmaccSignal is a communication mechanism (template wrapper around boost::signals2).
@@ -135,7 +135,7 @@ SmaccSignal is a communication mechanism (template wrapper around boost::signals
   The SmaccSignal approach isn't just convenience - it's essential for correctness. The automatic lifecycle management prevents an entire class of runtime failures that would be nearly impossible to debug in production.
 
 
-///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 
 # SMACC2 Threading & Asynchronous I/O
 SMACC2's threading architectureuses a sophisticated hybrid concurrency model that solves a fundamental robotics challenge: maintaining deterministic state machine behavior while handling inherently asynchronous real-world I/O.
@@ -266,7 +266,7 @@ SMACC2 uses what can be referred to as event-queue-mediated concurrency: async o
   synchronization primitives.
 
 
-///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 
 # Other SMACC2 CLAUDE.md File Locations
 
@@ -276,7 +276,7 @@ SMACC2 uses what can be referred to as event-queue-mediated concurrency: async o
   ## Reference Library
   /src/SMACC2/smacc2_sm_reference_library/claude.md
 
-///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 
 # Other References
 
