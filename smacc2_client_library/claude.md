@@ -271,9 +271,9 @@ private:
 
   Key Commonalities:
   - Inherit from SmaccAsyncClientBehavior or specialized base classes like CbNav2ZClientBehaviorBase
-  file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_nav2z_client_behavior_base.hpp#L28
+  <sup>file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_nav2z_client_behavior_base.hpp#L28</sup>
   - Configuration options structs (e.g., CbNavigateForwardOptions
-  file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_navigate_forward.hpp#L33)
+  <sup>file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_navigate_forward.hpp#L33)</sup>
 
   - Goal parameter members (poses, distances, joint targets)
   - Action client pointers with typed results
@@ -325,11 +325,11 @@ private:
 
   Key Commonalities:
   - Template-based onOrthogonalAllocation() for type-safe event posting
-  file:///src/SMACC2/smacc2_client_library/keyboard_client/include/keyboard_client/client_behaviors/cb_default_keyboard_behavior.hpp#L32
+  <sup>file:///src/SMACC2/smacc2_client_library/keyboard_client/include/keyboard_client/client_behaviors/cb_default_keyboard_behavior.hpp#L32</sup>
   - Event posting lambda functions stored as members
-  file:///src/SMACC2/smacc2_client_library/ros_timer_client/include/ros_timer_client/client_behaviors/cb_timer_countdown_loop.hpp#L49
+  <sup>file:///src/SMACC2/smacc2_client_library/ros_timer_client/include/ros_timer_client/client_behaviors/cb_timer_countdown_loop.hpp#L49</sup>
   - Callback registration in onEntry()
-  file:///src/nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_april_tag_detector/client_behaviors/cb_detect_apriltag.hpp#L47
+  <sup>file:///src/nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_april_tag_detector/client_behaviors/cb_detect_apriltag.hpp#L47</sup>
   - Counter/state tracking variables (tick counters, detection flags)
   
   
@@ -376,9 +376,9 @@ private:
 
   Key Commonalities:
   - Multiple inheritance: SmaccClientBehavior + ISmaccUpdatable
-  file:///src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L26
+  <sup>file:///src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L26</sup>
   - Required update() method for continuous operation
-  file:///src/nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_foundationpose/client_behaviors/cb_track_object_pose.hpp#L64
+  <sup>file:///src/nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_foundationpose/client_behaviors/cb_track_object_pose.hpp#L64</sup>
 
   - Enable/disable state management in onEntry()/onExit()
   - Deferred operation functions (lambdas for templated operations)
@@ -435,10 +435,9 @@ private:
 
   Key Commonalities:
   - Async behavior inheritance for non-blocking operations
-  file:///src/SMACC2/smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/client_behaviors/cb_activate.hpp#L28
+  <sup>file:///src/SMACC2/smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/client_behaviors/cb_activate.hpp#L28</sup>
   - Signal-based result handling (success/failure events)
-  file:///src/SMACC2/smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/client_behaviors/cb_activate.hpp#L41
-
+  <sup>file:///src/SMACC2/smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/client_behaviors/cb_activate.hpp#L41</sup>
   - Lifecycle client references
   - Standard postSuccessEvent()/postFailureEvent() methods
   
@@ -484,8 +483,8 @@ private:
 
   Key Commonalities:
   - Motion parameter members (angles, distances, speeds)
-  file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_rotate.hpp#L31
-  - Optional planner/controller selection file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_rotate.hpp#L35
+  <sup>file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_rotate.hpp#L31</sup>
+  - Optional planner/controller selection <sup>file:///src/SMACC2/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/client_behaviors/cb_rotate.hpp#L35</sup>
 
   - Transform buffer access for coordinate calculations
   - Goal checker configuration options
@@ -544,10 +543,10 @@ private:
 
   Key Commonalities:
   - Template-based message handling
-  file:///src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L35
+  <sup>file:///src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L35</sup>
   - Deferred operation lambdas for type erasure
-  file:///src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L44
-  - Response callback virtual methods file:///src/SMACC2/smacc2_client_library/http_client/include/http_client/client_behaviors/cb_http_request.hpp#L49
+  <sup>file:///src/SMACC2/smacc2_client_library/ros_publisher_client/include/ros_publisher_client/client_behaviors/cb_default_publish_loop.hpp#L44</sup>
+  - Response callback virtual methods <sup>file:///src/SMACC2/smacc2_client_library/http_client/include/http_client/client_behaviors/cb_http_request.hpp#L49</sup>
 
   - Communication client references
   - Request method enumeration/configuration
@@ -640,7 +639,7 @@ private:
 ####  Core C++ Design Patterns of State Tracking Components:
 
 #####  Enumeration State Management:
-  // Reference: nav2z_client/include/nav2z_client/components/slam_toolbox/cp_slam_toolbox.hpp:37-43
+  <sup>nav2z_client/include/nav2z_client/components/slam_toolbox/cp_slam_toolbox.hpp:37-43</sup>
   
   ```cpp
   class CpSlamToolbox : public smacc2::ISmaccComponent
@@ -655,7 +654,7 @@ private:
     SlamToolboxState state_;
   };
  ```
-  // Reference: nav2z_client/include/nav2z_client/components/slam_toolbox/cp_slam_toolbox.hpp:37-43
+  <sup>nav2z_client/include/nav2z_client/components/slam_toolbox/cp_slam_toolbox.hpp:37-43</sup>
 
 ##### Database-Style State Tracking:
    ```cpp
@@ -669,7 +668,7 @@ private:
     bool getGraspingObject(std::string name, ObjectType& object);
   };
 ```
-  // Reference: moveit2z_client/include/moveit2z_client/components/cp_grasping_objects.hpp:30-41
+  <sup> moveit2z_client/include/moveit2z_client/components/cp_grasping_objects.hpp:30-41</sup>
 
 #####  Common C++ Patterns:
   - Strongly Typed Enums: enum class for type-safe state representation
@@ -723,7 +722,7 @@ private:
     void commitPublish();  // Deferred execution pattern
   };
  ```
-  // Reference: nav2z_client/include/nav2z_client/components/planner_switcher/cp_planner_switcher.hpp:57-67
+  <sup>nav2z_client/include/nav2z_client/components/planner_switcher/cp_planner_switcher.hpp:57-67</sup>
 
 ##### Preset Configuration Pattern:
  
@@ -736,7 +735,7 @@ private:
     if (commit) commitPublish();
   }
   ```
-   // Reference: nav2z_client/src/nav2z_client/components/planner_switcher/cp_planner_switcher.cpp:60-68
+   <sup>nav2z_client/src/nav2z_client/components/planner_switcher/cp_planner_switcher.cpp:60-68</sup>
    
  ##### Common C++ Patterns:
   - Deferred Execution: commit parameter for batched configuration updates (TODO)
@@ -786,7 +785,7 @@ private:
     std::string name;
   };
   ```
-  // Reference: moveit2z_client/include/moveit2z_client/components/cp_trajectory_history.hpp:30-49
+  <sup>Reference: moveit2z_client/include/moveit2z_client/components/cp_trajectory_history.hpp:30-49</sup>
 
 ##### Complex Multi-Mode Buffer Management:
   ```cpp
@@ -802,7 +801,7 @@ private:
     void popPath(int pathCount = 1, bool keepPreviousPath = false);
   };
   ```
-    // Reference: nav2z_client/include/nav2z_client/components/odom_tracker/cp_odom_tracker.hpp:175-194
+  <sup>nav2z_client/include/nav2z_client/components/odom_tracker/cp_odom_tracker.hpp:175-194</sup>
 
 #####  Common C++ Patterns:
   - Vector-Based Storage: std::vector<> for sequential data storage
@@ -858,7 +857,7 @@ private:
     std::mutex m_mutex_;
   };
  ```
-  // Reference: nav2z_client/include/nav2z_client/components/pose/cp_pose.hpp:96-104
+  <sup>nav2z_client/include/nav2z_client/components/pose/cp_pose.hpp:96-104</sup>
  
 #####  Real-Time Update Pattern:
   
@@ -874,7 +873,7 @@ private:
     std::optional<geometry_msgs::msg::PoseStamped> updateAndGetGlobalPose(const std::string& frame_id);
   };
 ```
-// Reference: nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_foundationpose/components/cp_object_tracker_tf.hpp:31-44
+<sup>nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_foundationpose/components/cp_object_tracker_tf.hpp:31-44</sup>
 
 #####  Common C++ Patterns:
   - Static Resource Sharing: Singleton-like pattern for expensive TF resources
@@ -920,7 +919,7 @@ private:
     void rewind(int count);  // Common behavior
   };
 ```
-  // Reference: nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_navigator_base.hpp
+  <sup>nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_navigator_base.hpp</sup>
 
 ##### Signal-Based Event Coordination:
  
@@ -942,7 +941,7 @@ private:
     boost::signals2::connection cancelledNav2ZClientConnection_;
   };
 ```
- // Reference: nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_navigator.hpp:70-83
+ <sup>nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_navigator.hpp:70-83</sup>
 
 
  ##### Common C++ Patterns:

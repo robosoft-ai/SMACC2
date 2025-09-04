@@ -6,13 +6,13 @@ State machine-scoped objects persist throughout the entire state machine
 execution, while state-scoped objects are dynamically created and destroyed with
 state transitions.
   
-  ## State Scoped Objects (Lifetime tied to individual states)
+  ### State Scoped Objects (Lifetime tied to individual states)
   - States (St)
   - Client Behaviors (Cb)
   - State Reactors (Sr)
   - Event Generators (Eg)
 
-  ## State Machine Scoped Objects (Lifetime tied to the State Machine)
+  ### State Machine Scoped Objects (Lifetime tied to the State Machine)
   - State Machines (Sm) 
   - Orthogonals (Or)
   - Clients (Cl)
@@ -23,7 +23,7 @@ state transitions.
 # SMACC Signals
 SmaccSignal is a communication mechanism (template wrapper around boost::signals2).
 
-  ## Runtime architecture
+  ### Runtime architecture
   The actual runtime object is the SignalDetector (State Machine Scoped)
   - No prefix - singleton per state machine
   - Lifetime: State machine lifetime
@@ -34,7 +34,7 @@ SmaccSignal is a communication mechanism (template wrapper around boost::signals
     - Coordinates signal connections/disconnections
     - Handles execution model (single-threaded vs multi-threaded)
 
-  ## Signal Connection Lifetime Management
+  ### Signal Connection Lifetime Management
   Signal connections are managed through the state machine's
   createSignalConnection() which:
   1. Creates boost::signals2 connections between signal sources and
@@ -45,7 +45,7 @@ SmaccSignal is a communication mechanism (template wrapper around boost::signals
   4. Ensures proper cleanup when states exit (disconnecting state-scoped
   object signals)
 
-  ## Important Core Files
+  ### Important Core Files
   - smacc2/include/smacc2/common.hpp
   - smacc2/include/smacc2/smacc_signal.hpp
   - smacc2/include/smacc2/smacc_state_machine.hpp
@@ -55,22 +55,22 @@ SmaccSignal is a communication mechanism (template wrapper around boost::signals
   - smacc2/include/smacc2/callback_counter_semaphore.hpp
   - smacc2/src/smacc2/orthogonal.cpp
 
-  ## Important Client Library Related Files
+  ### Important Client Library Related Files
   - smacc2/include/smacc2/smacc_asynchronous_client_behavior.hpp
   - smacc2/include/smacc2/client_base_components/cp_topic_subscriber.hpp
   - smacc2/include/smacc2/impl/smacc_asynchronous_client_behavior_impl.hpp
   - smacc2/include/smacc2/client_bases/smacc_action_client_base.hpp
   - smacc2/include/smacc2/client_bases/smacc_service_server_client.hpp
 
-  ## Important Classes
+  ### Important Classes
   - SmaccSignal
 
-  ## Usage in SMACC Client Libraries
+  ### Usage in SMACC Client Libraries
   - Clients have signals: onSucceeded_, onAborted_, onMessageReceived_
   - Components have signals: onMessageTimeout_, onResponseReceived_
   - ClientBehaviors have signals: onSuccess_, onFailure_, onFinished_
 
-  ## Example usage in Clients:
+  ### Example usage in Clients:
   - smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/lifecyclenode_client.hpp
   - smacc2_client_library/ros_timer_client/include/ros_timer_client/cl_ros_timer.hpp
   - smacc2_client_library/moveit2z_client/include/moveit2z_client/cl_moveit2z.hpp
@@ -78,16 +78,16 @@ SmaccSignal is a communication mechanism (template wrapper around boost::signals
   - smacc2_client_library/http_client/include/http_client/cl_http_client.hpp
   - smacc2_client_library/keyboard_client/include/keyboard_client/cl_keyboard.hpp
 
-  ## Example usage in Client Behaviors:
+  ### Example usage in Client Behaviors:
   - smacc2_client_library/ros_timer_client/include/ros_timer_client/client_behaviors/cb_timer_countdown_once.hpp
 
-  ## Example usage in Components:
+  ### Example usage in Components:
   - smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_navigator.hpp
 
-  ## Boost Signals2 Documentation
+  ### Boost Signals2 Documentation
   https://www.boost.org/doc/libs/1_89_0/doc/html/signals2.html
 
-  ## Boost Signals2 Source Code
+  ### Boost Signals2 Source Code
   https://github.com/boostorg/signals2
 
   ## Problems related to incorrectly using boost signal raw instead of the SmaccSignal approach.
@@ -245,20 +245,20 @@ SMACC2 uses what can be referred to as event-queue-mediated concurrency: async o
 
   ## Design Strengths
 
-  Determinism Without Blocking: State machine logic remains predictable
-  while I/O operations run concurrently
+  - Determinism Without Blocking: State machine logic remains predictable
+  while I/O operations run concurrently.
 
-  Deadlock Prevention: Multiple escape mechanisms (requestForceFinish_,
-  timeouts, force disconnections) prevent system hangs
+  - Deadlock Prevention: Multiple escape mechanisms (requestForceFinish_,
+  timeouts, force disconnections) prevent system hangs.
 
-  Memory Safety: Automatic lifecycle management prevents dangling pointers
-  and callback-after-destruction bugs
+  - Memory Safety: Automatic lifecycle management prevents dangling pointers
+  and callback-after-destruction bugs.
 
-  Flexible Concurrency: Three distinct patterns handle different async I/O
-  requirements without forcing a one-size-fits-all solution
+  - Flexible Concurrency: Three distinct patterns handle different async I/O
+  requirements without forcing a one-size-fits-all solution.
 
-  Debugging Simplicity: Single-threaded state logic is much easier to debug
-   than fully concurrent state machines
+  - Debugging Simplicity: Single-threaded state logic is much easier to debug
+   than fully concurrent state machines.
 
   The architecture achieves controlled chaos - allowing the inherently
   chaotic async world to coexist with the deterministic requirements of
@@ -270,24 +270,24 @@ SMACC2 uses what can be referred to as event-queue-mediated concurrency: async o
 
 # Other SMACC2 CLAUDE.md File Locations
 
-  ## Client Library  
+  ### Client Library  
   /src/SMACC2/smacc2_client_library/claude.md
 
-  ## Reference Library
+  ### Reference Library
   /src/SMACC2/smacc2_sm_reference_library/claude.md
 
 //////////////////////////////////////////////////////////////////////////////
 
 # Other References
 
-  ## Boost Statechart Documentation
+  ### Boost Statechart Documentation
   https://www.boost.org/doc/libs/1_80_0/libs/statechart/doc/index.html
 
-  ## Boost Statechart Source Code
+  ### Boost Statechart Source Code
   https://github.com/boostorg/statechart
 
-  ## Boost ASIO Documentation
+  ### Boost ASIO Documentation
   https://www.boost.org/doc/libs/1_89_0/doc/html/boost_asio.html
 
-  ## Boost ASIO Source Code
+  ### Boost ASIO Source Code
   https://github.com/boostorg/asio
