@@ -20,7 +20,6 @@ find_package(Boost COMPONENTS thread REQUIRED)
 find_package(moveit2z_client REQUIRED)
 find_package(keyboard_client REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(ros_publisher_client REQUIRED)
 
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
@@ -30,7 +29,6 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   std_msgs
   moveit2z_client
   keyboard_client
-  ros_publisher_client
   rclcpp
 )
 

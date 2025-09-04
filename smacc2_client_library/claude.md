@@ -623,14 +623,14 @@ private:
 
 ###  2. STATE TRACKING PATTERN COMPONENTS
 
-  Navigation State Trackers
+#####  Navigation State Trackers
 
   - CpSlamToolbox (nav2z_client)
     - SLAM toolbox state tracking (Resumed/Paused)
     - Features: Blind state tracking, toggle operations
     - Pattern: Internal state enum with getter methods
 
-  Manipulation State Trackers
+#####  Manipulation State Trackers
 
   - CpGraspingComponent (moveit2z_client)
     - Object manipulation state and collision object management
@@ -639,7 +639,7 @@ private:
 	
 ####  Core C++ Design Patterns of State Tracking Components:
 
-  Enumeration State Management:
+#####  Enumeration State Management:
   // Reference: nav2z_client/include/nav2z_client/components/slam_toolbox/cp_slam_toolbox.hpp:37-43
   
   ```cpp
@@ -654,9 +654,11 @@ private:
   private:
     SlamToolboxState state_;
   };
+ ```
+  // Reference: nav2z_client/include/nav2z_client/components/slam_toolbox/cp_slam_toolbox.hpp:37-43
 
-  Database-Style State Tracking:
-  // Reference: moveit2z_client/include/moveit2z_client/components/cp_grasping_objects.hpp:30-41
+##### Database-Style State Tracking:
+   ```cpp
   class CpGraspingComponent : public smacc2::ISmaccComponent
   {
   private:
@@ -667,8 +669,9 @@ private:
     bool getGraspingObject(std::string name, ObjectType& object);
   };
 ```
+  // Reference: moveit2z_client/include/moveit2z_client/components/cp_grasping_objects.hpp:30-41
 
-  Common C++ Patterns:
+#####  Common C++ Patterns:
   - Strongly Typed Enums: enum class for type-safe state representation
   - State Query Interface: Inline getter methods for state access
   - State Transition Methods: Dedicated methods for state changes (toggleState())
@@ -687,7 +690,7 @@ private:
 
 ###  4. CONFIGURATION MANAGEMENT PATTERN COMPONENTS
 
-  Navigation Configuration Managers
+#####  Navigation Configuration Managers
 
   - CpPlannerSwitcher (nav2z_client)
     - Navigation2 planner/controller runtime switching
@@ -703,8 +706,7 @@ private:
 	
 #### Core C++ Design Patterns of Configuration Management Components:
 
-  Publisher-Based Configuration Broadcasting:
-  // Reference: nav2z_client/include/nav2z_client/components/planner_switcher/cp_planner_switcher.hpp:57-67
+#####  Publisher-Based Configuration Broadcasting:
 
   ```cpp
   class CpPlannerSwitcher : public smacc2::ISmaccComponent
@@ -720,9 +722,12 @@ private:
     void setDesiredGlobalPlanner(std::string plannerName);
     void commitPublish();  // Deferred execution pattern
   };
+ ```
+  // Reference: nav2z_client/include/nav2z_client/components/planner_switcher/cp_planner_switcher.hpp:57-67
 
-  Preset Configuration Pattern:
-  // Reference: nav2z_client/src/nav2z_client/components/planner_switcher/cp_planner_switcher.cpp:60-68
+##### Preset Configuration Pattern:
+ 
+   ```cpp
   void CpPlannerSwitcher::setBackwardPlanner(bool commit = true)
   {
     desired_planner_ = "BackwardGlobalPlanner";
@@ -731,8 +736,9 @@ private:
     if (commit) commitPublish();
   }
   ```
-
-  Common C++ Patterns:
+   // Reference: nav2z_client/src/nav2z_client/components/planner_switcher/cp_planner_switcher.cpp:60-68
+   
+ ##### Common C++ Patterns:
   - Deferred Execution: commit parameter for batched configuration updates (TODO)
 
 ###  5. DATA BUFFER PATTERN COMPONENTS
@@ -758,10 +764,9 @@ private:
     - Data Storage: Latest scan message, selected forward distance
     - Safety: Configurable security distance threshold (0.4m default)
 
- #### Core C++ Design Patterns of Data Buffer Components:
+#### Core C++ Design Patterns of Data Buffer Components:
 
-  Vector-Based Historical Storage:
-  // Reference: moveit2z_client/include/moveit2z_client/components/cp_trajectory_history.hpp:30-49
+##### Vector-Based Historical Storage:
 
   ```cpp
   class CpTrajectoryHistory : public smacc2::ISmaccComponent
@@ -780,9 +785,11 @@ private:
     moveit_msgs::msg::MoveItErrorCodes result;
     std::string name;
   };
+  ```
+  // Reference: moveit2z_client/include/moveit2z_client/components/cp_trajectory_history.hpp:30-49
 
-  Complex Multi-Mode Buffer Management:
-  // Reference: nav2z_client/include/nav2z_client/components/odom_tracker/cp_odom_tracker.hpp:175-194
+##### Complex Multi-Mode Buffer Management:
+  ```cpp
   class CpOdomTracker : public smacc2::ISmaccComponent
   {
   private:
@@ -795,8 +802,9 @@ private:
     void popPath(int pathCount = 1, bool keepPreviousPath = false);
   };
   ```
+    // Reference: nav2z_client/include/nav2z_client/components/odom_tracker/cp_odom_tracker.hpp:175-194
 
-  Common C++ Patterns:
+#####  Common C++ Patterns:
   - Vector-Based Storage: std::vector<> for sequential data storage
   - Struct-Based Metadata: Custom structs combining data with metadata
   - Index-Based Access: Negative indexing from end (size() - 1 - backIndex)
@@ -808,7 +816,7 @@ private:
   
 ###  6. TRANSFORM MANAGEMENT PATTERN COMPONENTS
 
-  Spatial Coordinate Systems
+#####  Spatial Coordinate Systems
 
   - CpPose (nav2z_client)
     - Real-time pose tracking and transform management
@@ -820,7 +828,7 @@ private:
     - Transform listener wrapper (referenced but minimal implementation)
     - Features: TF tree monitoring, transform buffering
 
-  Advanced Transform Management
+ ##### Advanced Transform Management
 
   - CpObjectTrackerTf (nova_carter/cl_foundationpose)
     - TF-based object pose tracking with temporal filtering
@@ -836,8 +844,8 @@ private:
 	
 ####  Core C++ Design Patterns of Transform Management Components:
 
-  Static Resource Sharing:
-  // Reference: nav2z_client/include/nav2z_client/components/pose/cp_pose.hpp:96-104
+#####  Static Resource Sharing:
+ 
   ```cpp
   class Pose : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdatable
   {
@@ -850,9 +858,10 @@ private:
     std::mutex m_mutex_;
   };
  ```
+  // Reference: nav2z_client/include/nav2z_client/components/pose/cp_pose.hpp:96-104
  
-  Real-Time Update Pattern:
-  // Reference: nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_foundationpose/components/cp_object_tracker_tf.hpp:31-44
+#####  Real-Time Update Pattern:
+  
    ```cpp
   class CpObjectTrackerTf : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdatable
   {
@@ -865,8 +874,9 @@ private:
     std::optional<geometry_msgs::msg::PoseStamped> updateAndGetGlobalPose(const std::string& frame_id);
   };
 ```
+// Reference: nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_foundationpose/components/cp_object_tracker_tf.hpp:31-44
 
-  Common C++ Patterns:
+#####  Common C++ Patterns:
   - Static Resource Sharing: Singleton-like pattern for expensive TF resources
   - Multiple Inheritance: ISmaccComponent + ISmaccUpdatable for real-time components
   - Thread-Safe Access: Mutex protection for concurrent transform access
@@ -896,8 +906,8 @@ private:
 
 #### Core C++ Design Patterns of Waypoint (Mission) Control Components:
 
-  Abstract Base Template Method:
-  // Reference: nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_navigator_base.hpp:38-45
+##### Abstract Base Template Method:
+
 ```cpp
   class CpWaypointNavigatorBase : public smacc2::ISmaccComponent
   {
@@ -909,22 +919,33 @@ private:
     virtual void onInitialize() = 0;  // Template method pattern
     void rewind(int count);  // Common behavior
   };
+```
+  // Reference: nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_navigator_base.hpp
 
-  Signal-Based Event Coordination:
-  // Reference: nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_navigator.hpp:70-83
+##### Signal-Based Event Coordination:
+ 
+  ```cpp
   class CpWaypointNavigator : public CpWaypointNavigatorBase
   {
   public:
     smacc2::SmaccSignal<void()> onNavigationRequestSucceded;
     smacc2::SmaccSignal<void()> onNavigationRequestAborted;
+    smacc2::SmaccSignal<void()> onNavigationRequestCancelled;
 
   private:
-    void onGoalReached(const ClNav2Z::WrappedResult& res);
+    void onGoalReached(const ClNav2Z::WrappedResult & res);
+    void onGoalCancelled(const ClNav2Z::WrappedResult & /*res*/);
+    void onGoalAborted(const ClNav2Z::WrappedResult & /*res*/);
+
     boost::signals2::connection succeddedNav2ZClientConnection_;
+    boost::signals2::connection abortedNav2ZClientConnection_;
+    boost::signals2::connection cancelledNav2ZClientConnection_;
   };
 ```
+ // Reference: nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_navigator.hpp:70-83
 
-  Common C++ Patterns:
+
+ ##### Common C++ Patterns:
   - Template Method Pattern: Abstract base with concrete implementations
   - Signal Aggregation: Multiple SmaccSignal<> for different event types
   - Connection Management: boost::signals2::connection for callback lifecycle
@@ -936,10 +957,10 @@ private:
   
   ### Common C++ Design Patterns Across All Component Types
 
-  Universal Patterns:
+  ##### Universal Patterns:
 
   1. Base Class Hierarchy: All inherit from smacc2::ISmaccComponent
-  2. Lifecycle Management: Mandatory onInitialize() override pattern
+  2. Lifecycle Management: Recommended onInitialize() override pattern
   3. RAII Resource Management: Automatic cleanup via destructors and smart pointers
   4. Thread Safety: std::mutex protection for shared data
   5. Optional Configuration: std::optional<> for configurable parameters
@@ -947,7 +968,7 @@ private:
   7. String-Based Identification: Consistent naming and identification patterns
   8. Template-Based Generics: Type-safe generic programming where applicable
 
-  Specialized Patterns by Category:
+  ##### Specialized Patterns by Category:
 
   - Publisher-Subscriber: Template specialization, QoS configuration
   - State Tracking: Enum classes, map-based databases
@@ -973,4 +994,3 @@ https://robosoft-ai.github.io/smacc2_doxygen/humble/html/index.html
 
 ## Documentation
 https://smacc2.robosoft.ai/
-
