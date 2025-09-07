@@ -271,10 +271,10 @@ SMACC2 uses what can be referred to as event-queue-mediated concurrency: async o
 # Other SMACC2 CLAUDE.md File Locations
 
   ### Client Library  
-  /src/SMACC2/smacc2_client_library/claude.md
+  SMACC2/smacc2_client_library/CLAUDE.md
 
   ### Reference Library
-  /src/SMACC2/smacc2_sm_reference_library/claude.md
+  SMACC2/smacc2_sm_reference_library/CLAUDE.md
 
 //////////////////////////////////////////////////////////////////////////////
 
