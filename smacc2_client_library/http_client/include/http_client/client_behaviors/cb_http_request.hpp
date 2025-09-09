@@ -36,8 +36,15 @@ public:
   }
 
   template <typename TOrthogonal, typename TSourceObject>
+  [[deprecated("Use onStateAllocation instead. onOrthogonalAllocation will be removed in future versions.")]]
   void onOrthogonalAllocation()
   {
+  }
+
+  template <typename TOrthogonal, typename TSourceObject>
+  void onStateAllocation()
+  {
+    // Base implementation - can be overridden by derived classes
   }
 
   virtual void runtimeConfigure() override

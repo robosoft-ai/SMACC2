@@ -53,7 +53,7 @@ public:
   void onInitialize() override;
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateAllocation()
   {
     waypointsEventDispatcher.initialize<TSourceObject, TOrthogonal>(client_);
   }

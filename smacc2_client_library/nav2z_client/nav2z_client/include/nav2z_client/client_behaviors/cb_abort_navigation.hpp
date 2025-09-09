@@ -33,10 +33,10 @@ public:
   CbAbortNavigation();
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateAllocation()
   {
     this->requiresClient(nav2zClient_);
-    smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    smacc2::SmaccAsyncClientBehavior::onStateAllocation<TOrthogonal, TSourceObject>();
   }
 
   void onEntry() override;

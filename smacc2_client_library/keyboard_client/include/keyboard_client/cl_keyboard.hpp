@@ -267,9 +267,9 @@ public:
   }
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateAllocation()
   {
-    // Base implementation handles the orthogonal allocation
+    // Base implementation handles the state allocation
   }
 
 protected:

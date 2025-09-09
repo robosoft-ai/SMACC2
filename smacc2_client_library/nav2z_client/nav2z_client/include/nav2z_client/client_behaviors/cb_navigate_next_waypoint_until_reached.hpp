@@ -38,10 +38,10 @@ public:
   virtual ~CbNavigateNextWaypointUntilReached();
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateAllocation()
   {
     this->requiresClient(nav2zClient_);
-    CbNavigateNextWaypoint::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    CbNavigateNextWaypoint::onStateAllocation<TOrthogonal, TSourceObject>();
 
     postEvGoalWaypointReached_ = [this]()
     {

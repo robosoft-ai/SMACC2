@@ -39,9 +39,9 @@ public:
   virtual ~CbWaitTransform();
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateAllocation()
   {
-    smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    smacc2::SmaccAsyncClientBehavior::onStateAllocation<TOrthogonal, TSourceObject>();
   }
 
   void onEntry() override;

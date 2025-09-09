@@ -48,6 +48,7 @@ std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
                                                            // behavior constructor parameters right?
     orthogonal->addClientBehavior(clientBehavior);
     clientBehavior->template onOrthogonalAllocation<TOrthogonal, TBehavior>();
+    clientBehavior->template onStateAllocation<TOrthogonal, TBehavior>();
     return clientBehavior;
   }
   else
