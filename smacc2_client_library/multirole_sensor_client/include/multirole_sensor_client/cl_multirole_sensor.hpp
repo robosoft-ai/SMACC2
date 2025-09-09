@@ -56,8 +56,7 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateAllocation()
   {
-    SmaccSubscriberClient<MessageType>::template onStateAllocation<
-      TOrthogonal, TSourceObject>();
+    SmaccSubscriberClient<MessageType>::template onStateAllocation<TOrthogonal, TSourceObject>();
 
     this->postTimeoutMessageEvent = [this]()
     {

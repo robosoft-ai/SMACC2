@@ -72,8 +72,10 @@ protected:
 
 private:
   template <typename TOrthogonal, typename TSourceObject>
-  [[deprecated("Use onStateAllocation instead. onOrthogonalAllocation will be removed in future versions.")]]
-  void onOrthogonalAllocation();
+  [[deprecated(
+    "Use onStateAllocation instead. onOrthogonalAllocation will be removed in future "
+    "versions.")]] void
+  onOrthogonalAllocation();
 
   // New method: called when the client behavior is allocated to a state (replaces onOrthogonalAllocation)
   template <typename TOrthogonal, typename TSourceObject>

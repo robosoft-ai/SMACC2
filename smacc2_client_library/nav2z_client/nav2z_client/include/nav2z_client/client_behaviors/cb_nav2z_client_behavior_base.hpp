@@ -34,8 +34,9 @@ public:
   // This method exists to support existing third-party classes that inherit from this base class
   // and call CbNav2ZClientBehaviorBase::onOrthogonalAllocation<TOrthogonal, TSourceObject>()
   template <typename TOrthogonal, typename TSourceObject>
-  [[deprecated("Use onStateAllocation instead. This method exists only for third-party compatibility.")]]
-  void onOrthogonalAllocation()
+  [[deprecated(
+    "Use onStateAllocation instead. This method exists only for third-party compatibility.")]] void
+  onOrthogonalAllocation()
   {
     // Call the new method to maintain functionality for third-party inheritors
     onStateAllocation<TOrthogonal, TSourceObject>();

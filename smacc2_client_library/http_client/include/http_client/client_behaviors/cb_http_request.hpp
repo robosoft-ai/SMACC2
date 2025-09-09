@@ -36,8 +36,10 @@ public:
   }
 
   template <typename TOrthogonal, typename TSourceObject>
-  [[deprecated("Use onStateAllocation instead. onOrthogonalAllocation will be removed in future versions.")]]
-  void onOrthogonalAllocation()
+  [[deprecated(
+    "Use onStateAllocation instead. onOrthogonalAllocation will be removed in future "
+    "versions.")]] void
+  onOrthogonalAllocation()
   {
   }
 
