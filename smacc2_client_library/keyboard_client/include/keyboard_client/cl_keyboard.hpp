@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <smacc2/client_bases/smacc_subscriber_client.hpp>
+#include <smacc2/client_base_components/cp_topic_subscriber.hpp>
 #include <smacc2/introspection/introspection.hpp>
 #include <smacc2/smacc.hpp>
 
@@ -159,7 +159,7 @@ struct EvKeyPressZ : sc::event<EvKeyPressZ<TSource, TOrthogonal>>
 
 //------------------  KEYBOARD CLIENT ---------------------------------------------
 
-class ClKeyboard : public smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>
+class ClKeyboard : public smacc2::ISmaccClient
 {
 public:
   ClKeyboard();
@@ -168,6 +168,9 @@ public:
 
   smacc2::SmaccSignal<void(char keypress)> OnKeyPress_;
 
+  // Get the subscriber component
+  smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16> * getSubscriber();
+
   template <typename T>
   void OnKeyPress(void (T::*callback)(char keypress), T * object)
   {
@@ -175,14 +178,24 @@ public:
     this->getStateMachine()->createSignalConnection(OnKeyPress_, callback, object);
   }
 
+private:
+  bool initialized_;
+  smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16> * subscriberComponent_;
   std::function<void(std_msgs::msg::UInt16)> postEventKeyPress;
 
-  template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+private:
+  // Called when the orthogonal creates this client - used to initialize components
+  template <typename TOrthogonal>
+  void setupClient()
   {
-    // call to the base configuration to properly handling the message and initial message smacc events
-    smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>::onOrthogonalAllocation<
-      TOrthogonal, TSourceObject>();
+    // Create the subscriber component during orthogonal initialization
+    subscriberComponent_ = this->createComponent<
+      smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16>, TOrthogonal, ClKeyboard>(
+      "/keyboard_unicode");
+    subscriberComponent_->onMessageReceived(&ClKeyboard::onKeyboardMessage, this);
+
+    // Configure the subscriber component's orthogonal allocation
+    subscriberComponent_->template onOrthogonalAllocation<TOrthogonal, ClKeyboard>();
 
     postEventKeyPress = [=](auto unicode_keychar)
     {
@@ -205,7 +218,7 @@ public:
         this->postKeyEvent<EvKeyPressG<ClKeyboard, TOrthogonal>>();
       else if (character == 'h')
         this->postKeyEvent<EvKeyPressH<ClKeyboard, TOrthogonal>>();
-      else if (character == 'y')
+      else if (character == 'i')
         this->postKeyEvent<EvKeyPressI<ClKeyboard, TOrthogonal>>();
       else if (character == 'j')
         this->postKeyEvent<EvKeyPressJ<ClKeyboard, TOrthogonal>>();
@@ -241,10 +254,25 @@ public:
         this->postKeyEvent<EvKeyPressY<ClKeyboard, TOrthogonal>>();
       else if (character == 'z')
         this->postKeyEvent<EvKeyPressZ<ClKeyboard, TOrthogonal>>();
-      OnKeyPress_(character); /*  */
+      OnKeyPress_(character);
     };
   }
 
+public:
+  // Override the base class methods to call our setup
+  template <typename TOrthogonal>
+  void onComponentInitialization()
+  {
+    setupClient<TOrthogonal>();
+  }
+
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
+  {
+    // Base implementation handles the orthogonal allocation
+  }
+
+protected:
   void onKeyboardMessage(const std_msgs::msg::UInt16 & unicode_keychar);
 
   template <typename TEv>
@@ -254,8 +282,5 @@ public:
       getLogger(), "ClKeyboard ev: %s", smacc2::demangleSymbol(typeid(TEv).name()).c_str());
     this->postEvent<TEv>();
   }
-
-private:
-  bool initialized_;
 };
 }  // namespace cl_keyboard

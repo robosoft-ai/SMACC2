@@ -184,8 +184,12 @@ public:
     auto client = std::make_shared<ClientHandler<TOrthogonal, TClient>>(args...);
     this->template assignClientToOrthogonal<TOrthogonal, TClient>(client.get());
 
+    // Call the component initialization hook
+    TClient * clientPtr = static_cast<TClient *>(client.get());
+    clientPtr->template onComponentInitialization<TOrthogonal>();
+
     // it is stored the client (not the client handler)
-    clients_.push_back(client);
+    this->clients_.push_back(client);
 
     return client;
   }

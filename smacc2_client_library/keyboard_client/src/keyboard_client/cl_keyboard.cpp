@@ -22,21 +22,16 @@
 
 namespace cl_keyboard
 {
-ClKeyboard::ClKeyboard()
-{
-  initialized_ = false;
-  topicName = "/keyboard_unicode";
-}
+ClKeyboard::ClKeyboard() { initialized_ = false; }
 
 ClKeyboard::~ClKeyboard() {}
 
 void ClKeyboard::onInitialize()
 {
-  SmaccSubscriberClient<std_msgs::msg::UInt16>::onInitialize();
-
   if (!this->initialized_)
   {
-    this->onMessageReceived(&ClKeyboard::onKeyboardMessage, this);
+    // Component will be created in onComponentInitialization
+    subscriberComponent_ = nullptr;
     this->initialized_ = true;
   }
 }
@@ -45,4 +40,10 @@ void ClKeyboard::onKeyboardMessage(const std_msgs::msg::UInt16 & unicode_keychar
 {
   postEventKeyPress(unicode_keychar);
 }
+
+smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16> * ClKeyboard::getSubscriber()
+{
+  return subscriberComponent_;
+}
+
 }  // namespace cl_keyboard
