@@ -46,12 +46,13 @@ public:
     // this would be the basic subscription component to the topic
     // we use this to gain the topic funcionality interated with SMACC and that post smacc events for transitions
     // we are using it to handle ros topic messages reception and notifying other components in the client
-    this->createComponent<smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16>, TOrthogonal, ClKeyboard>("/keyboard_unicode");
+    this->createComponent<
+      smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16>, TOrthogonal, ClKeyboard>(
+      "/keyboard_unicode");
 
     // this keyboard subscriber component requires the first subscriber component
     // it is notified by the CpTopicSubscriber and processes the messages to decide with keyboard event must be posted and then post it
     this->createComponent<cl_keyboard::components::CpKeyboardListener1, TOrthogonal, ClKeyboard>();
-
   }
 };
 }  // namespace cl_keyboard

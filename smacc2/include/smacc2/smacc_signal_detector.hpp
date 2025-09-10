@@ -169,7 +169,7 @@ SmExecution * run_async()
 
   //create a thread for the asynchronous state machine processor execution
   ret->schedulerThread =
-    new boost::thread(boost::bind(&sc::fifo_scheduler<>::operator(), ret -> scheduler1, NULL));
+    new boost::thread(boost::bind(&sc::fifo_scheduler<>::operator(), ret->scheduler1, NULL));
   ret->signalDetectorLoop =
     new boost::thread(boost::bind(&SignalDetector::pollingLoop, ret->signalDetector));
 

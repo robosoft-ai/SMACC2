@@ -253,7 +253,7 @@ public:
     postEventKeyPress(unicode_keychar);
   }
 
-  public:
+public:
   template <typename TEv>
   void postKeyEvent()
   {

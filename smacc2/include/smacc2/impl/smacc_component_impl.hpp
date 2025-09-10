@@ -115,7 +115,6 @@ SmaccComponentType * ISmaccComponent::createSiblingNamedComponent(std::string na
 template <typename TOrthogonal, typename TClient>
 void ISmaccComponent::onComponentInitialization()
 {
-
 }
 
 }  // namespace smacc2
