@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <smacc2/client_base_components/cp_topic_subscriber.hpp>
+#include <smacc2/client_core_components/cp_topic_subscriber.hpp>
 #include <smacc2/introspection/introspection.hpp>
 #include <smacc2/smacc.hpp>
 
@@ -171,7 +171,7 @@ public:
   void onComponentInitialization()
   {
     RCLCPP_INFO(getLogger(), "CpKeyboardListener1 initialization");
-    smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16> * subscriber;
+    smacc2::client_core_components::CpTopicSubscriber<std_msgs::msg::UInt16> * subscriber;
     this->requiresComponent(subscriber);
 
     subscriber->onMessageReceived(&CpKeyboardListener1::onKeyboardMessage, this);
