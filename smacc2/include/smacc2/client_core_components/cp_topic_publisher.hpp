@@ -83,5 +83,5 @@ void CpTopicPublisher<T>::onInitialize()
   }
 }
 
-}  // namespace components
+}  // namespace client_core_components
 }  // namespace smacc2

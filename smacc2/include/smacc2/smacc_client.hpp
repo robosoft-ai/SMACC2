@@ -86,7 +86,7 @@ public:
 
 protected:
   // Called when the orthogonal creates this client - used to initialize components
-  template <typename TOrthogonal>
+  template <typename TOrthogonal, typename TClient>
   void onComponentInitialization()
   {
   }

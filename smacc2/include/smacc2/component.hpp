@@ -41,6 +41,10 @@ protected:
   // implement. The owner and the node are already available when it is invoked by the client.
   virtual void onInitialize();
 
+  // component initialization with type information of the orthogonal and client that owns it
+  template <typename TOrthogonal, typename TClient>
+  void onComponentInitialization();
+
   template <typename EventType>
   void postEvent(const EventType & ev);
 
