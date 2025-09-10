@@ -15,7 +15,9 @@
 #pragma once
 
 #include <keyboard_client/components/cp_keyboard_listener_1.hpp>
+
 #include <smacc2/client_core_components/cp_topic_subscriber.hpp>
+
 #include <smacc2/introspection/introspection.hpp>
 #include <smacc2/smacc.hpp>
 
