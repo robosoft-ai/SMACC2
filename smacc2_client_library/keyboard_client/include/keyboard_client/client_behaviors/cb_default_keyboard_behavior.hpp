@@ -21,10 +21,12 @@
 
 namespace cl_keyboard
 {
+using namespace cl_keyboard::components;
+
 class CbDefaultKeyboardBehavior : public smacc2::SmaccClientBehavior
 {
 public:
-  ClKeyboard * ClKeyboard_;
+  components::CpKeyboardListener1 * cpSubscriber1;
   std::function<void(char)> postEventKeyPress;
 
   void onEntry();
