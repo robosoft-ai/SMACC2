@@ -58,6 +58,9 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation();
 
+  template <typename TOrthogonal, typename TSourceObject>
+  void onStateOrthogonalAllocation();
+
   virtual ~SmaccAsyncClientBehavior();
 
   template <typename TCallback, typename T>
