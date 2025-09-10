@@ -187,7 +187,7 @@ public:
 
     // Call the component initialization hook
     TClient * clientPtr = static_cast<TClient *>(client.get());
-    clientPtr->template onComponentInitialization<TOrthogonal>();
+    clientPtr->template onComponentInitialization<TOrthogonal, TClient>();
 
     // it is stored the client (not the client handler)
     this->clients_.push_back(client);

@@ -22,28 +22,8 @@
 
 namespace cl_keyboard
 {
-ClKeyboard::ClKeyboard() { initialized_ = false; }
+ClKeyboard::ClKeyboard() {}
 
 ClKeyboard::~ClKeyboard() {}
-
-void ClKeyboard::onInitialize()
-{
-  if (!this->initialized_)
-  {
-    // Component will be created in onComponentInitialization
-    subscriberComponent_ = nullptr;
-    this->initialized_ = true;
-  }
-}
-
-void ClKeyboard::onKeyboardMessage(const std_msgs::msg::UInt16 & unicode_keychar)
-{
-  postEventKeyPress(unicode_keychar);
-}
-
-smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16> * ClKeyboard::getSubscriber()
-{
-  return subscriberComponent_;
-}
 
 }  // namespace cl_keyboard
