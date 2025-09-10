@@ -21,36 +21,29 @@
 #pragma once
 
 #include <nav2z_client/client_behaviors/cb_track_path_slam.hpp>
-#include <nav2z_client/components/pose/cp_pose.hpp>
 #include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
+#include <nav2z_client/components/pose/cp_pose.hpp>
 
 namespace cl_nav2z
 {
 
-  
-  CbTrackPathSLAM::CbTrackPathSLAM()
-  {
+CbTrackPathSLAM::CbTrackPathSLAM() {}
 
-  }
+void CbTrackPathSLAM::onEntry()
+{
+  RCLCPP_INFO(this->getLogger(), "Pose tracker freeze reference frame");
+  cl_nav2z::Pose * poseComponent;
+  requiresComponent(poseComponent);
+  poseComponent->unfreezeReferenceFrame();
+  // poseComponent->setReferenceFrame("odom");
 
-  void CbTrackPathSLAM::onEntry()
-  {
-    RCLCPP_INFO(this->getLogger(), "Pose tracker freeze reference frame");
-    cl_nav2z::Pose *poseComponent;
-    requiresComponent(poseComponent);
-    poseComponent->unfreezeReferenceFrame();
-    // poseComponent->setReferenceFrame("odom");
-    
-    RCLCPP_INFO(this->getLogger(), "Odom tracker clear path");
-    cl_nav2z::odom_tracker::CpOdomTracker *odomTracker;
-    this->requiresComponent(odomTracker);
-    // odomTracker->setOdomFrame("odom");
-  
-    odomTracker->clearPath();
-  }
+  RCLCPP_INFO(this->getLogger(), "Odom tracker clear path");
+  cl_nav2z::odom_tracker::CpOdomTracker * odomTracker;
+  this->requiresComponent(odomTracker);
+  // odomTracker->setOdomFrame("odom");
 
-  void CbTrackPathSLAM::onExit() 
-  {
+  odomTracker->clearPath();
+}
 
-  }
-}  // namespace sm_dancebot_mine_ue
+void CbTrackPathSLAM::onExit() {}
+}  // namespace cl_nav2z

@@ -35,7 +35,7 @@ struct CbSpiralMotionOptions
   std::optional<float> maxLinearVelocity = 0.5f;
   std::optional<float> initialAngularVelocity = 1.5f;
   std::optional<rclcpp::Duration> spiralMotionDuration = rclcpp::Duration::from_seconds(40);
-  std::optional <float> finalRadius=20.0f;//meters
+  std::optional<float> finalRadius = 20.0f;  //meters
 };
 
 /* a basic client behavior has a simple onEntry and onExit functions. When we enter into a stae we call onEntry.
@@ -51,12 +51,11 @@ public:
 
   void onExit() override;
 
-  private:
+private:
   // this client behavior has its own temporal publisher to control the robot
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmdVelPub_;
 
   // we store the options that customize the behavior
   CbSpiralMotionOptions options_;
-
 };
-}  // namespace sm_nav2_test_7
+}  // namespace cl_nav2z

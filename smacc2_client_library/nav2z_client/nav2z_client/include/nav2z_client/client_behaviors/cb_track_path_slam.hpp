@@ -28,14 +28,11 @@ namespace cl_nav2z
 struct CbTrackPathSLAM : public smacc2::SmaccAsyncClientBehavior
 {
 private:
-  
-
 public:
-  
   CbTrackPathSLAM();
 
   void onEntry() override;
 
   void onExit() override;
 };
-}  // namespace sm_nav2_test_7
+}  // namespace cl_nav2z
