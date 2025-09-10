@@ -126,5 +126,5 @@ private:
     onMessageReceived_(msg);
   }
 };
-}  // namespace components
+}  // namespace client_core_components
 }  // namespace smacc2
