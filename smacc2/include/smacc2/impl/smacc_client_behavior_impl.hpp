@@ -92,7 +92,7 @@ void ISmaccClientBehavior::onOrthogonalAllocation()
 }
 
 template <typename TOrthogonal, typename TSourceObject>
-void ISmaccClientBehavior::onStateAllocation()
+void ISmaccClientBehavior::onStateOrthogonalAllocation()
 {
 }
 

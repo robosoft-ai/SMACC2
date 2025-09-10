@@ -49,7 +49,7 @@ protected:
 
   template <typename TOrthogonal, typename TSourceObject>
   [[deprecated(
-    "Use onStateAllocation instead. onOrthogonalAllocation will be removed in future "
+    "Use onStateOrthogonalAllocation instead. onOrthogonalAllocation will be removed in future "
     "versions.")]] void
   onOrthogonalAllocation()
   {
@@ -57,7 +57,7 @@ protected:
 
   // New method: called when the component is allocated to a state (replaces onOrthogonalAllocation)
   template <typename TOrthogonal, typename TSourceObject>
-  void onStateAllocation()
+  void onStateOrthogonalAllocation()
   {
   }
 

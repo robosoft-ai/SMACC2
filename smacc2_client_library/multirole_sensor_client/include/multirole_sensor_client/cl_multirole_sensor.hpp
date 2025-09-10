@@ -54,9 +54,10 @@ public:
   std::function<void()> postTimeoutMessageEvent;
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onStateAllocation()
+  void onStateOrthogonalAllocation()
   {
-    SmaccSubscriberClient<MessageType>::template onStateAllocation<TOrthogonal, TSourceObject>();
+    SmaccSubscriberClient<MessageType>::template onStateOrthogonalAllocation<
+      TOrthogonal, TSourceObject>();
 
     this->postTimeoutMessageEvent = [this]()
     {

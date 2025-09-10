@@ -37,7 +37,12 @@ void SmaccEventGenerator::postEvent()
 }
 
 template <typename TState, typename TSource>
-void SmaccEventGenerator::onStateAllocation()
+void SmaccEventGenerator::onStateOrthogonalAllocation()
+{
+}
+
+template <typename TState, typename TSource>
+void SmaccEventGenerator::onOrthogonalAllocation()
 {
 }
 }  // namespace smacc2

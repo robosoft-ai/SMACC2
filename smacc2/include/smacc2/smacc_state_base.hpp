@@ -289,7 +289,10 @@ public:
       auto eg = state->createEventGenerator<TEventGenerator>(args...);
       egh->configureEventGenerator(eg);
       eg->initialize(state);
-      eg->template onStateAllocation<MostDerived, TEventGenerator>();
+
+      eg->template onOrthogonalAllocation<
+        MostDerived, TEventGenerator>();  // deprecated to extinguish in future
+      eg->template onStateOrthogonalAllocation<MostDerived, TEventGenerator>();
       return eg;
     };
 

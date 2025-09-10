@@ -41,7 +41,7 @@ public:
   std::function<void()> deferedEventPropagation;
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onStateAllocation()
+  void onStateOrthogonalAllocation()
   {
     deferedEventPropagation = [this]()
     {

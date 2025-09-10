@@ -40,7 +40,13 @@ public:
   virtual ~SmaccEventGenerator();
 
   template <typename TState, typename TSource>
-  void onStateAllocation();
+  void onStateOrthogonalAllocation();
+
+  template <typename TState, typename TSource>
+  [[deprecated(
+    "Use onStateOrthogonalAllocation instead. This method will be removed in future "
+    "releases.")]] void
+  onOrthogonalAllocation();
 
   virtual void onEntry();
   virtual void onExit();

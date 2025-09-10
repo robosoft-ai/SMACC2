@@ -51,7 +51,7 @@ public:
   void onEntry() override;
 
   template <typename TState, typename TSource>
-  void onStateAllocation()
+  void onStateOrthogonalAllocation()
   {
     this->postEventTrue = [this]() { this->postEvent<EvTrue<TSource, TState>>(); };
     this->postEventFalse = [this]() { this->postEvent<EvFalse<TSource, TState>>(); };

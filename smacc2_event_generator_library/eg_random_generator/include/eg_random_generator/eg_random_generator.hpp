@@ -57,7 +57,7 @@ public:
   void onEntry() override;
 
   template <typename TState, typename TSource>
-  void onStateAllocation()
+  void onStateOrthogonalAllocation()
   {
     this->postEventA = [this]() { this->postEvent<EventA<TSource, TState>>(); };
     this->postEventB = [this]() { this->postEvent<EventB<TSource, TState>>(); };
