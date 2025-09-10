@@ -20,9 +20,9 @@
 
 #include <angles/angles.h>
 #include <geometry_msgs/msg/twist.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <nav2z_client/client_behaviors/cb_spiral_motion.hpp>
 #include <optional>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_nav2z
 {
@@ -40,7 +40,7 @@ CbSpiralMotion::CbSpiralMotion(std::optional<CbSpiralMotionOptions> options)
   }
 }
 
-void CbSpiralMotion::onEntry() 
+void CbSpiralMotion::onEntry()
 {
   /*
  struct CbSpiralMotionOptions
@@ -59,19 +59,19 @@ void CbSpiralMotion::onEntry()
   auto spiralMotionDuration = *(options_.spiralMotionDuration);
   auto finalRadius = *(options_.finalRadius);
 
-
   float rate = 20.0f;
   rclcpp::Rate r(rate);
   cmdVelPub_ = getNode()->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", rclcpp::QoS(1));
 
   rclcpp::Duration linearRamp = rclcpp::Duration::from_seconds(spiralMotionDuration.seconds());
-  float linearAceleration = (maxLinearVelocity - linearVelocity) / linearRamp.seconds(); 
+  float linearAceleration = (maxLinearVelocity - linearVelocity) / linearRamp.seconds();
   float dt = 1.0f / rate;
 
   // we know final radious and the constant linear velocity
   float finalAngularVelocity = maxLinearVelocity / finalRadius;
 
-  float angularAcceleration = (initialAngularVelocity - finalAngularVelocity)/ spiralMotionDuration.seconds();
+  float angularAcceleration =
+    (initialAngularVelocity - finalAngularVelocity) / spiralMotionDuration.seconds();
 
   geometry_msgs::msg::Twist cmd_vel;
 
@@ -79,12 +79,17 @@ void CbSpiralMotion::onEntry()
   cmd_vel.angular.z = initialAngularVelocity;
   auto start_time = getNode()->now();
 
-  RCLCPP_INFO_STREAM(getLogger(), "[CbSpiralMotion]: initialAngularVelocity: " << initialAngularVelocity << ", finalAngularVelocity: " << finalAngularVelocity << ", angularAcceleration: " << angularAcceleration);
-  RCLCPP_INFO_STREAM(getLogger(), "[CbSpiralMotion]: linearAceleration: " << linearAceleration << ", maxLinearVelocity: " << maxLinearVelocity);
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[CbSpiralMotion]: initialAngularVelocity: "
+                   << initialAngularVelocity << ", finalAngularVelocity: " << finalAngularVelocity
+                   << ", angularAcceleration: " << angularAcceleration);
+  RCLCPP_INFO_STREAM(
+    getLogger(), "[CbSpiralMotion]: linearAceleration: "
+                   << linearAceleration << ", maxLinearVelocity: " << maxLinearVelocity);
 
   bool end_condition = false;
 
-  while (!end_condition) 
+  while (!end_condition)
   {
     auto current_time = getNode()->now() - start_time;
 
@@ -98,18 +103,22 @@ void CbSpiralMotion::onEntry()
     // cmd_vel.angular.z -= signVal * angularAcceleration * dt;
 
     float ellapsedTimeFactor = current_time.seconds() / spiralMotionDuration.seconds();
-    cmd_vel.angular.z = initialAngularVelocity * (1.0f - ellapsedTimeFactor) + finalAngularVelocity * ellapsedTimeFactor;
+    cmd_vel.angular.z = initialAngularVelocity * (1.0f - ellapsedTimeFactor) +
+                        finalAngularVelocity * ellapsedTimeFactor;
 
+    RCLCPP_INFO(
+      getLogger(), "[CbSpiralMotion] cmd_vel.linear.x = %f, cmd_vel.angular.z = %f",
+      cmd_vel.linear.x, cmd_vel.angular.z);
 
-    RCLCPP_INFO(getLogger(), "[CbSpiralMotion] cmd_vel.linear.x = %f, cmd_vel.angular.z = %f", cmd_vel.linear.x, cmd_vel.angular.z);
-    
     cmdVelPub_->publish(cmd_vel);
     r.sleep();
 
     auto now = getNode()->now();
 
     rclcpp::Duration ellapsed = now - start_time;
-    RCLCPP_INFO_STREAM(getLogger(), "[CbSpiralMotion] ellapsed time: " << ellapsed.seconds() << ", total duration: " << spiralMotionDuration.seconds());
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[CbSpiralMotion] ellapsed time: " << ellapsed.seconds() << ", total duration: "
+                                                      << spiralMotionDuration.seconds());
     if (ellapsed > spiralMotionDuration)
     {
       RCLCPP_INFO_STREAM(getLogger(), "[CbSpiralMotion] spiralMotionDuration reached");
@@ -120,9 +129,8 @@ void CbSpiralMotion::onEntry()
   // asynchronous client behaviors usually post a success event when they are done
   // that is used in states to transition to the next state
   this->postSuccessEvent();
-
 }
-  
+
 void CbSpiralMotion::onExit() {}
 
-}  // namespace sm_dancebot_mine_ue
+}  // namespace cl_nav2z
