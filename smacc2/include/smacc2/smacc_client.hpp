@@ -89,6 +89,7 @@ protected:
   template <typename TOrthogonal, typename TClient>
   void onComponentInitialization()
   {
+    
   }
 
   // it is called after the client initialization, provides information about the orthogonal it is located in

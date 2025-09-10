@@ -26,7 +26,7 @@ using namespace cl_keyboard::components;
 class CbDefaultKeyboardBehavior : public smacc2::SmaccClientBehavior
 {
 public:
-  components::CpKeyboardSubscriber1 * cpSubscriber1;
+  components::CpKeyboardListener1 * cpSubscriber1;
   std::function<void(char)> postEventKeyPress;
 
   void onEntry();
