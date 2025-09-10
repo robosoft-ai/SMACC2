@@ -26,7 +26,7 @@
 
 namespace smacc2
 {
-namespace components
+namespace client_core_components
 {
 using namespace smacc2::default_events;
 

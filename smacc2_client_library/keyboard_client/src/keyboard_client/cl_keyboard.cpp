@@ -41,7 +41,8 @@ void ClKeyboard::onKeyboardMessage(const std_msgs::msg::UInt16 & unicode_keychar
   postEventKeyPress(unicode_keychar);
 }
 
-smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16> * ClKeyboard::getSubscriber()
+smacc2::client_core_components::CpTopicSubscriber<std_msgs::msg::UInt16> *
+ClKeyboard::getSubscriber()
 {
   return subscriberComponent_;
 }

@@ -1,4 +1,4 @@
-#include <smacc/client_base_components/cp_ros_control_interface.h>
+#include <smacc/client_core_components/cp_ros_control_interface.h>
 
 #include <controller_manager_msgs/ListControllerTypes.h>
 #include <controller_manager_msgs/ListControllers.h>

@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <smacc2/client_base_components/cp_topic_subscriber.hpp>
+#include <smacc2/client_core_components/cp_topic_subscriber.hpp>
 #include <smacc2/introspection/introspection.hpp>
 #include <smacc2/smacc.hpp>
 
@@ -169,7 +169,7 @@ public:
   smacc2::SmaccSignal<void(char keypress)> OnKeyPress_;
 
   // Get the subscriber component
-  smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16> * getSubscriber();
+  smacc2::client_core_components::CpTopicSubscriber<std_msgs::msg::UInt16> * getSubscriber();
 
   template <typename T>
   void OnKeyPress(void (T::*callback)(char keypress), T * object)
@@ -180,7 +180,7 @@ public:
 
 private:
   bool initialized_;
-  smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16> * subscriberComponent_;
+  smacc2::client_core_components::CpTopicSubscriber<std_msgs::msg::UInt16> * subscriberComponent_;
   std::function<void(std_msgs::msg::UInt16)> postEventKeyPress;
 
 private:
@@ -190,8 +190,8 @@ private:
   {
     // Create the subscriber component during orthogonal initialization
     subscriberComponent_ = this->createComponent<
-      smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16>, TOrthogonal, ClKeyboard>(
-      "/keyboard_unicode");
+      smacc2::client_core_components::CpTopicSubscriber<std_msgs::msg::UInt16>, TOrthogonal,
+      ClKeyboard>("/keyboard_unicode");
     subscriberComponent_->onMessageReceived(&ClKeyboard::onKeyboardMessage, this);
 
     // Configure the subscriber component's orthogonal allocation
