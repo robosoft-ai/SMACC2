@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <nav2z_client/client_behaviors  //cb_track_path_odometry.hpp>
+#include <nav2z_client/client_behaviors/cb_track_path_odometry.hpp>
 #include <nav2z_client/components/odom_tracker/cp_odom_tracker.hpp>
 #include <nav2z_client/components/pose/cp_pose.hpp>
 
