@@ -41,9 +41,9 @@ public:
 
   // Clients utilize a composition based architecture for their components.
   // In the function body below we create the components that will be used in this client.
-  
+
   {
-    // We start by creating a topic subscriber component from SMACC2s client core components. 
+    // We start by creating a topic subscriber component from SMACC2s client core components.
     // We use this to gain the topic funcionality interated with SMACC and the ability to post smacc events for transitions.
     // We are using it to handle the reception of ros topic messages and to notify the other components in the client.
     this->createComponent<
