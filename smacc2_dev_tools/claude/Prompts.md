@@ -8,3 +8,4 @@ the cb_timer_countdown_loop.cpp, cb_timer_countdown_once.cpp and cb_timer.cpp fi
 
 create a new component. See
 a new file cp_ros2_timer.hpp is created in the smacc2/include/client_core_components folder 
+
