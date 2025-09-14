@@ -157,7 +157,7 @@ struct EvKeyPressZ : sc::event<EvKeyPressZ<TSource, TOrthogonal>>
 {
 };
 
-//------------------  KEYBOARD CLIENT ---------------------------------------------
+//------------------  KEYBOARD LISTENER COMPONENT ---------------------------------------------
 
 class CpKeyboardListener1 : public smacc2::ISmaccComponent
 {
