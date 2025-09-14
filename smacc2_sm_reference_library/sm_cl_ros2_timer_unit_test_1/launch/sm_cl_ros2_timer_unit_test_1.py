@@ -18,5 +18,11 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     return LaunchDescription(
-        [Node(package="sm_cl_ros2_timer_unit_test_1", executable="sm_cl_ros2_timer_unit_test_1_node", output="screen")]
+        [
+            Node(
+                package="sm_cl_ros2_timer_unit_test_1",
+                executable="sm_cl_ros2_timer_unit_test_1_node",
+                output="screen",
+            )
+        ]
     )
