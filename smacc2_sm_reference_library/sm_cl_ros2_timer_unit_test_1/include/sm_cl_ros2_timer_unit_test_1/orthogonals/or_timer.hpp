@@ -12,31 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
-
-#include <cl_ros2_timer/cl_ros_timer.hpp>
+#include <chrono>
+#include <ros_timer_client/cl_ros_timer.hpp>
 #include <smacc2/smacc.hpp>
 
-namespace cl_ros_timer
+using namespace std::chrono_literals;
+
+namespace sm_cl_ros2_timer_unit_test_1
 {
-class CbTimer : public smacc2::SmaccClientBehavior
+using namespace std::chrono_literals;
+class OrTimer : public smacc2::Orthogonal<OrTimer>
 {
 public:
-  void onEntry() override;
-  void onExit() override;
-
-  template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
-  {
-    this->postTimerEvent_ = [this]()
-    { this->template postEvent<EvTimer<TSourceObject, TOrthogonal>>(); };
-  }
-
-  void onClientTimerTickCallback();
-
-private:
-  ClRosTimer * timerClient_;
-  std::function<void()> postTimerEvent_;
-  boost::signals2::scoped_connection c_;
+  void onInitialize() override { auto client = this->createClient<cl_ros_timer::ClRosTimer>(1s); }
 };
-}  // namespace cl_ros_timer
+}  // namespace sm_cl_ros2_timer_unit_test_1

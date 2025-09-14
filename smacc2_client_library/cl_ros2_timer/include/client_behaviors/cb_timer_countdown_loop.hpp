@@ -14,18 +14,18 @@
 
 #pragma once
 
-#include <cl_ros2_timer/cl_ros_timer.hpp>
+#include <cl_ros2_timer.hpp>
 #include <smacc2/smacc.hpp>
 
-namespace cl_ros_timer
+namespace cl_ros2_timer
 {
-class CbTimerCountdownOnce : public smacc2::SmaccClientBehavior
+class CbTimerCountdownLoop : public smacc2::SmaccClientBehavior
 {
 public:
-  CbTimerCountdownOnce(int64_t triggerTickCount);
+  explicit CbTimerCountdownLoop(int64_t triggerTickCount);
 
   void onEntry() override;
-  void onEntry() override;
+  void onExit() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
@@ -41,12 +41,12 @@ public:
   }
 
 private:
-  int64_t tickCounter_;
   int64_t tickTriggerCount_;
+  int64_t tickCounter_;
 
-  ClRosTimer * timerClient_;
+  ClRos2Timer * timerClient_;
   std::function<void()> postCountDownEvent_;
   smacc2::SmaccSignal<void()> onTimerTick_;
   void onClientTimerTickCallback();
 };
-}  // namespace cl_ros_timer
+}  // namespace cl_ros2_timer

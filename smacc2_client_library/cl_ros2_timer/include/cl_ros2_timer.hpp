@@ -19,16 +19,16 @@
 #include <optional>
 #include <smacc2/smacc.hpp>
 
-namespace cl_ros_timer
+namespace cl_ros2_timer
 {
 template <typename TSource, typename TOrthogonal>
 struct EvTimer : sc::event<EvTimer<TSource, TOrthogonal>>
 {
   /*
-    ClRosTimer *sender;
+    ClRos2Timer *sender;
     rclcpp::TimerEvent timedata;
 
-    EvTimer(ClRosTimer *sender, const rclcpp::TimerEvent &timedata)
+    EvTimer(ClRos2Timer *sender, const rclcpp::TimerEvent &timedata)
     {
         this->sender = sender;
         this->timedata = timedata;
@@ -36,12 +36,12 @@ struct EvTimer : sc::event<EvTimer<TSource, TOrthogonal>>
     */
 };
 
-class ClRosTimer : public smacc2::ISmaccClient
+class ClRos2Timer : public smacc2::ISmaccClient
 {
 public:
-  ClRosTimer(rclcpp::Duration duration, bool oneshot = false);
+  ClRos2Timer(rclcpp::Duration duration, bool oneshot = false);
 
-  virtual ~ClRosTimer();
+  virtual ~ClRos2Timer();
 
   virtual void onInitialize() override;
 
@@ -66,4 +66,4 @@ protected:
   std::function<void()> postTimerEvent_;
   smacc2::SmaccSignal<void()> onTimerTick_;
 };
-}  // namespace cl_ros_timer
+}  // namespace cl_ros2_timer

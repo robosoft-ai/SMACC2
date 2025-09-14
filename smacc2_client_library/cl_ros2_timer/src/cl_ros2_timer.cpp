@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <cl_ros2_timer/cl_ros_timer.hpp>
+#include <cl_ros2_timer.hpp>
 
-namespace cl_ros_timer
+namespace cl_ros2_timer
 {
-ClRosTimer::ClRosTimer(rclcpp::Duration duration, bool oneshot)
+ClRos2Timer::ClRos2Timer(rclcpp::Duration duration, bool oneshot)
 : duration_(duration), oneshot_(oneshot)
 {
 }
 
-ClRosTimer::~ClRosTimer() { timer_->cancel(); }
+ClRos2Timer::~ClRos2Timer() { timer_->cancel(); }
 
-void ClRosTimer::onInitialize()
+void ClRos2Timer::onInitialize()
 {
   auto clock = this->getNode()->get_clock();
 
   timer_ = rclcpp::create_timer(
-    this->getNode(), clock, duration_, std::bind(&ClRosTimer::timerCallback, this));
+    this->getNode(), clock, duration_, std::bind(&ClRos2Timer::timerCallback, this));
 }
 
-void ClRosTimer::timerCallback()
+void ClRos2Timer::timerCallback()
 {
   if (!onTimerTick_.empty())
   {
@@ -45,4 +45,4 @@ void ClRosTimer::timerCallback()
   }
 }
 
-}  // namespace cl_ros_timer
+}  // namespace cl_ros2_timer

@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <cl_ros2_timer/client_behaviors/cb_ros_timer.hpp>
+#include <client_behaviors/cb_ros2_timer.hpp>
 
-namespace cl_ros_timer
+namespace cl_ros2_timer
 {
 void CbTimer::onEntry()
 {
@@ -26,4 +26,4 @@ void CbTimer::onEntry()
 void CbTimer::onClientTimerTickCallback() { this->postTimerEvent_(); }
 
 void CbTimer::onExit() {}
-}  // namespace cl_ros_timer
+}  // namespace cl_ros2_timer

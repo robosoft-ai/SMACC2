@@ -14,26 +14,25 @@
 
 #pragma once
 
-#include <boost/signals2.hpp>
-#include <chrono>
-#include <optional>
+#include <cl_ros2_timer.hpp>
 #include <smacc2/smacc.hpp>
 
-namespace cl_ros_timer
+namespace cl_ros2_timer
 {
-template <typename TSource, typename TOrthogonal>
-struct EvTimer : sc::event<EvTimer<TSource, TOrthogonal>>
-{
-};
-
-class ClRosTimer : public smacc2::ISmaccClient
+class CbTimerCountdownOnce : public smacc2::SmaccClientBehavior
 {
 public:
-  ClRosTimer(rclcpp::Duration duration, bool oneshot = false);
+  CbTimerCountdownOnce(int64_t triggerTickCount);
 
-  virtual ~ClRosTimer();
+  void onEntry() override;
+  void onExit() override;
 
-  virtual void initialize();
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
+  {
+    this->postCountDownEvent_ = [=]()
+    { this->template postEvent<EvTimer<TSourceObject, TOrthogonal>>(); };
+  }
 
   template <typename T>
   boost::signals2::connection onTimerTick(void (T::*callback)(), T * object)
@@ -41,19 +40,13 @@ public:
     return this->getStateMachine()->createSignalConnection(onTimerTick_, callback, object);
   }
 
-  template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
-  {
-    this->postTimerEvent_ = [=]() { this->postEvent<EvTimer<TSourceObject, TOrthogonal>>(); };
-  }
+private:
+  int64_t tickCounter_;
+  int64_t tickTriggerCount_;
 
-protected:
-  rclcpp::TimerBase::SharedPtr timer_;
-  rclcpp::Duration duration_;
-  bool oneshot_;
-
-  void timerCallback();
-  std::function<void()> postTimerEvent_;
+  ClRos2Timer * timerClient_;
+  std::function<void()> postCountDownEvent_;
   smacc2::SmaccSignal<void()> onTimerTick_;
+  void onClientTimerTickCallback();
 };
-}  // namespace cl_ros_timer
+}  // namespace cl_ros2_timer

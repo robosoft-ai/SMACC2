@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp>
+#include <client_behaviors/cb_timer_countdown_loop.hpp>
 
-namespace cl_ros_timer
+namespace cl_ros2_timer
 {
-CbTimerCountdownOnce::CbTimerCountdownOnce(int64_t triggerTickCount)
-: tickCounter_(0), tickTriggerCount_(triggerTickCount)
+CbTimerCountdownLoop::CbTimerCountdownLoop(int64_t triggerTickCount)
+: tickTriggerCount_(triggerTickCount), tickCounter_(0)
 {
 }
 
-void CbTimerCountdownOnce::onClientTimerTickCallback()
+void CbTimerCountdownLoop::onClientTimerTickCallback()
 {
   tickCounter_++;
 
@@ -32,11 +32,11 @@ void CbTimerCountdownOnce::onClientTimerTickCallback()
   }
 }
 
-void CbTimerCountdownOnce::onEntry()
+void CbTimerCountdownLoop::onEntry()
 {
   this->requiresClient(timerClient_);
-  timerClient_->onTimerTick(&CbTimerCountdownOnce::onClientTimerTickCallback, this);
+  timerClient_->onTimerTick(&CbTimerCountdownLoop::onClientTimerTickCallback, this);
 }
 
-void CbTimerCountdownOnce::onExit() {}
-}  // namespace cl_ros_timer
+void CbTimerCountdownLoop::onExit() {}
+}  // namespace cl_ros2_timer

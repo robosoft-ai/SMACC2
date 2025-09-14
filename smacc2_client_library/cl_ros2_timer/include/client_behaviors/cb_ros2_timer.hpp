@@ -14,29 +14,29 @@
 
 #pragma once
 
-#include <cl_ros2_timer/cl_ros_timer.hpp>
+#include <cl_ros2_timer.hpp>
 #include <smacc2/smacc.hpp>
 
-namespace cl_ros_timer
+namespace cl_ros2_timer
 {
 class CbTimer : public smacc2::SmaccClientBehavior
 {
 public:
   void onEntry() override;
-  void onEntry() override;
+  void onExit() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-    this->postTimerEvent_ = [=]()
+    this->postTimerEvent_ = [this]()
     { this->template postEvent<EvTimer<TSourceObject, TOrthogonal>>(); };
   }
 
   void onClientTimerTickCallback();
 
 private:
-  ClRosTimer * timerClient_;
+  ClRos2Timer * timerClient_;
   std::function<void()> postTimerEvent_;
   boost::signals2::scoped_connection c_;
 };
-}  // namespace cl_ros_timer
+}  // namespace cl_ros2_timer
