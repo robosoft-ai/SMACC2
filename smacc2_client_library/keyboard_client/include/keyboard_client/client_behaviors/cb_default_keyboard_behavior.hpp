@@ -29,7 +29,11 @@ public:
   components::CpKeyboardListener1 * cpSubscriber1;
   std::function<void(char)> postEventKeyPress;
 
-  void onEntry();
+  void onEntry()
+  {
+    this->requiresComponent(this->cpSubscriber1);
+    this->cpSubscriber1->OnKeyPress(&CbDefaultKeyboardBehavior::OnKeyPress, this);
+  }
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
@@ -91,7 +95,7 @@ public:
     };
   }
 
-  void OnKeyPress(char character);
+  void OnKeyPress(char character) { postEventKeyPress(character); }
 
   template <typename TEv>
   void postKeyEvent()
