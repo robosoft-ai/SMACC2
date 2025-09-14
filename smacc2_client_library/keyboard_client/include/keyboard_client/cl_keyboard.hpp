@@ -50,13 +50,9 @@ public:
       smacc2::client_core_components::CpTopicSubscriber<std_msgs::msg::UInt16>, TOrthogonal,
       ClKeyboard>("/keyboard_unicode");
 
-
     // This keyboard listener component requires CpTopicSubscriber.
     // It is notified by the CpTopicSubscriber and processes the messages to decide which keyboard event must be posted and then posts it.
-    this->createComponent<
-      cl_keyboard::components::CpKeyboardListener1, TOrthogonal, 
-      ClKeyboard>();
-
+    this->createComponent<cl_keyboard::components::CpKeyboardListener1, TOrthogonal, ClKeyboard>();
   }
 };
 }  // namespace cl_keyboard
