@@ -1,4 +1,4 @@
-// Copyright 2021 RobosoftAI Inc.
+// Copyright 2025 Robosoft Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,14 +31,13 @@ struct State2 : smacc2::SmaccState<State2, SmClRos2TimerUnitTest1>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(
-      5);  // EvTimer triggers once at 10 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);  // EvTimer triggers once at 5 client ticks
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State2"); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State2 - runtimeConfigure() firing."); }
 
-  void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
+  void onEntry() { RCLCPP_INFO(getLogger(), "onEntry() firing."); }
 
-  void onExit() { RCLCPP_INFO(getLogger(), "On Exit!"); }
+  void onExit() { RCLCPP_INFO(getLogger(), "onExit() firing."); }
 };
 }  // namespace sm_cl_ros2_timer_unit_test_1
