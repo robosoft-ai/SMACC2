@@ -34,9 +34,9 @@ public:
   virtual ~CpTimerListener1() {}
 
   template <typename TOrthogonal, typename TClient>
-  void onOrthogonalAllocation()
+  void onStateOrthogonalAllocation()
   {
-    RCLCPP_INFO(getLogger(), "CpTimerListener1 onOrthogonalAllocation");
+    RCLCPP_INFO(getLogger(), "CpTimerListener1 onStateOrthogonalAllocation");
 
     this->postTimerEvent_ = [this]()
     { this->template postEvent<EvTimer<CpTimerListener1, TOrthogonal>>(); };

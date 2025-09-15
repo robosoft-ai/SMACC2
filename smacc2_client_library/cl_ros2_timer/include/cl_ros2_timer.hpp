@@ -19,7 +19,7 @@
 #include <optional>
 #include <smacc2/smacc.hpp>
 
-#include <components/cp_timer_listener1.hpp>
+#include <components/cp_timer_listener_1.hpp>
 #include <smacc2/client_core_components/cp_ros2_timer.hpp>
 
 namespace cl_ros2_timer
