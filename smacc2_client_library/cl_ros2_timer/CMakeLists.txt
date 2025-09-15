@@ -23,9 +23,6 @@ include_directories(
 
 add_library(${PROJECT_NAME}
   src/cl_ros2_timer.cpp
-  src/client_behaviors/cb_ros2_timer.cpp
-  src/client_behaviors/cb_timer_countdown_loop.cpp
-  src/client_behaviors/cb_timer_countdown_once.cpp
 )
 target_link_libraries(${PROJECT_NAME} SHARED ${Boost_LIBRARIES} smacc2)
 ament_target_dependencies(${PROJECT_NAME} smacc2)

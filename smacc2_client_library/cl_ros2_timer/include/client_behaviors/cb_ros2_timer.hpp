@@ -22,8 +22,13 @@ namespace cl_ros2_timer
 class CbTimer : public smacc2::SmaccClientBehavior
 {
 public:
-  void onEntry() override;
-  void onExit() override;
+  void onEntry() override
+  {
+    this->requiresClient(timerClient_);
+    timerClient_->onTimerTick(&CbTimer::onClientTimerTickCallback, this);
+  }
+
+  void onExit() override {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
@@ -32,7 +37,7 @@ public:
     { this->template postEvent<EvTimer<TSourceObject, TOrthogonal>>(); };
   }
 
-  void onClientTimerTickCallback();
+  void onClientTimerTickCallback() { this->postTimerEvent_(); }
 
 private:
   ClRos2Timer * timerClient_;

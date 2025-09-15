@@ -22,10 +22,18 @@ namespace cl_ros2_timer
 class CbTimerCountdownLoop : public smacc2::SmaccClientBehavior
 {
 public:
-  explicit CbTimerCountdownLoop(int64_t triggerTickCount);
+  explicit CbTimerCountdownLoop(int64_t triggerTickCount)
+  : tickTriggerCount_(triggerTickCount), tickCounter_(0)
+  {
+  }
 
-  void onEntry() override;
-  void onExit() override;
+  void onEntry() override
+  {
+    this->requiresClient(timerClient_);
+    timerClient_->onTimerTick(&CbTimerCountdownLoop::onClientTimerTickCallback, this);
+  }
+
+  void onExit() override {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
@@ -47,6 +55,15 @@ private:
   ClRos2Timer * timerClient_;
   std::function<void()> postCountDownEvent_;
   smacc2::SmaccSignal<void()> onTimerTick_;
-  void onClientTimerTickCallback();
+  void onClientTimerTickCallback()
+  {
+    tickCounter_++;
+
+    if (tickCounter_ % tickTriggerCount_ == 0)
+    {
+      onTimerTick_();
+      postCountDownEvent_();
+    }
+  }
 };
 }  // namespace cl_ros2_timer
