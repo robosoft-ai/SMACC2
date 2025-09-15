@@ -216,7 +216,7 @@ template <typename EventType>
 void ISmaccStateMachine::postEvent(EventLifeTime evlifetime)
 {
   auto evname = smacc2::introspection::demangleSymbol<EventType>();
-  RCLCPP_INFO_STREAM(getLogger(), "Event " << evname);
+  RCLCPP_INFO_STREAM(getLogger(), "Event: " << evname);
   auto * ev = new EventType();
   this->postEvent(ev, evlifetime);
 }
@@ -435,7 +435,7 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(
   {
     RCLCPP_INFO(
       getLogger(),
-      "[StateMachine] long life-time smacc signal subscription created. Subscriber is %s. Callback "
+      "[StateMachine] Long life-time SMACC signal subscription created. Subscriber is %s. Callback "
       "is: %s",
       demangledTypeName<TSmaccObjectType>().c_str(),
       demangleSymbol(typeid(callback).name()).c_str());
@@ -449,7 +449,7 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(
   {
     RCLCPP_INFO(
       getLogger(),
-      "[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s",
+      "[StateMachine] Life-time constrained SMACC signal subscription created. Subscriber is %s",
       demangledTypeName<TSmaccObjectType>().c_str());
 
     std::shared_ptr<CallbackCounterSemaphore> callbackCounterSemaphore;
@@ -471,9 +471,8 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(
   {
     RCLCPP_WARN(
       getLogger(),
-      "[StateMachine] connecting signal to an unknown object with life-time unknown "
-      "behavior. It might provoke "
-      "an exception if the object is destroyed during the execution.");
+      "[StateMachine] Connecting signal to an unknown object with unknown lifetime "
+      "behavior. An exception may occur if the object is destroyed during the execution.");
 
     connection = binder.bindaux(signal, callback, object, nullptr);
   }
@@ -488,7 +487,7 @@ void ISmaccStateMachine::notifyOnStateEntryStart(StateType * state)
 
   RCLCPP_DEBUG(
     getLogger(),
-    "[State Machne] Initializating a new state '%s' and updating current state. Getting state "
+    "[State Machine] Initializing a new state '%s' and updating current state. Getting state "
     "meta-information. number of orthogonals: %ld",
     demangleSymbol(typeid(StateType).name()).c_str(), this->orthogonals_.size());
 
@@ -501,13 +500,13 @@ template <typename StateType>
 void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
 {
   RCLCPP_INFO(
-    getLogger(), "[%s] State OnEntry code finished",
+    getLogger(), "[%s] State OnEntry code finished.",
     demangleSymbol(typeid(StateType).name()).c_str());
 
   auto currentState = this->currentState_.back();
   for (auto pair : this->orthogonals_)
   {
-    RCLCPP_DEBUG(getLogger(), "ortho onentry: %s", pair.second->getName().c_str());
+    RCLCPP_DEBUG(getLogger(), "Orthogonal onEntry: %s.", pair.second->getName().c_str());
     auto & orthogonal = pair.second;
     try
     {
@@ -525,7 +524,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
   for (auto & sr : currentState->getStateReactors())
   {
     auto srname = smacc2::demangleSymbol(typeid(*sr).name());
-    RCLCPP_INFO_STREAM(getLogger(), "state reactor onEntry: " << srname);
+    RCLCPP_INFO_STREAM(getLogger(), "State reactor onEntry: " << srname);
     try
     {
       sr->onEntry();
@@ -543,7 +542,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
   for (auto & eg : currentState->getEventGenerators())
   {
     auto egname = smacc2::demangleSymbol(typeid(*eg).name());
-    RCLCPP_INFO_STREAM(getLogger(), "event generator onEntry: " << egname);
+    RCLCPP_INFO_STREAM(getLogger(), "Event generator onEntry: " << egname);
     try
     {
       eg->onEntry();
@@ -595,10 +594,10 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
 {
   stateMachineCurrentAction = StateMachineInternalAction::STATE_EXITING;
   auto fullname = demangleSymbol(typeid(StateType).name());
-  RCLCPP_WARN_STREAM(getLogger(), "exiting state: " << fullname);
+  RCLCPP_WARN_STREAM(getLogger(), "Exiting state: " << fullname);
   // this->set_parameter("destroyed", true);
 
-  RCLCPP_INFO_STREAM(getLogger(), "Notification State Exit: leaving state " << state);
+  RCLCPP_INFO_STREAM(getLogger(), "Notification state exit: leaving state " << state);
   for (auto pair : this->orthogonals_)
   {
     auto & orthogonal = pair.second;
@@ -618,7 +617,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
   for (auto & sr : state->getStateReactors())
   {
     auto srname = smacc2::demangleSymbol(typeid(*sr).name());
-    RCLCPP_INFO_STREAM(getLogger(), "state reactor OnExit: " << srname);
+    RCLCPP_INFO_STREAM(getLogger(), "State reactor OnExit: " << srname);
     try
     {
       sr->onExit();
@@ -636,7 +635,7 @@ void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
   for (auto & eg : state->getEventGenerators())
   {
     auto egname = smacc2::demangleSymbol(typeid(*eg).name());
-    RCLCPP_INFO_STREAM(getLogger(), "event generator OnExit: " << egname);
+    RCLCPP_INFO_STREAM(getLogger(), "Event generator OnExit: " << egname);
     try
     {
       eg->onExit();
@@ -660,9 +659,9 @@ void ISmaccStateMachine::notifyOnStateExited(StateType * state)
   signalDetector_->notifyStateExited(state);
 
   auto fullname = demangleSymbol(typeid(StateType).name());
-  RCLCPP_WARN_STREAM(getLogger(), "exiting state: " << fullname);
+  RCLCPP_WARN_STREAM(getLogger(), "Exiting state: " << fullname);
 
-  RCLCPP_INFO_STREAM(getLogger(), "Notification State Disposing: leaving state" << state);
+  RCLCPP_INFO_STREAM(getLogger(), "Notification state disposing: leaving state" << state);
   for (auto pair : this->orthogonals_)
   {
     auto & orthogonal = pair.second;
@@ -682,7 +681,7 @@ void ISmaccStateMachine::notifyOnStateExited(StateType * state)
   for (auto & sr : state->getStateReactors())
   {
     auto srname = smacc2::demangleSymbol(typeid(*sr).name()).c_str();
-    RCLCPP_INFO(getLogger(), "state reactor disposing: %s", srname);
+    RCLCPP_INFO(getLogger(), "State reactor disposing: %s", srname);
     try
     {
       this->disconnectSmaccSignalObject(sr.get());
@@ -700,7 +699,7 @@ void ISmaccStateMachine::notifyOnStateExited(StateType * state)
   for (auto & eg : state->getEventGenerators())
   {
     auto egname = smacc2::demangleSymbol(typeid(*eg).name()).c_str();
-    RCLCPP_INFO(getLogger(), "state reactor disposing: %s", egname);
+    RCLCPP_INFO(getLogger(), "Event generator disposing: %s", egname);
     try
     {
       this->disconnectSmaccSignalObject(eg.get());
@@ -719,7 +718,7 @@ void ISmaccStateMachine::notifyOnStateExited(StateType * state)
   currentState_.pop_back();
 
   // then call exit state
-  RCLCPP_WARN_STREAM(getLogger(), "state exit: " << fullname);
+  RCLCPP_WARN_STREAM(getLogger(), "State exit: " << fullname);
 
   stateMachineCurrentAction = StateMachineInternalAction::TRANSITIONING;
   this->unlockStateMachine("state exit");
