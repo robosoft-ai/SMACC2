@@ -36,7 +36,7 @@ public:
   template <typename TOrthogonal, typename TClient>
   void onStateOrthogonalAllocation()
   {
-    RCLCPP_INFO(getLogger(), "CpTimerListener1 onStateOrthogonalAllocation");
+    RCLCPP_INFO(getLogger(), "CpTimerListener1 onStateOrthogonalAllocation.");
 
     this->postTimerEvent_ = [this]()
     { this->template postEvent<EvTimer<CpTimerListener1, TOrthogonal>>(); };
@@ -44,7 +44,7 @@ public:
 
   void onInitialize() override
   {
-    RCLCPP_INFO(getLogger(), "CpTimerListener1 initialization");
+    RCLCPP_INFO(getLogger(), "CpTimerListener1 initialization.");
 
     // Require the CpRos2Timer component (similar to CpKeyboardListener1 requiring CpTopicSubscriber)
     this->requiresComponent(timerComponent_);
@@ -67,7 +67,7 @@ private:
 
   void onTimerTickCallback()
   {
-    RCLCPP_DEBUG(getLogger(), "CpTimerListener1 received timer tick");
+    RCLCPP_DEBUG(getLogger(), "CpTimerListener1 received timer tick.");
 
     // Emit our own signal for client behaviors to connect to
     if (!onTimerCompleted_.empty())

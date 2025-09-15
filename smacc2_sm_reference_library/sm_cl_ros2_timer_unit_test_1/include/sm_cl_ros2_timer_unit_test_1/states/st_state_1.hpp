@@ -38,10 +38,10 @@ struct State1 : smacc2::SmaccState<State1, SmClRos2TimerUnitTest1>
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);  // EvTimer triggers once at 5 client ticks
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State1 - runtimeConfigure() firing."); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "runtimeConfigure() firing"); }
 
-  void onEntry() { RCLCPP_INFO(getLogger(), "onEntry() firing."); }
+  void onEntry() { RCLCPP_INFO(getLogger(), "onEntry() firing"); }
 
-  void onExit() { RCLCPP_INFO(getLogger(), "onExit() firing."); }
+  void onExit() { RCLCPP_INFO(getLogger(), "onExit() firing"); }
 };
 }  // namespace sm_cl_ros2_timer_unit_test_1
