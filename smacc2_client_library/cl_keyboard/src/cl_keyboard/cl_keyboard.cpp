@@ -12,23 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
 
-#include <ros_publisher_client/cl_ros_publisher.hpp>
-#include <smacc2/smacc_orthogonal.hpp>
-#include <std_msgs/msg/string.hpp>
+#include <cl_keyboard/cl_keyboard.hpp>
 
-namespace sm_pubsub_1
+namespace cl_keyboard
 {
-using namespace cl_ros_publisher;
-
-class OrUpdatablePublisher : public smacc2::Orthogonal<OrUpdatablePublisher>
-{
-public:
-  void onInitialize() override
-  {
-    auto ros_publisher_client = this->createClient<ClRosPublisher>();
-    ros_publisher_client->initialize();
-  }
-};
-}  // namespace sm_pubsub_1
+// Declare the Client's default constructor.
+ClKeyboard::ClKeyboard() {}
+// Declare the Client's default destructor.
+ClKeyboard::~ClKeyboard() {}
+}  // namespace cl_keyboard
