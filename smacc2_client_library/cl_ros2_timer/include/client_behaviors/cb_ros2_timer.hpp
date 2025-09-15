@@ -25,7 +25,13 @@ public:
   void onEntry() override
   {
     this->requiresClient(timerClient_);
-    timerClient_->onTimerTick(&CbTimer::onClientTimerTickCallback, this);
+
+    // Get the timer listener component
+    cl_ros2_timer::components::CpTimerListener1 * timerListener;
+    this->requiresComponent(timerListener);
+
+    // Connect to the timer listener component
+    timerListener->onTimerCompleted(&CbTimer::onClientTimerTickCallback, this);
   }
 
   void onExit() override {}

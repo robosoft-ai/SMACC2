@@ -21,28 +21,9 @@ ClRos2Timer::ClRos2Timer(rclcpp::Duration duration, bool oneshot)
 {
 }
 
-ClRos2Timer::~ClRos2Timer() { timer_->cancel(); }
-
-void ClRos2Timer::onInitialize()
+ClRos2Timer::~ClRos2Timer()
 {
-  auto clock = this->getNode()->get_clock();
-
-  timer_ = rclcpp::create_timer(
-    this->getNode(), clock, duration_, std::bind(&ClRos2Timer::timerCallback, this));
-}
-
-void ClRos2Timer::timerCallback()
-{
-  if (!onTimerTick_.empty())
-  {
-    this->onTimerTick_();
-  }
-  postTimerEvent_();
-
-  if (oneshot_)
-  {
-    this->timer_->cancel();
-  }
+  // Components are automatically cleaned up by the framework
 }
 
 }  // namespace cl_ros2_timer

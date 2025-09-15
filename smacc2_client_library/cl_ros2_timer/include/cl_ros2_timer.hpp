@@ -19,6 +19,9 @@
 #include <optional>
 #include <smacc2/smacc.hpp>
 
+#include <components/cp_timer_listener1.hpp>
+#include <smacc2/client_core_components/cp_ros2_timer.hpp>
+
 namespace cl_ros2_timer
 {
 template <typename TSource, typename TOrthogonal>
@@ -33,27 +36,20 @@ public:
 
   virtual ~ClRos2Timer();
 
-  virtual void onInitialize() override;
-
-  template <typename T>
-  boost::signals2::connection onTimerTick(void (T::*callback)(), T * object)
+  // Component-based initialization
+  template <typename TOrthogonal, typename TClient>
+  void onComponentInitialization()
   {
-    return this->getStateMachine()->createSignalConnection(onTimerTick_, callback, object);
+    // Create the core timer component
+    this->createComponent<smacc2::client_core_components::CpRos2Timer, TOrthogonal, ClRos2Timer>(
+      duration_, oneshot_);
+
+    // Create the timer listener component that requires CpRos2Timer
+    this->createComponent<cl_ros2_timer::components::CpTimerListener1, TOrthogonal, ClRos2Timer>();
   }
 
-  template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
-  {
-    this->postTimerEvent_ = [this]() { this->postEvent<EvTimer<TSourceObject, TOrthogonal>>(); };
-  }
-
-protected:
-  rclcpp::TimerBase::SharedPtr timer_;
+private:
   rclcpp::Duration duration_;
   bool oneshot_;
-
-  void timerCallback();
-  std::function<void()> postTimerEvent_;
-  smacc2::SmaccSignal<void()> onTimerTick_;
 };
 }  // namespace cl_ros2_timer

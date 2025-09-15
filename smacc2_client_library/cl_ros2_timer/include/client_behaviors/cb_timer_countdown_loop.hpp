@@ -30,7 +30,13 @@ public:
   void onEntry() override
   {
     this->requiresClient(timerClient_);
-    timerClient_->onTimerTick(&CbTimerCountdownLoop::onClientTimerTickCallback, this);
+
+    // Get the core timer component
+    smacc2::client_core_components::CpRos2Timer * timerComponent;
+    this->requiresComponent(timerComponent);
+
+    // Connect to the core timer component
+    timerComponent->onTimerTick(&CbTimerCountdownLoop::onClientTimerTickCallback, this);
   }
 
   void onExit() override {}
