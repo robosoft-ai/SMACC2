@@ -19,13 +19,9 @@ namespace cl_ros2_timer
 namespace components
 {
 
-CpTimerListener1::CpTimerListener1()
-{
-}
+CpTimerListener1::CpTimerListener1() {}
 
-CpTimerListener1::~CpTimerListener1()
-{
-}
+CpTimerListener1::~CpTimerListener1() {}
 
 void CpTimerListener1::onInitialize()
 {

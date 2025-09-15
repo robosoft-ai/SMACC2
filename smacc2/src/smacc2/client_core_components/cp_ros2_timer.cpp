@@ -38,7 +38,7 @@ void CpRos2Timer::onInitialize()
   {
     RCLCPP_INFO_STREAM(
       getLogger(), "[" << this->getName() << "] Initializing ROS2 Timer with duration: "
-      << duration_.seconds() << "s, oneshot: " << (oneshot_ ? "true" : "false"));
+                       << duration_.seconds() << "s, oneshot: " << (oneshot_ ? "true" : "false"));
 
     auto clock = this->getNode()->get_clock();
     timer_ = rclcpp::create_timer(
@@ -59,7 +59,8 @@ void CpRos2Timer::timerCallback()
 
   if (oneshot_)
   {
-    RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Oneshot timer completed, cancelling");
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << this->getName() << "] Oneshot timer completed, cancelling");
     timer_->cancel();
   }
 }
