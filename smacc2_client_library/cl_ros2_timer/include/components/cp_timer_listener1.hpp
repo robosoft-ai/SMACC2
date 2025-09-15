@@ -29,8 +29,9 @@ namespace components
 class CpTimerListener1 : public smacc2::ISmaccComponent
 {
 public:
-  CpTimerListener1();
-  virtual ~CpTimerListener1();
+  CpTimerListener1() {}
+
+  virtual ~CpTimerListener1() {}
 
   template <typename TOrthogonal, typename TClient>
   void onOrthogonalAllocation()
@@ -41,7 +42,16 @@ public:
     { this->template postEvent<EvTimer<CpTimerListener1, TOrthogonal>>(); };
   }
 
-  void onInitialize() override;
+  void onInitialize() override
+  {
+    RCLCPP_INFO(getLogger(), "CpTimerListener1 initialization");
+
+    // Require the CpRos2Timer component (similar to CpKeyboardListener1 requiring CpTopicSubscriber)
+    this->requiresComponent(timerComponent_);
+
+    // Connect to the timer component's tick signal
+    timerComponent_->onTimerTick(&CpTimerListener1::onTimerTickCallback, this);
+  }
 
   smacc2::SmaccSignal<void()> onTimerCompleted_;
 
@@ -55,7 +65,22 @@ private:
   smacc2::client_core_components::CpRos2Timer * timerComponent_;
   std::function<void()> postTimerEvent_;
 
-  void onTimerTickCallback();
+  void onTimerTickCallback()
+  {
+    RCLCPP_DEBUG(getLogger(), "CpTimerListener1 received timer tick");
+
+    // Emit our own signal for client behaviors to connect to
+    if (!onTimerCompleted_.empty())
+    {
+      onTimerCompleted_();
+    }
+
+    // Post SMACC2 event for state transitions
+    if (postTimerEvent_)
+    {
+      postTimerEvent_();
+    }
+  }
 };
 
 }  // namespace components

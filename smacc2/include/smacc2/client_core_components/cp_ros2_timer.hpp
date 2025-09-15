@@ -30,16 +30,63 @@ using namespace smacc2::default_events;
 class CpRos2Timer : public smacc2::ISmaccComponent
 {
 public:
-  CpRos2Timer(rclcpp::Duration duration, bool oneshot = false);
-  virtual ~CpRos2Timer();
+  CpRos2Timer(rclcpp::Duration duration, bool oneshot = false)
+  : duration_(duration), oneshot_(oneshot), initialized_(false)
+  {
+  }
 
-  void onInitialize() override;
+  virtual ~CpRos2Timer()
+  {
+    if (timer_)
+    {
+      timer_->cancel();
+    }
+  }
+
+  void onInitialize() override
+  {
+    if (!initialized_)
+    {
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << this->getName() << "] Initializing ROS2 Timer with duration: "
+                         << duration_.seconds() << "s, oneshot: " << (oneshot_ ? "true" : "false"));
+
+      auto clock = this->getNode()->get_clock();
+      timer_ = rclcpp::create_timer(
+        this->getNode(), clock, duration_, std::bind(&CpRos2Timer::timerCallback, this));
+
+      this->initialized_ = true;
+    }
+  }
 
   smacc2::SmaccSignal<void()> onTimerTick_;
 
-  void startTimer();
-  void stopTimer();
-  void cancelTimer();
+  void startTimer()
+  {
+    if (timer_ && timer_->is_canceled())
+    {
+      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Starting timer");
+      timer_->reset();
+    }
+  }
+
+  void stopTimer()
+  {
+    if (timer_)
+    {
+      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Stopping timer");
+      timer_->cancel();
+    }
+  }
+
+  void cancelTimer()
+  {
+    if (timer_)
+    {
+      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Cancelling timer");
+      timer_->cancel();
+    }
+  }
 
   template <typename T>
   boost::signals2::connection onTimerTick(void (T::*callback)(), T * object)
@@ -48,7 +95,22 @@ public:
   }
 
 private:
-  void timerCallback();
+  void timerCallback()
+  {
+    RCLCPP_DEBUG_STREAM(getLogger(), "[" << this->getName() << "] Timer tick");
+
+    if (!onTimerTick_.empty())
+    {
+      onTimerTick_();
+    }
+
+    if (oneshot_)
+    {
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << this->getName() << "] Oneshot timer completed, cancelling");
+      timer_->cancel();
+    }
+  }
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Duration duration_;
   bool oneshot_;
