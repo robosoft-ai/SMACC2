@@ -17,22 +17,22 @@ find_package(cl_ros2_timer REQUIRED)
 find_package(cl_keyboard REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
-include_directories(include
-                    ${smacc2_INCLUDE_DIRS}
-                    ${cl_ros2_timer_INCLUDE_DIRS}
-                    ${cl_keyboard_INCLUDE_DIRS})
+set(dependencies
+  smacc2
+  cl_ros2_timer
+  cl_keyboard
+)
 
 add_executable(${PROJECT_NAME}_node
                 src/sm_cl_keyboard_unit_test_1/sm_cl_keyboard_unit_test_1_node.cpp)
 
+target_include_directories(${PROJECT_NAME}_node PUBLIC include)
+ament_target_dependencies(${PROJECT_NAME}_node
+  ${dependencies}
+)
 target_link_libraries(${PROJECT_NAME}_node
-  ${smacc2_LIBRARIES}
-  ${cl_ros2_timer_LIBRARIES}
-  ${cl_keyboard_LIBRARIES}
   ${Boost_LIBRARIES}
 )
-
-ament_target_dependencies(${PROJECT_NAME}_node smacc2)
 
 install(
   DIRECTORY include/
