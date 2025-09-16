@@ -19,8 +19,8 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <cl_nav2z/components/waypoints_navigator/cp_waypoints_event_dispatcher.hpp>
 #include <cl_nav2z/cl_nav2z.hpp>
+#include <cl_nav2z/components/waypoints_navigator/cp_waypoints_event_dispatcher.hpp>
 #include <smacc2/smacc.hpp>
 
 #include <geometry_msgs/msg/pose.hpp>

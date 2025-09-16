@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <geometry_msgs/msg/twist.hpp>
 #include <cl_nav2z/components/pose/cp_pose.hpp>
+#include <geometry_msgs/msg/twist.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_nav2z

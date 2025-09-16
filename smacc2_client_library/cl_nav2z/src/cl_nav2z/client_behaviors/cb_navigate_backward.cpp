@@ -19,12 +19,12 @@
  ******************************************************************************************************************/
 
 #include <tf2/utils.h>
-#include <geometry_msgs/msg/quaternion_stamped.hpp>
 #include <cl_nav2z/client_behaviors/cb_navigate_backwards.hpp>
 #include <cl_nav2z/common.hpp>
 #include <cl_nav2z/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
 #include <cl_nav2z/components/odom_tracker/cp_odom_tracker.hpp>
 #include <cl_nav2z/components/pose/cp_pose.hpp>
+#include <geometry_msgs/msg/quaternion_stamped.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 namespace cl_nav2z

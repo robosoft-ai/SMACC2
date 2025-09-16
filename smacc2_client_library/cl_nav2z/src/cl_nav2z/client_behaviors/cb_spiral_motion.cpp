@@ -19,8 +19,8 @@
  ******************************************************************************************************************/
 
 #include <angles/angles.h>
-#include <geometry_msgs/msg/twist.hpp>
 #include <cl_nav2z/client_behaviors/cb_spiral_motion.hpp>
+#include <geometry_msgs/msg/twist.hpp>
 #include <optional>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 

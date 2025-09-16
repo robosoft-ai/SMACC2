@@ -20,11 +20,11 @@
 
 #include <angles/angles.h>
 #include <chrono>
+#include <cl_nav2z/client_behaviors/cb_save_slam_map.hpp>
+#include <cl_nav2z/components/pose/cp_pose.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <memory>
 #include <nav2_msgs/srv/save_map.hpp>
-#include <cl_nav2z/client_behaviors/cb_save_slam_map.hpp>
-#include <cl_nav2z/components/pose/cp_pose.hpp>
 #include <slam_toolbox/srv/save_map.hpp>
 #include <smacc2/client_behaviors/cb_call_service.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>

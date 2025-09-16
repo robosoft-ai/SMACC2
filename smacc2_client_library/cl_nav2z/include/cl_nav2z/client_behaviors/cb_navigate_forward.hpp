@@ -21,8 +21,8 @@
 
 #include <tf2/utils.h>
 #include <tf2_ros/buffer.h>
-#include <geometry_msgs/msg/pose_stamped.hpp>
 #include <cl_nav2z/components/odom_tracker/cp_odom_tracker.hpp>
+#include <geometry_msgs/msg/pose_stamped.hpp>
 #include <optional>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 

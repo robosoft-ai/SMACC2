@@ -22,14 +22,14 @@
 #include <yaml-cpp/yaml.h>
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
-#include <fstream>
+#include <cl_nav2z/cl_nav2z.hpp>
 #include <cl_nav2z/common.hpp>
 #include <cl_nav2z/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
 #include <cl_nav2z/components/odom_tracker/cp_odom_tracker.hpp>
 #include <cl_nav2z/components/planner_switcher/cp_planner_switcher.hpp>
 #include <cl_nav2z/components/pose/cp_pose.hpp>
 #include <cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator.hpp>
-#include <cl_nav2z/cl_nav2z.hpp>
+#include <fstream>
 #include <rclcpp/rclcpp.hpp>
 
 namespace cl_nav2z

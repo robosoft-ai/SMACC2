@@ -17,8 +17,8 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <cl_nav2z/components/planner_switcher/cp_planner_switcher.hpp>
 #include <cl_nav2z/cl_nav2z.hpp>
+#include <cl_nav2z/components/planner_switcher/cp_planner_switcher.hpp>
 
 namespace cl_nav2z
 {

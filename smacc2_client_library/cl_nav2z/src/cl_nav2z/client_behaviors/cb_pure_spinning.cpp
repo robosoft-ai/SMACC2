@@ -19,9 +19,9 @@
  ******************************************************************************************************************/
 
 #include <angles/angles.h>
-#include <geometry_msgs/msg/twist.hpp>
 #include <cl_nav2z/client_behaviors/cb_pure_spinning.hpp>
 #include <cl_nav2z/components/pose/cp_pose.hpp>
+#include <geometry_msgs/msg/twist.hpp>
 #include <sensor_msgs/msg/laser_scan.hpp>
 namespace cl_nav2z
 {

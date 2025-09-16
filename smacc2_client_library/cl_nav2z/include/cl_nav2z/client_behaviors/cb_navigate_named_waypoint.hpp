@@ -19,8 +19,8 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator.hpp>
 #include <cl_nav2z/cl_nav2z.hpp>
+#include <cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator.hpp>
 #include "cb_nav2z_client_behavior_base.hpp"
 #include "cb_navigate_next_waypoint.hpp"
 
