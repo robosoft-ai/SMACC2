@@ -15,11 +15,12 @@
 #include <smacc2/smacc.hpp>
 
 // CLIENTS
-#include <cl_ros2_timer.hpp>
+#include <cl_ros2_timer/cl_ros2_timer.hpp>
+#include <cl_ros2_timer/components/cp_timer_listener_1.hpp>
 
 //CLIENT BEHAVIORS
-#include <client_behaviors/cb_timer_countdown_loop.hpp>
-#include <client_behaviors/cb_timer_countdown_once.hpp>
+#include <cl_ros2_timer/client_behaviors/cb_timer_countdown_loop.hpp>
+#include <cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp>
 
 // ORTHOGONALS
 #include "orthogonals/or_timer.hpp"

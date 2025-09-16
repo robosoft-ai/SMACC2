@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include <chrono>
-#include <cl_ros2_timer.hpp>
+#include <cl_ros2_timer/cl_ros2_timer.hpp>
 #include <smacc2/smacc.hpp>
 
 using namespace std::chrono_literals;

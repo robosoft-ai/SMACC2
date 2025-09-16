@@ -14,16 +14,16 @@
 
 #pragma once
 
-#include <cl_ros2_timer.hpp>
+#include <cl_ros2_timer/cl_ros2_timer.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace cl_ros2_timer
 {
-class CbTimerCountdownLoop : public smacc2::SmaccClientBehavior
+class CbTimerCountdownOnce : public smacc2::SmaccClientBehavior
 {
 public:
-  explicit CbTimerCountdownLoop(int64_t triggerTickCount)
-  : tickTriggerCount_(triggerTickCount), tickCounter_(0)
+  CbTimerCountdownOnce(int64_t triggerTickCount)
+  : tickCounter_(0), tickTriggerCount_(triggerTickCount)
   {
   }
 
@@ -36,7 +36,7 @@ public:
     this->requiresComponent(timerComponent);
 
     // Connect to the core timer component
-    timerComponent->onTimerTick(&CbTimerCountdownLoop::onClientTimerTickCallback, this);
+    timerComponent->onTimerTick(&CbTimerCountdownOnce::onClientTimerTickCallback, this);
   }
 
   void onExit() override {}
@@ -55,8 +55,8 @@ public:
   }
 
 private:
-  int64_t tickTriggerCount_;
   int64_t tickCounter_;
+  int64_t tickTriggerCount_;
 
   ClRos2Timer * timerClient_;
   std::function<void()> postCountDownEvent_;
