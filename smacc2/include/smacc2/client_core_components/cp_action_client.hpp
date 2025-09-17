@@ -17,6 +17,7 @@
 #include <smacc2/component.hpp>
 #include <smacc2/smacc_default_events.hpp>
 #include <smacc2/smacc_signal.hpp>
+#include <smacc2/smacc_state_machine.hpp>
 
 #include <chrono>
 #include <functional>
