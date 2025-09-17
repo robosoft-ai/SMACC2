@@ -14,11 +14,11 @@
 
 #pragma once
 
-#include <nav2_msgs/action/navigate_to_pose.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
+#include <nav2_msgs/action/navigate_to_pose.hpp>
+#include <smacc2/client_core_components/cp_action_client.hpp>
 #include <smacc2/component.hpp>
 #include <smacc2/smacc_signal.hpp>
-#include <smacc2/client_core_components/cp_action_client.hpp>
 
 #include <functional>
 #include <future>
@@ -69,9 +69,8 @@ public:
 
     RCLCPP_INFO_STREAM(
       getLogger(), "[CpNav2ActionInterface] Sending navigation goal to: "
-                   << "x=" << target.pose.position.x
-                   << ", y=" << target.pose.position.y
-                   << ", frame=" << target.header.frame_id);
+                     << "x=" << target.pose.position.x << ", y=" << target.pose.position.y
+                     << ", frame=" << target.header.frame_id);
 
     return actionClient_->sendGoal(goal);
   }
@@ -99,10 +98,7 @@ public:
     return actionClient_->cancelGoal();
   }
 
-  bool isNavigationServerReady() const
-  {
-    return actionClient_ && actionClient_->isServerReady();
-  }
+  bool isNavigationServerReady() const { return actionClient_ && actionClient_->isServerReady(); }
 
   void waitForNavigationServer()
   {
@@ -163,7 +159,8 @@ public:
     }
     else
     {
-      RCLCPP_ERROR(getLogger(), "[CpNav2ActionInterface] Action client not found during initialization!");
+      RCLCPP_ERROR(
+        getLogger(), "[CpNav2ActionInterface] Action client not found during initialization!");
     }
   }
 
@@ -172,7 +169,8 @@ public:
   boost::signals2::connection onNavigationSucceeded(
     void (T::*callback)(const WrappedResult &), T * object)
   {
-    return this->getStateMachine()->createSignalConnection(onNavigationSucceeded_, callback, object);
+    return this->getStateMachine()->createSignalConnection(
+      onNavigationSucceeded_, callback, object);
   }
 
   template <typename T>
@@ -186,7 +184,8 @@ public:
   boost::signals2::connection onNavigationCancelled(
     void (T::*callback)(const WrappedResult &), T * object)
   {
-    return this->getStateMachine()->createSignalConnection(onNavigationCancelled_, callback, object);
+    return this->getStateMachine()->createSignalConnection(
+      onNavigationCancelled_, callback, object);
   }
 
   template <typename T>
@@ -207,7 +206,8 @@ private:
   {
     RCLCPP_INFO(getLogger(), "[CpNav2ActionInterface] Navigation succeeded");
     onNavigationSucceeded_(result);
-    if (postNavigationSuccessEvent) {
+    if (postNavigationSuccessEvent)
+    {
       postNavigationSuccessEvent(result);
     }
   }
@@ -216,7 +216,8 @@ private:
   {
     RCLCPP_WARN(getLogger(), "[CpNav2ActionInterface] Navigation aborted");
     onNavigationAborted_(result);
-    if (postNavigationAbortedEvent) {
+    if (postNavigationAbortedEvent)
+    {
       postNavigationAbortedEvent(result);
     }
   }
@@ -225,7 +226,8 @@ private:
   {
     RCLCPP_INFO(getLogger(), "[CpNav2ActionInterface] Navigation cancelled");
     onNavigationCancelled_(result);
-    if (postNavigationCancelledEvent) {
+    if (postNavigationCancelledEvent)
+    {
       postNavigationCancelledEvent(result);
     }
   }
@@ -234,7 +236,8 @@ private:
   {
     RCLCPP_DEBUG(getLogger(), "[CpNav2ActionInterface] Navigation feedback received");
     onNavigationFeedback_(feedback);
-    if (postNavigationFeedbackEvent) {
+    if (postNavigationFeedbackEvent)
+    {
       postNavigationFeedbackEvent(feedback);
     }
   }

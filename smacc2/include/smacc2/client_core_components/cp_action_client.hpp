@@ -15,15 +15,15 @@
 #pragma once
 
 #include <smacc2/component.hpp>
-#include <smacc2/smacc_signal.hpp>
 #include <smacc2/smacc_default_events.hpp>
+#include <smacc2/smacc_signal.hpp>
 
-#include <optional>
-#include <rclcpp_action/rclcpp_action.hpp>
 #include <chrono>
 #include <functional>
 #include <future>
 #include <mutex>
+#include <optional>
+#include <rclcpp_action/rclcpp_action.hpp>
 
 namespace smacc2
 {
@@ -43,7 +43,8 @@ public:
   using GoalHandle = rclcpp_action::ClientGoalHandle<ActionType>;
   using WrappedResult = typename GoalHandle::WrappedResult;
   using SendGoalOptions = typename ActionClient::SendGoalOptions;
-  using GoalResponseCallback = std::function<void(std::shared_future<typename GoalHandle::SharedPtr>)>;
+  using GoalResponseCallback =
+    std::function<void(std::shared_future<typename GoalHandle::SharedPtr>)>;
   using FeedbackCallback = typename GoalHandle::FeedbackCallback;
   using ResultCallback = typename GoalHandle::ResultCallback;
 
@@ -68,16 +69,14 @@ public:
   // Constructor
   CpActionClient() = default;
 
-  CpActionClient(const std::string& actionServerName)
-    : actionServerName(actionServerName) {}
+  CpActionClient(const std::string & actionServerName) : actionServerName(actionServerName) {}
 
   virtual ~CpActionClient() = default;
 
   // Public API
   std::shared_future<typename GoalHandle::SharedPtr> sendGoal(
-    Goal & goal,
-    typename smacc2::SmaccSignal<void(const WrappedResult &)>::WeakPtr resultCallback =
-      typename smacc2::SmaccSignal<void(const WrappedResult &)>::WeakPtr())
+    Goal & goal, typename smacc2::SmaccSignal<void(const WrappedResult &)>::WeakPtr resultCallback =
+                   typename smacc2::SmaccSignal<void(const WrappedResult &)>::WeakPtr())
   {
     std::lock_guard<std::mutex> lock(actionMutex_);
 
@@ -87,32 +86,29 @@ public:
     options.feedback_callback = feedbackCallback_;
 
     // Set up result callback
-    options.result_callback =
-      [this, resultCallback](const WrappedResult & result)
+    options.result_callback = [this, resultCallback](const WrappedResult & result)
+    {
+      std::lock_guard<std::mutex> lock(actionMutex_);
+
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << this->getName() << "] Action result callback, goal id: "
+                         << rclcpp_action::to_string(result.goal_id));
+
+      auto resultCallbackPtr = resultCallback.lock();
+      if (resultCallbackPtr != nullptr)
       {
-        std::lock_guard<std::mutex> lock(actionMutex_);
-
+        RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Calling user result callback");
+        (*resultCallbackPtr)(result);
+      }
+      else
+      {
         RCLCPP_INFO_STREAM(
-          getLogger(), "[" << this->getName() << "] Action result callback, goal id: "
-                           << rclcpp_action::to_string(result.goal_id));
+          getLogger(), "[" << this->getName() << "] Using default result handling");
+        this->onResult(result);
+      }
+    };
 
-        auto resultCallbackPtr = resultCallback.lock();
-        if (resultCallbackPtr != nullptr)
-        {
-          RCLCPP_INFO_STREAM(
-            getLogger(), "[" << this->getName() << "] Calling user result callback");
-          (*resultCallbackPtr)(result);
-        }
-        else
-        {
-          RCLCPP_INFO_STREAM(
-            getLogger(), "[" << this->getName() << "] Using default result handling");
-          this->onResult(result);
-        }
-      };
-
-    RCLCPP_INFO_STREAM(
-      getLogger(), "[" << this->getName() << "] Sending goal to action server");
+    RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Sending goal to action server");
 
     auto goalFuture = client_->async_send_goal(goal, options);
     lastRequest_ = goalFuture;
@@ -126,8 +122,7 @@ public:
 
     if (lastRequest_ && lastRequest_->valid())
     {
-      RCLCPP_INFO_STREAM(
-        getLogger(), "[" << this->getName() << "] Cancelling current goal");
+      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Cancelling current goal");
 
       auto cancelFuture = client_->async_cancel_all_goals();
       lastCancelResponse_ = cancelFuture;
@@ -135,24 +130,20 @@ public:
     }
     else
     {
-      RCLCPP_WARN_STREAM(
-        getLogger(), "[" << this->getName() << "] No active goal to cancel");
+      RCLCPP_WARN_STREAM(getLogger(), "[" << this->getName() << "] No active goal to cancel");
       return false;
     }
   }
 
-  bool isServerReady() const
-  {
-    return client_ && client_->action_server_is_ready();
-  }
+  bool isServerReady() const { return client_ && client_->action_server_is_ready(); }
 
   void waitForServer()
   {
     if (client_)
     {
       RCLCPP_INFO_STREAM(
-        getLogger(), "[" << this->getName() << "] Waiting for action server: "
-                         << *actionServerName);
+        getLogger(),
+        "[" << this->getName() << "] Waiting for action server: " << *actionServerName);
       client_->wait_for_action_server();
     }
   }
@@ -162,22 +153,19 @@ public:
   {
     if (!actionServerName)
     {
-      RCLCPP_ERROR_STREAM(
-        getLogger(), "[" << this->getName() << "] Action server name not set!");
+      RCLCPP_ERROR_STREAM(getLogger(), "[" << this->getName() << "] Action server name not set!");
       return;
     }
 
     RCLCPP_INFO_STREAM(
-      getLogger(), "[" << this->getName() << "] Initializing action client for: "
-                       << *actionServerName);
+      getLogger(),
+      "[" << this->getName() << "] Initializing action client for: " << *actionServerName);
 
     client_ = rclcpp_action::create_client<ActionType>(getNode(), *actionServerName);
 
     // Set up feedback callback
     feedbackCallback_ = [this](auto goalHandle, auto feedback)
-    {
-      this->onFeedback(goalHandle, feedback);
-    };
+    { this->onFeedback(goalHandle, feedback); };
   }
 
   template <typename TOrthogonal, typename TSourceObject>
@@ -185,19 +173,13 @@ public:
   {
     // Set up event posting functions with proper template parameters
     postSuccessEvent = [this](const WrappedResult & result)
-    {
-      this->postResultEvent<EvActionSucceeded<TSourceObject, TOrthogonal>>(result);
-    };
+    { this->postResultEvent<EvActionSucceeded<TSourceObject, TOrthogonal>>(result); };
 
     postAbortedEvent = [this](const WrappedResult & result)
-    {
-      this->postResultEvent<EvActionAborted<TSourceObject, TOrthogonal>>(result);
-    };
+    { this->postResultEvent<EvActionAborted<TSourceObject, TOrthogonal>>(result); };
 
     postCancelledEvent = [this](const WrappedResult & result)
-    {
-      this->postResultEvent<EvActionCancelled<TSourceObject, TOrthogonal>>(result);
-    };
+    { this->postResultEvent<EvActionCancelled<TSourceObject, TOrthogonal>>(result); };
 
     postFeedbackEvent = [this](const Feedback & feedback)
     {
@@ -240,7 +222,9 @@ public:
 private:
   std::shared_ptr<ActionClient> client_;
   std::optional<std::shared_future<typename GoalHandle::SharedPtr>> lastRequest_;
-  std::optional<std::shared_future<typename rclcpp_action::Client<ActionType>::CancelResponse::SharedPtr>> lastCancelResponse_;
+  std::optional<
+    std::shared_future<typename rclcpp_action::Client<ActionType>::CancelResponse::SharedPtr>>
+    lastCancelResponse_;
   FeedbackCallback feedbackCallback_;
   std::mutex actionMutex_;
 
