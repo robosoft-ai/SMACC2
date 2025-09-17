@@ -38,20 +38,20 @@ CbUndoPathBackwards::CbUndoPathBackwards(std::optional<CbUndoPathBackwardsOption
 void CbUndoPathBackwards::onEntry()
 {
   listener = std::make_shared<tf2_ros::Buffer>(this->getNode()->get_clock());
-  odomTracker = nav2zClient_->getComponent<CpOdomTracker>();
+  odomTracker = this->getComponent<CpOdomTracker>();
 
   odomTracker->logStateString(false);
 
-  auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
+  auto plannerSwitcher = this->getComponent<CpPlannerSwitcher>();
 
   nav_msgs::msg::Path forwardpath = odomTracker->getPath();
   // RCLCPP_INFO_STREAM(getLogger(),"[UndoPathBackward] Current path backwards: " << forwardpath);
 
   odomTracker->setWorkingMode(WorkingMode::CLEAR_PATH);
 
-  ClNav2Z::Goal goal;
+  nav2_msgs::action::NavigateToPose::Goal goal;
 
-  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = this->getComponent<CpGoalCheckerSwitcher>();
 
   // this line is used to flush/reset backward planner in the case it were already there
   // plannerSwitcher->setDefaultPlanners();
@@ -109,7 +109,7 @@ void CbUndoPathBackwards::onExit()
     RCLCPP_INFO_STREAM(
       getLogger(), getName() << " - [CbUndoPathBackwards] Exiting: undo navigation successful, "
                                 "popping odom tracker path");
-    odomTracker = nav2zClient_->getComponent<CpOdomTracker>();
+    odomTracker = this->getComponent<CpOdomTracker>();
     odomTracker->popPath();
 
     odomTracker->logStateString(false);
@@ -120,7 +120,7 @@ void CbUndoPathBackwards::onExit()
       getLogger(), getName() << " - [CbUndoPathBackwards] Exiting: undo navigation abort, avoiding "
                                 "popping current path");
 
-    odomTracker = nav2zClient_->getComponent<CpOdomTracker>();
+    odomTracker = this->getComponent<CpOdomTracker>();
     odomTracker->logStateString(false);
     // navigation interrupted or aborted. The path may be not totally undone.
     // We keep the odom tracker in its current state, probably in the middle of the undoing process.

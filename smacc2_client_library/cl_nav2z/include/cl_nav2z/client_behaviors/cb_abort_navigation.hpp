@@ -21,6 +21,7 @@
 
 #include <tf2_ros/buffer.h>
 
+#include <cl_nav2z/components/cp_nav2_action_interface.hpp>
 #include "cb_nav2z_client_behavior_base.hpp"
 #include "cb_navigate_global_position.hpp"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
@@ -35,7 +36,7 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
-    this->requiresClient(nav2zClient_);
+    this->requiresComponent(nav2ActionInterface_);
     smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 
@@ -43,6 +44,6 @@ public:
   void onExit() override;
 
 private:
-  cl_nav2z::ClNav2Z * nav2zClient_;
+  components::CpNav2ActionInterface * nav2ActionInterface_ = nullptr;
 };
 }  // namespace cl_nav2z

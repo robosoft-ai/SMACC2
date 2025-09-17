@@ -65,7 +65,7 @@ void CbNavigateForward::onEntry()
   }
 
   // get current pose
-  auto p = nav2zClient_->getComponent<Pose>();
+  auto p = this->getComponent<Pose>();
   auto referenceFrame = p->getReferenceFrame();
   auto currentPoseMsg = p->toPoseMsg();
 
@@ -112,7 +112,7 @@ void CbNavigateForward::onEntry()
   }
 
   // action goal
-  ClNav2Z::Goal goal;
+  nav2_msgs::action::NavigateToPose::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
   //goal.pose.header.stamp = getNode()->now();
   tf2::toMsg(targetPose, goal.pose.pose);
@@ -128,7 +128,7 @@ void CbNavigateForward::onEntry()
 
   tf2::toMsg(currentPose, currentStampedPoseMsg.pose);
 
-  odomTracker_ = nav2zClient_->getComponent<CpOdomTracker>();
+  odomTracker_ = this->getComponent<CpOdomTracker>();
   if (odomTracker_ != nullptr)
   {
     auto pathname = this->getCurrentState()->getName() + " - " + getName();
@@ -138,10 +138,10 @@ void CbNavigateForward::onEntry()
     odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
   }
 
-  auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
+  auto plannerSwitcher = this->getComponent<CpPlannerSwitcher>();
   plannerSwitcher->setForwardPlanner();
 
-  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = this->getComponent<CpGoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("forward_goal_checker");
 
   this->sendGoal(goal);

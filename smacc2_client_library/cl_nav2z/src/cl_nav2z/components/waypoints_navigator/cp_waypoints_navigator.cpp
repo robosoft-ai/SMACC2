@@ -43,23 +43,30 @@ CpWaypointNavigator::CpWaypointNavigator() {}
 
 void CpWaypointNavigatorBase::onInitialize() {}
 
-void CpWaypointNavigator::onInitialize() { client_ = dynamic_cast<ClNav2Z *>(owner_); }
+void CpWaypointNavigator::onInitialize()
+{
+  client_ = dynamic_cast<ClNav2Z *>(owner_);
+  this->requiresComponent(nav2ActionInterface_);
+}
 
-void CpWaypointNavigator::onGoalCancelled(const ClNav2Z::WrappedResult & /*res*/)
+void CpWaypointNavigator::onGoalCancelled(
+  const components::CpNav2ActionInterface::WrappedResult & /*res*/)
 {
   stopWaitingResult();
 
   this->onNavigationRequestCancelled();
 }
 
-void CpWaypointNavigator::onGoalAborted(const ClNav2Z::WrappedResult & /*res*/)
+void CpWaypointNavigator::onGoalAborted(
+  const components::CpNav2ActionInterface::WrappedResult & /*res*/)
 {
   stopWaitingResult();
 
   this->onNavigationRequestAborted();
 }
 
-void CpWaypointNavigator::onGoalReached(const ClNav2Z::WrappedResult & /*res*/)
+void CpWaypointNavigator::onGoalReached(
+  const components::CpNav2ActionInterface::WrappedResult & /*res*/)
 {
   waypointsEventDispatcher.postWaypointEvent(currentWaypoint_);
   currentWaypoint_++;
@@ -189,9 +196,7 @@ void CpWaypointNavigator::stopWaitingResult()
 
 std::optional<std::shared_future<
   std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose>>>>
-CpWaypointNavigator::sendNextGoal(
-  std::optional<NavigateNextWaypointOptions> options,
-  cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::WeakPtr resultCallback)
+CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> options)
 {
   if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypoints_.size())
   {
@@ -210,7 +215,7 @@ CpWaypointNavigator::sendNextGoal(
         getLogger(), "[CpWaypointNavigator] sending goal, waypoint: %ld", currentWaypoint_);
     }
 
-    ClNav2Z::Goal goal;
+    nav2_msgs::action::NavigateToPose::Goal goal;
     auto p = client_->getComponent<cl_nav2z::Pose>();
     auto pose = p->toPoseMsg();
 
@@ -279,11 +284,18 @@ CpWaypointNavigator::sendNextGoal(
     //     client_->onCancelled(&WaypointNavigator::onGoalAborted, this);
     // }
 
-    auto callbackptr = resultCallback.lock();
-    succeddedNav2ZClientConnection_ = this->getStateMachine()->createSignalConnection(
-      *callbackptr, &CpWaypointNavigator::onNavigationResult, this);
+    // Set up navigation result handling
+    if (!succeddedNav2ZClientConnection_.connected())
+    {
+      succeddedNav2ZClientConnection_ =
+        nav2ActionInterface_->onNavigationSucceeded(&CpWaypointNavigator::onGoalReached, this);
+      abortedNav2ZClientConnection_ =
+        nav2ActionInterface_->onNavigationAborted(&CpWaypointNavigator::onGoalAborted, this);
+      cancelledNav2ZClientConnection_ =
+        nav2ActionInterface_->onNavigationCancelled(&CpWaypointNavigator::onGoalCancelled, this);
+    }
 
-    return client_->sendGoal(goal, resultCallback);
+    return nav2ActionInterface_->sendGoal(goal);
   }
   else
   {
@@ -305,7 +317,8 @@ void CpWaypointNavigatorBase::notifyGoalReached()
   }
 }
 
-void CpWaypointNavigator::onNavigationResult(const ClNav2Z::WrappedResult & r)
+void CpWaypointNavigator::onNavigationResult(
+  const components::CpNav2ActionInterface::WrappedResult & r)
 {
   if (r.code == rclcpp_action::ResultCode::SUCCEEDED)
   {

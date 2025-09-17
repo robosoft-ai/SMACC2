@@ -20,6 +20,7 @@
 #pragma once
 
 #include <cl_nav2z/cl_nav2z.hpp>
+#include <cl_nav2z/components/cp_nav2_action_interface.hpp>
 #include <cl_nav2z/components/waypoints_navigator/cp_waypoints_event_dispatcher.hpp>
 #include <smacc2/smacc.hpp>
 
@@ -47,6 +48,7 @@ class CpWaypointNavigator : public CpWaypointNavigatorBase
 {
 public:
   ClNav2Z * client_;
+  components::CpNav2ActionInterface * nav2ActionInterface_ = nullptr;
 
   CpWaypointNavigator();
 
@@ -56,14 +58,12 @@ public:
   void onStateOrthogonalAllocation()
   {
     waypointsEventDispatcher.initialize<TSourceObject, TOrthogonal>(client_);
+    this->requiresComponent(nav2ActionInterface_);
   }
 
   std::optional<std::shared_future<
     std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose> > > >
-  sendNextGoal(
-    std::optional<NavigateNextWaypointOptions> options = std::nullopt,
-    cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::WeakPtr callback =
-      cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::WeakPtr());
+  sendNextGoal(std::optional<NavigateNextWaypointOptions> options = std::nullopt);
 
   void stopWaitingResult();
 
@@ -72,11 +72,11 @@ public:
   smacc2::SmaccSignal<void()> onNavigationRequestCancelled;
 
 private:
-  void onNavigationResult(const ClNav2Z::WrappedResult & r);
+  void onNavigationResult(const components::CpNav2ActionInterface::WrappedResult & r);
 
-  void onGoalReached(const ClNav2Z::WrappedResult & res);
-  void onGoalCancelled(const ClNav2Z::WrappedResult & /*res*/);
-  void onGoalAborted(const ClNav2Z::WrappedResult & /*res*/);
+  void onGoalReached(const components::CpNav2ActionInterface::WrappedResult & res);
+  void onGoalCancelled(const components::CpNav2ActionInterface::WrappedResult & /*res*/);
+  void onGoalAborted(const components::CpNav2ActionInterface::WrappedResult & /*res*/);
 
   boost::signals2::connection succeddedNav2ZClientConnection_;
   boost::signals2::connection abortedNav2ZClientConnection_;

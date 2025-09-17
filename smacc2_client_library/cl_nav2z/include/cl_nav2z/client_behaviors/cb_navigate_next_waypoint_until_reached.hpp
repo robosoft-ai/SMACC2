@@ -19,6 +19,7 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <cl_nav2z/components/cp_nav2_action_interface.hpp>
 #include "cb_navigate_next_waypoint.hpp"
 
 namespace cl_nav2z
@@ -40,22 +41,18 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
-    this->requiresClient(nav2zClient_);
     CbNavigateNextWaypoint::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
     postEvGoalWaypointReached_ = [this]()
-    {
-      this->postEvent<EvGoalWaypointReached<TSourceObject, TOrthogonal>>();
-
-      // nav2zClient_->onSucceeded(&CbNavigateNextWaypointUntilReached::onWaypointReached, this);
-    };
+    { this->postEvent<EvGoalWaypointReached<TSourceObject, TOrthogonal>>(); };
   }
 
   void onEntry() override;
 
   void onExit() override;
 
-  void onNavigationActionSuccess(const ClNav2Z::WrappedResult & r) override
+  void onNavigationActionSuccess(
+    const components::CpNav2ActionInterface::WrappedResult & r) override
   {
     // if (!isOwnActionResponse(r))
     // {
@@ -70,7 +67,7 @@ public:
     RCLCPP_INFO(
       getLogger(), "[%s] Propagating success event from action server", getName().c_str());
 
-    waypointsNavigator_ = nav2zClient_->getComponent<CpWaypointNavigator>();
+    this->requiresComponent(waypointsNavigator_);
 
     auto current_waypoint_name = waypointsNavigator_->getCurrentWaypointName();
 

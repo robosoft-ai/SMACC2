@@ -54,10 +54,10 @@ void CbNavigateGlobalPosition::onEntry()
   RCLCPP_INFO(getLogger(), "Entering Navigate Global position");
   RCLCPP_INFO(getLogger(), "Component requirements completed");
 
-  auto pose = nav2zClient_->getComponent<cl_nav2z::Pose>()->toPoseMsg();
-  auto * odomTracker = nav2zClient_->getComponent<CpOdomTracker>();
+  auto pose = this->getComponent<cl_nav2z::Pose>()->toPoseMsg();
+  auto * odomTracker = this->getComponent<CpOdomTracker>();
 
-  auto plannerSwitcher = nav2zClient_->getComponent<CpPlannerSwitcher>();
+  auto plannerSwitcher = this->getComponent<CpPlannerSwitcher>();
 
   plannerSwitcher->setDefaultPlanners(false);
 
@@ -68,7 +68,7 @@ void CbNavigateGlobalPosition::onEntry()
 
   plannerSwitcher->commitPublish();
 
-  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
+  auto goalCheckerSwitcher = this->getComponent<CpGoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("goal_checker");
 
   auto pathname = this->getCurrentState()->getName() + " - " + getName();
@@ -82,12 +82,12 @@ void CbNavigateGlobalPosition::onEntry()
 // auxiliary function that defines the motion that is requested to the nav2 action server
 void CbNavigateGlobalPosition::execute()
 {
-  auto p = nav2zClient_->getComponent<cl_nav2z::Pose>();
+  auto p = this->getComponent<cl_nav2z::Pose>();
   auto referenceFrame = p->getReferenceFrame();
   // auto currentPoseMsg = p->toPoseMsg();
 
   RCLCPP_INFO(getLogger(), "Sending Goal to MoveBase");
-  ClNav2Z::Goal goal;
+  nav2_msgs::action::NavigateToPose::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
   //goal.pose.header.stamp = getNode()->now();
 

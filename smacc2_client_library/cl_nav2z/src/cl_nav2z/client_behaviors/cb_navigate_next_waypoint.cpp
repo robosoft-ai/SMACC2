@@ -31,14 +31,9 @@ CbNavigateNextWaypoint::~CbNavigateNextWaypoint() {}
 
 void CbNavigateNextWaypoint::onEntry()
 {
-  waypointsNavigator_ = nav2zClient_->getComponent<CpWaypointNavigator>();
+  this->requiresComponent(waypointsNavigator_);
 
-  this->navigationCallback_ = std::make_shared<cl_nav2z::ClNav2Z::SmaccNavigateResultSignal>();
-
-  this->getStateMachine()->createSignalConnection(
-    *navigationCallback_, &CbNavigateNextWaypoint::onNavigationResult, this);
-
-  auto goalHandle = waypointsNavigator_->sendNextGoal(options_, navigationCallback_);
+  auto goalHandle = waypointsNavigator_->sendNextGoal(options_);
 
   auto waypointname = waypointsNavigator_->getCurrentWaypointName();
 

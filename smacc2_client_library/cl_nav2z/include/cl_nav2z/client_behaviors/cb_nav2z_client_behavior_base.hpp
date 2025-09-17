@@ -20,7 +20,9 @@
 #pragma once
 
 #include <cl_nav2z/cl_nav2z.hpp>
+#include <cl_nav2z/components/cp_nav2_action_interface.hpp>
 #include <cl_nav2z/components/planner_switcher/cp_planner_switcher.hpp>
+#include <smacc2/client_core_components/cp_action_client.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_nav2z
@@ -30,45 +32,111 @@ class CbNav2ZClientBehaviorBase : public smacc2::SmaccAsyncClientBehavior
 public:
   virtual ~CbNav2ZClientBehaviorBase();
 
-  // DEPRECATED: For third-party compatibility only. Third-party developers should migrate to onStateOrthogonalAllocation
-  // This method exists to support existing third-party classes that inherit from this base class
-  // and call CbNav2ZClientBehaviorBase::onOrthogonalAllocation<TOrthogonal, TSourceObject>()
+  template <typename TOrthogonal, typename TSourceObject>
+  void onStateOrthogonalAllocation()
+  {
+    // NEW: Pure component-based approach - no client dependencies
+    this->requiresComponent(nav2ActionInterface_);
+    this->requiresComponent(actionClient_);
+
+    smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
+  }
+
+  // LEGACY COMPATIBILITY: For third-party code that still calls the old method
   template <typename TOrthogonal, typename TSourceObject>
   [[deprecated(
     "Use onStateOrthogonalAllocation instead. This method exists only for third-party "
     "compatibility.")]] void
   onOrthogonalAllocation()
   {
-    // Call the new method to maintain functionality for third-party inheritors
     onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 
-  template <typename TOrthogonal, typename TSourceObject>
-  void onStateOrthogonalAllocation()
+protected:
+  // NEW: Component-based API - uses components directly
+  void sendGoal(nav2_msgs::action::NavigateToPose::Goal & goal)
   {
-    this->requiresClient(nav2zClient_);
-    smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    if (nav2ActionInterface_)
+    {
+      nav2ActionInterface_->sendGoal(goal);
+    }
   }
 
-protected:
-  void sendGoal(ClNav2Z::Goal & goal);
+  void cancelGoal()
+  {
+    if (nav2ActionInterface_)
+    {
+      nav2ActionInterface_->cancelNavigation();
+    }
+  }
 
-  void cancelGoal();
+  // Component-based signal connections
+  template <typename T>
+  boost::signals2::connection onNavigationSucceeded(
+    void (T::*callback)(const components::CpNav2ActionInterface::WrappedResult &), T * object)
+  {
+    if (nav2ActionInterface_)
+    {
+      return nav2ActionInterface_->onNavigationSucceeded(callback, object);
+    }
+    return boost::signals2::connection();
+  }
 
-  // handling results according its type
-  bool isOwnActionResponse(const ClNav2Z::WrappedResult &);
-  virtual void onNavigationResult(const ClNav2Z::WrappedResult &);
-  virtual void onNavigationActionSuccess(const ClNav2Z::WrappedResult &);
-  virtual void onNavigationActionAbort(const ClNav2Z::WrappedResult &);
+  template <typename T>
+  boost::signals2::connection onNavigationAborted(
+    void (T::*callback)(const components::CpNav2ActionInterface::WrappedResult &), T * object)
+  {
+    if (nav2ActionInterface_)
+    {
+      return nav2ActionInterface_->onNavigationAborted(callback, object);
+    }
+    return boost::signals2::connection();
+  }
 
-  cl_nav2z::ClNav2Z * nav2zClient_;
-  cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::SharedPtr navigationCallback_;
+  template <typename T>
+  boost::signals2::connection onNavigationCancelled(
+    void (T::*callback)(const components::CpNav2ActionInterface::WrappedResult &), T * object)
+  {
+    if (nav2ActionInterface_)
+    {
+      return nav2ActionInterface_->onNavigationCancelled(callback, object);
+    }
+    return boost::signals2::connection();
+  }
 
-  // deprecated
+  // Helper method to get the client for accessing other components
+  template <typename ComponentType>
+  ComponentType * getComponent()
+  {
+    ClNav2Z * client = nullptr;
+    this->requiresClient(client);
+    if (client)
+    {
+      return client->getComponent<ComponentType>();
+    }
+    return nullptr;
+  }
+
+  // NEW: Component references instead of client reference
+  components::CpNav2ActionInterface * nav2ActionInterface_ = nullptr;
+  smacc2::client_core_components::CpActionClient<nav2_msgs::action::NavigateToPose> *
+    actionClient_ = nullptr;
+
+  // Common legacy member for result tracking
   rclcpp_action::ResultCode navigationResult_;
-  std::shared_future<
-    std::shared_ptr<rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose> > >
-    goalHandleFuture_;
+
+  // REMOVED: All legacy client-based members
+  // ❌ cl_nav2z::ClNav2Z * nav2zClient_
+  // ❌ cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::SharedPtr navigationCallback_
+  // ❌ rclcpp_action::ResultCode navigationResult_
+  // ❌ goalHandleFuture_
+
+  // Virtual methods for derived classes - now use component types
+  virtual void onNavigationResult(const components::CpNav2ActionInterface::WrappedResult &) {}
+  virtual void onNavigationActionSuccess(const components::CpNav2ActionInterface::WrappedResult &)
+  {
+  }
+  virtual void onNavigationActionAbort(const components::CpNav2ActionInterface::WrappedResult &) {}
 };
 
 enum class SpinningPlanner

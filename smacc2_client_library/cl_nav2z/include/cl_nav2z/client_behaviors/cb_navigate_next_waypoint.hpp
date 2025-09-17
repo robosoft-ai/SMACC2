@@ -41,7 +41,5 @@ protected:
   CpWaypointNavigator * waypointsNavigator_;
 
   NavigateNextWaypointOptions options_;
-
-  cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::SharedPtr navigationCallback_;
 };
 }  // namespace cl_nav2z

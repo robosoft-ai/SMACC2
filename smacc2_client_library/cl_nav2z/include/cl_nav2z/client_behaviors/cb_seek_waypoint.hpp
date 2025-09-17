@@ -26,7 +26,7 @@
 
 namespace cl_nav2z
 {
-class CbSeekWaypoint : public smacc2::ISmaccClientBehavior
+class CbSeekWaypoint : public smacc2::SmaccClientBehavior
 {
 public:
   CbSeekWaypoint(std::string skip_until_name);

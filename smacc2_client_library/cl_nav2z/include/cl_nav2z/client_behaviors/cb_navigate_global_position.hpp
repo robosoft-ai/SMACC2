@@ -21,6 +21,7 @@
 
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
+#include <nav2_msgs/action/navigate_to_pose.hpp>
 
 #include "cb_nav2z_client_behavior_base.hpp"
 
@@ -63,6 +64,6 @@ public:
   void execute();
 
 private:
-  void readStartPoseFromParameterServer(ClNav2Z::Goal & goal);
+  void readStartPoseFromParameterServer(nav2_msgs::action::NavigateToPose::Goal & goal);
 };
 }  // namespace cl_nav2z
