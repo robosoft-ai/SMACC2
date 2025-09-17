@@ -35,6 +35,8 @@
 namespace cl_nav2z
 {
 using namespace std::chrono_literals;
+using namespace smacc2;
+
 CpWaypointNavigatorBase::CpWaypointNavigatorBase() : currentWaypoint_(0), waypoints_(0) {}
 
 CpWaypointNavigatorBase::~CpWaypointNavigatorBase() {}
@@ -216,7 +218,8 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
     }
 
     nav2_msgs::action::NavigateToPose::Goal goal;
-    auto p = client_->getComponent<cl_nav2z::Pose>();
+    Pose * p;
+    this->requiresComponent(p, true);
     auto pose = p->toPoseMsg();
 
     // configuring goal
@@ -224,7 +227,9 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
     //goal.pose.header.stamp = getNode()->now();
     goal.pose.pose = next;
 
-    auto plannerSwitcher = client_->getComponent<CpPlannerSwitcher>();
+    cl_nav2z::CpPlannerSwitcher * plannerSwitcher;
+    this->requiresComponent(plannerSwitcher, true);
+
     plannerSwitcher->setDefaultPlanners(false);
     if (options && options->controllerName_)
     {
@@ -239,7 +244,9 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
       RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default planners");
     }
 
-    auto goalCheckerSwitcher = client_->getComponent<CpGoalCheckerSwitcher>();
+    cl_nav2z::CpGoalCheckerSwitcher * goalCheckerSwitcher;
+    // this->requiresComponent(goalCheckerSwitcher, ComponentRequirement::HARD);
+    this->requiresComponent(goalCheckerSwitcher, true);
 
     if (options && options->goalCheckerName_)
     {
@@ -261,7 +268,10 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
     // rclcpp::sleep_for(5s);
 
     RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Getting odom tracker");
-    auto odomTracker = client_->getComponent<cl_nav2z::odom_tracker::CpOdomTracker>();
+
+    cl_nav2z::odom_tracker::CpOdomTracker * odomTracker;
+    requiresComponent(odomTracker);
+
     if (odomTracker != nullptr)
     {
       RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Storing path in odom tracker");

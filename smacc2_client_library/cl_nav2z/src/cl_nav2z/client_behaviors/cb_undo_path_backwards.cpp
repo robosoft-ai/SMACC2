@@ -29,6 +29,7 @@ using ::cl_nav2z::odom_tracker::CpOdomTracker;
 using ::cl_nav2z::odom_tracker::WorkingMode;
 
 using namespace std::chrono_literals;
+using namespace smacc2;
 
 CbUndoPathBackwards::CbUndoPathBackwards(std::optional<CbUndoPathBackwardsOptions> options)
 {
@@ -38,11 +39,12 @@ CbUndoPathBackwards::CbUndoPathBackwards(std::optional<CbUndoPathBackwardsOption
 void CbUndoPathBackwards::onEntry()
 {
   listener = std::make_shared<tf2_ros::Buffer>(this->getNode()->get_clock());
-  odomTracker = this->getComponent<CpOdomTracker>();
+  requiresComponent(odomTracker, ComponentRequirement::HARD);
 
   odomTracker->logStateString(false);
 
-  auto plannerSwitcher = this->getComponent<CpPlannerSwitcher>();
+  CpPlannerSwitcher * plannerSwitcher;
+  requiresComponent(plannerSwitcher, ComponentRequirement::HARD);
 
   nav_msgs::msg::Path forwardpath = odomTracker->getPath();
   // RCLCPP_INFO_STREAM(getLogger(),"[UndoPathBackward] Current path backwards: " << forwardpath);
@@ -51,7 +53,8 @@ void CbUndoPathBackwards::onEntry()
 
   nav2_msgs::action::NavigateToPose::Goal goal;
 
-  auto goalCheckerSwitcher = this->getComponent<CpGoalCheckerSwitcher>();
+  CpGoalCheckerSwitcher * goalCheckerSwitcher;
+  requiresComponent(goalCheckerSwitcher, ComponentRequirement::HARD);
 
   // this line is used to flush/reset backward planner in the case it were already there
   // plannerSwitcher->setDefaultPlanners();
@@ -109,7 +112,8 @@ void CbUndoPathBackwards::onExit()
     RCLCPP_INFO_STREAM(
       getLogger(), getName() << " - [CbUndoPathBackwards] Exiting: undo navigation successful, "
                                 "popping odom tracker path");
-    odomTracker = this->getComponent<CpOdomTracker>();
+
+    requiresComponent(odomTracker, ComponentRequirement::HARD);
     odomTracker->popPath();
 
     odomTracker->logStateString(false);
@@ -120,7 +124,7 @@ void CbUndoPathBackwards::onExit()
       getLogger(), getName() << " - [CbUndoPathBackwards] Exiting: undo navigation abort, avoiding "
                                 "popping current path");
 
-    odomTracker = this->getComponent<CpOdomTracker>();
+    requiresComponent(odomTracker, ComponentRequirement::HARD);
     odomTracker->logStateString(false);
     // navigation interrupted or aborted. The path may be not totally undone.
     // We keep the odom tracker in its current state, probably in the middle of the undoing process.

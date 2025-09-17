@@ -109,7 +109,7 @@ public:
   }
 
   // Component lifecycle
-  template <typename TOrthogonal, typename TSourceObject>
+  template <typename TOrthogonal, typename TClient>
   void onComponentInitialization()
   {
     // Require the underlying action client component
@@ -118,25 +118,25 @@ public:
     // Set up nav2-specific event posting functions
     postNavigationSuccessEvent = [this](const WrappedResult & result)
     {
-      auto * ev = new smacc2::default_events::EvActionSucceeded<TSourceObject, TOrthogonal>();
+      auto * ev = new smacc2::default_events::EvActionSucceeded<TClient, TOrthogonal>();
       this->postEvent(ev);
     };
 
     postNavigationAbortedEvent = [this](const WrappedResult & result)
     {
-      auto * ev = new smacc2::default_events::EvActionAborted<TSourceObject, TOrthogonal>();
+      auto * ev = new smacc2::default_events::EvActionAborted<TClient, TOrthogonal>();
       this->postEvent(ev);
     };
 
     postNavigationCancelledEvent = [this](const WrappedResult & result)
     {
-      auto * ev = new smacc2::default_events::EvActionCancelled<TSourceObject, TOrthogonal>();
+      auto * ev = new smacc2::default_events::EvActionCancelled<TClient, TOrthogonal>();
       this->postEvent(ev);
     };
 
     postNavigationFeedbackEvent = [this](const Feedback & feedback)
     {
-      auto * ev = new smacc2::default_events::EvActionFeedback<Feedback, TOrthogonal>();
+      auto * ev = new smacc2::default_events::EvActionFeedback<TClient, TOrthogonal>();
       ev->feedbackMessage = feedback;
       this->postEvent(ev);
     };

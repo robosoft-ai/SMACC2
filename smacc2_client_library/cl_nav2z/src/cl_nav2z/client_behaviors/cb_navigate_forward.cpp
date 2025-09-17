@@ -31,6 +31,7 @@ using ::cl_nav2z::odom_tracker::CpOdomTracker;
 using ::cl_nav2z::odom_tracker::WorkingMode;
 
 using ::cl_nav2z::Pose;
+using namespace smacc2;
 
 CbNavigateForward::CbNavigateForward(float distance_meters) : forwardDistance_(distance_meters) {}
 CbNavigateForward::CbNavigateForward() {}
@@ -65,7 +66,9 @@ void CbNavigateForward::onEntry()
   }
 
   // get current pose
-  auto p = this->getComponent<Pose>();
+  Pose * p;
+  this->requiresComponent(p, ComponentRequirement::HARD);
+
   auto referenceFrame = p->getReferenceFrame();
   auto currentPoseMsg = p->toPoseMsg();
 
@@ -128,7 +131,8 @@ void CbNavigateForward::onEntry()
 
   tf2::toMsg(currentPose, currentStampedPoseMsg.pose);
 
-  odomTracker_ = this->getComponent<CpOdomTracker>();
+  requiresComponent(odomTracker_, ComponentRequirement::SOFT);
+
   if (odomTracker_ != nullptr)
   {
     auto pathname = this->getCurrentState()->getName() + " - " + getName();
@@ -138,10 +142,12 @@ void CbNavigateForward::onEntry()
     odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
   }
 
-  auto plannerSwitcher = this->getComponent<CpPlannerSwitcher>();
+  CpPlannerSwitcher * plannerSwitcher;
+  this->requiresComponent(plannerSwitcher, ComponentRequirement::HARD);
   plannerSwitcher->setForwardPlanner();
 
-  auto goalCheckerSwitcher = this->getComponent<CpGoalCheckerSwitcher>();
+  CpGoalCheckerSwitcher * goalCheckerSwitcher;
+  this->requiresComponent(goalCheckerSwitcher, ComponentRequirement::HARD);
   goalCheckerSwitcher->setGoalCheckerId("forward_goal_checker");
 
   this->sendGoal(goal);

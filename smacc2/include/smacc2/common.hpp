@@ -71,6 +71,12 @@ enum class SMRunMode
   RELEASE
 };
 
+enum class ComponentRequirement
+{
+  SOFT,
+  HARD
+};
+
 }  // namespace smacc2
 
 #include <smacc2/smacc_default_events.hpp>

@@ -26,6 +26,8 @@
 
 namespace cl_nav2z
 {
+using namespace smacc2;
+
 CbRotate::CbRotate(float rotate_degree) : rotateDegree(rotate_degree) {}
 
 CbRotate::CbRotate(float rotate_degree, SpinningPlanner spinning_planner)
@@ -37,7 +39,8 @@ void CbRotate::onEntry()
 {
   double angle_increment_degree = rotateDegree;
 
-  auto plannerSwitcher = this->getComponent<CpPlannerSwitcher>();
+  CpPlannerSwitcher * plannerSwitcher;
+  this->requiresComponent(plannerSwitcher, ComponentRequirement::HARD);
 
   if (spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning)
   {
@@ -48,14 +51,18 @@ void CbRotate::onEntry()
     plannerSwitcher->setDefaultPlanners();
   }
 
-  auto p = this->getComponent<cl_nav2z::Pose>();
+  Pose * p;
+  this->requiresComponent(p, ComponentRequirement::HARD);
+
   auto referenceFrame = p->getReferenceFrame();
   auto currentPoseMsg = p->toPoseMsg();
 
   tf2::Transform currentPose;
   tf2::fromMsg(currentPoseMsg, currentPose);
 
-  auto odomTracker = this->getComponent<odom_tracker::CpOdomTracker>();
+  odom_tracker::CpOdomTracker * odomTracker;
+  this->requiresComponent(odomTracker, ComponentRequirement::SOFT);
+
   nav2_msgs::action::NavigateToPose::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
   //goal.pose.header.stamp = getNode()->now();

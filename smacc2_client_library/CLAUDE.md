@@ -857,7 +857,7 @@ private:
 
 #####  Spatial Coordinate Systems
 
-  - CpPose (nav2z_client)
+  - Pose (nav2z_client)
     - Real-time pose tracking and transform management
     - Features: TF2 integration, frame conversion, pose freezing
     - Update Pattern: Implements ISmaccUpdatable

@@ -104,19 +104,6 @@ protected:
     return boost::signals2::connection();
   }
 
-  // Helper method to get the client for accessing other components
-  template <typename ComponentType>
-  ComponentType * getComponent()
-  {
-    ClNav2Z * client = nullptr;
-    this->requiresClient(client);
-    if (client)
-    {
-      return client->getComponent<ComponentType>();
-    }
-    return nullptr;
-  }
-
   // NEW: Component references instead of client reference
   components::CpNav2ActionInterface * nav2ActionInterface_ = nullptr;
   smacc2::client_core_components::CpActionClient<nav2_msgs::action::NavigateToPose> *

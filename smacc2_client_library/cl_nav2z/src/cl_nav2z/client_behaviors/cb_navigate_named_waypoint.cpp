@@ -22,6 +22,8 @@
 
 namespace cl_nav2z
 {
+using namespace smacc2;
+
 CbNavigateNamedWaypoint::CbNavigateNamedWaypoint(
   std::string waypointname, std::optional<NavigateNextWaypointOptions> options)
 : CbNavigateNextWaypoint(options)
@@ -49,7 +51,9 @@ void CbNavigateNamedWaypoint::onEntry()
   //   getLogger(), "[CbNavigateNamedWaypoint] current iteration waypoints i: %ld",
   //   waypointsNavigator_->getCurrentWaypointIndex());  }
 
-  auto waypointsNavigator_ = this->getComponent<CpWaypointNavigator>();
+  CpWaypointNavigator * waypointsNavigator_;
+  this->requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);
+
   waypointsNavigator_->seekName(waypointname_);
   CbNavigateNextWaypoint::onEntry();
 }

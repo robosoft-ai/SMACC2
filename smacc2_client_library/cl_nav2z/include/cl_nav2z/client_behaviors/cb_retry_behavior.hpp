@@ -34,7 +34,8 @@ public:
   CbRetry() {}
   void onEntry() override
   {
-    odomTracker_ = this->nav2zClient_->template getComponent<CpOdomTracker>();
+    this->requiresComponent(odomTracker_, ComponentRequirement::HARD);
+
     auto goal = odomTracker_->getCurrentMotionGoal();
 
     if (goal)
