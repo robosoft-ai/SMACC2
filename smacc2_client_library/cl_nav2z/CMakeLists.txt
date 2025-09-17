@@ -49,25 +49,33 @@ set(dependencies
 include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
-  src/${PROJECT_NAME}/cl_nav2z.cpp
-  src/${PROJECT_NAME}/common.cpp
+  # Converted to header-only files:
+  # - src/${PROJECT_NAME}/cl_nav2z.cpp (converted)
+  # - src/${PROJECT_NAME}/common.cpp (converted)
+  # - src/${PROJECT_NAME}/client_behaviors/cb_nav2z_client_behavior_base.cpp (converted)
+  # - src/${PROJECT_NAME}/client_behaviors/cb_abort_navigation.cpp (converted)
+  # - src/${PROJECT_NAME}/client_behaviors/cb_pause_slam.cpp (converted)
+  # - src/${PROJECT_NAME}/client_behaviors/cb_resume_slam.cpp (converted)
+  # - src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint_until_reached.cpp (converted)
+  # - src/${PROJECT_NAME}/client_behaviors/cb_active_stop.cpp (converted)
+  # - src/${PROJECT_NAME}/components/goal_checker_switcher/cp_goal_checker_switcher.cpp (converted)
+  # - src/${PROJECT_NAME}/components/slam_toolbox/cp_slam_toolbox.cpp (converted)
+  # - src/${PROJECT_NAME}/components/amcl/cp_amcl.cpp (converted)
+  # - src/${PROJECT_NAME}/components/pose/cp_pose.cpp (converted)
+  # - src/${PROJECT_NAME}/components/waypoints_navigator/cp_waypoints_event_dispatcher.cpp (converted)
 
-  src/${PROJECT_NAME}/client_behaviors/cb_nav2z_client_behavior_base.cpp
+  # Remaining files that need complex implementation files
   src/${PROJECT_NAME}/client_behaviors/cb_absolute_rotate.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_rotate_look_at.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_backward.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_forward.cpp
-  src/${PROJECT_NAME}/client_behaviors/cb_abort_navigation.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_global_position.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint.cpp
-  src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint_until_reached.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_named_waypoint.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_rotate.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_undo_path_backwards.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_wait_pose.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_wait_nav2_nodes.cpp
-  src/${PROJECT_NAME}/client_behaviors/cb_pause_slam.cpp
-  src/${PROJECT_NAME}/client_behaviors/cb_resume_slam.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_wait_transform.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_seek_waypoint.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_spiral_motion.cpp
@@ -80,15 +88,9 @@ add_library(${PROJECT_NAME} SHARED
 
   src/${PROJECT_NAME}/components/odom_tracker/cp_odom_tracker.cpp
   src/${PROJECT_NAME}/components/planner_switcher/cp_planner_switcher.cpp
-  src/${PROJECT_NAME}/components/goal_checker_switcher/cp_goal_checker_switcher.cpp
-  src/${PROJECT_NAME}/components/pose/cp_pose.cpp
-  src/${PROJECT_NAME}/components/waypoints_navigator/cp_waypoints_event_dispatcher.cpp
   src/${PROJECT_NAME}/components/waypoints_navigator/cp_waypoints_navigator.cpp
   src/${PROJECT_NAME}/components/waypoints_navigator/cp_waypoints_visualizer.cpp
-  src/${PROJECT_NAME}/components/amcl/cp_amcl.cpp
-  src/${PROJECT_NAME}/components/slam_toolbox/cp_slam_toolbox.cpp
 
-  src/${PROJECT_NAME}/client_behaviors/cb_active_stop.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_load_waypoints_file.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_next_waypoint_free.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_position_control_free_space.cpp

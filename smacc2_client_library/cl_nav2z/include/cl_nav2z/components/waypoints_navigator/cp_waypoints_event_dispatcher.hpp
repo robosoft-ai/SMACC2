@@ -1586,7 +1586,11 @@ public:
   template <typename TDerived, typename TOrthogonal>
   void initialize(ClNav2Z * client);
 
-  void postWaypointEvent(int index);
+  inline void postWaypointEvent(int index)
+  {
+    auto & fn = postWaypointFn[index % WAYPOINTS_EVENTCOUNT];
+    if (fn != nullptr) fn();
+  }
 };
 
 template <typename TEv>

@@ -31,8 +31,8 @@ namespace cl_nav2z
 class CpSlamToolbox : public smacc2::ISmaccComponent
 {
 public:
-  CpSlamToolbox();
-  virtual ~CpSlamToolbox();
+  CpSlamToolbox() : state_(SlamToolboxState::Resumed) {}
+  virtual ~CpSlamToolbox() {}
 
   enum class SlamToolboxState
   {
@@ -42,7 +42,17 @@ public:
 
   inline SlamToolboxState getState() { return state_; }
 
-  void toggleState();
+  void toggleState()
+  {
+    if (state_ == SlamToolboxState::Paused)
+    {
+      state_ = SlamToolboxState::Resumed;
+    }
+    else
+    {
+      state_ = SlamToolboxState::Paused;
+    }
+  }
 
 private:
   SlamToolboxState state_;

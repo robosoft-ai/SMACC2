@@ -33,10 +33,12 @@ class CbNavigateNextWaypointUntilReached : public CbNavigateNextWaypoint
 {
 public:
   CbNavigateNextWaypointUntilReached(
-    std::string goalWaypointName,
-    std::optional<NavigateNextWaypointOptions> options = std::nullopt);
+    std::string goalWaypointName, std::optional<NavigateNextWaypointOptions> options = std::nullopt)
+  : CbNavigateNextWaypoint(options), goalWaypointName_(goalWaypointName)
+  {
+  }
 
-  virtual ~CbNavigateNextWaypointUntilReached();
+  virtual ~CbNavigateNextWaypointUntilReached() {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
@@ -47,9 +49,9 @@ public:
     { this->postEvent<EvGoalWaypointReached<TSourceObject, TOrthogonal>>(); };
   }
 
-  void onEntry() override;
+  inline void onEntry() override { CbNavigateNextWaypoint::onEntry(); }
 
-  void onExit() override;
+  inline void onExit() override { CbNavigateNextWaypoint::onExit(); }
 
   void onNavigationActionSuccess(
     const components::CpNav2ActionInterface::WrappedResult & r) override

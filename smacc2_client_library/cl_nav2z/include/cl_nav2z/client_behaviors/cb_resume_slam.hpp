@@ -28,8 +28,32 @@ namespace cl_nav2z
 class CbResumeSlam : public smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>
 {
 public:
-  CbResumeSlam(std::string serviceName = "/slam_toolbox/pause_new_measurements");
-  void onEntry() override;
+  CbResumeSlam(std::string serviceName = "/slam_toolbox/pause_new_measurements")
+  : smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>(serviceName.c_str())
+  {
+  }
+
+  inline void onEntry() override
+  {
+    this->requiresComponent(this->slam_);
+
+    auto currentState = slam_->getState();
+
+    if (currentState == CpSlamToolbox::SlamToolboxState::Paused)
+    {
+      RCLCPP_INFO(
+        getLogger(), "[CbResumeSlam] calling pause service to toggle from paused to resumed");
+      this->request_ = std::make_shared<slam_toolbox::srv::Pause::Request>();
+      smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>::onEntry();
+      this->slam_->toggleState();
+    }
+    else
+    {
+      this->request_ = nullptr;
+      RCLCPP_INFO(
+        getLogger(), "[CbResumeSlam] calling skipped. The current slam state is already resumed.");
+    }
+  }
 
 protected:
   CpSlamToolbox * slam_;

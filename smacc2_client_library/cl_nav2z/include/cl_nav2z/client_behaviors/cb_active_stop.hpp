@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <angles/angles.h>
 #include <geometry_msgs/msg/twist.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
@@ -31,10 +32,28 @@ private:
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_pub_;
 
 public:
-  CbActiveStop();
+  CbActiveStop() {}
 
-  void onEntry() override;
+  inline void onEntry() override
+  {
+    auto nh = this->getNode();
+    cmd_vel_pub_ = nh->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", rclcpp::QoS(1));
 
-  void onExit() override;
+    rclcpp::Rate loop_rate(5);
+    geometry_msgs::msg::Twist cmd_vel_msg;
+    while (!this->isShutdownRequested())
+    {
+      cmd_vel_msg.linear.x = 0;
+      cmd_vel_msg.angular.z = 0;
+
+      cmd_vel_pub_->publish(cmd_vel_msg);
+      loop_rate.sleep();
+    }
+    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Finished behavior execution");
+
+    this->postSuccessEvent();
+  }
+
+  inline void onExit() override {}
 };
 }  // namespace cl_nav2z

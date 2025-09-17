@@ -16,6 +16,7 @@
 
 #include <cl_nav2z/components/nav2_action_interface/cp_nav2_action_interface.hpp>
 #include <nav2_msgs/action/navigate_to_pose.hpp>
+#include <pluginlib/class_list_macros.hpp>
 #include <smacc2/client_core_components/cp_action_client.hpp>
 #include <smacc2/smacc.hpp>
 
@@ -80,3 +81,6 @@ private:
 };
 
 }  // namespace cl_nav2z
+
+// Export the ClNav2Z class as type smacc2::ISmaccClient as an implementation of the ISmaccClient interface.
+PLUGINLIB_EXPORT_CLASS(cl_nav2z::ClNav2Z, smacc2::ISmaccClient)

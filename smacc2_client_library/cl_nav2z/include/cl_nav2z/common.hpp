@@ -17,6 +17,7 @@
 #include <iostream>
 
 #include <tf2/transform_datatypes.h>
+#include <tf2/utils.h>
 #include <builtin_interfaces/msg/time.hpp>
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
@@ -24,11 +25,45 @@
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/quaternion_stamped.hpp>
 #include <nav2_msgs/action/navigate_to_pose.hpp>
+#include <rclcpp/rclcpp.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg);
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & msg);
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Point & msg);
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg);
-std::ostream & operator<<(std::ostream & out, const nav2_msgs::action::NavigateToPose::Goal & msg);
-std::ostream & operator<<(std::ostream & out, const builtin_interfaces::msg::Time & msg);
+inline std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg)
+{
+  out << " Orientation [" << msg.x << " , " << msg.y << " , " << msg.z << ", " << msg.w
+      << "] , yaw: " << tf2::getYaw(msg);
+  return out;
+}
+
+inline std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Point & msg)
+{
+  out << "[" << msg.x << " , " << msg.y << " , " << msg.z << "]";
+  return out;
+}
+
+inline std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & msg)
+{
+  out << " p " << msg.position;
+  out << " q [" << msg.orientation.x << " , " << msg.orientation.y << " , " << msg.orientation.z
+      << ", " << msg.orientation.w << "]";
+  return out;
+}
+
+inline std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg)
+{
+  out << msg.pose;
+  return out;
+}
+
+inline std::ostream & operator<<(
+  std::ostream & out, const nav2_msgs::action::NavigateToPose::Goal & msg)
+{
+  out << msg.pose;
+  return out;
+}
+
+inline std::ostream & operator<<(std::ostream & out, const builtin_interfaces::msg::Time & msg)
+{
+  out << "seconds: " << rclcpp::Time(msg).seconds();
+  return out;
+}

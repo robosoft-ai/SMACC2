@@ -21,20 +21,28 @@
 
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <smacc2/smacc.hpp>
+#include <string>
 
 namespace cl_nav2z
 {
 class CpAmcl : public smacc2::ISmaccComponent
 {
 public:
-  CpAmcl();
-  virtual ~CpAmcl();
+  CpAmcl() {}
+  virtual ~CpAmcl() {}
 
-  std::string getName() const override;
+  inline std::string getName() const override { return "AMCL"; }
 
-  void onInitialize() override;
+  inline void onInitialize() override
+  {
+    initalPosePub_ = getNode()->create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>(
+      "initialpose", rclcpp::QoS(10));
+  }
 
-  void setInitialPose(const geometry_msgs::msg::PoseWithCovarianceStamped & initialpose);
+  inline void setInitialPose(const geometry_msgs::msg::PoseWithCovarianceStamped & initialpose)
+  {
+    initalPosePub_->publish(initialpose);
+  }
 
 private:
   rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr initalPosePub_;

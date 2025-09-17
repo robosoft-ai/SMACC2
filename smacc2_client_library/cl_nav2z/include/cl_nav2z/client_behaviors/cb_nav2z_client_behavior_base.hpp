@@ -30,7 +30,7 @@ namespace cl_nav2z
 class CbNav2ZClientBehaviorBase : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  virtual ~CbNav2ZClientBehaviorBase();
+  virtual ~CbNav2ZClientBehaviorBase() {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()

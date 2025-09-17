@@ -31,7 +31,7 @@ namespace cl_nav2z
 class CbAbortNavigation : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbAbortNavigation();
+  CbAbortNavigation() {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
@@ -40,8 +40,13 @@ public:
     smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 
-  void onEntry() override;
-  void onExit() override;
+  void onEntry() override
+  {
+    this->nav2ActionInterface_->cancelNavigation();
+    this->postSuccessEvent();
+  }
+
+  void onExit() override {}
 
 private:
   components::CpNav2ActionInterface * nav2ActionInterface_ = nullptr;

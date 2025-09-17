@@ -33,11 +33,34 @@ class CpGoalCheckerSwitcher : public smacc2::ISmaccComponent
 public:
   CpGoalCheckerSwitcher(
     std::string goal_checker_selector_topic = "goal_checker_selector",
-    std::string default_goal_checker_name = "goal_checker");
-  void onInitialize() override;
-  virtual ~CpGoalCheckerSwitcher();
-  void setDefaultGoalChecker();
-  void setGoalCheckerId(std::string goal_checker_id);
+    std::string default_goal_checker_name = "goal_checker")
+  : goal_checker_selector_topic_(goal_checker_selector_topic),
+    default_goal_checker_name_(default_goal_checker_name)
+  {
+  }
+
+  void onInitialize() override
+  {
+    rclcpp::QoS qos(rclcpp::KeepLast(1));
+    qos.transient_local().reliable();
+
+    this->goal_checker_selector_pub_ =
+      getNode()->create_publisher<std_msgs::msg::String>(goal_checker_selector_topic_, qos);
+  }
+
+  virtual ~CpGoalCheckerSwitcher() {}
+
+  void setDefaultGoalChecker() { setGoalCheckerId(default_goal_checker_name_); }
+
+  void setGoalCheckerId(std::string goalcheckerid)
+  {
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[CpGoalCheckerSwitcher] Setting goal checker: " << goalcheckerid);
+
+    std_msgs::msg::String msg;
+    msg.data = goalcheckerid;
+    this->goal_checker_selector_pub_->publish(msg);
+  }
 
 private:
   std::string goal_checker_selector_topic_;
