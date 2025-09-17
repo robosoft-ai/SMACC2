@@ -14,22 +14,12 @@
 
 #include <cl_nav2z/cl_nav2z.hpp>
 #include <pluginlib/class_list_macros.hpp>
-#include <string>
 
 namespace cl_nav2z
 {
-// Define "Base" as a SmaccActionClientBase with NavigateToPose as action argument, tie to WrappedResult.
-typedef smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose> Base;
-typedef Base::WrappedResult WrappedResult;
 
-// Define Client class constructor.
-ClNav2Z::ClNav2Z(std::string moveBaseName) : Base(moveBaseName)
-{
-  // RCLCPP_INFO(getLogger(),"Smacc Move Base Action Client");
-}
-
-// Define Client class destructor.
-ClNav2Z::~ClNav2Z() {}
+// No implementation needed for the refactored client - all functionality
+// is provided through components and the header-only interface
 
 }  // namespace cl_nav2z
 
