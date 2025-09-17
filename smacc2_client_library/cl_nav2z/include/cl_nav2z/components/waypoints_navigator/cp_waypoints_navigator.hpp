@@ -20,7 +20,7 @@
 #pragma once
 
 #include <cl_nav2z/cl_nav2z.hpp>
-#include <cl_nav2z/components/cp_nav2_action_interface.hpp>
+#include <cl_nav2z/components/nav2_action_interface/cp_nav2_action_interface.hpp>
 #include <cl_nav2z/components/waypoints_navigator/cp_waypoints_event_dispatcher.hpp>
 #include <smacc2/smacc.hpp>
 

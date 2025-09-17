@@ -20,7 +20,7 @@
 #pragma once
 
 #include <cl_nav2z/cl_nav2z.hpp>
-#include <cl_nav2z/components/cp_nav2_action_interface.hpp>
+#include <cl_nav2z/components/nav2_action_interface/cp_nav2_action_interface.hpp>
 #include <cl_nav2z/components/planner_switcher/cp_planner_switcher.hpp>
 #include <smacc2/client_core_components/cp_action_client.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>

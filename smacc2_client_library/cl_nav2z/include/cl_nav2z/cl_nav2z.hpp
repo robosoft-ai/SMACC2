@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <cl_nav2z/components/cp_nav2_action_interface.hpp>
+#include <cl_nav2z/components/nav2_action_interface/cp_nav2_action_interface.hpp>
 #include <nav2_msgs/action/navigate_to_pose.hpp>
 #include <smacc2/client_core_components/cp_action_client.hpp>
 #include <smacc2/smacc.hpp>

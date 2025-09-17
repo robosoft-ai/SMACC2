@@ -19,7 +19,7 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <cl_nav2z/components/cp_nav2_action_interface.hpp>
+#include <cl_nav2z/components/nav2_action_interface/cp_nav2_action_interface.hpp>
 #include "cb_navigate_next_waypoint.hpp"
 
 namespace cl_nav2z

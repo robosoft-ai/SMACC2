@@ -21,7 +21,7 @@
 
 #include <tf2_ros/buffer.h>
 
-#include <cl_nav2z/components/cp_nav2_action_interface.hpp>
+#include <cl_nav2z/components/nav2_action_interface/cp_nav2_action_interface.hpp>
 #include "cb_nav2z_client_behavior_base.hpp"
 #include "cb_navigate_global_position.hpp"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
