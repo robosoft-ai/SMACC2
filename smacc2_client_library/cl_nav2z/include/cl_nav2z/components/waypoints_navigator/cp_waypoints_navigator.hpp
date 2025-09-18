@@ -30,6 +30,7 @@
 namespace cl_nav2z
 {
 class ClNav2Z;
+using namespace smacc2;
 
 struct EvWaypointFinal : sc::event<EvWaypointFinal>
 {

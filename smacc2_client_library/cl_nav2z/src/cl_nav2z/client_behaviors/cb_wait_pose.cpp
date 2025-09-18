@@ -26,6 +26,8 @@
 
 namespace cl_nav2z
 {
+  using namespace smacc2;
+  
 CbWaitPose::CbWaitPose() {}
 
 CbWaitPose::~CbWaitPose() {}
