@@ -36,7 +36,7 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
-    this->requiresComponent(nav2ActionInterface_);
+    this->requiresComponent(nav2ActionInterface_, ComponentRequirement::HARD);
     smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 

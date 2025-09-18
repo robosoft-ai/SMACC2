@@ -67,7 +67,7 @@ public:
     RCLCPP_INFO(
       getLogger(), "[%s] Propagating success event from action server", getName().c_str());
 
-    this->requiresComponent(waypointsNavigator_);
+    this->requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);
 
     auto current_waypoint_name = waypointsNavigator_->getCurrentWaypointName();
 

@@ -63,7 +63,7 @@ void CbAbsoluteRotate::onEntry()
 
   updateTemporalBehaviorParameters(false);
 
-  cl_nav2z::Pose * p;
+  cl_nav2z::CpPose * p;
   this->requiresComponent(p, ComponentRequirement::HARD);
 
   auto referenceFrame = p->getReferenceFrame();

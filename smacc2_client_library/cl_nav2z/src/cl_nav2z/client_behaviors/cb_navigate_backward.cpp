@@ -50,7 +50,7 @@ void CbNavigateBackwards::onEntry()
   RCLCPP_INFO_STREAM(
     getLogger(), "[CbNavigateBackwards] Straight backwards motion distance: " << dist);
 
-  cl_nav2z::Pose * p;
+  cl_nav2z::CpPose * p;
   this->requiresComponent(p, ComponentRequirement::HARD);
 
   auto referenceFrame = p->getReferenceFrame();

@@ -30,7 +30,7 @@ namespace cl_nav2z
 using ::cl_nav2z::odom_tracker::CpOdomTracker;
 using ::cl_nav2z::odom_tracker::WorkingMode;
 
-using ::cl_nav2z::Pose;
+using ::cl_nav2z::CpPose;
 using namespace smacc2;
 
 CbNavigateForward::CbNavigateForward(float distance_meters) : forwardDistance_(distance_meters) {}
@@ -66,7 +66,7 @@ void CbNavigateForward::onEntry()
   }
 
   // get current pose
-  Pose * p;
+  CpPose * p;
   this->requiresComponent(p, ComponentRequirement::HARD);
 
   auto referenceFrame = p->getReferenceFrame();

@@ -38,8 +38,8 @@ CbRotateLookAt::CbRotateLookAt(const geometry_msgs::msg::PoseStamped & lookAtPos
 
 void CbRotateLookAt::onEntry()
 {
-  cl_nav2z::Pose * pose;
-  this->requiresComponent(pose);
+  cl_nav2z::CpPose * pose;
+  this->requiresComponent(pose, ComponentRequirement::HARD);
 
   pose->waitTransformUpdate(rclcpp::Rate(20));
   auto position = pose->toPoseMsg().position;

@@ -48,7 +48,7 @@ void CpWaypointNavigatorBase::onInitialize() {}
 void CpWaypointNavigator::onInitialize()
 {
   client_ = dynamic_cast<ClNav2Z *>(owner_);
-  this->requiresComponent(nav2ActionInterface_);
+  this->requiresComponent(nav2ActionInterface_, ComponentRequirement::HARD);
 }
 
 void CpWaypointNavigator::onGoalCancelled(
@@ -218,8 +218,8 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
     }
 
     nav2_msgs::action::NavigateToPose::Goal goal;
-    Pose * p;
-    this->requiresComponent(p, true);
+    CpPose * p;
+    this->requiresComponent(p, ComponentRequirement::HARD);
     auto pose = p->toPoseMsg();
 
     // configuring goal
@@ -228,7 +228,7 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
     goal.pose.pose = next;
 
     cl_nav2z::CpPlannerSwitcher * plannerSwitcher;
-    this->requiresComponent(plannerSwitcher, true);
+    this->requiresComponent(plannerSwitcher, ComponentRequirement::HARD);
 
     plannerSwitcher->setDefaultPlanners(false);
     if (options && options->controllerName_)
@@ -246,7 +246,7 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
 
     cl_nav2z::CpGoalCheckerSwitcher * goalCheckerSwitcher;
     // this->requiresComponent(goalCheckerSwitcher, ComponentRequirement::HARD);
-    this->requiresComponent(goalCheckerSwitcher, true);
+    this->requiresComponent(goalCheckerSwitcher, ComponentRequirement::SOFT);
 
     if (options && options->goalCheckerName_)
     {
@@ -270,7 +270,7 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
     RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Getting odom tracker");
 
     cl_nav2z::odom_tracker::CpOdomTracker * odomTracker;
-    requiresComponent(odomTracker);
+    requiresComponent(odomTracker, ComponentRequirement::SOFT);
 
     if (odomTracker != nullptr)
     {

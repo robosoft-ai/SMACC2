@@ -33,7 +33,7 @@ void CpWaypointsVisualizer::onInitialize()
   markersPub_ = getNode()->create_publisher<visualization_msgs::msg::MarkerArray>(
     "cp_waypoints_visualizer/visualization_markers", rclcpp::QoS(rclcpp::KeepLast(1)));
 
-  this->requiresComponent(waypointsNavigator_);
+  this->requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);
   auto & waypoints = waypointsNavigator_->getWaypoints();
   auto & waypointsNames = waypointsNavigator_->getWaypointNames();
 

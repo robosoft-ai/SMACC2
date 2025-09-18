@@ -1,5 +1,0 @@
-<launch>
-    <node pkg="sm_cl_ros2_timer_unit_test_1" exec="sm_cl_ros2_timer_unit_test_1_node" name="sm_cl_ros2_timer_unit_test_1">
-        <param from="$(find-pkg-share sm_cl_ros2_timer_unit_test_1)/config/sm_cl_ros2_timer_unit_test_1_config.yaml"/>
-    </node>
-</launch>

@@ -99,7 +99,7 @@ void CpOdomTracker::onInitialize()
   }
   else if (this->strategy_ == OdomTrackerStrategy::POSE_COMPONENT)
   {
-    this->requiresComponent(robotPose_);
+    this->requiresComponent(robotPose_, ComponentRequirement::HARD);
     robotPoseTimer_ = nh->create_wall_timer(
       std::chrono::milliseconds(100), std::bind(&CpOdomTracker::update, this));
   }

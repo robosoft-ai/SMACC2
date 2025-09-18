@@ -58,7 +58,7 @@ public:
   void onStateOrthogonalAllocation()
   {
     waypointsEventDispatcher.initialize<TSourceObject, TOrthogonal>(client_);
-    this->requiresComponent(nav2ActionInterface_);
+    this->requiresComponent(nav2ActionInterface_, ComponentRequirement::HARD);
   }
 
   std::optional<std::shared_future<

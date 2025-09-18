@@ -28,11 +28,11 @@ namespace cl_nav2z
 using namespace std::chrono_literals;
 
 // static
-std::shared_ptr<tf2_ros::TransformListener> Pose::tfListener_;
-std::shared_ptr<tf2_ros::Buffer> Pose::tfBuffer_;
-std::mutex Pose::listenerMutex_;
+std::shared_ptr<tf2_ros::TransformListener> CpPose::tfListener_;
+std::shared_ptr<tf2_ros::Buffer> CpPose::tfBuffer_;
+std::mutex CpPose::listenerMutex_;
 
-Pose::Pose(std::string targetFrame, std::string referenceFrame)
+CpPose::CpPose(std::string targetFrame, std::string referenceFrame)
 : isInitialized(false), poseFrameName_(targetFrame), referenceFrame_(referenceFrame)
 
 {
@@ -52,12 +52,12 @@ std::string referenceFrameToString(StandardReferenceFrames referenceFrame)
   }
 }
 
-Pose::Pose(StandardReferenceFrames referenceFrame)
-: Pose("base_link", referenceFrameToString(referenceFrame))
+CpPose::CpPose(StandardReferenceFrames referenceFrame)
+: CpPose("base_link", referenceFrameToString(referenceFrame))
 {
 }
 
-void Pose::onInitialize()
+void CpPose::onInitialize()
 {
   RCLCPP_INFO(
     getLogger(), "[Pose] Creating Pose tracker component to track %s in the reference frame %s",
@@ -74,7 +74,7 @@ void Pose::onInitialize()
   }
 }
 
-void Pose::waitTransformUpdate(rclcpp::Rate r)
+void CpPose::waitTransformUpdate(rclcpp::Rate r)
 {
   bool found = false;
   RCLCPP_INFO(getLogger(), "[Pose Component] waitTransformUpdate");
@@ -116,13 +116,13 @@ void Pose::waitTransformUpdate(rclcpp::Rate r)
   RCLCPP_INFO(getLogger(), "[Pose Component] waitTransformUpdate -> pose found!");
 }
 
-float Pose::getYaw() { return tf2::getYaw(pose_.pose.orientation); }
+float CpPose::getYaw() { return tf2::getYaw(pose_.pose.orientation); }
 
-float Pose::getX() { return pose_.pose.position.x; }
-float Pose::getY() { return pose_.pose.position.y; }
-float Pose::getZ() { return pose_.pose.position.z; }
+float CpPose::getX() { return pose_.pose.position.x; }
+float CpPose::getY() { return pose_.pose.position.y; }
+float CpPose::getZ() { return pose_.pose.position.z; }
 
-void Pose::update()
+void CpPose::update()
 {
   tf2::Stamped<tf2::Transform> transform;
   try

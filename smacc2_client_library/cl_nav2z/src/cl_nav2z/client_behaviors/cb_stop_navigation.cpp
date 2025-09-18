@@ -37,8 +37,8 @@ void CbStopNavigation::onEntry()
 
   // this->cancelGoal();
 
-  cl_nav2z::Pose * poseComponent;
-  this->requiresComponent(poseComponent);
+  cl_nav2z::CpPose * poseComponent;
+  this->requiresComponent(poseComponent, ComponentRequirement::HARD);
 
   this->setGoal(poseComponent->toPoseMsg());
 

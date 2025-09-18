@@ -31,7 +31,7 @@ CbSeekWaypoint::~CbSeekWaypoint() {}
 
 void CbSeekWaypoint::onEntry()
 {
-  this->requiresComponent(waypointsNavigator_);
+  this->requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);
 
   if (count_)
   {

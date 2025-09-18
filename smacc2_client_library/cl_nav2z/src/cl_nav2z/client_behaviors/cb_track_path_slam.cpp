@@ -32,14 +32,14 @@ CbTrackPathSLAM::CbTrackPathSLAM() {}
 void CbTrackPathSLAM::onEntry()
 {
   RCLCPP_INFO(this->getLogger(), "Pose tracker freeze reference frame");
-  cl_nav2z::Pose * poseComponent;
-  requiresComponent(poseComponent);
+  cl_nav2z::CpPose * poseComponent;
+  requiresComponent(poseComponent, ComponentRequirement::HARD);
   poseComponent->unfreezeReferenceFrame();
   // poseComponent->setReferenceFrame("odom");
 
   RCLCPP_INFO(this->getLogger(), "Odom tracker clear path");
   cl_nav2z::odom_tracker::CpOdomTracker * odomTracker;
-  this->requiresComponent(odomTracker);
+  this->requiresComponent(odomTracker, ComponentRequirement::HARD);
   // odomTracker->setOdomFrame("odom");
 
   odomTracker->clearPath();

@@ -42,6 +42,7 @@ public:
   void requiresClient(SmaccClientType *& storage);
 
   template <typename SmaccComponentType>
+  [[deprecated("Use requiresClient with the ComponentRequirement argument. This method will be removed in future versions.")]]
   void requiresComponent(SmaccComponentType *& storage, bool throwExceptionIfNotExist);
 
   template <typename SmaccComponentType>

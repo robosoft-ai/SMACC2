@@ -40,12 +40,12 @@ enum class StandardReferenceFrames
   Odometry
 };
 
-class Pose : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdatable
+class CpPose : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdatable
 {
 public:
-  Pose(std::string poseFrameName = "base_link", std::string referenceFrame = "odom");
+  CpPose(std::string poseFrameName = "base_link", std::string referenceFrame = "odom");
 
-  Pose(StandardReferenceFrames referenceFrame);
+  CpPose(StandardReferenceFrames referenceFrame);
 
   void onInitialize() override;
 

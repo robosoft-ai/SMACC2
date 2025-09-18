@@ -22,6 +22,8 @@
 
 namespace cl_nav2z
 {
+  using namespace smacc2;
+  
 CbNavigateNextWaypoint::CbNavigateNextWaypoint(std::optional<NavigateNextWaypointOptions> options)
 {
   if (options) options_ = *options;
@@ -31,7 +33,7 @@ CbNavigateNextWaypoint::~CbNavigateNextWaypoint() {}
 
 void CbNavigateNextWaypoint::onEntry()
 {
-  this->requiresComponent(waypointsNavigator_);
+  this->requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);
 
   auto goalHandle = waypointsNavigator_->sendNextGoal(options_);
 

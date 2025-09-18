@@ -55,7 +55,7 @@ void CbNavigateGlobalPosition::onEntry()
   RCLCPP_INFO(getLogger(), "Entering Navigate Global position");
   RCLCPP_INFO(getLogger(), "Component requirements completed");
 
-  cl_nav2z::Pose * cpPose;
+  cl_nav2z::CpPose * cpPose;
   this->requiresComponent(cpPose, ComponentRequirement::HARD);
   auto pose = cpPose->toPoseMsg();
 
@@ -89,7 +89,7 @@ void CbNavigateGlobalPosition::onEntry()
 // auxiliary function that defines the motion that is requested to the nav2 action server
 void CbNavigateGlobalPosition::execute()
 {
-  cl_nav2z::Pose * p;
+  cl_nav2z::CpPose * p;
   this->requiresComponent(p, ComponentRequirement::HARD);
 
   auto referenceFrame = p->getReferenceFrame();

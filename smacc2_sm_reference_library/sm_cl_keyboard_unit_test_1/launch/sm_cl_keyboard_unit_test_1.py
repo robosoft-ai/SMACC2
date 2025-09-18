@@ -23,6 +23,15 @@ def generate_launch_description():
                 package="sm_cl_keyboard_unit_test_1",
                 executable="sm_cl_keyboard_unit_test_1_node",
                 output="screen",
+            ),
+            
+            Node(
+                package="cl_keyboard",
+                executable="keyboard_server_node.py",
+                name="cl_keyboard",
+                output="screen",
+                prefix="xterm -hold -e",
+                arguments=["--ros-args", "--log-level", "INFO"],
             )
         ]
     )

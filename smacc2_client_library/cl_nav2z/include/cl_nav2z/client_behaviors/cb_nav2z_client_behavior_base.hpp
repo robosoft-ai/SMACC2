@@ -27,6 +27,7 @@
 
 namespace cl_nav2z
 {
+  using namespace smacc2;
 class CbNav2ZClientBehaviorBase : public smacc2::SmaccAsyncClientBehavior
 {
 public:
@@ -36,8 +37,8 @@ public:
   void onStateOrthogonalAllocation()
   {
     // NEW: Pure component-based approach - no client dependencies
-    this->requiresComponent(nav2ActionInterface_);
-    this->requiresComponent(actionClient_);
+    this->requiresComponent(nav2ActionInterface_, ComponentRequirement::HARD);
+    this->requiresComponent(actionClient_, ComponentRequirement::HARD);
 
     smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }

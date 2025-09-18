@@ -1,7 +1,0 @@
-<launch>
-    <arg name="server_nodes_xterms" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -e" />
-    <node pkg="sm_cl_keyboard_unit_test_1" exec="sm_cl_keyboard_unit_test_1_node" name="sm_cl_keyboard_unit_test_1">
-        <param from="$(find-pkg-share sm_cl_keyboard_unit_test_1)/config/sm_cl_keyboard_unit_test_1_config.yaml"/>
-    </node>
-    <node pkg="keyboard_client" exec="keyboard_server_node.py" name="keyboard_server_node" launch-prefix="$(var server_nodes_xterms)"  />
-</launch>

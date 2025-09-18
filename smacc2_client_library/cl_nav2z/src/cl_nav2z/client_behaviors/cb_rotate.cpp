@@ -51,7 +51,7 @@ void CbRotate::onEntry()
     plannerSwitcher->setDefaultPlanners();
   }
 
-  Pose * p;
+  CpPose * p;
   this->requiresComponent(p, ComponentRequirement::HARD);
 
   auto referenceFrame = p->getReferenceFrame();

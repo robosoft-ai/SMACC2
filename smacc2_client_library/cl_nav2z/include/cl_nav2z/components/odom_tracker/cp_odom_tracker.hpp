@@ -146,7 +146,7 @@ protected:
   // without any subscriber
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odomSub_;
 
-  cl_nav2z::Pose * robotPose_;
+  cl_nav2z::CpPose * robotPose_;
   rclcpp::TimerBase::SharedPtr robotPoseTimer_;
 
   // -------------- PARAMETERS ----------------------

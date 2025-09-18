@@ -21,6 +21,7 @@
 
 namespace cl_nav2z
 {
+  using namespace smacc2;
 CbResumeSlam::CbResumeSlam(std::string serviceName)
 : smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>(serviceName.c_str())
 {
@@ -28,7 +29,7 @@ CbResumeSlam::CbResumeSlam(std::string serviceName)
 
 void CbResumeSlam::onEntry()
 {
-  this->requiresComponent(this->slam_);
+  this->requiresComponent(this->slam_, ComponentRequirement::HARD);
 
   auto currentState = slam_->getState();
 
