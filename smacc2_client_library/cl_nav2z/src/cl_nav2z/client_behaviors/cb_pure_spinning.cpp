@@ -25,7 +25,7 @@
 #include <sensor_msgs/msg/laser_scan.hpp>
 namespace cl_nav2z
 {
-
+using namespace smacc2;
 CbPureSpinning::CbPureSpinning(double targetYaw_rads, double max_angular_yaw_speed)
 : targetYaw__rads(targetYaw_rads),
   k_betta_(1.0),

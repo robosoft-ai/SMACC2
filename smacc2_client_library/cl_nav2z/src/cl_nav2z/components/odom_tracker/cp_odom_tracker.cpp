@@ -31,6 +31,8 @@ namespace cl_nav2z
 {
 namespace odom_tracker
 {
+  using namespace smacc2;
+  
 CpOdomTracker::CpOdomTracker(
   std::string odomTopicName, std::string odomFrame, OdomTrackerStrategy strategy)
 : strategy_(strategy)

@@ -27,6 +27,7 @@
 
 namespace cl_nav2z
 {
+  using namespace smacc2;
 CbPositionControlFreeSpace::CbPositionControlFreeSpace()
 : targetYaw_(0), k_betta_(1.0), max_angular_yaw_speed_(1.0)
 {

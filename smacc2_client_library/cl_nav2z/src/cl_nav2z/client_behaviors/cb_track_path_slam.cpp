@@ -26,7 +26,7 @@
 
 namespace cl_nav2z
 {
-
+using namespace smacc2;
 CbTrackPathSLAM::CbTrackPathSLAM() {}
 
 void CbTrackPathSLAM::onEntry()
