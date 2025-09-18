@@ -21,7 +21,7 @@
 
 namespace cl_nav2z
 {
-  using namespace smacc2;
+using namespace smacc2;
 
 CbNavigateNextWaypointFree::CbNavigateNextWaypointFree() {}
 

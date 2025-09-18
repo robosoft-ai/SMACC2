@@ -25,7 +25,7 @@
 namespace cl_nav2z
 {
 
-  using namespace smacc2;
+using namespace smacc2;
 CbLoadWaypointsFile::CbLoadWaypointsFile(std::string filepath) : filepath_(filepath) {}
 
 CbLoadWaypointsFile::CbLoadWaypointsFile(std::string parameter_name, std::string packagenamespace)
