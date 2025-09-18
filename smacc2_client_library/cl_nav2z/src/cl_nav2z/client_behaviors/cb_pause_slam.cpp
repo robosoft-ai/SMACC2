@@ -21,8 +21,8 @@
 
 namespace cl_nav2z
 {
-  using namespace smacc2;
-  
+using namespace smacc2;
+
 CbPauseSlam::CbPauseSlam(std::string serviceName)
 : smacc2::client_behaviors::CbServiceCall<slam_toolbox::srv::Pause>(serviceName.c_str())
 {

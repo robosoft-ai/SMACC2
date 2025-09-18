@@ -27,7 +27,7 @@
 
 namespace cl_nav2z
 {
-  using namespace smacc2;
+using namespace smacc2;
 class CbNav2ZClientBehaviorBase : public smacc2::SmaccAsyncClientBehavior
 {
 public:

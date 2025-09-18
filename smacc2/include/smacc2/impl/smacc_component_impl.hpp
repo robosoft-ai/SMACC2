@@ -44,73 +44,72 @@ template <typename TComponent>
 void ISmaccComponent::requiresComponent(
   TComponent *& requiredComponentStorage, bool throwExceptionIfNotExist)
 {
-  this->requiresComponent(requiredComponentStorage, throwExceptionIfNotExist ? ComponentRequirement::HARD
-                                                                             : ComponentRequirement::SOFT);
+  this->requiresComponent(
+    requiredComponentStorage,
+    throwExceptionIfNotExist ? ComponentRequirement::HARD : ComponentRequirement::SOFT);
 }
 
 template <typename TComponent>
 void ISmaccComponent::requiresComponent(
   std::string name, TComponent *& requiredComponentStorage, bool throwExceptionIfNotExist)
 {
-  this->requiresComponent(name, requiredComponentStorage, throwExceptionIfNotExist? ComponentRequirement::HARD
-                                                                                 : ComponentRequirement::SOFT);
+  this->requiresComponent(
+    name, requiredComponentStorage,
+    throwExceptionIfNotExist ? ComponentRequirement::HARD : ComponentRequirement::SOFT);
 }
 
 template <typename TComponent>
-  void ISmaccComponent::requiresComponent(
-    TComponent *& requiredComponentStorage, ComponentRequirement requirementType )
+void ISmaccComponent::requiresComponent(
+  TComponent *& requiredComponentStorage, ComponentRequirement requirementType)
+{
+  requiredComponentStorage = this->owner_->getComponent<TComponent>();
+
+  if (requiredComponentStorage == nullptr && requirementType == ComponentRequirement::HARD)
+  {
+    RCLCPP_DEBUG_STREAM(
+      this->getLogger(), std::string("Required component ") +
+                           demangleSymbol(typeid(TComponent).name()) +
+                           " not found. Available components:");
+
+    std::vector<std::shared_ptr<ISmaccComponent>> components;
+    this->owner_->getComponents(components);
+
+    for (auto c : components)
     {
-      requiredComponentStorage = this->owner_->getComponent<TComponent>();
-
-      if (requiredComponentStorage == nullptr && requirementType == ComponentRequirement::HARD)
-      {
-        RCLCPP_DEBUG_STREAM(
-          this->getLogger(), std::string("Required component ") +
-                              demangleSymbol(typeid(TComponent).name()) +
-                              " not found. Available components:");
-
-        std::vector<std::shared_ptr<ISmaccComponent>> components;
-        this->owner_->getComponents(components);
-
-        for (auto c : components)
-        {
-          RCLCPP_DEBUG(this->getLogger(), "- Component %s", c->getName().c_str());
-        }
-
-        throw std::runtime_error(
-          std::string("Component ") + demangleSymbol(typeid(TComponent).name()) + " not found");
-      }
+      RCLCPP_DEBUG(this->getLogger(), "- Component %s", c->getName().c_str());
     }
 
-  template <typename TComponent>
-  void ISmaccComponent::requiresComponent(
-    std::string name, TComponent *& requiredComponentStorage,
-    ComponentRequirement requirementType)
+    throw std::runtime_error(
+      std::string("Component ") + demangleSymbol(typeid(TComponent).name()) + " not found");
+  }
+}
+
+template <typename TComponent>
+void ISmaccComponent::requiresComponent(
+  std::string name, TComponent *& requiredComponentStorage, ComponentRequirement requirementType)
+{
+  requiredComponentStorage = this->owner_->getComponent<TComponent>(name);
+
+  if (requiredComponentStorage == nullptr && requirementType == ComponentRequirement::HARD)
+  {
+    RCLCPP_DEBUG_STREAM(
+      this->getLogger(), std::string("Required component with name: '") + name + "'" +
+                           demangleSymbol(typeid(TComponent).name()) +
+                           " not found. Available components:");
+
+    std::vector<std::shared_ptr<ISmaccComponent>> components;
+    this->owner_->getComponents(components);
+
+    for (auto c : components)
     {
-      requiredComponentStorage = this->owner_->getComponent<TComponent>(name);
-
-      if (requiredComponentStorage == nullptr && requirementType == ComponentRequirement::HARD)
-      {
-        RCLCPP_DEBUG_STREAM(
-          this->getLogger(), std::string("Required component with name: '") + name + "'" +
-                              demangleSymbol(typeid(TComponent).name()) +
-                              " not found. Available components:");
-
-        std::vector<std::shared_ptr<ISmaccComponent>> components;
-        this->owner_->getComponents(components);
-
-        for (auto c : components)
-        {
-          RCLCPP_DEBUG(this->getLogger(), " - Component %s", c->getName().c_str());
-        }
-
-        throw std::runtime_error(
-          std::string("Component ") + demangleSymbol(typeid(TComponent).name()) +
-          std::string(" not found"));
-      }
+      RCLCPP_DEBUG(this->getLogger(), " - Component %s", c->getName().c_str());
     }
 
-
+    throw std::runtime_error(
+      std::string("Component ") + demangleSymbol(typeid(TComponent).name()) +
+      std::string(" not found"));
+  }
+}
 
 template <typename TClient>
 void ISmaccComponent::requiresClient(TClient *& requiredClientStorage)

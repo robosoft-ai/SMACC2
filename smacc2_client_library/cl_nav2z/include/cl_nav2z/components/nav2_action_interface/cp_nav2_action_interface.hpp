@@ -27,7 +27,7 @@ namespace cl_nav2z
 {
 namespace components
 {
-  using namespace smacc2;
+using namespace smacc2;
 
 class CpNav2ActionInterface : public smacc2::ISmaccComponent
 {

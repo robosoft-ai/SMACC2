@@ -34,8 +34,9 @@ CbLoadWaypointsFile::CbLoadWaypointsFile(std::string parameter_name, std::string
 
 void CbLoadWaypointsFile::onEntry()
 {
-  requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);  // this is a component from the
-                                           // nav2z_client library
+  requiresComponent(
+    waypointsNavigator_, ComponentRequirement::HARD);  // this is a component from the
+                                                       // nav2z_client library
 
   if (filepath_)
   {
