@@ -62,10 +62,7 @@ void CbAbsoluteRotate::onEntry()
 
   updateTemporalBehaviorParameters(false);
 
-  //auto p = nav2zClient_->getComponent<cl_nav2z::Pose>();
-  cl_nav2z::Pose * p;
-  this->requiresComponent(p, ComponentRequirement::HARD);
-
+  auto p = nav2zClient_->getComponent<cl_nav2z::Pose>();
   auto referenceFrame = p->getReferenceFrame();
   auto currentPoseMsg = p->toPoseMsg();
 
@@ -79,10 +76,7 @@ void CbAbsoluteRotate::onEntry()
   q.setRPY(0, 0, targetAngle);
   goal.pose.pose.orientation = tf2::toMsg(q);
 
-  CpOdomTracker * odomTracker_;
-  requiresComponent(odomTracker_, smacc2::ComponentRequirement::SOFT);
-  // auto odomTracker_ = nav2zClient_->getComponent<odom_tracker::CpOdomTracker>();
-
+  auto odomTracker_ = nav2zClient_->getComponent<odom_tracker::CpOdomTracker>();
   if (odomTracker_ != nullptr)
   {
     auto pathname = this->getCurrentState()->getName() + " - " + getName();
@@ -92,10 +86,7 @@ void CbAbsoluteRotate::onEntry()
     odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
   }
 
-  // auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
-  CpGoalCheckerSwitcher * goalCheckerSwitcher;
-  requiresComponent(goalCheckerSwitcher);
-
+  auto goalCheckerSwitcher = nav2zClient_->getComponent<CpGoalCheckerSwitcher>();
   goalCheckerSwitcher->setGoalCheckerId("absolute_rotate_goal_checker");
 
   RCLCPP_INFO_STREAM(
