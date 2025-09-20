@@ -10,7 +10,7 @@
                 "/usr/include/x86_64-linux-gnu/qt5",
                 "/usr/include/x86_64-linux-gnu/qt5/QtCore",
                 "/usr/include/opencv4",
-                "${workspaceFolder}/SMACC2/smacc2_client_library/ros_timer_client/include"
+                "${workspaceFolder}/SMACC2/smacc2_client_library/cl_ros2_timer/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
