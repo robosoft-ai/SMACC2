@@ -47,7 +47,6 @@ void CpWaypointNavigatorBase::onInitialize() {}
 
 void CpWaypointNavigator::onInitialize()
 {
-  client_ = dynamic_cast<ClNav2Z *>(owner_);
   this->requiresComponent(nav2ActionInterface_, ComponentRequirement::HARD);
 }
 

@@ -41,8 +41,7 @@ public:
     // Create core action client component
     auto actionClient = this->createComponent<
       smacc2::client_core_components::CpActionClient<nav2_msgs::action::NavigateToPose>,
-      TOrthogonal, ClNav2Z>();
-    actionClient->actionServerName = actionServerName_;
+      TOrthogonal, ClNav2Z>(actionServerName_);
 
     // Create nav2-specific interface component (requires actionClient)
     this->createComponent<components::CpNav2ActionInterface, TOrthogonal, ClNav2Z>();

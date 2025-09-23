@@ -50,6 +50,81 @@
                 }
             ]
         },
+          {
+    "name": "(gdb) sm_nav2_test_10 (docker admin)",
+    "type": "cppdbg",
+    "request": "launch",
+
+    "program": "/home/admin/.vscode-gdb-run.sh",
+    "args": [
+        "/workspaces/isaac_ros-dev/install/sm_nav2_test_10/lib/sm_nav2_test_10/sm_nav2_test_10_node",
+        "--ros-args", "--log-level", "INFO",
+        "--ros-args", "-r", "__node:=SmNav2Test10",
+        "--params-file", "/workspaces/isaac_ros-dev/install/sm_nav2_test_10/share/sm_nav2_test_10/config/sm_nav2_test_10_config.yaml"
+    ],
+
+    "cwd": "/workspaces/isaac_ros-dev",
+    "MIMode": "gdb",
+    "externalConsole": false,
+
+"pipeTransport": {
+  "pipeProgram": "docker",
+  "pipeArgs": ["exec","-i","-u","admin","isaac_ros_dev-x86_64-container","/bin/bash","-l","-c"],
+  "debuggerPath": "/usr/bin/gdb",
+  "pipeCwd": "/workspaces/isaac_ros-dev"
+},
+
+
+    "sourceFileMap": {
+        "/workspaces/isaac_ros-dev": "${workspaceFolder}"
+    },
+
+    "setupCommands": [
+        { "text": "-enable-pretty-printing", "ignoreFailures": true },
+        { "text": "set breakpoint pending on" },
+        { "text": "set pagination off" },
+        { "text": "set exec-wrapper /home/admin/.vscode-gdb-run.sh" }
+        ]
+},
+{
+  "name": "(gdbserver) sm_nav2_test_10",
+  "type": "cppdbg",
+  "request": "launch",
+  "program": "${workspaceFolder}/../install/sm_nav2_test_10/lib/sm_nav2_test_10/sm_nav2_test_10_node",
+  "cwd": "${workspaceFolder}",
+
+  "preLaunchTask": "start gdbserver sm_nav2_test_10",
+  "postDebugTask": "stop gdbserver sm_nav2_test_10",
+
+  "MIMode": "gdb",
+  "miDebuggerPath": "/usr/bin/gdb",
+  "miDebuggerServerAddress": "localhost:2345",
+  "externalConsole": false,
+
+  "environment": [
+    {
+      "name": "TARGET_PROGRAM",
+      "value": "/workspaces/isaac_ros-dev/install/sm_nav2_test_10/lib/sm_nav2_test_10/sm_nav2_test_10_node"
+    }
+  ],
+
+  "setupCommands": [
+    { "text": "-enable-pretty-printing", "ignoreFailures": true },
+    { "text": "set pagination off" },
+    { "text": "set breakpoint pending on" },
+    { "text": "set breakpoint always-inserted on" },
+    { "text": "set stop-on-solib-events 1" }
+  ],
+
+  "stopAtEntry": false
+}
+
+
+
+
+
+,
+
 
         {
             "name": "(gdb) sm_panda_moveit2z_cb_inventory_node",
@@ -100,7 +175,7 @@
                 }
             ]
         }
-
+,
         {
             "name": "(gdb) Attach sm_panda_moveit2z_cb_inventory_node",
             "type": "cppdbg",
@@ -266,7 +341,7 @@
                 }
             ]
         },
-        {-
+        {
             "name": "(gdb) sm_atomic_services",
             "type": "cppdbg",
             "request": "launch",

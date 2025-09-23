@@ -120,9 +120,6 @@ public:
   template <typename TOrthogonal, typename TClient>
   void onComponentInitialization()
   {
-    // Require the underlying action client component
-    this->requiresComponent(actionClient_, ComponentRequirement::HARD);
-
     // Set up nav2-specific event posting functions
     postNavigationSuccessEvent = [this](const WrappedResult & result)
     {
@@ -145,7 +142,7 @@ public:
     postNavigationFeedbackEvent = [this](const Feedback & feedback)
     {
       auto * ev = new smacc2::default_events::EvActionFeedback<TClient, TOrthogonal>();
-      ev->feedbackMessage = feedback;
+      //ev->feedbackMessage = feedback;
       this->postEvent(ev);
     };
 
@@ -154,6 +151,11 @@ public:
 
   void onInitialize() override
   {
+    RCLCPP_INFO(getLogger(), "[CpNav2ActionInterface] Component initializing");
+
+    // Require the underlying action client component
+    this->requiresComponent(actionClient_, ComponentRequirement::HARD);
+
     // Wire up signal connections from action client to nav2-specific signals
     if (actionClient_)
     {
@@ -209,7 +211,7 @@ public:
   }
 
 private:
-  ActionClient * actionClient_ = nullptr;
+  smacc2::client_core_components::CpActionClient<ActionType> * actionClient_ = nullptr;
 
   // Event translation callbacks
   void onNavigationSuccessCallback(const WrappedResult & result)

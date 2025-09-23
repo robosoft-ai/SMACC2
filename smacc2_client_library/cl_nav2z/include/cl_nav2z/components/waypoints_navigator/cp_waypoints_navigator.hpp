@@ -58,6 +58,7 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
+    client_ = dynamic_cast<ClNav2Z *>(owner_);
     waypointsEventDispatcher.initialize<TSourceObject, TOrthogonal>(client_);
     this->requiresComponent(nav2ActionInterface_, ComponentRequirement::HARD);
   }

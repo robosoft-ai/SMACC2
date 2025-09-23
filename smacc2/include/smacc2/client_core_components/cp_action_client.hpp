@@ -109,7 +109,9 @@ public:
       }
     };
 
-    RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Sending goal to action server");
+    RCLCPP_INFO_STREAM(
+      getLogger(),
+      "[" << this->getName() << "] Sending goal to action server: " << (long)client_.get());
 
     auto goalFuture = client_->async_send_goal(goal, options);
     lastRequest_ = goalFuture;
@@ -163,6 +165,9 @@ public:
       "[" << this->getName() << "] Initializing action client for: " << *actionServerName);
 
     client_ = rclcpp_action::create_client<ActionType>(getNode(), *actionServerName);
+    RCLCPP_INFO_STREAM(
+      getLogger(),
+      "[" << this->getName() << "] DONE Initializing action client for: " << *actionServerName);
 
     // Set up feedback callback
     feedbackCallback_ = [this](auto goalHandle, auto feedback)
@@ -185,7 +190,7 @@ public:
     postFeedbackEvent = [this](const Feedback & feedback)
     {
       auto actionFeedbackEvent = new EvActionFeedback<Feedback, TOrthogonal>();
-      actionFeedbackEvent->client = this;
+      // actionFeedbackEvent->client = this->owner_;
       actionFeedbackEvent->feedbackMessage = feedback;
       this->postEvent(actionFeedbackEvent);
       RCLCPP_DEBUG(getLogger(), "[%s] FEEDBACK EVENT", this->getName().c_str());
@@ -221,7 +226,7 @@ public:
   std::shared_ptr<ActionClient> getActionClient() const { return client_; }
 
 private:
-  std::shared_ptr<ActionClient> client_;
+  std::shared_ptr<ActionClient> client_ = nullptr;
   std::optional<std::shared_future<typename GoalHandle::SharedPtr>> lastRequest_;
   std::optional<
     std::shared_future<typename rclcpp_action::Client<ActionType>::CancelResponse::SharedPtr>>
