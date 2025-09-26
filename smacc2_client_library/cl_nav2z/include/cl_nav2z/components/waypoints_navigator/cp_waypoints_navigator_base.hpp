@@ -55,19 +55,6 @@ public:
 
   void onInitialize() override;
 
-  // DEPRECATED: For third-party compatibility only. Third-party developers should migrate to onStateOrthogonalAllocation
-  // This method exists to support existing third-party classes that inherit from this base class
-  // and call CpWaypointNavigatorBase::onOrthogonalAllocation<TOrthogonal, TSourceObject>()
-  template <typename TOrthogonal, typename TSourceObject>
-  [[deprecated(
-    "Use onStateOrthogonalAllocation instead. This method exists only for third-party "
-    "compatibility.")]] void
-  onOrthogonalAllocation()
-  {
-    // Call the new method to maintain functionality for third-party inheritors
-    onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
-  }
-
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {

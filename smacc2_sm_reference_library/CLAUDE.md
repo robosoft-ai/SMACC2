@@ -125,3 +125,25 @@ To use the update() function at a custom rate like 10Hz instead of the
   ├── package.xml              # ROS2 package metadata
   └── README.md                # State machine documentation
 ```
+
+# Runtime test command
+
+To debug a state machine you can use following topics:
+
+To see the structure of the state machine:
+```
+ros2 topic echo /SmNav2Test10/smacc/state_machine_description
+```
+
+To see the current state (also hierarchy, mode states, super states, etc.)
+```
+ros2 topic echo /SmNav2Test10/smacc/status
+```
+
+To see the transitions of the state machine that are being triggered:
+```
+ros2 topic echo /SmNav2Test10/smacc/transition_log
+```
+
+Note: 'SmNav2Test10' is the name of the main state machine node, that may vary depending on the demo.
+
