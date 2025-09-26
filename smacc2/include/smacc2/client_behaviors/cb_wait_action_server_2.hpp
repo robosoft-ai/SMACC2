@@ -21,8 +21,8 @@
 #pragma once
 
 #include <smacc2/client_bases/smacc_action_client_base.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <smacc2/client_core_components/cp_action_client.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace smacc2
 {
@@ -32,11 +32,10 @@ using namespace smacc2::client_bases;
 using namespace smacc2::client_core_components;
 
 // waits the action server is available in the current orthogonal
-template<typename ActionT>
+template <typename ActionT>
 class CbWaitActionServer2 : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
@@ -45,40 +44,41 @@ public:
     this->requiresComponent(cp_action_client_, ComponentRequirement::SOFT);
   }
 
-CbWaitActionServer2(std::chrono::milliseconds timeout) : timeout_(timeout) {}
+  CbWaitActionServer2(std::chrono::milliseconds timeout) : timeout_(timeout) {}
 
-virtual ~CbWaitActionServer2() {}
+  virtual ~CbWaitActionServer2() {}
 
-void onEntry()
-{
-  if (cp_action_client_ != nullptr)
+  void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "[CbWaitActionServer] waiting for action server (using CpActionClient)...");
-    bool found = false;
-    auto starttime = getNode()->now();
-    while (!this->isShutdownRequested() && !found && (getNode()->now() - starttime) < timeout_)
+    if (cp_action_client_ != nullptr)
     {
-      auto client_base = cp_action_client_->getActionClient();
-      found = client_base->wait_for_action_server(std::chrono::milliseconds(1000));
-    }
+      RCLCPP_INFO(
+        getLogger(), "[CbWaitActionServer] waiting for action server (using CpActionClient)...");
+      bool found = false;
+      auto starttime = getNode()->now();
+      while (!this->isShutdownRequested() && !found && (getNode()->now() - starttime) < timeout_)
+      {
+        auto client_base = cp_action_client_->getActionClient();
+        found = client_base->wait_for_action_server(std::chrono::milliseconds(1000));
+      }
 
-    if (found)
-    {
-      RCLCPP_INFO(getLogger(), "[CbWaitActionServer] action server already available");
-      this->postSuccessEvent();
+      if (found)
+      {
+        RCLCPP_INFO(getLogger(), "[CbWaitActionServer] action server already available");
+        this->postSuccessEvent();
+      }
+      else
+      {
+        RCLCPP_INFO(getLogger(), "[CbWaitActionServer] action server not found, timeout");
+        this->postFailureEvent();
+      }
     }
     else
     {
-      RCLCPP_INFO(getLogger(), "[CbWaitActionServer] action server not found, timeout");
+      RCLCPP_INFO(getLogger(), "[CbWaitActionServer] there is no action client in this orthogonal");
       this->postFailureEvent();
     }
   }
-  else
-  {
-    RCLCPP_INFO(getLogger(), "[CbWaitActionServer] there is no action client in this orthogonal");
-    this->postFailureEvent();
-  }
-}
 
 private:
   CpActionClient<ActionT> * cp_action_client_;

@@ -146,4 +146,3 @@ ros2 topic echo /SmNav2Test10/smacc/transition_log
 ```
 
 Note: 'SmNav2Test10' is the name of the main state machine node, that may vary depending on the demo.
-

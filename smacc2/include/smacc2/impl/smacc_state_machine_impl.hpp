@@ -285,14 +285,14 @@ void ISmaccStateMachine::mapBehavior()
   RCLCPP_INFO(
     getLogger(), "Mapping state field '%s' to stateReactor '%s'", stateFieldName.c_str(),
     behaviorType.c_str());
-  SmaccClientBehavior * globalreference;
+  smacc2::ISmaccClientBehavior * globalreference;
   if (!this->getGlobalSMData(stateFieldName, globalreference))
   {
     // Using the requires component approach, we force a unique existence
     // of this component
     BehaviorType * behavior;
     this->requiresComponent(behavior);
-    globalreference = dynamic_cast<ISmaccClientBehavior *>(behavior);
+    globalreference = dynamic_cast<smacc2::ISmaccClientBehavior *>(behavior);
 
     this->setGlobalSMData(stateFieldName, globalreference);
   }
