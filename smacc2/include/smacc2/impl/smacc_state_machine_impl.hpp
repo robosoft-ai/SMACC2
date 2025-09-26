@@ -290,26 +290,26 @@ void ISmaccStateMachine::setGlobalSMData(std::string name, T value)
   this->updateStatusMessage();
 }
 
-template <typename StateField, typename BehaviorType>
-void ISmaccStateMachine::mapBehavior()
-{
-  std::string stateFieldName = demangleSymbol(typeid(StateField).name());
-  std::string behaviorType = demangleSymbol(typeid(BehaviorType).name());
-  RCLCPP_INFO(
-    getLogger(), "Mapping state field '%s' to stateReactor '%s'", stateFieldName.c_str(),
-    behaviorType.c_str());
-  smacc2::ISmaccClientBehavior * globalreference;
-  if (!this->getGlobalSMData(stateFieldName, globalreference))
-  {
-    // Using the requires component approach, we force a unique existence
-    // of this component
-    BehaviorType * behavior;
-    this->requiresComponent(behavior);
-    globalreference = dynamic_cast<smacc2::ISmaccClientBehavior *>(behavior);
-
-    this->setGlobalSMData(stateFieldName, globalreference);
-  }
-}
+//template <typename StateField, typename BehaviorType>
+//void ISmaccStateMachine::mapBehavior()
+//{
+//  std::string stateFieldName = demangleSymbol(typeid(StateField).name());
+//  std::string behaviorType = demangleSymbol(typeid(BehaviorType).name());
+//  RCLCPP_INFO(
+//    getLogger(), "Mapping state field '%s' to stateReactor '%s'", stateFieldName.c_str(),
+//    behaviorType.c_str());
+//  smacc2::ISmaccClientBehavior * globalreference;
+//  if (!this->getGlobalSMData(stateFieldName, globalreference))
+//  {
+//    // Using the requires component approach, we force a unique existence
+//    // of this component
+//    BehaviorType * behavior;
+//    this->requiresComponent(behavior);
+//    globalreference = dynamic_cast<smacc2::ISmaccClientBehavior *>(behavior);
+//
+//    this->setGlobalSMData(stateFieldName, globalreference);
+//  }
+//}
 
 namespace utils
 {
