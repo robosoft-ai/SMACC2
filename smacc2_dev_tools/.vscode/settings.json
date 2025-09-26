@@ -1,5 +1,5 @@
 {
-    "ros.distro": "galactic",
+    "ros.distro": "humble",
 
     "files.associations": {
         "cctype": "cpp",
@@ -116,11 +116,11 @@
 
     },
     "python.autoComplete.extraPaths": [
-        "/opt/ros/galactic/lib/python3.8/site-packages"
+        "/opt/ros/humble/lib/python3.10/site-packages"
     ],
     "python.analysis.extraPaths": [
-        "/opt/ros/galactic/lib/python3.8/site-packages"
+        "/opt/ros/humble/lib/python3.10/site-packages"
     ],
-    "cmake.sourceDirectory": "/home/geus/Desktop/smacc2_ws/src/SMACC2/.work/target_ws/build/smacc2_msgs/smacc2_msgs__py",
+    "cmake.sourceDirectory": "~/Desktop/workspace/isaac_ros-dev/src/SMACC2/.work/target_ws/build/smacc2_msgs/smacc2_msgs__py",
 
 }
