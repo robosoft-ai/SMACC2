@@ -145,4 +145,9 @@ To see the transitions of the state machine that are being triggered:
 ros2 topic echo /SmNav2Test10/smacc/transition_log
 ```
 
+Too see events:
+```
+ros2 topic echo /SmClRos2TimerUnitTest1/smacc/event_log
+```
+
 Note: 'SmNav2Test10' is the name of the main state machine node, that may vary depending on the demo.

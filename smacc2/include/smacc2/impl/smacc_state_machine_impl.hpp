@@ -183,6 +183,19 @@ void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
 
   TRACEPOINT(smacc2_event, eventtypename);
 
+  {
+    auto evinfo = SmaccEventInfo(TypeInfo::getTypeInfoFromType<EventType>());
+    EventLabel<EventType>(evinfo.label);
+
+    smacc2_msgs::msg::SmaccEvent event;
+    event.event_type = evinfo.getEventTypeName();
+    event.event_source = evinfo.getEventSourceName();
+    event.event_object_tag = evinfo.getOrthogonalName();
+    event.label = evinfo.label;
+
+    this->eventsLogPub_->publish(event);
+  }
+
   if (
     evlifetime == EventLifeTime::CURRENT_STATE &&
     (stateMachineCurrentAction == StateMachineInternalAction::STATE_EXITING ||

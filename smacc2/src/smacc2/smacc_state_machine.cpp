@@ -172,6 +172,9 @@ void ISmaccStateMachine::initializeROS(std::string shortname)
   transitionLogPub_ = nh_->create_publisher<smacc2_msgs::msg::SmaccTransitionLogEntry>(
     shortname + "/smacc/transition_log", rclcpp::QoS(1));
 
+  eventsLogPub_ = nh_->create_publisher<smacc2_msgs::msg::SmaccEvent>(
+    shortname + "/smacc/event_log", rclcpp::QoS(100));
+
   // STATE MACHINE SERVICES
   transitionHistoryService_ = nh_->create_service<smacc2_msgs::srv::SmaccGetTransitionHistory>(
     shortname + "/smacc/transition_log_history",
