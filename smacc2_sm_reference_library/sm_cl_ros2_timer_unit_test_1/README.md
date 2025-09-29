@@ -32,7 +32,7 @@ source ~/workspace/humble_ws/install/setup.sh
 And then run the launch file...
 
 ```
-ros2 launch sm_cl_ros2_timer_unit_test_1 sm_cl_ros2_timer_unit_test_1.launch
+ros2 launch sm_cl_ros2_timer_unit_test_1 sm_cl_ros2_timer_unit_test_1.py
 ```
 
  <h2>Viewer Instructions</h2>
