@@ -149,5 +149,9 @@ Too see events:
 ```
 ros2 topic echo /SmClRos2TimerUnitTest1/smacc/event_log
 ```
-
 Note: 'SmNav2Test10' is the name of the main state machine node, that may vary depending on the demo.
+
+To simulate keyboard strokes, in particular 'N', which is used to manually transition states, use the command:
+```
+ros2 topic pub /keyboard_unicode std_msgs/msg/UInt16 "data: 110" --once
+```

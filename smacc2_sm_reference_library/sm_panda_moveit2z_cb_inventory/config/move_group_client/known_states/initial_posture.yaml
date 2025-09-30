@@ -1,6 +1,8 @@
 joint_states:
-    shoulder_lift_joint: 0.0
-    shoulder_pan_joint: 0.0
-    wrist_1_joint: 0.0
-    wrist_2_joint: 0.0
-    wrist_3_joint: 0.0
+    panda_joint1: 0.0
+    panda_joint2: 0.0
+    panda_joint3: 0.0
+    panda_joint4: 0.0
+    panda_joint5: 0.0
+    panda_joint6: 0.0
+    panda_joint7: 0.0

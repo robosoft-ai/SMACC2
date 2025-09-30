@@ -58,15 +58,19 @@ struct StMoveEndEffector : smacc2::SmaccState<StMoveEndEffector, SmPandaMoveit2z
   {
     geometry_msgs::msg::PoseStamped target_pose;
     target_pose.header.frame_id = "panda_link0";
-    target_pose.pose.position.x = 0.4;
-    target_pose.pose.position.y = 0;
-    target_pose.pose.position.z = 0.467;
+    // Dramatic movement for high visibility in RViz
+    // Current pose: [0.554, 0.000, 0.625]
+    target_pose.pose.position.x = 0.3;   // Large movement: -0.254m from current
+    target_pose.pose.position.y = 0.2;   // Lateral movement: +0.2m from current
+    target_pose.pose.position.z = 0.4;   // Vertical movement: -0.225m from current
 
-    target_pose.pose.orientation.x = 0;
-    target_pose.pose.orientation.y = 0;
-    target_pose.pose.orientation.z = 0;
+    // Add orientation change for more visible motion
+    // 45-degree rotation around Z-axis for dramatic effect
+    target_pose.pose.orientation.x = 0.0;
+    target_pose.pose.orientation.y = 0.0;
+    target_pose.pose.orientation.z = 0.383;  // sin(45°/2)
 
-    target_pose.pose.orientation.w = 1;
+    target_pose.pose.orientation.w = 0.924;  // cos(45°/2)
 
     //target_pose.pose.position.z = 0.579;
 
