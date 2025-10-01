@@ -45,11 +45,9 @@ struct StEndEffectorRotate : smacc2::SmaccState<StEndEffectorRotate, SmPandaMove
   typedef boost::mpl::list<
 
 
-    Transition<EvCbSuccess<CbEndEffectorRotate, OrArm>, StMoveKnownState1, SUCCESS>,
-    Transition<EvCbFailure<CbEndEffectorRotate, OrArm>, StEndEffectorRotate, SUCCESS>,
-
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveEndEffector, PREVIOUS>,  
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveKnownState1, NEXT>  
+    Transition<EvCbSuccess<CbEndEffectorRotate, OrArm>, StPause7, SUCCESS>,
+    
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause7, NEXT>  
 
 
     >

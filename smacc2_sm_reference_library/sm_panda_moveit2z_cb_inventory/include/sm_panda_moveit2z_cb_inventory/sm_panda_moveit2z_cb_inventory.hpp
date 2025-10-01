@@ -53,6 +53,12 @@ struct StPause3;
 struct StPause4;
 struct StPause5;
 struct StPause6;
+struct StPause7;
+struct StPause8;
+struct StPause9;
+struct StPause10;
+struct StPause11;
+struct StPause12;
 struct StMoveJoints1;
 struct StMoveJoints2;
 struct StMoveJoints3;
@@ -61,7 +67,7 @@ struct StMoveCartesianRelative;
 struct StMoveCartesianRelative2;
 struct StCircularPivotMotion;
 struct StAttachObject;
-struct StDetatchObject;
+struct StDetachObject;
 struct StEndEffectorRotate;
 struct StExecuteLastTrajectory;
 struct StMoveKnownState1;
@@ -94,6 +100,12 @@ struct SmPandaMoveit2zCbInventory : public smacc2::SmaccStateMachineBase<SmPanda
 #include "states/st_pause_4.hpp"
 #include "states/st_pause_5.hpp"
 #include "states/st_pause_6.hpp"
+#include "states/st_pause_7.hpp"
+#include "states/st_pause_8.hpp"
+#include "states/st_pause_9.hpp"
+#include "states/st_pause_10.hpp"
+#include "states/st_pause_11.hpp"
+#include "states/st_pause_12.hpp"
 #include "states/st_attach_object.hpp"
 #include "states/st_move_end_effector.hpp"
 #include "states/st_circular_pivot_motion.hpp"

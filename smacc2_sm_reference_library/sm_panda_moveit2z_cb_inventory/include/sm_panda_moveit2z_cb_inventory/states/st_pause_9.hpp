@@ -21,19 +21,24 @@
 
 #pragma once
 
-#include "rclcpp/rclcpp.hpp"
-#include "smacc2/smacc.hpp"
+#include <sensor_msgs/msg/joint_state.h>
+#include <smacc2/client_behaviors/cb_sleep_for.hpp>
 
 namespace sm_panda_moveit2z_cb_inventory
 {
 // SMACC2 classes
+using smacc2::EvStateRequestFinish;
 using smacc2::Transition;
 using smacc2::default_transition_tags::SUCCESS;
 using namespace smacc2;
+using namespace cl_moveit2z;
+using smacc2::client_behaviors::CbWaitTopicMessage;
+using smacc2::client_behaviors::CbSleepFor;
+using namespace std::chrono_literals;
 using namespace cl_keyboard;
 
 // STATE DECLARATION
-struct StMoveCartesianRelative2 : smacc2::SmaccState<StMoveCartesianRelative2, SmPandaMoveit2zCbInventory>
+struct StPause9 : smacc2::SmaccState<StPause9, SmPandaMoveit2zCbInventory>
 {
   using SmaccState::SmaccState;
 
@@ -43,34 +48,21 @@ struct StMoveCartesianRelative2 : smacc2::SmaccState<StMoveCartesianRelative2, S
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-   Transition<EvCbSuccess<CbMoveCartesianRelative2, OrArm>, StPause10, SUCCESS>,
-   // Transition<EvCbSuccess<CbMoveCartesianRelative2, OrArm>, StAttachObject, SUCCESS>,
-   // Transition<EvCbFailure<CbMoveCartesianRelative2, OrArm>, StMoveCartesianRelative2, ABORT>, // retry
+    Transition<EvCbSuccess<CbSleepFor, OrArm>, StMoveCartesianRelative2, SUCCESS>,
 
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause10, NEXT>  
-    >
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveCartesianRelative2, NEXT>
 
-    reactions;
+
+    > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    geometry_msgs::msg::Vector3 position;
-    position.x = -0.01;
-    position.y = 0.0;
-    position.z = 0.01;
-    configure_orthogonal<OrArm, CbMoveCartesianRelative2>("tool0", "tool0", position);
+    // configure_orthogonal<OrArm, CbWaitTopicMessage<sensor_msgs::msg::JointState>>("/joint_states");
+    configure_orthogonal<OrArm, CbSleepFor>(15s);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
-  }
+  };
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StMoveCartesianRelative2"); }
-
-  void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
-
-  void onExit(ABORT)
-  {
-    rclcpp::sleep_for(1s);
-    RCLCPP_INFO(getLogger(), "On Exit!");
-  }
+  void runtimeConfigure() {}
 };
 }  // namespace sm_panda_moveit2z_cb_inventory

@@ -125,8 +125,59 @@ To use the update() function at a custom rate like 10Hz instead of the
   ├── package.xml              # ROS2 package metadata
   └── README.md                # State machine documentation
 ```
+  # Runtime Test Procedures
 
-# Runtime test command
+  ## CRITICAL: One Test at a Time Rule
+  **⚠️ NEVER run multiple tests concurrently. Each test must be completed 
+  and fully cleaned up before starting the next test.**
+
+  ## Test Execution Workflow
+
+  ### Step 1: Verify a clean environment
+  ros2 node list
+  ✅ REQUIRED RESULT: Empty list OR only smacc2_rta node running
+
+  ### Step 2: Start a Test
+  - Launch the state machine using the command from the package's README.md
+  - Monitor state transitions to verify the state machine progresses beyond
+  the initial state
+  - Trigger state transitions using keyboard events if needed: `ros2 topic
+  pub /keyboard_unicode std_msgs/msg/UInt16 "data: 110" --once`
+
+  ### Step 3: Complete the Test
+  - Allow the state machine to demonstrate state transitions
+  - Verify the test objectives are met
+
+  ### Step 4: **MANDATORY CLEANUP** (Must complete before next test)
+  1. **Kill the test process:**
+     ```bash
+     pkill -f "sm_example" && sleep 5
+     OR use Ctrl-C if running in foreground
+
+  2. Verify clean environment:
+  ros2 node list
+  2. ✅ REQUIRED RESULT: Empty list OR only smacc2_rta node running
+  3. If other nodes still running (NOT smacc2_rta):
+    - List all running nodes and create temporary kill list
+    - Find PIDs: ps -eef | grep [node_name]
+    - Kill each: sudo kill -9 [PID]
+    - Repeat Step 2 until clean
+  4. Wait 3 seconds: sleep 3
+
+  Step 4: Ready for Next Test
+
+  Only proceed to the next test after Step 3 shows a clean environment.
+
+  Common Mistakes to Avoid
+
+  - ❌ Starting a new test while background processes are still running
+  - ❌ Skipping the node list verification step
+  - ❌ Not killing all non-smacc2_rta nodes between tests
+  - ❌ Running multiple launch commands simultaneously
+
+
+
+# Runtime testing commands
 
 To debug a state machine you can use following topics:
 

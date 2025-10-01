@@ -1,0 +1,64 @@
+{
+  "project_name": "SMACC2",
+  "project_description": "State Machine Automation and Control for Complex Systems - A ROS2-based framework for building hierarchical state machines for robotics applications",
+  "project_type": "ros2_robotics",
+  "primary_language": "cpp",
+  "build_system": "colcon",
+  "key_directories": {
+    "core": "smacc2/",
+    "client_libraries": "smacc2_client_library/",
+    "reference_examples": "smacc2_sm_reference_library/"
+  },
+  "important_files": [
+    "smacc2/include/smacc2/smacc_state_machine.hpp",
+    "smacc2/include/smacc2/smacc_signal.hpp",
+    "smacc2/include/smacc2/common.hpp",
+    "CLAUDE.md",
+    "smacc2_client_library/CLAUDE.md",
+    "smacc2_sm_reference_library/CLAUDE.md"
+  ],
+  "coding_conventions": {
+    "naming": "snake_case for files, PascalCase for classes",
+    "state_prefix": "St",
+    "client_prefix": "Cl",
+    "component_prefix": "Cp",
+    "behavior_prefix": "Cb",
+    "orthogonal_prefix": "Or",
+    "event_prefix": "Ev"
+  },
+  "runtime_testing": {
+    "one_test_at_a_time": true,
+    "cleanup_required": true,
+    "keyboard_trigger": "ros2 topic pub /keyboard_unicode std_msgs/msg/UInt16 \"data: 110\" --once"
+  },
+  "approved_bash_commands": [
+    "WebSearch",
+    "Bash(find:*)",
+    "Bash(colcon build:*)",
+    "Bash(source:*)",
+    "Bash(ros2 node:*)",
+    "Bash(ros2 topic echo:*)",
+    "Bash(timeout 5 ros2 topic echo /*/smacc/event_log)",
+    "Bash(ros2 topic pub:*)",
+    "Bash(ros2 launch:*)",
+    "Bash(for i in {1..8})",
+    "Bash(do ros2 topic pub /keyboard_unicode std_msgs/msg/UInt16 \"data: 110\" --once)",
+    "Bash(done)",
+    "Bash(ros2 run:*)",
+    "Bash(for i in {1..10})",
+    "Bash(do ros2 topic pub /keyboard_unicode std_msgs/msg/UInt16 \"data: 110\" --once)",
+    "Bash(timeout 5 ros2 topic echo /*/smacc/status)",
+    "Bash(timeout 3 ros2 topic echo /joint_states --once)",
+    "Bash(do ros2 topic pub /keyboard_unicode std_msgs/msg/UInt16 \"data: 110\" --once)",
+    "Bash(for i in {1..15})",
+    "Bash(for i in {1..20})",
+    "Bash(timeout 5 ros2 topic echo /joint_states --once)",
+    "Bash(unset:*)",
+    "Bash(ros2 pkg list:*)",
+    "Bash(pkill:*)",
+    "Bash(timeout 3 ros2 topic echo:*)",
+    "Bash(for i in {1..5})",
+    "Bash(timeout 5 ros2 topic echo:*)",
+    "Bash(timeout 10 ros2 topic echo /panda_arm_controller/follow_joint_trajectory/_action/send_goal --once)"
+  ]
+}

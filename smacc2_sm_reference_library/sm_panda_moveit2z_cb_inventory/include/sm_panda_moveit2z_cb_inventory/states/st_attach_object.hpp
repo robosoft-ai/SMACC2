@@ -45,8 +45,8 @@ struct StAttachObject : smacc2::SmaccState<StAttachObject, SmPandaMoveit2zCbInve
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbAttachObject, OrArm>, StDetatchObject, SUCCESS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StDetatchObject, NEXT>  
+    Transition<EvCbSuccess<CbAttachObject, OrArm>, StPause11, SUCCESS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause11, NEXT>  
     >
     reactions;
 
