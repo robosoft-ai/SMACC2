@@ -276,6 +276,17 @@ SMACC2 uses what can be referred to as event-queue-mediated concurrency: async o
   ### Reference Library
   SMACC2/smacc2_sm_reference_library/CLAUDE.md
 
+  ### Project Settings
+  SMACC2/.claude/settings.json
+
+//////////////////////////////////////////////////////////////////////////////
+
+## Token Conservation
+- Summarize lengthy outputs instead of showing full logs
+- Group similar error messages
+- Skip routine background process messages
+- Prioritize actionable information over verbose logging
+
 //////////////////////////////////////////////////////////////////////////////
 
 # Other References

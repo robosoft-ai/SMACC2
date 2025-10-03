@@ -29,11 +29,24 @@ src/SMACC2/smacc2_sm_reference_library/CLAUDE.md
 
 Perform a test running the sm_panda_moveit2z_cb_inventory package, following
   the Runtime Test Procedures described in the smacc2_sm_reference_library/CLAUDE.md
-  file. Perform the test 5 times in a row, in all tests the state machine
-  should at least transition out of StKnownState1, before closing it. Do this exactly, do not deviate from the plan. 
+  file. Perform the test 3 times in a row, in all tests the state machine
+  should at least transition out of StKnownState1, before closing it Check this by looking at the transition_log topic. 
+  
+   #### ⚠️ CRITICAL: Test Completion Requirements
+  **When instructed to perform multiple tests (e.g., "3 tests"), Claude MUST
+  complete ALL tests as specified. No exceptions.**
+
+  **Enforcement rules:**
+  - Use TodoWrite tool to track all test completions and enforce accountability
+
+  Follow the test procedures exactly. Take no shortcuts. 
+  Focus only on test results and errors. Ignore routine ROS node startup messages, background process outputs, and standard system logs unless they indicate failures.
+
 
 yes, but first please suggest some edits to the sm_reference_library
   CLAUDE.md file Runtime Test Procedures section so that this never happens
   again.
 
   add the bash command i approved to the src/SMACC2/.claude/settings.json file
+
+In claude code, im performing runtime tests that launch ros nodes, and I using way too many tokens on system reminders related to background processes. How can i modify my prompts, claude.md files, and project settings to reduce token usage related to this issue?
