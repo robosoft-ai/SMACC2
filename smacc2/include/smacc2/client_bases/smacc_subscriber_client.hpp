@@ -45,7 +45,10 @@ public:
 
   SmaccSubscriberClient() { initialized_ = false; }
 
-  SmaccSubscriberClient(std::string topicname) { topicName = topicname; }
+  SmaccSubscriberClient(std::string topicname) {
+    initialized_ = false;
+    topicName = topicname; 
+  }
 
   virtual ~SmaccSubscriberClient() {}
 
