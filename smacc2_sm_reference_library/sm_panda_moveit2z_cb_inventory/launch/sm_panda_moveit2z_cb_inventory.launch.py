@@ -28,15 +28,10 @@ def setup_log_directory():
     Creates timestamped log directory with error handling.
     Returns: (log_dir_path, timestamp) tuple
     """
-    timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+    timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
     # Primary log directory location
-    log_dir = os.path.join(
-        os.path.expanduser('~'),
-        '.ros',
-        'log',
-        timestamp
-    )
+    log_dir = os.path.join(os.path.expanduser("~"), ".ros", "log", timestamp)
 
     try:
         os.makedirs(log_dir, mode=0o755, exist_ok=True)
@@ -44,7 +39,7 @@ def setup_log_directory():
         return log_dir, timestamp
     except PermissionError as e:
         # Fallback to /tmp if ~/.ros is not writable
-        fallback_dir = os.path.join('/tmp', 'sm_panda_moveit2z_cb_inventory_logs', timestamp)
+        fallback_dir = os.path.join("/tmp", "sm_panda_moveit2z_cb_inventory_logs", timestamp)
         print(f"[Launch] WARNING: Cannot create log directory at {log_dir}")
         print(f"[Launch] Permission denied: {e}")
         print(f"[Launch] Using fallback directory: {fallback_dir}")
