@@ -43,11 +43,11 @@ struct StMoveCartesianRelative2 : smacc2::SmaccState<StMoveCartesianRelative2, S
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-   Transition<EvCbSuccess<CbMoveCartesianRelative2, OrArm>, StPause10, SUCCESS>,
+   Transition<EvCbSuccess<CbMoveCartesianRelative2, OrArm>, StPause8, SUCCESS>,
    // Transition<EvCbSuccess<CbMoveCartesianRelative2, OrArm>, StAttachObject, SUCCESS>,
    // Transition<EvCbFailure<CbMoveCartesianRelative2, OrArm>, StMoveCartesianRelative2, ABORT>, // retry
 
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause10, NEXT>  
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause8, NEXT>  
     >
 
     reactions;
@@ -56,9 +56,9 @@ struct StMoveCartesianRelative2 : smacc2::SmaccState<StMoveCartesianRelative2, S
   static void staticConfigure()
   {
     geometry_msgs::msg::Vector3 position;
-    position.x = -0.01;
+    position.x = -0.25;  // Increased to 25cm for dramatic movement
     position.y = 0.0;
-    position.z = 0.01;
+    position.z = 0.20;   // Increased to 20cm for dramatic movement
     configure_orthogonal<OrArm, CbMoveCartesianRelative2>("tool0", "tool0", position);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }

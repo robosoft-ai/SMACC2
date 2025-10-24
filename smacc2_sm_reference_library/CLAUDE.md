@@ -179,7 +179,8 @@ To use the update() function at a custom rate like 10Hz instead of the
   ### Step 4: **MANDATORY CLEANUP** (Must complete before next test)
   1. **Kill the test process:**
      ```bash
-     pkill -f "[node_name]" && sleep 10
+     pgrep -f "ros-args" | awk '{print "kill -9 " $1}' | sh && sleep 10
+     pgrep -f "ros-args" | awk '{print "kill -9 " $1}' | sh && sleep 10
      ```
      OR use Ctrl-C if running in foreground
 
@@ -237,23 +238,22 @@ Get the name of the state machine class from the state machine packages main .hp
 
 To see the structure of the state machine:
 ```
-ros2 topic echo /[sm_name]/smacc/state_machine_description
+source install/setup.bash && ros2 topic echo /[sm_name]/smacc/state_machine_description
 ```
 
 To see the current state (also hierarchy, mode states, super states, etc.)
 ```
-ros2 topic echo /[sm_name]/smacc/status
+source install/setup.bash && ros2 topic echo /[sm_name]/smacc/status
 ```
 
 To see the transitions of the state machine that are being triggered:
 ```
-ros2 topic echo /[sm_name]/smacc/transition_log
-
+source install/setup.bash && ros2 topic echo /[sm_name]/smacc/transition_log
 ```
 
 Too see events:
 ```
-ros2 topic echo /[sm_name]/smacc/event_log
+source install/setup.bash && ros2 topic echo /[sm_name]/smacc/event_log
 ```
 
 To simulate keyboard strokes, in particular 'N', which is used to manually transition states, use the command:

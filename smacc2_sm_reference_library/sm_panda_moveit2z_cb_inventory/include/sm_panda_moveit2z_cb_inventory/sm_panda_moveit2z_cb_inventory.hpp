@@ -59,6 +59,10 @@ struct StPause9;
 struct StPause10;
 struct StPause11;
 struct StPause12;
+struct StPause13;
+struct StPause14;
+struct StPause15;
+struct StPause16;
 struct StMoveJoints1;
 struct StMoveJoints2;
 struct StMoveJoints3;
@@ -106,6 +110,10 @@ struct SmPandaMoveit2zCbInventory : public smacc2::SmaccStateMachineBase<SmPanda
 #include "states/st_pause_10.hpp"
 #include "states/st_pause_11.hpp"
 #include "states/st_pause_12.hpp"
+#include "states/st_pause_13.hpp"
+#include "states/st_pause_14.hpp"
+#include "states/st_pause_15.hpp"
+#include "states/st_pause_16.hpp"
 #include "states/st_attach_object.hpp"
 #include "states/st_move_end_effector.hpp"
 #include "states/st_circular_pivot_motion.hpp"

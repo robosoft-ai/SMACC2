@@ -55,7 +55,7 @@ def launch_setup(context, *args, **kwargs):
         executable="move_group",
         output="screen",
         parameters=[moveit_config.to_dict()],
-        prefix="xterm -hold -e",
+        prefix="konsole --hold -e",
     )
 
     rviz_base = LaunchConfiguration("rviz_config")
@@ -131,7 +131,7 @@ def launch_setup(context, *args, **kwargs):
     smacc_state_machine_spawner = Node(
         package="sm_panda_moveit2z_cb_inventory",
         executable="sm_panda_moveit2z_cb_inventory_node",
-        prefix="xterm -hold -e",
+        prefix="konsole --hold -e",
         output="screen",
     )
 
@@ -140,7 +140,7 @@ def launch_setup(context, *args, **kwargs):
         executable="keyboard_server_node.py",
         name="keyboard_client",
         output="screen",
-        prefix="xterm -hold -e",
+        prefix="konsole --hold -e",
         arguments=["--ros-args", "--log-level", "INFO"],
     )
 

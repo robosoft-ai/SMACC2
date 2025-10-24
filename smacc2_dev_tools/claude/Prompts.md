@@ -50,3 +50,15 @@ yes, but first please suggest some edits to the sm_reference_library
   add the bash command i approved to the src/SMACC2/.claude/settings.json file
 
 In claude code, im performing runtime tests that launch ros nodes, and I using way too many tokens on system reminders related to background processes. How can i modify my prompts, claude.md files, and project settings to reduce token usage related to this issue?
+
+
+source install/setup.bash && ros2 topic echo /SmPandaMoveit2zCbInventory/smacc/transition_log
+
+lets run and debug the sm_panda_moveit2z_cb_inventory package. Use the launch command ros2 launch sm_panda_moveit2z_cb_inventory sm_panda_moveit2z_cb_inventory.launch.py and monitor the topic using the command: 
+source install/setup.bash && ros2 topic echo /SmPandaMoveit2zCbInventory/smacc/transition_log
+
+The following states aren't working in the sense that they show no movement:
+StMoveCartesianRelative2
+StMoveCartesianRelative
+StPouringMotion
+StCircularPivotMotion

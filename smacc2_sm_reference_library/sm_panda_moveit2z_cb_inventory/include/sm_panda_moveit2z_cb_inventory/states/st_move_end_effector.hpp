@@ -43,9 +43,9 @@ struct StMoveEndEffector : smacc2::SmaccState<StMoveEndEffector, SmPandaMoveit2z
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbMoveEndEffector, OrArm>, StPause8, SUCCESS>,
+    Transition<EvCbSuccess<CbMoveEndEffector, OrArm>, StPause13, SUCCESS>,
 
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause8, NEXT>  
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause13, NEXT>  
     >
     reactions;
 

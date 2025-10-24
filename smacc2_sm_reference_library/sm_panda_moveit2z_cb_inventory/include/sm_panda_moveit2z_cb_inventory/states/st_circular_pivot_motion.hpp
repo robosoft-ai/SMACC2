@@ -43,7 +43,9 @@ struct StCircularPivotMotion : smacc2::SmaccState<StCircularPivotMotion, SmPanda
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    // Transition<EvCbSuccess<CbMoveCartesianRelative2, OrArm>, StMoveCartesianRelative2, SUCCESS>
+    Transition<EvCbSuccess<CbCircularPivotMotion, OrArm>, StPause10, SUCCESS>,
+
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause10, NEXT>
     >
     reactions;
 
