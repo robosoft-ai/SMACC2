@@ -55,8 +55,8 @@ struct StPouringMotion : smacc2::SmaccState<StPouringMotion, SmPandaMoveit2zCbIn
    geometry_msgs::msg::Point relativePivotPoint;
    relativePivotPoint.x = -0.01;
    double deltaHeight = 0.05;
-   std::string tipLink = "panda_rightfinger";
-   std::string globalFrame = "panda_rightfinger";
+   std::string tipLink = "";  // Auto-detect from MoveIt2 configuration
+   std::string globalFrame = "panda_link8";  // Standard Panda end effector link
 
     configure_orthogonal<OrArm, CbCircularPouringMotion>(relativePivotPoint, deltaHeight, tipLink, globalFrame);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

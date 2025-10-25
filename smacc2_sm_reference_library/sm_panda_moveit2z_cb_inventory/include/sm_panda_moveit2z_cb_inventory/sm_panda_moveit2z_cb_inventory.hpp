@@ -66,6 +66,8 @@ struct StPause16;
 struct StMoveJoints1;
 struct StMoveJoints2;
 struct StMoveJoints3;
+struct StMoveJoints4;
+struct StMoveJoints5;
 struct StMoveEndEffector;
 struct StMoveCartesianRelative;
 struct StMoveCartesianRelative2;
@@ -120,6 +122,8 @@ struct SmPandaMoveit2zCbInventory : public smacc2::SmaccStateMachineBase<SmPanda
 #include "states/st_move_joints_1.hpp"
 #include "states/st_move_joints_2.hpp"
 #include "states/st_move_joints_3.hpp"
+#include "states/st_move_joints_4.hpp"
+#include "states/st_move_joints_5.hpp"
 #include "states/st_detach_object.hpp"
 #include "states/st_move_known_state_1.hpp"
 #include "states/st_move_known_state_2.hpp"

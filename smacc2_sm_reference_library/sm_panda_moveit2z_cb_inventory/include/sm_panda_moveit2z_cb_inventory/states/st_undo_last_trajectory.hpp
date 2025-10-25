@@ -43,9 +43,9 @@ struct StUndoLastTrajectory : smacc2::SmaccState<StUndoLastTrajectory, SmPandaMo
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-      Transition<EvCbSuccess<CbUndoLastTrajectory, OrArm>, StPause11, SUCCESS>,
+      Transition<EvCbSuccess<CbUndoLastTrajectory, OrArm>, StPause7, SUCCESS>,
 
-      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause11, NEXT>
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause7, NEXT>
 
     >
     reactions;

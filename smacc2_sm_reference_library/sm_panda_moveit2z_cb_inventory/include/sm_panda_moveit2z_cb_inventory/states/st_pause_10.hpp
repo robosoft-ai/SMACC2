@@ -48,8 +48,8 @@ struct StPause10 : smacc2::SmaccState<StPause10, SmPandaMoveit2zCbInventory>
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbSleepFor, OrArm>, StUndoLastTrajectory, SUCCESS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StUndoLastTrajectory, NEXT>  
+    Transition<EvCbSuccess<CbSleepFor, OrArm>, StCircularPivotMotion, SUCCESS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StCircularPivotMotion, NEXT>  
 
     > reactions;
 
