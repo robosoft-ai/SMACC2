@@ -90,7 +90,7 @@ def launch_setup(context, *args, **kwargs):
     # Construct logging prefix
     if log_dir:
         move_group_log = os.path.join(log_dir, f"move_group_{timestamp}.log")
-        move_group_prefix = f"konsole --hold -p tabtitle='Move Group' -e bash -c '\"$@\" 2>&1 | tee {move_group_log}; exec bash' -- "
+        move_group_prefix = f"konsole --hold -p tabtitle='Move Group' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {move_group_log}; exec bash' -- "
     else:
         move_group_prefix = "konsole --hold -p tabtitle='Move Group' -e"
 
@@ -175,7 +175,7 @@ def launch_setup(context, *args, **kwargs):
     # Construct logging prefix for state machine node
     if log_dir:
         state_machine_log = os.path.join(log_dir, f"state_machine_{timestamp}.log")
-        state_machine_prefix = f"konsole --hold -p tabtitle='State Machine' -e bash -c '\"$@\" 2>&1 | tee {state_machine_log}; exec bash' -- "
+        state_machine_prefix = f"konsole --hold -p tabtitle='State Machine' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {state_machine_log}; exec bash' -- "
     else:
         state_machine_prefix = "konsole --hold -p tabtitle='State Machine' -e"
 
@@ -189,7 +189,7 @@ def launch_setup(context, *args, **kwargs):
     # Construct logging prefix for keyboard client node
     if log_dir:
         keyboard_log = os.path.join(log_dir, f"keyboard_client_{timestamp}.log")
-        keyboard_prefix = f"konsole --hold -p tabtitle='Keyboard Client' -e bash -c '\"$@\" 2>&1 | tee {keyboard_log}; exec bash' -- "
+        keyboard_prefix = f"konsole --hold -p tabtitle='Keyboard Client' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {keyboard_log}; exec bash' -- "
     else:
         keyboard_prefix = "konsole --hold -p tabtitle='Keyboard Client' -e"
 
