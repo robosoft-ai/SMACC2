@@ -18,8 +18,8 @@
  *
  ******************************************************************************************************************/
 
-#include <future>
 #include <cl_moveit2z/client_behaviors/cb_move_joints.hpp>
+#include <future>
 
 namespace cl_moveit2z
 {

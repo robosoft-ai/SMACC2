@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <future>
 #include <cl_moveit2z/cl_moveit2z.hpp>
+#include <future>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 namespace cl_moveit2z
 {

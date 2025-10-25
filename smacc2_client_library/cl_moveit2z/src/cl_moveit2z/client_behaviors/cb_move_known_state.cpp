@@ -20,9 +20,9 @@
 
 #include <yaml-cpp/yaml.h>
 #include <ament_index_cpp/get_package_share_directory.hpp>
+#include <cl_moveit2z/client_behaviors/cb_move_known_state.hpp>
 #include <filesystem>
 #include <fstream>
-#include <cl_moveit2z/client_behaviors/cb_move_known_state.hpp>
 
 namespace cl_moveit2z
 {
