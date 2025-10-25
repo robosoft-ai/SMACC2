@@ -59,7 +59,7 @@ struct StMoveCartesianRelative2 : smacc2::SmaccState<StMoveCartesianRelative2, S
     position.x = -0.25;  // Increased to 25cm for dramatic movement
     position.y = 0.0;
     position.z = 0.20;   // Increased to 20cm for dramatic movement
-    configure_orthogonal<OrArm, CbMoveCartesianRelative2>("tool0", "tool0", position);
+    configure_orthogonal<OrArm, CbMoveCartesianRelative2>("world", "panda_link8", position);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 

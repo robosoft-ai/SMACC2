@@ -62,3 +62,7 @@ StMoveCartesianRelative2
 StMoveCartesianRelative
 StPouringMotion
 StCircularPivotMotion
+
+ look in the log files (~/.ros/log) for the most recent state machine run.
+  Analyse the move_group, state machine, and other logs and creat a plan to
+  fix the error messages that are occuring in StMoveCartesianRelative2
