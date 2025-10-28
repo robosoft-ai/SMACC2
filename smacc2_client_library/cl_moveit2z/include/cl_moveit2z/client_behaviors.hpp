@@ -20,25 +20,19 @@
 #pragma once
 
 // BASIC MANIPULATION BEHAVIORSz
-#include "client_behaviors/cb_move_cartesian_relative.hpp"
 #include "client_behaviors/cb_move_end_effector.hpp"
-#include "client_behaviors/cb_move_end_effector_relative.hpp"
 #include "client_behaviors/cb_move_joints.hpp"
 #include "client_behaviors/cb_move_known_state.hpp"
-#include "client_behaviors/cb_move_named_target.hpp"
 
 // ADVANCED MANIPULATION BEHAVIORS
 #include "client_behaviors/cb_circular_pivot_motion.hpp"
 #include "client_behaviors/cb_end_effector_rotate.hpp"
 #include "client_behaviors/cb_move_cartesian_relative2.hpp"
 #include "client_behaviors/cb_move_end_effector_trajectory.hpp"
-#include "client_behaviors/cb_pouring_motion.hpp"
 
 // HISTORY BASED BEHAVIRORS
-#include "client_behaviors/cb_execute_last_trajectory.hpp"
-#include "client_behaviors/cb_move_last_trajectory_initial_state.hpp"
 #include "client_behaviors/cb_undo_last_trajectory.hpp"
 
 // GRASPING BEHAVIORS
-#include "client_behaviors/cb_attach_object.hpp"
-#include "client_behaviors/cb_detach_object.hpp"
+//#include "client_behaviors/cb_attach_object.hpp"
+//#include "client_behaviors/cb_detach_object.hpp"

@@ -19,7 +19,7 @@
  ******************************************************************************************************************/
 
 #include <tf2_ros/transform_listener.h>
-#include <cl_moveit2z/client_behaviors/cb_circular_pivot_motion.hpp>
+#include <moveit2z_client/client_behaviors/cb_circular_pivot_motion.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 using namespace std::chrono_literals;
