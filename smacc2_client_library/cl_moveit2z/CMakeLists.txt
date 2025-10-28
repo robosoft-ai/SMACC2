@@ -24,11 +24,14 @@ tf2_geometry_msgs
 yaml_cpp_vendor
 )
 
-## Declare a C++ INTERFACE library (100% header-only)
-add_library(${PROJECT_NAME} INTERFACE)
+include_directories(include)
 
-# All implementations are now header-only:
-# src/cl_moveit2z/cl_moveit2z.cpp  # PHASE 4: NOW HEADER-ONLY (inline methods)
+## Declare a C++ library (header-only implementations with compilation anchor)
+add_library(${PROJECT_NAME}
+  src/cl_moveit2z/cl_moveit2z.cpp  # Compilation anchor stub
+)
+
+# All implementations are header-only (inline):
 # src/cl_moveit2z/common.cpp  # PHASE 1: NOW HEADER-ONLY (inline stream operators)
 # src/cl_moveit2z/components/cp_trajectory_history.cpp  # PHASE 2: NOW HEADER-ONLY (inline methods)
 # src/cl_moveit2z/components/cp_grasping_objects.cpp  # PHASE 3: NOW HEADER-ONLY (inline methods)
@@ -43,25 +46,19 @@ add_library(${PROJECT_NAME} INTERFACE)
 # src/cl_moveit2z/client_behaviors/cb_move_cartesian_relative2.cpp  # HEADER-ONLY
 # src/cl_moveit2z/client_behaviors/cb_circular_pivot_motion.cpp  # HEADER-ONLY
 
-target_include_directories(${PROJECT_NAME} INTERFACE
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
+target_link_libraries(${PROJECT_NAME} ${YAML_CPP_LIBRARIES})
 
-target_link_libraries(${PROJECT_NAME} INTERFACE ${YAML_CPP_LIBRARIES})
-
-ament_target_dependencies(${PROJECT_NAME} INTERFACE
+ament_target_dependencies(${PROJECT_NAME}
   ${dependencies})
 
-ament_export_targets(${PROJECT_NAME}Targets HAS_LIBRARY_TARGET)
+ament_export_include_directories(include)
+ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(${dependencies})
 
 install(TARGETS ${PROJECT_NAME}
-  EXPORT ${PROJECT_NAME}Targets
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
-  INCLUDES DESTINATION include
 )
 
 install(DIRECTORY include/

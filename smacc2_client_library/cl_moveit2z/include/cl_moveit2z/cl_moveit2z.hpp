@@ -85,14 +85,11 @@ public:
 
   std::shared_ptr<moveit::planning_interface::PlanningSceneInterface> planningSceneInterface;
 
-  inline ClMoveit2z(std::string groupName) : options_(groupName) {}
+  ClMoveit2z(std::string groupName);
 
-  inline ClMoveit2z(const moveit::planning_interface::MoveGroupInterface::Options & options)
-  : options_(options)
-  {
-  }
+  ClMoveit2z(const moveit::planning_interface::MoveGroupInterface::Options & options);
 
-  virtual ~ClMoveit2z() {}
+  virtual ~ClMoveit2z();
 
   inline void onInitialize() override
   {
