@@ -56,8 +56,7 @@ struct ExecutionResult
   std::string errorMessage;
   std::chrono::duration<double> executionTime;
 
-  ExecutionResult()
-  : success(false), errorCode(), errorMessage(""), executionTime(0.0)
+  ExecutionResult() : success(false), errorCode(), errorMessage(""), executionTime(0.0)
   {
     errorCode.val = moveit_msgs::msg::MoveItErrorCodes::FAILURE;
   }
@@ -154,8 +153,8 @@ public:
       }
       else
       {
-        result.errorMessage = "Trajectory execution failed with error code: " +
-                              std::to_string(result.errorCode.val);
+        result.errorMessage =
+          "Trajectory execution failed with error code: " + std::to_string(result.errorCode.val);
         RCLCPP_WARN(getLogger(), "[CpTrajectoryExecutor] %s", result.errorMessage.c_str());
       }
 
@@ -275,8 +274,7 @@ private:
     catch (const std::exception & e)
     {
       RCLCPP_WARN(
-        getLogger(), "[CpTrajectoryExecutor] Failed to record trajectory to history: %s",
-        e.what());
+        getLogger(), "[CpTrajectoryExecutor] Failed to record trajectory to history: %s", e.what());
     }
   }
 };

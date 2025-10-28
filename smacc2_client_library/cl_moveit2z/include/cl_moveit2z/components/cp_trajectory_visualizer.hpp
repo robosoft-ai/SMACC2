@@ -97,7 +97,8 @@ public:
    * @param ns Namespace for the markers (default: "trajectory")
    */
   inline void setTrajectory(
-    const std::vector<geometry_msgs::msg::PoseStamped> & poses, const std::string & ns = "trajectory")
+    const std::vector<geometry_msgs::msg::PoseStamped> & poses,
+    const std::string & ns = "trajectory")
   {
     std::lock_guard<std::mutex> guard(markersMutex_);
 

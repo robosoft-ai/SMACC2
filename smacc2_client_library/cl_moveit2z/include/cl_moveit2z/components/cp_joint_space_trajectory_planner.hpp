@@ -144,7 +144,8 @@ public:
 
       // Get current robot state
       RCLCPP_INFO(
-        getLogger(), "[CpJointSpaceTrajectoryPlanner] Getting current state for trajectory planning");
+        getLogger(),
+        "[CpJointSpaceTrajectoryPlanner] Getting current state for trajectory planning");
       auto currentState = moveGroup->getCurrentState(100);
       if (!currentState)
       {
@@ -155,14 +156,11 @@ public:
       }
 
       // Determine group name and tip link
-      std::string groupName =
-        options.groupName.value_or(moveGroup->getName());
-      std::string tipLink =
-        options.tipLink.value_or(moveGroup->getEndEffectorLink());
+      std::string groupName = options.groupName.value_or(moveGroup->getName());
+      std::string tipLink = options.tipLink.value_or(moveGroup->getEndEffectorLink());
 
       RCLCPP_INFO(
-        getLogger(),
-        "[CpJointSpaceTrajectoryPlanner] Planning for group '%s' with tip link '%s'",
+        getLogger(), "[CpJointSpaceTrajectoryPlanner] Planning for group '%s' with tip link '%s'",
         groupName.c_str(), tipLink.c_str());
 
       // Get joint names
@@ -318,8 +316,7 @@ public:
           result.errorMessage = "Joint trajectory discontinuity detected";
         }
         result.success = false;
-        RCLCPP_WARN(
-          getLogger(), "[CpJointSpaceTrajectoryPlanner] %s", result.errorMessage.c_str());
+        RCLCPP_WARN(getLogger(), "[CpJointSpaceTrajectoryPlanner] %s", result.errorMessage.c_str());
       }
       else
       {

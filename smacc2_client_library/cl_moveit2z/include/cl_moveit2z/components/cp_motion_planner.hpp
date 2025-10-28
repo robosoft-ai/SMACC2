@@ -24,8 +24,8 @@
 
 #include <cl_moveit2z/cl_moveit2z.hpp>
 
-#include <geometry_msgs/msg/pose_stamped.hpp>
 #include <moveit/move_group_interface/move_group_interface.h>
+#include <geometry_msgs/msg/pose_stamped.hpp>
 #include <moveit_msgs/msg/move_it_error_codes.hpp>
 #include <moveit_msgs/msg/robot_trajectory.hpp>
 
@@ -151,8 +151,8 @@ public:
       }
       else
       {
-        result.errorMessage = "Planning to pose failed with error code: " +
-                              std::to_string(result.errorCode.val);
+        result.errorMessage =
+          "Planning to pose failed with error code: " + std::to_string(result.errorCode.val);
         RCLCPP_WARN(getLogger(), "[CpMotionPlanner] %s", result.errorMessage.c_str());
       }
     }
@@ -269,8 +269,8 @@ public:
         waypoints.size());
 
       moveit_msgs::msg::RobotTrajectory trajectory;
-      double fractionAchieved =
-        moveGroup->computeCartesianPath(waypoints, maxStep, jumpThreshold, trajectory, avoidCollisions);
+      double fractionAchieved = moveGroup->computeCartesianPath(
+        waypoints, maxStep, jumpThreshold, trajectory, avoidCollisions);
 
       result.plan.trajectory_ = trajectory;
 
@@ -324,8 +324,7 @@ public:
     }
     catch (const std::exception & e)
     {
-      RCLCPP_ERROR(
-        getLogger(), "[CpMotionPlanner] Exception getting current state: %s", e.what());
+      RCLCPP_ERROR(getLogger(), "[CpMotionPlanner] Exception getting current state: %s", e.what());
       return nullptr;
     }
   }
