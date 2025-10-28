@@ -37,13 +37,54 @@ struct TrajectoryHistoryEntry
 class CpTrajectoryHistory : public smacc2::ISmaccComponent
 {
 public:
-  bool getLastTrajectory(int backIndex, moveit_msgs::msg::RobotTrajectory & trajectory);
+  inline bool getLastTrajectory(int backIndex, moveit_msgs::msg::RobotTrajectory & trajectory)
+  {
+    if (trajectoryHistory_.size() == 0)
+    {
+      RCLCPP_WARN_STREAM(
+        getLogger(), "[" << getName() << "] requested index: " << backIndex
+                         << ", history size: " << trajectoryHistory_.size());
+      return false;
+    }
 
-  bool getLastTrajectory(moveit_msgs::msg::RobotTrajectory & trajectory);
+    if (backIndex < 0)
+    {
+      backIndex = 0;
+    }
+    else if ((size_t)backIndex >= this->trajectoryHistory_.size())
+    {
+      RCLCPP_WARN_STREAM(
+        getLogger(), "[" << getName() << "] requested index: " << backIndex
+                         << ", history size: " << trajectoryHistory_.size());
+      return false;
+    }
 
-  void pushTrajectory(
+    trajectory =
+      this->trajectoryHistory_[this->trajectoryHistory_.size() - 1 - backIndex].trajectory;
+    return true;
+  }
+
+  inline bool getLastTrajectory(moveit_msgs::msg::RobotTrajectory & trajectory)
+  {
+    return getLastTrajectory(-1, trajectory);
+  }
+
+  inline void pushTrajectory(
     std::string name, const moveit_msgs::msg::RobotTrajectory & trajectory,
-    moveit_msgs::msg::MoveItErrorCodes result);
+    moveit_msgs::msg::MoveItErrorCodes result)
+  {
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] adding a new trajectory to the history ( "
+                       << trajectory.joint_trajectory.points.size() << " poses)");
+
+    TrajectoryHistoryEntry entry;
+    this->trajectoryHistory_.push_back(entry);
+
+    auto & last = this->trajectoryHistory_.back();
+    last.trajectory = trajectory;
+    last.result = result;
+    last.name = name;
+  }
 
 private:
   std::vector<TrajectoryHistoryEntry> trajectoryHistory_;

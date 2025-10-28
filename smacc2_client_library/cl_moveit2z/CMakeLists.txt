@@ -15,8 +15,6 @@ find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
 
-#set(YAML_CPP_LIBRARIES yaml-cpp)
-
 set(dependencies
 moveit_ros_planning_interface
 tf2
@@ -26,39 +24,44 @@ tf2_geometry_msgs
 yaml_cpp_vendor
 )
 
-include_directories(include)
+## Declare a C++ INTERFACE library (100% header-only)
+add_library(${PROJECT_NAME} INTERFACE)
 
-## Declare a C++ library
-add_library(${PROJECT_NAME}
-  src/cl_moveit2z/cl_moveit2z.cpp
-  src/cl_moveit2z/common.cpp
-  src/cl_moveit2z/components/cp_trajectory_history.cpp
-  src/cl_moveit2z/components/cp_grasping_objects.cpp
+# All implementations are now header-only:
+# src/cl_moveit2z/cl_moveit2z.cpp  # PHASE 4: NOW HEADER-ONLY (inline methods)
+# src/cl_moveit2z/common.cpp  # PHASE 1: NOW HEADER-ONLY (inline stream operators)
+# src/cl_moveit2z/components/cp_trajectory_history.cpp  # PHASE 2: NOW HEADER-ONLY (inline methods)
+# src/cl_moveit2z/components/cp_grasping_objects.cpp  # PHASE 3: NOW HEADER-ONLY (inline methods)
 
-  # ALL CLIENT BEHAVIORS ARE NOW HEADER-ONLY
-  # src/cl_moveit2z/client_behaviors/cb_move_end_effector.cpp  # HEADER-ONLY
-  # src/cl_moveit2z/client_behaviors/cb_move_known_state.cpp  # HEADER-ONLY
-  # src/cl_moveit2z/client_behaviors/cb_move_joints.cpp  # HEADER-ONLY
-  # src/cl_moveit2z/client_behaviors/cb_undo_last_trajectory.cpp  # HEADER-ONLY
-  # src/cl_moveit2z/client_behaviors/cb_move_end_effector_trajectory.cpp  # HEADER-ONLY
-  # src/cl_moveit2z/client_behaviors/cb_end_effector_rotate.cpp  # HEADER-ONLY
-  # src/cl_moveit2z/client_behaviors/cb_move_cartesian_relative2.cpp  # HEADER-ONLY
-  # src/cl_moveit2z/client_behaviors/cb_circular_pivot_motion.cpp  # HEADER-ONLY
+# ALL CLIENT BEHAVIORS ARE NOW HEADER-ONLY
+# src/cl_moveit2z/client_behaviors/cb_move_end_effector.cpp  # HEADER-ONLY
+# src/cl_moveit2z/client_behaviors/cb_move_known_state.cpp  # HEADER-ONLY
+# src/cl_moveit2z/client_behaviors/cb_move_joints.cpp  # HEADER-ONLY
+# src/cl_moveit2z/client_behaviors/cb_undo_last_trajectory.cpp  # HEADER-ONLY
+# src/cl_moveit2z/client_behaviors/cb_move_end_effector_trajectory.cpp  # HEADER-ONLY
+# src/cl_moveit2z/client_behaviors/cb_end_effector_rotate.cpp  # HEADER-ONLY
+# src/cl_moveit2z/client_behaviors/cb_move_cartesian_relative2.cpp  # HEADER-ONLY
+# src/cl_moveit2z/client_behaviors/cb_circular_pivot_motion.cpp  # HEADER-ONLY
+
+target_include_directories(${PROJECT_NAME} INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(${PROJECT_NAME} ${YAML_CPP_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} INTERFACE ${YAML_CPP_LIBRARIES})
 
-ament_target_dependencies(${PROJECT_NAME}
-                          ${dependencies})
+ament_target_dependencies(${PROJECT_NAME} INTERFACE
+  ${dependencies})
 
-ament_export_include_directories(include)
-ament_export_libraries(${PROJECT_NAME})
+ament_export_targets(${PROJECT_NAME}Targets HAS_LIBRARY_TARGET)
 ament_export_dependencies(${dependencies})
 
 install(TARGETS ${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}Targets
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
 )
 
 install(DIRECTORY include/

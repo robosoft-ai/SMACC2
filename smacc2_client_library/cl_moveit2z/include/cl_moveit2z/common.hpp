@@ -25,18 +25,50 @@
 #include <geometry_msgs/msg/quaternion_stamped.hpp>
 #include <moveit_msgs/srv/get_position_ik.hpp>
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg);
+// All stream operators are now inline for header-only implementation
+// CRITICAL: Order matters! Primitive types first, then compound types that use them
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Transform & msg);
+// Primitive geometry types (no dependencies)
+inline std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Vector3 & msg)
+{
+  return out << "[ " << msg.x << " " << msg.y << " " << msg.z << "]";
+}
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & msg);
+inline std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Point & msg)
+{
+  return out << "[ " << msg.x << " " << msg.y << " " << msg.z << "]";
+}
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg);
+inline std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Quaternion & msg)
+{
+  return out << " Quaternion[" << msg.x << " , " << msg.y << " , " << msg.z << ", w:" << msg.w;
+}
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Point & msg);
+// Compound types (depend on primitive types above)
+inline std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Transform & msg)
+{
+  return out << "Translation[" << msg.translation << "], Rotation[" << msg.rotation << "]";
+}
 
-std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Vector3 & msg);
+inline std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::Pose & msg)
+{
+  return out << "Position[" << msg.position << "], Orientation[" << msg.orientation << "]";
+}
 
-std::ostream & operator<<(std::ostream & out, const moveit_msgs::srv::GetPositionIK::Request & msg);
+inline std::ostream & operator<<(std::ostream & out, const geometry_msgs::msg::PoseStamped & msg)
+{
+  return out << "[serialization geometry_msgs::msg::PoseStamped] frame_id: " << msg.header.frame_id
+             << ", pose: " << msg.pose;
+}
 
-std::ostream & operator<<(std::ostream & out, const sensor_msgs::msg::JointState & msg);
+inline std::ostream & operator<<(
+  std::ostream & out, const moveit_msgs::srv::GetPositionIK::Request & msg)
+{
+  return out << "[moveit_msgs::srv::GetPositionIK::Request] position["
+             << msg.ik_request.pose_stamped << "]";
+}
+
+inline std::ostream & operator<<(std::ostream & out, const sensor_msgs::msg::JointState & /*msg*/)
+{
+  return out << "[sensor_msgs::msg::JointState]";
+}
