@@ -28,15 +28,44 @@ namespace cl_moveit2z
 class CbUndoLastTrajectory : public CbMoveEndEffectorTrajectory
 {
 public:
-  CbUndoLastTrajectory();
+  CbUndoLastTrajectory() {}
 
-  CbUndoLastTrajectory(int backIndex);
+  CbUndoLastTrajectory(int backIndex) : backIndex_(backIndex) {}
 
-  virtual ~CbUndoLastTrajectory();
+  virtual ~CbUndoLastTrajectory() {}
 
-  virtual void onEntry() override;
+  virtual void onEntry() override
+  {
+    CpTrajectoryHistory * trajectoryHistory;
+    this->requiresComponent(trajectoryHistory);
+    this->requiresClient(movegroupClient_);
 
-  virtual void generateTrajectory();
+    if (trajectoryHistory->getLastTrajectory(backIndex_, trajectory))
+    {
+      RCLCPP_WARN_STREAM(
+        getLogger(), "[" << getName() << "] reversing last trajectory [" << backIndex_ << "]");
+
+      auto initialTime = trajectory.joint_trajectory.points.back().time_from_start;
+
+      reversed = trajectory;
+
+      std::reverse(reversed.joint_trajectory.points.begin(), reversed.joint_trajectory.points.end());
+
+      for (auto & jp : reversed.joint_trajectory.points)
+      {
+        jp.time_from_start = rclcpp::Duration(initialTime) - rclcpp::Duration(jp.time_from_start);
+      }
+
+      this->executeJointSpaceTrajectory(reversed);
+    }
+    else
+    {
+      RCLCPP_WARN_STREAM(
+        getLogger(), "[" << getName() << "] could not undo last trajectory, trajectory not found.");
+    }
+  }
+
+  virtual void generateTrajectory() {}
 
 private:
   int backIndex_ = -1;

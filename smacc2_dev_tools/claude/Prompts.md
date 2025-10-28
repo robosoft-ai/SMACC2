@@ -75,3 +75,12 @@ Organize the phases of the so that each phase can be successfully compiled and t
 CRITICAL: Do not modify the sm_panda_cl_moveit2z_cb_inventory package for any reason.
 
 All testing will be performed by me (the human). Let me know when to conduct a test and Ill let you know the results. 
+
+
+Ultrathink and make a plan, but don't code yet, to refactor the cl_moveit2z package so that all of the client behaviors are header-only.
+
+Organize the phases of the plan so that each phase can be successfully compiled and tested at runtime using the sm_panda_cl_moveit2z_cb_inventory package.
+
+CRITICAL: Do not modify the sm_panda_cl_moveit2z_cb_inventory package for any reason.
+
+All testing will be performed by me (the human). Let me know when to conduct a test and Ill let you know the results. 

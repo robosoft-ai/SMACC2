@@ -22,6 +22,9 @@
 
 #include <map>
 #include <string>
+#include <future>
+#include <sstream>
+#include <algorithm>
 
 #include <cl_moveit2z/cl_moveit2z.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
@@ -35,13 +38,122 @@ public:
   std::map<std::string, double> jointValueTarget_;
   std::optional<std::string> group_;
 
-  CbMoveJoints();
-  CbMoveJoints(const std::map<std::string, double> & jointValueTarget);
-  virtual void onEntry() override;
-  virtual void onExit() override;
+  CbMoveJoints() {}
+
+  CbMoveJoints(const std::map<std::string, double> & jointValueTarget)
+  : jointValueTarget_(jointValueTarget)
+  {
+  }
+
+  virtual void onEntry() override
+  {
+    this->requiresClient(movegroupClient_);
+
+    if (this->group_)
+    {
+      moveit::planning_interface::MoveGroupInterface move_group(
+        getNode(), moveit::planning_interface::MoveGroupInterface::Options(*(this->group_)));
+      this->moveJoints(move_group);
+    }
+    else
+    {
+      this->moveJoints(*movegroupClient_->moveGroupClientInterface);
+    }
+  }
+
+  virtual void onExit() override {}
 
 protected:
-  void moveJoints(moveit::planning_interface::MoveGroupInterface & moveGroupInterface);
+  static std::string currentJointStatesToString(
+    moveit::planning_interface::MoveGroupInterface & moveGroupInterface,
+    std::map<std::string, double> & targetJoints)
+  {
+    auto state = moveGroupInterface.getCurrentState();
+
+    if (state == nullptr) return std::string();
+
+    auto vnames = state->getVariableNames();
+
+    std::stringstream ss;
+
+    for (auto & tgj : targetJoints)
+    {
+      auto it = std::find(vnames.begin(), vnames.end(), tgj.first);
+      auto index = std::distance(vnames.begin(), it);
+
+      ss << tgj.first << ":" << state->getVariablePosition(index) << std::endl;
+    }
+
+    return ss.str();
+  }
+
+  void moveJoints(moveit::planning_interface::MoveGroupInterface & moveGroupInterface)
+  {
+    if (scalingFactor_) moveGroupInterface.setMaxVelocityScalingFactor(*scalingFactor_);
+
+    bool success;
+    moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
+
+    if (jointValueTarget_.size() == 0)
+    {
+      RCLCPP_WARN(
+        getLogger(), "[CbMoveJoints] No joint was value specified. Skipping planning call.");
+      success = false;
+    }
+    else
+    {
+      moveGroupInterface.setJointValueTarget(jointValueTarget_);
+      //moveGroupInterface.setGoalJointTolerance(0.01);
+
+      auto result = moveGroupInterface.plan(computedMotionPlan);
+
+      success = (result == moveit::core::MoveItErrorCode::SUCCESS);
+
+      RCLCPP_INFO(
+        getLogger(), "[CbMoveJoints] Execution plan result %s (%d)", success ? "SUCCESS" : "FAILED",
+        result.val);
+    }
+
+    if (success)
+    {
+      auto executionResult = moveGroupInterface.execute(computedMotionPlan);
+
+      //auto statestr = currentJointStatesToString(moveGroupInterface, jointValueTarget_);
+
+      if (executionResult == moveit_msgs::msg::MoveItErrorCodes::SUCCESS)
+      {
+        RCLCPP_INFO_STREAM(
+          getLogger(), "[" << this->getName()
+                           << "] motion execution succeeded. Throwing success event. " << std::endl
+          //                         << statestr
+        );
+        movegroupClient_->postEventMotionExecutionSucceded();
+        this->postSuccessEvent();
+      }
+      else
+      {
+        RCLCPP_WARN_STREAM(
+          getLogger(),
+          "[" << this->getName() << "] motion execution failed. Throwing fail event." << std::endl
+          //                         << statestr
+        );
+        movegroupClient_->postEventMotionExecutionFailed();
+        this->postFailureEvent();
+      }
+    }
+    else
+    {
+      auto statestr = currentJointStatesToString(moveGroupInterface, jointValueTarget_);
+      RCLCPP_WARN_STREAM(
+        getLogger(),
+        "[" << this->getName() << "] motion execution failed. Throwing fail event." << std::endl
+        //                       << statestr
+      );
+      movegroupClient_->postEventMotionExecutionFailed();
+      this->postFailureEvent();
+    }
+  }
+
   ClMoveit2z * movegroupClient_;
 };
 }  // namespace cl_moveit2z

@@ -19,6 +19,13 @@
  *****************************************************************************************************************/
 
 #include "cb_circular_pivot_motion.hpp"
+#include <cl_moveit2z/common.hpp>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <ament_index_cpp/get_package_share_directory.hpp>
+
+using namespace std::chrono_literals;
 
 namespace cl_moveit2z
 {
@@ -26,11 +33,66 @@ namespace cl_moveit2z
 class CbEndEffectorRotate : public CbCircularPivotMotion
 {
 public:
-  CbEndEffectorRotate(double deltaRadians, std::optional<std::string> tipLink = std::nullopt);
+  CbEndEffectorRotate(double deltaRadians, std::optional<std::string> tipLink = std::nullopt)
+  : CbCircularPivotMotion(tipLink)
+  {
+    deltaRadians_ = deltaRadians;
+  }
 
-  virtual ~CbEndEffectorRotate();
+  virtual ~CbEndEffectorRotate() {}
 
-  virtual void onEntry() override;
+  virtual void onEntry() override
+  {
+    // autocompute pivot pose
+    tf2_ros::Buffer tfBuffer(getNode()->get_clock());
+    tf2_ros::TransformListener tfListener(tfBuffer);
+
+    tf2::Stamped<tf2::Transform> endEffectorInPivotFrame;
+
+    int attempts = 3;
+
+    this->requiresClient(movegroupClient_);
+    if (!tipLink_)
+    {
+      tipLink_ = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
+      RCLCPP_WARN_STREAM(
+        getLogger(),
+        "[" << getName() << "] tip unspecified, using default end effector: " << *tipLink_);
+    }
+
+    while (attempts > 0)
+    {
+      try
+      {
+        //auto pivotFrameName = this->movegroupClient_->moveGroupClientInterface->getPlanningFrame();
+        auto pivotFrameName = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
+
+        tf2::Stamped<tf2::Transform> endEffectorInPivotFrame;
+
+        tf2::fromMsg(
+          tfBuffer.lookupTransform(pivotFrameName, *tipLink_, rclcpp::Time(), rclcpp::Duration(10s)),
+          endEffectorInPivotFrame);
+
+        tf2::toMsg(endEffectorInPivotFrame, this->planePivotPose_.pose);
+        this->planePivotPose_.header.frame_id = endEffectorInPivotFrame.frame_id_;
+        this->planePivotPose_.header.stamp =
+          rclcpp::Time(endEffectorInPivotFrame.stamp_.time_since_epoch().count());
+        break;
+      }
+      catch (const std::exception & e)
+      {
+        RCLCPP_ERROR_STREAM(getLogger(), e.what() << ". Attempt countdown: " << attempts);
+        rclcpp::Duration(500ms);
+        attempts--;
+      }
+    }
+
+    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] pivotPose: " << planePivotPose_);
+
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[" << getName() << "] calling base CbCircularPivotMotion::onEntry");
+    CbCircularPivotMotion::onEntry();
+  }
 
   std::optional<std::string> tipLink;
 };

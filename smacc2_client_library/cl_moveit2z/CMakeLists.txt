@@ -35,14 +35,15 @@ add_library(${PROJECT_NAME}
   src/cl_moveit2z/components/cp_trajectory_history.cpp
   src/cl_moveit2z/components/cp_grasping_objects.cpp
 
-  src/cl_moveit2z/client_behaviors/cb_move_end_effector.cpp
-  src/cl_moveit2z/client_behaviors/cb_move_known_state.cpp
-  src/cl_moveit2z/client_behaviors/cb_move_joints.cpp
-  src/cl_moveit2z/client_behaviors/cb_undo_last_trajectory.cpp
-  src/cl_moveit2z/client_behaviors/cb_move_end_effector_trajectory.cpp
-  src/cl_moveit2z/client_behaviors/cb_end_effector_rotate.cpp
-  src/cl_moveit2z/client_behaviors/cb_move_cartesian_relative2.cpp
-  src/cl_moveit2z/client_behaviors/cb_circular_pivot_motion.cpp
+  # ALL CLIENT BEHAVIORS ARE NOW HEADER-ONLY
+  # src/cl_moveit2z/client_behaviors/cb_move_end_effector.cpp  # HEADER-ONLY
+  # src/cl_moveit2z/client_behaviors/cb_move_known_state.cpp  # HEADER-ONLY
+  # src/cl_moveit2z/client_behaviors/cb_move_joints.cpp  # HEADER-ONLY
+  # src/cl_moveit2z/client_behaviors/cb_undo_last_trajectory.cpp  # HEADER-ONLY
+  # src/cl_moveit2z/client_behaviors/cb_move_end_effector_trajectory.cpp  # HEADER-ONLY
+  # src/cl_moveit2z/client_behaviors/cb_end_effector_rotate.cpp  # HEADER-ONLY
+  # src/cl_moveit2z/client_behaviors/cb_move_cartesian_relative2.cpp  # HEADER-ONLY
+  # src/cl_moveit2z/client_behaviors/cb_circular_pivot_motion.cpp  # HEADER-ONLY
 )
 
 target_link_libraries(${PROJECT_NAME} ${YAML_CPP_LIBRARIES})

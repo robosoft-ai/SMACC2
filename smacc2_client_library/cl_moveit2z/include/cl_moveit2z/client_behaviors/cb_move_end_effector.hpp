@@ -21,8 +21,14 @@
 #pragma once
 
 #include <cl_moveit2z/cl_moveit2z.hpp>
+#include <cl_moveit2z/common.hpp>
 #include <future>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <tf2/impl/utils.h>
+
+using namespace std::chrono_literals;
+
 namespace cl_moveit2z
 {
 class CbMoveEndEffector : public smacc2::SmaccAsyncClientBehavior
@@ -32,15 +38,88 @@ public:
   std::string tip_link_;
   std::optional<std::string> group_;
 
-  CbMoveEndEffector();
-  CbMoveEndEffector(geometry_msgs::msg::PoseStamped target_pose, std::string tip_link = "");
+  CbMoveEndEffector() {}
 
-  virtual void onEntry() override;
+  CbMoveEndEffector(
+    geometry_msgs::msg::PoseStamped target_pose, std::string tip_link = "")
+  : targetPose(target_pose)
+  {
+    tip_link_ = tip_link;
+  }
+
+  virtual void onEntry() override
+  {
+    this->requiresClient(movegroupClient_);
+
+    if (this->group_)
+    {
+      RCLCPP_DEBUG(
+        getLogger(), "[CbMoveEndEfector] new thread started to move absolute end effector");
+      moveit::planning_interface::MoveGroupInterface move_group(getNode(), *group_);
+      this->moveToAbsolutePose(move_group, targetPose);
+      RCLCPP_DEBUG(getLogger(), "[CbMoveEndEfector] to move absolute end effector thread destroyed");
+    }
+    else
+    {
+      RCLCPP_DEBUG(
+        getLogger(), "[CbMoveEndEfector] new thread started to move absolute end effector");
+      this->moveToAbsolutePose(*(movegroupClient_->moveGroupClientInterface), targetPose);
+      RCLCPP_DEBUG(getLogger(), "[CbMoveEndEfector] to move absolute end effector thread destroyed");
+    }
+  }
 
 protected:
   bool moveToAbsolutePose(
     moveit::planning_interface::MoveGroupInterface & moveGroupInterface,
-    geometry_msgs::msg::PoseStamped & targetObjectPose);
+    geometry_msgs::msg::PoseStamped & targetObjectPose)
+  {
+    RCLCPP_DEBUG(getLogger(), "[CbMoveEndEffector] Synchronous sleep of 1 seconds");
+    rclcpp::sleep_for(500ms);
+
+    moveGroupInterface.setPlanningTime(1.0);
+
+    RCLCPP_INFO_STREAM(
+      getLogger(), "[CbMoveEndEffector] Target End efector Pose: " << targetObjectPose);
+
+    moveGroupInterface.setPoseTarget(targetObjectPose, tip_link_);
+    moveGroupInterface.setPoseReferenceFrame(targetObjectPose.header.frame_id);
+
+    moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
+    bool success =
+      (moveGroupInterface.plan(computedMotionPlan) == moveit::core::MoveItErrorCode::SUCCESS);
+    RCLCPP_INFO(
+      getLogger(), "[CbMoveEndEffector] Success Visualizing plan 1 (pose goal) %s",
+      success ? "" : "FAILED");
+
+    if (success)
+    {
+      auto executionResult = moveGroupInterface.execute(computedMotionPlan);
+
+      if (executionResult == moveit_msgs::msg::MoveItErrorCodes::SUCCESS)
+      {
+        RCLCPP_INFO(getLogger(), "[CbMoveEndEffector] motion execution succeeded");
+        movegroupClient_->postEventMotionExecutionSucceded();
+        this->postSuccessEvent();
+      }
+      else
+      {
+        RCLCPP_INFO(getLogger(), "[CbMoveEndEffector] motion execution failed");
+        movegroupClient_->postEventMotionExecutionFailed();
+        this->postFailureEvent();
+      }
+    }
+    else
+    {
+      RCLCPP_INFO(getLogger(), "[CbMoveEndEffector] motion execution failed");
+      movegroupClient_->postEventMotionExecutionFailed();
+      this->postFailureEvent();
+    }
+
+    RCLCPP_DEBUG(getLogger(), "[CbMoveEndEffector] Synchronous sleep of 1 seconds");
+    rclcpp::sleep_for(500ms);
+
+    return success;
+  }
 
   ClMoveit2z * movegroupClient_;
 };
