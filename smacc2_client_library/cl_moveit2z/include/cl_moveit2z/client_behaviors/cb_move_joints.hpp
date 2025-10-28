@@ -27,6 +27,8 @@
 #include <string>
 
 #include <cl_moveit2z/cl_moveit2z.hpp>
+#include <cl_moveit2z/components/cp_motion_planner.hpp>
+#include <cl_moveit2z/components/cp_trajectory_executor.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_moveit2z
@@ -89,54 +91,133 @@ protected:
 
   void moveJoints(moveit::planning_interface::MoveGroupInterface & moveGroupInterface)
   {
-    if (scalingFactor_) moveGroupInterface.setMaxVelocityScalingFactor(*scalingFactor_);
-
-    bool success;
-    moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
-
     if (jointValueTarget_.size() == 0)
     {
-      RCLCPP_WARN(
-        getLogger(), "[CbMoveJoints] No joint was value specified. Skipping planning call.");
-      success = false;
+      RCLCPP_WARN(getLogger(), "[CbMoveJoints] No joint value specified. Skipping planning call.");
+      movegroupClient_->postEventMotionExecutionFailed();
+      this->postFailureEvent();
+      return;
+    }
+
+    // Try to use CpMotionPlanner component (preferred)
+    CpMotionPlanner * motionPlanner = nullptr;
+    this->requiresComponent(motionPlanner, false);  // Optional component
+
+    bool success = false;
+    moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
+
+    if (motionPlanner != nullptr)
+    {
+      // Use component-based motion planner (preferred)
+      RCLCPP_INFO(getLogger(), "[CbMoveJoints] Using CpMotionPlanner component for joint planning");
+
+      PlanningOptions options;
+      if (scalingFactor_)
+      {
+        options.maxVelocityScaling = *scalingFactor_;
+      }
+
+      auto result = motionPlanner->planToJointTarget(jointValueTarget_, options);
+
+      success = result.success;
+      if (success)
+      {
+        computedMotionPlan = result.plan;
+        RCLCPP_INFO(getLogger(), "[CbMoveJoints] Planning succeeded (via CpMotionPlanner)");
+      }
+      else
+      {
+        RCLCPP_WARN(
+          getLogger(), "[CbMoveJoints] Planning failed (via CpMotionPlanner): %s",
+          result.errorMessage.c_str());
+      }
     }
     else
     {
+      // Fallback to legacy direct API calls
+      RCLCPP_WARN(
+        getLogger(),
+        "[CbMoveJoints] CpMotionPlanner component not available, using legacy planning "
+        "(consider adding CpMotionPlanner component)");
+
+      if (scalingFactor_) moveGroupInterface.setMaxVelocityScalingFactor(*scalingFactor_);
+
       moveGroupInterface.setJointValueTarget(jointValueTarget_);
-      //moveGroupInterface.setGoalJointTolerance(0.01);
 
       auto result = moveGroupInterface.plan(computedMotionPlan);
 
       success = (result == moveit::core::MoveItErrorCode::SUCCESS);
 
       RCLCPP_INFO(
-        getLogger(), "[CbMoveJoints] Execution plan result %s (%d)", success ? "SUCCESS" : "FAILED",
-        result.val);
+        getLogger(), "[CbMoveJoints] Planning %s (legacy mode, code: %d)",
+        success ? "SUCCESS" : "FAILED", result.val);
     }
 
+    // Execution
     if (success)
     {
-      auto executionResult = moveGroupInterface.execute(computedMotionPlan);
+      // Try to use CpTrajectoryExecutor component (preferred)
+      CpTrajectoryExecutor * trajectoryExecutor = nullptr;
+      this->requiresComponent(trajectoryExecutor, false);  // Optional component
 
-      //auto statestr = currentJointStatesToString(moveGroupInterface, jointValueTarget_);
+      bool executionSuccess = false;
 
-      if (executionResult == moveit_msgs::msg::MoveItErrorCodes::SUCCESS)
+      if (trajectoryExecutor != nullptr)
+      {
+        // Use component-based trajectory executor (preferred)
+        RCLCPP_INFO(
+          getLogger(), "[CbMoveJoints] Using CpTrajectoryExecutor component for execution");
+
+        ExecutionOptions execOptions;
+        execOptions.trajectoryName = this->getName();
+        if (scalingFactor_)
+        {
+          execOptions.maxVelocityScaling = *scalingFactor_;
+        }
+
+        auto execResult = trajectoryExecutor->executePlan(computedMotionPlan, execOptions);
+        executionSuccess = execResult.success;
+
+        if (executionSuccess)
+        {
+          RCLCPP_INFO(getLogger(), "[CbMoveJoints] Execution succeeded (via CpTrajectoryExecutor)");
+        }
+        else
+        {
+          RCLCPP_WARN(
+            getLogger(), "[CbMoveJoints] Execution failed (via CpTrajectoryExecutor): %s",
+            execResult.errorMessage.c_str());
+        }
+      }
+      else
+      {
+        // Fallback to legacy direct execution
+        RCLCPP_WARN(
+          getLogger(),
+          "[CbMoveJoints] CpTrajectoryExecutor component not available, using legacy execution "
+          "(consider adding CpTrajectoryExecutor component)");
+
+        auto executionResult = moveGroupInterface.execute(computedMotionPlan);
+        executionSuccess = (executionResult == moveit_msgs::msg::MoveItErrorCodes::SUCCESS);
+
+        RCLCPP_INFO(
+          getLogger(), "[CbMoveJoints] Execution %s (legacy mode)",
+          executionSuccess ? "succeeded" : "failed");
+      }
+
+      // Post events
+      if (executionSuccess)
       {
         RCLCPP_INFO_STREAM(
-          getLogger(), "[" << this->getName()
-                           << "] motion execution succeeded. Throwing success event. " << std::endl
-          //                         << statestr
-        );
+          getLogger(),
+          "[" << this->getName() << "] motion execution succeeded. Throwing success event.");
         movegroupClient_->postEventMotionExecutionSucceded();
         this->postSuccessEvent();
       }
       else
       {
         RCLCPP_WARN_STREAM(
-          getLogger(),
-          "[" << this->getName() << "] motion execution failed. Throwing fail event." << std::endl
-          //                         << statestr
-        );
+          getLogger(), "[" << this->getName() << "] motion execution failed. Throwing fail event.");
         movegroupClient_->postEventMotionExecutionFailed();
         this->postFailureEvent();
       }
@@ -145,10 +226,9 @@ protected:
     {
       auto statestr = currentJointStatesToString(moveGroupInterface, jointValueTarget_);
       RCLCPP_WARN_STREAM(
-        getLogger(),
-        "[" << this->getName() << "] motion execution failed. Throwing fail event." << std::endl
-        //                       << statestr
-      );
+        getLogger(), "[" << this->getName() << "] planning failed. Throwing fail event."
+                         << std::endl
+                         << statestr);
       movegroupClient_->postEventMotionExecutionFailed();
       this->postFailureEvent();
     }

@@ -23,6 +23,8 @@
 #include <tf2/impl/utils.h>
 #include <cl_moveit2z/cl_moveit2z.hpp>
 #include <cl_moveit2z/common.hpp>
+#include <cl_moveit2z/components/cp_motion_planner.hpp>
+#include <cl_moveit2z/components/cp_trajectory_executor.hpp>
 #include <future>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
@@ -77,41 +79,130 @@ protected:
     RCLCPP_DEBUG(getLogger(), "[CbMoveEndEffector] Synchronous sleep of 1 seconds");
     rclcpp::sleep_for(500ms);
 
-    moveGroupInterface.setPlanningTime(1.0);
+    // Try to use CpMotionPlanner component (preferred)
+    CpMotionPlanner * motionPlanner = nullptr;
+    this->requiresComponent(motionPlanner, false);  // Optional component
+
+    bool success = false;
+    moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
 
     RCLCPP_INFO_STREAM(
-      getLogger(), "[CbMoveEndEffector] Target End efector Pose: " << targetObjectPose);
+      getLogger(), "[CbMoveEndEffector] Target End effector Pose: " << targetObjectPose);
 
-    moveGroupInterface.setPoseTarget(targetObjectPose, tip_link_);
-    moveGroupInterface.setPoseReferenceFrame(targetObjectPose.header.frame_id);
+    if (motionPlanner != nullptr)
+    {
+      // Use component-based motion planner (preferred)
+      RCLCPP_INFO(getLogger(), "[CbMoveEndEffector] Using CpMotionPlanner component for planning");
 
-    moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
-    bool success =
-      (moveGroupInterface.plan(computedMotionPlan) == moveit::core::MoveItErrorCode::SUCCESS);
-    RCLCPP_INFO(
-      getLogger(), "[CbMoveEndEffector] Success Visualizing plan 1 (pose goal) %s",
-      success ? "" : "FAILED");
+      PlanningOptions options;
+      options.planningTime = 1.0;
+      options.poseReferenceFrame = targetObjectPose.header.frame_id;
 
+      std::optional<std::string> tipLinkOpt;
+      if (!tip_link_.empty())
+      {
+        tipLinkOpt = tip_link_;
+      }
+
+      auto result = motionPlanner->planToPose(targetObjectPose, tipLinkOpt, options);
+
+      success = result.success;
+      if (success)
+      {
+        computedMotionPlan = result.plan;
+        RCLCPP_INFO(getLogger(), "[CbMoveEndEffector] Planning succeeded (via CpMotionPlanner)");
+      }
+      else
+      {
+        RCLCPP_WARN(
+          getLogger(), "[CbMoveEndEffector] Planning failed (via CpMotionPlanner): %s",
+          result.errorMessage.c_str());
+      }
+    }
+    else
+    {
+      // Fallback to legacy direct API calls
+      RCLCPP_WARN(
+        getLogger(),
+        "[CbMoveEndEffector] CpMotionPlanner component not available, using legacy planning "
+        "(consider adding CpMotionPlanner component)");
+
+      moveGroupInterface.setPlanningTime(1.0);
+      moveGroupInterface.setPoseTarget(targetObjectPose, tip_link_);
+      moveGroupInterface.setPoseReferenceFrame(targetObjectPose.header.frame_id);
+
+      success =
+        (moveGroupInterface.plan(computedMotionPlan) == moveit::core::MoveItErrorCode::SUCCESS);
+      RCLCPP_INFO(
+        getLogger(), "[CbMoveEndEffector] Planning %s (legacy mode)",
+        success ? "succeeded" : "FAILED");
+    }
+
+    // Execution
     if (success)
     {
-      auto executionResult = moveGroupInterface.execute(computedMotionPlan);
+      // Try to use CpTrajectoryExecutor component (preferred)
+      CpTrajectoryExecutor * trajectoryExecutor = nullptr;
+      this->requiresComponent(trajectoryExecutor, false);  // Optional component
 
-      if (executionResult == moveit_msgs::msg::MoveItErrorCodes::SUCCESS)
+      bool executionSuccess = false;
+
+      if (trajectoryExecutor != nullptr)
       {
-        RCLCPP_INFO(getLogger(), "[CbMoveEndEffector] motion execution succeeded");
+        // Use component-based trajectory executor (preferred)
+        RCLCPP_INFO(
+          getLogger(), "[CbMoveEndEffector] Using CpTrajectoryExecutor component for execution");
+
+        ExecutionOptions execOptions;
+        execOptions.trajectoryName = this->getName();
+
+        auto execResult = trajectoryExecutor->executePlan(computedMotionPlan, execOptions);
+        executionSuccess = execResult.success;
+
+        if (executionSuccess)
+        {
+          RCLCPP_INFO(
+            getLogger(), "[CbMoveEndEffector] Execution succeeded (via CpTrajectoryExecutor)");
+        }
+        else
+        {
+          RCLCPP_WARN(
+            getLogger(), "[CbMoveEndEffector] Execution failed (via CpTrajectoryExecutor): %s",
+            execResult.errorMessage.c_str());
+        }
+      }
+      else
+      {
+        // Fallback to legacy direct execution
+        RCLCPP_WARN(
+          getLogger(),
+          "[CbMoveEndEffector] CpTrajectoryExecutor component not available, using legacy "
+          "execution "
+          "(consider adding CpTrajectoryExecutor component)");
+
+        auto executionResult = moveGroupInterface.execute(computedMotionPlan);
+        executionSuccess = (executionResult == moveit_msgs::msg::MoveItErrorCodes::SUCCESS);
+
+        RCLCPP_INFO(
+          getLogger(), "[CbMoveEndEffector] Execution %s (legacy mode)",
+          executionSuccess ? "succeeded" : "failed");
+      }
+
+      // Post events
+      if (executionSuccess)
+      {
         movegroupClient_->postEventMotionExecutionSucceded();
         this->postSuccessEvent();
       }
       else
       {
-        RCLCPP_INFO(getLogger(), "[CbMoveEndEffector] motion execution failed");
         movegroupClient_->postEventMotionExecutionFailed();
         this->postFailureEvent();
       }
     }
     else
     {
-      RCLCPP_INFO(getLogger(), "[CbMoveEndEffector] motion execution failed");
+      RCLCPP_INFO(getLogger(), "[CbMoveEndEffector] planning failed, skipping execution");
       movegroupClient_->postEventMotionExecutionFailed();
       this->postFailureEvent();
     }

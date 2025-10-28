@@ -21,6 +21,7 @@
 
 #include <tf2/transform_datatypes.h>
 #include <tf2_ros/transform_listener.h>
+#include <cl_moveit2z/components/cp_tf_listener.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include "cb_move_end_effector_trajectory.hpp"
 
@@ -225,12 +226,10 @@ protected:
 private:
   void computeCurrentEndEffectorPoseRelativeToPivot()
   {
-    //auto currentRobotEndEffectorPose = this->movegroupClient_->moveGroupClientInterface.getCurrentPose();
+    // Use CpTfListener component for transform lookups
+    CpTfListener * tfListener = nullptr;
+    this->requiresComponent(tfListener, false);  // Optional component
 
-    tf2_ros::Buffer tfBuffer(getNode()->get_clock());
-    tf2_ros::TransformListener tfListener(tfBuffer);
-
-    // tf2::Stamped<tf2::Transform>  globalBaseLink;
     tf2::Stamped<tf2::Transform> endEffectorInPivotFrame;
 
     try
@@ -243,20 +242,48 @@ private:
       RCLCPP_INFO_STREAM(
         getLogger(), "[" << getName() << "] waiting transform, pivot: '"
                          << planePivotPose_.header.frame_id << "' tipLink: '" << *tipLink_ << "'");
-      tf2::fromMsg(
-        tfBuffer.lookupTransform(
-          planePivotPose_.header.frame_id, *tipLink_, rclcpp::Time(), rclcpp::Duration(10s)),
-        endEffectorInPivotFrame);
 
-      //endEffectorInPivotFrame = tfBuffer.lookupTransform(planePivotPose_.header.frame_id, *tipLink_, rclcpp::Time(0));
+      if (tfListener != nullptr)
+      {
+        // Use component-based TF listener (preferred)
+        auto transformOpt =
+          tfListener->lookupTransform(planePivotPose_.header.frame_id, *tipLink_, rclcpp::Time());
 
-      // we define here the global frame as the pivot frame id
-      // tfListener.waitForTransform(currentRobotEndEffectorPose.header.frame_id, planePivotPose_.header.frame_id, rclcpp::Time(0), rclcpp::Duration(10));
-      // tfListener.lookupTransform(currentRobotEndEffectorPose.header.frame_id, planePivotPose_.header.frame_id, rclcpp::Time(0), globalBaseLink);
+        if (transformOpt)
+        {
+          tf2::fromMsg(transformOpt.value(), endEffectorInPivotFrame);
+        }
+        else
+        {
+          RCLCPP_ERROR_STREAM(
+            getLogger(), "[" << getName() << "] Failed to lookup transform from " << *tipLink_
+                             << " to " << planePivotPose_.header.frame_id);
+          return;
+        }
+      }
+      else
+      {
+        // Fallback to legacy TF2 usage if component not available
+        RCLCPP_WARN_STREAM(
+          getLogger(), "[" << getName()
+                           << "] CpTfListener component not available, using legacy TF2 (consider "
+                              "adding CpTfListener component)");
+        tf2_ros::Buffer tfBuffer(getNode()->get_clock());
+        tf2_ros::TransformListener tfListenerLegacy(tfBuffer);
+
+        tf2::fromMsg(
+          tfBuffer.lookupTransform(
+            planePivotPose_.header.frame_id, *tipLink_, rclcpp::Time(), rclcpp::Duration(10s)),
+          endEffectorInPivotFrame);
+      }
     }
     catch (const std::exception & e)
     {
-      std::cerr << e.what() << '\n';
+      RCLCPP_ERROR_STREAM(
+        getLogger(),
+        "[" << getName()
+            << "] Exception in computeCurrentEndEffectorPoseRelativeToPivot: " << e.what());
+      return;
     }
 
     // tf2::Transform endEffectorInBaseLinkFrame;
