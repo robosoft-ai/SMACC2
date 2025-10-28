@@ -215,7 +215,8 @@ protected:
     auto groupname = movegroupClient_->moveGroupClientInterface->getName();
 
     RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] getting joint names");
-    auto currentjointnames = currentState->getJointModelGroup(groupname)->getActiveJointModelNames();
+    auto currentjointnames =
+      currentState->getJointModelGroup(groupname)->getActiveJointModelNames();
 
     if (!tipLink_ || *tipLink_ == "")
     {
@@ -343,7 +344,8 @@ protected:
 
             if (k == 0)
             {
-              ss << "This is the first posture of the trajectory. Maybe the robot initial posture is "
+              ss << "This is the first posture of the trajectory. Maybe the robot initial posture "
+                    "is "
                     "not coincident to the initial posture of the generated joint trajectory."
                  << std::endl;
             }

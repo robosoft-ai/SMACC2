@@ -20,11 +20,11 @@
 
 #pragma once
 
-#include <map>
-#include <string>
-#include <future>
-#include <sstream>
 #include <algorithm>
+#include <future>
+#include <map>
+#include <sstream>
+#include <string>
 
 #include <cl_moveit2z/cl_moveit2z.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>

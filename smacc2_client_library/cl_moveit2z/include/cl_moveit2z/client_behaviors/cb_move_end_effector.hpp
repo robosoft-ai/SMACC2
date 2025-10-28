@@ -20,12 +20,12 @@
 
 #pragma once
 
+#include <tf2/impl/utils.h>
 #include <cl_moveit2z/cl_moveit2z.hpp>
 #include <cl_moveit2z/common.hpp>
 #include <future>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
-#include <tf2/impl/utils.h>
 
 using namespace std::chrono_literals;
 
@@ -40,8 +40,7 @@ public:
 
   CbMoveEndEffector() {}
 
-  CbMoveEndEffector(
-    geometry_msgs::msg::PoseStamped target_pose, std::string tip_link = "")
+  CbMoveEndEffector(geometry_msgs::msg::PoseStamped target_pose, std::string tip_link = "")
   : targetPose(target_pose)
   {
     tip_link_ = tip_link;
@@ -57,14 +56,16 @@ public:
         getLogger(), "[CbMoveEndEfector] new thread started to move absolute end effector");
       moveit::planning_interface::MoveGroupInterface move_group(getNode(), *group_);
       this->moveToAbsolutePose(move_group, targetPose);
-      RCLCPP_DEBUG(getLogger(), "[CbMoveEndEfector] to move absolute end effector thread destroyed");
+      RCLCPP_DEBUG(
+        getLogger(), "[CbMoveEndEfector] to move absolute end effector thread destroyed");
     }
     else
     {
       RCLCPP_DEBUG(
         getLogger(), "[CbMoveEndEfector] new thread started to move absolute end effector");
       this->moveToAbsolutePose(*(movegroupClient_->moveGroupClientInterface), targetPose);
-      RCLCPP_DEBUG(getLogger(), "[CbMoveEndEfector] to move absolute end effector thread destroyed");
+      RCLCPP_DEBUG(
+        getLogger(), "[CbMoveEndEfector] to move absolute end effector thread destroyed");
     }
   }
 

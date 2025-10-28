@@ -47,7 +47,9 @@ public:
   CbCircularPivotMotion(
     const geometry_msgs::msg::PoseStamped & planePivotPose, double deltaRadians,
     std::optional<std::string> tipLink = std::nullopt)
-  : CbMoveEndEffectorTrajectory(tipLink), planePivotPose_(planePivotPose), deltaRadians_(deltaRadians)
+  : CbMoveEndEffectorTrajectory(tipLink),
+    planePivotPose_(planePivotPose),
+    deltaRadians_(deltaRadians)
   {
     if (tipLink_) planePivotPose_.header.frame_id = *tipLink;
   }
@@ -162,7 +164,8 @@ public:
       globalPose.header.stamp = rclcpp::Time(planePivotPose_.header.stamp) +
                                 rclcpp::Duration::from_seconds(i * secondsPerSample);
       RCLCPP_INFO_STREAM(
-        getLogger(), "[" << getName() << "]" << rclcpp::Time(globalPose.header.stamp).nanoseconds());
+        getLogger(),
+        "[" << getName() << "]" << rclcpp::Time(globalPose.header.stamp).nanoseconds());
 
       this->endEffectorTrajectory_.push_back(globalPose);
       currentAngle += angleStep;

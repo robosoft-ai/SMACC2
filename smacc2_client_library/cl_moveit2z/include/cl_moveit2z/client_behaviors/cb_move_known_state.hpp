@@ -20,12 +20,12 @@
 
 #pragma once
 
-#include <map>
-#include <string>
-#include <filesystem>
-#include <fstream>
 #include <yaml-cpp/yaml.h>
 #include <ament_index_cpp/get_package_share_directory.hpp>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <string>
 #include "cb_move_joints.hpp"
 
 namespace cl_moveit2z
@@ -33,8 +33,7 @@ namespace cl_moveit2z
 class CbMoveKnownState : public CbMoveJoints
 {
 public:
-  CbMoveKnownState(std::string pkg, std::string config_path)
-  : pkg_(pkg), config_path_(config_path)
+  CbMoveKnownState(std::string pkg, std::string config_path) : pkg_(pkg), config_path_(config_path)
   {
   }
 
@@ -71,7 +70,8 @@ private:
 
     if (std::filesystem::exists(filepath))
     {
-      RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] known state file exists: " << filepath);
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << getName() << "] known state file exists: " << filepath);
     }
     else
     {

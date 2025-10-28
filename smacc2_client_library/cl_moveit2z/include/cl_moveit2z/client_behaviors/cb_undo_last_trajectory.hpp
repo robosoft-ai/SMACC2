@@ -49,7 +49,8 @@ public:
 
       reversed = trajectory;
 
-      std::reverse(reversed.joint_trajectory.points.begin(), reversed.joint_trajectory.points.end());
+      std::reverse(
+        reversed.joint_trajectory.points.begin(), reversed.joint_trajectory.points.end());
 
       for (auto & jp : reversed.joint_trajectory.points)
       {

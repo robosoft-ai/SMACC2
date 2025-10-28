@@ -18,12 +18,12 @@
  *
  *****************************************************************************************************************/
 
-#include "cb_circular_pivot_motion.hpp"
-#include <cl_moveit2z/common.hpp>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include <ament_index_cpp/get_package_share_directory.hpp>
+#include <cl_moveit2z/common.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include "cb_circular_pivot_motion.hpp"
 
 using namespace std::chrono_literals;
 
@@ -65,12 +65,14 @@ public:
       try
       {
         //auto pivotFrameName = this->movegroupClient_->moveGroupClientInterface->getPlanningFrame();
-        auto pivotFrameName = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
+        auto pivotFrameName =
+          this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
 
         tf2::Stamped<tf2::Transform> endEffectorInPivotFrame;
 
         tf2::fromMsg(
-          tfBuffer.lookupTransform(pivotFrameName, *tipLink_, rclcpp::Time(), rclcpp::Duration(10s)),
+          tfBuffer.lookupTransform(
+            pivotFrameName, *tipLink_, rclcpp::Time(), rclcpp::Duration(10s)),
           endEffectorInPivotFrame);
 
         tf2::toMsg(endEffectorInPivotFrame, this->planePivotPose_.pose);
