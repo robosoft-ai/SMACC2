@@ -20,10 +20,10 @@
 
 #pragma once
 
-#include <smacc2/smacc.hpp>
 #include <cl_moveit2z/cl_moveit2z.hpp>
 #include <cl_moveit2z/components/cp_grasping_objects.hpp>
 #include <moveit_msgs/msg/collision_object.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace cl_moveit2z
 {
@@ -69,8 +69,7 @@ public:
 
     if (found)
     {
-      RCLCPP_INFO_STREAM(
-        getLogger(), "[CbAttachObject] Attaching object: " << targetObjectName_);
+      RCLCPP_INFO_STREAM(getLogger(), "[CbAttachObject] Attaching object: " << targetObjectName_);
 
       targetCollisionObject.operation = moveit_msgs::msg::CollisionObject::ADD;
       targetCollisionObject.header.stamp = getNode()->now();
@@ -86,8 +85,8 @@ public:
     else
     {
       RCLCPP_ERROR_STREAM(
-        getLogger(), "[CbAttachObject] Object not found in grasping component: "
-        << targetObjectName_);
+        getLogger(),
+        "[CbAttachObject] Object not found in grasping component: " << targetObjectName_);
       this->postFailureEvent();
     }
   }

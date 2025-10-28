@@ -20,9 +20,9 @@
 
 #pragma once
 
-#include <smacc2/smacc.hpp>
 #include <cl_moveit2z/cl_moveit2z.hpp>
 #include <cl_moveit2z/components/cp_grasping_objects.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace cl_moveit2z
 {
@@ -54,8 +54,8 @@ public:
     if (graspingComponent->currentAttachedObjectName)
     {
       RCLCPP_INFO_STREAM(
-        getLogger(), "[CbDetachObject] Detaching object: "
-        << *(graspingComponent->currentAttachedObjectName));
+        getLogger(),
+        "[CbDetachObject] Detaching object: " << *(graspingComponent->currentAttachedObjectName));
 
       auto & planningSceneInterface = moveGroupClient->planningSceneInterface;
       auto res = moveGroupClient->moveGroupClientInterface->detachObject(
