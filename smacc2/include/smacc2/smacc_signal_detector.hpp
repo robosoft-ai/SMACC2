@@ -53,6 +53,8 @@ public:
 
   void stop();
 
+  void terminateScheduler();
+
   void pollingLoop();
 
   template <typename EventType>
@@ -105,6 +107,14 @@ private:
 
 void onSigQuit(int sig);
 
+// Global variables for graceful shutdown handling
+// Declared here, defined in signal_detector.cpp
+extern std::atomic<bool> g_shutdown_requested;
+extern SignalDetector * g_signal_detector;
+
+// Signal handler for graceful shutdown (SIGINT/SIGTERM)
+void onSignalShutdown(int sig);
+
 // Main entry point for any SMACC state machine
 // It instantiates and starts the specified state machine type
 // it uses two threads: a new thread and the current one.
@@ -113,6 +123,9 @@ void onSigQuit(int sig);
 template <typename StateMachineType>
 void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
 {
+  // Register signal handlers for graceful shutdown
+  ::signal(SIGINT, onSignalShutdown);
+  ::signal(SIGTERM, onSignalShutdown);
   ::signal(SIGQUIT, onSigQuit);
 
   // create the asynchronous state machine scheduler
@@ -120,6 +133,9 @@ void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
 
   // create the signalDetector component
   SignalDetector signalDetector(&scheduler1, executionModel);
+
+  // Store global reference for signal handler access
+  g_signal_detector = &signalDetector;
 
   // create the asynchronous state machine processor
   SmaccFifoScheduler::processor_handle sm =
@@ -135,6 +151,19 @@ void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
 
   // use the  main thread for the signal detector component (waiting actionclient requests)
   signalDetector.pollingLoop();
+
+  // After polling loop exits (due to shutdown), terminate the scheduler from main thread
+  // This is safe to call here (not from signal handler) as we're in the main thread context
+  RCLCPP_INFO(rclcpp::get_logger("SMACC"), "Polling loop exited. Terminating scheduler...");
+  signalDetector.terminateScheduler();
+
+  // Wait for scheduler thread to finish
+  RCLCPP_INFO(rclcpp::get_logger("SMACC"), "Waiting for scheduler thread to join...");
+  schedulerThread.join();
+  RCLCPP_INFO(rclcpp::get_logger("SMACC"), "Scheduler thread terminated. Shutdown complete.");
+
+  // Clear global reference
+  g_signal_detector = nullptr;
 }
 
 struct SmExecution
@@ -149,6 +178,9 @@ struct SmExecution
 template <typename StateMachineType>
 SmExecution * run_async()
 {
+  // Register signal handlers for graceful shutdown
+  ::signal(SIGINT, onSignalShutdown);
+  ::signal(SIGTERM, onSignalShutdown);
   ::signal(SIGQUIT, onSigQuit);
 
   SmExecution * ret = new SmExecution();
@@ -158,6 +190,9 @@ SmExecution * run_async()
 
   // create the signalDetector component
   ret->signalDetector = new SignalDetector(ret->scheduler1);
+
+  // Store global reference for signal handler access
+  g_signal_detector = ret->signalDetector;
 
   // create the asynchronous state machine processor
   ret->sm = ret->scheduler1->create_processor<StateMachineType>(ret->signalDetector);

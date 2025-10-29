@@ -36,6 +36,11 @@
 namespace smacc2
 {
 using namespace std::chrono_literals;
+
+// Define global variables for graceful shutdown handling
+std::atomic<bool> g_shutdown_requested{false};
+SignalDetector * g_signal_detector = nullptr;
+
 /**
 ******************************************************************************************************************
 * SignalDetector()
@@ -220,6 +225,20 @@ void SignalDetector::stop() { end_ = true; }
 
 /**
  ******************************************************************************************************************
+ * terminateScheduler()
+ ******************************************************************************************************************
+ */
+void SignalDetector::terminateScheduler()
+{
+  if (scheduler_)
+  {
+    RCLCPP_INFO(getLogger(), "[SignalDetector] Terminating scheduler...");
+    scheduler_->terminate();
+  }
+}
+
+/**
+ ******************************************************************************************************************
  * poll()
  ******************************************************************************************************************
  */
@@ -365,6 +384,27 @@ void SignalDetector::pollingLoop()
     executor.add_node(nh);
     executor.spin();
   }
+}
+
+void onSignalShutdown(int sig)
+{
+  // IMPORTANT: Signal handlers can only call async-signal-safe functions
+  // We must NOT call complex C++ methods here (like terminateScheduler)
+  // as they may use mutexes/condition variables which are not signal-safe
+
+  // Set global shutdown flag (atomic operation - signal-safe)
+  g_shutdown_requested = true;
+
+  // Stop the signal detector loop (atomic operation - signal-safe)
+  if (g_signal_detector)
+  {
+    g_signal_detector->stop();
+  }
+
+  // Trigger ROS2 shutdown (this handles its own signal safety)
+  rclcpp::shutdown();
+
+  // Note: Scheduler termination will happen from main thread after polling loop exits
 }
 
 void onSigQuit(int)
