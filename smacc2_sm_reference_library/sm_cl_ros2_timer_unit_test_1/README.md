@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ![sm_cl_ros2_timer_unit_test_1](docs/SmClRos2TimerUnitTest1_2021-10-18_93942.svg)
+ ![sm_cl_ros2_timer_unit_test_1](docs/SmClRos2TimerUnitTest1_2025-9-15_56482.svg)
 
  <h2>Description</h2> A completely minimal state machine example.<br></br>
 
