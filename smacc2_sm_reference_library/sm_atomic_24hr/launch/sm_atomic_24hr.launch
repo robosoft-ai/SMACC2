@@ -1,5 +1,0 @@
-<launch>
-    <node pkg="sm_atomic_24hr" exec="sm_atomic_24hr_node" name="sm_atomic_24hr">
-        <param from="$(find-pkg-share sm_atomic_24hr)/config/sm_atomic_24hr_24hr_config.yaml"/>
-    </node>
-</launch>
