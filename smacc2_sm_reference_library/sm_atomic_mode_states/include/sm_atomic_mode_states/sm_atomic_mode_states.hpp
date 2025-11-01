@@ -21,14 +21,14 @@
 #include <smacc2/smacc.hpp>
 
 // CLIENTS
-#include <ros_timer_client/cl_ros_timer.hpp>
+#include <cl_ros2_timer/cl_ros2_timer.hpp>
 
 // ORTHOGONALS
 #include <sm_atomic_mode_states/orthogonals/or_timer.hpp>
 
 //CLIENT BEHAVIORS
-#include <ros_timer_client/client_behaviors/cb_timer_countdown_loop.hpp>
-#include <ros_timer_client/client_behaviors/cb_timer_countdown_once.hpp>
+#include <cl_ros2_timer/client_behaviors/cb_timer_countdown_loop.hpp>
+#include <cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp>
 #include <sm_atomic_mode_states/client_behaviors/cb_updatable_test.hpp>
 
 using namespace boost;

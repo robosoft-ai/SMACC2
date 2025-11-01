@@ -18,7 +18,7 @@ find_package(smacc2_msgs REQUIRED)
 find_package(std_msgs)
 find_package(Boost COMPONENTS thread REQUIRED)
 find_package(cl_moveit2z REQUIRED)
-find_package(keyboard_client REQUIRED)
+find_package(cl_keyboard REQUIRED)
 find_package(rclcpp REQUIRED)
 
 
@@ -28,7 +28,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   smacc2_msgs
   std_msgs
   cl_moveit2z
-  keyboard_client
+  cl_keyboard
   rclcpp
 )
 
@@ -44,7 +44,7 @@ add_executable(${PROJECT_NAME}_node
 
 target_link_libraries(${PROJECT_NAME}_node
   ${smacc2_LIBRARIES}
-  ${ros_timer_client_LIBRARIES}
+  ${cl_ros2_timer_LIBRARIES}
   ${moveit2z_LIBRARIES}
   ${Boost_LIBRARIES}
 )

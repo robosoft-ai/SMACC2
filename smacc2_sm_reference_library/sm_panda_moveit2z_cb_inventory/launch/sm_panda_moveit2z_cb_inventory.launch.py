@@ -194,7 +194,7 @@ def launch_setup(context, *args, **kwargs):
         keyboard_prefix = "konsole --hold -p tabtitle='Keyboard Client' -e"
 
     keyboard_client_node = Node(
-        package="keyboard_client",
+        package="cl_keyboard",
         executable="keyboard_server_node.py",
         name="keyboard_client",
         output="screen",

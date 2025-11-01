@@ -27,9 +27,8 @@
   <depend>moveit_plugins</depend>
   <depend>moveit_ros_robot_interaction</depend>
   <depend>moveit</depend>
-  <depend>keyboard_client</depend>
+  <depend>cl_keyboard</depend>
   <depend>rclcpp</depend>
-  <depend>ros_publisher_client</depend>
 
 
   <exec_depend>joint_trajectory_controller</exec_depend>

@@ -17,8 +17,8 @@ find_package(std_msgs REQUIRED)
 find_package(smacc2_msgs REQUIRED)
 find_package(multirole_sensor_client REQUIRED)
 find_package(sr_all_events_go REQUIRED)
-find_package(ros_timer_client REQUIRED)
-find_package(keyboard_client REQUIRED)
+find_package(cl_ros2_timer REQUIRED)
+find_package(cl_keyboard REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
@@ -28,8 +28,8 @@ set(dependencies
   smacc2_msgs
   multirole_sensor_client
   sr_all_events_go
-  ros_timer_client
-  keyboard_client
+  cl_ros2_timer
+  cl_keyboard
   rclcpp
 )
 

@@ -21,7 +21,7 @@
 #pragma once
 
 #include <chrono>
-#include <keyboard_client/cl_keyboard.hpp>
+#include <cl_keyboard/cl_keyboard.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace sm_panda_moveit2z_cb_inventory {

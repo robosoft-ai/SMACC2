@@ -15,7 +15,7 @@
 #pragma once
 
 #include <chrono>
-#include <ros_timer_client/cl_ros_timer.hpp>
+#include <cl_ros2_timer/cl_ros2_timer.hpp>
 #include <smacc2/smacc.hpp>
 
 using namespace std::chrono_literals;
@@ -26,6 +26,6 @@ using namespace std::chrono_literals;
 class OrTimer : public smacc2::Orthogonal<OrTimer>
 {
 public:
-  void onInitialize() override { auto client = this->createClient<cl_ros_timer::ClRosTimer>(1s); }
+  void onInitialize() override { auto client = this->createClient<cl_ros2_timer::ClRos2Timer>(1s); }
 };
 }  // namespace sm_branching

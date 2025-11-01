@@ -15,7 +15,7 @@
 #pragma once
 
 #include <chrono>
-#include <ros_timer_client/cl_ros_timer.hpp>
+#include <cl_ros2_timer/cl_ros2_timer.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_advanced_recovery_1
@@ -26,7 +26,7 @@ class OrTimer : public smacc2::Orthogonal<OrTimer>
 public:
   virtual void onInitialize() override
   {
-    auto actionclient = this->createClient<cl_ros_timer::ClRosTimer>(rclcpp::Duration(0.1s));
+    auto actionclient = this->createClient<cl_ros2_timer::ClRos2Timer>(rclcpp::Duration(0.1s));
   }
 };
 }  // namespace sm_advanced_recovery_1

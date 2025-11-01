@@ -18,7 +18,7 @@
 
 namespace sm_branching
 {
-using namespace cl_ros_timer;
+using namespace cl_ros2_timer;
 using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION

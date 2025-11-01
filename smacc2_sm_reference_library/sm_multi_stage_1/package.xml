@@ -13,8 +13,8 @@
   <depend>sr_all_events_go</depend>
   <depend>std_msgs</depend>
 
-  <depend>ros_timer_client</depend>
-  <depend>keyboard_client</depend>
+  <depend>cl_ros2_timer</depend>
+  <depend>cl_keyboard</depend>
   <depend>xterm</depend>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

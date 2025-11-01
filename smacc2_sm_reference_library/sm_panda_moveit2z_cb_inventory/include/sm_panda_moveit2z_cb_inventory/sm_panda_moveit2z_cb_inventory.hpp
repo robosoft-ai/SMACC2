@@ -33,8 +33,8 @@
 #include <moveit2z_client/cl_moveit2z.hpp>
 #include <moveit2z_client/client_behaviors.hpp>
 
-#include <keyboard_client/cl_keyboard.hpp>
-#include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.hpp>
+#include <cl_keyboard/cl_keyboard.hpp>
+#include <cl_keyboard/client_behaviors/cb_default_keyboard_behavior.hpp>
 
 #include <smacc2/client_behaviors/cb_wait_topic_message.hpp>
 
