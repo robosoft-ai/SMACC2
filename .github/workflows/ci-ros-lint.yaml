@@ -20,7 +20,7 @@ jobs:
         package-name:
           smacc2
 
-          keyboard_client
+          cl_keyboard
 
           backward_global_planner
           backward_local_planner
@@ -29,11 +29,10 @@ jobs:
           nav2z_planners_common
           pure_spinning_local_planner
           undo_path_global_planner
-          nav2z_client
+          cl_nav2z
 
           multirole_sensor_client
-          ros_publisher_client
-          ros_timer_client
+          cl_ros2_timer
 
           eg_conditional_generator
           eg_random_generator
