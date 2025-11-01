@@ -5,7 +5,7 @@ on:
 jobs:
   ament_lint:
     name: ament_${{ matrix.linter }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -15,7 +15,7 @@ jobs:
     - uses: ros-tooling/setup-ros@v0.2
     - uses: ros-tooling/action-ros-lint@v0.1
       with:
-        distribution: galactic
+        distribution: humble
         linter: ${{ matrix.linter }}
         package-name:
           smacc2
@@ -39,9 +39,20 @@ jobs:
 
           smacc2_msgs
 
+          sm_advanced_recovery_1
           sm_atomic
-          sm_atomic_performance_test
-          sm_atomic_subscribers_performance_test
+          sm_atomic_http
+          sm_atomic_lifecycle
+          sm_atomic_mode_states
+          sm_branching
+          sm_cl_keyboard_unit_test_1
+          sm_cl_ros2_timer_unit_test_1
+          sm_multi_stage_1
+          sm_pack_ml
+          sm_panda_cl_moveit2z_cb_inventory
+          sm_panda_moveit2z_cb_inventory
+          sm_simple_action_client
+          sm_three_some
 
           sr_all_events_go
           sr_conditional
