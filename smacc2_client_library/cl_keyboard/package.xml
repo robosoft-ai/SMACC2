@@ -4,7 +4,7 @@
  <name>cl_keyboard</name>
   <version>2.3.20</version>
   <description>The cl_keyboard package</description>
-  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
