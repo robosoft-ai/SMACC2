@@ -20,6 +20,7 @@
 
 #pragma once
 #include <cassert>
+#include <smacc2/introspection/introspection.hpp>
 #include <smacc2/smacc_client.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 
