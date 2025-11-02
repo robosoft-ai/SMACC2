@@ -54,11 +54,6 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}
 )
 
-install(DIRECTORY
-  docs
-  DESTINATION share/${PROJECT_NAME}
-)
-
 install(TARGETS
         ${PROJECT_NAME}_node
         ${PROJECT_NAME}_node_single
