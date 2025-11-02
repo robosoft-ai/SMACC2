@@ -6,7 +6,7 @@ Changelog for package cl_keyboard
    For historical changes prior to 2.3.20, see keyboard_client/CHANGELOG.rst.
    The keyboard_client package is now deprecated in favor of cl_keyboard.
 
-2.3.20 (2025-01-XX)
+2.3.20 (2025-11-01)
 -------------------
 * New cl_keyboard client library created as replacement for keyboard_client (`#621 <https://github.com/robosoft-ai/SMACC2/issues/621>`_)
 

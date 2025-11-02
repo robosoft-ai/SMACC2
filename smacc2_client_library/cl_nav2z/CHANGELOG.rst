@@ -6,7 +6,7 @@ Changelog for package cl_nav2z
    For historical changes prior to 2.3.20, see nav2z_client/CHANGELOG.rst.
    The nav2z_client package is now deprecated in favor of cl_nav2z.
 
-2.3.20 (2025-01-XX)
+2.3.20 (2025-11-01)
 -------------------
 * Minor refactoring (`#622 <https://github.com/robosoft-ai/SMACC2/issues/622>`_)
 * Refactor of cl_nav2z to component-based architecture (`#624 <https://github.com/robosoft-ai/SMACC2/issues/624>`_)

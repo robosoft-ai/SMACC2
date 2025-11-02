@@ -6,7 +6,7 @@ Changelog for package cl_moveit2z
    For historical changes prior to 2.3.20, see moveit2z_client/CHANGELOG.rst.
    The moveit2z_client package is now deprecated in favor of cl_moveit2z.
 
-2.3.20 (2025-01-XX)
+2.3.20 (2025-11-01)
 -------------------
 * New cl_moveit2z client library created (`#638 <https://github.com/robosoft-ai/SMACC2/issues/638>`_)
 

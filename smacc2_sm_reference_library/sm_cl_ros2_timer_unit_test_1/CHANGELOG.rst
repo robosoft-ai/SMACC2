@@ -5,7 +5,7 @@ Changelog for package sm_cl_ros2_timer_unit_test_1
    This package was created in 2025 as a unit test for cl_ros2_timer, cloned from sm_atomic.
    For the original sm_atomic history, see sm_atomic/CHANGELOG.rst.
 
-2.3.20 (2025-01-XX)
+2.3.20 (2025-11-01)
 -------------------
 * Created sm_cl_ros2_timer_unit_test_1 as unit test for cl_ros2_timer client
 * New cl_ros2_timer unit test (`#616 <https://github.com/robosoft-ai/SMACC2/issues/616>`_)

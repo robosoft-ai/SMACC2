@@ -1,7 +1,7 @@
 Changelog for package smacc2
 ================================
 
-2.3.20 (2025-01-XX)
+2.3.20 (2025-11-01)
 -------------------
 ### Fixed
 - **CRITICAL**: Fix double onExit() calls in client behaviors (`#556 <https://github.com/robosoft-ai/SMACC2/issues/556>`_, `#558 <https://github.com/robosoft-ai/SMACC2/issues/558>`_)
