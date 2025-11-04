@@ -29,7 +29,7 @@ public:
   void onExit() override;
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateOrthogonalAllocation()
   {
     this->postCountDownEvent_ = [=]()
     { this->template postEvent<EvTimer<TSourceObject, TOrthogonal>>(); };

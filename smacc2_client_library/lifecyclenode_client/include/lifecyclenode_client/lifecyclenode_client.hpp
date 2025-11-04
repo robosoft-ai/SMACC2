@@ -266,7 +266,7 @@ public:
   boost::signals2::signal<void()> onTransitionOnErrorError_;
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateOrthogonalAllocation()
   {
     this->postOnTransitionCreate_ = [=]()
     {

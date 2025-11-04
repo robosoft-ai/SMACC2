@@ -26,7 +26,7 @@ public:
   void onEntry() override;
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateOrthogonalAllocation()
   {
     this->postTimerEvent_ = [=]()
     { this->template postEvent<EvTimer<TSourceObject, TOrthogonal>>(); };

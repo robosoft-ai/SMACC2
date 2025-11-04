@@ -66,11 +66,11 @@ public:
     std::optional<std::string> tipLink = std::nullopt);
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateOrthogonalAllocation()
   {
     this->initializeROS();
 
-    smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
     postJointDiscontinuityEvent = [this](auto traj)
     {

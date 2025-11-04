@@ -47,9 +47,9 @@ public:
   void onEntry() override;
 
   // template <typename TOrthogonal, typename TSourceObject>
-  // void onOrthogonalAllocation()
+  // void onStateOrthogonalAllocation()
   // {
-  //   smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+  //   smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
   // }
 
   void onExit() override { sequenceNodes_.clear(); }
@@ -66,7 +66,7 @@ public:
       auto createdBh = std::shared_ptr<TBehavior>(new TBehavior(args...));
 
       this->getCurrentState()->getOrthogonal<TOrthogonal>()->addClientBehavior(createdBh);
-      createdBh->template onOrthogonalAllocation<TOrthogonal, TBehavior>();
+      createdBh->template onStateOrthogonalAllocation<TOrthogonal, TBehavior>();
 
       return createdBh;
     };
