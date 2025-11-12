@@ -47,13 +47,13 @@ struct EvActionFeedback : sc::event<EvActionFeedback<ActionFeedback, TOrthogonal
 template <typename TSource, typename TOrthogonal>
 struct EvActionResult : sc::event<EvActionResult<TSource, TOrthogonal>>
 {
-  typename TSource::WrappedResult resultMessage;
+  // typename TSource::WrappedResult resultMessage;
 };
 
 template <typename TSource, typename TOrthogonal>
 struct EvActionSucceeded : sc::event<EvActionSucceeded<TSource, TOrthogonal>>
 {
-  typename TSource::WrappedResult resultMessage;
+  // typename TSource::WrappedResult resultMessage;
 
   static std::string getEventLabel()
   {
@@ -71,7 +71,7 @@ struct EvActionSucceeded : sc::event<EvActionSucceeded<TSource, TOrthogonal>>
 template <typename TSource, typename TOrthogonal>
 struct EvActionAborted : sc::event<EvActionAborted<TSource, TOrthogonal>>
 {
-  typename TSource::WrappedResult resultMessage;
+  // typename TSource::WrappedResult resultMessage;
 
   static std::string getEventLabel()
   {
@@ -89,7 +89,7 @@ struct EvActionAborted : sc::event<EvActionAborted<TSource, TOrthogonal>>
 template <typename TSource, typename TOrthogonal>
 struct EvActionCancelled : sc::event<EvActionCancelled<TSource, TOrthogonal>>
 {
-  typename TSource::WrappedResult resultMessage;
+  //typename TSource::WrappedResult resultMessage;
 
   static std::string getEventLabel()
   {

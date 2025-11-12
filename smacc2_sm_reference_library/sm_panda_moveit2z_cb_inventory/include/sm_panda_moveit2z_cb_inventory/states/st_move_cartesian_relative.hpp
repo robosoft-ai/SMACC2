@@ -43,10 +43,12 @@ struct StMoveCartesianRelative : smacc2::SmaccState<StMoveCartesianRelative, SmP
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbMoveCartesianRelative, OrArm>, StAttachObject, SUCCESS> ,
-    Transition<EvCbFailure<CbMoveCartesianRelative, OrArm>, StAttachObject, ABORT>,
+   
+  Transition<EvCbSuccess<CbMoveCartesianRelative, OrArm>, StPause7, SUCCESS>,
+  // Transition<EvCbSuccess<CbMoveCartesianRelative, OrArm>, StAttachObject, SUCCESS> ,
+  // Transition<EvCbFailure<CbMoveCartesianRelative, OrArm>, StMoveCartesianRelative2, ABORT>,
 
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StAttachObject, NEXT>  
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause7, NEXT>  
     >
     reactions;
 

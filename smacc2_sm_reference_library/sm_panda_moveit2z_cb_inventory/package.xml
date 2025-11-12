@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>sm_panda_moveit2z_cb_inventory</name>
-  <version>2.3.19</version>
+  <version>2.3.20</version>
   <description>The sm_panda_moveit2z_cb_inventory package</description>
   <maintainer email="smacc2@smacc2.cool">SMACC2 is cool</maintainer>
   <license>Apache-2.0</license>
@@ -12,7 +12,7 @@
 
   <depend>libboost-thread-dev</depend>
 
-  <depend>ros_timer_client</depend>
+  <depend>cl_ros2_timer</depend>
   <depend>smacc2</depend>
   <depend>moveit2z_client</depend>
   <depend>controller_manager</depend>
@@ -27,9 +27,8 @@
   <depend>moveit_plugins</depend>
   <depend>moveit_ros_robot_interaction</depend>
   <depend>moveit</depend>
-  <depend>keyboard_client</depend>
+  <depend>cl_keyboard</depend>
   <depend>rclcpp</depend>
-  <depend>ros_publisher_client</depend>
 
 
   <exec_depend>joint_trajectory_controller</exec_depend>

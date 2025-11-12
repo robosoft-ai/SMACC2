@@ -36,6 +36,11 @@
 namespace smacc2
 {
 using namespace std::chrono_literals;
+
+// Define global variables for graceful shutdown handling
+std::atomic<bool> g_shutdown_requested{false};
+SignalDetector * g_signal_detector = nullptr;
+
 /**
 ******************************************************************************************************************
 * SignalDetector()
@@ -220,6 +225,20 @@ void SignalDetector::stop() { end_ = true; }
 
 /**
  ******************************************************************************************************************
+ * terminateScheduler()
+ ******************************************************************************************************************
+ */
+void SignalDetector::terminateScheduler()
+{
+  if (scheduler_)
+  {
+    RCLCPP_INFO(getLogger(), "[SignalDetector] Terminating scheduler...");
+    scheduler_->terminate();
+  }
+}
+
+/**
+ ******************************************************************************************************************
  * poll()
  ******************************************************************************************************************
  */
@@ -236,7 +255,7 @@ void SignalDetector::pollOnce()
     //smaccStateMachine_->lockStateMachine("update behaviors");
 
     this->findUpdatableClientsAndComponents();
-    RCLCPP_DEBUG_STREAM(getLogger(), "updatable clients: " << this->updatableClients_.size());
+    RCLCPP_DEBUG_STREAM(getLogger(), "Updatable clients: " << this->updatableClients_.size());
 
     if (this->updatableClients_.size())
     {
@@ -275,7 +294,7 @@ void SignalDetector::pollOnce()
         StateMachineInternalAction::STATE_EXITING)
     {
       RCLCPP_DEBUG_STREAM(
-        getLogger(), "updatable states: " << this->updatableStateElements_.size());
+        getLogger(), "Updatable states: " << this->updatableStateElements_.size());
 
       for (auto stateElement : this->updatableStateElements_)
       {
@@ -297,7 +316,7 @@ void SignalDetector::pollOnce()
   }
   catch (std::exception & ex)
   {
-    RCLCPP_ERROR(getLogger(), "Exception during Signal Detector update loop. %s", ex.what());
+    RCLCPP_ERROR(getLogger(), "Exception during Signal Detector update loop. %s.", ex.what());
   }
 
   auto nh = this->getNode();
@@ -327,7 +346,7 @@ void SignalDetector::pollingLoop()
   {
     RCLCPP_WARN(
       getLogger(),
-      "Signal detector frequency (ros param signal_detector_loop_freq) was not set, using default "
+      "Signal Detector frequency (ros param signal_detector_loop_freq) was not set, using default "
       "frequency: "
       "%lf",
       this->loop_rate_hz);
@@ -335,23 +354,23 @@ void SignalDetector::pollingLoop()
   else
   {
     RCLCPP_WARN(
-      getLogger(), "Signal detector frequency (ros param signal_detector_loop_freq): %lf",
+      getLogger(), "Signal Detector frequency (ros param signal_detector_loop_freq): %lf",
       this->loop_rate_hz);
   }
 
   nh->set_parameter(rclcpp::Parameter("signal_detector_loop_freq", this->loop_rate_hz));
 
-  RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] loop rate hz:" << loop_rate_hz);
+  RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] Loop rate hz:" << loop_rate_hz);
 
   if (this->executionModel_ == ExecutionModel::SINGLE_THREAD_SPINNER)
   {
-    RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] running in single threaded mode");
+    RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] Running in single-threaded mode.");
 
     rclcpp::Rate r(loop_rate_hz);
     while (rclcpp::ok() && !end_)
     {
       RCLCPP_INFO_STREAM_THROTTLE(
-        getLogger(), *getNode()->get_clock(), 10000, "[SignalDetector] heartbeat");
+        getLogger(), *getNode()->get_clock(), 10000, "[SignalDetector] Heartbeat");
       pollOnce();
       rclcpp::spin_some(nh);
       r.sleep();
@@ -359,7 +378,7 @@ void SignalDetector::pollingLoop()
   }
   else
   {
-    RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] running in multi threaded mode");
+    RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] Running in multi-threaded mode.");
 
     rclcpp::executors::MultiThreadedExecutor executor;
     executor.add_node(nh);
@@ -367,9 +386,30 @@ void SignalDetector::pollingLoop()
   }
 }
 
+void onSignalShutdown(int sig)
+{
+  // IMPORTANT: Signal handlers can only call async-signal-safe functions
+  // We must NOT call complex C++ methods here (like terminateScheduler)
+  // as they may use mutexes/condition variables which are not signal-safe
+
+  // Set global shutdown flag (atomic operation - signal-safe)
+  g_shutdown_requested = true;
+
+  // Stop the signal detector loop (atomic operation - signal-safe)
+  if (g_signal_detector)
+  {
+    g_signal_detector->stop();
+  }
+
+  // Trigger ROS2 shutdown (this handles its own signal safety)
+  rclcpp::shutdown();
+
+  // Note: Scheduler termination will happen from main thread after polling loop exits
+}
+
 void onSigQuit(int)
 {
-  RCLCPP_INFO(rclcpp::get_logger("SMACC"), "SignalDetector: SIGQUIT received");
+  RCLCPP_INFO(rclcpp::get_logger("SMACC"), "SignalDetector: SIGQUIT received.");
   exit(0);
 }
 

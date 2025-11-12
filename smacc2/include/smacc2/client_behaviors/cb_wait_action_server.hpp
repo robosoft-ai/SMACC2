@@ -21,6 +21,7 @@
 #pragma once
 
 #include <smacc2/client_bases/smacc_action_client_base.hpp>
+#include <smacc2/client_core_components/cp_action_client.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace smacc2
@@ -28,6 +29,7 @@ namespace smacc2
 namespace client_behaviors
 {
 using namespace smacc2::client_bases;
+using namespace smacc2::client_core_components;
 
 // waits the action server is available in the current orthogonal
 class CbWaitActionServer : public smacc2::SmaccAsyncClientBehavior
@@ -40,6 +42,8 @@ public:
   void onOrthogonalAllocation()
   {
     SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+
+    // requires an action client
     this->requiresClient(client_);
   }
 
@@ -47,6 +51,7 @@ public:
 
 private:
   ISmaccActionClient * client_;
+
   std::chrono::milliseconds timeout_;
 };
 }  // namespace client_behaviors

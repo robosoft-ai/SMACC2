@@ -25,8 +25,26 @@
 namespace smacc2
 {
 template <typename TOrthogonal, typename TSourceObject>
+void SmaccAsyncClientBehavior::onStateOrthogonalAllocation()
+{
+  this->onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+}
+
+template <typename TOrthogonal, typename TSourceObject>
 void SmaccAsyncClientBehavior::onOrthogonalAllocation()
 {
+  if (postFinishEventFn_ || postSuccessEventFn_ || postFailureEventFn_)
+  {
+    RCLCPP_WARN(
+      getLogger(),
+      "SmaccAsyncClientBehavior already has event posting functions assigned. Skipping "
+      "re-assignment. This could be a problem if you are using the same behavior in multiple "
+      "states. This may be related with the deprecation of onOrthogonalAllocation in favor of "
+      "onStateOrthogonalAllocation.");
+
+    return;
+  }
+
   postFinishEventFn_ = [this]
   {
     this->onFinished_();

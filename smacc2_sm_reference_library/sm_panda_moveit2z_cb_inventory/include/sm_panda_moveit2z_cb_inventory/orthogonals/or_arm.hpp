@@ -20,7 +20,7 @@
 #include <moveit2z_client/components/cp_trajectory_history.hpp>
 #include <moveit2z_client/components/cp_grasping_objects.hpp>
 
-#include "ros_timer_client/cl_ros_timer.hpp"
+#include "cl_ros2_timer/cl_ros2_timer.hpp"
 #include "smacc2/smacc.hpp"
 
 namespace sm_panda_moveit2z_cb_inventory

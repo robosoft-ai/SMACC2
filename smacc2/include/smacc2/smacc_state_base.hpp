@@ -76,7 +76,7 @@ public:
     logger_.reset(new rclcpp::Logger(
       rclcpp::get_logger(smacc2::utils::cleanShortTypeName(typeid(MostDerived)))));
 
-    RCLCPP_INFO(getLogger(), "[%s] creating state ", STATE_NAME);
+    RCLCPP_INFO(getLogger(), "[%s] Creating state ", STATE_NAME);
     this->set_context(ctx.pContext_);
 
     node_ = this->getStateMachine().getNode();
@@ -455,7 +455,7 @@ private:
       }
 
       RCLCPP_DEBUG_STREAM(
-        getLogger(), "finding static client behaviors. State Database: "
+        getLogger(), "Finding static client behaviors. State Database: "
                        << SmaccStateInfo::staticBehaviorInfo.size() << ". Current state "
                        << cleanShortTypeName(*tindex)
                        << " cbs: " << SmaccStateInfo::staticBehaviorInfo[tindex].size());

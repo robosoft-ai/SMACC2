@@ -20,6 +20,7 @@
 
 #pragma once
 #include <cassert>
+#include <smacc2/introspection/introspection.hpp>
 #include <smacc2/smacc_client.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 
@@ -178,7 +179,7 @@ public:
     // }
 
     RCLCPP_INFO(
-      getLogger(), "[%s] creating client object, type:'%s' object tag: '%s'",
+      getLogger(), "[%s] Creating client object, type:'%s' object tag: '%s'",
       demangleType(typeid(*this)).c_str(), demangledTypeName<TClient>().c_str(),
       demangledTypeName<TOrthogonal>().c_str());
 

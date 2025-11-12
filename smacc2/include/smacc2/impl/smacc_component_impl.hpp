@@ -44,9 +44,27 @@ template <typename TComponent>
 void ISmaccComponent::requiresComponent(
   TComponent *& requiredComponentStorage, bool throwExceptionIfNotExist)
 {
+  this->requiresComponent(
+    requiredComponentStorage,
+    throwExceptionIfNotExist ? ComponentRequirement::HARD : ComponentRequirement::SOFT);
+}
+
+template <typename TComponent>
+void ISmaccComponent::requiresComponent(
+  std::string name, TComponent *& requiredComponentStorage, bool throwExceptionIfNotExist)
+{
+  this->requiresComponent(
+    name, requiredComponentStorage,
+    throwExceptionIfNotExist ? ComponentRequirement::HARD : ComponentRequirement::SOFT);
+}
+
+template <typename TComponent>
+void ISmaccComponent::requiresComponent(
+  TComponent *& requiredComponentStorage, ComponentRequirement requirementType)
+{
   requiredComponentStorage = this->owner_->getComponent<TComponent>();
 
-  if (requiredComponentStorage == nullptr && throwExceptionIfNotExist)
+  if (requiredComponentStorage == nullptr && requirementType == ComponentRequirement::HARD)
   {
     RCLCPP_DEBUG_STREAM(
       this->getLogger(), std::string("Required component ") +
@@ -68,11 +86,11 @@ void ISmaccComponent::requiresComponent(
 
 template <typename TComponent>
 void ISmaccComponent::requiresComponent(
-  std::string name, TComponent *& requiredComponentStorage, bool throwExceptionIfNotExist)
+  std::string name, TComponent *& requiredComponentStorage, ComponentRequirement requirementType)
 {
   requiredComponentStorage = this->owner_->getComponent<TComponent>(name);
 
-  if (requiredComponentStorage == nullptr && throwExceptionIfNotExist)
+  if (requiredComponentStorage == nullptr && requirementType == ComponentRequirement::HARD)
   {
     RCLCPP_DEBUG_STREAM(
       this->getLogger(), std::string("Required component with name: '") + name + "'" +

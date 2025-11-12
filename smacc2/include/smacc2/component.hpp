@@ -66,13 +66,29 @@ protected:
   }
 
   template <typename TComponent>
+  [[deprecated(
+    "Use requiresComponent with ComponentRequirement argument instead. This method will be removed "
+    "in future "
+    "versions.")]] void
+  requiresComponent(TComponent *& requiredComponentStorage, bool throwExceptionIfNotExist);
+
+  template <typename TComponent>
+  [[deprecated(
+    "Use requiresComponent with ComponentRequirement argument instead. This method will be removed "
+    "in future "
+    "versions.")]] void
+  requiresComponent(
+    std::string name, TComponent *& requiredComponentStorage, bool throwExceptionIfNotExist);
+
+  template <typename TComponent>
   void requiresComponent(
-    TComponent *& requiredComponentStorage, bool throwExceptionIfNotExist = false);
+    TComponent *& requiredComponentStorage,
+    ComponentRequirement requirementType = ComponentRequirement::SOFT);
 
   template <typename TComponent>
   void requiresComponent(
     std::string name, TComponent *& requiredComponentStorage,
-    bool throwExceptionIfNotExist = false);
+    ComponentRequirement requirementType = ComponentRequirement::SOFT);
 
   template <typename TClient>
   void requiresClient(TClient *& requiredClientStorage);

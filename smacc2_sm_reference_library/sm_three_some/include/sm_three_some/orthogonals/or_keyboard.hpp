@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <keyboard_client/cl_keyboard.hpp>
+#include <cl_keyboard/cl_keyboard.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 namespace sm_three_some
 {

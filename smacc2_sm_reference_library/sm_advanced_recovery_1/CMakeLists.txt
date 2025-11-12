@@ -17,8 +17,8 @@ find_package(smacc2)
 find_package(std_msgs)
 find_package(multirole_sensor_client)
 find_package(sr_all_events_go)
-find_package(ros_timer_client)
-find_package(keyboard_client)
+find_package(cl_ros2_timer)
+find_package(cl_keyboard)
 find_package(Boost COMPONENTS thread REQUIRED)
 
 set(dependencies
@@ -27,15 +27,15 @@ set(dependencies
   std_msgs
   multirole_sensor_client
   sr_all_events_go
-  ros_timer_client
-  keyboard_client
+  cl_ros2_timer
+  cl_keyboard
 )
 
 include_directories(include
   ${rclcpp_INCLUDE_DIRS}
   ${smacc2_INCLUDE_DIRS}
-  ${ros_timer_client_INCLUDE_DIRS}
-  ${keyboard_client_INCLUDE_DIRS}
+  ${cl_ros2_timer_INCLUDE_DIRS}
+  ${cl_keyboard_INCLUDE_DIRS}
   ${std_msgs_INCLUDE_DIRS}
   ${sr_all_events_go_INCLUDE_DIRS}
 )
@@ -48,8 +48,8 @@ ament_export_include_directories(include)
 target_link_libraries(${PROJECT_NAME}_node
   ${rclcpp_LIBRARIES}
   ${smacc2_LIBRARIES}
-  ${ros_timer_client_LIBRARIES}
-  ${keyboard_client_LIBRARIES}
+  ${cl_ros2_timer_LIBRARIES}
+  ${cl_keyboard_LIBRARIES}
   ${std_msgs_LIBRARIES}
   ${sr_all_events_go_LIBRARIES}
   ${Boost_LIBRARIES}

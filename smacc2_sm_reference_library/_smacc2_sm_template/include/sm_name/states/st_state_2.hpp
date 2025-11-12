@@ -18,8 +18,8 @@
 #include "smacc2/smacc.hpp"
 
 // CLIENTS
-#include "ros_timer_client/cl_ros_timer.hpp"
-#include "ros_timer_client/client_behaviors/cb_timer_countdown_once.hpp"
+#include "cl_ros2_timer/cl_ros2_timer.hpp"
+#include "cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp"
 
 // ORTHOGONALS
 #include "$sm_name$/orthogonals/or_timer.hpp"
@@ -31,8 +31,8 @@ using smacc2::Transition;
 using smacc2::EvStateRequestFinish;
 using smacc2::default_transition_tags::SUCCESS;
 
-using cl_ros_timer::EvTimer;
-using cl_ros_timer::CbTimerCountdownOnce;
+using cl_ros2_timer::EvTimer;
+using cl_ros2_timer::CbTimerCountdownOnce;
 
 using $sm_name$::OrTimer;
 

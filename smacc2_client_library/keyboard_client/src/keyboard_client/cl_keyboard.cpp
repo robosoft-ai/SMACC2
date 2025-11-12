@@ -22,8 +22,8 @@
 
 namespace cl_keyboard
 {
+// Declare the Client's default constructor.
 ClKeyboard::ClKeyboard() {}
-
+// Declare the Client's default destructor.
 ClKeyboard::~ClKeyboard() {}
-
 }  // namespace cl_keyboard

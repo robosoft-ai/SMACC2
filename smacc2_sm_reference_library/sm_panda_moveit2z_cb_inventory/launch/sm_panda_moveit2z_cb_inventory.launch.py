@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+from datetime import datetime
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
@@ -20,6 +21,39 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
 from moveit_configs_utils import MoveItConfigsBuilder
+
+
+def setup_log_directory():
+    """
+    Creates timestamped log directory with error handling.
+    Returns: (log_dir_path, timestamp) tuple
+    """
+    timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+
+    # Primary log directory location
+    log_dir = os.path.join(os.path.expanduser("~"), ".ros", "log", timestamp)
+
+    try:
+        os.makedirs(log_dir, mode=0o755, exist_ok=True)
+        print(f"[Launch] Log directory created: {log_dir}")
+        return log_dir, timestamp
+    except PermissionError as e:
+        # Fallback to /tmp if ~/.ros is not writable
+        fallback_dir = os.path.join("/tmp", "sm_panda_moveit2z_cb_inventory_logs", timestamp)
+        print(f"[Launch] WARNING: Cannot create log directory at {log_dir}")
+        print(f"[Launch] Permission denied: {e}")
+        print(f"[Launch] Using fallback directory: {fallback_dir}")
+        try:
+            os.makedirs(fallback_dir, mode=0o755, exist_ok=True)
+            return fallback_dir, timestamp
+        except Exception as fallback_error:
+            print(f"[Launch] ERROR: Cannot create fallback directory: {fallback_error}")
+            print(f"[Launch] Logs will only be displayed in konsole terminals")
+            return None, timestamp
+    except OSError as e:
+        print(f"[Launch] ERROR: Failed to create log directory: {e}")
+        print(f"[Launch] Logs will only be displayed in konsole terminals")
+        return None, timestamp
 
 
 def generate_launch_description():
@@ -38,6 +72,9 @@ def generate_launch_description():
 
 def launch_setup(context, *args, **kwargs):
 
+    # Setup logging directory
+    log_dir, timestamp = setup_log_directory()
+
     moveit_config = (
         MoveItConfigsBuilder("moveit_resources_panda")
         .robot_description(file_path="config/panda.urdf.xacro")
@@ -50,12 +87,19 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Start the actual move_group node/action server
+    # Construct logging prefix
+    if log_dir:
+        move_group_log = os.path.join(log_dir, f"move_group_{timestamp}.log")
+        move_group_prefix = f"konsole --hold -p tabtitle='Move Group' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {move_group_log}; exec bash' -- "
+    else:
+        move_group_prefix = "konsole --hold -p tabtitle='Move Group' -e"
+
     run_move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
         parameters=[moveit_config.to_dict()],
-        prefix="xterm -hold -e",
+        prefix=move_group_prefix,
     )
 
     rviz_base = LaunchConfiguration("rviz_config")
@@ -128,19 +172,33 @@ def launch_setup(context, *args, **kwargs):
         arguments=["panda_arm_controller", "-c", "/controller_manager"],
     )
 
+    # Construct logging prefix for state machine node
+    if log_dir:
+        state_machine_log = os.path.join(log_dir, f"state_machine_{timestamp}.log")
+        state_machine_prefix = f"konsole --hold -p tabtitle='State Machine' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {state_machine_log}; exec bash' -- "
+    else:
+        state_machine_prefix = "konsole --hold -p tabtitle='State Machine' -e"
+
     smacc_state_machine_spawner = Node(
         package="sm_panda_moveit2z_cb_inventory",
         executable="sm_panda_moveit2z_cb_inventory_node",
-        prefix="xterm -hold -e",
+        prefix=state_machine_prefix,
         output="screen",
     )
 
+    # Construct logging prefix for keyboard client node
+    if log_dir:
+        keyboard_log = os.path.join(log_dir, f"keyboard_client_{timestamp}.log")
+        keyboard_prefix = f"konsole --hold -p tabtitle='Keyboard Client' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {keyboard_log}; exec bash' -- "
+    else:
+        keyboard_prefix = "konsole --hold -p tabtitle='Keyboard Client' -e"
+
     keyboard_client_node = Node(
-        package="keyboard_client",
+        package="cl_keyboard",
         executable="keyboard_server_node.py",
         name="keyboard_client",
         output="screen",
-        prefix="xterm -hold -e",
+        prefix=keyboard_prefix,
         arguments=["--ros-args", "--log-level", "INFO"],
     )
 

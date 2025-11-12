@@ -43,13 +43,9 @@ struct StPouringMotion : smacc2::SmaccState<StPouringMotion, SmPandaMoveit2zCbIn
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-      Transition<EvCbSuccess<CbCircularPouringMotion, OrArm>, StMoveLastTrajectoryInitialState, SUCCESS>,
-      Transition<EvCbFailure<CbCircularPouringMotion, OrArm>, StMoveLastTrajectoryInitialState, ABORT>,
+      Transition<EvCbSuccess<CbCircularPouringMotion, OrArm>, StPause9, SUCCESS>,
 
-
-      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveKnownState1, PREVIOUS>,  
-
-      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveLastTrajectoryInitialState, NEXT>  
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause9, NEXT>  
     >
     reactions;
 
@@ -59,8 +55,8 @@ struct StPouringMotion : smacc2::SmaccState<StPouringMotion, SmPandaMoveit2zCbIn
    geometry_msgs::msg::Point relativePivotPoint;
    relativePivotPoint.x = -0.01;
    double deltaHeight = 0.05;
-   std::string tipLink = "panda_rightfinger";
-   std::string globalFrame = "panda_rightfinger";
+   std::string tipLink = "";  // Auto-detect from MoveIt2 configuration
+   std::string globalFrame = "panda_link8";  // Standard Panda end effector link
 
     configure_orthogonal<OrArm, CbCircularPouringMotion>(relativePivotPoint, deltaHeight, tipLink, globalFrame);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

@@ -26,7 +26,8 @@ source ~/workspace/humble_ws/install/setup.sh
 And then run the launch file...
 
 ```
-ros2 launch simple_action_client_example simple_action_client_example.launch
+ros2 launch sm_simple_action_client sm_simple_action_client.launch
+
 ```
 
  <h2>Viewer Instructions</h2>

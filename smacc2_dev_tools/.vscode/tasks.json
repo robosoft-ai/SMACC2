@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "start gdbserver sm_nav2_test_10",
+      "type": "process",
+      "command": "docker",
+      "args": [
+        "exec", "-d",
+        "-u", "admin",
+        "-e", "DISPLAY",
+        "-e", "XAUTHORITY=/home/admin/.Xauthority",
+        "-e", "QT_X11_NO_MITSHM=1",
+        "isaac_ros_dev-x86_64-container",
+        "bash", "-lc",
+        "konsole --hold -e bash -lc 'source /opt/ros/humble/setup.bash; source /workspaces/isaac_ros-dev/install/setup.bash; exec gdbserver :2345 /workspaces/isaac_ros-dev/build/sm_nav2_test_10/sm_nav2_test_10_node --ros-args --log-level INFO --ros-args -r __node:=SmNav2Test10 --params-file /workspaces/isaac_ros-dev/install/sm_nav2_test_10/share/sm_nav2_test_10/config/sm_nav2_test_10_config.yaml'"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "never", "panel": "shared", "showReuseMessage": false }
+    },
+    {
+      "label": "stop gdbserver sm_nav2_test_10",
+      "type": "process",
+      "command": "docker",
+      "args": [
+        "exec", "-u", "admin",
+        "isaac_ros_dev-x86_64-container",
+        "bash", "-lc",
+        "pkill -f 'gdbserver .*sm_nav2_test_10_node' || true"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "never", "panel": "shared", "showReuseMessage": false }
+    }
+  ]
+}

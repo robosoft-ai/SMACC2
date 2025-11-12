@@ -1,0 +1,277 @@
+// Copyright 2021 RobosoftAI Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/*****************************************************************************************************************
+ *
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
+#include <cl_nav2z/cl_nav2z.hpp>
+#include <cl_nav2z/client_behaviors/cb_absolute_rotate.hpp>
+#include <cl_nav2z/common.hpp>
+#include <cl_nav2z/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
+#include <cl_nav2z/components/odom_tracker/cp_odom_tracker.hpp>
+#include <cl_nav2z/components/pose/cp_pose.hpp>
+
+#include <rclcpp/parameter_client.hpp>
+
+namespace cl_nav2z
+{
+using namespace smacc2;
+
+CbAbsoluteRotate::CbAbsoluteRotate() {}
+CbAbsoluteRotate::CbAbsoluteRotate(float absoluteGoalAngleDegree, float yaw_goal_tolerance)
+{
+  this->absoluteGoalAngleDegree = absoluteGoalAngleDegree;
+
+  if (yaw_goal_tolerance >= 0)
+  {
+    this->yawGoalTolerance = yaw_goal_tolerance;
+  }
+}
+
+void CbAbsoluteRotate::onEntry()
+{
+  listener = std::make_shared<tf2_ros::Buffer>(getNode()->get_clock());
+  double goal_angle = this->absoluteGoalAngleDegree;
+
+  RCLCPP_INFO_STREAM(getLogger(), "[CbAbsoluteRotate] Absolute yaw Angle:" << goal_angle);
+
+  CpPlannerSwitcher * plannerSwitcher;
+  this->requiresComponent(plannerSwitcher, ComponentRequirement::SOFT);
+
+  if (spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning)
+  {
+    plannerSwitcher->setPureSpinningPlanner();
+  }
+  else
+  {
+    plannerSwitcher->setDefaultPlanners();
+  }
+
+  updateTemporalBehaviorParameters(false);
+
+  cl_nav2z::CpPose * p;
+  this->requiresComponent(p, ComponentRequirement::HARD);
+
+  auto referenceFrame = p->getReferenceFrame();
+  auto currentPoseMsg = p->toPoseMsg();
+
+  nav2_msgs::action::NavigateToPose::Goal goal;
+  goal.pose.header.frame_id = referenceFrame;
+  //goal.pose.header.stamp = getNode()->now();
+
+  auto targetAngle = goal_angle * M_PI / 180.0;
+  goal.pose.pose.position = currentPoseMsg.position;
+  tf2::Quaternion q;
+  q.setRPY(0, 0, targetAngle);
+  goal.pose.pose.orientation = tf2::toMsg(q);
+
+  cl_nav2z::odom_tracker::CpOdomTracker * odomTracker_;
+  this->requiresComponent(odomTracker_, ComponentRequirement::SOFT);
+
+  if (odomTracker_ != nullptr)
+  {
+    auto pathname = this->getCurrentState()->getName() + " - " + getName();
+    odomTracker_->pushPath(pathname);
+    odomTracker_->setStartPoint(p->toPoseStampedMsg());
+    odomTracker_->setCurrentMotionGoal(goal.pose);
+    odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
+  }
+
+  CpGoalCheckerSwitcher * goalCheckerSwitcher;
+  this->requiresComponent(goalCheckerSwitcher, ComponentRequirement::HARD);
+
+  goalCheckerSwitcher->setGoalCheckerId("absolute_rotate_goal_checker");
+
+  RCLCPP_INFO_STREAM(
+    getLogger(),
+    "[" << getName() << "] current pose yaw: " << tf2::getYaw(currentPoseMsg.orientation));
+  RCLCPP_INFO_STREAM(
+    getLogger(),
+    "[" << getName() << "] goal pose yaw: " << tf2::getYaw(goal.pose.pose.orientation));
+  this->sendGoal(goal);
+}
+
+void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
+{
+  auto log = this->getLogger();
+
+  std::string nodename = "/controller_server";
+
+  auto parameters_client =
+    std::make_shared<rclcpp::AsyncParametersClient>(this->getNode(), nodename);
+
+  RCLCPP_INFO_STREAM(
+    log, "[" << getName() << "] using a parameter client to update some controller parameters: "
+             << nodename << ". Waiting service.");
+  parameters_client->wait_for_service();
+
+  RCLCPP_INFO_STREAM(log, "[" << getName() << "] Service found: " << nodename << ".");
+
+  std::string localPlannerName;
+  std::vector<rclcpp::Parameter> parameters;
+
+  // dynamic_reconfigure::DoubleParameter yaw_goal_tolerance;
+  rclcpp::Parameter yaw_goal_tolerance("goal_checker.yaw_goal_tolerance");
+
+  rclcpp::Parameter max_vel_theta, min_vel_theta;
+
+  bool isRosBasePlanner = !spinningPlanner || *spinningPlanner == SpinningPlanner::Default;
+  bool isPureSpinningPlanner = spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning;
+
+  // SELECTING CONTROLLER AND PARAMETERS NAME
+  if (isPureSpinningPlanner)
+  {
+    localPlannerName = "PureSpinningLocalPlanner";
+    max_vel_theta = rclcpp::Parameter(localPlannerName + ".max_angular_z_speed");
+    min_vel_theta = rclcpp::Parameter(localPlannerName + ".min_vel_theta");
+  }
+  else if (isRosBasePlanner)
+  {
+    localPlannerName = "FollowPath";
+    max_vel_theta = rclcpp::Parameter(localPlannerName + ".max_vel_theta");
+    min_vel_theta = rclcpp::Parameter(localPlannerName + ".min_vel_theta");
+  }
+
+  if (!undo)
+  {
+    if (yawGoalTolerance)
+    {
+      // save old yaw tolerance
+      auto fut = parameters_client->get_parameters(
+        {localPlannerName + ".yaw_goal_tolerance"},
+        [&](auto futureParameters)
+        {
+          auto params = futureParameters.get();
+          oldYawTolerance = params[0].as_double();
+        });
+
+      // make synchronous
+      fut.get();
+
+      yaw_goal_tolerance = rclcpp::Parameter("goal_checker.yaw_goal_tolerance", *yawGoalTolerance);
+      parameters.push_back(yaw_goal_tolerance);
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << getName()
+                         << "] updating yaw tolerance local planner to: " << *yawGoalTolerance
+                         << ", from previous value: " << this->oldYawTolerance);
+    }
+
+    if (maxVelTheta)
+    {
+      if (isRosBasePlanner)
+      {
+        // nh.getParam(nodename + "/"  + localPlannerName+"/min_vel_theta", oldMinVelTheta);
+        // getCurrentState()->getParam(nodename + "/" + localPlannerName + "/max_vel_theta", oldMaxVelTheta);
+
+        // save old yaw tolerance
+        auto fut = parameters_client->get_parameters(
+          {localPlannerName + ".max_vel_theta"},
+          [&](auto futureParameters)
+          {
+            auto params = futureParameters.get();
+            oldMaxVelTheta = params[0].as_double();
+          });
+
+        // make synchronous
+        fut.get();
+      }
+
+      max_vel_theta = rclcpp::Parameter(localPlannerName + ".max_vel_theta", *maxVelTheta);
+      min_vel_theta = rclcpp::Parameter(localPlannerName + ".min_vel_theta", -*maxVelTheta);
+      parameters.push_back(max_vel_theta);
+      parameters.push_back(min_vel_theta);
+
+      RCLCPP_INFO_STREAM(
+        log, "[" << getName() << "] updating max vel theta local planner to: " << *maxVelTheta
+                 << ", from previous value: " << this->oldMaxVelTheta);
+      RCLCPP_INFO_STREAM(
+        log, "[" << getName() << "] updating min vel theta local planner to: " << -*maxVelTheta
+                 << ", from previous value: " << this->oldMinVelTheta);
+    }
+  }
+  else
+  {
+    if (yawGoalTolerance)
+    {
+      yaw_goal_tolerance = rclcpp::Parameter("goal_checker.yaw_goal_tolerance", oldYawTolerance);
+      RCLCPP_INFO_STREAM(
+        log, "[" << getName() << "] restoring yaw tolerance local planner from: "
+                 << *yawGoalTolerance << " , to previous value: " << this->oldYawTolerance);
+    }
+
+    if (maxVelTheta)
+    {
+      if (isRosBasePlanner)
+      {
+        max_vel_theta = rclcpp::Parameter(localPlannerName + ".max_vel_theta", oldMaxVelTheta);
+        min_vel_theta = rclcpp::Parameter(localPlannerName + ".max_vel_theta", oldMinVelTheta);
+      }
+
+      parameters.push_back(max_vel_theta);
+      parameters.push_back(min_vel_theta);
+      RCLCPP_INFO_STREAM(
+        log, "[" << getName() << "] restoring max vel theta local planner from: " << *maxVelTheta
+                 << ", to previous value: " << this->oldMaxVelTheta);
+      RCLCPP_INFO_STREAM(
+        log, "[" << getName() << "] restoring min vel theta local planner from: " << -(*maxVelTheta)
+                 << ", to previous value: " << this->oldMinVelTheta);
+    }
+  }
+
+  if (parameters.size())
+  {
+    std::stringstream ss;
+    ss << "Executing asynchronous request. Parameters to update: " << std::endl;
+    for (auto & p : parameters)
+    {
+      ss << p.get_name() << " - " << p.value_to_string() << std::endl;
+    }
+
+    RCLCPP_INFO_STREAM(getLogger(), "[CbAbsoluteRotate] " << ss.str());
+
+    auto futureResults = parameters_client->set_parameters(parameters);
+
+    int i = 0;
+    for (auto & res : futureResults.get())
+    {
+      RCLCPP_INFO_STREAM(
+        getLogger(), "[" << getName() << "] parameter result: " << parameters[i].get_name() << "="
+                         << parameters[i].as_string() << ". Result: " << res.successful);
+      i++;
+    }
+
+    RCLCPP_INFO_STREAM(log, "[" << getName() << "] parameters updated");
+  }
+  else
+  {
+    RCLCPP_INFO_STREAM(log, "[" << getName() << "] skipping parameters update");
+  }
+}
+
+void CbAbsoluteRotate::onExit()
+{
+  if (spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning)
+  {
+  }
+  else
+  {
+  }
+
+  this->updateTemporalBehaviorParameters(true);
+}
+
+}  // namespace cl_nav2z

@@ -26,6 +26,7 @@
 
 namespace smacc2
 {
+
 class ISmaccClientBehavior
 {
 public:
@@ -41,7 +42,15 @@ public:
   void requiresClient(SmaccClientType *& storage);
 
   template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *& storage, bool throwExceptionIfNotExist = false);
+  [[deprecated(
+    "Use requiresClient with the ComponentRequirement argument. This method will be removed in "
+    "future versions.")]] void
+  requiresComponent(SmaccComponentType *& storage, bool throwExceptionIfNotExist);
+
+  template <typename SmaccComponentType>
+  void requiresComponent(
+    SmaccComponentType *& storage,
+    ComponentRequirement requirementType = ComponentRequirement::SOFT);
 
   virtual void onEntry() {}
 

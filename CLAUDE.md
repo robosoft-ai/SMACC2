@@ -57,7 +57,7 @@ SmaccSignal is a communication mechanism (template wrapper around boost::signals
 
   ### Important Client Library Related Files
   - smacc2/include/smacc2/smacc_asynchronous_client_behavior.hpp
-  - smacc2/include/smacc2/client_base_components/cp_topic_subscriber.hpp
+  - smacc2/include/smacc2/client_core_components/cp_topic_subscriber.hpp
   - smacc2/include/smacc2/impl/smacc_asynchronous_client_behavior_impl.hpp
   - smacc2/include/smacc2/client_bases/smacc_action_client_base.hpp
   - smacc2/include/smacc2/client_bases/smacc_service_server_client.hpp
@@ -268,13 +268,27 @@ SMACC2 uses what can be referred to as event-queue-mediated concurrency: async o
 
 //////////////////////////////////////////////////////////////////////////////
 
-# Other SMACC2 CLAUDE.md File Locations
+# Other SMACC2 Documentation File Locations
 
-  ### Client Library  
+  ### Client Library
   SMACC2/smacc2_client_library/CLAUDE.md
 
   ### Reference Library
   SMACC2/smacc2_sm_reference_library/CLAUDE.md
+
+  ### Project Settings
+  SMACC2/.claude/settings.json
+
+  ### Release Process
+  SMACC2/RELEASING.md - Comprehensive guide for creating SMACC2 releases
+
+//////////////////////////////////////////////////////////////////////////////
+
+## Token Conservation
+- Summarize lengthy outputs instead of showing full logs
+- Group similar error messages
+- Skip routine background process messages
+- Prioritize actionable information over verbose logging
 
 //////////////////////////////////////////////////////////////////////////////
 

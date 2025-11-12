@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+    "WebSearch",
+    "Bash(find:*)",
+    "Bash(colcon build:*)",
+    "Bash(source:*)",
+    "Bash(ros2 node:*)",
+    "Bash(source install/setup.bash && ros2 topic echo:*)",
+    "Bash(source install/setup.bash && timeout 5 ros2 topic echo /*/smacc/event_log)",
+    "Bash(ros2 topic pub:*)",
+    "Bash(ros2 launch:*)",
+    "Bash(for i in {1..8})",
+    "Bash(source install/setup.bash && do ros2 topic pub /keyboard_unicode std_msgs/msg/UInt16 \"data: 110\" --once)",
+    "Bash(done)",
+    "Bash(ros2 run:*)",
+    "Bash(for i in {1..10})",
+    "Bash(source install/setup.bash && do ros2 topic pub /keyboard_unicode std_msgs/msg/UInt16 \"data: 110\" --once)",
+    "Bash(source install/setup.bash && timeout 5 ros2 topic echo /*/smacc/status)",
+    "Bash(source install/setup.bash && timeout 3 ros2 topic echo /joint_states --once)",
+    "Bash(source install/setup.bash && do ros2 topic pub /keyboard_unicode std_msgs/msg/UInt16 \"data: 110\" --once)",
+    "Bash(for i in {1..15})",
+    "Bash(for i in {1..20})",
+    "Bash(source install/setup.bash && timeout 5 ros2 topic echo /joint_states --once)",
+    "Bash(unset:*)",
+    "Bash(ros2 pkg list:*)",
+    "Bash(pkill:*)",
+    "Bash(timeout 3 ros2 topic echo:*)",
+    "Bash(for i in {1..5})",
+    "Bash(timeout 5 ros2 topic echo:*)",
+    "Bash(timeout 10 ros2 topic echo /panda_arm_controller/follow_joint_trajectory/_action/send_goal --once)"
+    ],
+    "deny": [
+     
+    ]
+  },
+  "env": {
+  }
+}

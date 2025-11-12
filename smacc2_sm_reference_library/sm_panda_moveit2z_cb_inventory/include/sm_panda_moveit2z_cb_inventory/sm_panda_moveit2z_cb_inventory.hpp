@@ -33,8 +33,8 @@
 #include <moveit2z_client/cl_moveit2z.hpp>
 #include <moveit2z_client/client_behaviors.hpp>
 
-#include <keyboard_client/cl_keyboard.hpp>
-#include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.hpp>
+#include <cl_keyboard/cl_keyboard.hpp>
+#include <cl_keyboard/client_behaviors/cb_default_keyboard_behavior.hpp>
 
 #include <smacc2/client_behaviors/cb_wait_topic_message.hpp>
 
@@ -53,15 +53,27 @@ struct StPause3;
 struct StPause4;
 struct StPause5;
 struct StPause6;
+struct StPause7;
+struct StPause8;
+struct StPause9;
+struct StPause10;
+struct StPause11;
+struct StPause12;
+struct StPause13;
+struct StPause14;
+struct StPause15;
+struct StPause16;
 struct StMoveJoints1;
 struct StMoveJoints2;
 struct StMoveJoints3;
+struct StMoveJoints4;
+struct StMoveJoints5;
 struct StMoveEndEffector;
 struct StMoveCartesianRelative;
 struct StMoveCartesianRelative2;
 struct StCircularPivotMotion;
 struct StAttachObject;
-struct StDetatchObject;
+struct StDetachObject;
 struct StEndEffectorRotate;
 struct StExecuteLastTrajectory;
 struct StMoveKnownState1;
@@ -94,12 +106,24 @@ struct SmPandaMoveit2zCbInventory : public smacc2::SmaccStateMachineBase<SmPanda
 #include "states/st_pause_4.hpp"
 #include "states/st_pause_5.hpp"
 #include "states/st_pause_6.hpp"
+#include "states/st_pause_7.hpp"
+#include "states/st_pause_8.hpp"
+#include "states/st_pause_9.hpp"
+#include "states/st_pause_10.hpp"
+#include "states/st_pause_11.hpp"
+#include "states/st_pause_12.hpp"
+#include "states/st_pause_13.hpp"
+#include "states/st_pause_14.hpp"
+#include "states/st_pause_15.hpp"
+#include "states/st_pause_16.hpp"
 #include "states/st_attach_object.hpp"
 #include "states/st_move_end_effector.hpp"
 #include "states/st_circular_pivot_motion.hpp"
 #include "states/st_move_joints_1.hpp"
 #include "states/st_move_joints_2.hpp"
 #include "states/st_move_joints_3.hpp"
+#include "states/st_move_joints_4.hpp"
+#include "states/st_move_joints_5.hpp"
 #include "states/st_detach_object.hpp"
 #include "states/st_move_known_state_1.hpp"
 #include "states/st_move_known_state_2.hpp"

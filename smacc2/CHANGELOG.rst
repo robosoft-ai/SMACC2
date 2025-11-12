@@ -1,6 +1,59 @@
 Changelog for package smacc2
 ================================
 
+2.3.20 (2025-11-01)
+-------------------
+### Fixed
+- **CRITICAL**: Fix double onExit() calls in client behaviors (`#556 <https://github.com/robosoft-ai/SMACC2/issues/556>`_, `#558 <https://github.com/robosoft-ai/SMACC2/issues/558>`_)
+
+  Client behavior's onExit method was being invoked twice during state transitions due to
+  duplicate notifyOnStateExitting() call. This caused issues including deadlocks in behaviors
+  with thread joins in onExit. Fixed by removing redundant call outside mutex lock.
+
+  - Root cause identified by @yassiezar
+  - Issue reported in apt packages by @Crowdedlight
+
+- Fix toggle functionality (`#587 <https://github.com/robosoft-ai/SMACC2/issues/587>`_)
+
+### Added
+- New cl_moveit2z client library (`#638 <https://github.com/robosoft-ai/SMACC2/issues/638>`_)
+- New cl_keyboard client and removal of sm_pubsub_1 (`#621 <https://github.com/robosoft-ai/SMACC2/issues/621>`_)
+- New cl_ros2_timer unit test (`#616 <https://github.com/robosoft-ai/SMACC2/issues/616>`_)
+- Nova Carter navigation behaviors (`#608 <https://github.com/robosoft-ai/SMACC2/issues/608>`_)
+- Progress on requiresComponent (`#628 <https://github.com/robosoft-ai/SMACC2/issues/628>`_)
+
+### Changed
+- Refactoring of cl_moveit2z to component-based architecture & header-only implementation (`#639 <https://github.com/robosoft-ai/SMACC2/issues/639>`_)
+- Refactoring cl_nav2z to remove legacy API support and update client behaviors (`#625 <https://github.com/robosoft-ai/SMACC2/issues/625>`_)
+- Refactor of cl_nav2z to component-based architecture (`#624 <https://github.com/robosoft-ai/SMACC2/issues/624>`_)
+- Refactor of cl_nav2z, moved cp_nav2_action_interface.hpp into folder (`#626 <https://github.com/robosoft-ai/SMACC2/issues/626>`_)
+- Refactor of cl_ros2_timer namespace structure (include paths) (`#623 <https://github.com/robosoft-ai/SMACC2/issues/623>`_)
+- Refactored cl_ros2_timer components to header-only (`#619 <https://github.com/robosoft-ai/SMACC2/issues/619>`_)
+- Refactoring cl_ros2_timer to component-based architecture (`#618 <https://github.com/robosoft-ai/SMACC2/issues/618>`_)
+- Refactoring cl_ros2_timer to header-lite (`#617 <https://github.com/robosoft-ai/SMACC2/issues/617>`_)
+- Final keyboard client refactor changes with formatting (`#599 <https://github.com/robosoft-ai/SMACC2/issues/599>`_)
+- Refactor keyboard client to remove cb.cpp file (`#609 <https://github.com/robosoft-ai/SMACC2/issues/609>`_)
+- Refactoring: renaming onOrthogonalAllocation (`#600 <https://github.com/robosoft-ai/SMACC2/issues/600>`_)
+- Refactor base components (`#606 <https://github.com/robosoft-ai/SMACC2/issues/606>`_)
+- sm_panda_moveit2z_cb_inventory refactor (`#633 <https://github.com/robosoft-ai/SMACC2/issues/633>`_)
+- Moving reference library from ros_timer_client and keyboard_client to cl_ros2_timer and cl_keyboard (`#645 <https://github.com/robosoft-ai/SMACC2/issues/645>`_)
+- Trimming sm_atomic_services and sm_atomic_24hr from sm_reference_library (`#644 <https://github.com/robosoft-ai/SMACC2/issues/644>`_)
+- Update ROS distribution from Galactic to Humble (`#631 <https://github.com/robosoft-ai/SMACC2/issues/631>`_)
+- Update include path for cl_ros2_timer (`#629 <https://github.com/robosoft-ai/SMACC2/issues/629>`_)
+
+### Documentation
+- Updating CLAUDE.md files (`#643 <https://github.com/robosoft-ai/SMACC2/issues/643>`_)
+- CLAUDE.MD file for client behavior libraries (`#586 <https://github.com/robosoft-ai/SMACC2/issues/586>`_)
+- Fixing sm readmes (`#632 <https://github.com/robosoft-ai/SMACC2/issues/632>`_)
+- Updating sm_simple_action_client launch file (`#642 <https://github.com/robosoft-ai/SMACC2/issues/642>`_)
+- Update README.md (`#576 <https://github.com/robosoft-ai/SMACC2/issues/576>`_)
+
+### Contributors
+- Pablo Iñigo Blasco (@pabloinigoblasco)
+- Brett Aldrich (@brettpac)
+- Jaycee Lock (@yassiezar)
+- Crowdedlight (@Crowdedlight)
+
 0.4.0 (2022-04-04)
 ------------------
 ### Added

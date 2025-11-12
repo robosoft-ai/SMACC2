@@ -33,7 +33,7 @@ using namespace smacc2;
 using namespace cl_keyboard;
 
 // STATE DECLARATION
-struct StDetatchObject : smacc2::SmaccState<StDetatchObject, SmPandaMoveit2zCbInventory>
+struct StDetachObject : smacc2::SmaccState<StDetachObject, SmPandaMoveit2zCbInventory>
 {
   using SmaccState::SmaccState;
 
@@ -43,8 +43,8 @@ struct StDetatchObject : smacc2::SmaccState<StDetatchObject, SmPandaMoveit2zCbIn
 
   // TRANSITION TABLE
   typedef boost::mpl::list<
-    Transition<EvCbSuccess<CbDetachObject, OrArm>, StEndEffectorRotate, SUCCESS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StEndEffectorRotate, NEXT>  
+    Transition<EvCbSuccess<CbDetachObject, OrArm>, StPause12, SUCCESS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPause12, NEXT>  
     >
     reactions;
 
@@ -55,7 +55,7 @@ struct StDetatchObject : smacc2::SmaccState<StDetatchObject, SmPandaMoveit2zCbIn
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
-  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StDetatchObject"); }
+  void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering StDetachObject"); }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "On Entry!"); }
 

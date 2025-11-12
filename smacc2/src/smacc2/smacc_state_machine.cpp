@@ -44,7 +44,7 @@ ISmaccStateMachine::ISmaccStateMachine(
 
   nh_ = rclcpp::Node::make_shared(stateMachineName, nodeOptions);  //
   RCLCPP_INFO_STREAM(
-    nh_->get_logger(), "Creating State Machine Base: " << nh_->get_fully_qualified_name());
+    nh_->get_logger(), "Creating state machine base: " << nh_->get_fully_qualified_name());
 
   signalDetector_ = signalDetector;
   signalDetector_->initialize(this);
@@ -78,8 +78,7 @@ ISmaccStateMachine::~ISmaccStateMachine()
 
 void ISmaccStateMachine::disconnectSmaccSignalObject(void * object_ptr)
 {
-  RCLCPP_INFO(
-    nh_->get_logger(), "[SmaccSignals] object signal disconnecting %ld", (long)object_ptr);
+  RCLCPP_INFO(nh_->get_logger(), "[SmaccSignal] Object signal disconnecting %ld", (long)object_ptr);
   if (stateCallbackConnections.count(object_ptr) > 0)
   {
     auto callbackSemaphore = stateCallbackConnections[object_ptr];
@@ -88,7 +87,7 @@ void ISmaccStateMachine::disconnectSmaccSignalObject(void * object_ptr)
   }
   else
   {
-    RCLCPP_INFO(nh_->get_logger(), "[SmaccSignals] no signals found %ld", (long)object_ptr);
+    RCLCPP_INFO(nh_->get_logger(), "[SmaccSignal] No signals found %ld", (long)object_ptr);
   }
 }
 
@@ -113,8 +112,8 @@ void ISmaccStateMachine::updateStatusMessage()
   if (currentStateInfo_ != nullptr)
   {
     RCLCPP_WARN_STREAM(
-      nh_->get_logger(), "[StateMachine] setting state active "
-                           << ": " << currentStateInfo_->getFullPath());
+      nh_->get_logger(),
+      "[StateMachine] Setting state active: " << currentStateInfo_->getFullPath());
 
     if (runMode_ == SMRunMode::DEBUG)
     {
@@ -164,7 +163,7 @@ void ISmaccStateMachine::onInitialized()
 
 void ISmaccStateMachine::initializeROS(std::string shortname)
 {
-  RCLCPP_WARN_STREAM(nh_->get_logger(), "State machine base creation:" << shortname);
+  RCLCPP_WARN_STREAM(nh_->get_logger(), "State machine base creation: " << shortname);
   // STATE MACHINE TOPICS
   stateMachinePub_ = nh_->create_publisher<smacc2_msgs::msg::SmaccStateMachine>(
     shortname + "/smacc/state_machine_description", rclcpp::QoS(1));
@@ -172,6 +171,9 @@ void ISmaccStateMachine::initializeROS(std::string shortname)
     shortname + "/smacc/status", rclcpp::QoS(1));
   transitionLogPub_ = nh_->create_publisher<smacc2_msgs::msg::SmaccTransitionLogEntry>(
     shortname + "/smacc/transition_log", rclcpp::QoS(1));
+
+  eventsLogPub_ = nh_->create_publisher<smacc2_msgs::msg::SmaccEvent>(
+    shortname + "/smacc/event_log", rclcpp::QoS(100));
 
   // STATE MACHINE SERVICES
   transitionHistoryService_ = nh_->create_service<smacc2_msgs::srv::SmaccGetTransitionHistory>(
@@ -187,7 +189,7 @@ void ISmaccStateMachine::getTransitionLogHistory(
   std::shared_ptr<smacc2_msgs::srv::SmaccGetTransitionHistory::Response> res)
 {
   RCLCPP_WARN(
-    nh_->get_logger(), "Requesting Transition Log History, current size: %ld",
+    nh_->get_logger(), "Requesting transition log history, current size: %ld",
     this->transitionLogHistory_.size());
   res->history = this->transitionLogHistory_;
 }

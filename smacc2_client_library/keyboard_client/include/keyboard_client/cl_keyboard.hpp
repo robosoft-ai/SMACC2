@@ -15,7 +15,8 @@
 #pragma once
 
 #include <keyboard_client/components/cp_keyboard_listener_1.hpp>
-#include <smacc2/client_base_components/cp_topic_subscriber.hpp>
+
+#include <smacc2/client_core_components/cp_topic_subscriber.hpp>
 
 #include <smacc2/introspection/introspection.hpp>
 #include <smacc2/smacc.hpp>
@@ -28,8 +29,6 @@
 
 namespace cl_keyboard
 {
-//------------------  KEYBOARD CLIENT ---------------------------------------------
-
 class ClKeyboard : public smacc2::ISmaccClient
 {
 public:
@@ -39,19 +38,20 @@ public:
   // Override the base class methods to call our setup
   template <typename TOrthogonal, typename TClient>
   void onComponentInitialization()
-  // clients utilizes a composition based architecture for their components
-  // here we define the list of components that this client will have in a component based architecture
-  {
-    // for listener we use dependency injection pattern where we reference the CpTopicSubscriber inside the smacc core
-    // this would be the basic subscription component to the topic
-    // we use this to gain the topic funcionality interated with SMACC and that post smacc events for transitions
-    // we are using it to handle ros topic messages reception and notifying other components in the client
-    this->createComponent<
-      smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16>, TOrthogonal, ClKeyboard>(
-      "/keyboard_unicode");
 
-    // this keyboard subscriber component requires the first subscriber component
-    // it is notified by the CpTopicSubscriber and processes the messages to decide with keyboard event must be posted and then post it
+  // Clients utilize a composition based architecture for their components.
+  // In the function body below we create the components that will be used in this client.
+
+  {
+    // We start by creating a topic subscriber component from SMACC2s client core components.
+    // We use this to gain the topic funcionality interated with SMACC and the ability to post smacc events for transitions.
+    // We are using it to handle the reception of ros topic messages and to notify the other components in the client.
+    this->createComponent<
+      smacc2::client_core_components::CpTopicSubscriber<std_msgs::msg::UInt16>, TOrthogonal,
+      ClKeyboard>("/keyboard_unicode");
+
+    // This keyboard listener component requires CpTopicSubscriber.
+    // It is notified by the CpTopicSubscriber and processes the messages to decide which keyboard event must be posted and then posts it.
     this->createComponent<cl_keyboard::components::CpKeyboardListener1, TOrthogonal, ClKeyboard>();
   }
 };

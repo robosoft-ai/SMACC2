@@ -108,8 +108,8 @@ public:
   template <typename T>
   void setGlobalSMData(std::string name, T value);
 
-  template <typename StateField, typename BehaviorType>
-  void mapBehavior();
+  //template <typename StateField, typename BehaviorType>
+  //void mapBehavior();
 
   std::string getStateMachineName();
 
@@ -183,6 +183,9 @@ protected:
   rclcpp::Publisher<smacc2_msgs::msg::SmaccStateMachine>::SharedPtr stateMachinePub_;
   rclcpp::Publisher<smacc2_msgs::msg::SmaccStatus>::SharedPtr stateMachineStatusPub_;
   rclcpp::Publisher<smacc2_msgs::msg::SmaccTransitionLogEntry>::SharedPtr transitionLogPub_;
+
+  rclcpp::Publisher<smacc2_msgs::msg::SmaccEvent>::SharedPtr eventsLogPub_;
+
   rclcpp::Service<smacc2_msgs::srv::SmaccGetTransitionHistory>::SharedPtr transitionHistoryService_;
 
   // if it is null, you may be located in a transition. There is a small gap of time where internally
