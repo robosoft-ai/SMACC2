@@ -37,9 +37,24 @@ namespace smacc2
 {
 using namespace std::chrono_literals;
 
-// Define global variables for graceful shutdown handling
-std::atomic<bool> g_shutdown_requested{false};
-SignalDetector * g_signal_detector = nullptr;
+/**
+******************************************************************************************************************
+* SmExecution singleton implementation
+******************************************************************************************************************
+*/
+SmExecution::SmExecution()
+: schedulerThread(nullptr),
+  signalDetectorLoop(nullptr),
+  signalDetector(nullptr),
+  scheduler1(nullptr)
+{
+}
+
+SmExecution & SmExecution::getInstance()
+{
+  static SmExecution instance;
+  return instance;
+}
 
 /**
 ******************************************************************************************************************
@@ -392,13 +407,11 @@ void onSignalShutdown(int sig)
   // We must NOT call complex C++ methods here (like terminateScheduler)
   // as they may use mutexes/condition variables which are not signal-safe
 
-  // Set global shutdown flag (atomic operation - signal-safe)
-  g_shutdown_requested = true;
-
   // Stop the signal detector loop (atomic operation - signal-safe)
-  if (g_signal_detector)
+  SmExecution & smExecution = SmExecution::getInstance();
+  if (smExecution.signalDetector)
   {
-    g_signal_detector->stop();
+    smExecution.signalDetector->stop();
   }
 
   // Trigger ROS2 shutdown (this handles its own signal safety)
