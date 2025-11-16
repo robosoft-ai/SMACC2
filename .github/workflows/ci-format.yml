@@ -22,7 +22,7 @@ jobs:
        apt update
        apt install -y python3-pip clang-format ros-jazzy-ament-cppcheck
        git config --global --add safe.directory `pwd`
-       pip install pre-commit
+       pip install --user pre-commit
     - name: pre-commit
       shell: bash
       run: |
