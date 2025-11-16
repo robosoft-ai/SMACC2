@@ -72,18 +72,15 @@ void CbNavigateForward::onEntry()
   auto referenceFrame = p->getReferenceFrame();
   auto currentPoseMsg = p->toPoseMsg();
 
-  RCLCPP_INFO_STREAM(
-    getLogger(), "[" << getName() << "]"
-                     << "current pose: " << currentPoseMsg);
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "]" << "current pose: " << currentPoseMsg);
 
   // force global orientation if it is requested
   if (options.forceInitialOrientation)
   {
     currentPoseMsg.orientation = *(options.forceInitialOrientation);
     RCLCPP_WARN_STREAM(
-      getLogger(),
-      "[" << getName() << "]"
-          << "Forcing initial straight motion orientation: " << currentPoseMsg.orientation);
+      getLogger(), "[" << getName() << "]" << "Forcing initial straight motion orientation: "
+                       << currentPoseMsg.orientation);
   }
 
   tf2::Transform currentPose;
@@ -120,8 +117,7 @@ void CbNavigateForward::onEntry()
   //goal.pose.header.stamp = getNode()->now();
   tf2::toMsg(targetPose, goal.pose.pose);
   RCLCPP_INFO_STREAM(
-    getLogger(), "[" << getName() << "]"
-                     << " TARGET POSE FORWARD: " << goal.pose.pose);
+    getLogger(), "[" << getName() << "]" << " TARGET POSE FORWARD: " << goal.pose.pose);
 
   // current pose
   geometry_msgs::msg::PoseStamped currentStampedPoseMsg;

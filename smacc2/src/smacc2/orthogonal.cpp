@@ -107,7 +107,8 @@ void ISmaccOrthogonal::onEntry()
 
       try
       {
-        TRACETOOLS_TRACEPOINT(smacc2_client_behavior_on_entry_start, statename, orthogonalName, cbName);
+        TRACETOOLS_TRACEPOINT(
+          smacc2_client_behavior_on_entry_start, statename, orthogonalName, cbName);
         clBehavior->executeOnEntry();
       }
       catch (const std::exception & e)
@@ -142,7 +143,8 @@ void ISmaccOrthogonal::onExit()
         getLogger(), "[Orthogonal: %s] OnExit, current Behavior: %s", orthogonalName, cbName);
       try
       {
-        TRACETOOLS_TRACEPOINT(smacc2_client_behavior_on_exit_start, statename, orthogonalName, cbName);
+        TRACETOOLS_TRACEPOINT(
+          smacc2_client_behavior_on_exit_start, statename, orthogonalName, cbName);
         clBehavior->executeOnExit();
       }
       catch (const std::exception & e)

@@ -30,9 +30,7 @@ ISmaccClientBehavior::ISmaccClientBehavior()
 
 ISmaccClientBehavior::~ISmaccClientBehavior()
 {
-  RCLCPP_WARN_STREAM(
-    getLogger(), "[" << getName() << "]"
-                     << " Client behavior deallocated");
+  RCLCPP_WARN_STREAM(getLogger(), "[" << getName() << "]" << " Client behavior deallocated");
 }
 
 std::string ISmaccClientBehavior::getName() const { return demangleSymbol(typeid(*this).name()); }

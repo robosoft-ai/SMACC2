@@ -72,32 +72,28 @@ void ros_trace_smacc2_state_onExit_end(const char * state_name)
 }
 
 void ros_trace_smacc2_client_behavior_on_entry_start(
-  const char * state_name, const char * orthogonal_name,
-  const char * client_behavior_name)
+  const char * state_name, const char * orthogonal_name, const char * client_behavior_name)
 {
   CONDITIONAL_TP(
     smacc2_client_behavior_on_entry_start, state_name, orthogonal_name, client_behavior_name);
 }
 
 void ros_trace_smacc2_client_behavior_on_entry_end(
-  const char * state_name, const char * orthogonal_name,
-  const char * client_behavior_name)
+  const char * state_name, const char * orthogonal_name, const char * client_behavior_name)
 {
   CONDITIONAL_TP(
     smacc2_client_behavior_on_entry_end, state_name, orthogonal_name, client_behavior_name);
 }
 
 void ros_trace_smacc2_client_behavior_on_exit_start(
-  const char * state_name, const char * orthogonal_name,
-  const char * client_behavior_name)
+  const char * state_name, const char * orthogonal_name, const char * client_behavior_name)
 {
   CONDITIONAL_TP(
     smacc2_client_behavior_on_exit_start, state_name, orthogonal_name, client_behavior_name);
 }
 
 void ros_trace_smacc2_client_behavior_on_exit_end(
-  const char * state_name, const char * orthogonal_name,
-  const char * client_behavior_name)
+  const char * state_name, const char * orthogonal_name, const char * client_behavior_name)
 {
   CONDITIONAL_TP(
     smacc2_client_behavior_on_exit_end, state_name, orthogonal_name, client_behavior_name);
