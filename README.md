@@ -29,9 +29,9 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
 
 1. [Install ROS 2 Jazzy](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debians.html).
 
-2. Make sure that `colcon`, its extensions and `vcs` are installed:
+2. Make sure that `colcon`, its extensions, `vcs`, and development tools are installed:
    ```
-   sudo apt install python3-colcon-common-extensions python3-vcstool
+   sudo apt install python3-colcon-common-extensions python3-vcstool clang-format pre-commit
    ```
 3. Create a new ROS 2 workspace if necessary:
    ```
@@ -82,9 +82,9 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
 
 1. [Install ROS 2 Humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html).
 
-2. Make sure that `colcon`, its extensions and `vcs` are installed:
+2. Make sure that `colcon`, its extensions, `vcs`, and development tools are installed:
    ```
-   sudo apt install python3-colcon-common-extensions python3-vcstool
+   sudo apt install python3-colcon-common-extensions python3-vcstool clang-format pre-commit
    ```
 3. Create a new ROS 2 workspace if necessary:
    ```
@@ -135,9 +135,9 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
 
 1. [Install ROS 2 Foxy](https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html).
 
-2. Make sure that `colcon`, its extensions and `vcs` are installed:
+2. Make sure that `colcon`, its extensions, `vcs`, and development tools are installed:
    ```
-   sudo apt install python3-colcon-common-extensions python3-vcstool
+   sudo apt install python3-colcon-common-extensions python3-vcstool clang-format pre-commit
    ```
 3. Create a new ROS 2 workspace if necessary:
    ```
