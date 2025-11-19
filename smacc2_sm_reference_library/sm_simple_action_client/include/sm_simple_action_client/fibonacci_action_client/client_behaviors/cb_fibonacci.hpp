@@ -36,7 +36,7 @@ public:
   void onEntry() override
   {
     ClFibonacci::Goal goal;
-    goal.order = 100;
+    goal.order = 10;
 
     fibonacciCallback_ = std::make_shared<ClFibonacci::FibonacciResultSignal>();
     this->getStateMachine()->createSignalConnection(

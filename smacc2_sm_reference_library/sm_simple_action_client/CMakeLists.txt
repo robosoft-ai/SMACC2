@@ -48,6 +48,11 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}
 )
 
+install(PROGRAMS
+  scripts/auto_mode_trigger.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 install(TARGETS
   ${PROJECT_NAME}_node
   DESTINATION lib/${PROJECT_NAME}
