@@ -42,24 +42,6 @@ void ISmaccComponent::postEvent()
 
 template <typename TComponent>
 void ISmaccComponent::requiresComponent(
-  TComponent *& requiredComponentStorage, bool throwExceptionIfNotExist)
-{
-  this->requiresComponent(
-    requiredComponentStorage,
-    throwExceptionIfNotExist ? ComponentRequirement::HARD : ComponentRequirement::SOFT);
-}
-
-template <typename TComponent>
-void ISmaccComponent::requiresComponent(
-  std::string name, TComponent *& requiredComponentStorage, bool throwExceptionIfNotExist)
-{
-  this->requiresComponent(
-    name, requiredComponentStorage,
-    throwExceptionIfNotExist ? ComponentRequirement::HARD : ComponentRequirement::SOFT);
-}
-
-template <typename TComponent>
-void ISmaccComponent::requiresComponent(
   TComponent *& requiredComponentStorage, ComponentRequirement requirementType)
 {
   requiredComponentStorage = this->owner_->getComponent<TComponent>();

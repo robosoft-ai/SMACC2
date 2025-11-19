@@ -46,7 +46,7 @@ public:
   ClModeSelect() : SmaccSubscriberClient<example_interfaces::msg::Int32>("mode_command") {}
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateOrthogonalAllocation()
   {
     post_autonomous_mode_event_ = [this]()
     {
@@ -61,7 +61,7 @@ public:
       this->postEvent<EvManualMode<TSourceObject, TOrthogonal>>();
     };
 
-    SmaccSubscriberClient<example_interfaces::msg::Int32>::onOrthogonalAllocation<
+    SmaccSubscriberClient<example_interfaces::msg::Int32>::onStateOrthogonalAllocation<
       TOrthogonal, TSourceObject>();
   }
 

@@ -228,7 +228,7 @@ private:
   {
     // Use CpTfListener component for transform lookups
     CpTfListener * tfListener = nullptr;
-    this->requiresComponent(tfListener, false);  // Optional component
+    this->requiresComponent(tfListener, smacc2::ComponentRequirement::SOFT);  // Optional component
 
     tf2::Stamped<tf2::Transform> endEffectorInPivotFrame;
 

@@ -112,7 +112,7 @@ public:
   }
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateOrthogonalAllocation()
   {
     postEventMotionExecutionSucceded_ = [=]()
     {

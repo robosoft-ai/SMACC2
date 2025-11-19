@@ -124,7 +124,6 @@ SmaccComponentType * ISmaccClient::createNamedComponent(std::string name, TArgs.
     ret = dynamic_pointer_cast<SmaccComponentType>(it->second);
   }
 
-  ret->template onOrthogonalAllocation<TOrthogonal, TClient>();
   ret->template onStateOrthogonalAllocation<TOrthogonal, TClient>();
 
   return ret.get();

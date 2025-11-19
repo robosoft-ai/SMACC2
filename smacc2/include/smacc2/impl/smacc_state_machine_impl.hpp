@@ -124,8 +124,10 @@ void ISmaccStateMachine::createOrthogonal()
 
 //-------------------------------------------------------------------------------------------------------
 template <typename SmaccComponentType>
-void ISmaccStateMachine::requiresComponent(SmaccComponentType *& storage, bool throwsException)
+void ISmaccStateMachine::requiresComponent(
+  SmaccComponentType *& storage, ComponentRequirement requirementType)
 {
+  bool throwsException = requirementType == ComponentRequirement::HARD;
   RCLCPP_DEBUG(
     getLogger(), "component %s is required",
     demangleSymbol(typeid(SmaccComponentType).name()).c_str());

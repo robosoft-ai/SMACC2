@@ -85,7 +85,6 @@ void ISmaccOrthogonal::assignClientToOrthogonal(TClient * client)
   client->setStateMachine(getStateMachine());
   client->setOrthogonal(this);
 
-  client->template onOrthogonalAllocation<TOrthogonal, TClient>();
   client->template onStateOrthogonalAllocation<TOrthogonal, TClient>();
 }
 

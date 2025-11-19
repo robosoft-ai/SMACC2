@@ -87,7 +87,7 @@ public:
     this->requiresClient(moveit2zClient_);
 
     // CpTrajectoryHistory is optional but recommended
-    this->requiresComponent(trajectoryHistory_, false);
+    this->requiresComponent(trajectoryHistory_, smacc2::ComponentRequirement::SOFT);
 
     if (trajectoryHistory_)
     {

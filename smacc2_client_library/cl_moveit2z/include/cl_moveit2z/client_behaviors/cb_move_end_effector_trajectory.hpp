@@ -79,11 +79,11 @@ public:
   }
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateOrthogonalAllocation()
   {
     this->initializeROS();
 
-    smacc2::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
     postJointDiscontinuityEvent = [this](auto traj)
     {
@@ -113,7 +113,8 @@ public:
 
     // Get optional components for visualization
     CpTrajectoryVisualizer * trajectoryVisualizer = nullptr;
-    this->requiresComponent(trajectoryVisualizer, false);  // Optional component
+    this->requiresComponent(
+      trajectoryVisualizer, smacc2::ComponentRequirement::SOFT);  // Optional component
 
     RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Generating end effector trajectory");
 
@@ -205,7 +206,8 @@ protected:
   {
     // Try to use CpJointSpaceTrajectoryPlanner component (preferred)
     CpJointSpaceTrajectoryPlanner * trajectoryPlanner = nullptr;
-    this->requiresComponent(trajectoryPlanner, false);  // Optional component
+    this->requiresComponent(
+      trajectoryPlanner, smacc2::ComponentRequirement::SOFT);  // Optional component
 
     if (trajectoryPlanner != nullptr)
     {
@@ -460,7 +462,8 @@ protected:
 
     // Try to use CpTrajectoryExecutor component (preferred)
     CpTrajectoryExecutor * trajectoryExecutor = nullptr;
-    this->requiresComponent(trajectoryExecutor, false);  // Optional component
+    this->requiresComponent(
+      trajectoryExecutor, smacc2::ComponentRequirement::SOFT);  // Optional component
 
     bool executionSuccess = false;
 
@@ -585,7 +588,7 @@ protected:
   {
     // Use CpTfListener component for transform lookups
     CpTfListener * tfListener = nullptr;
-    this->requiresComponent(tfListener, false);  // Optional component
+    this->requiresComponent(tfListener, smacc2::ComponentRequirement::SOFT);  // Optional component
 
     try
     {

@@ -56,9 +56,6 @@ class SmaccAsyncClientBehavior : public ISmaccClientBehavior
 {
 public:
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation();
-
-  template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation();
 
   virtual ~SmaccAsyncClientBehavior();

@@ -92,7 +92,7 @@ public:
   const std::map<std::string, std::shared_ptr<smacc2::ISmaccOrthogonal>> & getOrthogonals() const;
 
   template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *& storage, bool throwsExceptionIfNotExist = false);
+  void requiresComponent(SmaccComponentType *& storage, ComponentRequirement requirementType);
 
   template <typename EventType>
   void postEvent(EventType * ev, EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);

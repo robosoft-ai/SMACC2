@@ -43,16 +43,6 @@ public:
     smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 
-  // LEGACY COMPATIBILITY: For third-party code that still calls the old method
-  template <typename TOrthogonal, typename TSourceObject>
-  [[deprecated(
-    "Use onStateOrthogonalAllocation instead. This method exists only for third-party "
-    "compatibility.")]] void
-  onOrthogonalAllocation()
-  {
-    onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
-  }
-
 protected:
   // NEW: Component-based API - uses components directly
   void sendGoal(nav2_msgs::action::NavigateToPose::Goal & goal)

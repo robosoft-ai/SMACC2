@@ -131,7 +131,7 @@ public:
   }
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateOrthogonalAllocation()
   {
     // we create here all the event factory functions capturing the TOrthogonal
     postSuccessEvent = [this](auto msg)

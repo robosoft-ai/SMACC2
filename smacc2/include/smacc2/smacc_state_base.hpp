@@ -290,8 +290,7 @@ public:
       egh->configureEventGenerator(eg);
       eg->initialize(state);
 
-      eg->template onOrthogonalAllocation<
-        MostDerived, TEventGenerator>();  // deprecated to extinguish in future
+      eg->template onStateOrthogonalAllocation<MostDerived, TEventGenerator>();
       eg->template onStateOrthogonalAllocation<MostDerived, TEventGenerator>();
       return eg;
     };

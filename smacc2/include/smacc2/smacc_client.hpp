@@ -91,16 +91,6 @@ protected:
   {
   }
 
-  // it is called after the client initialization, provides information about the orthogonal it is located in
-  template <typename TOrthogonal, typename TSourceObject>
-  [[deprecated(
-    "Use onStateOrthogonalAllocation instead. onOrthogonalAllocation will be removed in future "
-    "versions.")]] void
-  onOrthogonalAllocation()
-  {
-  }
-
-  // New method: called when the client is allocated to a state (replaces onOrthogonalAllocation)
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {

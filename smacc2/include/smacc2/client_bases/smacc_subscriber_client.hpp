@@ -75,7 +75,7 @@ public:
   }
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateOrthogonalAllocation()
   {
     // ros topic message received smacc event callback
     this->postMessageEvent = [this](auto msg)

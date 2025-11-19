@@ -101,7 +101,8 @@ protected:
 
     // Try to use CpMotionPlanner component (preferred)
     CpMotionPlanner * motionPlanner = nullptr;
-    this->requiresComponent(motionPlanner, false);  // Optional component
+    this->requiresComponent(
+      motionPlanner, smacc2::ComponentRequirement::SOFT);  // Optional component
 
     bool success = false;
     moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
@@ -158,7 +159,8 @@ protected:
     {
       // Try to use CpTrajectoryExecutor component (preferred)
       CpTrajectoryExecutor * trajectoryExecutor = nullptr;
-      this->requiresComponent(trajectoryExecutor, false);  // Optional component
+      this->requiresComponent(
+        trajectoryExecutor, smacc2::ComponentRequirement::SOFT);  // Optional component
 
       bool executionSuccess = false;
 

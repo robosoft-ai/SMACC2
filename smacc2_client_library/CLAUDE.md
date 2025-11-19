@@ -331,7 +331,7 @@ private:
   {
   public:
     template <typename TOrthogonal, typename TSourceObject>
-    void onOrthogonalAllocation() {
+    void onStateOrthogonalAllocation() {
       // Event posting lambda setup
       postEventFunction_ = [=]() {
         this->template postEvent<EvSomeEvent<TSourceObject, TOrthogonal>>();
@@ -352,7 +352,7 @@ private:
   ```
 
   Key Commonalities:
-  - Template-based onOrthogonalAllocation() for type-safe event posting
+  - Template-based onStateOrthogonalAllocation() for type-safe event posting
   <sup>file:///src/SMACC2/smacc2_client_library/cl_keyboard/include/cl_keyboard/client_behaviors/cb_default_keyboard_behavior.hpp#L32</sup>
   - Event posting lambda functions stored as members
   <sup>file:///src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_timer_countdown_loop.hpp#L49</sup>
@@ -438,8 +438,8 @@ private:
   {
   public:
     template <typename TOrthogonal, typename TSourceObject>
-    void onOrthogonalAllocation() {
-      SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    void onStateOrthogonalAllocation() {
+      SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
       this->requiresClient(lifecycleClient_);
 
       // Connect to lifecycle transition signals
@@ -602,7 +602,7 @@ private:
 ### Common Architectural Patterns Across All Types:
 
   1. Base Classes: Most behaviors inherit from either SmaccClientBehavior(synchronous) or SmaccAsyncClientBehavior (asynchronous)
-  2. Template-based Orthogonal Allocation: All behaviors use onOrthogonalAllocation<TOrthogonal, TSourceObject>() for type-safe integration
+  2. Template-based Orthogonal Allocation: All behaviors use onStateOrthogonalAllocation<TOrthogonal, TSourceObject>() for type-safe integration
   3. Client/Component Dependencies: Use requiresClient() or requiresComponent() pattern
   4. Standard Lifecycle: onEntry()/onExit() methods for state management
   5. Event Integration: Type-safe event posting via templates

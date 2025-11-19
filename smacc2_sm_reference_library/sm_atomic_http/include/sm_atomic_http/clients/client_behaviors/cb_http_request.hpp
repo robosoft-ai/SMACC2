@@ -36,7 +36,7 @@ class CbHttpRequest : public cl_http::CbHttpGetRequest
 {
 public:
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateOrthogonalAllocation()
   {
     triggerTranstition = [this]()
     {

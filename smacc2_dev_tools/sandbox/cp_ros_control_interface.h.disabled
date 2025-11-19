@@ -29,7 +29,7 @@ public:
     virtual void onInitialize() override;
 
     // template <typename TOrthogonal, typename TSourceObject>
-    // void onOrthogonalAllocation() {}
+    // void onStateOrthogonalAllocation() {}
 
     std::vector<ControllerTypeInfo> listControllerTypes();
 
