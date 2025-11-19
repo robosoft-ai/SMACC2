@@ -61,7 +61,11 @@ def generate_launch_description():
 
     # Config file path
     config_file = PathJoinSubstitution(
-        [FindPackageShare("sm_simple_action_client"), "config", "simple_action_client_example_config.yaml"]
+        [
+            FindPackageShare("sm_simple_action_client"),
+            "config",
+            "simple_action_client_example_config.yaml",
+        ]
     )
 
     # Construct logging prefix for Fibonacci action server

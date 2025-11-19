@@ -25,29 +25,41 @@ from example_interfaces.msg import Int32
 
 class AutoModeTrigger(Node):
     def __init__(self):
-        super().__init__('auto_mode_trigger')
-        self.publisher = self.create_publisher(Int32, 'mode_command', 10)
+        super().__init__("auto_mode_trigger")
+        self.publisher = self.create_publisher(Int32, "mode_command", 10)
 
         # Wait for state machine to initialize
-        self.get_logger().info('╔════════════════════════════════════════════════════════════════╗')
-        self.get_logger().info('║  AUTO MODE TRIGGER - Waiting 3 seconds for SM initialization  ║')
-        self.get_logger().info('╚════════════════════════════════════════════════════════════════╝')
+        self.get_logger().info(
+            "╔════════════════════════════════════════════════════════════════╗"
+        )
+        self.get_logger().info("║  AUTO MODE TRIGGER - Waiting 3 seconds for SM initialization  ║")
+        self.get_logger().info(
+            "╚════════════════════════════════════════════════════════════════╝"
+        )
         time.sleep(3.0)
 
         # Publish autonomous mode command
         msg = Int32()
         msg.data = 1  # Autonomous mode
         self.publisher.publish(msg)
-        self.get_logger().info(' ')
-        self.get_logger().info('╔════════════════════════════════════════════════════════════════╗')
-        self.get_logger().info('║  ✓ Published AUTONOMOUS mode command (data=1)                  ║')
-        self.get_logger().info('║  State machine should transition: StState1 → StState2          ║')
-        self.get_logger().info('╚════════════════════════════════════════════════════════════════╝')
-        self.get_logger().info(' ')
+        self.get_logger().info(" ")
+        self.get_logger().info(
+            "╔════════════════════════════════════════════════════════════════╗"
+        )
+        self.get_logger().info(
+            "║  ✓ Published AUTONOMOUS mode command (data=1)                  ║"
+        )
+        self.get_logger().info(
+            "║  State machine should transition: StState1 → StState2          ║"
+        )
+        self.get_logger().info(
+            "╚════════════════════════════════════════════════════════════════╝"
+        )
+        self.get_logger().info(" ")
 
         # Schedule shutdown after publishing
         time.sleep(1.0)
-        self.get_logger().info('Auto-trigger complete. Node shutting down.')
+        self.get_logger().info("Auto-trigger complete. Node shutting down.")
         # Create a timer to shutdown after allowing message to be sent
         self.create_timer(0.5, lambda: rclpy.shutdown())
 
@@ -65,5 +77,5 @@ def main():
             rclpy.shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
