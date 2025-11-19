@@ -17,8 +17,12 @@
 #include <chrono>
 
 #include <cl_moveit2z/cl_moveit2z.hpp>
-#include <cl_moveit2z/components/cp_trajectory_history.hpp>
 #include <cl_moveit2z/components/cp_grasping_objects.hpp>
+#include <cl_moveit2z/components/cp_joint_space_trajectory_planner.hpp>
+#include <cl_moveit2z/components/cp_tf_listener.hpp>
+#include <cl_moveit2z/components/cp_trajectory_executor.hpp>
+#include <cl_moveit2z/components/cp_trajectory_history.hpp>
+#include <cl_moveit2z/components/cp_trajectory_visualizer.hpp>
 
 #include "cl_ros2_timer/cl_ros2_timer.hpp"
 #include "smacc2/smacc.hpp"
@@ -33,9 +37,15 @@ public:
   void onInitialize() override
   {
     auto move_group_client = this->createClient<cl_moveit2z::ClMoveit2z>("panda_arm"); //ur_manipulator
-    move_group_client->createComponent<cl_moveit2z::CpTrajectoryHistory>();
-    auto graspingComponent = move_group_client->createComponent<cl_moveit2z::CpGraspingComponent>();
 
+    // Core components for component-based architecture
+    move_group_client->createComponent<cl_moveit2z::CpJointSpaceTrajectoryPlanner>();
+    move_group_client->createComponent<cl_moveit2z::CpTrajectoryExecutor>();
+    move_group_client->createComponent<cl_moveit2z::CpTfListener>();
+    move_group_client->createComponent<cl_moveit2z::CpTrajectoryVisualizer>();
+    move_group_client->createComponent<cl_moveit2z::CpTrajectoryHistory>();
+
+    auto graspingComponent = move_group_client->createComponent<cl_moveit2z::CpGraspingComponent>();
     graspingComponent->gripperLink_="tool0";
     graspingComponent->createGraspableBox("virtualBox", 0,0.5,0.5,0.1,0.1,0.1);
   }

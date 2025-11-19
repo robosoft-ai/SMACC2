@@ -194,35 +194,10 @@ public:
     // handle finishing events
   }
 
-  virtual void onExit() override
-  {
-    // Get optional components for visualization cleanup
-    CpTrajectoryVisualizer * trajectoryVisualizer = nullptr;
-    this->requiresComponent(trajectoryVisualizer, false);  // Optional component
-
-    if (trajectoryVisualizer != nullptr && autocleanmarkers)
-    {
-      RCLCPP_INFO_STREAM(
-        getLogger(),
-        "[" << getName() << "] Clearing trajectory markers via CpTrajectoryVisualizer.");
-      trajectoryVisualizer->clearMarkers();
-    }
-    else if (autocleanmarkers)
-    {
-      // Legacy marker cleanup
-      std::lock_guard<std::mutex> guard(m_mutex_);
-      for (auto & marker : this->beahiorMarkers_.markers)
-      {
-        marker.header.stamp = getNode()->now();
-        marker.action = visualization_msgs::msg::Marker::DELETE;
-      }
-
-      if (markersPub_)
-      {
-        markersPub_->publish(beahiorMarkers_);
-      }
-    }
-  }
+  // onExit removed - requiresComponent() during state disposal causes deadlock
+  // Components and markers are automatically cleaned up when state is destroyed
+  // If manual cleanup needed in future, use empty onExit like CbMoveJoints
+  virtual void onExit() override {}
 
 protected:
   ComputeJointTrajectoryErrorCode computeJointSpaceTrajectory(
