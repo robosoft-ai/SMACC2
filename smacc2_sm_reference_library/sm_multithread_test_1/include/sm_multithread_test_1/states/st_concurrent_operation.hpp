@@ -75,32 +75,32 @@ struct StConcurrentOperation : smacc2::SmaccState<StConcurrentOperation, SmMulti
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "╔════════════════════════════════════════════════════════════════╗");
     RCLCPP_INFO(getLogger(), "║      CONCURRENT OPERATION STATE - Multi-threaded Demo         ║");
     RCLCPP_INFO(getLogger(), "╚════════════════════════════════════════════════════════════════╝");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "Running 4 concurrent timers for 15 seconds...");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "  Timer A: 100ms period,  50ms work (fast, light)");
     RCLCPP_INFO(getLogger(), "  Timer B: 250ms period, 100ms work (medium, medium)");
     RCLCPP_INFO(getLogger(), "  Timer C: 500ms period, 150ms work (slow, heavy)");
     RCLCPP_INFO(getLogger(), "  Timer D: 1000ms period, 200ms work (very slow, very heavy)");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "👀 Watch for:");
     RCLCPP_INFO(getLogger(), "   • Different thread IDs (multi-threaded mode)");
     RCLCPP_INFO(getLogger(), "   • Overlapping START/END timestamps (concurrency!)");
     RCLCPP_INFO(getLogger(), "   • Same thread ID = single-threaded mode");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
   }
 
   void onExit()
   {
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "╔════════════════════════════════════════════════════════════════╗");
     RCLCPP_INFO(getLogger(), "║      DEMONSTRATION COMPLETE - Check Logs Above!               ║");
     RCLCPP_INFO(getLogger(), "╚════════════════════════════════════════════════════════════════╝");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
   }
 };
 

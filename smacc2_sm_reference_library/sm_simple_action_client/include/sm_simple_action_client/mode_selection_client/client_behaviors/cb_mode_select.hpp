@@ -40,7 +40,7 @@ public:
     mode_select_client_->onFirstMessageReceived(&CbModeSelect::onFirstMessageReceived, this);
     mode_select_client_->onMessageReceived(&CbModeSelect::onMessageReceived, this);
   }
-  void onFirstMessageReceived(const example_interfaces::msg::Int32 & msg)
+  void onFirstMessageReceived(const example_interfaces::msg::Int32 & /*msg*/)
   {
     RCLCPP_INFO(getLogger(), "CbModeSelect::onFirstMessageReceived()");
   }

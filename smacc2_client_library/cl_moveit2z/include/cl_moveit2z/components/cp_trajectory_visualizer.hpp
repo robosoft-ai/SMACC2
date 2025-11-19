@@ -49,7 +49,7 @@ public:
    *
    * @param publishRate Publishing rate (default: 10Hz)
    */
-  CpTrajectoryVisualizer(double publishRate = 10.0) : publishRate_(publishRate), enabled_(false) {}
+  CpTrajectoryVisualizer(double publishRate = 10.0) : enabled_(false), publishRate_(publishRate) {}
 
   virtual ~CpTrajectoryVisualizer() = default;
 

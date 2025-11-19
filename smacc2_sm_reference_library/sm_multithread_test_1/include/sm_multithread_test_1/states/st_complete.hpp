@@ -44,24 +44,24 @@ struct StComplete : smacc2::SmaccState<StComplete, SmMultithreadTest1>
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "════════════════════════════════════════════════════════════════");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "  ✅ Multi-threaded Executor Demonstration Complete!");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "  📊 Review the logs above to observe:");
     RCLCPP_INFO(getLogger(), "     • Thread IDs in callback execution");
     RCLCPP_INFO(getLogger(), "     • Concurrent vs serial execution patterns");
     RCLCPP_INFO(getLogger(), "     • Overlapping work timestamps");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "  🔄 To compare modes, run:");
     RCLCPP_INFO(getLogger(), "     • Multi-threaded:  ros2 launch sm_multithread_test_1 sm_multithread_test_1.launch.py");
     RCLCPP_INFO(getLogger(), "     • Single-threaded: ros2 launch sm_multithread_test_1 sm_multithread_test_1_single.launch.py");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "  Press Ctrl+C to exit.");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "════════════════════════════════════════════════════════════════");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
   }
 
   void onExit()

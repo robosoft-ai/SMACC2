@@ -94,11 +94,11 @@ struct SmMultithreadTest1
 
   virtual void onInitialize() override
   {
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "╔════════════════════════════════════════════════════════════════╗");
     RCLCPP_INFO(getLogger(), "║    SmMultithreadTest1 - Multi-threaded Executor Demo         ║");
     RCLCPP_INFO(getLogger(), "╚════════════════════════════════════════════════════════════════╝");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
     RCLCPP_INFO(getLogger(), "Initializing state machine with 4 timer orthogonals...");
 
     // Create the four orthogonals, each with a timer at a different rate
@@ -108,7 +108,7 @@ struct SmMultithreadTest1
     this->createOrthogonal<OrTimerD>();  // 1000ms
 
     RCLCPP_INFO(getLogger(), "State machine initialization complete.");
-    RCLCPP_INFO(getLogger(), "");
+    RCLCPP_INFO(getLogger(), " ");
   }
 };
 

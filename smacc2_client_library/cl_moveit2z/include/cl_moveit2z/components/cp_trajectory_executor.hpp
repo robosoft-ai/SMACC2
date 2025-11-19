@@ -25,7 +25,7 @@
 #include <cl_moveit2z/cl_moveit2z.hpp>
 #include <cl_moveit2z/components/cp_trajectory_history.hpp>
 
-#include <moveit/move_group_interface/move_group_interface.h>
+#include <moveit/move_group_interface/move_group_interface.hpp>
 #include <moveit_msgs/msg/move_it_error_codes.hpp>
 #include <moveit_msgs/msg/robot_trajectory.hpp>
 

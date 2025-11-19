@@ -18,8 +18,6 @@
  *
  ******************************************************************************************************************/
 
-#pragma once
-
 #include <cl_nav2z/client_behaviors/cb_track_path_odometry.hpp>
 #include <cl_nav2z/components/odom_tracker/cp_odom_tracker.hpp>
 #include <cl_nav2z/components/pose/cp_pose.hpp>

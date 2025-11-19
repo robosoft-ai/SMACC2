@@ -401,7 +401,7 @@ void SignalDetector::pollingLoop()
   }
 }
 
-void onSignalShutdown(int sig)
+void onSignalShutdown(int /*sig*/)
 {
   // IMPORTANT: Signal handlers can only call async-signal-safe functions
   // We must NOT call complex C++ methods here (like terminateScheduler)
