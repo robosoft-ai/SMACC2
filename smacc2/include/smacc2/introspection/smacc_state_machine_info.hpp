@@ -165,7 +165,13 @@ typename enable_if<boost::mpl::is_sequence<T>>::type processTransitions(
     sourceState->fullStateName.c_str());
   using boost::mpl::_1;
   using wrappedList = typename boost::mpl::transform<T, add_type_wrapper<_1>>::type;
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] About to call boost::mpl::for_each for state %s",
+    sourceState->fullStateName.c_str());
   boost::mpl::for_each<wrappedList>(AddTransition(sourceState));
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] Completed boost::mpl::for_each for state %s",
+    sourceState->fullStateName.c_str());
 }
 
 template <typename Ev, typename Dst, typename Tag>
@@ -173,8 +179,14 @@ void processTransition(
   smacc2::Transition<Ev, boost::statechart::deep_history<Dst>, Tag> *,
   std::shared_ptr<SmaccStateInfo> & sourceState)
 {
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] processTransition [deep_history] START for state %s",
+    sourceState->toShortName().c_str());
   auto transitionTypeInfo = TypeInfo::getTypeInfoFromType<
     smacc2::Transition<Ev, boost::statechart::deep_history<Dst>, Tag>>();
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] processTransition [deep_history] got TypeInfo for state %s",
+    sourceState->toShortName().c_str());
   smacc2::Transition<Ev, Dst, Tag> * mock = nullptr;
   processTransitionAux(mock, sourceState, true, transitionTypeInfo);
 }
@@ -183,7 +195,13 @@ template <typename Ev, typename Dst, typename Tag>
 void processTransition(
   smacc2::Transition<Ev, Dst, Tag> * t, std::shared_ptr<SmaccStateInfo> & sourceState)
 {
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] processTransition START for state %s",
+    sourceState->toShortName().c_str());
   auto transitionTypeInfo = TypeInfo::getTypeInfoFromType<smacc2::Transition<Ev, Dst, Tag>>();
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] processTransition got TypeInfo for state %s",
+    sourceState->toShortName().c_str());
   RCLCPP_INFO(
     globalNh_->get_logger(), "State %s Walker transition: %s", sourceState->toShortName().c_str(),
     demangleSymbol(typeid(Ev).name()).c_str());
@@ -338,10 +356,14 @@ template <typename T>
 typename disable_if<boost::mpl::is_sequence<T>>::type processTransitions(
   std::shared_ptr<SmaccStateInfo> & sourceState)
 {
-  // RCLCPP_INFO_STREAM(getLogger(),"state transition from: " << sourceState->demangledStateName <<
-  // " of type: " << demangledTypeName<T>());
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] processTransitions [single/leaf] called for state %s",
+    sourceState->fullStateName.c_str());
   T * dummy = nullptr;
   processTransition(dummy, sourceState);
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] processTransitions [single/leaf] completed for state %s",
+    sourceState->fullStateName.c_str());
 }
 
 template <typename T>
@@ -396,7 +418,13 @@ template <
   template <typename> typename EvType, typename Tag, typename DestinyState>
 void AddTransition::operator()(TTransition<EvType<TevSource>, DestinyState, Tag>)
 {
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] AddTransition::operator() [3-param] called for state %s",
+    currentState_->fullStateName.c_str());
   processTransitions<TTransition<EvType<TevSource>, DestinyState, Tag>>(currentState_);
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] AddTransition::operator() [3-param] completed for state %s",
+    currentState_->fullStateName.c_str());
 }
 
 //--------------------------------------------
@@ -406,14 +434,26 @@ template <
   template <typename> typename EvType, typename DestinyState>
 void AddTransition::operator()(TTransition<EvType<TevSource>, DestinyState>)
 {
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] AddTransition::operator() [2-param] called for state %s",
+    currentState_->fullStateName.c_str());
   processTransitions<TTransition<EvType<TevSource>, DestinyState>>(currentState_);
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] AddTransition::operator() [2-param] completed for state %s",
+    currentState_->fullStateName.c_str());
 }
 
 template <typename TTrans>
 void AddTransition::operator()(TTrans)
 {
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] AddTransition::operator() [generic] called for state %s",
+    currentState_->fullStateName.c_str());
   using type_t = typename TTrans::type;
   processTransitions<type_t>(currentState_);
+  RCLCPP_INFO(
+    globalNh_->get_logger(), "[DIAG] AddTransition::operator() [generic] completed for state %s",
+    currentState_->fullStateName.c_str());
 }
 
 /*
