@@ -32,7 +32,6 @@ struct StiMode4SequenceDStep1 : smacc2::SmaccState<StiMode4SequenceDStep1, SsMod
 
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiMode4SequenceDStep2, TIMEOUT>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode4SequenceDStep2, NEXT>
-    //Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode2SequenceALoop, PREVIOUS>,
 
     //Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, Mode2StObserve, RETURN>,
     //Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsRecovery2, ABORT>
@@ -43,7 +42,7 @@ struct StiMode4SequenceDStep1 : smacc2::SmaccState<StiMode4SequenceDStep1, SsMod
   static void staticConfigure()
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(20);
-    configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
+    
     
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }

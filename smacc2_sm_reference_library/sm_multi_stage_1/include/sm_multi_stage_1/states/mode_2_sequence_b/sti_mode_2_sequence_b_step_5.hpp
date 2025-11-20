@@ -31,7 +31,6 @@ struct StiMode2SequenceBStep5 : smacc2::SmaccState<StiMode2SequenceBStep5, SsMod
   typedef mpl::list<
 
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiMode2SequenceBStep6, SUCCESS>,
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode2SequenceBStep4, PREVIOUS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode2SequenceBStep6, NEXT>,
     Transition<EvKeyPressS<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode2SequenceBStep8, SUCCESS>
 
@@ -44,7 +43,7 @@ struct StiMode2SequenceBStep5 : smacc2::SmaccState<StiMode2SequenceBStep5, SsMod
   static void staticConfigure()
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(20);
-    configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
+    
     
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }

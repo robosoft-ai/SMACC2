@@ -23,17 +23,12 @@
 
 // ORTHOGONALS
 #include <sm_multi_stage_1/orthogonals/or_keyboard.hpp>
-#include <sm_multi_stage_1/orthogonals/or_subscriber.hpp>
 #include <sm_multi_stage_1/orthogonals/or_timer.hpp>
 
 using namespace cl_ros2_timer;
 using namespace cl_keyboard;
-using namespace sm_multi_stage_1::cl_subscriber;
 
 //CLIENT BEHAVIORS
-#include <sm_multi_stage_1/clients/cl_subscriber/client_behaviors/cb_default_subscriber_behavior.hpp>
-#include <sm_multi_stage_1/clients/cl_subscriber/client_behaviors/cb_watchdog_subscriber_behavior.hpp>
-
 #include <cl_keyboard/client_behaviors/cb_default_keyboard_behavior.hpp>
 
 //#include <cl_ros2_timer/client_behaviors/cb_ros_timer.hpp>
@@ -305,7 +300,6 @@ struct SmMultiStage1 : public smacc2::SmaccStateMachineBase<SmMultiStage1, MsMod
   {
     this->createOrthogonal<OrTimer>();
     this->createOrthogonal<OrKeyboard>();
-    this->createOrthogonal<OrSubscriber>();
   }
 };
 }  // namespace sm_multi_stage_1

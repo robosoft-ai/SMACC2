@@ -30,7 +30,6 @@ struct StiMode3SequenceBStep3 : smacc2::SmaccState<StiMode3SequenceBStep3, SsMod
   // TRANSITION TABLE
   typedef mpl::list<
 
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode3SequenceBStep4, SUCCESS>,
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiMode3SequenceBStep5, SUCCESS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiMode3SequenceBStep6, SUCCESS>
 
@@ -43,7 +42,7 @@ struct StiMode3SequenceBStep3 : smacc2::SmaccState<StiMode3SequenceBStep3, SsMod
   static void staticConfigure()
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(20);
-    configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
+    
     
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }

@@ -35,7 +35,7 @@ struct StRecoveryInnervate2 : smacc2::SmaccState<StRecoveryInnervate2, MsRecover
   static void staticConfigure()
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(50);
-    configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
+    
     
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
