@@ -61,7 +61,7 @@ private:
   void on_write(boost::beast::error_code ec, std::size_t bytes_transferred) override;
   void on_read(boost::beast::error_code ec, std::size_t bytes_transferred) override;
   void setBody(const std::string & body) override;
-  void setHeaders(const std::unordered_map<std::string, std::string> & headers) override {}
+  void setHeaders(const std::unordered_map<std::string, std::string> & /*headers*/) override {}
 
   std::function<void(const TResponse &)> onResponse;
 

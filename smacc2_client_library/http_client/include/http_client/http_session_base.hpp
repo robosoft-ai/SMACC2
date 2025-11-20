@@ -57,7 +57,7 @@ protected:
   virtual void on_read(boost::beast::error_code ec, std::size_t bytes_transferred) = 0;
 
   // Optional, needed for SSL connections
-  virtual void on_handshake(boost::beast::error_code ec) {}
-  virtual void on_shutdown(boost::beast::error_code ec) {}
+  virtual void on_handshake(boost::beast::error_code /*ec*/) {}
+  virtual void on_shutdown(boost::beast::error_code /*ec*/) {}
 };
 }  // namespace cl_http

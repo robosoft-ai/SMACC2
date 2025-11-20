@@ -47,7 +47,7 @@ public:
     cl_http_->onResponseReceived(&CbHttpRequestBase::onResponseReceived, this);
   }
 
-  virtual void onResponseReceived(const ClHttp::TResponse & response) {}
+  virtual void onResponseReceived(const ClHttp::TResponse & /*response*/) {}
 
   virtual void onEntry() override { cl_http_->makeRequest(kRequestType); }
 
