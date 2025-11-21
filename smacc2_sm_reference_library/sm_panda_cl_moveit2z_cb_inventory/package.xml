@@ -4,9 +4,8 @@
   <name>sm_panda_cl_moveit2z_cb_inventory</name>
   <version>3.0.1</version>
   <description>The sm_panda_cl_moveit2z_cb_inventory package</description>
-  <maintainer email="smacc2@smacc2.cool">SMACC2 is cool</maintainer>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
   <license>Apache-2.0</license>
-  <license>MyLicense</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
@@ -31,8 +30,8 @@
   <depend>rclcpp</depend>
   <depend>yaml-cpp</depend>
 
-
   <exec_depend>joint_trajectory_controller</exec_depend>
+  <exec_depend>konsole</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

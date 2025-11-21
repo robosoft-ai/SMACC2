@@ -4,7 +4,7 @@
   <name>sm_cl_keyboard_unit_test_1</name>
   <version>3.0.1</version>
   <description>The sm_cl_keyboard_unit_test_1 package</description>
-  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
@@ -13,7 +13,7 @@
   <depend>cl_keyboard</depend>
   <depend>smacc2</depend>
 
-  <exec_depend>xterm</exec_depend>
+  <exec_depend>konsole</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

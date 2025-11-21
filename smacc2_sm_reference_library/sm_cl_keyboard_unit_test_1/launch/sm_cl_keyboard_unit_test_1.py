@@ -27,9 +27,9 @@ def generate_launch_description():
             Node(
                 package="cl_keyboard",
                 executable="keyboard_server_node.py",
-                name="cl_keyboard",
+                name="keyboard_server_node",
                 output="screen",
-                prefix="xterm -hold -e",
+                prefix="konsole --hold -p tabtitle='Keyboard Server' -e",
                 arguments=["--ros-args", "--log-level", "INFO"],
             ),
         ]
