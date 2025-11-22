@@ -32,8 +32,8 @@ struct StErrorProcessing : smacc2::SmaccState<StErrorProcessing, SmAtomicLifecyc
 
   // TRANSITION TABLE
   typedef mpl::list<
-        Transition<EvTransitionOnErrorSuccess<ClLifecycleNode, OrLifecycleNode>, StUnconfigured, SUCCESS>,
-        Transition<EvTransitionOnErrorFailure<ClLifecycleNode, OrLifecycleNode>, StFinalized, ABORT>
+        Transition<EvTransitionOnErrorSuccess<CpLifecycleEventMonitor, OrLifecycleNode>, StUnconfigured, SUCCESS>,
+        Transition<EvTransitionOnErrorFailure<CpLifecycleEventMonitor, OrLifecycleNode>, StFinalized, ABORT>
       >
       reactions;
 

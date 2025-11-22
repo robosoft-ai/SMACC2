@@ -104,6 +104,50 @@ struct EvActionCancelled : sc::event<EvActionCancelled<TSource, TOrthogonal>>
   static std::string getDefaultTransitionType() { return demangledTypeName<CANCEL>(); }
 };
 
+//-------------- SERVICE EVENTS --------------------------------------------------------
+template <typename TSource, typename TOrthogonal, typename TResponse>
+struct EvServiceResponse : sc::event<EvServiceResponse<TSource, TOrthogonal, TResponse>>
+{
+  TResponse response;
+
+  static std::string getEventLabel()
+  {
+    std::string label;
+    EventLabel<TSource>(label);
+    return label;
+  }
+
+  static std::string getDefaultTransitionTag() { return demangledTypeName<SUCCESS>(); }
+
+  static std::string getDefaultTransitionType() { return demangledTypeName<SUCCESS>(); }
+};
+
+template <typename TSource, typename TOrthogonal>
+struct EvServiceRequestSent : sc::event<EvServiceRequestSent<TSource, TOrthogonal>>
+{
+  static std::string getEventLabel()
+  {
+    std::string label;
+    EventLabel<TSource>(label);
+    return label;
+  }
+};
+
+template <typename TSource, typename TOrthogonal>
+struct EvServiceFailure : sc::event<EvServiceFailure<TSource, TOrthogonal>>
+{
+  static std::string getEventLabel()
+  {
+    std::string label;
+    EventLabel<TSource>(label);
+    return label;
+  }
+
+  static std::string getDefaultTransitionTag() { return demangledTypeName<ABORT>(); }
+
+  static std::string getDefaultTransitionType() { return demangledTypeName<ABORT>(); }
+};
+
 //---------- CONTROL FLOW EVENTS ----------------------------------------------------------
 
 template <typename StateType>

@@ -32,8 +32,8 @@ struct StShuttingDown : smacc2::SmaccState<StShuttingDown, SmAtomicLifecycle>
 
   // TRANSITION TABLE
   typedef mpl::list<
-        Transition<EvTransitionOnShutdownSuccess<ClLifecycleNode, OrLifecycleNode>, StFinalized, SUCCESS>,
-        Transition<EvTransitionOnShutdownError<ClLifecycleNode, OrLifecycleNode>, StErrorProcessing, ABORT>
+        Transition<EvTransitionOnShutdownSuccess<CpLifecycleEventMonitor, OrLifecycleNode>, StFinalized, SUCCESS>,
+        Transition<EvTransitionOnShutdownError<CpLifecycleEventMonitor, OrLifecycleNode>, StErrorProcessing, ABORT>
     >reactions;
 
   // STATE FUNCTIONS

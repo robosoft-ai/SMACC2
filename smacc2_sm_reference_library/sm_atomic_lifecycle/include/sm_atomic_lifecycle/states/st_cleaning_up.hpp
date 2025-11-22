@@ -32,8 +32,8 @@ struct StCleaningUp : smacc2::SmaccState<StCleaningUp, SmAtomicLifecycle>
 
   // TRANSITION TABLE
   typedef mpl::list<
-          Transition<EvTransitionOnCleanupSuccess<ClLifecycleNode, OrLifecycleNode>, StUnconfigured, SUCCESS>,
-          Transition<EvTransitionOnCleanupError<ClLifecycleNode, OrLifecycleNode>, StErrorProcessing, ABORT>
+          Transition<EvTransitionOnCleanupSuccess<CpLifecycleEventMonitor, OrLifecycleNode>, StUnconfigured, SUCCESS>,
+          Transition<EvTransitionOnCleanupError<CpLifecycleEventMonitor, OrLifecycleNode>, StErrorProcessing, ABORT>
       >
       reactions;
 

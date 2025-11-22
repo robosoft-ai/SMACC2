@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <lifecyclenode_client/components/cp_lifecycle_event_monitor.hpp>
 #include <lifecyclenode_client/lifecyclenode_client.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
@@ -36,19 +37,18 @@ public:
   {
     smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
-    this->requiresClient(this->lifecycleNodeClient_);
+    this->requiresClient(lifecycleNodeClient_);
+    this->requiresComponent(eventMonitor_);
 
-    lifecycleNodeClient_->onTransitionOnActivateSuccess_.connect([this]()
-                                                                 { this->postSuccessEvent(); });
-    lifecycleNodeClient_->onTransitionOnActivateFailure_.connect([this]()
-                                                                 { this->postFailureEvent(); });
-    lifecycleNodeClient_->onTransitionOnActivateError_.connect([this]()
-                                                               { this->postFailureEvent(); });
+    eventMonitor_->onTransitionOnActivateSuccess_.connect([this]() { this->postSuccessEvent(); });
+    eventMonitor_->onTransitionOnActivateFailure_.connect([this]() { this->postFailureEvent(); });
+    eventMonitor_->onTransitionOnActivateError_.connect([this]() { this->postFailureEvent(); });
   }
 
   virtual void onEntry() override { lifecycleNodeClient_->activate(); }
 
 private:
   ClLifecycleNode * lifecycleNodeClient_;
+  CpLifecycleEventMonitor * eventMonitor_;
 };
 }  // namespace cl_lifecyclenode

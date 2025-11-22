@@ -32,8 +32,8 @@ struct StDeactivating : smacc2::SmaccState<StDeactivating, SmAtomicLifecycle>
 
   // TRANSITION TABLE
   typedef mpl::list<
-          Transition<EvTransitionOnDeactivateSuccess<ClLifecycleNode, OrLifecycleNode>, StInactive, SUCCESS>,
-          Transition<EvTransitionOnDeactivateError<ClLifecycleNode, OrLifecycleNode>, StErrorProcessing, ABORT>
+          Transition<EvTransitionOnDeactivateSuccess<CpLifecycleEventMonitor, OrLifecycleNode>, StInactive, SUCCESS>,
+          Transition<EvTransitionOnDeactivateError<CpLifecycleEventMonitor, OrLifecycleNode>, StErrorProcessing, ABORT>
       >
       reactions;
 

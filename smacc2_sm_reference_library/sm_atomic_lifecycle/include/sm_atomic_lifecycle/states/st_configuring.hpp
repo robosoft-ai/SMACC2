@@ -32,9 +32,9 @@ struct StConfiguring : smacc2::SmaccState<StConfiguring, SmAtomicLifecycle>
 
   // TRANSITION TABLE
   typedef mpl::list<
-          Transition<EvTransitionOnConfigureSuccess<ClLifecycleNode, OrLifecycleNode>, StInactive, SUCCESS>,
-          Transition<EvTransitionOnConfigureFailure<ClLifecycleNode, OrLifecycleNode>, StUnconfigured, ABORT> ,
-          Transition<EvTransitionOnConfigureError<ClLifecycleNode, OrLifecycleNode>, StErrorProcessing, ABORT>
+          Transition<EvTransitionOnConfigureSuccess<CpLifecycleEventMonitor, OrLifecycleNode>, StInactive, SUCCESS>,
+          Transition<EvTransitionOnConfigureFailure<CpLifecycleEventMonitor, OrLifecycleNode>, StUnconfigured, ABORT> ,
+          Transition<EvTransitionOnConfigureError<CpLifecycleEventMonitor, OrLifecycleNode>, StErrorProcessing, ABORT>
         >
       reactions;
 
