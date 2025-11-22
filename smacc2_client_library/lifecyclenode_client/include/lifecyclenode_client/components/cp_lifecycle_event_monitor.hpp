@@ -26,7 +26,8 @@
 #include <string>
 
 // Forward declarations
-namespace cl_lifecyclenode {
+namespace cl_lifecyclenode
+{
 class CpLifecycleEventMonitor;
 
 // Event declarations - component is now the source
@@ -80,7 +81,7 @@ template <typename TSourceObject, typename TOrthogonal>
 struct EvTransitionOnErrorSuccess;
 template <typename TSourceObject, typename TOrthogonal>
 struct EvTransitionOnErrorFailure;
-}
+}  // namespace cl_lifecyclenode
 
 namespace cl_lifecyclenode
 {
@@ -184,105 +185,80 @@ public:
     // Set up event posting lambdas with correct template parameters
     // Component is the event source (TSourceObject = CpLifecycleEventMonitor)
 
-    postEventConfigure_ = [this]() {
-      this->postEvent<EvTransitionConfigure<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventConfigure_ = [this]()
+    { this->postEvent<EvTransitionConfigure<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventActivate_ = [this]() {
-      this->postEvent<EvTransitionActivate<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventActivate_ = [this]()
+    { this->postEvent<EvTransitionActivate<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventDeactivate_ = [this]() {
-      this->postEvent<EvTransitionDeactivate<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventDeactivate_ = [this]()
+    { this->postEvent<EvTransitionDeactivate<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventCleanup_ = [this]() {
-      this->postEvent<EvTransitionCleanup<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventCleanup_ = [this]()
+    { this->postEvent<EvTransitionCleanup<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventUnconfiguredShutdown_ = [this]() {
-      this->postEvent<EvTransitionUnconfiguredShutdown<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventUnconfiguredShutdown_ = [this]()
+    { this->postEvent<EvTransitionUnconfiguredShutdown<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventInactiveShutdown_ = [this]() {
-      this->postEvent<EvTransitionInactiveShutdown<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventInactiveShutdown_ = [this]()
+    { this->postEvent<EvTransitionInactiveShutdown<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventActiveShutdown_ = [this]() {
-      this->postEvent<EvTransitionActiveShutdown<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventActiveShutdown_ = [this]()
+    { this->postEvent<EvTransitionActiveShutdown<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventDestroy_ = [this]() {
-      this->postEvent<EvTransitionDestroy<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventDestroy_ = [this]()
+    { this->postEvent<EvTransitionDestroy<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnConfigureSuccess_ = [this]() {
-      this->postEvent<EvTransitionOnConfigureSuccess<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnConfigureSuccess_ = [this]()
+    { this->postEvent<EvTransitionOnConfigureSuccess<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnConfigureFailure_ = [this]() {
-      this->postEvent<EvTransitionOnConfigureFailure<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnConfigureFailure_ = [this]()
+    { this->postEvent<EvTransitionOnConfigureFailure<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnConfigureError_ = [this]() {
-      this->postEvent<EvTransitionOnConfigureError<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnConfigureError_ = [this]()
+    { this->postEvent<EvTransitionOnConfigureError<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnActivateSuccess_ = [this]() {
-      this->postEvent<EvTransitionOnActivateSuccess<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnActivateSuccess_ = [this]()
+    { this->postEvent<EvTransitionOnActivateSuccess<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnActivateFailure_ = [this]() {
-      this->postEvent<EvTransitionOnActivateFailure<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnActivateFailure_ = [this]()
+    { this->postEvent<EvTransitionOnActivateFailure<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnActivateError_ = [this]() {
-      this->postEvent<EvTransitionOnActivateError<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnActivateError_ = [this]()
+    { this->postEvent<EvTransitionOnActivateError<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnDeactivateSuccess_ = [this]() {
-      this->postEvent<EvTransitionOnDeactivateSuccess<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnDeactivateSuccess_ = [this]()
+    { this->postEvent<EvTransitionOnDeactivateSuccess<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnDeactivateFailure_ = [this]() {
-      this->postEvent<EvTransitionOnDeactivateFailure<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnDeactivateFailure_ = [this]()
+    { this->postEvent<EvTransitionOnDeactivateFailure<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnDeactivateError_ = [this]() {
-      this->postEvent<EvTransitionOnDeactivateError<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnDeactivateError_ = [this]()
+    { this->postEvent<EvTransitionOnDeactivateError<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnCleanupSuccess_ = [this]() {
-      this->postEvent<EvTransitionOnCleanupSuccess<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnCleanupSuccess_ = [this]()
+    { this->postEvent<EvTransitionOnCleanupSuccess<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnCleanupFailure_ = [this]() {
-      this->postEvent<EvTransitionOnCleanupFailure<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnCleanupFailure_ = [this]()
+    { this->postEvent<EvTransitionOnCleanupFailure<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnCleanupError_ = [this]() {
-      this->postEvent<EvTransitionOnCleanupError<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnCleanupError_ = [this]()
+    { this->postEvent<EvTransitionOnCleanupError<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnShutdownSuccess_ = [this]() {
-      this->postEvent<EvTransitionOnShutdownSuccess<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnShutdownSuccess_ = [this]()
+    { this->postEvent<EvTransitionOnShutdownSuccess<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnShutdownFailure_ = [this]() {
-      this->postEvent<EvTransitionOnShutdownFailure<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnShutdownFailure_ = [this]()
+    { this->postEvent<EvTransitionOnShutdownFailure<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnShutdownError_ = [this]() {
-      this->postEvent<EvTransitionOnShutdownError<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnShutdownError_ = [this]()
+    { this->postEvent<EvTransitionOnShutdownError<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnErrorSuccess_ = [this]() {
-      this->postEvent<EvTransitionOnErrorSuccess<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnErrorSuccess_ = [this]()
+    { this->postEvent<EvTransitionOnErrorSuccess<CpLifecycleEventMonitor, TOrthogonal>>(); };
 
-    postEventOnErrorFailure_ = [this]() {
-      this->postEvent<EvTransitionOnErrorFailure<CpLifecycleEventMonitor, TOrthogonal>>();
-    };
+    postEventOnErrorFailure_ = [this]()
+    { this->postEvent<EvTransitionOnErrorFailure<CpLifecycleEventMonitor, TOrthogonal>>(); };
   }
 
 private:

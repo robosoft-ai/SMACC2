@@ -109,8 +109,7 @@ public:
    * @param serviceName ROS2 service name
    * @param serviceTimeout Maximum time to wait for service response
    */
-  CpServiceClient(
-    const std::string & serviceName, std::chrono::milliseconds serviceTimeout)
+  CpServiceClient(const std::string & serviceName, std::chrono::milliseconds serviceTimeout)
   : serviceName(serviceName), serviceTimeout(serviceTimeout)
   {
   }
@@ -140,8 +139,7 @@ public:
     if (!client_->service_is_ready())
     {
       RCLCPP_WARN_STREAM(
-        getLogger(),
-        "[" << this->getName() << "] Service not ready: " << *serviceName);
+        getLogger(), "[" << this->getName() << "] Service not ready: " << *serviceName);
     }
 
     RCLCPP_INFO_STREAM(
@@ -198,7 +196,8 @@ public:
       auto response = future.get();
 
       RCLCPP_INFO_STREAM(
-        getLogger(), "[" << this->getName() << "] Service response received from: " << *serviceName);
+        getLogger(),
+        "[" << this->getName() << "] Service response received from: " << *serviceName);
 
       // Emit signals and events
       onServiceResponse_(response);
@@ -221,10 +220,7 @@ public:
    * @brief Check if the service server is ready
    * @return true if service is available, false otherwise
    */
-  bool isServiceReady() const
-  {
-    return client_ && client_->service_is_ready();
-  }
+  bool isServiceReady() const { return client_ && client_->service_is_ready(); }
 
   /**
    * @brief Wait for the service to become available
@@ -245,8 +241,7 @@ public:
         if (!client_->wait_for_service(timeout))
         {
           RCLCPP_WARN_STREAM(
-            getLogger(),
-            "[" << this->getName() << "] Service wait timed out: " << *serviceName);
+            getLogger(), "[" << this->getName() << "] Service wait timed out: " << *serviceName);
         }
       }
       else
@@ -274,8 +269,7 @@ public:
     }
 
     RCLCPP_INFO_STREAM(
-      getLogger(),
-      "[" << this->getName() << "] Initializing service client for: " << *serviceName);
+      getLogger(), "[" << this->getName() << "] Initializing service client for: " << *serviceName);
 
     client_ = getNode()->create_client<ServiceType>(*serviceName);
 
@@ -333,8 +327,7 @@ public:
    * @return Signal connection handle
    */
   template <typename T>
-  boost::signals2::connection onResponse(
-    void (T::*callback)(const SharedResponse &), T * object)
+  boost::signals2::connection onResponse(void (T::*callback)(const SharedResponse &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onServiceResponse_, callback, object);
   }
@@ -350,8 +343,7 @@ public:
   template <typename T>
   boost::signals2::connection onRequestSent(void (T::*callback)(), T * object)
   {
-    return this->getStateMachine()->createSignalConnection(
-      onServiceRequestSent_, callback, object);
+    return this->getStateMachine()->createSignalConnection(onServiceRequestSent_, callback, object);
   }
 
   /**

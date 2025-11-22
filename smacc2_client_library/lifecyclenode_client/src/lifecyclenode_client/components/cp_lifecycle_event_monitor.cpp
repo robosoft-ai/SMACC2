@@ -16,28 +16,24 @@
 
 namespace cl_lifecyclenode
 {
-CpLifecycleEventMonitor::CpLifecycleEventMonitor(std::string nodeName)
-: nodeName_(nodeName)
-{
-}
+CpLifecycleEventMonitor::CpLifecycleEventMonitor(std::string nodeName) : nodeName_(nodeName) {}
 
 void CpLifecycleEventMonitor::onInitialize()
 {
   // Phase 3: Create subscription to lifecycle transition events
   const std::string node_transition_event_topic = "/transition_event";
 
-  subscription_ =
-    getNode()->create_subscription<lifecycle_msgs::msg::TransitionEvent>(
-      nodeName_ + node_transition_event_topic, 100,
-      std::bind(&CpLifecycleEventMonitor::onTransitionEvent, this, std::placeholders::_1));
+  subscription_ = getNode()->create_subscription<lifecycle_msgs::msg::TransitionEvent>(
+    nodeName_ + node_transition_event_topic, 100,
+    std::bind(&CpLifecycleEventMonitor::onTransitionEvent, this, std::placeholders::_1));
 
   RCLCPP_INFO(
     getLogger(), "[CpLifecycleEventMonitor] Subscribed to: %s",
     (nodeName_ + node_transition_event_topic).c_str());
 }
 
-std::optional<lifecycle_msgs::msg::TransitionEvent> CpLifecycleEventMonitor::
-  getLastTransitionEvent() const
+std::optional<lifecycle_msgs::msg::TransitionEvent>
+CpLifecycleEventMonitor::getLastTransitionEvent() const
 {
   std::lock_guard<std::mutex> lock(eventMutex_);
   if (lastTransitionEvent_)
@@ -51,8 +47,8 @@ void CpLifecycleEventMonitor::onTransitionEvent(
   const lifecycle_msgs::msg::TransitionEvent::SharedPtr msg)
 {
   RCLCPP_INFO(
-    getLogger(), "[CpLifecycleEventMonitor] Transition event: %d -> %d",
-    msg->start_state.id, msg->goal_state.id);
+    getLogger(), "[CpLifecycleEventMonitor] Transition event: %d -> %d", msg->start_state.id,
+    msg->goal_state.id);
 
   // Store the event
   {
