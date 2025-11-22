@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp>
 #include <cl_lifecycle_node/cl_lifecycle_node.hpp>
+#include <cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_lifecycle_node

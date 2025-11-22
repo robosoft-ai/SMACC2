@@ -19,10 +19,10 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp>
 #include <lifecycle_msgs/msg/transition_event.hpp>
 #include <lifecycle_msgs/srv/change_state.hpp>
 #include <lifecycle_msgs/srv/get_state.hpp>
-#include <cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp>
 #include <smacc2/client_core_components/cp_service_client.hpp>
 #include <smacc2/smacc.hpp>
 #include <smacc2/smacc_client_behavior_base.hpp>

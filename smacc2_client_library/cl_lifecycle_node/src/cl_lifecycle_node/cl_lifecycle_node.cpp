@@ -17,8 +17,8 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp>
 #include <cl_lifecycle_node/cl_lifecycle_node.hpp>
+#include <cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp>
 #include <string>
 
 namespace cl_lifecycle_node
