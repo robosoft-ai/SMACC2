@@ -27,9 +27,7 @@ def setup_log_directory():
     timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
     # Primary log directory location
-    log_dir = os.path.join(
-        os.path.expanduser("~"), ".ros", "log", f"{timestamp}-sm_branching"
-    )
+    log_dir = os.path.join(os.path.expanduser("~"), ".ros", "log", f"{timestamp}-sm_branching")
 
     try:
         os.makedirs(log_dir, mode=0o755, exist_ok=True)
