@@ -78,12 +78,14 @@ def generate_launch_description():
                 executable="sm_atomic_lifecycle_node",
                 output="screen",
                 prefix=state_machine_prefix,
+                arguments=["--ros-args", "--log-level", "INFO"],
             ),
             Node(
                 package="sm_atomic_lifecycle",
                 executable="lifecycle_example_node",
                 output="screen",
                 prefix=lifecycle_prefix,
+                arguments=["--ros-args", "--log-level", "INFO"],
             ),
         ],
     )

@@ -77,6 +77,7 @@ def generate_launch_description():
                 name="sm_three_some",
                 output="screen",
                 prefix=state_machine_prefix,
+                arguments=["--ros-args", "--log-level", "INFO"],
             ),
             Node(
                 package="cl_keyboard",
@@ -84,6 +85,7 @@ def generate_launch_description():
                 name="keyboard_server_node",
                 output="screen",
                 prefix=keyboard_prefix,
+                arguments=["--ros-args", "--log-level", "INFO"],
             ),
         ],
     )

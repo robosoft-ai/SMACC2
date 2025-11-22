@@ -77,6 +77,7 @@ def generate_launch_description():
                 name="sm_pack_ml",
                 output="screen",
                 prefix=state_machine_prefix,
+                arguments=["--ros-args", "--log-level", "INFO"],
             ),
             Node(
                 package="cl_keyboard",

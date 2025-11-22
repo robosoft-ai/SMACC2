@@ -79,7 +79,7 @@ def launch_setup(context, *args, **kwargs):
 
     # Construct logging prefix for keyboard client node
     if log_dir:
-        keyboard_log = os.path.join(log_dir, f"cl_keyboard_{timestamp}.log")
+        keyboard_log = os.path.join(log_dir, f"keyboard_server_{timestamp}.log")
         keyboard_prefix = f'konsole --hold -p tabtitle="Keyboard Server" -e bash -c \'RCUTILS_COLORIZED_OUTPUT=1 "$@" 2>&1 | tee {keyboard_log}; exec bash\' -- '
     else:
         keyboard_prefix = 'konsole --hold -p tabtitle="Keyboard Server" -e'

@@ -23,6 +23,7 @@ def generate_launch_description():
                 package="sm_cl_keyboard_unit_test_1",
                 executable="sm_cl_keyboard_unit_test_1_node",
                 output="screen",
+                arguments=["--ros-args", "--log-level", "INFO"],
             ),
             Node(
                 package="cl_keyboard",

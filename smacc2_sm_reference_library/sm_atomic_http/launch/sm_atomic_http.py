@@ -18,5 +18,12 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     return LaunchDescription(
-        [Node(package="sm_atomic_http", executable="sm_atomic_http_node", output="screen")]
+        [
+            Node(
+                package="sm_atomic_http",
+                executable="sm_atomic_http_node",
+                output="screen",
+                arguments=["--ros-args", "--log-level", "INFO"],
+            )
+        ]
     )

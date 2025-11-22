@@ -76,6 +76,7 @@ def generate_launch_description():
                 output="screen",
                 prefix=state_machine_prefix,
                 parameters=[config_file],
+                arguments=["--ros-args", "--log-level", "INFO"],
             ),
         ],
     )

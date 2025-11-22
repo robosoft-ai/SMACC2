@@ -67,4 +67,5 @@ install(
   FILES_MATCHING
   PATTERN "*.launch"
   PATTERN "*.launch.py"
+  PATTERN "*.py"
 )

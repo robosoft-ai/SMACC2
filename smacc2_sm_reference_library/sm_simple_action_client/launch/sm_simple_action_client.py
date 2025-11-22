@@ -98,6 +98,7 @@ def generate_launch_description():
                 name="fibonacci_action_server",
                 output="screen",
                 prefix=fibonacci_prefix,
+                arguments=["--ros-args", "--log-level", "INFO"],
             ),
             # Start state machine
             Node(
@@ -107,6 +108,7 @@ def generate_launch_description():
                 output="screen",
                 parameters=[config_file],
                 prefix=state_machine_prefix,
+                arguments=["--ros-args", "--log-level", "INFO"],
             ),
             # Auto-trigger autonomous mode after delay
             Node(
@@ -115,6 +117,7 @@ def generate_launch_description():
                 name="auto_mode_trigger",
                 output="screen",
                 prefix=trigger_prefix,
+                arguments=["--ros-args", "--log-level", "INFO"],
             ),
         ]
     )

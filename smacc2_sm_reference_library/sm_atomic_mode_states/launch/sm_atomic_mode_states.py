@@ -23,6 +23,7 @@ def generate_launch_description():
                 package="sm_atomic_mode_states",
                 executable="sm_atomic_mode_states_node",
                 output="screen",
+                arguments=["--ros-args", "--log-level", "INFO"],
             )
         ]
     )
