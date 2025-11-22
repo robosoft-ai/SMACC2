@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <lifecyclenode_client/components/cp_lifecycle_event_monitor.hpp>
+#include <cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp>
 
-namespace cl_lifecyclenode
+namespace cl_lifecycle_node
 {
 CpLifecycleEventMonitor::CpLifecycleEventMonitor(std::string nodeName) : nodeName_(nodeName) {}
 
@@ -262,4 +262,4 @@ void CpLifecycleEventMonitor::onTransitionEvent(
   }
 }
 
-}  // namespace cl_lifecyclenode
+}  // namespace cl_lifecycle_node

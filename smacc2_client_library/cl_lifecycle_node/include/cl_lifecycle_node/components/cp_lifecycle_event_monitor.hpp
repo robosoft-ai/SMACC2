@@ -26,7 +26,7 @@
 #include <string>
 
 // Forward declarations
-namespace cl_lifecyclenode
+namespace cl_lifecycle_node
 {
 class CpLifecycleEventMonitor;
 
@@ -81,9 +81,9 @@ template <typename TSourceObject, typename TOrthogonal>
 struct EvTransitionOnErrorSuccess;
 template <typename TSourceObject, typename TOrthogonal>
 struct EvTransitionOnErrorFailure;
-}  // namespace cl_lifecyclenode
+}  // namespace cl_lifecycle_node
 
-namespace cl_lifecyclenode
+namespace cl_lifecycle_node
 {
 /**
  * @brief Component that monitors ROS2 lifecycle node transition events
@@ -307,4 +307,4 @@ private:
   std::function<void()> postEventOnErrorFailure_;
 };
 
-}  // namespace cl_lifecyclenode
+}  // namespace cl_lifecycle_node

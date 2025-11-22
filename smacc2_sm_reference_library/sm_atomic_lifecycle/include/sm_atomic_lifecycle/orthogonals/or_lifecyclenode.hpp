@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include <smacc2/smacc.hpp>
-#include <lifecyclenode_client/lifecyclenode_client.hpp>
+#include <cl_lifecycle_node/cl_lifecycle_node.hpp>
 
 using namespace std::chrono_literals;
 
@@ -25,7 +25,7 @@ class OrLifecycleNode : public smacc2::Orthogonal<OrLifecycleNode>
 public:
   void onInitialize() override
   {
-    auto client = this->createClient<cl_lifecyclenode::ClLifecycleNode>("lifecycle_example_node");
+    auto client = this->createClient<cl_lifecycle_node::ClLifecycleNode>("lifecycle_example_node");
   }
 };
 }  // namespace sm_atomic_lifecycle

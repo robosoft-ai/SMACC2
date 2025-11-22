@@ -20,24 +20,24 @@
 
 #pragma once
 
-#include <lifecyclenode_client/components/cp_lifecycle_event_monitor.hpp>
-#include <lifecyclenode_client/lifecyclenode_client.hpp>
+#include <cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp>
+#include <cl_lifecycle_node/cl_lifecycle_node.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
-namespace cl_lifecyclenode
+namespace cl_lifecycle_node
 {
-class CbDeactivate : public smacc2::SmaccAsyncClientBehavior
+class CbDeactivateOnExit : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbDeactivate() {}
-  virtual ~CbDeactivate() {}
+  CbDeactivateOnExit() {}
+  virtual ~CbDeactivateOnExit() {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
     smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
-    this->requiresClient(this->lifecycleNodeClient_);
+    this->requiresClient(lifecycleNodeClient_);
     this->requiresComponent(eventMonitor_);
 
     eventMonitor_->onTransitionOnDeactivateSuccess_.connect([this]() { this->postSuccessEvent(); });
@@ -45,10 +45,10 @@ public:
     eventMonitor_->onTransitionOnDeactivateError_.connect([this]() { this->postFailureEvent(); });
   }
 
-  virtual void onEntry() override { lifecycleNodeClient_->deactivate(); }
+  virtual void onExit() override { lifecycleNodeClient_->deactivate(); }
 
 private:
   ClLifecycleNode * lifecycleNodeClient_;
   CpLifecycleEventMonitor * eventMonitor_;
 };
-}  // namespace cl_lifecyclenode
+}  // namespace cl_lifecycle_node

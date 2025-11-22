@@ -22,7 +22,7 @@
 #include <optional>
 #include <string>
 
-namespace cl_lifecyclenode
+namespace cl_lifecycle_node
 {
 /**
  * @brief Component that tracks the current lifecycle state
@@ -70,4 +70,4 @@ private:
   mutable std::mutex stateMutex_;
 };
 
-}  // namespace cl_lifecyclenode
+}  // namespace cl_lifecycle_node

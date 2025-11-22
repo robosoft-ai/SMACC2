@@ -71,7 +71,7 @@ SmaccSignal is a communication mechanism (template wrapper around boost::signals
   - ClientBehaviors have signals: onSuccess_, onFailure_, onFinished_
 
   ### Example usage in Clients:
-  - smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/lifecyclenode_client.hpp
+  - smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/cl_lifecycle_node.hpp
   - smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/cl_ros_timer.hpp
   - smacc2_client_library/moveit2z_client/include/moveit2z_client/cl_moveit2z.hpp
   - smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/nav2z_client.hpp

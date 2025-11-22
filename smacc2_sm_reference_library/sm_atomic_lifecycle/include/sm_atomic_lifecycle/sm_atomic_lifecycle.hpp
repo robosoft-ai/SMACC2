@@ -22,12 +22,12 @@
 
 // CLIENTS
 #include <cl_ros2_timer/cl_ros2_timer.hpp>
-#include <lifecyclenode_client/lifecyclenode_client.hpp>
+#include <cl_lifecycle_node/cl_lifecycle_node.hpp>
 
 //CLIENT BEHAVIORS
 #include <cl_ros2_timer/client_behaviors/cb_timer_countdown_loop.hpp>
 #include <cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp>
-#include <lifecyclenode_client/client_behaviors.hpp>
+#include <cl_lifecycle_node/client_behaviors.hpp>
 
 // ORTHOGONALS
 #include "orthogonals/or_timer.hpp"

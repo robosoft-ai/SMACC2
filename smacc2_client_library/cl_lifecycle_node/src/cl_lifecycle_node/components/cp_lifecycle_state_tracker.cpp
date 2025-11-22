@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <lifecyclenode_client/components/cp_lifecycle_state_tracker.hpp>
+#include <cl_lifecycle_node/components/cp_lifecycle_state_tracker.hpp>
 
-namespace cl_lifecyclenode
+namespace cl_lifecycle_node
 {
 void CpLifecycleStateTracker::onInitialize()
 {
@@ -57,4 +57,4 @@ uint8_t CpLifecycleStateTracker::getCurrentStateId() const
   return 0;
 }
 
-}  // namespace cl_lifecyclenode
+}  // namespace cl_lifecycle_node

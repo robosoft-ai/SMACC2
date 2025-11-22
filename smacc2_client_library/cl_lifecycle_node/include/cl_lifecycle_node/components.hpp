@@ -18,5 +18,5 @@
 #include <smacc2/client_core_components/cp_service_client.hpp>
 
 // Lifecycle-specific components
-#include <lifecyclenode_client/components/cp_lifecycle_event_monitor.hpp>
-#include <lifecyclenode_client/components/cp_lifecycle_state_tracker.hpp>
+#include <cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp>
+#include <cl_lifecycle_node/components/cp_lifecycle_state_tracker.hpp>

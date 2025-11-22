@@ -23,7 +23,7 @@
 namespace sm_atomic_lifecycle
 {
 using sm_atomic_lifecycle::OrLifecycleNode;
-using namespace cl_lifecyclenode;
+using namespace cl_lifecycle_node;
 
 // STATE DECLARATION
 struct StUnconfigured : smacc2::SmaccState<StUnconfigured, SmAtomicLifecycle>

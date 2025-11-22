@@ -11,7 +11,7 @@
 
   <depend>ament_cmake_auto</depend>
   <depend>cl_ros2_timer</depend>
-  <depend>lifecyclenode_client</depend>
+  <depend>cl_lifecycle_node</depend>
   <depend>smacc2</depend>
   <depend>std_msgs</depend>
 

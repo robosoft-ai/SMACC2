@@ -22,12 +22,12 @@
 #include <lifecycle_msgs/msg/transition_event.hpp>
 #include <lifecycle_msgs/srv/change_state.hpp>
 #include <lifecycle_msgs/srv/get_state.hpp>
-#include <lifecyclenode_client/components/cp_lifecycle_event_monitor.hpp>
+#include <cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp>
 #include <smacc2/client_core_components/cp_service_client.hpp>
 #include <smacc2/smacc.hpp>
 #include <smacc2/smacc_client_behavior_base.hpp>
 
-namespace cl_lifecyclenode
+namespace cl_lifecycle_node
 {
 template <typename TSourceObject, typename TOrthogonal>
 struct EvLifecycleNodeChangeState
@@ -254,4 +254,4 @@ private:
   lifecycle_msgs::msg::TransitionEvent::SharedPtr lastTransitionEvent_;
 };
 
-}  // namespace cl_lifecyclenode
+}  // namespace cl_lifecycle_node

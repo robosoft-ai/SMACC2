@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(lifecyclenode_client)
+project(cl_lifecycle_node)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
@@ -25,7 +25,7 @@ set(dependencies
 include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
-  src/${PROJECT_NAME}/lifecyclenode_client.cpp
+  src/${PROJECT_NAME}/cl_lifecycle_node.cpp
   src/${PROJECT_NAME}/components/cp_lifecycle_event_monitor.cpp
   src/${PROJECT_NAME}/components/cp_lifecycle_state_tracker.cpp
 )

@@ -71,7 +71,7 @@ The SMACC2 Client Library provides modular, reusable clients for robot behaviors
 | `cl_keyboard` | Keyboard input handling | Subscriber-based |
 | `cl_ros2_timer` | Timer-based behaviors | Timer callbacks |
 | `http_client` | HTTP requests | Custom protocol |
-| `lifecyclenode_client` | ROS2 lifecycle management | Service calls |
+| `cl_lifecycle_node` | ROS2 lifecycle management | Service calls |
 
 ## Architecture Patterns
 
@@ -192,7 +192,7 @@ private:
 **Used for:** Request/response interactions
    - Synchronous/Asynchronous service calls
    - Response handling
-**Example:** `lifecyclenode_client` calling lifecycle services
+**Example:** `cl_lifecycle_node` calling lifecycle services
 
 ```cpp
 class ClLifecycleNode : public smacc2::ISmaccClient
@@ -462,9 +462,9 @@ private:
 
   Key Commonalities:
   - Async behavior inheritance for non-blocking operations
-  <sup>file:///src/SMACC2/smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/client_behaviors/cb_activate.hpp#L28</sup>
+  <sup>file:///src/SMACC2/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/client_behaviors/cb_activate.hpp#L28</sup>
   - Signal-based result handling (success/failure events)
-  <sup>file:///src/SMACC2/smacc2_client_library/lifecyclenode_client/include/lifecyclenode_client/client_behaviors/cb_activate.hpp#L41</sup>
+  <sup>file:///src/SMACC2/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/client_behaviors/cb_activate.hpp#L41</sup>
   - Lifecycle client references
   - Standard postSuccessEvent()/postFailureEvent() methods
   

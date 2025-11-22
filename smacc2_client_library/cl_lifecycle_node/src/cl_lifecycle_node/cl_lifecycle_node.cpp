@@ -17,11 +17,11 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <lifecyclenode_client/components/cp_lifecycle_event_monitor.hpp>
-#include <lifecyclenode_client/lifecyclenode_client.hpp>
+#include <cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp>
+#include <cl_lifecycle_node/cl_lifecycle_node.hpp>
 #include <string>
 
-namespace cl_lifecyclenode
+namespace cl_lifecycle_node
 {
 ClLifecycleNode::ClLifecycleNode(std::string node_name)
 : nodeName_(node_name), eventMonitor_(nullptr)
@@ -72,4 +72,4 @@ void ClLifecycleNode::shutdown()
   changeState(lifecycle_msgs::msg::Transition::TRANSITION_UNCONFIGURED_SHUTDOWN);
 }
 
-}  // namespace cl_lifecyclenode
+}  // namespace cl_lifecycle_node
