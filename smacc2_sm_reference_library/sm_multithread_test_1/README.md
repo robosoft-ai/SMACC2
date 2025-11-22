@@ -46,14 +46,14 @@ colcon build --packages-select sm_multithread_test_1
 source install/setup.bash
 
 # Launch multi-threaded version
-ros2 launch sm_multithread_test_1 sm_multithread_test_1.launch.py
+ros2 launch sm_multithread_test_1 sm_multithread_test_1.py
 ```
 
 ### Run Single-threaded Version (For Comparison)
 
 ```bash
 # Launch single-threaded version
-ros2 launch sm_multithread_test_1 sm_multithread_test_1_single.launch.py
+ros2 launch sm_multithread_test_1 sm_multithread_test_1_single.py
 ```
 
 The state machine runs for **15 seconds** then enters a terminal state. Press `Ctrl+C` to exit.
@@ -366,10 +366,10 @@ source install/setup.bash
 
 ```bash
 # Multi-threaded version (main demonstration)
-ros2 launch sm_multithread_test_1 sm_multithread_test_1.launch.py
+ros2 launch sm_multithread_test_1 sm_multithread_test_1.py
 
 # Single-threaded version (for comparison)
-ros2 launch sm_multithread_test_1 sm_multithread_test_1_single.launch.py
+ros2 launch sm_multithread_test_1 sm_multithread_test_1_single.py
 ```
 
 ---

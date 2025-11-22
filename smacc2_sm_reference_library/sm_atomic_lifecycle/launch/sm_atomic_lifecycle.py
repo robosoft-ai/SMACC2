@@ -67,9 +67,9 @@ def generate_launch_description():
     # Construct logging prefix for lifecycle example node
     if log_dir:
         lifecycle_log = os.path.join(log_dir, f"lifecycle_example_node_{timestamp}.log")
-        lifecycle_prefix = f"konsole --hold -p tabtitle='Lifecycle Example' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {lifecycle_log}; exec bash' -- "
+        lifecycle_prefix = f"konsole --hold -p tabtitle='Lifecycle Example Node' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {lifecycle_log}; exec bash' -- "
     else:
-        lifecycle_prefix = "konsole --hold -p tabtitle='Lifecycle Example' -e"
+        lifecycle_prefix = "konsole --hold -p tabtitle='Lifecycle Example Node' -e"
 
     return LaunchDescription(
         [

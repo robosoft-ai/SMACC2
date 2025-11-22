@@ -30,10 +30,9 @@ source install/setup.bash
 ```
 
 And then run the launch file...
-! refactor state machine name
 
 ```
-ros2 launch sm_three_some sm_three_some.launch
+ros2 launch sm_three_some sm_three_some.py
 ```
 
  <h2>Viewer Instructions</h2>

@@ -30,10 +30,9 @@ source install/setup.bash
 ```
 
 And then run the launch file...
-! refactor state machine name
 
 ```
-ros2 launch sm_branching sm_branching.launch
+ros2 launch sm_branching sm_branching.py
 ```
 
  <h2>Viewer Instructions</h2>

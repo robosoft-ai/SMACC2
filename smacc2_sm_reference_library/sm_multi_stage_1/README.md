@@ -32,7 +32,7 @@ source install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_multi_stage_1 sm_multi_stage_1.launch
+ros2 launch sm_multi_stage_1 sm_multi_stage_1.py
 ```
 
  <h2>Viewer Instructions</h2>

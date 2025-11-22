@@ -1,5 +1,0 @@
-<launch>
-    <node pkg="sm_branching" exec="sm_branching_node" name="sm_branching">
-        <param from="$(find-pkg-share sm_branching)/config/sm_branching_config.yaml"/>
-    </node>
-</launch>

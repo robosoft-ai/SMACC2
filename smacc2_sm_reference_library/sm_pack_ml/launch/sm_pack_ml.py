@@ -15,7 +15,6 @@
 import os
 from datetime import datetime
 from launch import LaunchDescription
-from launch.actions import OpaqueFunction
 from launch_ros.actions import Node
 
 
@@ -27,7 +26,9 @@ def setup_log_directory():
     timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
     # Primary log directory location
-    log_dir = os.path.join(os.path.expanduser("~"), ".ros", "log", timestamp)
+    log_dir = os.path.join(
+        os.path.expanduser("~"), ".ros", "log", f"{timestamp}-sm_pack_ml"
+    )
 
     try:
         os.makedirs(log_dir, mode=0o755, exist_ok=True)
@@ -35,7 +36,7 @@ def setup_log_directory():
         return log_dir, timestamp
     except PermissionError as e:
         # Fallback to /tmp if ~/.ros is not writable
-        fallback_dir = os.path.join("/tmp", "sm_multi_stage_1_logs", timestamp)
+        fallback_dir = os.path.join("/tmp", "sm_pack_ml_logs", timestamp)
         print(f"[Launch] WARNING: Cannot create log directory at {log_dir}")
         print(f"[Launch] Permission denied: {e}")
         print(f"[Launch] Using fallback directory: {fallback_dir}")
@@ -53,49 +54,38 @@ def setup_log_directory():
 
 
 def generate_launch_description():
-    return LaunchDescription([OpaqueFunction(function=launch_setup)])
-
-
-def launch_setup(context, *args, **kwargs):
-
     # Setup logging directory
     log_dir, timestamp = setup_log_directory()
 
     # Construct logging prefix for state machine node
     if log_dir:
         state_machine_log = os.path.join(log_dir, f"state_machine_{timestamp}.log")
-        state_machine_prefix = f'konsole --hold -p tabtitle="State Machine" -e bash -c \'RCUTILS_COLORIZED_OUTPUT=1 "$@" 2>&1 | tee {state_machine_log}; exec bash\' -- '
+        state_machine_prefix = f"konsole --hold -p tabtitle='SM Pack ML' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {state_machine_log}; exec bash' -- "
     else:
-        state_machine_prefix = 'konsole --hold -p tabtitle="State Machine" -e'
+        state_machine_prefix = "konsole --hold -p tabtitle='SM Pack ML' -e"
 
-    sm_multi_stage_1_node = Node(
-        package="sm_multi_stage_1",
-        executable="sm_multi_stage_1_node",
-        name="sm_multi_stage_1",
-        output="screen",
-        prefix=state_machine_prefix,
-        arguments=["--ros-args", "--log-level", "DEBUG"],
-    )
-
-    # Construct logging prefix for keyboard client node
+    # Construct logging prefix for keyboard server node
     if log_dir:
-        keyboard_log = os.path.join(log_dir, f"cl_keyboard_{timestamp}.log")
-        keyboard_prefix = f'konsole --hold -p tabtitle="Keyboard Server" -e bash -c \'RCUTILS_COLORIZED_OUTPUT=1 "$@" 2>&1 | tee {keyboard_log}; exec bash\' -- '
+        keyboard_log = os.path.join(log_dir, f"keyboard_server_{timestamp}.log")
+        keyboard_prefix = f"konsole --hold -p tabtitle='Keyboard Server' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {keyboard_log}; exec bash' -- "
     else:
-        keyboard_prefix = 'konsole --hold -p tabtitle="Keyboard Server" -e'
+        keyboard_prefix = "konsole --hold -p tabtitle='Keyboard Server' -e"
 
-    keyboard_server_node = Node(
-        package="cl_keyboard",
-        executable="keyboard_server_node.py",
-        name="keyboard_server_node",
-        output="screen",
-        prefix=keyboard_prefix,
-        arguments=["--ros-args", "--log-level", "INFO"],
+    return LaunchDescription(
+        [
+            Node(
+                package="sm_pack_ml",
+                executable="sm_pack_ml_node",
+                name="sm_pack_ml",
+                output="screen",
+                prefix=state_machine_prefix,
+            ),
+            Node(
+                package="cl_keyboard",
+                executable="keyboard_server_node.py",
+                name="keyboard_server_node",
+                output="screen",
+                prefix=keyboard_prefix,
+            ),
+        ],
     )
-
-    nodes_to_start = [
-        sm_multi_stage_1_node,
-        keyboard_server_node,
-    ]
-
-    return nodes_to_start

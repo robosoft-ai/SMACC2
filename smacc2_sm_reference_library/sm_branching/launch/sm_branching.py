@@ -16,6 +16,7 @@ import os
 from datetime import datetime
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from ament_index_python.packages import get_package_share_directory
 
 
 def setup_log_directory():
@@ -27,7 +28,7 @@ def setup_log_directory():
 
     # Primary log directory location
     log_dir = os.path.join(
-        os.path.expanduser("~"), ".ros", "log", f"{timestamp}-sm_advanced_recovery_1"
+        os.path.expanduser("~"), ".ros", "log", f"{timestamp}-sm_branching"
     )
 
     try:
@@ -36,7 +37,7 @@ def setup_log_directory():
         return log_dir, timestamp
     except PermissionError as e:
         # Fallback to /tmp if ~/.ros is not writable
-        fallback_dir = os.path.join("/tmp", "sm_advanced_recovery_1_logs", timestamp)
+        fallback_dir = os.path.join("/tmp", "sm_branching_logs", timestamp)
         print(f"[Launch] WARNING: Cannot create log directory at {log_dir}")
         print(f"[Launch] Permission denied: {e}")
         print(f"[Launch] Using fallback directory: {fallback_dir}")
@@ -57,37 +58,26 @@ def generate_launch_description():
     # Setup logging directory
     log_dir, timestamp = setup_log_directory()
 
+    # Get package share directory for config file
+    package_share_dir = get_package_share_directory("sm_branching")
+    config_file = os.path.join(package_share_dir, "config", "sm_branching_config.yaml")
+
     # Construct logging prefix for state machine node
     if log_dir:
         state_machine_log = os.path.join(log_dir, f"state_machine_{timestamp}.log")
-        state_machine_prefix = f"konsole --hold -p tabtitle='SM Advanced Recovery' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {state_machine_log}; exec bash' -- "
+        state_machine_prefix = f"konsole --hold -p tabtitle='SM Branching' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {state_machine_log}; exec bash' -- "
     else:
-        state_machine_prefix = "konsole --hold -p tabtitle='SM Advanced Recovery' -e"
-
-    # Construct logging prefix for keyboard server node
-    if log_dir:
-        keyboard_log = os.path.join(log_dir, f"keyboard_server_{timestamp}.log")
-        keyboard_prefix = f"konsole --hold -p tabtitle='Keyboard Server' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {keyboard_log}; exec bash' -- "
-    else:
-        keyboard_prefix = "konsole --hold -p tabtitle='Keyboard Server' -e"
+        state_machine_prefix = "konsole --hold -p tabtitle='SM Branching' -e"
 
     return LaunchDescription(
         [
             Node(
-                package="sm_advanced_recovery_1",
-                executable="sm_advanced_recovery_1_node",
-                name="sm_advanced_recovery_1",
+                package="sm_branching",
+                executable="sm_branching_node",
+                name="sm_branching",
                 output="screen",
                 prefix=state_machine_prefix,
-                arguments=["--ros-args", "--log-level", "DEBUG"],
-            ),
-            Node(
-                package="cl_keyboard",
-                executable="keyboard_server_node.py",
-                name="keyboard_server_node",
-                output="screen",
-                prefix=keyboard_prefix,
-                arguments=["--ros-args", "--log-level", "INFO"],
+                parameters=[config_file],
             ),
         ],
     )

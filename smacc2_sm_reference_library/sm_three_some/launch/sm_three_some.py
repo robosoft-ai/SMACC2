@@ -27,7 +27,7 @@ def setup_log_directory():
 
     # Primary log directory location
     log_dir = os.path.join(
-        os.path.expanduser("~"), ".ros", "log", f"{timestamp}-sm_advanced_recovery_1"
+        os.path.expanduser("~"), ".ros", "log", f"{timestamp}-sm_three_some"
     )
 
     try:
@@ -36,7 +36,7 @@ def setup_log_directory():
         return log_dir, timestamp
     except PermissionError as e:
         # Fallback to /tmp if ~/.ros is not writable
-        fallback_dir = os.path.join("/tmp", "sm_advanced_recovery_1_logs", timestamp)
+        fallback_dir = os.path.join("/tmp", "sm_three_some_logs", timestamp)
         print(f"[Launch] WARNING: Cannot create log directory at {log_dir}")
         print(f"[Launch] Permission denied: {e}")
         print(f"[Launch] Using fallback directory: {fallback_dir}")
@@ -60,9 +60,9 @@ def generate_launch_description():
     # Construct logging prefix for state machine node
     if log_dir:
         state_machine_log = os.path.join(log_dir, f"state_machine_{timestamp}.log")
-        state_machine_prefix = f"konsole --hold -p tabtitle='SM Advanced Recovery' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {state_machine_log}; exec bash' -- "
+        state_machine_prefix = f"konsole --hold -p tabtitle='SM Three Some' -e bash -c 'RCUTILS_COLORIZED_OUTPUT=1 \"$@\" 2>&1 | tee {state_machine_log}; exec bash' -- "
     else:
-        state_machine_prefix = "konsole --hold -p tabtitle='SM Advanced Recovery' -e"
+        state_machine_prefix = "konsole --hold -p tabtitle='SM Three Some' -e"
 
     # Construct logging prefix for keyboard server node
     if log_dir:
@@ -74,12 +74,11 @@ def generate_launch_description():
     return LaunchDescription(
         [
             Node(
-                package="sm_advanced_recovery_1",
-                executable="sm_advanced_recovery_1_node",
-                name="sm_advanced_recovery_1",
+                package="sm_three_some",
+                executable="sm_three_some_node",
+                name="sm_three_some",
                 output="screen",
                 prefix=state_machine_prefix,
-                arguments=["--ros-args", "--log-level", "DEBUG"],
             ),
             Node(
                 package="cl_keyboard",
@@ -87,7 +86,6 @@ def generate_launch_description():
                 name="keyboard_server_node",
                 output="screen",
                 prefix=keyboard_prefix,
-                arguments=["--ros-args", "--log-level", "INFO"],
             ),
         ],
     )

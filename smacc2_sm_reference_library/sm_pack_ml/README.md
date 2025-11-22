@@ -32,7 +32,7 @@ source install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_pack_ml sm_pack_ml.launch
+ros2 launch sm_pack_ml sm_pack_ml.py
 ```
 
  <h2>Viewer Instructions</h2>
