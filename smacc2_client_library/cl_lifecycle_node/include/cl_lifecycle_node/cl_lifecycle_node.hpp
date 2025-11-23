@@ -244,10 +244,10 @@ private:
   rclcpp::Client<lifecycle_msgs::srv::GetState>::SharedPtr client_get_state_;
   rclcpp::Client<lifecycle_msgs::srv::ChangeState>::SharedPtr client_change_state_;
 
+  std::string nodeName_;
+
   // Phase 3: Event monitor component
   CpLifecycleEventMonitor * eventMonitor_;
-
-  std::string nodeName_;
   const std::string node_get_state_topic = "/get_state";
   const std::string node_change_state_topic = "/change_state";
 
