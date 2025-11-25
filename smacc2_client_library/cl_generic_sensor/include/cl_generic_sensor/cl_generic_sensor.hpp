@@ -72,8 +72,8 @@ public:
     }
 
     this->createComponent<
-      smacc2::client_core_components::CpTopicSubscriber<MessageType>, TOrthogonal,
-      ClGenericSensor>(*topicName_);
+      smacc2::client_core_components::CpTopicSubscriber<MessageType>, TOrthogonal, ClGenericSensor>(
+      *topicName_);
 
     RCLCPP_INFO(
       getLogger(), "[ClGenericSensor] Created CpTopicSubscriber for topic: %s",
@@ -97,8 +97,7 @@ public:
     else
     {
       RCLCPP_INFO(
-        getLogger(),
-        "[ClGenericSensor] Timeout not configured - watchdog functionality disabled");
+        getLogger(), "[ClGenericSensor] Timeout not configured - watchdog functionality disabled");
     }
   }
 
