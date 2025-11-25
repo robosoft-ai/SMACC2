@@ -91,9 +91,9 @@ public:
       if (timeout_)
       {
         RCLCPP_INFO_STREAM(
-          getLogger(),
-          "[" << this->getName() << "] Initializing message timeout watchdog with duration: "
-              << timeout_->seconds() << "s");
+          getLogger(), "[" << this->getName()
+                           << "] Initializing message timeout watchdog with duration: "
+                           << timeout_->seconds() << "s");
 
         // Create the timeout timer
         timeoutTimer_ = rclcpp::create_timer(
