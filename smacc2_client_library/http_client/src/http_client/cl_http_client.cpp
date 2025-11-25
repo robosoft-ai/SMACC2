@@ -14,7 +14,7 @@
 
 /*****************************************************************************************************************
  *
- * 	 Authors: Jaycee Lock
+ * 	 Authors: Jaycee Lock & Brett Aldrich
  *
  ******************************************************************************************************************/
 
@@ -22,66 +22,24 @@
 
 namespace cl_http
 {
-ClHttp::ClHttp(const std::string & server_name, const int & timeout)
+ClHttp::ClHttp(const std::string & server_name, const int & /*timeout*/)
 : initialized_{false},
-  timeout_{timeout},
-  server_{server_name},
-  worker_guard_{boost::asio::make_work_guard(io_context_.get_executor())},
-  ssl_context_{boost::asio::ssl::context::tlsv13_client}
+  server_url_{server_name},
+  connectionManager_{nullptr},
+  sessionManager_{nullptr},
+  requestExecutor_{nullptr}
 {
-  ssl_context_.set_default_verify_paths();
-  ssl_context_.set_verify_mode(boost::asio::ssl::verify_peer);
+  // Timeout parameter kept for API compatibility but unused (managed by components)
 }
 
 ClHttp::~ClHttp()
 {
-  worker_guard_.reset();
-  tcp_connection_runner_.join();
+  // Thread cleanup handled by CpHttpConnectionManager destructor
 }
 
 void ClHttp::onInitialize()
 {
-  if (!initialized_)
-  {
-    tcp_connection_runner_ = std::thread{[&]() { io_context_.run(); }};
-    this->initialized_ = true;
-  }
-}
-
-void ClHttp::makeRequest(
-  const kHttpRequestMethod http_method, const std::string & path, const std::string & body,
-  const std::unordered_map<std::string, std::string> & headers)
-{
-  auto path_used = path;
-  if (path[0] != '/')
-  {
-    std::reverse(path_used.begin(), path_used.end());
-    path_used += '/';
-    std::reverse(path_used.begin(), path_used.end());
-  }
-
-  RCLCPP_INFO(this->getLogger(), "SSL? %d", server_.isSSL());
-  RCLCPP_INFO(this->getLogger(), "Server %s", server_.getServerName().c_str());
-  RCLCPP_INFO(this->getLogger(), "Path %s", path_used.c_str());
-  RCLCPP_INFO(this->getLogger(), "Port %s", server_.getPort().c_str());
-
-  std::shared_ptr<http_session_base> http_session_ptr;
-
-  if (server_.isSSL())
-  {
-    http_session_ptr = std::make_shared<ssl_http_session>(
-      boost::asio::make_strand(io_context_), ssl_context_, callbackHandler);
-  }
-  else
-  {
-    http_session_ptr =
-      std::make_shared<http_session>(boost::asio::make_strand(io_context_), callbackHandler);
-  }
-
-  http_session_ptr->setBody(body);
-  http_session_ptr->setHeaders(headers);
-  http_session_ptr->run(
-    server_.getServerName(), path_used, static_cast<boost::beast::http::verb>(http_method),
-    HTTP_VERSION);
+  // Components created in onComponentInitialization()
+  this->initialized_ = true;
 }
 }  // namespace cl_http

@@ -14,7 +14,7 @@
 
 /*****************************************************************************************************************
  *
- * 	 Authors: Jaycee Lock
+ * 	 Authors: Jaycee Lock & Brett Aldrich 
  *
  ******************************************************************************************************************/
 
@@ -29,6 +29,6 @@ namespace cl_http
 class CbHttpGetRequest : public CbHttpRequestBase
 {
 public:
-  CbHttpGetRequest() : CbHttpRequestBase(ClHttp::kHttpRequestMethod::GET) {}
+  CbHttpGetRequest() : CbHttpRequestBase(CpHttpRequestExecutor::HttpMethod::GET) {}
 };
 }  // namespace cl_http

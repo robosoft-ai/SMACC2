@@ -14,57 +14,52 @@
 
 /*****************************************************************************************************************
  *
- * 	 Authors: Jaycee Lock
+ * 	 Authors: Jaycee Lock & Brett Aldrich
+ *
+ *   Description: HTTP/HTTPS Client using pure component-based architecture
+ *
+ *   Architecture:
+ *     ClHttp (minimal orchestrator) creates and configures three components:
+ *       - CpHttpConnectionManager: io_context and thread management
+ *       - CpHttpSessionManager: SSL context and session creation
+ *       - CpHttpRequestExecutor: Request execution and response signals
+ *
+ *   Usage:
+ *     Behaviors should access CpHttpRequestExecutor component directly via requiresComponent()
+ *     and connect to its onResponseReceived_ signal for HTTP responses.
+ *
+ *   See README.md for complete documentation and examples.
  *
  ******************************************************************************************************************/
 
 #pragma once
 
-#include <boost/asio/executor_work_guard.hpp>
-#include <boost/asio/strand.hpp>
-#include <boost/beast/core.hpp>
-#include <boost/beast/http.hpp>
-#include <boost/beast/ssl.hpp>
-#include <boost/beast/version.hpp>
-#include <http_client/http_session.hpp>
-#include <http_client/ssl_http_session.hpp>
-#include <smacc2/smacc.hpp>
+#include <http_client/components/cp_http_connection_manager.hpp>
+#include <http_client/components/cp_http_request_executor.hpp>
+#include <http_client/components/cp_http_session_manager.hpp>
+#include <http_client/http_session_base.hpp>
 #include <smacc2/smacc_client.hpp>
 #include <string>
-#include <thread>
 
 namespace cl_http
 {
+/**
+ * @brief HTTP/HTTPS client with pure component-based architecture
+ *
+ * This client acts as a minimal orchestrator that creates and configures
+ * three specialized components during initialization. All HTTP functionality
+ * is delegated to components.
+ *
+ * Components created:
+ *   - CpHttpConnectionManager: Manages io_context and worker thread
+ *   - CpHttpSessionManager: Manages SSL context and creates sessions
+ *   - CpHttpRequestExecutor: Executes requests and emits response signals
+ *
+ * Behaviors should access CpHttpRequestExecutor directly via requiresComponent()
+ * rather than using the client interface.
+ */
 class ClHttp : public smacc2::ISmaccClient
 {
-  class Server
-  {
-  public:
-    explicit Server(const std::string & server_name) : server_name_{server_name}, ssl_{true}
-    {
-      if (!server_name_.substr(0, 7).compare("http://"))
-      {
-        ssl_ = false;
-        server_name_.erase(0, 7);
-      }
-      else if (!server_name_.substr(0, 8).compare("https://"))
-      {
-        server_name_.erase(0, 8);
-        ssl_ = true;
-      }
-    }
-
-    bool isSSL() const { return ssl_; }
-
-    std::string getPort() const { return ssl_ ? "443" : "80"; }
-
-    std::string getServerName() const { return server_name_; }
-
-  private:
-    std::string server_name_;
-    bool ssl_;
-  };
-
 public:
   enum class kHttpRequestMethod
   {
@@ -75,41 +70,38 @@ public:
 
   using TResponse = http_session_base::TResponse;
 
-  template <typename T>
-  boost::signals2::connection onResponseReceived(void (T::*callback)(const TResponse &), T * object)
-  {
-    return this->getStateMachine()->createSignalConnection(onResponseReceived_, callback, object);
-  }
-
   explicit ClHttp(const std::string & server, const int & timeout = 1500);
 
   virtual ~ClHttp();
 
   void onInitialize() override;
 
-  void makeRequest(
-    const kHttpRequestMethod http_method, const std::string & path = "/",
-    const std::string & body = "",
-    const std::unordered_map<std::string, std::string> & headers = {});
+  // Component composition during orthogonal initialization
+  template <typename TOrthogonal, typename TClient>
+  void onComponentInitialization()
+  {
+    // Create components
+    connectionManager_ = this->createComponent<CpHttpConnectionManager, TOrthogonal, ClHttp>();
+    sessionManager_ = this->createComponent<CpHttpSessionManager, TOrthogonal, ClHttp>();
+    requestExecutor_ = this->createComponent<CpHttpRequestExecutor, TOrthogonal, ClHttp>();
+
+    // Set component dependencies
+    requestExecutor_->setDependencies(connectionManager_, sessionManager_);
+
+    // Configure session manager with server URL
+    sessionManager_->setServerUrl(server_url_);
+  }
 
 private:
   const int HTTP_VERSION = 11;
 
   bool initialized_;
-  bool is_ssl_;
-  int timeout_;
 
-  Server server_;
+  std::string server_url_;  // Server URL for component configuration
 
-  boost::asio::io_context io_context_;
-  boost::asio::executor_work_guard<decltype(io_context_)::executor_type> worker_guard_;
-  std::thread tcp_connection_runner_;
-
-  boost::asio::ssl::context ssl_context_;
-
-  smacc2::SmaccSignal<void(const TResponse &)> onResponseReceived_;
-
-  std::function<void(TResponse)> callbackHandler = [&](const TResponse & res)
-  { onResponseReceived_(res); };
+  // Component references
+  CpHttpConnectionManager * connectionManager_;
+  CpHttpSessionManager * sessionManager_;
+  CpHttpRequestExecutor * requestExecutor_;
 };
 }  // namespace cl_http

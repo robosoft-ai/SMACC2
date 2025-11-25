@@ -14,7 +14,7 @@
 
 /*****************************************************************************************************************
  *
- * 	 Authors: Jaycee Lock
+ * 	 Authors: Jaycee Lock & Brett Aldrich
  *
  ******************************************************************************************************************/
 
@@ -22,6 +22,7 @@
 
 #include <cstring>
 #include <http_client/cl_http_client.hpp>
+#include <http_client/components/cp_http_request_executor.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace cl_http
@@ -30,7 +31,7 @@ namespace cl_http
 class CbHttpRequestBase : public smacc2::SmaccClientBehavior
 {
 public:
-  CbHttpRequestBase(const ClHttp::kHttpRequestMethod http_request_type)
+  CbHttpRequestBase(const CpHttpRequestExecutor::HttpMethod http_request_type)
   : kRequestType(http_request_type)
   {
   }
@@ -43,19 +44,21 @@ public:
 
   virtual void runtimeConfigure() override
   {
-    this->requiresClient(cl_http_);
-    cl_http_->onResponseReceived(&CbHttpRequestBase::onResponseReceived, this);
+    // Access executor component and connect to response signal
+    this->requiresComponent(requestExecutor_);
+    this->getStateMachine()->createSignalConnection(
+      requestExecutor_->onResponseReceived_, &CbHttpRequestBase::onResponseReceived, this);
   }
 
-  virtual void onResponseReceived(const ClHttp::TResponse & /*response*/) {}
+  virtual void onResponseReceived(const CpHttpRequestExecutor::TResponse & /*response*/) {}
 
-  virtual void onEntry() override { cl_http_->makeRequest(kRequestType); }
+  virtual void onEntry() override { requestExecutor_->executeRequest(kRequestType); }
 
   virtual void onExit() override {}
 
 private:
-  const ClHttp::kHttpRequestMethod kRequestType;
+  const CpHttpRequestExecutor::HttpMethod kRequestType;
 
-  ClHttp * cl_http_;
+  CpHttpRequestExecutor * requestExecutor_;
 };
 }  // namespace cl_http

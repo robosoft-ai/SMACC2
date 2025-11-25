@@ -28,6 +28,10 @@ add_library(http_session
 
 add_library(${PROJECT_NAME}
   src/http_client/cl_http_client.cpp
+  # Component sources
+  src/http_client/components/cp_http_connection_manager.cpp
+  src/http_client/components/cp_http_session_manager.cpp
+  src/http_client/components/cp_http_request_executor.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}

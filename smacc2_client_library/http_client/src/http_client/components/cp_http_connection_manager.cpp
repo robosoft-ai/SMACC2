@@ -1,4 +1,4 @@
-// Copyright 2023 RobosoftAI Inc.
+// Copyright 2024 RobosoftAI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,21 +14,46 @@
 
 /*****************************************************************************************************************
  *
- * 	 Authors: Jaycee Lock & Brett Aldrich
+ * 	 Authors: Claude (Anthropic AI)
  *
  ******************************************************************************************************************/
 
-#pragma once
-
-#include <http_client/cl_http_client.hpp>
-#include <http_client/client_behaviors/cb_http_request.hpp>
-#include <smacc2/smacc.hpp>
+#include <http_client/components/cp_http_connection_manager.hpp>
 
 namespace cl_http
 {
-class CbHttpPostRequest : public CbHttpRequestBase
+
+CpHttpConnectionManager::CpHttpConnectionManager()
+: worker_guard_(boost::asio::make_work_guard(io_context_.get_executor())), initialized_(false)
 {
-public:
-  CbHttpPostRequest() : CbHttpRequestBase(CpHttpRequestExecutor::HttpMethod::POST) {}
-};
+}
+
+CpHttpConnectionManager::~CpHttpConnectionManager()
+{
+  if (initialized_)
+  {
+    worker_guard_.reset();
+    if (io_thread_.joinable())
+    {
+      io_thread_.join();
+    }
+  }
+}
+
+void CpHttpConnectionManager::onInitialize()
+{
+  if (!initialized_)
+  {
+    io_thread_ = std::thread([this]() { io_context_.run(); });
+    initialized_ = true;
+  }
+}
+
+boost::asio::any_io_executor CpHttpConnectionManager::getStrand()
+{
+  return boost::asio::make_strand(io_context_);
+}
+
+boost::asio::io_context & CpHttpConnectionManager::getIoContext() { return io_context_; }
+
 }  // namespace cl_http
