@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(http_client)
+project(cl_http)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
@@ -22,16 +22,16 @@ include_directories(
 file(GLOB_RECURSE SRC_FILES src *.cpp)
 
 add_library(http_session
-  src/http_client/ssl_http_session.cpp
-  src/http_client/http_session.cpp
+  src/cl_http/ssl_http_session.cpp
+  src/cl_http/http_session.cpp
 )
 
 add_library(${PROJECT_NAME}
-  src/http_client/cl_http_client.cpp
+  src/cl_http/cl_http.cpp
   # Component sources
-  src/http_client/components/cp_http_connection_manager.cpp
-  src/http_client/components/cp_http_session_manager.cpp
-  src/http_client/components/cp_http_request_executor.cpp
+  src/cl_http/components/cp_http_connection_manager.cpp
+  src/cl_http/components/cp_http_session_manager.cpp
+  src/cl_http/components/cp_http_request_executor.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}

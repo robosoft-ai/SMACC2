@@ -21,8 +21,8 @@
 #pragma once
 
 #include <cstring>
-#include <http_client/cl_http_client.hpp>
-#include <http_client/components/cp_http_request_executor.hpp>
+#include <cl_http/cl_http.hpp>
+#include <cl_http/components/cp_http_request_executor.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace cl_http

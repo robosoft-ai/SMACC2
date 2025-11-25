@@ -18,7 +18,7 @@
  *
  ******************************************************************************************************************/
 
-#include <http_client/components/cp_http_session_manager.hpp>
+#include <cl_http/components/cp_http_session_manager.hpp>
 
 #include <algorithm>
 

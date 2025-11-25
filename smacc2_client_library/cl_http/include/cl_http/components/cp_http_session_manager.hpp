@@ -18,9 +18,9 @@
 #pragma once
 
 #include <boost/asio/ssl/context.hpp>
-#include <http_client/http_session.hpp>
-#include <http_client/http_session_base.hpp>
-#include <http_client/ssl_http_session.hpp>
+#include <cl_http/http_session.hpp>
+#include <cl_http/http_session_base.hpp>
+#include <cl_http/ssl_http_session.hpp>
 #include <memory>
 #include <smacc2/component.hpp>
 #include <string>

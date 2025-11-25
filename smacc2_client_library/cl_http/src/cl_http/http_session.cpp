@@ -19,7 +19,7 @@ Authors: Jacobus Lock & Brett Aldrich
 
 ******************************************************************************************************************/
 
-#include <http_client/http_session.hpp>
+#include <cl_http/http_session.hpp>
 
 namespace cl_http
 {

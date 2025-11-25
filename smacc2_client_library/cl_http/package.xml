@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
- <name>http_client</name>
+ <name>cl_http</name>
   <version>3.0.1</version>
-  <description>The http_client package</description>
+  <description>The cl_http package</description>
   <maintainer email="jaycee.lock@proton.me">Jaycee Lock</maintainer>
   <license>Apache-2.0</license>
 

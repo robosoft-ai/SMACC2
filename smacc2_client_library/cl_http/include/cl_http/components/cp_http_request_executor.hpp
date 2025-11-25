@@ -18,7 +18,7 @@
 #pragma once
 
 #include <boost/beast/http.hpp>
-#include <http_client/http_session_base.hpp>
+#include <cl_http/http_session_base.hpp>
 #include <smacc2/component.hpp>
 #include <smacc2/smacc_signal.hpp>
 #include <string>

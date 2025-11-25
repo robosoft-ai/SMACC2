@@ -15,7 +15,7 @@
 /*****************************************************************************************************************
 *
 
-Authors: Jacobus Lock & Brett Aldrich
+Author: Jacobus Lock
 
 ******************************************************************************************************************/
 
@@ -25,22 +25,26 @@ Authors: Jacobus Lock & Brett Aldrich
 #include <boost/asio/strand.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
+#include <boost/beast/ssl.hpp>
 #include <boost/beast/version.hpp>
-#include <http_client/http_session_base.hpp>
+#include <cl_http/http_session_base.hpp>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 
 namespace cl_http
 {
-class http_session : public std::enable_shared_from_this<http_session>, public http_session_base
+class ssl_http_session : public std::enable_shared_from_this<ssl_http_session>,
+                         public http_session_base
 {
 public:
   // Objects are constructed with a strand to
   // ensure that handlers do not execute concurrently.
-  http_session(
-    boost::asio::any_io_executor ioc, const std::function<void(const TResponse &)> response);
+  ssl_http_session(
+    boost::asio::any_io_executor ioc, boost::asio::ssl::context & ssl_context,
+    const std::function<void(const TResponse &)> response);
 
-  virtual ~http_session() {}
+  virtual ~ssl_http_session() {}
 
   // Start the asynchronous operation
   void run(
@@ -50,7 +54,7 @@ public:
   std::string getPort() override { return kPort; }
 
 private:
-  const std::string kPort = "80";
+  const std::string kPort = "443";
 
   void on_resolve(
     boost::beast::error_code ec, boost::asio::ip::tcp::resolver::results_type results) override;
@@ -58,15 +62,19 @@ private:
   void on_connect(
     boost::beast::error_code ec,
     boost::asio::ip::tcp::resolver::results_type::endpoint_type) override;
+  void on_handshake(boost::beast::error_code ec) override;
   void on_write(boost::beast::error_code ec, std::size_t bytes_transferred) override;
   void on_read(boost::beast::error_code ec, std::size_t bytes_transferred) override;
+  void on_shutdown(boost::beast::error_code ec) override;
   void setBody(const std::string & body) override;
-  void setHeaders(const std::unordered_map<std::string, std::string> & /*headers*/) override {}
+  void setHeaders(const std::unordered_map<std::string, std::string> & headers) override;
+  void appendToHeader(const std::string & key, const std::string & val);
 
   std::function<void(const TResponse &)> onResponse;
 
   boost::asio::ip::tcp::resolver resolver_;
-  boost::beast::tcp_stream stream_;
+  // boost::beast::tcp_stream stream_;
+  boost::beast::ssl_stream<boost::beast::tcp_stream> stream_;
   boost::beast::flat_buffer buffer_;  // (Must persist between reads)
   boost::beast::http::request<boost::beast::http::string_body> req_;
   TResponse res_;

@@ -19,7 +19,7 @@ Author: Jacobus Lock
 
 ******************************************************************************************************************/
 
-#include <http_client/ssl_http_session.hpp>
+#include <cl_http/ssl_http_session.hpp>
 
 namespace cl_http
 {

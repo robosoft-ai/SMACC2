@@ -18,9 +18,9 @@
  *
  ******************************************************************************************************************/
 
-#include <http_client/components/cp_http_connection_manager.hpp>
-#include <http_client/components/cp_http_request_executor.hpp>
-#include <http_client/components/cp_http_session_manager.hpp>
+#include <cl_http/components/cp_http_connection_manager.hpp>
+#include <cl_http/components/cp_http_request_executor.hpp>
+#include <cl_http/components/cp_http_session_manager.hpp>
 
 namespace cl_http
 {

@@ -10,7 +10,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>cl_ros2_timer</depend>
-  <depend>http_client</depend>
+  <depend>cl_http</depend>
   <depend>smacc2</depend>
 
   <exec_depend>xterm</exec_depend>

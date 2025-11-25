@@ -18,28 +18,17 @@
  *
  ******************************************************************************************************************/
 
-#include <http_client/cl_http_client.hpp>
+#pragma once
+
+#include <cl_http/cl_http.hpp>
+#include <cl_http/client_behaviors/cb_http_request.hpp>
+#include <smacc2/smacc.hpp>
 
 namespace cl_http
 {
-ClHttp::ClHttp(const std::string & server_name, const int & /*timeout*/)
-: initialized_{false},
-  server_url_{server_name},
-  connectionManager_{nullptr},
-  sessionManager_{nullptr},
-  requestExecutor_{nullptr}
+class CbHttpPostRequest : public CbHttpRequestBase
 {
-  // Timeout parameter kept for API compatibility but unused (managed by components)
-}
-
-ClHttp::~ClHttp()
-{
-  // Thread cleanup handled by CpHttpConnectionManager destructor
-}
-
-void ClHttp::onInitialize()
-{
-  // Components created in onComponentInitialization()
-  this->initialized_ = true;
-}
+public:
+  CbHttpPostRequest() : CbHttpRequestBase(CpHttpRequestExecutor::HttpMethod::POST) {}
+};
 }  // namespace cl_http

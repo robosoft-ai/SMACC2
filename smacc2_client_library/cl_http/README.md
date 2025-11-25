@@ -1,10 +1,10 @@
-# HTTP Client (http_client)
+# HTTP Client (cl_http)
 
 SMACC2 client library for making HTTP/HTTPS requests using Boost.Beast.
 
 ## Architecture
-
-The `http_client` follows a pure component-based architecture with three specialized components:
+/home/brettpac/workspaces/isaac_ros-dev/src/SMACC2/smacc2_client_library/cl_http
+The `cl_http` follows a pure component-based architecture with three specialized components:
 
 ```
 ClHttp (Client - Orchestrator)
@@ -70,7 +70,7 @@ Behavior callback
 The easiest way to make HTTP requests is using the provided base behaviors:
 
 ```cpp
-#include <http_client/client_behaviors/cb_http_get_request.hpp>
+#include <cl_http/client_behaviors/cb_http_get_request.hpp>
 
 class StHttpRequest : public smacc2::SmaccState<StHttpRequest, SmExample>
 {
@@ -89,7 +89,7 @@ public:
 For custom HTTP behavior, inherit from base class and override response handling:
 
 ```cpp
-#include <http_client/client_behaviors/cb_http_request.hpp>
+#include <cl_http/client_behaviors/cb_http_request.hpp>
 
 class CbCustomRequest : public cl_http::CbHttpRequestBase
 {
@@ -233,11 +233,10 @@ void onResponse(const CpHttpRequestExecutor::TResponse& response)
 
 ## Pure Component-Based Architecture
 
-The http_client package uses a **pure component-based architecture** with no legacy API remnants. All functionality is accessed through components:
+The cl_http package uses a **pure component-based architecture** with no legacy API remnants. All functionality is accessed through components:
 
 - **Direct component access** is the only supported pattern
-- Base behaviors (`CbHttpRequestBase`, `CbHttpGetRequest`, `CbHttpPostRequest`) use components internally
-- For migration history, see [MIGRATION_ARCHIVED.md](MIGRATION_ARCHIVED.md)
+- Base behaviors (`CbHttpRequestBase`, `CbHttpGetRequest`, `CbHttpPostRequest`) use components internally 
 
 ## Examples
 
@@ -346,7 +345,7 @@ private:
 Run the reference state machine:
 
 ```bash
-ros2 launch sm_atomic_http sm_atomic_http.launch
+ros2 launch sm_atomic_http sm_atomic_http.py
 ```
 
 This will make GET requests to https://example.com and demonstrate the HTTP client functionality.

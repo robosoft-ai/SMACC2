@@ -14,21 +14,32 @@
 
 /*****************************************************************************************************************
  *
- * 	 Authors: Jaycee Lock & Brett Aldrich 
+ * 	 Authors: Jaycee Lock & Brett Aldrich
  *
  ******************************************************************************************************************/
 
-#pragma once
-
-#include <http_client/cl_http_client.hpp>
-#include <http_client/client_behaviors/cb_http_request.hpp>
-#include <smacc2/smacc.hpp>
+#include <cl_http/cl_http.hpp>
 
 namespace cl_http
 {
-class CbHttpGetRequest : public CbHttpRequestBase
+ClHttp::ClHttp(const std::string & server_name, const int & /*timeout*/)
+: initialized_{false},
+  server_url_{server_name},
+  connectionManager_{nullptr},
+  sessionManager_{nullptr},
+  requestExecutor_{nullptr}
 {
-public:
-  CbHttpGetRequest() : CbHttpRequestBase(CpHttpRequestExecutor::HttpMethod::GET) {}
-};
+  // Timeout parameter kept for API compatibility but unused (managed by components)
+}
+
+ClHttp::~ClHttp()
+{
+  // Thread cleanup handled by CpHttpConnectionManager destructor
+}
+
+void ClHttp::onInitialize()
+{
+  // Components created in onComponentInitialization()
+  this->initialized_ = true;
+}
 }  // namespace cl_http

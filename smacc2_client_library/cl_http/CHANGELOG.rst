@@ -1,5 +1,5 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package http_client
+Changelog for package cl_http
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 2.3.19 (2025-06-17)

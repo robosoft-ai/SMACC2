@@ -16,14 +16,14 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(cl_ros2_timer REQUIRED)
-find_package(http_client REQUIRED)
+find_package(cl_http REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 find_package(OpenSSL REQUIRED)
 
 include_directories(include
                     ${smacc2_INCLUDE_DIRS}
                     ${cl_ros2_timer_INCLUDE_DIRS}
-                    ${http_client_INCLUDE_DIRS}
+                    ${cl_http_INCLUDE_DIRS}
 )
 
 add_executable(${PROJECT_NAME}_node
@@ -32,7 +32,7 @@ add_executable(${PROJECT_NAME}_node
 target_link_libraries(${PROJECT_NAME}_node
   ${smacc2_LIBRARIES}
   ${cl_ros2_timer_LIBRARIES}
-  ${http_client_LIBRARIES}
+  ${cl_http_LIBRARIES}
   ${Boost_LIBRARIES}
   OpenSSL::SSL
   OpenSSL::Crypto
