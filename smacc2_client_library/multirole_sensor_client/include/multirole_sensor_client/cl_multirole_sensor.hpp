@@ -14,103 +14,99 @@
 
 #pragma once
 
+#include <multirole_sensor_client/components/cp_message_timeout.hpp>
 #include <optional>
 #include <rclcpp/rclcpp.hpp>
-#include <smacc2/client_bases/smacc_subscriber_client.hpp>
-#include <smacc2/impl/smacc_state_machine_impl.hpp>
-#include <smacc2/smacc_signal.hpp>
+#include <smacc2/client_core_components/cp_topic_subscriber.hpp>
+#include <smacc2/smacc_client.hpp>
 
 namespace cl_multirole_sensor
 {
 using namespace smacc2;
 
-template <typename TSource, typename TOrthogonal>
-struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource, TOrthogonal>>
-{
-};
-
-using namespace smacc2::client_bases;
-
-// This class extends a ros topic subscriber object that reads from
-// some sensor source. It provides timeout event.
+// Pure component-based multirole sensor client
+// This client follows the ClKeyboard pattern where all functionality
+// is implemented through composable components
 template <typename MessageType>
-class ClMultiroleSensor : public smacc2::client_bases::SmaccSubscriberClient<MessageType>
+class ClMultiroleSensor : public smacc2::ISmaccClient
 {
 public:
   typedef MessageType TMessageType;
-  SmaccSignal<void()> onMessageTimeout_;
 
-  ClMultiroleSensor() : smacc2::client_bases::SmaccSubscriberClient<MessageType>()
+  // Optional topic name - if not set, must be configured during component initialization
+  std::optional<std::string> topicName_;
+
+  // Optional timeout duration - if not set, timeout functionality is disabled
+  std::optional<rclcpp::Duration> timeout_;
+
+  ClMultiroleSensor() {}
+
+  // Constructor with topic name
+  ClMultiroleSensor(std::string topicName) : topicName_(topicName) {}
+
+  // Constructor with topic name and timeout
+  ClMultiroleSensor(std::string topicName, rclcpp::Duration timeout)
+  : topicName_(topicName), timeout_(timeout)
   {
-    initialized_ = false;
   }
 
-  template <typename T>
-  boost::signals2::connection onMessageTimeout(void (T::*callback)(), T * object)
+  virtual ~ClMultiroleSensor() {}
+
+  // Component-based architecture initialization
+  // This method creates and configures the components that provide
+  // the client's functionality
+  template <typename TOrthogonal, typename TClient>
+  void onComponentInitialization()
   {
-    return this->getStateMachine()->createSignalConnection(onMessageTimeout_, callback, object);
-  }
+    RCLCPP_INFO(getLogger(), "[ClMultiroleSensor] Initializing component-based sensor client");
 
-  std::function<void()> postTimeoutMessageEvent;
-
-  template <typename TOrthogonal, typename TSourceObject>
-  void onStateOrthogonalAllocation()
-  {
-    SmaccSubscriberClient<MessageType>::template onStateOrthogonalAllocation<
-      TOrthogonal, TSourceObject>();
-
-    this->postTimeoutMessageEvent = [this]()
+    // Create the topic subscriber component
+    // This component handles ROS topic subscription and posts SMACC events
+    if (!topicName_)
     {
-      this->onMessageTimeout_();
+      RCLCPP_ERROR(
+        getLogger(),
+        "[ClMultiroleSensor] Topic name not set. Please configure topicName_ before "
+        "initialization.");
+      return;
+    }
 
-      auto event = new EvTopicMessageTimeout<TSourceObject, TOrthogonal>();
-      this->postEvent(event);
-    };
-  }
+    this->createComponent<
+      smacc2::client_core_components::CpTopicSubscriber<MessageType>, TOrthogonal,
+      ClMultiroleSensor>(*topicName_);
 
-  void onInitialize() override
-  {
-    if (!initialized_)
+    RCLCPP_INFO(
+      getLogger(), "[ClMultiroleSensor] Created CpTopicSubscriber for topic: %s",
+      topicName_->c_str());
+
+    // Create the message timeout component (optional - only if timeout is configured)
+    // This component monitors message reception and posts timeout events
+    if (timeout_)
     {
-      SmaccSubscriberClient<MessageType>::onInitialize();
+      auto timeoutComponent = this->createComponent<
+        cl_multirole_sensor::components::CpMessageTimeout<MessageType>, TOrthogonal,
+        ClMultiroleSensor>();
 
-      this->onMessageReceived(&ClMultiroleSensor<MessageType>::resetTimer, this);
+      // Configure the timeout duration
+      timeoutComponent->timeout_ = timeout_;
 
-      if (timeout_)
-      {
-        auto ros_clock = rclcpp::Clock::make_shared();
-        timeoutTimer_ = rclcpp::create_timer(
-          this->getNode(), this->getNode()->get_clock(), *timeout_,
-          std::bind(&ClMultiroleSensor<MessageType>::timeoutCallback, this));
-
-        timeoutTimer_->reset();
-      }
-      else
-      {
-        RCLCPP_WARN(
-          this->getLogger(),
-          "Timeout sensor client not set, skipping timeout watchdog funcionality");
-      }
-
-      initialized_ = true;
+      RCLCPP_INFO(
+        getLogger(), "[ClMultiroleSensor] Created CpMessageTimeout with duration: %f seconds",
+        timeout_->seconds());
+    }
+    else
+    {
+      RCLCPP_INFO(
+        getLogger(),
+        "[ClMultiroleSensor] Timeout not configured - watchdog functionality disabled");
     }
   }
 
-  std::optional<rclcpp::Duration> timeout_;
+  // Convenience method to set topic name after construction
+  void setTopicName(const std::string & topicName) { topicName_ = topicName; }
 
-protected:
-  void resetTimer(const MessageType & /*msg*/)
-  {
-    //resetting the timer
-    timeoutTimer_->reset();
-    //timeoutTimer_->stop();
-    //timeoutTimer_->start();
-  }
-
-private:
-  rclcpp::TimerBase::SharedPtr timeoutTimer_;
-  bool initialized_;
-
-  void timeoutCallback() { postTimeoutMessageEvent(); }
+  // Convenience method to set timeout after construction
+  void setTimeout(const rclcpp::Duration & timeout) { timeout_ = timeout; }
 };
+
 }  // namespace cl_multirole_sensor

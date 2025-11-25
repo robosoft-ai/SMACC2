@@ -15,13 +15,17 @@
 #pragma once
 
 #include <multirole_sensor_client/cl_multirole_sensor.hpp>
+#include <multirole_sensor_client/components/cp_message_timeout.hpp>
 
 #include <string>
 
+#include <smacc2/client_core_components/cp_topic_subscriber.hpp>
 #include <smacc2/smacc_client_behavior.hpp>
 
 namespace cl_multirole_sensor
 {
+// Component-based default behavior for multirole sensor client
+// This behavior works with ClMultiroleSensor and propagates events from components
 template <typename ClientType>
 class CbDefaultMultiRoleSensorBehavior : public smacc2::SmaccClientBehavior
 {
@@ -30,51 +34,109 @@ public:
 
   ClientType * sensor_;
 
-  CbDefaultMultiRoleSensorBehavior() { sensor_ = nullptr; }
+  // References to the components we'll use
+  smacc2::client_core_components::CpTopicSubscriber<TMessageType> * subscriberComponent_;
+  cl_multirole_sensor::components::CpMessageTimeout<TMessageType> * timeoutComponent_;
+
+  CbDefaultMultiRoleSensorBehavior()
+  : sensor_(nullptr), subscriberComponent_(nullptr), timeoutComponent_(nullptr)
+  {
+  }
 
   static std::string getEventLabel()
   {
-    // show ros message type
-    return demangleSymbol(typeid(TMessageType).name());
+    // Show ros message type
+    return smacc2::demangleSymbol(typeid(TMessageType).name());
   }
 
-  std::function<void()> deferedEventPropagation;
+  // Deferred event propagation functions - set during orthogonal allocation
+  std::function<void()> deferredComponentConnection;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
-    deferedEventPropagation = [this]()
+    // Setup deferred component connection and event propagation
+    deferredComponentConnection = [this]()
     {
       RCLCPP_INFO(
-        getLogger(), "[CbDefaultMultiRoleSensorBehavior] onEntry. Requires client of type '%s'",
-        demangleSymbol<ClientType>().c_str());
+        getLogger(),
+        "[CbDefaultMultiRoleSensorBehavior] Connecting to components for client type '%s'",
+        smacc2::demangleSymbol<ClientType>().c_str());
 
-      // just propagate the client events from this client behavior source.
-      sensor_->onMessageReceived(
-        &CbDefaultMultiRoleSensorBehavior<ClientType>::propagateEvent<
-          EvTopicMessage<TSourceObject, TOrthogonal>>,
+      // Get the subscriber component from the client
+      this->requiresComponent(subscriberComponent_);
+
+      if (subscriberComponent_ == nullptr)
+      {
+        RCLCPP_ERROR(
+          getLogger(),
+          "[CbDefaultMultiRoleSensorBehavior] Failed to get CpTopicSubscriber component!");
+        return;
+      }
+
+      // Connect to subscriber component signals to propagate events
+      subscriberComponent_->onMessageReceived(
+        &CbDefaultMultiRoleSensorBehavior<ClientType>::propagateMessageEvent<
+          smacc2::default_events::EvTopicMessage<TSourceObject, TOrthogonal, TMessageType>>,
         this);
-      sensor_->onFirstMessageReceived(
-        &CbDefaultMultiRoleSensorBehavior<ClientType>::propagateEvent<
-          EvTopicInitialMessage<TSourceObject, TOrthogonal>>,
+
+      subscriberComponent_->onFirstMessageReceived(
+        &CbDefaultMultiRoleSensorBehavior<ClientType>::propagateMessageEvent<
+          smacc2::default_events::EvTopicInitialMessage<TSourceObject, TOrthogonal, TMessageType>>,
         this);
-      sensor_->onMessageTimeout(
-        &CbDefaultMultiRoleSensorBehavior<ClientType>::propagateEvent2<
-          EvTopicMessageTimeout<TSourceObject, TOrthogonal>>,
-        this);
+
+      RCLCPP_INFO(
+        getLogger(), "[CbDefaultMultiRoleSensorBehavior] Connected to subscriber component");
+
+      // Try to get the timeout component (it's optional)
+      try
+      {
+        this->requiresComponent(timeoutComponent_);
+
+        if (timeoutComponent_ != nullptr)
+        {
+          // Connect to timeout component signal to propagate timeout events
+          timeoutComponent_->onMessageTimeout(
+            &CbDefaultMultiRoleSensorBehavior<ClientType>::propagateTimeoutEvent<
+              cl_multirole_sensor::components::EvTopicMessageTimeout<TSourceObject, TOrthogonal>>,
+            this);
+
+          RCLCPP_INFO(
+            getLogger(),
+            "[CbDefaultMultiRoleSensorBehavior] Connected to timeout component (watchdog active)");
+        }
+      }
+      catch (const std::exception & e)
+      {
+        RCLCPP_INFO(
+          getLogger(),
+          "[CbDefaultMultiRoleSensorBehavior] Timeout component not found (watchdog disabled): %s",
+          e.what());
+      }
     };
   }
 
+  // Propagate message event with message data
   template <typename EvType>
-  void propagateEvent(const TMessageType & /*msg*/)
+  void propagateMessageEvent(const TMessageType & msg)
   {
-    // TODO: copy event concept fields
-    this->postEvent<EvType>();
+    RCLCPP_DEBUG(
+      getLogger(), "[CbDefaultMultiRoleSensorBehavior] Propagating message event: %s",
+      smacc2::demangleSymbol<EvType>().c_str());
+
+    auto event = new EvType();
+    event->msgData = msg;
+    this->postEvent(event);
   }
 
+  // Propagate timeout event (no message data)
   template <typename EvType>
-  void propagateEvent2()
+  void propagateTimeoutEvent()
   {
+    RCLCPP_WARN(
+      getLogger(), "[CbDefaultMultiRoleSensorBehavior] Propagating timeout event: %s",
+      smacc2::demangleSymbol<EvType>().c_str());
+
     this->postEvent<EvType>();
   }
 
@@ -82,8 +144,9 @@ public:
   {
     RCLCPP_INFO(
       getLogger(), "[CbDefaultMultiRoleSensorBehavior] onEntry. Requires client of type '%s'",
-      demangleSymbol<ClientType>().c_str());
+      smacc2::demangleSymbol<ClientType>().c_str());
 
+    // Get the client if we don't have it yet
     if (sensor_ == nullptr)
     {
       this->requiresClient(sensor_);
@@ -93,21 +156,24 @@ public:
     {
       RCLCPP_FATAL_STREAM(
         getLogger(),
-        "[CbDefaultMultiRoleSensorBehavior]Sensor client behavior needs a client of type: "
-          << demangleSymbol<ClientType>() << " but it is not found.");
+        "[CbDefaultMultiRoleSensorBehavior] Sensor client behavior needs a client of type: "
+          << smacc2::demangleSymbol<ClientType>() << " but it is not found.");
     }
     else
     {
-      deferedEventPropagation();
-      RCLCPP_INFO(getLogger(), "[CbDefaultMultiRoleSensorBehavior] onEntry. sensor initialize");
+      // Connect to components
+      deferredComponentConnection();
+      RCLCPP_INFO(getLogger(), "[CbDefaultMultiRoleSensorBehavior] Sensor behavior initialized");
     }
   }
 
-  void onExit() {}
+  void onExit() override { RCLCPP_INFO(getLogger(), "[CbDefaultMultiRoleSensorBehavior] onExit"); }
 
+  // Virtual callback for custom message processing in derived behaviors
   virtual void onMessageCallback(const TMessageType & /*msg*/)
   {
-    // empty to fill by sensor customization based on inheritance
+    // Empty to fill by sensor customization based on inheritance
   }
 };
+
 }  // namespace cl_multirole_sensor

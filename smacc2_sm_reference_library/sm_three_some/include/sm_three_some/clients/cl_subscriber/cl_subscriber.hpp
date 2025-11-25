@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #pragma once
-#include <smacc2/client_bases/smacc_subscriber_client.hpp>
+#include <multirole_sensor_client/cl_multirole_sensor.hpp>
 
 #include <std_msgs/msg/int16.hpp>
 
@@ -21,8 +21,21 @@ namespace sm_three_some
 {
 namespace cl_subscriber
 {
-class ClSubscriber : public smacc2::client_bases::SmaccSubscriberClient<std_msgs::msg::UInt16>
+// Component-based subscriber client using ClMultiroleSensor
+// This demonstrates the pure component-based architecture
+class ClSubscriber : public cl_multirole_sensor::ClMultiroleSensor<std_msgs::msg::UInt16>
 {
+public:
+  ClSubscriber()
+  {
+    // Configure the topic to subscribe to
+    // Note: This subscribes to the keyboard unicode topic for testing
+    this->topicName_ = "/keyboard_unicode";
+
+    // Optional: Configure timeout for watchdog functionality
+    // Uncomment the line below to enable 5-second timeout
+    // this->timeout_ = rclcpp::Duration(5, 0);
+  }
 };
 }  // namespace cl_subscriber
 }  // namespace sm_three_some
