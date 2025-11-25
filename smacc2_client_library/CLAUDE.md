@@ -372,7 +372,7 @@ private:
   - cb_position_control_free_space - Continuous position control
 
   Sensor Monitoring:
-  - cb_default_multirole_sensor_behavior - Multi-sensor data streaming
+  - cb_default_generic_sensor_behavior - Multi-sensor data streaming
   - cb_battery_decision - Battery monitoring for mission control
 
 #### Common C++ Structure:

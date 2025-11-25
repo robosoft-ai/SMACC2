@@ -1,4 +1,4 @@
-# Multirole Sensor Client
+# Generic Sensor Client
 
 A SMACC2 client library for subscribing to ROS topics with optional timeout watchdog functionality. Built using a pure component-based architecture following SMACC2 best practices.
 
@@ -15,7 +15,7 @@ A SMACC2 client library for subscribing to ROS topics with optional timeout watc
 The multirole sensor client follows the **ClKeyboard pattern** where all functionality is implemented through composable components:
 
 ```
-ClMultiroleSensor
+ClGenericSensor
     ├── CpTopicSubscriber (from smacc2 core)
     │   ├── Subscribes to ROS topic
     │   ├── Posts EvTopicMessage events
@@ -38,12 +38,12 @@ ClMultiroleSensor
 ### Basic Usage (No Timeout)
 
 ```cpp
-#include <multirole_sensor_client/cl_multirole_sensor.hpp>
+#include <cl_generic_sensor/cl_generic_sensor.hpp>
 
 namespace my_sm
 {
 // Create a client for sensor_msgs::LaserScan
-class ClLidar : public cl_multirole_sensor::ClMultiroleSensor<sensor_msgs::msg::LaserScan>
+class ClLidar : public cl_generic_sensor::ClGenericSensor<sensor_msgs::msg::LaserScan>
 {
 public:
   ClLidar()
@@ -58,12 +58,12 @@ public:
 ### Usage with Timeout Watchdog
 
 ```cpp
-#include <multirole_sensor_client/cl_multirole_sensor.hpp>
+#include <cl_generic_sensor/cl_generic_sensor.hpp>
 
 namespace my_sm
 {
 // Create a client with 5-second timeout
-class ClGps : public cl_multirole_sensor::ClMultiroleSensor<sensor_msgs::msg::NavSatFix>
+class ClGps : public cl_generic_sensor::ClGenericSensor<sensor_msgs::msg::NavSatFix>
 {
 public:
   ClGps()
@@ -79,7 +79,7 @@ public:
 
 ```cpp
 // Direct construction with topic and timeout
-ClMultiroleSensor<std_msgs::msg::String> sensor("/topic_name", rclcpp::Duration(3, 0));
+ClGenericSensor<std_msgs::msg::String> sensor("/topic_name", rclcpp::Duration(3, 0));
 ```
 
 ### Using in Orthogonals
@@ -115,24 +115,24 @@ struct StMonitoring : smacc2::SmaccState<StMonitoring, SmMyStateMachine>
 
   static void staticConfigure()
   {
-    configure_orthogonal<OrSensor, CbDefaultMultiRoleSensorBehavior<ClLidar>>();
+    configure_orthogonal<OrSensor, CbDefaultGenericSensorBehavior<ClLidar>>();
   }
 };
 ```
 
 ### Using the Default Behavior
 
-The `CbDefaultMultiRoleSensorBehavior` automatically propagates events from components:
+The `CbDefaultGenericSensorBehavior` automatically propagates events from components:
 
 ```cpp
-#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>
+#include <cl_generic_sensor/client_behaviors/cb_default_generic_sensor_behavior.hpp>
 
 // Use directly
-configure_orthogonal<OrSensor, cl_multirole_sensor::CbDefaultMultiRoleSensorBehavior<ClLidar>>();
+configure_orthogonal<OrSensor, cl_generic_sensor::CbDefaultGenericSensorBehavior<ClLidar>>();
 
 // Or create custom behavior
 class CbCustomSensorBehavior
-  : public cl_multirole_sensor::CbDefaultMultiRoleSensorBehavior<ClLidar>
+  : public cl_generic_sensor::CbDefaultGenericSensorBehavior<ClLidar>
 {
 public:
   void onMessageCallback(const sensor_msgs::msg::LaserScan& msg) override
@@ -145,7 +145,7 @@ public:
 
 ## Components
 
-See [components/README.md](include/multirole_sensor_client/components/README.md) for detailed component documentation.
+See [components/README.md](include/cl_generic_sensor/components/README.md) for detailed component documentation.
 
 ## Examples
 
@@ -153,7 +153,7 @@ See [components/README.md](include/multirole_sensor_client/components/README.md)
 
 ```cpp
 class ClTemperature
-  : public cl_multirole_sensor::ClMultiroleSensor<sensor_msgs::msg::Temperature>
+  : public cl_generic_sensor::ClGenericSensor<sensor_msgs::msg::Temperature>
 {
 public:
   ClTemperature()
@@ -174,7 +174,7 @@ typedef mpl::list<
 
 ```cpp
 class ClCamera
-  : public cl_multirole_sensor::ClMultiroleSensor<sensor_msgs::msg::Image>
+  : public cl_generic_sensor::ClGenericSensor<sensor_msgs::msg::Image>
 {
 public:
   ClCamera()
@@ -199,7 +199,7 @@ class ClOldSensor : public smacc2::client_bases::SmaccSubscriberClient<std_msgs:
 
 **New:**
 ```cpp
-class ClNewSensor : public cl_multirole_sensor::ClMultiroleSensor<std_msgs::msg::String>
+class ClNewSensor : public cl_generic_sensor::ClGenericSensor<std_msgs::msg::String>
 {
 public:
   ClNewSensor()

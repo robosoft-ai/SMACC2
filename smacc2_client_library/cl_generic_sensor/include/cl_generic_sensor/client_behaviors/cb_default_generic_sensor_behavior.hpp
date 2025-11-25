@@ -14,20 +14,20 @@
 
 #pragma once
 
-#include <multirole_sensor_client/cl_multirole_sensor.hpp>
-#include <multirole_sensor_client/components/cp_message_timeout.hpp>
+#include <cl_generic_sensor/cl_generic_sensor.hpp>
+#include <cl_generic_sensor/components/cp_message_timeout.hpp>
 
 #include <string>
 
 #include <smacc2/client_core_components/cp_topic_subscriber.hpp>
 #include <smacc2/smacc_client_behavior.hpp>
 
-namespace cl_multirole_sensor
+namespace cl_generic_sensor
 {
 // Component-based default behavior for multirole sensor client
-// This behavior works with ClMultiroleSensor and propagates events from components
+// This behavior works with ClGenericSensor and propagates events from components
 template <typename ClientType>
-class CbDefaultMultiRoleSensorBehavior : public smacc2::SmaccClientBehavior
+class CbDefaultGenericSensorBehavior : public smacc2::SmaccClientBehavior
 {
 public:
   typedef typename ClientType::TMessageType TMessageType;
@@ -36,9 +36,9 @@ public:
 
   // References to the components we'll use
   smacc2::client_core_components::CpTopicSubscriber<TMessageType> * subscriberComponent_;
-  cl_multirole_sensor::components::CpMessageTimeout<TMessageType> * timeoutComponent_;
+  cl_generic_sensor::components::CpMessageTimeout<TMessageType> * timeoutComponent_;
 
-  CbDefaultMultiRoleSensorBehavior()
+  CbDefaultGenericSensorBehavior()
   : sensor_(nullptr), subscriberComponent_(nullptr), timeoutComponent_(nullptr)
   {
   }
@@ -60,7 +60,7 @@ public:
     {
       RCLCPP_INFO(
         getLogger(),
-        "[CbDefaultMultiRoleSensorBehavior] Connecting to components for client type '%s'",
+        "[CbDefaultGenericSensorBehavior] Connecting to components for client type '%s'",
         smacc2::demangleSymbol<ClientType>().c_str());
 
       // Get the subscriber component from the client
@@ -70,23 +70,23 @@ public:
       {
         RCLCPP_ERROR(
           getLogger(),
-          "[CbDefaultMultiRoleSensorBehavior] Failed to get CpTopicSubscriber component!");
+          "[CbDefaultGenericSensorBehavior] Failed to get CpTopicSubscriber component!");
         return;
       }
 
       // Connect to subscriber component signals to propagate events
       subscriberComponent_->onMessageReceived(
-        &CbDefaultMultiRoleSensorBehavior<ClientType>::propagateMessageEvent<
+        &CbDefaultGenericSensorBehavior<ClientType>::propagateMessageEvent<
           smacc2::default_events::EvTopicMessage<TSourceObject, TOrthogonal, TMessageType>>,
         this);
 
       subscriberComponent_->onFirstMessageReceived(
-        &CbDefaultMultiRoleSensorBehavior<ClientType>::propagateMessageEvent<
+        &CbDefaultGenericSensorBehavior<ClientType>::propagateMessageEvent<
           smacc2::default_events::EvTopicInitialMessage<TSourceObject, TOrthogonal, TMessageType>>,
         this);
 
       RCLCPP_INFO(
-        getLogger(), "[CbDefaultMultiRoleSensorBehavior] Connected to subscriber component");
+        getLogger(), "[CbDefaultGenericSensorBehavior] Connected to subscriber component");
 
       // Try to get the timeout component (it's optional)
       try
@@ -97,20 +97,20 @@ public:
         {
           // Connect to timeout component signal to propagate timeout events
           timeoutComponent_->onMessageTimeout(
-            &CbDefaultMultiRoleSensorBehavior<ClientType>::propagateTimeoutEvent<
-              cl_multirole_sensor::components::EvTopicMessageTimeout<TSourceObject, TOrthogonal>>,
+            &CbDefaultGenericSensorBehavior<ClientType>::propagateTimeoutEvent<
+              cl_generic_sensor::components::EvTopicMessageTimeout<TSourceObject, TOrthogonal>>,
             this);
 
           RCLCPP_INFO(
             getLogger(),
-            "[CbDefaultMultiRoleSensorBehavior] Connected to timeout component (watchdog active)");
+            "[CbDefaultGenericSensorBehavior] Connected to timeout component (watchdog active)");
         }
       }
       catch (const std::exception & e)
       {
         RCLCPP_INFO(
           getLogger(),
-          "[CbDefaultMultiRoleSensorBehavior] Timeout component not found (watchdog disabled): %s",
+          "[CbDefaultGenericSensorBehavior] Timeout component not found (watchdog disabled): %s",
           e.what());
       }
     };
@@ -121,7 +121,7 @@ public:
   void propagateMessageEvent(const TMessageType & msg)
   {
     RCLCPP_DEBUG(
-      getLogger(), "[CbDefaultMultiRoleSensorBehavior] Propagating message event: %s",
+      getLogger(), "[CbDefaultGenericSensorBehavior] Propagating message event: %s",
       smacc2::demangleSymbol<EvType>().c_str());
 
     auto event = new EvType();
@@ -134,7 +134,7 @@ public:
   void propagateTimeoutEvent()
   {
     RCLCPP_WARN(
-      getLogger(), "[CbDefaultMultiRoleSensorBehavior] Propagating timeout event: %s",
+      getLogger(), "[CbDefaultGenericSensorBehavior] Propagating timeout event: %s",
       smacc2::demangleSymbol<EvType>().c_str());
 
     this->postEvent<EvType>();
@@ -143,7 +143,7 @@ public:
   void onEntry() override
   {
     RCLCPP_INFO(
-      getLogger(), "[CbDefaultMultiRoleSensorBehavior] onEntry. Requires client of type '%s'",
+      getLogger(), "[CbDefaultGenericSensorBehavior] onEntry. Requires client of type '%s'",
       smacc2::demangleSymbol<ClientType>().c_str());
 
     // Get the client if we don't have it yet
@@ -156,18 +156,18 @@ public:
     {
       RCLCPP_FATAL_STREAM(
         getLogger(),
-        "[CbDefaultMultiRoleSensorBehavior] Sensor client behavior needs a client of type: "
+        "[CbDefaultGenericSensorBehavior] Sensor client behavior needs a client of type: "
           << smacc2::demangleSymbol<ClientType>() << " but it is not found.");
     }
     else
     {
       // Connect to components
       deferredComponentConnection();
-      RCLCPP_INFO(getLogger(), "[CbDefaultMultiRoleSensorBehavior] Sensor behavior initialized");
+      RCLCPP_INFO(getLogger(), "[CbDefaultGenericSensorBehavior] Sensor behavior initialized");
     }
   }
 
-  void onExit() override { RCLCPP_INFO(getLogger(), "[CbDefaultMultiRoleSensorBehavior] onExit"); }
+  void onExit() override { RCLCPP_INFO(getLogger(), "[CbDefaultGenericSensorBehavior] onExit"); }
 
   // Virtual callback for custom message processing in derived behaviors
   virtual void onMessageCallback(const TMessageType & /*msg*/)
@@ -176,4 +176,4 @@ public:
   }
 };
 
-}  // namespace cl_multirole_sensor
+}  // namespace cl_generic_sensor

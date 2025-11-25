@@ -14,7 +14,7 @@
 
 #pragma once
 #include <sm_three_some/clients/cl_subscriber/cl_subscriber.hpp>
-#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>
+#include <cl_generic_sensor/client_behaviors/cb_default_generic_sensor_behavior.hpp>
 
 namespace sm_three_some
 {
@@ -23,7 +23,7 @@ namespace cl_subscriber
 // Watchdog subscriber behavior with timeout monitoring
 // Uses the multirole sensor behavior for component-based architecture
 class CbWatchdogSubscriberBehavior
-  : public cl_multirole_sensor::CbDefaultMultiRoleSensorBehavior<ClSubscriber>
+  : public cl_generic_sensor::CbDefaultGenericSensorBehavior<ClSubscriber>
 {
 public:
   typedef std_msgs::msg::UInt16 TMessageType;
@@ -31,7 +31,7 @@ public:
   void onEntry() override
   {
     // Call base class onEntry to setup component connections
-    cl_multirole_sensor::CbDefaultMultiRoleSensorBehavior<ClSubscriber>::onEntry();
+    cl_generic_sensor::CbDefaultGenericSensorBehavior<ClSubscriber>::onEntry();
 
     RCLCPP_INFO(getLogger(), "[CbWatchdogSubscriberBehavior] Watchdog behavior active");
 

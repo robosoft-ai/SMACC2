@@ -31,7 +31,7 @@ jobs:
           undo_path_global_planner
           cl_nav2z
 
-          multirole_sensor_client
+          cl_generic_sensor
           cl_ros2_timer
 
           eg_conditional_generator

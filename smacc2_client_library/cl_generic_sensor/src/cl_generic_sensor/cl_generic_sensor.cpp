@@ -13,6 +13,6 @@
 // limitations under the License.
 
 // This file is kept for build system compatibility
-// The multirole_sensor_client is now header-only with component-based architecture
-#include <multirole_sensor_client/cl_multirole_sensor.hpp>
-#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.hpp>
+// The cl_generic_sensor is now header-only with component-based architecture
+#include <cl_generic_sensor/cl_generic_sensor.hpp>
+#include <cl_generic_sensor/client_behaviors/cb_default_generic_sensor_behavior.hpp>

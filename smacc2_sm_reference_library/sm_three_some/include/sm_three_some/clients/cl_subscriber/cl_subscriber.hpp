@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #pragma once
-#include <multirole_sensor_client/cl_multirole_sensor.hpp>
+#include <cl_generic_sensor/cl_generic_sensor.hpp>
 
 #include <std_msgs/msg/int16.hpp>
 
@@ -21,9 +21,9 @@ namespace sm_three_some
 {
 namespace cl_subscriber
 {
-// Component-based subscriber client using ClMultiroleSensor
+// Component-based subscriber client using ClGenericSensor
 // This demonstrates the pure component-based architecture
-class ClSubscriber : public cl_multirole_sensor::ClMultiroleSensor<std_msgs::msg::UInt16>
+class ClSubscriber : public cl_generic_sensor::ClGenericSensor<std_msgs::msg::UInt16>
 {
 public:
   ClSubscriber()

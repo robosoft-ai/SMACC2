@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(multirole_sensor_client)
+project(cl_generic_sensor)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
@@ -22,7 +22,7 @@ set(dependencies
 include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
-            src/${PROJECT_NAME}/cl_multirole_sensor.cpp)
+            src/${PROJECT_NAME}/cl_generic_sensor.cpp)
 
 ament_target_dependencies(${PROJECT_NAME} ${dependencies})
 

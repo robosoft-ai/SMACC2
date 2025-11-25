@@ -14,13 +14,13 @@
 
 #pragma once
 
-#include <multirole_sensor_client/components/cp_message_timeout.hpp>
+#include <cl_generic_sensor/components/cp_message_timeout.hpp>
 #include <optional>
 #include <rclcpp/rclcpp.hpp>
 #include <smacc2/client_core_components/cp_topic_subscriber.hpp>
 #include <smacc2/smacc_client.hpp>
 
-namespace cl_multirole_sensor
+namespace cl_generic_sensor
 {
 using namespace smacc2;
 
@@ -28,7 +28,7 @@ using namespace smacc2;
 // This client follows the ClKeyboard pattern where all functionality
 // is implemented through composable components
 template <typename MessageType>
-class ClMultiroleSensor : public smacc2::ISmaccClient
+class ClGenericSensor : public smacc2::ISmaccClient
 {
 public:
   typedef MessageType TMessageType;
@@ -39,18 +39,18 @@ public:
   // Optional timeout duration - if not set, timeout functionality is disabled
   std::optional<rclcpp::Duration> timeout_;
 
-  ClMultiroleSensor() {}
+  ClGenericSensor() {}
 
   // Constructor with topic name
-  ClMultiroleSensor(std::string topicName) : topicName_(topicName) {}
+  ClGenericSensor(std::string topicName) : topicName_(topicName) {}
 
   // Constructor with topic name and timeout
-  ClMultiroleSensor(std::string topicName, rclcpp::Duration timeout)
+  ClGenericSensor(std::string topicName, rclcpp::Duration timeout)
   : topicName_(topicName), timeout_(timeout)
   {
   }
 
-  virtual ~ClMultiroleSensor() {}
+  virtual ~ClGenericSensor() {}
 
   // Component-based architecture initialization
   // This method creates and configures the components that provide
@@ -58,7 +58,7 @@ public:
   template <typename TOrthogonal, typename TClient>
   void onComponentInitialization()
   {
-    RCLCPP_INFO(getLogger(), "[ClMultiroleSensor] Initializing component-based sensor client");
+    RCLCPP_INFO(getLogger(), "[ClGenericSensor] Initializing component-based sensor client");
 
     // Create the topic subscriber component
     // This component handles ROS topic subscription and posts SMACC events
@@ -66,17 +66,17 @@ public:
     {
       RCLCPP_ERROR(
         getLogger(),
-        "[ClMultiroleSensor] Topic name not set. Please configure topicName_ before "
+        "[ClGenericSensor] Topic name not set. Please configure topicName_ before "
         "initialization.");
       return;
     }
 
     this->createComponent<
       smacc2::client_core_components::CpTopicSubscriber<MessageType>, TOrthogonal,
-      ClMultiroleSensor>(*topicName_);
+      ClGenericSensor>(*topicName_);
 
     RCLCPP_INFO(
-      getLogger(), "[ClMultiroleSensor] Created CpTopicSubscriber for topic: %s",
+      getLogger(), "[ClGenericSensor] Created CpTopicSubscriber for topic: %s",
       topicName_->c_str());
 
     // Create the message timeout component (optional - only if timeout is configured)
@@ -84,21 +84,21 @@ public:
     if (timeout_)
     {
       auto timeoutComponent = this->createComponent<
-        cl_multirole_sensor::components::CpMessageTimeout<MessageType>, TOrthogonal,
-        ClMultiroleSensor>();
+        cl_generic_sensor::components::CpMessageTimeout<MessageType>, TOrthogonal,
+        ClGenericSensor>();
 
       // Configure the timeout duration
       timeoutComponent->timeout_ = timeout_;
 
       RCLCPP_INFO(
-        getLogger(), "[ClMultiroleSensor] Created CpMessageTimeout with duration: %f seconds",
+        getLogger(), "[ClGenericSensor] Created CpMessageTimeout with duration: %f seconds",
         timeout_->seconds());
     }
     else
     {
       RCLCPP_INFO(
         getLogger(),
-        "[ClMultiroleSensor] Timeout not configured - watchdog functionality disabled");
+        "[ClGenericSensor] Timeout not configured - watchdog functionality disabled");
     }
   }
 
@@ -109,4 +109,4 @@ public:
   void setTimeout(const rclcpp::Duration & timeout) { timeout_ = timeout; }
 };
 
-}  // namespace cl_multirole_sensor
+}  // namespace cl_generic_sensor

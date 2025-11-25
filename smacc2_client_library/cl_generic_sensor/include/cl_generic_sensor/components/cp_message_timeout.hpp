@@ -20,7 +20,7 @@
 #include <smacc2/component.hpp>
 #include <smacc2/smacc_signal.hpp>
 
-namespace cl_multirole_sensor
+namespace cl_generic_sensor
 {
 namespace components
 {
@@ -142,4 +142,4 @@ private:
 };
 
 }  // namespace components
-}  // namespace cl_multirole_sensor
+}  // namespace cl_generic_sensor

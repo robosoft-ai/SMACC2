@@ -15,7 +15,7 @@ find_package(ament_cmake REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(smacc2_msgs REQUIRED)
-find_package(multirole_sensor_client REQUIRED)
+find_package(cl_generic_sensor REQUIRED)
 find_package(sr_all_events_go REQUIRED)
 find_package(cl_ros2_timer REQUIRED)
 find_package(cl_keyboard REQUIRED)
@@ -26,7 +26,7 @@ set(dependencies
   smacc2
   std_msgs
   smacc2_msgs
-  multirole_sensor_client
+  cl_generic_sensor
   sr_all_events_go
   cl_ros2_timer
   cl_keyboard

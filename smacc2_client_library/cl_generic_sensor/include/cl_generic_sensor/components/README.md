@@ -17,17 +17,17 @@ A component that monitors ROS topic message reception and posts timeout events w
 
 #### Usage
 
-The `CpMessageTimeout` component is automatically created by `ClMultiroleSensor` when a timeout duration is configured.
+The `CpMessageTimeout` component is automatically created by `ClGenericSensor` when a timeout duration is configured.
 
 **Example 1: Client with timeout**
 ```cpp
 // In your client constructor or initialization
-ClMultiroleSensor<std_msgs::msg::String> sensor("/my_topic", rclcpp::Duration(5, 0));
+ClGenericSensor<std_msgs::msg::String> sensor("/my_topic", rclcpp::Duration(5, 0));
 ```
 
 **Example 2: Configuring timeout after construction**
 ```cpp
-ClMultiroleSensor<sensor_msgs::msg::LaserScan> lidarClient;
+ClGenericSensor<sensor_msgs::msg::LaserScan> lidarClient;
 lidarClient.topicName_ = "/scan";
 lidarClient.timeout_ = rclcpp::Duration(2, 0);  // 2 second timeout
 ```
@@ -35,7 +35,7 @@ lidarClient.timeout_ = rclcpp::Duration(2, 0);  // 2 second timeout
 **Example 3: No timeout (optional)**
 ```cpp
 // Timeout component will not be created
-ClMultiroleSensor<std_msgs::msg::Int32> sensor("/counter");
+ClGenericSensor<std_msgs::msg::Int32> sensor("/counter");
 // No timeout configured - component gracefully not created
 ```
 
@@ -71,5 +71,5 @@ The separation of timeout functionality into a component provides:
 ## See Also
 
 - `CpTopicSubscriber` - Core SMACC2 component for topic subscription
-- `ClMultiroleSensor` - Main client that uses these components
-- `CbDefaultMultiRoleSensorBehavior` - Behavior that propagates component events
+- `ClGenericSensor` - Main client that uses these components
+- `CbDefaultGenericSensorBehavior` - Behavior that propagates component events
