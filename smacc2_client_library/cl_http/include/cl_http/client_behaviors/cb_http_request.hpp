@@ -20,9 +20,9 @@
 
 #pragma once
 
-#include <cstring>
 #include <cl_http/cl_http.hpp>
 #include <cl_http/components/cp_http_request_executor.hpp>
+#include <cstring>
 #include <smacc2/smacc.hpp>
 
 namespace cl_http
