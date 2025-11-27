@@ -6,6 +6,7 @@
     "Bash(colcon build:*)",
     "Bash(source:*)",
     "Bash(ros2 node:*)",
+    "Bash(/opt/ros/jazzy/setup.bash && colcon build --packages-select smacc2)",
     "Bash(source install/setup.bash && ros2 topic echo:*)",
     "Bash(source install/setup.bash && timeout 5 ros2 topic echo /*/smacc/event_log)",
     "Bash(ros2 topic pub:*)",

@@ -1,4 +1,6 @@
 {
+   "terminal.integrated.cwd": "workspaces/isaac_ros-dev/"
+   
     "ros.distro": "jazzy",
 
     "files.associations": {
