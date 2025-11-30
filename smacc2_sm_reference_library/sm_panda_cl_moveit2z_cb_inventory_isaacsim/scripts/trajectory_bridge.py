@@ -26,27 +26,23 @@ import time
 
 class TrajectoryBridge(Node):
     def __init__(self):
-        super().__init__('trajectory_bridge')
+        super().__init__("trajectory_bridge")
 
         self.callback_group = ReentrantCallbackGroup()
 
         # Parameters
-        self.declare_parameter('joint_command_topic', 'joint_commands')
-        self.declare_parameter('joint_state_topic', 'joint_states')
-        self.declare_parameter('action_name', 'panda_arm_controller/follow_joint_trajectory')
-        self.declare_parameter('position_tolerance', 0.01)  # radians
-        self.declare_parameter('goal_time_tolerance', 1.0)  # seconds
+        self.declare_parameter("joint_command_topic", "joint_commands")
+        self.declare_parameter("joint_state_topic", "joint_states")
+        self.declare_parameter("action_name", "panda_arm_controller/follow_joint_trajectory")
+        self.declare_parameter("position_tolerance", 0.01)  # radians
+        self.declare_parameter("goal_time_tolerance", 1.0)  # seconds
 
-        joint_command_topic = self.get_parameter('joint_command_topic').value
-        joint_state_topic = self.get_parameter('joint_state_topic').value
-        action_name = self.get_parameter('action_name').value
+        joint_command_topic = self.get_parameter("joint_command_topic").value
+        joint_state_topic = self.get_parameter("joint_state_topic").value
+        action_name = self.get_parameter("action_name").value
 
         # Publisher for joint commands to Isaac Sim
-        self.joint_command_pub = self.create_publisher(
-            JointState,
-            joint_command_topic,
-            10
-        )
+        self.joint_command_pub = self.create_publisher(JointState, joint_command_topic, 10)
 
         # Subscriber for joint states from Isaac Sim
         self.current_joint_state = None
@@ -56,7 +52,7 @@ class TrajectoryBridge(Node):
             joint_state_topic,
             self.joint_state_callback,
             10,
-            callback_group=self.callback_group
+            callback_group=self.callback_group,
         )
 
         # Action server for MoveIt2
@@ -67,13 +63,13 @@ class TrajectoryBridge(Node):
             execute_callback=self.execute_trajectory,
             goal_callback=self.goal_callback,
             cancel_callback=self.cancel_callback,
-            callback_group=self.callback_group
+            callback_group=self.callback_group,
         )
 
-        self.get_logger().info(f'Trajectory Bridge started')
-        self.get_logger().info(f'  Action server: {action_name}')
-        self.get_logger().info(f'  Publishing commands to: {joint_command_topic}')
-        self.get_logger().info(f'  Subscribing to states from: {joint_state_topic}')
+        self.get_logger().info(f"Trajectory Bridge started")
+        self.get_logger().info(f"  Action server: {action_name}")
+        self.get_logger().info(f"  Publishing commands to: {joint_command_topic}")
+        self.get_logger().info(f"  Subscribing to states from: {joint_state_topic}")
 
     def joint_state_callback(self, msg):
         with self.joint_state_lock:
@@ -85,35 +81,37 @@ class TrajectoryBridge(Node):
 
     def goal_callback(self, goal_request):
         """Accept all trajectory goals"""
-        self.get_logger().info('Received trajectory goal request - ACCEPTING')
+        self.get_logger().info("Received trajectory goal request - ACCEPTING")
         return GoalResponse.ACCEPT
 
     def cancel_callback(self, goal_handle):
         """Accept all cancel requests"""
-        self.get_logger().info('Received cancel request - ACCEPTING')
+        self.get_logger().info("Received cancel request - ACCEPTING")
         return CancelResponse.ACCEPT
 
     def execute_trajectory(self, goal_handle):
         """Execute the trajectory received from MoveIt2"""
-        self.get_logger().info('Received trajectory goal')
+        self.get_logger().info("Received trajectory goal")
 
         trajectory = goal_handle.request.trajectory
         joint_names = trajectory.joint_names
         points = trajectory.points
 
         if len(points) == 0:
-            self.get_logger().warn('Empty trajectory received')
+            self.get_logger().warn("Empty trajectory received")
             goal_handle.succeed()
             result = FollowJointTrajectory.Result()
             result.error_code = FollowJointTrajectory.Result.SUCCESSFUL
             return result
 
-        self.get_logger().info(f'Executing trajectory with {len(points)} points for joints: {joint_names}')
+        self.get_logger().info(
+            f"Executing trajectory with {len(points)} points for joints: {joint_names}"
+        )
 
         # Get trajectory duration
         last_point = points[-1]
         total_duration = last_point.time_from_start.sec + last_point.time_from_start.nanosec * 1e-9
-        self.get_logger().info(f'Trajectory duration: {total_duration:.2f} seconds')
+        self.get_logger().info(f"Trajectory duration: {total_duration:.2f} seconds")
 
         # Publish rate (Hz) - Isaac Sim needs frequent updates
         publish_rate = 50.0  # 50 Hz
@@ -135,7 +133,7 @@ class TrajectoryBridge(Node):
             # Check if goal was canceled
             if goal_handle.is_cancel_requested:
                 goal_handle.canceled()
-                self.get_logger().info('Trajectory canceled')
+                self.get_logger().info("Trajectory canceled")
                 result = FollowJointTrajectory.Result()
                 result.error_code = FollowJointTrajectory.Result.INVALID_GOAL
                 return result
@@ -148,7 +146,10 @@ class TrajectoryBridge(Node):
                 break
 
             # Find the surrounding trajectory points for interpolation
-            while current_point_idx < len(points) - 1 and point_times[current_point_idx + 1] <= elapsed:
+            while (
+                current_point_idx < len(points) - 1
+                and point_times[current_point_idx + 1] <= elapsed
+            ):
                 current_point_idx += 1
 
             # Get target position (interpolate if between points)
@@ -217,12 +218,12 @@ class TrajectoryBridge(Node):
             self.joint_command_pub.publish(cmd)
             time.sleep(0.02)
 
-        self.get_logger().info('Trajectory execution completed')
+        self.get_logger().info("Trajectory execution completed")
         goal_handle.succeed()
 
         result = FollowJointTrajectory.Result()
         result.error_code = FollowJointTrajectory.Result.SUCCESSFUL
-        self.get_logger().info('Trajectory execution completed successfully')
+        self.get_logger().info("Trajectory execution completed successfully")
 
         return result
 
@@ -244,5 +245,5 @@ def main(args=None):
         rclpy.shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

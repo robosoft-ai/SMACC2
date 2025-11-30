@@ -201,12 +201,14 @@ def launch_setup(context, *args, **kwargs):
         name="trajectory_bridge",
         output="screen",
         prefix=trajectory_bridge_prefix,
-        parameters=[{
-            "joint_command_topic": "joint_commands",
-            "joint_state_topic": "joint_states",
-            "action_name": "panda_arm_controller/follow_joint_trajectory",
-            "use_sim_time": True,
-        }],
+        parameters=[
+            {
+                "joint_command_topic": "joint_commands",
+                "joint_state_topic": "joint_states",
+                "action_name": "panda_arm_controller/follow_joint_trajectory",
+                "use_sim_time": True,
+            }
+        ],
         arguments=["--ros-args", "--log-level", "INFO"],
     )
 

@@ -89,7 +89,9 @@ if not franka_prim.IsValid():
         path_str = str(prim.GetPath())
         if "panda" in path_str.lower() or "franka" in path_str.lower():
             # Show robot prims up to 5 levels deep
-            if path_str.count("/") <= 5 and ("instanceable" in path_str.lower() or path_str.endswith("panda")):
+            if path_str.count("/") <= 5 and (
+                "instanceable" in path_str.lower() or path_str.endswith("panda")
+            ):
                 print(f"  Found: {path_str} (type: {prim.GetTypeName()})")
     print("\nAll top-level prims under /World:")
     world_prim = stage.GetPrimAtPath("/World")
@@ -168,10 +170,22 @@ try:
                 ("Context.outputs:context", "PublishClock.inputs:context"),
                 ("ReadSimTime.outputs:simulationTime", "PublishJointState.inputs:timeStamp"),
                 ("ReadSimTime.outputs:simulationTime", "PublishClock.inputs:timeStamp"),
-                ("SubscribeJointState.outputs:jointNames", "ArticulationController.inputs:jointNames"),
-                ("SubscribeJointState.outputs:positionCommand", "ArticulationController.inputs:positionCommand"),
-                ("SubscribeJointState.outputs:velocityCommand", "ArticulationController.inputs:velocityCommand"),
-                ("SubscribeJointState.outputs:effortCommand", "ArticulationController.inputs:effortCommand"),
+                (
+                    "SubscribeJointState.outputs:jointNames",
+                    "ArticulationController.inputs:jointNames",
+                ),
+                (
+                    "SubscribeJointState.outputs:positionCommand",
+                    "ArticulationController.inputs:positionCommand",
+                ),
+                (
+                    "SubscribeJointState.outputs:velocityCommand",
+                    "ArticulationController.inputs:velocityCommand",
+                ),
+                (
+                    "SubscribeJointState.outputs:effortCommand",
+                    "ArticulationController.inputs:effortCommand",
+                ),
             ],
             og.Controller.Keys.SET_VALUES: [
                 ("ArticulationController.inputs:robotPath", FRANKA_STAGE_PATH),
@@ -184,6 +198,7 @@ try:
     print("  MoveIt2 ActionGraph created successfully")
 except Exception as e:
     import traceback
+
     print(f"  ERROR creating MoveIt2 ActionGraph: {e}")
     print(f"  Full traceback:")
     traceback.print_exc()
@@ -237,15 +252,30 @@ try:
                 ("createViewport.outputs:execOut", "getRenderProduct.inputs:execIn"),
                 ("createViewport.outputs:viewport", "getRenderProduct.inputs:viewport"),
                 ("getRenderProduct.outputs:execOut", "setCamera.inputs:execIn"),
-                ("getRenderProduct.outputs:renderProductPath", "setCamera.inputs:renderProductPath"),
+                (
+                    "getRenderProduct.outputs:renderProductPath",
+                    "setCamera.inputs:renderProductPath",
+                ),
                 ("setCamera.outputs:execOut", "cameraHelperRgb.inputs:execIn"),
                 ("setCamera.outputs:execOut", "cameraHelperInfo.inputs:execIn"),
                 ("setCamera.outputs:execOut", "cameraHelperDepth.inputs:execIn"),
                 ("setCamera.outputs:execOut", "cameraHelperPointCloud.inputs:execIn"),
-                ("getRenderProduct.outputs:renderProductPath", "cameraHelperRgb.inputs:renderProductPath"),
-                ("getRenderProduct.outputs:renderProductPath", "cameraHelperInfo.inputs:renderProductPath"),
-                ("getRenderProduct.outputs:renderProductPath", "cameraHelperDepth.inputs:renderProductPath"),
-                ("getRenderProduct.outputs:renderProductPath", "cameraHelperPointCloud.inputs:renderProductPath"),
+                (
+                    "getRenderProduct.outputs:renderProductPath",
+                    "cameraHelperRgb.inputs:renderProductPath",
+                ),
+                (
+                    "getRenderProduct.outputs:renderProductPath",
+                    "cameraHelperInfo.inputs:renderProductPath",
+                ),
+                (
+                    "getRenderProduct.outputs:renderProductPath",
+                    "cameraHelperDepth.inputs:renderProductPath",
+                ),
+                (
+                    "getRenderProduct.outputs:renderProductPath",
+                    "cameraHelperPointCloud.inputs:renderProductPath",
+                ),
             ],
             og.Controller.Keys.SET_VALUES: [
                 ("createViewport.inputs:viewportId", 1),
@@ -271,6 +301,7 @@ try:
 
 except Exception as e:
     import traceback
+
     print(f"  ERROR creating ZED Camera OmniGraph: {e}")
     print(f"  Full traceback:")
     traceback.print_exc()
@@ -301,7 +332,9 @@ print("  1. Press PLAY in Isaac Sim to start the simulation")
 print("  2. In a separate terminal, run:")
 print("     source /opt/ros/jazzy/setup.bash")
 print("     source ~/workspaces/isaac_ros-dev/install/setup.bash")
-print("     ros2 launch sm_panda_cl_moveit2z_cb_inventory_isaacsim sm_panda_cl_moveit2z_cb_inventory_isaacsim.launch.py")
+print(
+    "     ros2 launch sm_panda_cl_moveit2z_cb_inventory_isaacsim sm_panda_cl_moveit2z_cb_inventory_isaacsim.launch.py"
+)
 print("\n" + "=" * 60)
 
 # Debug: Print panda structure if verbose
