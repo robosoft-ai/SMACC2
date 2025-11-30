@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sm_panda_cl_moveit2z_cb_inventory_isaacsim</name>
+  <version>3.0.1</version>
+  <description>The sm_panda_cl_moveit2z_cb_inventory package adapted for Isaac Sim</description>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>libboost-thread-dev</depend>
+
+  <depend>cl_ros2_timer</depend>
+  <depend>smacc2</depend>
+  <depend>cl_moveit2z</depend>
+  <depend>controller_manager</depend>
+  <depend>moveit_resources_panda_moveit_config</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>moveit_visual_tools</depend>
+  <depend>moveit_planners_chomp</depend>
+  <depend>pilz_industrial_motion_planner</depend>
+  <depend>joint_state_broadcaster</depend>
+  <depend>moveit_simple_controller_manager</depend>
+  <depend>moveit_planners_ompl</depend>
+  <depend>moveit_plugins</depend>
+  <depend>moveit_ros_robot_interaction</depend>
+  <depend>moveit</depend>
+  <depend>cl_keyboard</depend>
+  <depend>rclcpp</depend>
+  <depend>yaml-cpp</depend>
+
+  <exec_depend>joint_trajectory_controller</exec_depend>
+  <exec_depend>konsole</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

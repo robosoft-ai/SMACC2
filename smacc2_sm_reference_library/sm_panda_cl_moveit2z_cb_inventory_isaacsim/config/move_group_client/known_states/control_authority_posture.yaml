@@ -1,0 +1,8 @@
+joint_states:
+    panda_joint1: 1.57
+    panda_joint2: -1.57
+    panda_joint3: 1.57
+    panda_joint4: -2.8
+    panda_joint5: 1.57
+    panda_joint6: 2.8
+    panda_joint7: 1.57
