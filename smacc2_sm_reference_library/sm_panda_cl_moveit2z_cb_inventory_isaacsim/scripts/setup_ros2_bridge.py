@@ -125,13 +125,58 @@ else:
             print(f"  Found wrist link: {wrist_path}")
             break
 
-# Camera mounting is disabled - the ZED X has incompatible transform ops
-# To manually attach the camera:
-# 1. In Isaac Sim Stage panel, drag ZED_X under panda_link7
-# 2. Or create a Fixed Joint manually in the Physics panel
-print("\nNOTE: Camera mounting skipped (transform rotation order mismatch)")
-print("  To attach camera manually: drag ZED_X under panda_link7 in Stage panel")
+# Step 4b: Mount camera to wrist using Fixed Joint
+print("\nMounting ZED camera to Franka wrist...")
 mounted_camera_path = ZED_CAMERA_PATH
+
+if wrist_prim and wrist_prim.IsValid():
+    try:
+        from pxr import UsdPhysics
+
+        # Create a fixed joint to attach camera to wrist
+        fixed_joint_path = f"{ZED_CAMERA_PATH}/WristFixedJoint"
+
+        # Check if joint already exists
+        existing_joint = stage.GetPrimAtPath(fixed_joint_path)
+        if existing_joint.IsValid():
+            print(f"  Fixed joint already exists at {fixed_joint_path}")
+        else:
+            # Create the fixed joint
+            fixed_joint = UsdPhysics.FixedJoint.Define(stage, fixed_joint_path)
+
+            # Set the joint bodies - body0 is parent (wrist), body1 is child (camera)
+            fixed_joint.CreateBody0Rel().SetTargets([wrist_path])
+            fixed_joint.CreateBody1Rel().SetTargets([ZED_CAMERA_PATH])
+
+            # Set local poses for the joint
+            # Camera offset from wrist: forward, right, up (in wrist frame)
+            fixed_joint.CreateLocalPos0Attr().Set(
+                Gf.Vec3f(CAMERA_MOUNT_OFFSET[0], CAMERA_MOUNT_OFFSET[1], CAMERA_MOUNT_OFFSET[2])
+            )
+            fixed_joint.CreateLocalPos1Attr().Set(Gf.Vec3f(0, 0, 0))
+
+            # Set rotation (camera pointing forward from wrist)
+            rot_x = Gf.Rotation(Gf.Vec3d(1, 0, 0), CAMERA_MOUNT_ROTATION[0])
+            rot_y = Gf.Rotation(Gf.Vec3d(0, 1, 0), CAMERA_MOUNT_ROTATION[1])
+            rot_z = Gf.Rotation(Gf.Vec3d(0, 0, 1), CAMERA_MOUNT_ROTATION[2])
+            combined_rot = rot_z * rot_y * rot_x
+            quat = combined_rot.GetQuat()
+            fixed_joint.CreateLocalRot0Attr().Set(
+                Gf.Quatf(quat.GetReal(), Gf.Vec3f(quat.GetImaginary()))
+            )
+            fixed_joint.CreateLocalRot1Attr().Set(Gf.Quatf(1, 0, 0, 0))
+
+            print(f"  Created fixed joint: {fixed_joint_path}")
+            print(f"  Camera mounted to: {wrist_path}")
+            print(f"  Offset: {CAMERA_MOUNT_OFFSET}, Rotation: {CAMERA_MOUNT_ROTATION}")
+
+    except Exception as e:
+        print(f"  WARNING: Could not create fixed joint: {e}")
+        print("  Camera will remain at original position")
+        print("  To attach manually: drag ZED_X under panda_link7 in Stage panel")
+else:
+    print("  WARNING: Wrist link not found, camera mounting skipped")
+    print("  To attach manually: drag ZED_X under panda_link7 in Stage panel")
 
 omni.kit.app.get_app().update()
 
