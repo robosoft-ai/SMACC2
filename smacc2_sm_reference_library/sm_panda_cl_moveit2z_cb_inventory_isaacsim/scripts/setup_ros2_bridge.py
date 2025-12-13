@@ -39,8 +39,8 @@ Usage:
 FRANKA_STAGE_PATH = "/World/carter_warehouse_navigation_w_ZED_Pandas/panda_instanceable"
 ZED_CAMERA_PATH = "/World/carter_warehouse_navigation_w_ZED_Pandas/ZED_X"
 
-# Franka wrist link for camera mounting (panda_link7 is the last arm link before panda_hand)
-FRANKA_WRIST_LINK = "panda_link7"
+# Franka hand link for camera mounting
+FRANKA_WRIST_LINK = "panda_hand"
 
 # OmniGraph paths (use unique names to avoid conflicts with existing graphs)
 ACTION_GRAPH_PATH = "/Panda_MoveIt_ActionGraph"
@@ -73,32 +73,46 @@ import omni.graph.core as og
 import usdrt.Sdf
 from pxr import Sdf, UsdGeom, Gf
 from isaacsim.core.utils.extensions import enable_extension
+import os
 
-print("=" * 60)
-print("Isaac Sim ROS2 Bridge Setup Script")
-print("=" * 60)
+# Log file for debugging (readable from terminal)
+LOG_FILE = os.path.expanduser("~/isaacsim_ros2_bridge_setup.log")
+
+def log(msg):
+    """Print and log to file"""
+    print(msg)
+    with open(LOG_FILE, "a") as f:
+        f.write(msg + "\n")
+
+# Clear log file at start
+with open(LOG_FILE, "w") as f:
+    f.write("")
+
+log("=" * 60)
+log("Isaac Sim ROS2 Bridge Setup Script")
+log("=" * 60)
 
 # Step 1: Get the current stage
 stage = omni.usd.get_context().get_stage()
 if stage is None:
-    print("ERROR: No stage is currently open!")
-    print("Please open a USD stage first (File > Open)")
+    log("ERROR: No stage is currently open!")
+    log("Please open a USD stage first (File > Open)")
     raise RuntimeError("No stage open")
 
-print(f"Stage loaded: {stage.GetRootLayer().identifier}")
+log(f"Stage loaded: {stage.GetRootLayer().identifier}")
 
 # Step 2: Enable ROS2 bridge extension
-print("\nEnabling ROS2 bridge extension...")
+log("\nEnabling ROS2 bridge extension...")
 enable_extension("isaacsim.ros2.bridge")
 omni.kit.app.get_app().update()
-print("ROS2 bridge extension enabled")
+log("ROS2 bridge extension enabled")
 
 # Step 3: Verify prims exist
-print("\nVerifying prim paths...")
+log("\nVerifying prim paths...")
 franka_prim = stage.GetPrimAtPath(FRANKA_STAGE_PATH)
 if not franka_prim.IsValid():
-    print(f"ERROR: Franka prim not found at {FRANKA_STAGE_PATH}")
-    print("\nSearching for Franka/Panda prims in stage...")
+    log(f"ERROR: Franka prim not found at {FRANKA_STAGE_PATH}")
+    log("\nSearching for Franka/Panda prims in stage...")
     for prim in stage.Traverse():
         path_str = str(prim.GetPath())
         if "panda" in path_str.lower() or "franka" in path_str.lower():
@@ -106,41 +120,41 @@ if not franka_prim.IsValid():
             if path_str.count("/") <= 5 and (
                 "instanceable" in path_str.lower() or path_str.endswith("panda")
             ):
-                print(f"  Found: {path_str} (type: {prim.GetTypeName()})")
-    print("\nAll top-level prims under /World:")
+                log(f"  Found: {path_str} (type: {prim.GetTypeName()})")
+    log("\nAll top-level prims under /World:")
     world_prim = stage.GetPrimAtPath("/World")
     if world_prim.IsValid():
         for child in world_prim.GetChildren():
-            print(f"  /World/{child.GetName()}")
+            log(f"  /World/{child.GetName()}")
     raise RuntimeError("Franka prim not found - check paths above and update FRANKA_STAGE_PATH")
-print(f"  Franka found: {FRANKA_STAGE_PATH}")
+log(f"  Franka found: {FRANKA_STAGE_PATH}")
 
 zed_prim = stage.GetPrimAtPath(ZED_CAMERA_PATH)
 if not zed_prim.IsValid():
-    print(f"ERROR: ZED camera prim not found at {ZED_CAMERA_PATH}")
+    log(f"ERROR: ZED camera prim not found at {ZED_CAMERA_PATH}")
     raise RuntimeError("ZED camera prim not found")
-print(f"  ZED camera found: {ZED_CAMERA_PATH}")
+log(f"  ZED camera found: {ZED_CAMERA_PATH}")
 
 # Step 4: Find the wrist link (camera mounting disabled for now)
-print("\nSearching for Franka wrist link...")
+log("\nSearching for Franka wrist link...")
 wrist_path = f"{FRANKA_STAGE_PATH}/{FRANKA_WRIST_LINK}"
 wrist_prim = stage.GetPrimAtPath(wrist_path)
 
 if wrist_prim.IsValid():
-    print(f"  Found wrist link: {wrist_path}")
+    log(f"  Found wrist link: {wrist_path}")
 else:
-    print(f"  Not found at {wrist_path}, searching...")
+    log(f"  Not found at {wrist_path}, searching...")
     # Search for panda_link7 or panda_hand as fallback
     for prim in stage.Traverse():
         path_str = str(prim.GetPath())
         if FRANKA_STAGE_PATH in path_str and path_str.endswith("panda_link7"):
             wrist_path = path_str
             wrist_prim = prim
-            print(f"  Found wrist link: {wrist_path}")
+            log(f"  Found wrist link: {wrist_path}")
             break
 
 # Step 4b: Mount camera to wrist using Fixed Joint
-print("\nMounting ZED camera to Franka wrist...")
+log("\nMounting ZED camera to Franka wrist...")
 mounted_camera_path = ZED_CAMERA_PATH
 
 if wrist_prim and wrist_prim.IsValid():
@@ -153,7 +167,7 @@ if wrist_prim and wrist_prim.IsValid():
         # Check if joint already exists
         existing_joint = stage.GetPrimAtPath(fixed_joint_path)
         if existing_joint.IsValid():
-            print(f"  Fixed joint already exists at {fixed_joint_path}")
+            log(f"  Fixed joint already exists at {fixed_joint_path}")
         else:
             # Create the fixed joint
             fixed_joint = UsdPhysics.FixedJoint.Define(stage, fixed_joint_path)
@@ -180,30 +194,30 @@ if wrist_prim and wrist_prim.IsValid():
             )
             fixed_joint.CreateLocalRot1Attr().Set(Gf.Quatf(1, 0, 0, 0))
 
-            print(f"  Created fixed joint: {fixed_joint_path}")
-            print(f"  Camera mounted to: {wrist_path}")
-            print(f"  Offset: {CAMERA_MOUNT_OFFSET}, Rotation: {CAMERA_MOUNT_ROTATION}")
+            log(f"  Created fixed joint: {fixed_joint_path}")
+            log(f"  Camera mounted to: {wrist_path}")
+            log(f"  Offset: {CAMERA_MOUNT_OFFSET}, Rotation: {CAMERA_MOUNT_ROTATION}")
 
     except Exception as e:
-        print(f"  WARNING: Could not create fixed joint: {e}")
-        print("  Camera will remain at original position")
-        print("  To attach manually: drag ZED_X under panda_link7 in Stage panel")
+        log(f"  WARNING: Could not create fixed joint: {e}")
+        log("  Camera will remain at original position")
+        log("  To attach manually: drag ZED_X under panda_link7 in Stage panel")
 else:
-    print("  WARNING: Wrist link not found, camera mounting skipped")
-    print("  To attach manually: drag ZED_X under panda_link7 in Stage panel")
+    log("  WARNING: Wrist link not found, camera mounting skipped")
+    log("  To attach manually: drag ZED_X under panda_link7 in Stage panel")
 
 omni.kit.app.get_app().update()
 
 # Step 5: Create MoveIt2 Integration OmniGraph
-print("\nCreating MoveIt2 integration OmniGraph...")
+log("\nCreating MoveIt2 integration OmniGraph...")
 
 try:
-    print(f"  Creating graph at path: {ACTION_GRAPH_PATH}")
+    log(f"  Creating graph at path: {ACTION_GRAPH_PATH}")
 
     # Check if graph already exists and delete it first
     existing_graph = stage.GetPrimAtPath(ACTION_GRAPH_PATH)
     if existing_graph.IsValid():
-        print(f"  WARNING: Graph already exists at {ACTION_GRAPH_PATH}, deleting...")
+        log(f"  WARNING: Graph already exists at {ACTION_GRAPH_PATH}, deleting...")
         stage.RemovePrim(ACTION_GRAPH_PATH)
         omni.kit.app.get_app().update()
 
@@ -254,151 +268,58 @@ try:
             ],
         },
     )
-    print("  MoveIt2 ActionGraph created successfully")
+    log("  MoveIt2 ActionGraph created successfully")
 except Exception as e:
     import traceback
 
-    print(f"  ERROR creating MoveIt2 ActionGraph: {e}")
-    print(f"  Full traceback:")
+    log(f"  ERROR creating MoveIt2 ActionGraph: {e}")
+    log(f"  Full traceback:")
     traceback.print_exc()
 
 omni.kit.app.get_app().update()
 
 # Step 6: Create ZED Camera OmniGraph
-print("\nCreating ZED Camera OmniGraph...")
-print(f"  Creating graph at path: {ZED_CAMERA_GRAPH_PATH}")
-
-# Check if graph already exists and delete it first
-existing_zed_graph = stage.GetPrimAtPath(ZED_CAMERA_GRAPH_PATH)
-if existing_zed_graph.IsValid():
-    print(f"  WARNING: Graph already exists at {ZED_CAMERA_GRAPH_PATH}, deleting...")
-    stage.RemovePrim(ZED_CAMERA_GRAPH_PATH)
-    omni.kit.app.get_app().update()
-
-# Find the camera prim inside the ZED_X
-camera_prim_path = mounted_camera_path
-# Look for actual Camera prim inside ZED_X
-zed_prim_check = stage.GetPrimAtPath(mounted_camera_path)
-if zed_prim_check.IsValid():
-    for child in zed_prim_check.GetChildren():
-        if child.GetTypeName() == "Camera":
-            camera_prim_path = str(child.GetPath())
-            print(f"  Found camera prim: {camera_prim_path}")
-            break
-else:
-    print(f"  WARNING: ZED prim not found at {mounted_camera_path}")
-
-try:
-    (ros_camera_graph, _, _, _) = og.Controller.edit(
-        {
-            "graph_path": ZED_CAMERA_GRAPH_PATH,
-            "evaluator_name": "push",
-            "pipeline_stage": og.GraphPipelineStage.GRAPH_PIPELINE_STAGE_ONDEMAND,
-        },
-        {
-            og.Controller.Keys.CREATE_NODES: [
-                ("OnTick", "omni.graph.action.OnTick"),
-                ("createViewport", "isaacsim.core.nodes.IsaacCreateViewport"),
-                ("getRenderProduct", "isaacsim.core.nodes.IsaacGetViewportRenderProduct"),
-                ("setCamera", "isaacsim.core.nodes.IsaacSetCameraOnRenderProduct"),
-                ("cameraHelperRgb", "isaacsim.ros2.bridge.ROS2CameraHelper"),
-                ("cameraHelperInfo", "isaacsim.ros2.bridge.ROS2CameraInfoHelper"),
-                ("cameraHelperDepth", "isaacsim.ros2.bridge.ROS2CameraHelper"),
-                ("cameraHelperPointCloud", "isaacsim.ros2.bridge.ROS2CameraHelper"),
-            ],
-            og.Controller.Keys.CONNECT: [
-                ("OnTick.outputs:tick", "createViewport.inputs:execIn"),
-                ("createViewport.outputs:execOut", "getRenderProduct.inputs:execIn"),
-                ("createViewport.outputs:viewport", "getRenderProduct.inputs:viewport"),
-                ("getRenderProduct.outputs:execOut", "setCamera.inputs:execIn"),
-                (
-                    "getRenderProduct.outputs:renderProductPath",
-                    "setCamera.inputs:renderProductPath",
-                ),
-                ("setCamera.outputs:execOut", "cameraHelperRgb.inputs:execIn"),
-                ("setCamera.outputs:execOut", "cameraHelperInfo.inputs:execIn"),
-                ("setCamera.outputs:execOut", "cameraHelperDepth.inputs:execIn"),
-                ("setCamera.outputs:execOut", "cameraHelperPointCloud.inputs:execIn"),
-                (
-                    "getRenderProduct.outputs:renderProductPath",
-                    "cameraHelperRgb.inputs:renderProductPath",
-                ),
-                (
-                    "getRenderProduct.outputs:renderProductPath",
-                    "cameraHelperInfo.inputs:renderProductPath",
-                ),
-                (
-                    "getRenderProduct.outputs:renderProductPath",
-                    "cameraHelperDepth.inputs:renderProductPath",
-                ),
-                (
-                    "getRenderProduct.outputs:renderProductPath",
-                    "cameraHelperPointCloud.inputs:renderProductPath",
-                ),
-            ],
-            og.Controller.Keys.SET_VALUES: [
-                ("createViewport.inputs:viewportId", 1),
-                ("setCamera.inputs:cameraPrim", [usdrt.Sdf.Path(camera_prim_path)]),
-                ("cameraHelperRgb.inputs:topicName", ZED_RGB_TOPIC),
-                ("cameraHelperRgb.inputs:frameId", ZED_FRAME_ID),
-                ("cameraHelperRgb.inputs:type", "rgb"),
-                ("cameraHelperInfo.inputs:topicName", ZED_CAMERA_INFO_TOPIC),
-                ("cameraHelperInfo.inputs:frameId", ZED_FRAME_ID),
-                ("cameraHelperDepth.inputs:topicName", ZED_DEPTH_TOPIC),
-                ("cameraHelperDepth.inputs:frameId", ZED_FRAME_ID),
-                ("cameraHelperDepth.inputs:type", "depth"),
-                ("cameraHelperPointCloud.inputs:topicName", ZED_POINTCLOUD_TOPIC),
-                ("cameraHelperPointCloud.inputs:frameId", ZED_FRAME_ID),
-                ("cameraHelperPointCloud.inputs:type", "depth_pcl"),
-            ],
-        },
-    )
-
-    # Evaluate once to initialize the graph
-    og.Controller.evaluate_sync(ros_camera_graph)
-    print("  ZED Camera OmniGraph created successfully")
-
-except Exception as e:
-    import traceback
-
-    print(f"  ERROR creating ZED Camera OmniGraph: {e}")
-    print(f"  Full traceback:")
-    traceback.print_exc()
+# NOTE: Camera graph creation is DISABLED due to Isaac Sim crash when creating viewport
+# The crash occurs in libomni.ui.scene.so when setting up the camera render product
+# To use camera in Isaac Sim, manually add camera publishers via the GUI:
+#   1. Select the ZED_X/base_link/ZED_X/CameraLeft prim
+#   2. Right-click > Create > Isaac > ROS2 Camera
+log("\nZED Camera OmniGraph creation SKIPPED")
+log("  Camera viewport creation causes Isaac Sim crash")
+log("  To publish camera data, use Isaac Sim GUI:")
+log("    1. Select: /World/carter_warehouse_navigation_w_ZED_Pandas/ZED_X/base_link/ZED_X/CameraLeft")
+log("    2. Right-click > Create > Isaac > ROS2 Bridge > Camera")
+camera_prim_path = f"{ZED_CAMERA_PATH}/base_link/ZED_X/CameraLeft"
 
 omni.kit.app.get_app().update()
 
 # Step 7: Print summary
-print("\n" + "=" * 60)
-print("SETUP COMPLETE!")
-print("=" * 60)
-print("\nROS2 Topics configured:")
-print(f"  Publishing:")
-print(f"    - /{JOINT_STATES_TOPIC} (sensor_msgs/JointState)")
-print(f"    - /clock (rosgraph_msgs/Clock)")
-print(f"    - /{ZED_RGB_TOPIC} (sensor_msgs/Image)")
-print(f"    - /{ZED_CAMERA_INFO_TOPIC} (sensor_msgs/CameraInfo)")
-print(f"    - /{ZED_DEPTH_TOPIC} (sensor_msgs/Image)")
-print(f"    - /{ZED_POINTCLOUD_TOPIC} (sensor_msgs/PointCloud2)")
-print(f"  Subscribing:")
-print(f"    - /{JOINT_COMMANDS_TOPIC} (sensor_msgs/JointState)")
+log("\n" + "=" * 60)
+log("SETUP COMPLETE!")
+log("=" * 60)
+log("\nROS2 Topics configured:")
+log(f"  Publishing:")
+log(f"    - /{JOINT_STATES_TOPIC} (sensor_msgs/JointState)")
+log(f"    - /clock (rosgraph_msgs/Clock)")
+log(f"    - /{ZED_RGB_TOPIC} (sensor_msgs/Image)")
+log(f"    - /{ZED_CAMERA_INFO_TOPIC} (sensor_msgs/CameraInfo)")
+log(f"    - /{ZED_DEPTH_TOPIC} (sensor_msgs/Image)")
+log(f"    - /{ZED_POINTCLOUD_TOPIC} (sensor_msgs/PointCloud2)")
+log(f"  Subscribing:")
+log(f"    - /{JOINT_COMMANDS_TOPIC} (sensor_msgs/JointState)")
 
-print("\nOmniGraphs created:")
-print(f"  - {ACTION_GRAPH_PATH}")
-print(f"  - {ZED_CAMERA_GRAPH_PATH}")
+log("\nOmniGraphs created:")
+log(f"  - {ACTION_GRAPH_PATH}")
+log(f"  - {ZED_CAMERA_GRAPH_PATH}")
+log(f"  Camera prim used: {camera_prim_path}")
 
-print("\nNext steps:")
-print("  1. Press PLAY in Isaac Sim to start the simulation")
-print("  2. In a separate terminal, run:")
-print("     source /opt/ros/jazzy/setup.bash")
-print("     source ~/workspaces/isaac_ros-dev/install/setup.bash")
-print(
+log("\nNext steps:")
+log("  1. Press PLAY in Isaac Sim to start the simulation")
+log("  2. In a separate terminal, run:")
+log("     source /opt/ros/jazzy/setup.bash")
+log("     source ~/workspaces/isaac_ros-dev/install/setup.bash")
+log(
     "     ros2 launch sm_panda_cl_moveit2z_cb_inventory_isaacsim sm_panda_cl_moveit2z_cb_inventory_isaacsim.launch.py"
 )
-print("\n" + "=" * 60)
-
-# Debug: Print panda structure if verbose
-print("\nDebug: Searching for panda links...")
-for prim in stage.Traverse():
-    path_str = str(prim.GetPath())
-    if "panda" in path_str.lower() and ("link" in path_str.lower() or "joint" in path_str.lower()):
-        print(f"  {path_str}")
+log("\n" + "=" * 60)
+log(f"\nLog file written to: {LOG_FILE}")
