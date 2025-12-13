@@ -5,7 +5,7 @@
 
 ### Naming Conventions
 
-- **Packages:** `snake_case` (e.g., `nav2z_client`)
+- **Packages:** `snake_case` (e.g., `cl_nav2z`)
 - **Classes:** `PascalCase` with prefixes:
   - Clients: `Cl` prefix (e.g., `ClNav2Z`)
   - Client Behaviors: `Cb` prefix (e.g., `CbNavigateForward`)  
@@ -16,9 +16,9 @@
 ### Code Organization
 
 ```
-my_client/
-├── include/my_client/
-│   ├── cl_my_client.hpp              # Main client
+cl_example/
+├── include/cl_example/
+│   ├── cl_example.hpp              # Main client
 │   ├── client_behaviors.hpp          # Behavior includes (optional)
 │   ├── client_behaviors/
 │   │   ├── cb_behavior_1.hpp
@@ -26,8 +26,8 @@ my_client/
 │   └── components/
 │       ├── cp_component_1.hpp
 │       └── cp_component_2.hpp
-├── src/my_client/
-│   ├── cl_my_client.cpp
+├── src/cl_example/
+│   ├── cl_example.cpp
 │   ├── client_behaviors/
 │   │   ├── cb_behavior_1.cpp
 │   │   └── cb_behavior_2.cpp
@@ -60,18 +60,19 @@ so, header files, cpp, state machine.
 
 # Overview
 
-The SMACC2 Client Library provides modular, reusable clients for robot behaviors within the SMACC2 state machine framework. Each client encapsulates specific functionality and can be used across different state machines.
+The SMACC2 Client Library provides modular, reusable clients for robot behaviors within the SMACC2 state machine framework. Each client encapsulates specific functionality and can be used across different state machines. The preferred style for clients is a **pure component-based architecture** where clients act as orchestrators that compose reusable components.
 
 ### Current Clients
 
-| Client | Purpose | Communication Pattern |
-|--------|---------|----------------------|
-| `cl_nav2z` | Navigation with Nav2 | Action-based |
-| `cl_moveitz` | Manipulation with MoveIt2 | Direct API calls |
-| `cl_keyboard` | Keyboard input handling | Subscriber-based |
-| `cl_ros2_timer` | Timer-based behaviors | Timer callbacks |
-| `http_client` | HTTP requests | Custom protocol |
-| `cl_lifecycle_node` | ROS2 lifecycle management | Service calls |
+| Client | Purpose | Core Components |
+|--------|---------|-----------------|
+| `cl_nav2z` | Navigation with Nav2 | CpActionClient, CpNav2ActionInterface |
+| `cl_moveit2z` | Manipulation with MoveIt2 | CpMoveItInterface |
+| `cl_keyboard` | Keyboard input handling | CpTopicSubscriber, CpKeyboardListener1 |
+| `cl_ros2_timer` | Timer-based behaviors | CpRos2Timer, CpTimerListener1 |
+| `cl_http` | HTTP requests | CpHttpConnectionManager, CpHttpRequestExecutor |
+| `cl_lifecycle_node` | ROS2 lifecycle management | CpLifecycleEventMonitor |
+| `cl_generic_sensor` | Generic sensor input | CpTopicSubscriber, CpMessageTimeout |
 
 ## Architecture Patterns
 
@@ -90,140 +91,293 @@ Every SMACC2 client follows an architecture with 3 object types:
    - Manages internal state and data
    - Offers utility services
 
+# Pure Component-Based Architecture
+
+All SMACC2 clients follow a **pure orchestrator pattern**:
+
+1. **Clients are orchestrators only** - They create and configure components but implement no business logic
+2. **Components implement functionality** - All actual functionality lives in reusable components
+3. **Behaviors consume components** - Behaviors access components via `requiresComponent()`
+
+
 ### Inheritance Hierarchy
 
 ```cpp
-// For general clients
+// Client: Pure orchestrator - creates components only
 class ClExample : public smacc2::ISmaccClient
 
-// For synchronous client behaviors
-class CbSyncBehavior1 : public smacc2::SmaccClientBehavior
+// Component: Implements actual functionality
+class CpExample : public smacc2::ISmaccComponent
 
-// For asynchronous client behaviors
-class CbAsyncBehavior1 : public smacc2::SmaccAsyncClientBehavior
+// Synchronous behavior: Accesses components via requiresComponent()
+class CbSyncBehavior : public smacc2::SmaccClientBehavior
 
-// For components
-class CpComponent1 : public smacc2::ISmaccComponent
+// Asynchronous behavior: For long-running operations
+class CbAsyncBehavior : public smacc2::SmaccAsyncClientBehavior
+```
+
+### Key Template Methods
+
+**onComponentInitialization()** - Called during orthogonal initialization to create components:
+```cpp
+template <typename TOrthogonal, typename TClient>
+void onComponentInitialization()
+{
+  // TOrthogonal = orthogonal containing this client
+  // TClient = this client type (for type-safe event posting)
+  this->createComponent<CpSomeComponent, TOrthogonal, TClient>(args...);
+}
+```
+
+**onStateOrthogonalAllocation()** - Called in components/behaviors for event posting setup:
+```cpp
+template <typename TOrthogonal, typename TSourceObject>
+void onStateOrthogonalAllocation()
+{
+  // Set up event posting lambdas with template parameters
+  postEvent_ = [this]() {
+    this->postEvent<EvSomeEvent<TSourceObject, TOrthogonal>>();
+  };
+}
 ```
 
 //////////////////////////////////////////////////////////////////////////////
 
-# Architecture
+# Framework Core Components
 
-//////////////////////////////////////////////////////////////////////////////
+The framework provides reusable components in `smacc2/client_core_components/`:
 
-## Known Client Types
-
-### 1. ACTION-BASED CLIENTS
-
-**Used for:** Long-running operations with feedback (navigation, manipulation)
-**Features:**    
-   - Action server integration
-   - Goal/Result handling
-   - Cancellation support
-**Example:** `nav2z_client` using `NavigateToPose` action
-
+### CpTopicSubscriber<MessageType>
+Generic ROS2 topic subscription with signals and event posting.
 ```cpp
-class ClNav2Z : public smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>
+template <typename MessageType>
+class CpTopicSubscriber : public smacc2::ISmaccComponent
 {
 public:
-  using smacc2::client_bases::SmaccActionClientBase<nav2_msgs::action::NavigateToPose>::GoalHandle;
-  typedef smacc2::SmaccSignal<void(const WrappedResult &)> SmaccNavigateResultSignal;
-  
-  ClNav2Z(std::string actionName = "/navigate_to_pose");
-  virtual ~ClNav2Z();
+  smacc2::SmaccSignal<void(const MessageType &)> onFirstMessageReceived_;
+  smacc2::SmaccSignal<void(const MessageType &)> onMessageReceived_;
+
+  std::function<void(const MessageType &)> postMessageEvent;
+  std::function<void(const MessageType &)> postInitialMessageEvent;
 };
 ```
 
-### 2. TOPIC-BASED CLIENTS
-
-**Used for:** Publish/subscribe communication patterns
-**Features:**  
-   - Publisher/Subscriber pattern
-   - Signal-based event communication
-   - Thread-safe state management
-
-Publishing is easy. Subscribing to topics, and throwing events based on that subscription is the main challenge.
-
-#### Creating a subscriber client using the CpTopicSubscriber
-
-**Example:** `cl_keyboard` subscribing to key events
-
-The key point of this approach is using the CpTopicSubscriber that essentially is a SMACC2 Component that wraps a ROS2 subscriber and provides a signal-based callback mechanism and also posts SMACC2 events.
-
-
+### CpActionClient<ActionType>
+Generic ROS2 action client with signals for result handling.
 ```cpp
-class ClKeyboard : public smacc2::ISmaccClient
+template <typename ActionType>
+class CpActionClient : public smacc2::ISmaccComponent
 {
 public:
-  ClKeyboard();
-  virtual ~ClKeyboard();
+  smacc2::SmaccSignal<void(const WrappedResult &)> onSucceeded_;
+  smacc2::SmaccSignal<void(const WrappedResult &)> onAborted_;
+  smacc2::SmaccSignal<void(const WrappedResult &)> onCancelled_;
+  smacc2::SmaccSignal<void(const Feedback &)> onFeedback_;
 
-  virtual void onInitialize() override;
+  std::shared_future<GoalHandle::SharedPtr> sendGoal(const Goal & goal);
+  bool cancelGoal();
+};
+```
 
-  template <typename TOrthogonal>
+### CpRos2Timer
+Timer component with tick signal.
+```cpp
+class CpRos2Timer : public smacc2::ISmaccComponent
+{
+public:
+  smacc2::SmaccSignal<void()> onTimerTick_;
+
+  void start();
+  void stop();
+};
+```
+
+//////////////////////////////////////////////////////////////////////////////
+
+# Known Client Types with Component-Based Examples
+
+## 1. ACTION-BASED CLIENTS
+
+**Used for:** Long-running operations with feedback (navigation, manipulation)
+
+**Pattern:** Client creates CpActionClient + domain-specific interface component
+
+```cpp
+// cl_nav2z - Pure orchestrator pattern
+class ClNav2Z : public smacc2::ISmaccClient
+{
+public:
+  ClNav2Z(std::string actionServerName = "/navigate_to_pose")
+    : actionServerName_(actionServerName) {}
+
+  template <typename TOrthogonal, typename TClient>
   void onComponentInitialization()
   {
-    // Create the subscriber component during orthogonal initialization
-    subscriberComponent_ = this->createComponent<
-      smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16>, TOrthogonal, ClKeyboard>(
-      "/keyboard_unicode");
-    subscriberComponent_->onMessageReceived(&ClKeyboard::onKeyboardMessage, this);
+    // Create core action client component
+    this->createComponent<
+      smacc2::client_core_components::CpActionClient<nav2_msgs::action::NavigateToPose>,
+      TOrthogonal, ClNav2Z>(actionServerName_);
 
-    // ...
+    // Create nav2-specific interface component
+    this->createComponent<components::CpNav2ActionInterface, TOrthogonal, ClNav2Z>();
   }
 
 private:
-  void onKeyPress(const std_msgs::msg::UInt16::SharedPtr msg);
-
-  smacc2::components::CpTopicSubscriber<std_msgs::msg::UInt16> * subscriberComponent_;
+  std::string actionServerName_;
+  // NO business logic methods - pure orchestrator
 };
 ```
 
-**Examples:** 
-
-- [ClAprilTagDetector/CpAprilVisualization](https://github.com/robosoft-ai/nova_carter_sm_library/blob/main/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_april_tag_detector/components/cp_april_visualization.hpp)
-
-- [ClNav2Z/CpWaypointsVisualizer](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_visualizer.hpp)
-
-
-### 3. SERVICE-BASED CLIENTS
-
-**Used for:** Request/response interactions
-   - Synchronous/Asynchronous service calls
-   - Response handling
-**Example:** `cl_lifecycle_node` calling lifecycle services
-
+**Interface Component** wraps the generic action client:
 ```cpp
-class ClLifecycleNode : public smacc2::ISmaccClient
+class CpNav2ActionInterface : public smacc2::ISmaccComponent
 {
 public:
-  ClLifecycleNode(std::string serviceName);
+  smacc2::SmaccSignal<void(const WrappedResult &)> onNavigationSucceeded_;
+  smacc2::SmaccSignal<void(const WrappedResult &)> onNavigationAborted_;
 
-  bool changeState(std::uint8_t transition);
+  void onInitialize() override
+  {
+    // Get the underlying action client component
+    this->requiresComponent(actionClient_);
+
+    // Wire up signal connections
+    actionClient_->onSucceeded(&CpNav2ActionInterface::onSuccessCallback, this);
+    actionClient_->onAborted(&CpNav2ActionInterface::onAbortedCallback, this);
+  }
+
+  std::shared_future<GoalHandle::SharedPtr> sendNavigationGoal(
+    const geometry_msgs::msg::PoseStamped & target)
+  {
+    Goal goal;
+    goal.pose = target;
+    return actionClient_->sendGoal(goal);
+  }
 
 private:
-  rclcpp::Client<lifecycle_msgs::srv::ChangeState>::SharedPtr client_;
+  smacc2::client_core_components::CpActionClient<ActionType> * actionClient_;
 };
 ```
-### 4. TIMER-BASED CLIENTS
+
+## 2. TOPIC-BASED CLIENTS
+
+**Used for:** Publish/subscribe communication patterns
+
+**Pattern:** Client creates CpTopicSubscriber + listener component for event posting
+
+```cpp
+// cl_keyboard - Topic-based pure component architecture
+class ClKeyboard : public smacc2::ISmaccClient
+{
+public:
+  template <typename TOrthogonal, typename TClient>
+  void onComponentInitialization()
+  {
+    // Create core topic subscriber component
+    this->createComponent<
+      smacc2::client_core_components::CpTopicSubscriber<std_msgs::msg::UInt16>,
+      TOrthogonal, ClKeyboard>("/keyboard_unicode");
+
+    // Create listener component that processes messages and posts events
+    this->createComponent<components::CpKeyboardListener1, TOrthogonal, ClKeyboard>();
+  }
+};
+```
+
+**Listener Component** connects to subscriber and posts events:
+```cpp
+class CpKeyboardListener1 : public smacc2::ISmaccComponent
+{
+public:
+  smacc2::SmaccSignal<void(char)> OnKeyPress_;
+
+  template <typename TOrthogonal, typename TClient>
+  void onStateOrthogonalAllocation()
+  {
+    // Set up event posting with orthogonal type info
+    postEventKeyPress = [this](auto unicode) {
+      char c = (char)unicode.data;
+      if (c == 'a') this->postEvent<EvKeyPressA<CpKeyboardListener1, TOrthogonal>>();
+      else if (c == 'b') this->postEvent<EvKeyPressB<CpKeyboardListener1, TOrthogonal>>();
+      // ... more keys
+    };
+  }
+
+  void onInitialize() override
+  {
+    // Require the subscriber component
+    this->requiresComponent(subscriber_);
+    subscriber_->onMessageReceived(&CpKeyboardListener1::onKeyboardMessage, this);
+  }
+
+private:
+  smacc2::client_core_components::CpTopicSubscriber<std_msgs::msg::UInt16> * subscriber_;
+  std::function<void(const std_msgs::msg::UInt16 &)> postEventKeyPress;
+};
+```
+
+## 3. TIMER-BASED CLIENTS
 
 **Used for:** Periodic operations and delays
-**Example:** `cl_ros2_timer` for timed behaviors
+
+**Pattern:** Client creates CpRos2Timer + listener component
 
 ```cpp
 class ClRos2Timer : public smacc2::ISmaccClient
 {
 public:
-  ClRosTimer(rclcpp::Duration duration, bool oneshot = true);
-  
-  virtual void onInitialize() override;
-  
-  smacc2::SmaccSignal<void()> onTimerTick_;
-  
+  ClRos2Timer(rclcpp::Duration duration, bool oneshot = false)
+    : duration_(duration), oneshot_(oneshot) {}
+
+  template <typename TOrthogonal, typename TClient>
+  void onComponentInitialization()
+  {
+    // Create the core timer component
+    this->createComponent<smacc2::client_core_components::CpRos2Timer,
+      TOrthogonal, ClRos2Timer>(duration_, oneshot_);
+
+    // Create listener component
+    this->createComponent<components::CpTimerListener1, TOrthogonal, ClRos2Timer>();
+  }
+
 private:
-  void timerCallback();
-  rclcpp::TimerBase::SharedPtr timer_;
+  rclcpp::Duration duration_;
+  bool oneshot_;
+};
+```
+
+## 4. HTTP CLIENTS
+
+**Used for:** HTTP/HTTPS requests with multiple specialized components
+
+```cpp
+class ClHttp : public smacc2::ISmaccClient
+{
+public:
+  explicit ClHttp(const std::string & server, int timeout = 1500);
+
+  template <typename TOrthogonal, typename TClient>
+  void onComponentInitialization()
+  {
+    // Create connection management component
+    connectionManager_ = this->createComponent<CpHttpConnectionManager, TOrthogonal, ClHttp>();
+
+    // Create session management component
+    sessionManager_ = this->createComponent<CpHttpSessionManager, TOrthogonal, ClHttp>();
+
+    // Create request executor component
+    requestExecutor_ = this->createComponent<CpHttpRequestExecutor, TOrthogonal, ClHttp>();
+
+    // Set component dependencies
+    requestExecutor_->setDependencies(connectionManager_, sessionManager_);
+    sessionManager_->setServerUrl(server_url_);
+  }
+
+private:
+  std::string server_url_;
+  CpHttpConnectionManager * connectionManager_;
+  CpHttpSessionManager * sessionManager_;
+  CpHttpRequestExecutor * requestExecutor_;
 };
 ```
 
@@ -238,7 +392,9 @@ private:
 
 //////////////////////////////////////////////////////////////////////////////
 
-## Known Behavior Types
+# Client Behavior Patterns
+
+Behaviors access components via `requiresComponent()` and connect to component signals.
    
 ###   1. ACTION-BASED PATTERN BEHAVIORS (Goal-oriented with feedback)
  
@@ -271,42 +427,37 @@ private:
 #### Common C++ Structure:
 
 ```cpp
-  class CbActionBehavior : public CbNav2ZClientBehaviorBase  // or SmaccAsyncClientBehavior
+class CbNavigateForward : public smacc2::SmaccAsyncClientBehavior
+{
+public:
+  geometry_msgs::msg::PoseStamped targetPose_;
+
+  void onEntry() override
   {
-  public:
-    // Configuration options struct
-    SomeOptions options;
+    // Get interface component (not client)
+    this->requiresComponent(navInterface_);
 
-    // Goal parameters (pose, distance, joints, etc.)
-    geometry_msgs::msg::PoseStamped targetPose;  // or equivalent
+    // Connect to component signals
+    navInterface_->onNavigationSucceeded(
+      &CbNavigateForward::onNavigationSuccess, this);
+    navInterface_->onNavigationAborted(
+      &CbNavigateForward::onNavigationAborted, this);
 
-    // Constructor with parameters
-    CbActionBehavior(ParamType param);
+    // Send goal via component
+    navInterface_->sendNavigationGoal(targetPose_);
+  }
 
-    virtual void onEntry() override;  // Sends goal to action server
-    virtual void onExit() override;   // Clean up
+private:
+  components::CpNav2ActionInterface * navInterface_;
 
-  protected:
-    // Action client reference
-    ClActionClient* actionClient_;
-
-    // Result handling methods
-    virtual void onActionResult(const Result&);
-    virtual void onActionSuccess(const Result&);
-    virtual void onActionAbort(const Result&);
-  };
-  ```
-
-  Key Commonalities:
-  - Inherit from SmaccAsyncClientBehavior or specialized base classes like CbNav2ZClientBehaviorBase
-  <sup>file:///src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_nav2z_client_behavior_base.hpp#L28</sup>
-  - Configuration options structs (e.g., CbNavigateForwardOptions
-  <sup>file:///src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_navigate_forward.hpp#L33)</sup>
-
-  - Goal parameter members (poses, distances, joint targets)
-  - Action client pointers with typed results
-  - Async result handling via callbacks
-
+  void onNavigationSuccess(const WrappedResult & result) {
+    this->postSuccessEvent();
+  }
+  void onNavigationAborted(const WrappedResult & result) {
+    this->postFailureEvent();
+  }
+};
+```
 
 ###  2. EVENT-DRIVEN PATTERN BEHAVIORS (Reactive to external stimuli)
 
@@ -327,29 +478,37 @@ private:
 
 ####  Common C++ Structure:
 ```cpp
-  class CbEventBehavior : public smacc2::SmaccClientBehavior
+class CbDefaultKeyboardBehavior : public smacc2::SmaccClientBehavior
+{
+public:
+  template <typename TOrthogonal, typename TSourceObject>
+  void onStateOrthogonalAllocation()
   {
-  public:
-    template <typename TOrthogonal, typename TSourceObject>
-    void onStateOrthogonalAllocation() {
-      // Event posting lambda setup
-      postEventFunction_ = [=]() {
-        this->template postEvent<EvSomeEvent<TSourceObject, TOrthogonal>>();
-      };
-    }
+    // Set up event posting lambda
+    postKeyEvent_ = [this](char key) {
+      if (key == 'n')
+        this->postEvent<EvKeyPressN<TSourceObject, TOrthogonal>>();
+    };
+  }
 
-    void onEntry() override {
-      this->requiresClient(client_);
-      client_->onSomeCallback(&CbEventBehavior::onCallbackMethod, this);
-    }
+  void onEntry() override
+  {
+    // Get listener component
+    this->requiresComponent(keyboardListener_);
 
-  private:
-    std::function<void()> postEventFunction_;  // Event posting mechanism
-    SomeClient* client_;                       // Client for external data
+    // Connect to component signal
+    keyboardListener_->OnKeyPress(&CbDefaultKeyboardBehavior::onKeyPress, this);
+  }
 
-    void onCallbackMethod(const CallbackData& data);  // Process external input
-  };
-  ```
+private:
+  components::CpKeyboardListener1 * keyboardListener_;
+  std::function<void(char)> postKeyEvent_;
+
+  void onKeyPress(char key) {
+    if (postKeyEvent_) postKeyEvent_(key);
+  }
+};
+```
 
   Key Commonalities:
   - Template-based onStateOrthogonalAllocation() for type-safe event posting
@@ -968,39 +1127,41 @@ private:
 ```
  <sup>cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator.hpp:70-83</sup>
 
+## Common Component Patterns
 
- ##### Common C++ Patterns:
-  - Template Method Pattern: Abstract base with concrete implementations
-  - Signal Aggregation: Multiple SmaccSignal<> for different event types
-  - Connection Management: boost::signals2::connection for callback lifecycle
-  - Index-Based State: Integer waypoint progression tracking
-  - Event Dispatcher Pattern: Separate dispatcher for event routing
-  - Polymorphic Callbacks: Virtual methods for customizable behavior
-  - State Progression Logic: Automatic increment on successful completion
-  - RAII Connection Management: Automatic signal disconnection on destruction
-  
-  ### Common C++ Design Patterns Across All Component Types
+1. **Base Class:** All inherit from `smacc2::ISmaccComponent`
+2. **Dependencies:** Use `requiresComponent()` to access other components
+3. **Signals:** Use `smacc2::SmaccSignal<>` for decoupled communication
+4. **Lifecycle:** Implement `onInitialize()` for setup
+5. **Event Posting:** Use `onStateOrthogonalAllocation()` for templated events
+6. **Thread Safety:** Use `std::mutex` for shared data
+7. **Real-Time:** Inherit from `ISmaccUpdatable` for periodic updates
 
-  ##### Universal Patterns:
+//////////////////////////////////////////////////////////////////////////////
 
-  1. Base Class Hierarchy: All inherit from smacc2::ISmaccComponent
-  2. Lifecycle Management: Recommended onInitialize() override pattern
-  3. RAII Resource Management: Automatic cleanup via destructors and smart pointers
-  4. Thread Safety: std::mutex protection for shared data
-  5. Optional Configuration: std::optional<> for configurable parameters
-  6. Signal-Slot Communication: smacc2::SmaccSignal<> for decoupled messaging
-  7. String-Based Identification: Consistent naming and identification patterns
-  8. Template-Based Generics: Type-safe generic programming where applicable
+# Architecture Benefits
 
-  ##### Specialized Patterns by Category:
+1. **Pure Separation of Concerns**
+   - Clients orchestrate only - no business logic
+   - Components implement all functionality
+   - Behaviors consume components via `requiresComponent()`
 
-  - Publisher-Subscriber: Template specialization, QoS configuration
-  - State Tracking: Enum classes, map-based databases
-  - Configuration: Builder pattern, deferred execution
-  - Data Buffers: Vector storage, index-based access, bounds checking
-  - Transform Management: Static resource sharing, real-time updates
-  - Mission Control: Abstract base classes, event aggregation
-  ---
+2. **Composability**
+   - Components can be mixed and matched
+   - New clients compose existing components
+   - Framework provides reusable core components
+
+3. **Testability**
+   - Each component can be tested independently
+   - Clear interfaces between components
+
+4. **Type Safety**
+   - Template parameters ensure correct event typing
+   - Compile-time orthogonal resolution
+
+5. **Signal-Based Communication**
+   - Loose coupling via SmaccSignal connections
+   - Automatic lifecycle management
 
 
 //////////////////////////////////////////////////////////////////////////////
