@@ -1,0 +1,2 @@
+# This package requires isaac_ros_apriltag_interfaces which is part of NVIDIA Isaac ROS.
+# Remove this file when Isaac ROS packages are available in the workspace.
