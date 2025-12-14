@@ -22,13 +22,13 @@
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 
-#include <isaac_ros_apriltag_interfaces/msg/april_tag_detection_array.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
+#include <isaac_ros_apriltag_interfaces/msg/april_tag_detection_array.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
+#include <smacc2/client_core_components/cp_topic_subscriber.hpp>
 #include <smacc2/component.hpp>
 #include <smacc2/smacc_signal.hpp>
-#include <smacc2/client_core_components/cp_topic_subscriber.hpp>
 
 #include <map>
 #include <mutex>

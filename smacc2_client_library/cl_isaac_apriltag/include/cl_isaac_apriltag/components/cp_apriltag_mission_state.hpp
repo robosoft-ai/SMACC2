@@ -44,10 +44,7 @@ public:
 
   virtual ~CpAprilTagMissionState() = default;
 
-  void onInitialize() override
-  {
-    RCLCPP_INFO(getLogger(), "[CpAprilTagMissionState] Initialized");
-  }
+  void onInitialize() override { RCLCPP_INFO(getLogger(), "[CpAprilTagMissionState] Initialized"); }
 
   /**
    * @brief Check if a tag has been visited.
