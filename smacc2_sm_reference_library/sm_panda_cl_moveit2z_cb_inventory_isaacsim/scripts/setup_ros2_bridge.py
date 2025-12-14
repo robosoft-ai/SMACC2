@@ -78,11 +78,13 @@ import os
 # Log file for debugging (readable from terminal)
 LOG_FILE = os.path.expanduser("~/isaacsim_ros2_bridge_setup.log")
 
+
 def log(msg):
     """Print and log to file"""
     print(msg)
     with open(LOG_FILE, "a") as f:
         f.write(msg + "\n")
+
 
 # Clear log file at start
 with open(LOG_FILE, "w") as f:
@@ -287,7 +289,9 @@ omni.kit.app.get_app().update()
 log("\nZED Camera OmniGraph creation SKIPPED")
 log("  Camera viewport creation causes Isaac Sim crash")
 log("  To publish camera data, use Isaac Sim GUI:")
-log("    1. Select: /World/carter_warehouse_navigation_w_ZED_Pandas/ZED_X/base_link/ZED_X/CameraLeft")
+log(
+    "    1. Select: /World/carter_warehouse_navigation_w_ZED_Pandas/ZED_X/base_link/ZED_X/CameraLeft"
+)
 log("    2. Right-click > Create > Isaac > ROS2 Bridge > Camera")
 camera_prim_path = f"{ZED_CAMERA_PATH}/base_link/ZED_X/CameraLeft"
 
