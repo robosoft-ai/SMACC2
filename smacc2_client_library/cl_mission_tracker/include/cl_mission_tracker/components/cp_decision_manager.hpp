@@ -40,10 +40,7 @@ public:
 
   virtual ~CpDecisionManager() = default;
 
-  void onInitialize() override
-  {
-    RCLCPP_INFO(getLogger(), "[CpDecisionManager] Initialized");
-  }
+  void onInitialize() override { RCLCPP_INFO(getLogger(), "[CpDecisionManager] Initialized"); }
 
   /**
    * @brief Get the current decision counter value.
