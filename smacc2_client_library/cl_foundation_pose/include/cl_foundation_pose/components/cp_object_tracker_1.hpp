@@ -13,10 +13,10 @@
 // limitations under the License.
 
 #pragma once
+#include <cl_foundation_pose/components/tracker_utils.hpp>
+#include <smacc2/client_core_components/cp_topic_subscriber.hpp>
 #include <smacc2/component.hpp>
 #include <vision_msgs/msg/detection3_d_array.hpp>
-#include <smacc2/client_core_components/cp_topic_subscriber.hpp>
-#include <cl_foundation_pose/components/tracker_utils.hpp>
 
 namespace cl_foundation_pose
 {
@@ -25,7 +25,6 @@ using namespace smacc2::client_core_components;
 
 class CpObjectTracker1 : public smacc2::ISmaccComponent
 {
-
 public:
   // Declare the Component's default constructor.
   void onInitialize()
@@ -37,18 +36,18 @@ public:
     fondationPoseTopic_->onMessageReceived(&CpObjectTracker1::onDetection3DArrayReceived, this);
   }
 
-  void onDetection3DArrayReceived(const vision_msgs::msg::Detection3DArray& msg)
+  void onDetection3DArrayReceived(const vision_msgs::msg::Detection3DArray & msg)
   {
     RCLCPP_INFO(getLogger(), "Received %ld detections", msg.detections.size());
 
-    for (auto &detection : msg.detections)
+    for (auto & detection : msg.detections)
     {
       auto previouslyExistingObjectEntry = detectedObjects.find(detection.id);
 
       // if we have seen this object before...
       if (previouslyExistingObjectEntry != detectedObjects.end())
       {
-        auto& previouslyExistingObject = previouslyExistingObjectEntry->second;
+        auto & previouslyExistingObject = previouslyExistingObjectEntry->second;
         previouslyExistingObject.msg = detection;
       }
       else
@@ -62,7 +61,7 @@ public:
     }
   }
 
-  std::optional<geometry_msgs::msg::PoseStamped> getPose(const std::string& object_id)
+  std::optional<geometry_msgs::msg::PoseStamped> getPose(const std::string & object_id)
   {
     auto object = detectedObjects.find(object_id);
     if (object != detectedObjects.end())
@@ -75,13 +74,12 @@ public:
     return std::nullopt;
   }
 
-  private:
+private:
+  // Declare the subscriber component.
+  CpTopicSubscriber<vision_msgs::msg::Detection3DArray> * fondationPoseTopic_;
 
-    // Declare the subscriber component.
-    CpTopicSubscriber<vision_msgs::msg::Detection3DArray>* fondationPoseTopic_;
-
-    // Declare a data structure to store the detected objects.
-    std::map<std::string, DetectedObject> detectedObjects;
+  // Declare a data structure to store the detected objects.
+  std::map<std::string, DetectedObject> detectedObjects;
 };
 
-} // namespace cl_foundation_pose
+}  // namespace cl_foundation_pose

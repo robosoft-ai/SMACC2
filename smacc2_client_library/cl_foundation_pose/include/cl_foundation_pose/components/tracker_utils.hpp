@@ -27,13 +27,11 @@ struct DetectedObject
 
   std::vector<geometry_msgs::msg::PoseStamped> historicalPoses_;
 
-  DetectedObject()
-  {
-    historicalPoses_.clear();
-  }
+  DetectedObject() { historicalPoses_.clear(); }
 };
 
+struct EvObjectDetected : sc::event<EvObjectDetected>
+{
+};
 
-struct EvObjectDetected : sc::event<EvObjectDetected> {};
-
-} // namespace cl_foundation_pose
+}  // namespace cl_foundation_pose

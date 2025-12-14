@@ -40,19 +40,14 @@ namespace cl_isaac_apriltag
 class CpAprilTagVisualization : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdatable
 {
 public:
-  CpAprilTagVisualization()
-  {
+  CpAprilTagVisualization() {}
 
-  }
-
-  virtual ~CpAprilTagVisualization()
-  {
-  }
+  virtual ~CpAprilTagVisualization() {}
 
   void onInitialize() override
   {
-      markerPublisher = getNode()->create_publisher<visualization_msgs::msg::MarkerArray>("/markers_2", 10);
-
+    markerPublisher =
+      getNode()->create_publisher<visualization_msgs::msg::MarkerArray>("/markers_2", 10);
   }
 
   std::optional<tf2::Transform> getGlobalApriltagTransform()
@@ -66,55 +61,61 @@ public:
     std::stringstream ss;
 
     ss << "[CpAprilTagVisualization] computeAggregatdMarker" << std::endl;
-     cl_isaac_apriltag::ClIsaacApriltag* apriltagDetector = dynamic_cast<cl_isaac_apriltag::ClIsaacApriltag*>(this->owner_);
+    cl_isaac_apriltag::ClIsaacApriltag * apriltagDetector =
+      dynamic_cast<cl_isaac_apriltag::ClIsaacApriltag *>(this->owner_);
 
-      ss << "[CpAprilTagVisualization] getTagsWithinTime" << std::endl;
-      auto tags = apriltagDetector->getTagsWithinTime(0.5s);
+    ss << "[CpAprilTagVisualization] getTagsWithinTime" << std::endl;
+    auto tags = apriltagDetector->getTagsWithinTime(0.5s);
 
-      //avergae apriltag position
-      double avgX = 0;
-      double avgY = 0;
-      double avgZ = 0;
-      for (auto &apriltag : tags)
-      {
-        avgX += apriltag.second.pose.position.x;
-        avgY += apriltag.second.pose.position.y;
-        avgZ += apriltag.second.pose.position.z;
-      }
+    //avergae apriltag position
+    double avgX = 0;
+    double avgY = 0;
+    double avgZ = 0;
+    for (auto & apriltag : tags)
+    {
+      avgX += apriltag.second.pose.position.x;
+      avgY += apriltag.second.pose.position.y;
+      avgZ += apriltag.second.pose.position.z;
+    }
 
-      if(tags.size() == 0)
-      {
-        RCLCPP_INFO_THROTTLE(getLogger(), *(getNode()->get_clock()), 1000, "[CpAprilTagVisualization] no apriltags detected to visualize");
-        return;
-      }
+    if (tags.size() == 0)
+    {
+      RCLCPP_INFO_THROTTLE(
+        getLogger(), *(getNode()->get_clock()), 1000,
+        "[CpAprilTagVisualization] no apriltags detected to visualize");
+      return;
+    }
 
-      avgX /= tags.size();
-      avgY /= tags.size();
-      avgZ /= tags.size();
+    avgX /= tags.size();
+    avgY /= tags.size();
+    avgZ /= tags.size();
 
-      //substract some small forward offset from apriltag position for the goal position
-      avgX -= 0.15;
+    //substract some small forward offset from apriltag position for the goal position
+    avgX -= 0.15;
 
-      ss << "[CpAprilTagVisualization] detected " << tags.size() << " tags" << std::endl;
-      ss << "[CpAprilTagVisualization] avgX: " << avgX << ", avgY: " << avgY << ", avgZ: " << avgZ << std::endl;
+    ss << "[CpAprilTagVisualization] detected " << tags.size() << " tags" << std::endl;
+    ss << "[CpAprilTagVisualization] avgX: " << avgX << ", avgY: " << avgY << ", avgZ: " << avgZ
+       << std::endl;
 
-      tf2::Transform apriltagTransform;
-      apriltagTransform.setOrigin(tf2::Vector3(avgX, avgY, 0.0));
-      apriltagTransform.setRotation(tf2::Quaternion(0.0, 0.0, 0.0, 1.0));
+    tf2::Transform apriltagTransform;
+    apriltagTransform.setOrigin(tf2::Vector3(avgX, avgY, 0.0));
+    apriltagTransform.setRotation(tf2::Quaternion(0.0, 0.0, 0.0, 1.0));
 
-      globalApriltagTransform = apriltagTransform;
+    globalApriltagTransform = apriltagTransform;
 
-      ss << "[CpAprilTagVisualization] apriltagTransform: " << apriltagTransform.getOrigin().x() << ", " << apriltagTransform.getOrigin().y() << ", " << apriltagTransform.getOrigin().z();
-      ss << "[CpAprilTagVisualization] globalApriltagTransform: " << globalApriltagTransform->getOrigin().x() << ", " << globalApriltagTransform->getOrigin().y() << ", " << globalApriltagTransform->getOrigin().z();
-      RCLCPP_INFO_THROTTLE(getLogger(), *(getNode()->get_clock()), 1000, ss.str().c_str());
+    ss << "[CpAprilTagVisualization] apriltagTransform: " << apriltagTransform.getOrigin().x()
+       << ", " << apriltagTransform.getOrigin().y() << ", " << apriltagTransform.getOrigin().z();
+    ss << "[CpAprilTagVisualization] globalApriltagTransform: "
+       << globalApriltagTransform->getOrigin().x() << ", "
+       << globalApriltagTransform->getOrigin().y() << ", "
+       << globalApriltagTransform->getOrigin().z();
+    RCLCPP_INFO_THROTTLE(getLogger(), *(getNode()->get_clock()), 1000, ss.str().c_str());
   }
 
   virtual void update() override
   {
-
     if (globalApriltagTransform)
     {
-
       this->computeAggregatdMarker();
 
       // publish visualization markrs of th apriltag global estimation
@@ -144,7 +145,10 @@ public:
       marker.pose.orientation.z = rotation.z();
       marker.pose.orientation.x = rotation.x();
 
-      RCLCPP_INFO_THROTTLE(getLogger(), *(getNode()->get_clock()), 1000, "[CpAprilTagVisualization] marker position: %f, %f, %f", origin.x(), origin.y(), origin.z());
+      RCLCPP_INFO_THROTTLE(
+        getLogger(), *(getNode()->get_clock()), 1000,
+        "[CpAprilTagVisualization] marker position: %f, %f, %f", origin.x(), origin.y(),
+        origin.z());
 
       // red color
       marker.color.r = 1.0;
@@ -159,11 +163,10 @@ public:
       markerArray.markers.push_back(marker);
 
       markerPublisher->publish(markerArray);
-  }
+    }
   }
 
 protected:
-
   std::mutex m_mutex_;
 
   rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr markerPublisher;

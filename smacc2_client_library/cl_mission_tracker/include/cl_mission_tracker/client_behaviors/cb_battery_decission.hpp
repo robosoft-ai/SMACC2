@@ -25,53 +25,50 @@
 namespace cl_mission_tracker
 {
 
-class CbBatteryDecission : public smacc2::SmaccAsyncClientBehavior {
+class CbBatteryDecission : public smacc2::SmaccAsyncClientBehavior
+{
 private:
-    cl_mission_tracker::ClMissionTracker *missionTracker_ = nullptr;
-    std::function<void()> postEventFn_;
+  cl_mission_tracker::ClMissionTracker * missionTracker_ = nullptr;
+  std::function<void()> postEventFn_;
 
 public:
   CbBatteryDecission() {}
 
   virtual ~CbBatteryDecission() {}
 
-
-  virtual void onEntry() override
-  {
-    this->postEventFn_();
-  }
+  virtual void onEntry() override { this->postEventFn_(); }
 
   virtual void onExit() override {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onOrthogonalAllocation()
   {
-        postEventFn_ = [this]()
-        {
-          this->requiresClient(missionTracker_);
-          int decission_count = missionTracker_->getDecissionCounter();
-          missionTracker_->nextDecission();
+    postEventFn_ = [this]()
+    {
+      this->requiresClient(missionTracker_);
+      int decission_count = missionTracker_->getDecissionCounter();
+      missionTracker_->nextDecission();
 
-          switch (decission_count)
-          {
-            case 0:
-            case 2:
-            case 4:
-              this->postEvent<EvBatteryLoad<TSourceObject, TOrthogonal>>();
-              break;
-            case 1:
-              this->postEvent<EvRadialMotion<TSourceObject, TOrthogonal>>();
-              break;
-            case 3:
-              this->postEvent<EvSPattern<TSourceObject, TOrthogonal>>();
-              break;
-            case 5:
-              this->postEvent<EvFPattern<TSourceObject, TOrthogonal>>();
-              break;
-            default:
-              break;
-          }
-        };
+      switch (decission_count)
+      {
+        case 0:
+        case 2:
+        case 4:
+          this->postEvent<EvBatteryLoad<TSourceObject, TOrthogonal>>();
+          break;
+        case 1:
+          this->postEvent<EvRadialMotion<TSourceObject, TOrthogonal>>();
+          break;
+        case 3:
+          this->postEvent<EvSPattern<TSourceObject, TOrthogonal>>();
+          break;
+        case 5:
+          this->postEvent<EvFPattern<TSourceObject, TOrthogonal>>();
+          break;
+        default:
+          break;
+      }
+    };
   }
 };
-} // namespace cl_mission_tracker
+}  // namespace cl_mission_tracker

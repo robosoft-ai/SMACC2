@@ -25,21 +25,15 @@
 namespace cl_foundation_pose
 {
 
-class CbTrackObjectPause : public smacc2::SmaccClientBehavior , public smacc2::ISmaccUpdatable
+class CbTrackObjectPause : public smacc2::SmaccClientBehavior, public smacc2::ISmaccUpdatable
 {
 private:
-    cl_foundation_pose::CpObjectTrackerTf   *objectTracker_ = nullptr;
+  cl_foundation_pose::CpObjectTrackerTf * objectTracker_ = nullptr;
 
 public:
-  CbTrackObjectPose()
-  {
+  CbTrackObjectPose() {}
 
-  }
-
-  virtual ~CbTrackObjectPose()
-  {
-
-  }
+  virtual ~CbTrackObjectPose() {}
 
   virtual void onEntry() override
   {
@@ -49,15 +43,12 @@ public:
     RCLCPP_INFO(getLogger(), "CbTrackObjectPose onEntry - enabled");
   }
 
-  virtual void onExit() override
-  {
-    objectTracker_->setEnabled(false);
-  }
+  virtual void onExit() override { objectTracker_->setEnabled(false); }
 
   virtual void update() override
   {
-    if (objectTracker_!=nullptr && objectTracker_->isEnabled())
-    objectTracker_->updateAndGetGlobalPose(objectToTrackId_, globalFrame_);
+    if (objectTracker_ != nullptr && objectTracker_->isEnabled())
+      objectTracker_->updateAndGetGlobalPose(objectToTrackId_, globalFrame_);
   }
 };
-} // namespace cl_foundation_pose
+}  // namespace cl_foundation_pose

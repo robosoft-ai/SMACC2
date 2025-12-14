@@ -26,11 +26,10 @@
 
 namespace cl_foundation_pose
 {
-  using namespace smacc2::client_core_components;
+using namespace smacc2::client_core_components;
 
 class ClFoundationPose : public smacc2::ISmaccClient
 {
-
 public:
   ClFoundationPose() {}
 
@@ -40,4 +39,4 @@ public:
   }
 };
 
-} // namespace cl_foundation_pose
+}  // namespace cl_foundation_pose

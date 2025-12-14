@@ -25,30 +25,34 @@
 namespace cl_mission_tracker
 {
 template <typename AsyncCB, typename Orthogonal>
-struct EvBatteryLoad
-    : sc::event<EvBatteryLoad<AsyncCB, Orthogonal>> {};
+struct EvBatteryLoad : sc::event<EvBatteryLoad<AsyncCB, Orthogonal>>
+{
+};
 
 template <typename AsyncCB, typename Orthogonal>
-struct EvRadialMotion
-    : sc::event<EvRadialMotion<AsyncCB, Orthogonal>> {};
+struct EvRadialMotion : sc::event<EvRadialMotion<AsyncCB, Orthogonal>>
+{
+};
 
 template <typename AsyncCB, typename Orthogonal>
-struct EvSPattern
-    : sc::event<EvSPattern<AsyncCB, Orthogonal>> {};
+struct EvSPattern : sc::event<EvSPattern<AsyncCB, Orthogonal>>
+{
+};
 
 template <typename AsyncCB, typename Orthogonal>
-struct EvFPattern
-    : sc::event<EvFPattern<AsyncCB, Orthogonal>> {};
+struct EvFPattern : sc::event<EvFPattern<AsyncCB, Orthogonal>>
+{
+};
 
 class ClMissionTracker : public smacc2::ISmaccClient
 {
-    private:
-        int decission_counter = 0;
+private:
+  int decission_counter = 0;
 
-    public:
-        ClMissionTracker() {}
-        void nextDecission () {decission_counter++;}
-        int getDecissionCounter() {return decission_counter;}
+public:
+  ClMissionTracker() {}
+  void nextDecission() { decission_counter++; }
+  int getDecissionCounter() { return decission_counter; }
 };
 
-} // namespace cl_mission_tracker
+}  // namespace cl_mission_tracker

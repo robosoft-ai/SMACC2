@@ -25,49 +25,43 @@
 namespace cl_foundation_pose
 {
 
-class CbTrackObjectPose : public smacc2::SmaccClientBehavior , public smacc2::ISmaccUpdatable
+class CbTrackObjectPose : public smacc2::SmaccClientBehavior, public smacc2::ISmaccUpdatable
 {
 private:
-    std::string globalFrame_;
-    std::string objectToTrackId_;
-    cl_foundation_pose::CpObjectTrackerTf   *objectTracker_ = nullptr;
+  std::string globalFrame_;
+  std::string objectToTrackId_;
+  cl_foundation_pose::CpObjectTrackerTf * objectTracker_ = nullptr;
 
 public:
-  CbTrackObjectPose(std::string objectToTrackId, std::string globalFrame="map"):
-    globalFrame_(globalFrame),
-    objectToTrackId_(objectToTrackId)
+  CbTrackObjectPose(std::string objectToTrackId, std::string globalFrame = "map")
+  : globalFrame_(globalFrame), objectToTrackId_(objectToTrackId)
   {
-
   }
 
-  virtual ~CbTrackObjectPose()
-  {
-
-  }
+  virtual ~CbTrackObjectPose() {}
 
   virtual void onEntry() override
   {
-    requiresComponent(objectTracker_,true);
+    requiresComponent(objectTracker_, true);
     RCLCPP_INFO(getLogger(), "CbTrackObjectPose onEntry");
     RCLCPP_INFO(getLogger(), "CbTrackObjectPose onEntry - enabled");
     objectTracker_->setEnabled(true);
-    RCLCPP_INFO(getLogger(), "CbTrackObjectPose onEntry - updateAndGetGlobalPose, objectToTrackId: %s, globalFrame: %s", objectToTrackId_.c_str(), globalFrame_.c_str());
+    RCLCPP_INFO(
+      getLogger(),
+      "CbTrackObjectPose onEntry - updateAndGetGlobalPose, objectToTrackId: %s, globalFrame: %s",
+      objectToTrackId_.c_str(), globalFrame_.c_str());
     objectTracker_->updateAndGetGlobalPose(objectToTrackId_, globalFrame_);
-
   }
 
-  virtual void onExit() override
-  {
-    objectTracker_->setEnabled(false);
-  }
+  virtual void onExit() override { objectTracker_->setEnabled(false); }
 
   virtual void update() override
   {
-    if(objectTracker_!=nullptr && objectTracker_->isEnabled())
+    if (objectTracker_ != nullptr && objectTracker_->isEnabled())
     {
       RCLCPP_INFO(getLogger(), "CbTrackObjectPose update");
       objectTracker_->updateAndGetGlobalPose(objectToTrackId_, globalFrame_);
     }
   }
 };
-} // namespace cl_foundation_pose
+}  // namespace cl_foundation_pose
