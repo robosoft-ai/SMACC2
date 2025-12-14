@@ -19,16 +19,28 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <cl_mission_tracker/cl_mission_tracker.hpp>
+#include <cl_mission_tracker/components/cp_decision_manager.hpp>
 #include <smacc2/smacc.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_mission_tracker
 {
 
+/**
+ * @brief Behavior that makes mission decisions based on a counter.
+ *
+ * This behavior uses requiresComponent() to access:
+ * - CpDecisionManager: For decision counter state
+ *
+ * Based on the current decision count, it posts different events
+ * to control the mission flow.
+ */
 class CbBatteryDecission : public smacc2::SmaccAsyncClientBehavior
 {
 private:
-  cl_mission_tracker::ClMissionTracker * missionTracker_ = nullptr;
+  // Component accessed via requiresComponent (NOT direct client!)
+  CpDecisionManager * decisionManager_ = nullptr;
   std::function<void()> postEventFn_;
 
 public:
@@ -45,11 +57,13 @@ public:
   {
     postEventFn_ = [this]()
     {
-      this->requiresClient(missionTracker_);
-      int decission_count = missionTracker_->getDecissionCounter();
-      missionTracker_->nextDecission();
+      // Get component via requiresComponent pattern (NOT requiresClient!)
+      this->requiresComponent(decisionManager_, true);
 
-      switch (decission_count)
+      // Get current decision and advance counter
+      int decisionCount = decisionManager_->nextDecision();
+
+      switch (decisionCount)
       {
         case 0:
         case 2:
@@ -71,4 +85,5 @@ public:
     };
   }
 };
+
 }  // namespace cl_mission_tracker

@@ -22,37 +22,59 @@
 #include <smacc2/smacc.hpp>
 #include <smacc2/smacc_client.hpp>
 
+#include <cl_mission_tracker/components/cp_decision_manager.hpp>
+
 namespace cl_mission_tracker
 {
+
+// Event: Battery load decision
 template <typename AsyncCB, typename Orthogonal>
 struct EvBatteryLoad : sc::event<EvBatteryLoad<AsyncCB, Orthogonal>>
 {
 };
 
+// Event: Radial motion decision
 template <typename AsyncCB, typename Orthogonal>
 struct EvRadialMotion : sc::event<EvRadialMotion<AsyncCB, Orthogonal>>
 {
 };
 
+// Event: S-pattern decision
 template <typename AsyncCB, typename Orthogonal>
 struct EvSPattern : sc::event<EvSPattern<AsyncCB, Orthogonal>>
 {
 };
 
+// Event: F-pattern decision
 template <typename AsyncCB, typename Orthogonal>
 struct EvFPattern : sc::event<EvFPattern<AsyncCB, Orthogonal>>
 {
 };
 
+/**
+ * @brief Client for mission tracking and decision sequencing.
+ *
+ * This client follows the pure component-based architecture pattern.
+ * It acts as an orchestrator that creates and wires components:
+ *
+ * - CpDecisionManager: Manages decision counter state
+ *
+ * Client behaviors should use requiresComponent() to access the
+ * decision manager, not direct client fields.
+ */
 class ClMissionTracker : public smacc2::ISmaccClient
 {
-private:
-  int decission_counter = 0;
-
 public:
   ClMissionTracker() {}
-  void nextDecission() { decission_counter++; }
-  int getDecissionCounter() { return decission_counter; }
+
+  virtual ~ClMissionTracker() {}
+
+  template <typename TOrthogonal, typename TClient>
+  void onComponentInitialization()
+  {
+    // Create decision manager component
+    this->createComponent<CpDecisionManager, TOrthogonal, ClMissionTracker>();
+  }
 };
 
 }  // namespace cl_mission_tracker

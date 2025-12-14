@@ -35,7 +35,9 @@ public:
 
   void onInitialize() override
   {
-    //auto subcomponent = this->createComponent<CpTopicSubscriber<vision_msgs::msg::Detection3DArray>>("/detection3d_array");
+    auto subcomponent =
+      this->createComponent<CpTopicSubscriber<vision_msgs::msg::Detection3DArray>>(
+        "/detection3d_array");
   }
 };
 
