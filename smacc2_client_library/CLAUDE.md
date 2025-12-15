@@ -118,275 +118,68 @@ class CbAsyncBehavior : public smacc2::SmaccAsyncClientBehavior
 
 ### Key Template Methods
 
-**onComponentInitialization()** - Called during orthogonal initialization to create components:
-```cpp
-template <typename TOrthogonal, typename TClient>
-void onComponentInitialization()
-{
-  // TOrthogonal = orthogonal containing this client
-  // TClient = this client type (for type-safe event posting)
-  this->createComponent<CpSomeComponent, TOrthogonal, TClient>(args...);
-}
-```
-
-**onStateOrthogonalAllocation()** - Called in components/behaviors for event posting setup:
-```cpp
-template <typename TOrthogonal, typename TSourceObject>
-void onStateOrthogonalAllocation()
-{
-  // Set up event posting lambdas with template parameters
-  postEvent_ = [this]() {
-    this->postEvent<EvSomeEvent<TSourceObject, TOrthogonal>>();
-  };
-}
-```
+| Method | Called When | Purpose |
+|--------|-------------|---------|
+| `onComponentInitialization<TOrthogonal, TClient>()` | Orthogonal init | Create components with type context |
+| `onStateOrthogonalAllocation<TOrthogonal, TSourceObject>()` | State entry | Set up event posting lambdas |
+| `onInitialize()` | Component creation | Component setup, require dependencies |
+| `onEntry()` / `onExit()` | State transitions | Behavior execution lifecycle |
 
 //////////////////////////////////////////////////////////////////////////////
 
 # Framework Core Components
 
-The framework provides reusable components in `smacc2/client_core_components/`:
-
-### CpTopicSubscriber<MessageType>
-Generic ROS2 topic subscription with signals and event posting.
-```cpp
-template <typename MessageType>
-class CpTopicSubscriber : public smacc2::ISmaccComponent
-{
-public:
-  smacc2::SmaccSignal<void(const MessageType &)> onFirstMessageReceived_;
-  smacc2::SmaccSignal<void(const MessageType &)> onMessageReceived_;
-
-  std::function<void(const MessageType &)> postMessageEvent;
-  std::function<void(const MessageType &)> postInitialMessageEvent;
-};
-```
+Located in `smacc2/include/smacc2/client_core_components/`
 
 ### CpActionClient<ActionType>
 Generic ROS2 action client with signals for result handling.
-```cpp
-template <typename ActionType>
-class CpActionClient : public smacc2::ISmaccComponent
-{
-public:
-  smacc2::SmaccSignal<void(const WrappedResult &)> onSucceeded_;
-  smacc2::SmaccSignal<void(const WrappedResult &)> onAborted_;
-  smacc2::SmaccSignal<void(const WrappedResult &)> onCancelled_;
-  smacc2::SmaccSignal<void(const Feedback &)> onFeedback_;
+- **Signals:** `onActionSucceeded_`, `onActionAborted_`, `onActionCancelled_`, `onActionFeedback_`
+- **Methods:** `sendGoal()`, `cancelGoal()`, `waitForServer()`
+- [cp_action_client.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2/include/smacc2/client_core_components/cp_action_client.hpp)
+- `src/SMACC2/smacc2/include/smacc2/client_core_components/cp_action_client.hpp`
 
-  std::shared_future<GoalHandle::SharedPtr> sendGoal(const Goal & goal);
-  bool cancelGoal();
-};
-```
+### CpTopicSubscriber<MessageType>
+Generic ROS2 topic subscription with event posting.
+- **Signals:** `onFirstMessageReceived_`, `onMessageReceived_`
+- **Events:** `EvTopicMessage`, `EvTopicInitialMessage`
+- [cp_topic_subscriber.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2/include/smacc2/client_core_components/cp_topic_subscriber.hpp)
+- `src/SMACC2/smacc2/include/smacc2/client_core_components/cp_topic_subscriber.hpp`
+
+### CpTopicPublisher<MessageType>
+Generic ROS2 topic publisher with QoS configuration.
+- **Methods:** `publish(const MessageType & msg)`
+- [cp_topic_publisher.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2/include/smacc2/client_core_components/cp_topic_publisher.hpp)
+- `src/SMACC2/smacc2/include/smacc2/client_core_components/cp_topic_publisher.hpp`
+
+### CpServiceClient<ServiceType>
+Generic ROS2 service client with async/sync support.
+- **Signals:** `onServiceResponse_`, `onServiceFailure_`
+- **Methods:** `sendRequest()`, `sendRequestSync()`
+- [cp_service_client.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2/include/smacc2/client_core_components/cp_service_client.hpp)
+- `src/SMACC2/smacc2/include/smacc2/client_core_components/cp_service_client.hpp`
 
 ### CpRos2Timer
-Timer component with tick signal.
-```cpp
-class CpRos2Timer : public smacc2::ISmaccComponent
-{
-public:
-  smacc2::SmaccSignal<void()> onTimerTick_;
-
-  void start();
-  void stop();
-};
-```
+Timer component for periodic or one-shot execution.
+- **Signal:** `onTimerTick_`
+- **Methods:** `startTimer()`, `stopTimer()`
+- [cp_ros2_timer.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2/include/smacc2/client_core_components/cp_ros2_timer.hpp)
+- `src/SMACC2/smacc2/include/smacc2/client_core_components/cp_ros2_timer.hpp`
 
 //////////////////////////////////////////////////////////////////////////////
 
-# Known Client Types with Component-Based Examples
+# Client Packages Reference
 
-## 1. ACTION-BASED CLIENTS
-
-**Used for:** Long-running operations with feedback (navigation, manipulation)
-
-**Pattern:** Client creates CpActionClient + domain-specific interface component
-
-```cpp
-// cl_nav2z - Pure orchestrator pattern
-class ClNav2Z : public smacc2::ISmaccClient
-{
-public:
-  ClNav2Z(std::string actionServerName = "/navigate_to_pose")
-    : actionServerName_(actionServerName) {}
-
-  template <typename TOrthogonal, typename TClient>
-  void onComponentInitialization()
-  {
-    // Create core action client component
-    this->createComponent<
-      smacc2::client_core_components::CpActionClient<nav2_msgs::action::NavigateToPose>,
-      TOrthogonal, ClNav2Z>(actionServerName_);
-
-    // Create nav2-specific interface component
-    this->createComponent<components::CpNav2ActionInterface, TOrthogonal, ClNav2Z>();
-  }
-
-private:
-  std::string actionServerName_;
-  // NO business logic methods - pure orchestrator
-};
-```
-
-**Interface Component** wraps the generic action client:
-```cpp
-class CpNav2ActionInterface : public smacc2::ISmaccComponent
-{
-public:
-  smacc2::SmaccSignal<void(const WrappedResult &)> onNavigationSucceeded_;
-  smacc2::SmaccSignal<void(const WrappedResult &)> onNavigationAborted_;
-
-  void onInitialize() override
-  {
-    // Get the underlying action client component
-    this->requiresComponent(actionClient_);
-
-    // Wire up signal connections
-    actionClient_->onSucceeded(&CpNav2ActionInterface::onSuccessCallback, this);
-    actionClient_->onAborted(&CpNav2ActionInterface::onAbortedCallback, this);
-  }
-
-  std::shared_future<GoalHandle::SharedPtr> sendNavigationGoal(
-    const geometry_msgs::msg::PoseStamped & target)
-  {
-    Goal goal;
-    goal.pose = target;
-    return actionClient_->sendGoal(goal);
-  }
-
-private:
-  smacc2::client_core_components::CpActionClient<ActionType> * actionClient_;
-};
-```
-
-## 2. TOPIC-BASED CLIENTS
-
-**Used for:** Publish/subscribe communication patterns
-
-**Pattern:** Client creates CpTopicSubscriber + listener component for event posting
-
-```cpp
-// cl_keyboard - Topic-based pure component architecture
-class ClKeyboard : public smacc2::ISmaccClient
-{
-public:
-  template <typename TOrthogonal, typename TClient>
-  void onComponentInitialization()
-  {
-    // Create core topic subscriber component
-    this->createComponent<
-      smacc2::client_core_components::CpTopicSubscriber<std_msgs::msg::UInt16>,
-      TOrthogonal, ClKeyboard>("/keyboard_unicode");
-
-    // Create listener component that processes messages and posts events
-    this->createComponent<components::CpKeyboardListener1, TOrthogonal, ClKeyboard>();
-  }
-};
-```
-
-**Listener Component** connects to subscriber and posts events:
-```cpp
-class CpKeyboardListener1 : public smacc2::ISmaccComponent
-{
-public:
-  smacc2::SmaccSignal<void(char)> OnKeyPress_;
-
-  template <typename TOrthogonal, typename TClient>
-  void onStateOrthogonalAllocation()
-  {
-    // Set up event posting with orthogonal type info
-    postEventKeyPress = [this](auto unicode) {
-      char c = (char)unicode.data;
-      if (c == 'a') this->postEvent<EvKeyPressA<CpKeyboardListener1, TOrthogonal>>();
-      else if (c == 'b') this->postEvent<EvKeyPressB<CpKeyboardListener1, TOrthogonal>>();
-      // ... more keys
-    };
-  }
-
-  void onInitialize() override
-  {
-    // Require the subscriber component
-    this->requiresComponent(subscriber_);
-    subscriber_->onMessageReceived(&CpKeyboardListener1::onKeyboardMessage, this);
-  }
-
-private:
-  smacc2::client_core_components::CpTopicSubscriber<std_msgs::msg::UInt16> * subscriber_;
-  std::function<void(const std_msgs::msg::UInt16 &)> postEventKeyPress;
-};
-```
-
-## 3. TIMER-BASED CLIENTS
-
-**Used for:** Periodic operations and delays
-
-**Pattern:** Client creates CpRos2Timer + listener component
-
-```cpp
-class ClRos2Timer : public smacc2::ISmaccClient
-{
-public:
-  ClRos2Timer(rclcpp::Duration duration, bool oneshot = false)
-    : duration_(duration), oneshot_(oneshot) {}
-
-  template <typename TOrthogonal, typename TClient>
-  void onComponentInitialization()
-  {
-    // Create the core timer component
-    this->createComponent<smacc2::client_core_components::CpRos2Timer,
-      TOrthogonal, ClRos2Timer>(duration_, oneshot_);
-
-    // Create listener component
-    this->createComponent<components::CpTimerListener1, TOrthogonal, ClRos2Timer>();
-  }
-
-private:
-  rclcpp::Duration duration_;
-  bool oneshot_;
-};
-```
-
-## 4. HTTP CLIENTS
-
-**Used for:** HTTP/HTTPS requests with multiple specialized components
-
-```cpp
-class ClHttp : public smacc2::ISmaccClient
-{
-public:
-  explicit ClHttp(const std::string & server, int timeout = 1500);
-
-  template <typename TOrthogonal, typename TClient>
-  void onComponentInitialization()
-  {
-    // Create connection management component
-    connectionManager_ = this->createComponent<CpHttpConnectionManager, TOrthogonal, ClHttp>();
-
-    // Create session management component
-    sessionManager_ = this->createComponent<CpHttpSessionManager, TOrthogonal, ClHttp>();
-
-    // Create request executor component
-    requestExecutor_ = this->createComponent<CpHttpRequestExecutor, TOrthogonal, ClHttp>();
-
-    // Set component dependencies
-    requestExecutor_->setDependencies(connectionManager_, sessionManager_);
-    sessionManager_->setServerUrl(server_url_);
-  }
-
-private:
-  std::string server_url_;
-  CpHttpConnectionManager * connectionManager_;
-  CpHttpSessionManager * sessionManager_;
-  CpHttpRequestExecutor * requestExecutor_;
-};
-```
-
-### 5. API-BASED CLIENTS
-
-**Used for:** Wrapping an API
-**Example:** `cl_moveit2z` 
-
-- [ClMoveit2Z](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/cl_moveit2z.hpp)
+| Client | Purpose | Main Header |
+|--------|---------|-------------|
+| cl_nav2z | Navigation with Nav2 | [cl_nav2z.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/cl_nav2z.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/cl_nav2z.hpp` |
+| cl_moveit2z | Manipulation with MoveIt2 | [cl_moveit2z.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/cl_moveit2z.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/cl_moveit2z.hpp` |
+| cl_keyboard | Keyboard input handling | [cl_keyboard.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_keyboard/include/cl_keyboard/cl_keyboard.hpp) / `src/SMACC2/smacc2_client_library/cl_keyboard/include/cl_keyboard/cl_keyboard.hpp` |
+| cl_ros2_timer | Timer-based behaviors | [cl_ros_timer.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/cl_ros_timer.hpp) / `src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/cl_ros_timer.hpp` |
+| cl_http | HTTP requests | [cl_http_client.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_http/include/cl_http/cl_http_client.hpp) / `src/SMACC2/smacc2_client_library/cl_http/include/cl_http/cl_http_client.hpp` |
+| cl_lifecycle_node | ROS2 lifecycle management | [cl_lifecycle_node.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/cl_lifecycle_node.hpp) / `src/SMACC2/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/cl_lifecycle_node.hpp` |
+| cl_mission_tracker | Mission state management | [cl_mission_tracker.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_mission_tracker/include/cl_mission_tracker/cl_mission_tracker.hpp) / `src/SMACC2/smacc2_client_library/cl_mission_tracker/include/cl_mission_tracker/cl_mission_tracker.hpp` |
+| cl_isaac_apriltag | AprilTag detection | [cl_isaac_apriltag.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/cl_isaac_apriltag.hpp) / `src/SMACC2/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/cl_isaac_apriltag.hpp` |
+| cl_foundation_pose | Object pose tracking | [cl_foundation_pose.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_foundation_pose/include/cl_foundation_pose/cl_foundation_pose.hpp) / `src/SMACC2/smacc2_client_library/cl_foundation_pose/include/cl_foundation_pose/cl_foundation_pose.hpp` |
 
 
 
@@ -396,736 +189,409 @@ private:
 
 Behaviors access components via `requiresComponent()` and connect to component signals.
    
-###   1. ACTION-BASED PATTERN BEHAVIORS (Goal-oriented with feedback)
- 
-#### Examples:
-   cl_nav2z Client Behaviors:
-  - cb_navigate_forward - Forward navigation with goal feedback
-  - cb_navigate_backwards - Backward navigation with goal feedback
-  - cb_navigate_global_position - Navigate to absolute position
-  - cb_navigate_named_waypoint - Navigate to predefined waypoint
-  - cb_navigate_next_waypoint - Sequential waypoint navigation
-  - cb_navigate_next_waypoint_free - Free-form waypoint navigation
-  - cb_navigate_next_waypoint_until_reached - Persistent waypoint pursuit
-  - cb_abort_navigation - Cancel active navigation goal
-  - cb_stop_navigation - Stop current navigation
+## 1. Action-Based Behaviors
 
-  cl_moveit2z Client Behaviors:
-  - cb_move_end_effector - Move robot arm end effector to pose
-  - cb_move_cartesian_relative - Relative Cartesian movements
-  - cb_move_cartesian_relative2 - Enhanced relative movements
-  - cb_move_joints - Direct joint control
-  - cb_move_joints_relative - Relative joint movements
-  - cb_move_known_state - Move to predefined configuration
-  - cb_move_named_target - Move to named pose targets
-  - cb_execute_last_trajectory - Re-execute previous trajectory
-  - cb_undo_last_trajectory - Reverse last movement
+**Purpose:** Long-running, goal-oriented operations with feedback (navigation, manipulation).
 
-  Nova Carter Specific:
-  - cb_spiral_motion - Execute spiral search patterns
+**Base Class:** `SmaccAsyncClientBehavior`
 
-#### Common C++ Structure:
+**Key Characteristics:**
+- Inherits from `SmaccAsyncClientBehavior` for non-blocking execution
+- Connects to action client signals (`onSucceeded_`, `onAborted_`)
+- Posts `EvCbSuccess` / `EvCbFailure` events on completion
 
-```cpp
-class CbNavigateForward : public smacc2::SmaccAsyncClientBehavior
-{
-public:
-  geometry_msgs::msg::PoseStamped targetPose_;
+**Best Reference:**
+- [cb_navigate_global_position.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_navigate_global_position.hpp)
+- `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_navigate_global_position.hpp`
 
-  void onEntry() override
-  {
-    // Get interface component (not client)
-    this->requiresComponent(navInterface_);
+**Additional Examples:**
 
-    // Connect to component signals
-    navInterface_->onNavigationSucceeded(
-      &CbNavigateForward::onNavigationSuccess, this);
-    navInterface_->onNavigationAborted(
-      &CbNavigateForward::onNavigationAborted, this);
+| Behavior | Description | Links |
+|----------|-------------|-------|
+| cb_navigate_forward | Forward navigation to goal | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_navigate_forward.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_navigate_forward.hpp` |
+| cb_navigate_backwards | Backward navigation | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_navigate_backwards.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_navigate_backwards.hpp` |
+| cb_navigate_named_waypoint | Navigate to predefined waypoint | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_navigate_named_waypoint.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_navigate_named_waypoint.hpp` |
+| cb_navigate_next_waypoint | Sequential waypoint navigation | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_navigate_next_waypoint.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_navigate_next_waypoint.hpp` |
+| cb_abort_navigation | Cancel active navigation | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_abort_navigation.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_abort_navigation.hpp` |
+| cb_move_end_effector | Move arm end-effector to pose | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_move_end_effector.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_move_end_effector.hpp` |
+| cb_move_joints | Direct joint control | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_move_joints.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_move_joints.hpp` |
+| cb_move_known_state | Move to predefined configuration | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_move_known_state.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_move_known_state.hpp` |
+| cb_move_cartesian_relative2 | Relative Cartesian movement | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_move_cartesian_relative2.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_move_cartesian_relative2.hpp` |
 
-    // Send goal via component
-    navInterface_->sendNavigationGoal(targetPose_);
-  }
+---
 
-private:
-  components::CpNav2ActionInterface * navInterface_;
+## 2. Event-Driven Behaviors
 
-  void onNavigationSuccess(const WrappedResult & result) {
-    this->postSuccessEvent();
-  }
-  void onNavigationAborted(const WrappedResult & result) {
-    this->postFailureEvent();
-  }
-};
-```
+**Purpose:** React to external stimuli (keyboard input, timer ticks, sensor messages).
 
-###  2. EVENT-DRIVEN PATTERN BEHAVIORS (Reactive to external stimuli)
+**Base Class:** `SmaccClientBehavior` or `SmaccAsyncClientBehavior`
 
-#### Examples:
+**Key Characteristics:**
+- Uses `onStateOrthogonalAllocation<TOrthogonal, TSourceObject>()` for type-safe event posting
+- Connects to component signals in `onEntry()`
+- Event posting via stored lambda functions
 
-  Keyboard Client Behaviors:
-  - cb_default_keyboard_behavior - React to keyboard input (A-Z keys)
+**Best Reference:**
+- [cb_default_keyboard_behavior.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_keyboard/include/cl_keyboard/client_behaviors/cb_default_keyboard_behavior.hpp)
+- `src/SMACC2/smacc2_client_library/cl_keyboard/include/cl_keyboard/client_behaviors/cb_default_keyboard_behavior.hpp`
 
-  Sensor/Perception Client Behaviors:
-  - cb_detect_apriltag - AprilTag detection events
-  - cb_lidar_sensor - LiDAR data processing events
-  - cb_forward_obstacle_detector - Obstacle detection events
+**Additional Examples:**
 
-  Timer Client Behaviors:
-  - cb_timer_countdown_once - Single timer expiration event
-  - cb_timer_countdown_loop - Recurring timer events
-  - cb_ros_timer - Generic timer-based events
+| Behavior | Description | Links |
+|----------|-------------|-------|
+| cb_timer_countdown_once | Single timer expiration | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp) / `src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp` |
+| cb_timer_countdown_loop | Recurring timer events | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_timer_countdown_loop.hpp) / `src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_timer_countdown_loop.hpp` |
+| cb_ros2_timer | Generic timer behavior | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_ros2_timer.hpp) / `src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_ros2_timer.hpp` |
+| cb_detect_apriltag | AprilTag detection events | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/client_behaviors/cb_detect_apriltag.hpp) / `src/SMACC2/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/client_behaviors/cb_detect_apriltag.hpp` |
 
-####  Common C++ Structure:
-```cpp
-class CbDefaultKeyboardBehavior : public smacc2::SmaccClientBehavior
-{
-public:
-  template <typename TOrthogonal, typename TSourceObject>
-  void onStateOrthogonalAllocation()
-  {
-    // Set up event posting lambda
-    postKeyEvent_ = [this](char key) {
-      if (key == 'n')
-        this->postEvent<EvKeyPressN<TSourceObject, TOrthogonal>>();
-    };
-  }
+---
 
-  void onEntry() override
-  {
-    // Get listener component
-    this->requiresComponent(keyboardListener_);
+## 3. Continuous Update Behaviors
 
-    // Connect to component signal
-    keyboardListener_->OnKeyPress(&CbDefaultKeyboardBehavior::onKeyPress, this);
-  }
+**Purpose:** Persistent monitoring, tracking, or periodic calculations during state execution.
 
-private:
-  components::CpKeyboardListener1 * keyboardListener_;
-  std::function<void(char)> postKeyEvent_;
+**Base Class:** `SmaccClientBehavior` + `ISmaccUpdatable` (multiple inheritance)
 
-  void onKeyPress(char key) {
-    if (postKeyEvent_) postKeyEvent_(key);
-  }
-};
-```
+**Key Characteristics:**
+- Inherits from both `SmaccClientBehavior` and `ISmaccUpdatable`
+- Implements `update()` method called at ~20Hz by SignalDetector
+- Enable/disable tracking in `onEntry()` / `onExit()`
 
-  Key Commonalities:
-  - Template-based onStateOrthogonalAllocation() for type-safe event posting
-  <sup>file:///src/SMACC2/smacc2_client_library/cl_keyboard/include/cl_keyboard/client_behaviors/cb_default_keyboard_behavior.hpp#L32</sup>
-  - Event posting lambda functions stored as members
-  <sup>file:///src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_timer_countdown_loop.hpp#L49</sup>
-  - Callback registration in onEntry()
-  <sup>file:///src/nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_april_tag_detector/client_behaviors/cb_detect_apriltag.hpp#L47</sup>
-  - Counter/state tracking variables (tick counters, detection flags)
-  
-  
-###  3. CONTINUOUS UPDATE PATTERN BEHAVIORS (Persistent monitoring/tracking)
+**Best Reference:**
+- [cb_track_object_pose.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_foundation_pose/include/cl_foundation_pose/client_behaviors/cb_track_object_pose.hpp)
+- `src/SMACC2/smacc2_client_library/cl_foundation_pose/include/cl_foundation_pose/client_behaviors/cb_track_object_pose.hpp`
 
-#### Examples:
+**Additional Examples:**
 
-  Tracking Behaviors:
-  - cb_track_object_pose - Continuous object pose tracking
-  - cb_track_path_odometry - Odometry-based path tracking
-  - cb_track_path_slam - SLAM-based path tracking
-  - cb_position_control_free_space - Continuous position control
+| Behavior | Description | Links |
+|----------|-------------|-------|
+| cb_track_path_odometry | Odometry-based path tracking | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_track_path_odometry.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_track_path_odometry.hpp` |
+| cb_track_path_slam | SLAM-based path tracking | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_track_path_slam.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_track_path_slam.hpp` |
+| cb_position_control_free_space | Continuous position control | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_position_control_free_space.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_position_control_free_space.hpp` |
+| cb_battery_decission | Battery monitoring for mission control | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_mission_tracker/include/cl_mission_tracker/client_behaviors/cb_battery_decission.hpp) / `src/SMACC2/smacc2_client_library/cl_mission_tracker/include/cl_mission_tracker/client_behaviors/cb_battery_decission.hpp` |
 
-  Sensor Monitoring:
-  - cb_default_generic_sensor_behavior - Multi-sensor data streaming
-  - cb_battery_decision - Battery monitoring for mission control
+---
 
-#### Common C++ Structure:
- 
- ```cpp
-  class CbContinuousBehavior : public smacc2::SmaccClientBehavior,
-                              public smacc2::ISmaccUpdatable
-  {
-  public:
-    virtual void onEntry() override {
-      requiresClient(client_);
-      // or requiresComponent(component_, true);
-      enableContinuousOperation();
-    }
+## 4. Configuration/Lifecycle Behaviors
 
-    virtual void onExit() override {
-      disableContinuousOperation();
-    }
+**Purpose:** System state management, ROS2 lifecycle transitions, waiting for readiness.
 
-    virtual void update() override {  // Called continuously by SMACC2 framework
-      performContinuousTask();
-    }
+**Base Class:** `SmaccAsyncClientBehavior`
 
-  private:
-    SomeClient* client_;             // or Component* component_;
-    ConfigParams params_;            // Tracking parameters
-  };
-```
+**Key Characteristics:**
+- Connects to lifecycle transition signals
+- Posts success/failure events on transition completion
+- Often used in initialization states
 
-  Key Commonalities:
-  - Multiple inheritance: SmaccClientBehavior + ISmaccUpdatable
-  - Required update() method for continuous operation
-  <sup>file:///src/nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_foundationpose/client_behaviors/cb_track_object_pose.hpp#L64</sup>
+**Best Reference:**
+- [cb_activate.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/client_behaviors/cb_activate.hpp)
+- `src/SMACC2/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/client_behaviors/cb_activate.hpp`
 
-  - Enable/disable state management in onEntry()/onExit()
-  - Deferred operation functions (lambdas for templated operations)
-  
-###  4. CONFIGURATION/LIFECYCLE PATTERN BEHAVIORS (System state management)
+**Additional Examples:**
 
-#### Examples:
+| Behavior | Description | Links |
+|----------|-------------|-------|
+| cb_configure | Configure lifecycle node | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/client_behaviors/cb_configure.hpp) / `src/SMACC2/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/client_behaviors/cb_configure.hpp` |
+| cb_deactivate | Deactivate lifecycle node | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/client_behaviors/cb_deactivate.hpp) / `src/SMACC2/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/client_behaviors/cb_deactivate.hpp` |
+| cb_cleanup | Cleanup lifecycle node | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/client_behaviors/cb_cleanup.hpp) / `src/SMACC2/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/client_behaviors/cb_cleanup.hpp` |
+| cb_pause_slam | Pause SLAM operations | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_pause_slam.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_pause_slam.hpp` |
+| cb_resume_slam | Resume SLAM operations | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_resume_slam.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_resume_slam.hpp` |
+| cb_wait_nav2_nodes | Wait for Nav2 system readiness | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_wait_nav2_nodes.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_wait_nav2_nodes.hpp` |
+| cb_wait_pose | Wait for pose availability | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_wait_pose.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_wait_pose.hpp` |
+| cb_wait_transform | Wait for TF transforms | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_wait_transform.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_wait_transform.hpp` |
 
-  Lifecycle Node Behaviors:
-  - cb_activate - Activate lifecycle node
-  - cb_deactivate - Deactivate lifecycle node
-  - cb_configure - Configure lifecycle node
-  - cb_cleanup - Clean up lifecycle node
-  - cb_shutdown - Shutdown lifecycle node
-  - cb_destroy - Destroy lifecycle node
-  - cb_deactivate_on_exit - Auto-deactivate on state exit
+---
 
-  System Configuration:
-  - cb_wait_nav2_nodes - Wait for Nav2 system readiness
-  - cb_wait_pose - Wait for pose availability
-  - cb_wait_transform - Wait for TF transforms
-  - cb_pause_slam - Pause SLAM operations
-  - cb_resume_slam - Resume SLAM operations
-  - cb_save_slam_map - Save current SLAM map
-  
- #### Common C++ Structure:
-  
-  ```cpp
-  class CbLifecycleBehavior : public smacc2::SmaccAsyncClientBehavior
-  {
-  public:
-    template <typename TOrthogonal, typename TSourceObject>
-    void onStateOrthogonalAllocation() {
-      SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
-      this->requiresClient(lifecycleClient_);
+## 5. Motion Control Behaviors
 
-      // Connect to lifecycle transition signals
-      lifecycleClient_->onTransitionSuccess_.connect([this]() {
-        this->postSuccessEvent();
-      });
-      lifecycleClient_->onTransitionFailure_.connect([this]() {
-        this->postFailureEvent();
-      });
-    }
+**Purpose:** Direct robot movement control (rotation, spinning, specialized motion patterns).
 
-    virtual void onEntry() override {
-      lifecycleClient_->performLifecycleTransition();
-    }
+**Base Class:** `SmaccAsyncClientBehavior` or client-specific base (e.g., `CbNav2ZClientBehaviorBase`)
 
-  private:
-    ClLifecycleNode* lifecycleClient_;
-  };
-  ```
+**Key Characteristics:**
+- Motion parameters as member variables (angles, distances, speeds)
+- Optional planner/controller selection via `std::optional<>`
+- TF buffer access for coordinate calculations
 
-  Key Commonalities:
-  - Async behavior inheritance for non-blocking operations
-  <sup>file:///src/SMACC2/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/client_behaviors/cb_activate.hpp#L28</sup>
-  - Signal-based result handling (success/failure events)
-  <sup>file:///src/SMACC2/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/client_behaviors/cb_activate.hpp#L41</sup>
-  - Lifecycle client references
-  - Standard postSuccessEvent()/postFailureEvent() methods
-  
+**Best Reference:**
+- [cb_rotate.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_rotate.hpp)
+- `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_rotate.hpp`
 
-###  5. MOTION CONTROL PATTERN BEHAVIORS (Direct robot control)
+**Additional Examples:**
 
-####  Examples: 
+| Behavior | Description | Links |
+|----------|-------------|-------|
+| cb_absolute_rotate | Rotate to absolute heading | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_absolute_rotate.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_absolute_rotate.hpp` |
+| cb_rotate_look_at | Rotate to face target | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_rotate_look_at.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_rotate_look_at.hpp` |
+| cb_pure_spinning | Continuous spinning motion | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_pure_spinning.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_pure_spinning.hpp` |
+| cb_spiral_motion | Spiral search patterns | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_spiral_motion.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_spiral_motion.hpp` |
+| cb_undo_path_backwards | Reverse path following | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_undo_path_backwards.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_undo_path_backwards.hpp` |
+| cb_active_stop | Emergency stop behavior | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_active_stop.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_active_stop.hpp` |
+| cb_end_effector_rotate | End-effector rotation | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_end_effector_rotate.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_end_effector_rotate.hpp` |
+| cb_circular_pivot_motion | Circular motion patterns | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_circular_pivot_motion.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_circular_pivot_motion.hpp` |
 
-  Rotation Behaviors:
-  - cb_rotate - Basic rotation control
-  - cb_absolute_rotate - Rotate to absolute heading
-  - cb_rotate_look_at - Rotate to face target
-  - cb_pure_spinning - Continuous spinning motion
-  - cb_end_effector_rotate - Manipulator end-effector rotation
+---
 
-  Complex Motion:
-  - cb_circular_pivot_motion - Circular motion patterns
-  - cb_pouring_motion - Specialized pouring movements
-  - cb_undo_path_backwards - Reverse path following
-  - cb_active_stop - Emergency stop behavior
-  
-  
-####  Common C++ Structure:
-  
-  ```cpp
-  class CbMotionBehavior : public CbNav2ZClientBehaviorBase  // or SmaccAsyncClientBehavior
-  {
-  public:
-    // Motion parameters
-    float motionParameter_;                    // angle, distance, etc.
-    std::optional<std::string> goalChecker_;  // Navigation goal checker
-    std::optional<PlannerType> plannerType_;  // Motion planner selection
+## 6. Communication Behaviors
 
-    CbMotionBehavior(float param, PlannerType planner = default);
+**Purpose:** Data exchange via HTTP, object manipulation in planning scenes.
 
-    void onEntry() override;  // Execute motion command
+**Base Class:** `SmaccAsyncClientBehavior`
 
-  private:
-    std::shared_ptr<tf2_ros::Buffer> tfBuffer_;  // Transform data
-    // or MoveitClient* moveitClient_;
-  };
-```
+**Key Characteristics:**
+- Deferred operation lambdas for template-safe execution
+- Response callback virtual methods
+- Request method configuration
 
-  Key Commonalities:
-  - Motion parameter members (angles, distances, speeds)
-  <sup>file:///src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_rotate.hpp#L31</sup>
-  - Optional planner/controller selection <sup>file:///src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_rotate.hpp#L35</sup>
+**Best Reference:**
+- [cb_http_get_request.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_http/include/cl_http/client_behaviors/cb_http_get_request.hpp)
+- `src/SMACC2/smacc2_client_library/cl_http/include/cl_http/client_behaviors/cb_http_get_request.hpp`
 
-  - Transform buffer access for coordinate calculations
-  - Goal checker configuration options
-  - Immediate motion execution in onEntry()
+**Additional Examples:**
 
+| Behavior | Description | Links |
+|----------|-------------|-------|
+| cb_http_post_request | HTTP POST operations | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_http/include/cl_http/client_behaviors/cb_http_post_request.hpp) / `src/SMACC2/smacc2_client_library/cl_http/include/cl_http/client_behaviors/cb_http_post_request.hpp` |
+| cb_http_request | Generic HTTP request base | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_http/include/cl_http/client_behaviors/cb_http_request.hpp) / `src/SMACC2/smacc2_client_library/cl_http/include/cl_http/client_behaviors/cb_http_request.hpp` |
+| cb_attach_object | Attach objects in planning scene | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_attach_object.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_attach_object.hpp` |
+| cb_detach_object | Detach objects from planning scene | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_detach_object.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_detach_object.hpp` |
 
-###   6. COMMUNICATION PATTERN BEHAVIORS (Data exchange)
+---
 
-#### Examples:
-  
-  HTTP Client Behaviors:
-  - cb_http_get_request - HTTP GET operations
-  - cb_http_post_request - HTTP POST operations
-  - cb_http_request - Generic HTTP requests
+## 7. Utility/Helper Behaviors
 
-  Publisher Client Behaviors:
-  - cb_default_publish_loop - Continuous message publishing
-  - cb_publish_once - Single message publishing
-  - cb_muted_behavior - Silent/disabled publishing
+**Purpose:** Support functions, file loading, waypoint management, retry logic.
 
-  Object Interaction:
-  - cb_attach_object - Attach objects in planning scene
-  - cb_detach_object - Detach objects from planning scene
-    
- 
- #### Common C++ Structure:
-  
-  ```cpp
-  class CbCommunicationBehavior : public smacc2::SmaccClientBehavior
-  {
-  public:
-    template <typename TMessage>
-    CbCommunicationBehavior(const TMessage& data) {
-      setMessage(data);
-    }
+**Base Class:** `SmaccClientBehavior` or `SmaccAsyncClientBehavior`
 
-    template <typename TMessage>
-    void setMessage(const TMessage& data) {
-      deferredOperation_ = [this, data]() {
-        this->client_->performOperation(data);
-      };
-    }
+**Key Characteristics:**
+- Minimal state, often just configuration parameters
+- Simple `onEntry()` operations
+- Building blocks for complex behaviors
 
-    void onEntry() override {
-      this->requiresClient(client_);
-      if (deferredOperation_) deferredOperation_();
-    }
+**Best Reference:**
+- [cb_load_waypoints_file.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_load_waypoints_file.hpp)
+- `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_load_waypoints_file.hpp`
 
-    virtual void onResponseReceived(const Response& response) {}
+**Additional Examples:**
 
-  private:
-    std::function<void()> deferredOperation_;  // Template-safe operation storage
-    CommunicationClient* client_;
-  };
-```
-
-  Key Commonalities:
-  - Template-based message handling
-  - Deferred operation lambdas for type erasure
-  - Response callback virtual methods <sup>file:///src/SMACC2/smacc2_client_library/http_client/include/http_client/client_behaviors/cb_http_request.hpp#L49</sup>
-
-  - Communication client references
-  - Request method enumeration/configuration
-
-###  7. UTILITY/HELPER PATTERN BEHAVIORS (Support functions)
-
-#### Examples: 
-
-  File/Data Management:
-  - cb_load_waypoints_file - Load waypoint configurations
-  - cb_seek_waypoint - Search for specific waypoints
-  - cb_pause_object_tracking - Pause tracking operations
-  - cb_retry_behavior - Retry failed operations
-
-  Trajectory Management:
-  - cb_move_last_trajectory_initial_state - Reset to trajectory start
-  - cb_move_end_effector_trajectory - Execute complex trajectories
-  
-#### Key C++ Commonalities:
-
-  - Inherit from appropriate base behavior classes
-  - Minimal state - often just configuration parameters
-  - Simple onEntry() operations (file loading, state reset, retry logic)
-  - Optional result/status reporting
-  - Often used as building blocks for complex behaviors
-   
-
-### Common Architectural Patterns Across All Types:
-
-  1. Base Classes: Most behaviors inherit from either SmaccClientBehavior(synchronous) or SmaccAsyncClientBehavior (asynchronous)
-  2. Template-based Orthogonal Allocation: All behaviors use onStateOrthogonalAllocation<TOrthogonal, TSourceObject>() for type-safe integration
-  3. Client/Component Dependencies: Use requiresClient() or requiresComponent() pattern
-  4. Standard Lifecycle: onEntry()/onExit() methods for state management
-  5. Event Integration: Type-safe event posting via templates
-  6. Signal/Callback Architecture: Boost.signals2 or lambda-based callback systems
-  7. Optional Configuration: Extensive use of std::optional<> for flexible parameterization
+| Behavior | Description | Links |
+|----------|-------------|-------|
+| cb_seek_waypoint | Search for specific waypoints | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_seek_waypoint.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_seek_waypoint.hpp` |
+| cb_retry_behavior | Retry failed operations | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_retry_behavior.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_retry_behavior.hpp` |
+| cb_undo_last_trajectory | Reverse previous motion | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_undo_last_trajectory.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/client_behaviors/cb_undo_last_trajectory.hpp` |
+| cb_save_slam_map | Save current SLAM map | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_save_slam_map.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/client_behaviors/cb_save_slam_map.hpp` |
+| cb_pause_object_tracking | Pause tracking operations | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_foundation_pose/include/cl_foundation_pose/client_behaviors/cb_pause_object_tracking.hpp) / `src/SMACC2/smacc2_client_library/cl_foundation_pose/include/cl_foundation_pose/client_behaviors/cb_pause_object_tracking.hpp` |
 
 
 //////////////////////////////////////////////////////////////////////////////
 
-## Known Component Types
+# Component Patterns
 
-###  1. PUBLISHER-SUBSCRIBER PATTERN COMPONENTS
+## 1. Action Interface Components
 
-  Navigation Publishers
+**Purpose:** Wrap generic action clients with domain-specific interfaces.
 
-  - CpAmcl (cl_nav2z)
-    - AMCL initial pose publisher
-    - Features: Initial pose setting for localization
-  - CpWaypointsVisualizer (cl_nav2z)
-    - Waypoint visualization publisher
-    - Features: RViz marker publishing for waypoint display
+**Key Characteristics:**
+- Creates domain-specific signals from generic action client
+- Provides high-level methods (e.g., `sendNavigationGoal()`)
+- Uses `requiresComponent()` to access underlying `CpActionClient`
 
-  Perception Publishers
+**Best Reference:**
+- [cp_nav2_action_interface.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/nav2_action_interface/cp_nav2_action_interface.hpp)
+- `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/nav2_action_interface/cp_nav2_action_interface.hpp`
 
-  - CpAprilTagVisualization (nova_carter/cl_april_tag_detector)
-    - AprilTag detection visualization publisher
-    - Features: MarkerArray publishing, aggregated tag position calculation, real-time marker updates
-    - Update Pattern: Implements ISmaccUpdatable
-    - Thread Safety: Mutex-protected transform data
+---
 
-####  Core C++ Design Patterns of Publisher-Subscriber Components: 
-  
-  Core Communication Infrastructure
+## 2. Event Listener Components
 
-  - CpTopicSubscriber<MessageType> (smacc2/core)
-    - Generic ROS topic subscription with event generation
-    - Features: Configurable QoS, first message tracking, signal-slot integration
-  - CpTopicPublisher<MessageType> (smacc2/core)
-    - ROS topic publishing infrastructure
-    - Features: Template-based message publishing, periodic publishing support
+**Purpose:** Connect to ROS topics/timers and emit signals for event posting.
 
+**Key Characteristics:**
+- Uses `onStateOrthogonalAllocation()` to set up event posting lambdas
+- Connects to `CpTopicSubscriber` or `CpRos2Timer` in `onInitialize()`
+- Emits signals that behaviors connect to
 
-###  2. STATE TRACKING PATTERN COMPONENTS
+**Best Reference:**
+- [cp_keyboard_listener_1.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_keyboard/include/cl_keyboard/components/cp_keyboard_listener_1.hpp)
+- `src/SMACC2/smacc2_client_library/cl_keyboard/include/cl_keyboard/components/cp_keyboard_listener_1.hpp`
 
-#####  Navigation State Trackers
+**Additional Examples:**
 
-  - CpSlamToolbox (cl_nav2z)
-    - SLAM toolbox state tracking (Resumed/Paused)
-    - Features: Blind state tracking, toggle operations
-    - Pattern: Internal state enum with getter methods
+| Component | Description | Links |
+|-----------|-------------|-------|
+| cp_timer_listener_1 | Timer tick event generator | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/components/cp_timer_listener_1.hpp) / `src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/components/cp_timer_listener_1.hpp` |
+| cp_lifecycle_event_monitor | Lifecycle transition event monitoring | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp) / `src/SMACC2/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp` |
 
-#####  Manipulation State Trackers
+---
 
-  - CpGraspingComponent (cl_moveit2z)
-    - Object manipulation state and collision object management
-    - Features: Attached object tracking, gripper state, finger tip management
-    - State: Current attached object name, collision object database
-	
-####  Core C++ Design Patterns of State Tracking Components:
+## 3. State Tracking Components
 
-#####  Enumeration State Management:
-  <sup>cl_nav2z/include/cl_nav2z/components/slam_toolbox/cp_slam_toolbox.hpp:37-43</sup>
-  
-  ```cpp
-  class CpSlamToolbox : public smacc2::ISmaccComponent
-  {
-  public:
-    enum class SlamToolboxState { Resumed, Paused };
+**Purpose:** Maintain internal state and provide state query interfaces.
 
-    inline SlamToolboxState getState() { return state_; }
-    void toggleState();  // State transition logic
+**Key Characteristics:**
+- Uses `enum class` for type-safe state representation
+- Inline getter methods for state access
+- Dedicated methods for state transitions
 
-  private:
-    SlamToolboxState state_;
-  };
- ```
-  <sup>cl_nav2z/include/cl_nav2z/components/slam_toolbox/cp_slam_toolbox.hpp:37-43</sup>
+**Best Reference:**
+- [cp_slam_toolbox.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/slam_toolbox/cp_slam_toolbox.hpp)
+- `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/slam_toolbox/cp_slam_toolbox.hpp`
 
-##### Database-Style State Tracking:
-   ```cpp
-  class CpGraspingComponent : public smacc2::ISmaccComponent
-  {
-  private:
-    std::map<std::string, moveit_msgs::msg::CollisionObject> graspingObjects;
+**Additional Examples:**
 
-  public:
-    std::optional<std::string> currentAttachedObjectName;
-    bool getGraspingObject(std::string name, ObjectType& object);
-  };
-```
-  <sup> cl_moveit2z/include/cl_moveit2z/components/cp_grasping_objects.hpp:30-41</sup>
+| Component | Description | Links |
+|-----------|-------------|-------|
+| cp_grasping_objects | Grasping object state and collision management | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/components/cp_grasping_objects.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/components/cp_grasping_objects.hpp` |
+| cp_apriltag_mission_state | AprilTag mission state management | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/components/cp_apriltag_mission_state.hpp) / `src/SMACC2/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/components/cp_apriltag_mission_state.hpp` |
+| cp_decision_manager | Decision counter and state management | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_mission_tracker/include/cl_mission_tracker/components/cp_decision_manager.hpp) / `src/SMACC2/smacc2_client_library/cl_mission_tracker/include/cl_mission_tracker/components/cp_decision_manager.hpp` |
 
-#####  Common C++ Patterns:
-  - Strongly Typed Enums: enum class for type-safe state representation
-  - State Query Interface: Inline getter methods for state access
-  - State Transition Methods: Dedicated methods for state changes (toggleState())
-  - Map-Based Databases: std::map<std::string, ObjectType> for object tracking
-  - Optional State Fields: std::optional<> for nullable state information
-  - RAII State Initialization: Constructor-based state initialization
-  - Const-Correct Getters: const methods for read-only state access
+---
 
-###  3. OBJECT TRACKING COMPONENTS
+## 4. Configuration Management Components
 
-  - CpObjectTracker1 (nova_carter/cl_foundationpose)
-    - 3D object detection state management
-    - Features: Detection database with ID-based tracking, pose extraction
-    - Data Structure: Map of detected objects with vision_msgs integration
-    - Event Generation: EvObjectDetected on new detections
+**Purpose:** Runtime parameter switching and configuration publishing.
 
-###  4. CONFIGURATION MANAGEMENT PATTERN COMPONENTS
+**Key Characteristics:**
+- Publisher-based configuration broadcasting
+- Preset configuration methods (e.g., `setBackwardPlanner()`)
+- Deferred execution via `commit` parameter
 
-#####  Navigation Configuration Managers
+**Best Reference:**
+- [cp_planner_switcher.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/planner_switcher/cp_planner_switcher.hpp)
+- `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/planner_switcher/cp_planner_switcher.hpp`
 
-  - CpPlannerSwitcher (cl_nav2z)
-    - Navigation2 planner/controller runtime switching
-    - Features: Global planner switching, local controller switching, goal checker selection
-    - Publishers: planner_selector, controller_selector, goal_checker_selector
-  - CpGoalCheckerSwitcher (cl_nav2z)
-    - Navigation goal verification switching
-    - Features: Runtime goal checker algorithm selection
-    - Publisher: goal_checker_selector topic
-  - CpCostmapSwitch (cl_nav2z)
-    - Costmap layer enable/disable control
-    - Includes: CpCostmapProxy helper class for dynamic reconfigure
-	
-#### Core C++ Design Patterns of Configuration Management Components:
+**Additional Examples:**
 
-#####  Publisher-Based Configuration Broadcasting:
+| Component | Description | Links |
+|-----------|-------------|-------|
+| cp_goal_checker_switcher | Goal checker algorithm selection | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/goal_checker_switcher/cp_goal_checker_switcher.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/goal_checker_switcher/cp_goal_checker_switcher.hpp` |
+| cp_costmap_switch | Costmap layer enable/disable | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/costmap_switch/cp_costmap_switch.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/costmap_switch/cp_costmap_switch.hpp` |
 
-  ```cpp
-  class CpPlannerSwitcher : public smacc2::ISmaccComponent
-  {
-  private:
-    std::string desired_planner_;
-    std::string desired_controller_;
+---
 
-    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr planner_selector_pub_;
-    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr controller_selector_pub_;
+## 5. Data Buffer Components
 
-  public:
-    void setDesiredGlobalPlanner(std::string plannerName);
-    void commitPublish();  // Deferred execution pattern
-  };
- ```
-  <sup>cl_nav2z/include/cl_nav2z/components/planner_switcher/cp_planner_switcher.hpp:57-67</sup>
+**Purpose:** Store and retrieve sequential or historical data.
 
-##### Preset Configuration Pattern:
- 
-   ```cpp
-  void CpPlannerSwitcher::setBackwardPlanner(bool commit = true)
-  {
-    desired_planner_ = "BackwardGlobalPlanner";
-    desired_controller_ = "BackwardLocalPlanner";
+**Key Characteristics:**
+- Vector-based storage with metadata structs
+- Stack-like push/pop semantics
+- Thread-safe operations with `std::mutex`
+- Index-based retrieval with bounds checking
 
-    if (commit) commitPublish();
-  }
-  ```
-   <sup>cl_nav2z/src/cl_nav2z/components/planner_switcher/cp_planner_switcher.cpp:60-68</sup>
-   
- ##### Common C++ Patterns:
-  - Deferred Execution: commit parameter for batched configuration updates (TODO)
+**Best Reference:**
+- [cp_odom_tracker.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/odom_tracker/cp_odom_tracker.hpp)
+- `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/odom_tracker/cp_odom_tracker.hpp`
 
-###  5. DATA BUFFER PATTERN COMPONENTS
+**Additional Examples:**
 
-  Motion History Buffers
+| Component | Description | Links |
+|-----------|-------------|-------|
+| cp_trajectory_history | Trajectory execution history | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/components/cp_trajectory_history.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/components/cp_trajectory_history.hpp` |
 
-  - CpOdomTracker (cl_nav2z)
-    - Comprehensive odometry and path tracking system
-    - Features: Path stack management, multi-mode operation (RECORD/CLEAR/IDLE)
-    - Data Structures: Path stack, aggregated stack path, goal tracking
-    - Thread Safety: Full mutex protection
-  - CpTrajectoryHistory (cl_moveit2z)
-    - MoveIt2 trajectory execution history
-    - Features: Named trajectory storage, execution result tracking
-    - Data Structure: Vector of TrajectoryHistoryEntry with metadata
-    - Retrieval: By index, last trajectory access
+---
 
-  Sensor Data Buffers
+## 6. Transform Management Components
 
-  - CpForwardObstacleDetector (nova_carter/cl_lidar)
-    - LiDAR-based forward obstacle distance tracking
-    - Features: Security distance calculation, ray filtering, real-time distance updates
-    - Data Storage: Latest scan message, selected forward distance
-    - Safety: Configurable security distance threshold (0.4m default)
+**Purpose:** Handle spatial coordinate systems and pose tracking.
 
-#### Core C++ Design Patterns of Data Buffer Components:
+**Key Characteristics:**
+- Static resource sharing for expensive TF resources
+- `ISmaccUpdatable` for real-time pose updates
+- Thread-safe access with mutex protection
+- `std::optional<>` returns for potentially failing operations
 
-##### Vector-Based Historical Storage:
+**Best Reference:**
+- [cp_pose.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/pose/cp_pose.hpp)
+- `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/pose/cp_pose.hpp`
 
-  ```cpp
-  class CpTrajectoryHistory : public smacc2::ISmaccComponent
-  {
-  private:
-    std::vector<TrajectoryHistoryEntry> trajectoryHistory_;
+**Additional Examples:**
 
-  public:
-    bool getLastTrajectory(int backIndex, TrajectoryType& trajectory);
-    void pushTrajectory(std::string name, const TrajectoryType& trajectory, ResultType result);
-  };
+| Component | Description | Links |
+|-----------|-------------|-------|
+| cp_tf_listener | Transform listener wrapper | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/components/cp_tf_listener.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/components/cp_tf_listener.hpp` |
+| cp_object_tracker_tf | TF-based object pose tracking | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_foundation_pose/include/cl_foundation_pose/components/cp_object_tracker_tf.hpp) / `src/SMACC2/smacc2_client_library/cl_foundation_pose/include/cl_foundation_pose/components/cp_object_tracker_tf.hpp` |
+| cp_object_tracker_1 | Vision-based object detection tracking | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_foundation_pose/include/cl_foundation_pose/components/cp_object_tracker_1.hpp) / `src/SMACC2/smacc2_client_library/cl_foundation_pose/include/cl_foundation_pose/components/cp_object_tracker_1.hpp` |
 
-  struct TrajectoryHistoryEntry 
-  {
-    moveit_msgs::msg::RobotTrajectory trajectory;
-    moveit_msgs::msg::MoveItErrorCodes result;
-    std::string name;
-  };
-  ```
-  <sup>Reference: cl_moveit2z/include/cl_moveit2z/components/cp_trajectory_history.hpp:30-49</sup>
+---
 
-##### Complex Multi-Mode Buffer Management:
-  ```cpp
-  class CpOdomTracker : public smacc2::ISmaccComponent
-  {
-  private:
-    std::vector<nav_msgs::msg::Path> pathStack_;
-    std::vector<PathInfo> pathInfos_;
-    std::mutex m_mutex_;
+## 7. Waypoint/Mission Control Components
 
-  public:
-    void pushPath(std::string pathname);
-    void popPath(int pathCount = 1, bool keepPreviousPath = false);
-  };
-  ```
-  <sup>cl_nav2z/include/cl_nav2z/components/odom_tracker/cp_odom_tracker.hpp:175-194</sup>
+**Purpose:** Orchestrate multi-waypoint mission execution.
 
-#####  Common C++ Patterns:
-  - Vector-Based Storage: std::vector<> for sequential data storage
-  - Struct-Based Metadata: Custom structs combining data with metadata
-  - Index-Based Access: Negative indexing from end (size() - 1 - backIndex)
-  - Thread-Safe Operations: std::mutex protection for concurrent access
-  - RAII Resource Management: Automatic memory management via containers
-  - Stack-Like Operations: Push/pop semantics for buffer management
-  - Bounds Checking: Explicit size validation before access
-  - Named Storage: String-based identification for stored elements
-  
-###  6. TRANSFORM MANAGEMENT PATTERN COMPONENTS
+**Key Characteristics:**
+- Abstract base class with template method pattern
+- Signal-based event coordination for waypoint completion
+- Waypoint list management with rewind capability
 
-#####  Spatial Coordinate Systems
+**Best Reference:**
+- [cp_waypoints_navigator.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator.hpp)
+- `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator.hpp`
 
-  - Pose (cl_nav2z)
-    - Real-time pose tracking and transform management
-    - Features: TF2 integration, frame conversion, pose freezing
-    - Update Pattern: Implements ISmaccUpdatable
-    - Thread Safety: Mutex-protected pose data
-    - Reference Frames: Configurable (map, odom, base_link)
-  - CpTfListener (cl_moveit2z)
-    - Transform listener wrapper (referenced but minimal implementation)
-    - Features: TF tree monitoring, transform buffering
+**Additional Examples:**
 
- ##### Advanced Transform Management
+| Component | Description | Links |
+|-----------|-------------|-------|
+| cp_waypoints_navigator_base | Abstract waypoint navigation foundation | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator_base.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator_base.hpp` |
+| cp_waypoints_event_dispatcher | Waypoint navigation event coordination | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_event_dispatcher.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_event_dispatcher.hpp` |
+| cp_waypoints_visualizer | Waypoint visualization | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_visualizer.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_visualizer.hpp` |
 
-  - CpObjectTrackerTf (nova_carter/cl_foundationpose)
-    - TF-based object pose tracking with temporal filtering
-    - Features:
-        - Multi-object tracking via TF frames
-      - Historical pose buffering (512 sample max)
-      - Median filtering for pose stabilization
-      - Enable/disable state management
-      - Reset capabilities
-    - Update Pattern: Implements ISmaccUpdatable
-    - Thread Safety: Full mutex protection
-    - Event Generation: EvObjectDetected on successful tracking
-	
-####  Core C++ Design Patterns of Transform Management Components:
+---
 
-#####  Static Resource Sharing:
- 
-  ```cpp
-  class Pose : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdatable
-  {
-  private:
-    static std::shared_ptr<tf2_ros::Buffer> tfBuffer_;
-    static std::shared_ptr<tf2_ros::TransformListener> tfListener_;
-    static std::mutex listenerMutex_;
+## 8. HTTP/Protocol Components
 
-    geometry_msgs::msg::PoseStamped pose_;
-    std::mutex m_mutex_;
-  };
- ```
-  <sup>cl_nav2z/include/cl_nav2z/components/pose/cp_pose.hpp:96-104</sup>
- 
-#####  Real-Time Update Pattern:
-  
-   ```cpp
-  class CpObjectTrackerTf : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdatable
-  {
-  private:
-    std::map<std::string, DetectedObject> detectedObjects;
-    std::mutex m_mutex_;
+**Purpose:** Manage HTTP connections, sessions, and request execution.
 
-  public:
-    void update() override;  // Real-time processing
-    std::optional<geometry_msgs::msg::PoseStamped> updateAndGetGlobalPose(const std::string& frame_id);
-  };
-```
-<sup>nova_carter_sm_library/sm_nav2_test_7/include/sm_nav2_test_7/clients/cl_foundationpose/components/cp_object_tracker_tf.hpp:31-44</sup>
+**Key Characteristics:**
+- Separation of concerns: connection, session, execution
+- Component dependencies via `setDependencies()`
+- Async request execution with result signals
 
-#####  Common C++ Patterns:
-  - Static Resource Sharing: Singleton-like pattern for expensive TF resources
-  - Multiple Inheritance: ISmaccComponent + ISmaccUpdatable for real-time components
-  - Thread-Safe Access: Mutex protection for concurrent transform access
-  - Optional Return Types: std::optional<> for potentially failing operations
-  - Template Method Pattern: update() override for real-time processing
-  - RAII TF Management: Automatic TF buffer/listener lifecycle management
-  - Temporal Filtering: Historical data for stability (median filtering)
-  - Frame-Based Indexing: String-based frame identification for transform lookups
+**Best Reference:**
+- [cp_http_request_executor.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_http/include/cl_http/components/cp_http_request_executor.hpp)
+- `src/SMACC2/smacc2_client_library/cl_http/include/cl_http/components/cp_http_request_executor.hpp`
 
-###  7. WAYPOINT (MISSION) CONTROL PATTERN COMPONENTS
+**Additional Examples:**
 
-  Waypoint Navigation Orchestration
+| Component | Description | Links |
+|-----------|-------------|-------|
+| cp_http_session_manager | HTTP session state management | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_http/include/cl_http/components/cp_http_session_manager.hpp) / `src/SMACC2/smacc2_client_library/cl_http/include/cl_http/components/cp_http_session_manager.hpp` |
+| cp_http_connection_manager | HTTP connection lifecycle management | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_http/include/cl_http/components/cp_http_connection_manager.hpp) / `src/SMACC2/smacc2_client_library/cl_http/include/cl_http/components/cp_http_connection_manager.hpp` |
 
-  - CpWaypointNavigatorBase (nav2z_client)
-    - Abstract waypoint navigation foundation
-    - Features: Base class for waypoint management systems
-    - Pattern: Template method pattern for waypoint operations
-  - CpWaypointNavigator (nav2z_client)
-    - Sequential waypoint navigation controller
-    - Features: Waypoint list management, goal sending with options
-    - State Management: Success-based progression
-    - Integration: Navigation2 action client integration
-  - CpWaypointsEventDispatcher (nav2z_client)
-    - Waypoint navigation event coordination
-    - Features: Event routing for waypoint-based state machines
-    - Pattern: Event dispatcher for multi-waypoint missions
+---
 
-#### Core C++ Design Patterns of Waypoint (Mission) Control Components:
+## 9. Motion Planning Components (cl_moveit2z)
 
-##### Abstract Base Template Method:
+**Purpose:** MoveIt2 motion planning and trajectory execution.
 
-```cpp
-  class CpWaypointNavigatorBase : public smacc2::ISmaccComponent
-  {
-  protected:
-    int currentWaypoint_;
-    std::vector<geometry_msgs::msg::PoseStamped> waypoints_;
+**Best Reference:**
+- [cp_motion_planner.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/components/cp_motion_planner.hpp)
+- `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/components/cp_motion_planner.hpp`
 
-  public:
-    virtual void onInitialize() = 0;  // Template method pattern
-    void rewind(int count);  // Common behavior
-  };
-```
-  <sup>cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator_base.hpp</sup>
+**Additional Examples:**
 
-##### Signal-Based Event Coordination:
- 
-  ```cpp
-  class CpWaypointNavigator : public CpWaypointNavigatorBase
-  {
-  public:
-    smacc2::SmaccSignal<void()> onNavigationRequestSucceded;
-    smacc2::SmaccSignal<void()> onNavigationRequestAborted;
-    smacc2::SmaccSignal<void()> onNavigationRequestCancelled;
+| Component | Description | Links |
+|-----------|-------------|-------|
+| cp_trajectory_executor | Trajectory execution controller | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/components/cp_trajectory_executor.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/components/cp_trajectory_executor.hpp` |
 
-  private:
-    void onGoalReached(const ClNav2Z::WrappedResult & res);
-    void onGoalCancelled(const ClNav2Z::WrappedResult & /*res*/);
-    void onGoalAborted(const ClNav2Z::WrappedResult & /*res*/);
+---
 
-    boost::signals2::connection succeddedNav2ZClientConnection_;
-    boost::signals2::connection abortedNav2ZClientConnection_;
-    boost::signals2::connection cancelledNav2ZClientConnection_;
-  };
-```
- <sup>cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator.hpp:70-83</sup>
+## 10. Perception/Tracking Components
+
+**Purpose:** AprilTag and object detection/tracking.
+
+**Best Reference:**
+- [cp_apriltag_tracker.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/components/cp_apriltag_tracker.hpp)
+- `src/SMACC2/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/components/cp_apriltag_tracker.hpp`
+
+**Additional Examples:**
+
+| Component | Description | Links |
+|-----------|-------------|-------|
+| cp_april_visualization | AprilTag visualization | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/components/cp_april_visualization.hpp) / `src/SMACC2/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/components/cp_april_visualization.hpp` |
+
+//////////////////////////////////////////////////////////////////////////////
 
 ## Common Component Patterns
 
@@ -1136,6 +602,36 @@ private:
 5. **Event Posting:** Use `onStateOrthogonalAllocation()` for templated events
 6. **Thread Safety:** Use `std::mutex` for shared data
 7. **Real-Time:** Inherit from `ISmaccUpdatable` for periodic updates
+
+# Common Architectural Patterns
+
+These patterns appear consistently across all behavior and component types:
+
+1. **Base Class Inheritance**
+   - Behaviors: `SmaccClientBehavior` (sync) or `SmaccAsyncClientBehavior` (async)
+   - Components: `ISmaccComponent`
+   - For periodic updates: Add `ISmaccUpdatable` via multiple inheritance
+
+2. **Template-Based Orthogonal Allocation**
+   - `onStateOrthogonalAllocation<TOrthogonal, TSourceObject>()` captures type info
+   - Enables type-safe event posting with correct orthogonal context
+
+3. **Dependency Declaration**
+   - `requiresClient(client_)` - get reference to owning client
+   - `requiresComponent(component_)` - get reference to sibling component
+
+4. **Signal-Callback Architecture**
+   - Components expose `SmaccSignal<>` members
+   - Behaviors connect via `signal.connect(&Class::method, this)`
+   - Automatic lifecycle management prevents dangling callbacks
+
+5. **Optional Configuration**
+   - `std::optional<>` for flexible parameterization
+   - Allows defaults while enabling explicit overrides
+
+6. **Thread Safety**
+   - `std::mutex` for shared data protection
+   - Lock guards in accessor methods
 
 //////////////////////////////////////////////////////////////////////////////
 
