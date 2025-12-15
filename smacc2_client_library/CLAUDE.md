@@ -13,6 +13,7 @@
 - **Namespaces:** Match package name (e.g., `cl_nav2z`)
 - **Events:** `Ev` prefix (e.g., `EvNavigationSuccess`)
 
+
 ### Code Organization
 
 ```
@@ -39,6 +40,9 @@ cl_example/
 └── README.md
 ```
 
+
+//////////////////////////////////////////////////////////////////////////////
+
 # Client Library Binary representation
 so, header files, cpp, state machine.
  
@@ -51,9 +55,6 @@ so, header files, cpp, state machine.
  - If the body of the function is defined in the header file, it will be compiled into the cpp that includes the header file, not in the .so file.
  - We could generate the .so file with one single cpp file that includes all the cpp files of the package. However, the key point is not how many cpp files we have but where the body of the functions are defined. If they are defined in the header file, they will be compiled into the executable that includes the header file, not in the .so file.
  - If we define the body of the functions in the hpp files, the body of the functions will be compiled both in the .so file and in the executable that includes the header file. This is not a problem because the linker will take care of it. However, it increases the compilation time because every time we change a header file, all the cpp files that include the header file need to be recompiled.
-
-
-
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -91,6 +92,9 @@ Every SMACC2 client follows an architecture with 3 object types:
    - Manages internal state and data
    - Offers utility services
 
+
+//////////////////////////////////////////////////////////////////////////////
+
 # Pure Component-Based Architecture
 
 All SMACC2 clients follow a **pure orchestrator pattern**:
@@ -116,6 +120,7 @@ class CbSyncBehavior : public smacc2::SmaccClientBehavior
 class CbAsyncBehavior : public smacc2::SmaccAsyncClientBehavior
 ```
 
+
 ### Key Template Methods
 
 | Method | Called When | Purpose |
@@ -124,6 +129,7 @@ class CbAsyncBehavior : public smacc2::SmaccAsyncClientBehavior
 | `onStateOrthogonalAllocation<TOrthogonal, TSourceObject>()` | State entry | Set up event posting lambdas |
 | `onInitialize()` | Component creation | Component setup, require dependencies |
 | `onEntry()` / `onExit()` | State transitions | Behavior execution lifecycle |
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -164,6 +170,7 @@ Timer component for periodic or one-shot execution.
 - **Methods:** `startTimer()`, `stopTimer()`
 - [cp_ros2_timer.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2/include/smacc2/client_core_components/cp_ros2_timer.hpp)
 - `src/SMACC2/smacc2/include/smacc2/client_core_components/cp_ros2_timer.hpp`
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -603,6 +610,9 @@ Behaviors access components via `requiresComponent()` and connect to component s
 6. **Thread Safety:** Use `std::mutex` for shared data
 7. **Real-Time:** Inherit from `ISmaccUpdatable` for periodic updates
 
+
+//////////////////////////////////////////////////////////////////////////////
+
 # Common Architectural Patterns
 
 These patterns appear consistently across all behavior and component types:
@@ -632,6 +642,7 @@ These patterns appear consistently across all behavior and component types:
 6. **Thread Safety**
    - `std::mutex` for shared data protection
    - Lock guards in accessor methods
+
 
 //////////////////////////////////////////////////////////////////////////////
 
