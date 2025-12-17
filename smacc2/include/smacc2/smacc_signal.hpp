@@ -21,8 +21,8 @@
 #pragma once
 
 #include <boost/any.hpp>
-#include <boost/signals2/signal.hpp>
 #include <boost/signals2/connection.hpp>
+#include <boost/signals2/signal.hpp>
 
 namespace smacc2
 {

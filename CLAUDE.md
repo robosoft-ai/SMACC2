@@ -37,7 +37,7 @@ SmaccSignal is a communication mechanism (template wrapper around boost::signals
   ### Signal Connection Lifetime Management
   Signal connections are managed through the state machine's
   createSignalConnection() which:
-  1. Creates boost::signals2 connections between signal sources and
+  1. Creates smacc2::SmaccSignalConnection connections between signal sources and
   callbacks
   2. Tracks connections by object pointer
   3. Automatically disconnects when objects are destroyed via

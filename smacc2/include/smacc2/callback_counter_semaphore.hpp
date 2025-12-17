@@ -19,11 +19,11 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <smacc2/smacc_signal.hpp>
 #include <condition_variable>
 #include <iostream>
 #include <mutex>
 #include <rclcpp/rclcpp.hpp>
+#include <smacc2/smacc_signal.hpp>
 #include <thread>
 
 namespace smacc2

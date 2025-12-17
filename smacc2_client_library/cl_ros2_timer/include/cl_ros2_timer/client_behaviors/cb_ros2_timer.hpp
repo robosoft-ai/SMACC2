@@ -48,6 +48,5 @@ public:
 private:
   ClRos2Timer * timerClient_;
   std::function<void()> postTimerEvent_;
-  boost::signals2::scoped_connection c_;
 };
 }  // namespace cl_ros2_timer
