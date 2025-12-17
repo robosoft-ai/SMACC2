@@ -76,8 +76,8 @@ private:
   void recursiveConsumeNext();
 
   std::list<std::function<std::shared_ptr<smacc2::SmaccAsyncClientBehavior>()>> sequenceNodes_;
-  boost::signals2::connection conn_;
-  boost::signals2::connection conn2_;
+  smacc2::SmaccSignalConnection conn_;
+  smacc2::SmaccSignalConnection conn2_;
 
   std::shared_ptr<smacc2::SmaccAsyncClientBehavior> bh_;
   std::atomic<int> consume_{0};

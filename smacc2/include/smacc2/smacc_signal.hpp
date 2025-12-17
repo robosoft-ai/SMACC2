@@ -22,12 +22,15 @@
 
 #include <boost/any.hpp>
 #include <boost/signals2/signal.hpp>
+#include <boost/signals2/connection.hpp>
 
 namespace smacc2
 {
 using namespace boost;
 using namespace boost::signals2;
 using namespace boost::signals2::detail;
+
+typedef boost::signals2::connection SmaccSignalConnection;
 
 template <
   typename Signature,

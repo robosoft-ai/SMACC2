@@ -128,13 +128,13 @@ public:
   }
 
   template <typename TCallback, typename T>
-  boost::signals2::connection onMotionExecutionSuccedded(TCallback callback, T * object)
+  smacc2::SmaccSignalConnection onMotionExecutionSuccedded(TCallback callback, T * object)
   {
     return this->getStateMachine()->createSignalConnection(onSucceded_, callback, object);
   }
 
   template <typename TCallback, typename T>
-  boost::signals2::connection onMotionExecutionFailed(TCallback callback, T * object)
+  smacc2::SmaccSignalConnection onMotionExecutionFailed(TCallback callback, T * object)
   {
     return this->getStateMachine()->createSignalConnection(onFailed_, callback, object);
   }

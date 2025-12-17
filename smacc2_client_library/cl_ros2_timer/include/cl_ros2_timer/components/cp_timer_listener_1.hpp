@@ -56,7 +56,7 @@ public:
   smacc2::SmaccSignal<void()> onTimerCompleted_;
 
   template <typename T>
-  boost::signals2::connection onTimerCompleted(void (T::*callback)(), T * object)
+  smacc2::SmaccSignalConnection onTimerCompleted(void (T::*callback)(), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onTimerCompleted_, callback, object);
   }

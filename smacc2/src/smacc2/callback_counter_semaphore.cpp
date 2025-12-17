@@ -17,7 +17,6 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  *****************************************************************************************************************/
-#include <boost/signals2.hpp>
 #include <condition_variable>
 #include <iostream>
 #include <mutex>
@@ -88,7 +87,7 @@ void CallbackCounterSemaphore::finalize()
     name_.c_str(), (long)this);
 }
 
-void CallbackCounterSemaphore::addConnection(boost::signals2::connection conn)
+void CallbackCounterSemaphore::addConnection(smacc2::SmaccSignalConnection conn)
 {
   std::unique_lock<std::mutex> lock(mutex_);
 

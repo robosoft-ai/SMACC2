@@ -319,7 +319,7 @@ template <int arity>
 struct Bind
 {
   template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-  boost::signals2::connection bindaux(
+  smacc2::SmaccSignalConnection bindaux(
     TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object,
     std::shared_ptr<CallbackCounterSemaphore> callbackCounter);
 };
@@ -328,7 +328,7 @@ template <>
 struct Bind<1>
 {
   template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-  boost::signals2::connection bindaux(
+  smacc2::SmaccSignalConnection bindaux(
     TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object,
     std::shared_ptr<CallbackCounterSemaphore> callbackCounter)
   {
@@ -353,7 +353,7 @@ template <>
 struct Bind<2>
 {
   template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-  boost::signals2::connection bindaux(
+  smacc2::SmaccSignalConnection bindaux(
     TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object,
     std::shared_ptr<CallbackCounterSemaphore> callbackCounter)
   {
@@ -377,7 +377,7 @@ template <>
 struct Bind<3>
 {
   template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-  boost::signals2::connection bindaux(
+  smacc2::SmaccSignalConnection bindaux(
     TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object,
     std::shared_ptr<CallbackCounterSemaphore> callbackCounter)
   {
@@ -401,7 +401,7 @@ template <>
 struct Bind<4>
 {
   template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-  boost::signals2::connection bindaux(
+  smacc2::SmaccSignalConnection bindaux(
     TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object,
     std::shared_ptr<CallbackCounterSemaphore> callbackCounter)
   {
@@ -424,7 +424,7 @@ struct Bind<4>
 using namespace smacc2::utils;
 
 template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-boost::signals2::connection ISmaccStateMachine::createSignalConnection(
+smacc2::SmaccSignalConnection ISmaccStateMachine::createSignalConnection(
   TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object)
 {
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
@@ -439,7 +439,7 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(
 
   typedef decltype(callback) ft;
   Bind<boost::function_types::function_arity<ft>::value> binder;
-  boost::signals2::connection connection;
+  smacc2::SmaccSignalConnection connection;
 
   // long life-time objects
   if (

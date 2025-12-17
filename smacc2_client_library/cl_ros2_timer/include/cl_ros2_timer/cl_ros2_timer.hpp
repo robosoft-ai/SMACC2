@@ -14,7 +14,6 @@
 
 #pragma once
 
-#include <boost/signals2.hpp>
 #include <chrono>
 #include <optional>
 #include <smacc2/smacc.hpp>

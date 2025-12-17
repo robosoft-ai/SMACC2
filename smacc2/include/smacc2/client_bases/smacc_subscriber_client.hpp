@@ -60,14 +60,14 @@ public:
   std::function<void(const MessageType &)> postInitialMessageEvent;
 
   template <typename T>
-  boost::signals2::connection onMessageReceived(
+  smacc2::SmaccSignalConnection onMessageReceived(
     void (T::*callback)(const MessageType &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onMessageReceived_, callback, object);
   }
 
   template <typename T>
-  boost::signals2::connection onFirstMessageReceived(
+  smacc2::SmaccSignalConnection onFirstMessageReceived(
     void (T::*callback)(const MessageType &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(

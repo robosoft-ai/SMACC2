@@ -80,8 +80,8 @@ private:
   void onGoalCancelled(const components::CpNav2ActionInterface::WrappedResult & /*res*/);
   void onGoalAborted(const components::CpNav2ActionInterface::WrappedResult & /*res*/);
 
-  boost::signals2::connection succeddedNav2ZClientConnection_;
-  boost::signals2::connection abortedNav2ZClientConnection_;
-  boost::signals2::connection cancelledNav2ZClientConnection_;
+  smacc2::SmaccSignalConnection succeddedNav2ZClientConnection_;
+  smacc2::SmaccSignalConnection abortedNav2ZClientConnection_;
+  smacc2::SmaccSignalConnection cancelledNav2ZClientConnection_;
 };
 }  // namespace cl_nav2z

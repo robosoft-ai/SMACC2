@@ -52,7 +52,7 @@ public:
 
   // signal subscription method. This signal will be triggered when the first message is received
   template <typename T>
-  boost::signals2::connection onMessageReceived(
+  smacc2::SmaccSignalConnection onMessageReceived(
     void (T::*callback)(const MessageType &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onMessageReceived_, callback, object);
@@ -60,7 +60,7 @@ public:
 
   // signal subscription method. This signal will be triggered when the first message is received
   template <typename T>
-  boost::signals2::connection onFirstMessageReceived(
+  smacc2::SmaccSignalConnection onFirstMessageReceived(
     void (T::*callback)(const MessageType &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(

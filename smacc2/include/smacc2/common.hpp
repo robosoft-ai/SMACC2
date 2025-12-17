@@ -35,7 +35,6 @@
 #include <boost/function.hpp>
 #include <boost/intrusive_ptr.hpp>
 #include <boost/mpl/list.hpp>
-#include <boost/signals2.hpp>
 
 #include <mutex>
 #include <rclcpp/rclcpp.hpp>

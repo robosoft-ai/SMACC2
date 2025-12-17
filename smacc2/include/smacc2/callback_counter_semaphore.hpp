@@ -19,7 +19,7 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <boost/signals2.hpp>
+#include <smacc2/smacc_signal.hpp>
 #include <condition_variable>
 #include <iostream>
 #include <mutex>
@@ -38,13 +38,13 @@ public:
 
   void finalize();
 
-  void addConnection(boost::signals2::connection conn);
+  void addConnection(smacc2::SmaccSignalConnection conn);
 
 private:
   int count_;
   std::mutex mutex_;
   std::condition_variable cv_;
-  std::vector<boost::signals2::connection> connections_;
+  std::vector<smacc2::SmaccSignalConnection> connections_;
   bool finalized = false;
   std::string name_;
 };

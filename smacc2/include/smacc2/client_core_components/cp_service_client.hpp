@@ -327,7 +327,7 @@ public:
    * @return Signal connection handle
    */
   template <typename T>
-  boost::signals2::connection onResponse(void (T::*callback)(const SharedResponse &), T * object)
+  smacc2::SmaccSignalConnection onResponse(void (T::*callback)(const SharedResponse &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onServiceResponse_, callback, object);
   }
@@ -341,7 +341,7 @@ public:
    * @return Signal connection handle
    */
   template <typename T>
-  boost::signals2::connection onRequestSent(void (T::*callback)(), T * object)
+  smacc2::SmaccSignalConnection onRequestSent(void (T::*callback)(), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onServiceRequestSent_, callback, object);
   }
@@ -355,7 +355,7 @@ public:
    * @return Signal connection handle
    */
   template <typename T>
-  boost::signals2::connection onFailure(void (T::*callback)(), T * object)
+  smacc2::SmaccSignalConnection onFailure(void (T::*callback)(), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onServiceFailure_, callback, object);
   }

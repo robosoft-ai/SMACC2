@@ -51,7 +51,7 @@ public:
     onServiceRequestReceived_;
 
   template <typename T>
-  boost::signals2::connection onServiceRequestReceived(
+  smacc2::SmaccSignalConnection onServiceRequestReceived(
     void (T::*callback)(
       const std::shared_ptr<typename TService::Request>,
       std::shared_ptr<typename TService::Response>),

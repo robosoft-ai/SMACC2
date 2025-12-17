@@ -60,21 +60,21 @@ void SmaccAsyncClientBehavior::onStateOrthogonalAllocation()
 }
 
 template <typename TCallbackMethod, typename T>
-boost::signals2::connection SmaccAsyncClientBehavior::onSuccess(
+smacc2::SmaccSignalConnection SmaccAsyncClientBehavior::onSuccess(
   TCallbackMethod callback, T * object)
 {
   return this->getStateMachine()->createSignalConnection(onSuccess_, callback, object);
 }
 
 template <typename TCallbackMethod, typename T>
-boost::signals2::connection SmaccAsyncClientBehavior::onFinished(
+smacc2::SmaccSignalConnection SmaccAsyncClientBehavior::onFinished(
   TCallbackMethod callback, T * object)
 {
   return this->getStateMachine()->createSignalConnection(onFinished_, callback, object);
 }
 
 template <typename TCallbackMethod, typename T>
-boost::signals2::connection SmaccAsyncClientBehavior::onFailure(
+smacc2::SmaccSignalConnection SmaccAsyncClientBehavior::onFailure(
   TCallbackMethod callback, T * object)
 {
   return this->getStateMachine()->createSignalConnection(onFailure_, callback, object);

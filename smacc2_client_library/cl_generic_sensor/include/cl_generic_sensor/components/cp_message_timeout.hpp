@@ -52,7 +52,7 @@ public:
 
   // Signal subscription method for timeout events
   template <typename T>
-  boost::signals2::connection onMessageTimeout(void (T::*callback)(), T * object)
+  smacc2::SmaccSignalConnection onMessageTimeout(void (T::*callback)(), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onMessageTimeout_, callback, object);
   }

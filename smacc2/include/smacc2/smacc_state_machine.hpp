@@ -128,7 +128,7 @@ public:
     std::shared_ptr<smacc2_msgs::srv::SmaccGetTransitionHistory::Response> res);
 
   template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-  boost::signals2::connection createSignalConnection(
+  smacc2::SmaccSignalConnection createSignalConnection(
     TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object);
 
   void disconnectSmaccSignalObject(void * object);

@@ -61,13 +61,13 @@ public:
   virtual ~SmaccAsyncClientBehavior();
 
   template <typename TCallback, typename T>
-  boost::signals2::connection onSuccess(TCallback callback, T * object);
+  smacc2::SmaccSignalConnection onSuccess(TCallback callback, T * object);
 
   template <typename TCallback, typename T>
-  boost::signals2::connection onFinished(TCallback callback, T * object);
+  smacc2::SmaccSignalConnection onFinished(TCallback callback, T * object);
 
   template <typename TCallback, typename T>
-  boost::signals2::connection onFailure(TCallback callback, T * object);
+  smacc2::SmaccSignalConnection onFailure(TCallback callback, T * object);
 
   void requestForceFinish();
 

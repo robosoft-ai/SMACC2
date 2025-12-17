@@ -49,7 +49,7 @@ public:
   }
 
   template <typename T>
-  boost::signals2::connection onTimerTick(void (T::*callback)(), T * object)
+  smacc2::SmaccSignalConnection onTimerTick(void (T::*callback)(), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onTimerTick_, callback, object);
   }

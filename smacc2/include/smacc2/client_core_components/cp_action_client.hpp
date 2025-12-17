@@ -199,25 +199,25 @@ public:
 
   // Signal connection methods
   template <typename T>
-  boost::signals2::connection onSucceeded(void (T::*callback)(const WrappedResult &), T * object)
+  smacc2::SmaccSignalConnection onSucceeded(void (T::*callback)(const WrappedResult &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onActionSucceeded_, callback, object);
   }
 
   template <typename T>
-  boost::signals2::connection onAborted(void (T::*callback)(const WrappedResult &), T * object)
+  smacc2::SmaccSignalConnection onAborted(void (T::*callback)(const WrappedResult &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onActionAborted_, callback, object);
   }
 
   template <typename T>
-  boost::signals2::connection onCancelled(void (T::*callback)(const WrappedResult &), T * object)
+  smacc2::SmaccSignalConnection onCancelled(void (T::*callback)(const WrappedResult &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onActionCancelled_, callback, object);
   }
 
   template <typename T>
-  boost::signals2::connection onFeedback(void (T::*callback)(const Feedback &), T * object)
+  smacc2::SmaccSignalConnection onFeedback(void (T::*callback)(const Feedback &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onActionFeedback_, callback, object);
   }

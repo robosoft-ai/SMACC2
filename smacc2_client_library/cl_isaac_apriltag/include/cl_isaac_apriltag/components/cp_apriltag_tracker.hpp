@@ -132,7 +132,7 @@ public:
    * @return Connection object for managing the subscription
    */
   template <typename T>
-  boost::signals2::connection onAprilTagDetected(
+  smacc2::SmaccSignalConnection onAprilTagDetected(
     void (T::*callback)(const AprilTagDetectionArray::SharedPtr &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onAprilTagDetection_, callback, object);

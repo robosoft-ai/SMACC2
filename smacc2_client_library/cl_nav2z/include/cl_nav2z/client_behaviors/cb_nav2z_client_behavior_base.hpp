@@ -63,36 +63,36 @@ protected:
 
   // Component-based signal connections
   template <typename T>
-  boost::signals2::connection onNavigationSucceeded(
+  smacc2::SmaccSignalConnection onNavigationSucceeded(
     void (T::*callback)(const components::CpNav2ActionInterface::WrappedResult &), T * object)
   {
     if (nav2ActionInterface_)
     {
       return nav2ActionInterface_->onNavigationSucceeded(callback, object);
     }
-    return boost::signals2::connection();
+    return smacc2::SmaccSignalConnection();
   }
 
   template <typename T>
-  boost::signals2::connection onNavigationAborted(
+  smacc2::SmaccSignalConnection onNavigationAborted(
     void (T::*callback)(const components::CpNav2ActionInterface::WrappedResult &), T * object)
   {
     if (nav2ActionInterface_)
     {
       return nav2ActionInterface_->onNavigationAborted(callback, object);
     }
-    return boost::signals2::connection();
+    return smacc2::SmaccSignalConnection();
   }
 
   template <typename T>
-  boost::signals2::connection onNavigationCancelled(
+  smacc2::SmaccSignalConnection onNavigationCancelled(
     void (T::*callback)(const components::CpNav2ActionInterface::WrappedResult &), T * object)
   {
     if (nav2ActionInterface_)
     {
       return nav2ActionInterface_->onNavigationCancelled(callback, object);
     }
-    return boost::signals2::connection();
+    return smacc2::SmaccSignalConnection();
   }
 
   // NEW: Component references instead of client reference
