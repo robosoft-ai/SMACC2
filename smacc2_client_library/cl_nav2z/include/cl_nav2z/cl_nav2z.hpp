@@ -27,6 +27,12 @@ namespace cl_nav2z
 class ClNav2Z : public smacc2::ISmaccClient
 {
 public:
+  // Type aliases required for event system (TSource::WrappedResult in smacc_default_events.hpp)
+  using ActionType = nav2_msgs::action::NavigateToPose;
+  using GoalHandle = rclcpp_action::ClientGoalHandle<ActionType>;
+  using WrappedResult = typename GoalHandle::WrappedResult;
+  using Feedback = typename ActionType::Feedback;
+
   // Constructor
   ClNav2Z(std::string actionServerName = "/navigate_to_pose") : actionServerName_(actionServerName)
   {
@@ -39,7 +45,7 @@ public:
   void onComponentInitialization()
   {
     // Create core action client component
-    auto actionClient = this->createComponent<
+    this->createComponent<
       smacc2::client_core_components::CpActionClient<nav2_msgs::action::NavigateToPose>,
       TOrthogonal, ClNav2Z>(actionServerName_);
 

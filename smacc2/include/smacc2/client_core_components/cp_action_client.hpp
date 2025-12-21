@@ -277,9 +277,10 @@ private:
   }
 
   template <typename EvType>
-  void postResultEvent(const WrappedResult & /* result */)
+  void postResultEvent(const WrappedResult & result)
   {
     auto * ev = new EvType();
+    ev->resultMessage = result;
     RCLCPP_INFO(
       getLogger(), "[%s] Posting event: %s", this->getName().c_str(),
       smacc2::demangleSymbol(typeid(ev).name()).c_str());
