@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>sm_nav2_unit_test_1</name>
+  <version>0.1.0</version>
+  <description>Nav2 unit test state machine for SMACC2</description>
+  <maintainer email="user@example.com">User</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>smacc2</depend>
+  <depend>cl_ros2_timer</depend>
+  <depend>cl_keyboard</depend>
+  <depend>cl_nav2z</depend>
+  <depend>geometry_msgs</depend>
+
+  <exec_depend>nav2_bringup</exec_depend>
+  <exec_depend>xterm</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
