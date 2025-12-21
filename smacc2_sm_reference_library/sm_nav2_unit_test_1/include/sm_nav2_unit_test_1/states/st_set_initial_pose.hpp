@@ -16,7 +16,7 @@
 
 #include <smacc2/smacc.hpp>
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
-#include <cl_nav2z/client_behaviors/cb_wait_transform.hpp>
+#include <cl_nav2z/client_behaviors/cb_wait_nav2_nodes.hpp>
 
 namespace sm_nav2_unit_test_1
 {
@@ -25,25 +25,46 @@ using namespace cl_nav2z;
 using namespace cl_keyboard;
 using namespace smacc2::default_transition_tags;
 
-// Forward declaration
+// Custom transition tag for retry
+struct RETRY : SUCCESS {};
+
+// Custom event for max retries exceeded
+template <typename TSource, typename TOrthogonal>
+struct EvMaxRetriesExceeded : sc::event<EvMaxRetriesExceeded<TSource, TOrthogonal>>
+{
+};
+
+// Forward declarations
 struct StNavigateToWaypoint1;
+struct StFinalState;
 
 // STATE DECLARATION
 struct StSetInitialPose : smacc2::SmaccState<StSetInitialPose, SmNav2UnitTest1>
 {
   using SmaccState::SmaccState;
 
+  // Retry configuration: MAX_RETRIES means number of retries after initial attempt
+  // Total attempts = 1 (initial) + MAX_RETRIES = 4
+  static constexpr int MAX_RETRIES = 3;
+  static constexpr int MAX_ATTEMPTS = 1 + MAX_RETRIES;  // 4 total attempts
+  static constexpr const char* ATTEMPT_COUNTER_KEY = "localization_attempt_count";
+
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvCbSuccess<CbWaitTransform, OrNavigation>, StNavigateToWaypoint1, SUCCESS>,
-    Transition<EvCbFailure<CbWaitTransform, OrNavigation>, StNavigateToWaypoint1, ABORT>
+    // Success: proceed to navigation when Nav2 nodes are ready
+    Transition<EvCbSuccess<CbWaitNav2Nodes, OrNavigation>, StNavigateToWaypoint1, SUCCESS>,
+    // Failure with retries remaining: self-transition to try again
+    Transition<EvCbFailure<CbWaitNav2Nodes, OrNavigation>, StSetInitialPose, RETRY>,
+    // Max retries exceeded: abort to final state
+    Transition<EvMaxRetriesExceeded<CbWaitNav2Nodes, OrNavigation>, StFinalState, ABORT>
   > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // Wait for map->base_link transform (10 second timeout)
-    configure_orthogonal<OrNavigation, CbWaitTransform>("base_link", "map", rclcpp::Duration(10, 0));
+    // Wait for Nav2 nodes to be active (PlannerServer, ControllerServer, BtNavigator)
+    // This ensures the navigation stack is ready before attempting to navigate
+    configure_orthogonal<OrNavigation, CbWaitNav2Nodes>();
 
     // Keyboard behavior for manual control
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
@@ -51,6 +72,36 @@ struct StSetInitialPose : smacc2::SmaccState<StSetInitialPose, SmNav2UnitTest1>
 
   void runtimeConfigure()
   {
+    // Increment attempt counter first
+    int attemptCount = 0;
+    this->getGlobalSMData(ATTEMPT_COUNTER_KEY, attemptCount);
+    attemptCount++;
+    this->setGlobalSMData(ATTEMPT_COUNTER_KEY, attemptCount);
+
+    // Check if max attempts exceeded (1 initial + MAX_RETRIES)
+    if (attemptCount > MAX_ATTEMPTS)
+    {
+      RCLCPP_ERROR(
+        getLogger(),
+        "StSetInitialPose: All %d attempts failed, aborting mission", MAX_ATTEMPTS);
+      // Post abort event - this will be processed and transition to StFinalState
+      this->postEvent<EvMaxRetriesExceeded<CbWaitNav2Nodes, OrNavigation>>();
+      return;
+    }
+
+    // Log current attempt
+    if (attemptCount == 1)
+    {
+      RCLCPP_INFO(getLogger(), "StSetInitialPose: Initial attempt (1 of %d)", MAX_ATTEMPTS);
+    }
+    else
+    {
+      RCLCPP_WARN(
+        getLogger(),
+        "StSetInitialPose: Retry %d of %d (attempt %d of %d)",
+        attemptCount - 1, MAX_RETRIES, attemptCount, MAX_ATTEMPTS);
+    }
+
     RCLCPP_INFO(getLogger(), "StSetInitialPose: runtimeConfigure() - Setting initial pose for AMCL");
 
     // Set initial pose for AMCL localization
@@ -81,12 +132,25 @@ struct StSetInitialPose : smacc2::SmaccState<StSetInitialPose, SmNav2UnitTest1>
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "StSetInitialPose: onEntry() - Waiting for map->base_link transform");
+    RCLCPP_INFO(getLogger(), "StSetInitialPose: onEntry() - Waiting for Nav2 nodes to be active");
   }
 
   void onExit()
   {
-    RCLCPP_INFO(getLogger(), "StSetInitialPose: onExit() - Localization ready");
+    RCLCPP_INFO(getLogger(), "StSetInitialPose: onExit()");
+  }
+
+  // Reset attempt counter on successful exit to navigation
+  void onExit(SUCCESS)
+  {
+    // Clear attempt counter on success
+    this->setGlobalSMData(ATTEMPT_COUNTER_KEY, 0);
+    RCLCPP_INFO(getLogger(), "StSetInitialPose: Localization successful, proceeding to navigation");
+  }
+
+  void onExit(ABORT)
+  {
+    RCLCPP_ERROR(getLogger(), "StSetInitialPose: Localization failed after max retries, aborting");
   }
 };
 
