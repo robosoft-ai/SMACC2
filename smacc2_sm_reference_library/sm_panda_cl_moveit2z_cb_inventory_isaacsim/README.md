@@ -27,7 +27,7 @@ source install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_panda_cl_moveit2z_cb_inventory sm_panda_cl_moveit2z_cb_inventory.py
+ros2 launch sm_panda_cl_moveit2z_cb_inventory_isaacsim sm_panda_cl_moveit2z_cb_inventory_isaacsim.launch.py
 ```
 
 
