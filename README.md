@@ -2,8 +2,6 @@
 
 SMACC2 is an event-driven, asynchronous, behavioral state machine library for real-time ROS 2 (Robotic Operating System) applications written in C++, designed to allow programmers to build robot control applications for multicomponent robots, in an intuitive and systematic manner.
 
-SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wiki.ros.org/smach). SMACC is built on top of the [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
-
 ## Repository Status, Packages and Documentation
 
 ROS 2 Distro | Branch | Build status | Documentation | Released packages
@@ -78,111 +76,6 @@ ROS 2 Distro | Branch | Build status | Documentation | Released packages
    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
    ```
 
-## Getting started - ROS Humble
-
-1. [Install ROS 2 Humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html).
-
-2. Make sure that `colcon`, its extensions, `vcs`, and development tools are installed:
-   ```
-   sudo apt install python3-colcon-common-extensions python3-vcstool clang-format pre-commit
-   ```
-3. Create a new ROS 2 workspace if necessary:
-   ```
-   export COLCON_WS=~/workspace/humble_ws
-   mkdir -p $COLCON_WS/src
-   ```
-4. Or just navigate to your workspace source folder:
-   ```
-   cd ~/workspace/humble_ws/src
-   ```
-5. Clone the repo:
-   ```
-   git clone https://github.com/robosoft-ai/SMACC2.git
-   ```
-6. Checkout the Humble branch:
-   ```
-   cd ~/workspace/humble_ws/src/SMACC2
-   git checkout humble
-   ```
-7. Navigate to the workspace:
-   ```
-   cd ~/workspace/humble_ws
-   ```
-8. Update System:
-   ```
-   sudo apt update
-   sudo apt upgrade
-   ```
-9. Source the workspace:
-   ```
-   source /opt/ros/humble/setup.bash
-   ```
-10. Update dependencies:
-   ```
-   rosdep update
-   ```
-11. Pull relevant packages and install dependencies:
-   ```
-   vcs import src --skip-existing --input src/SMACC2/.github/SMACC2.humble.repos
-   rosdep install --ignore-src --from-paths src -y -r
-   ```
-12. Compile:
-   ```
-   colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
-   ```
-
-## Getting started - ROS Foxy
-
-1. [Install ROS 2 Foxy](https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html).
-
-2. Make sure that `colcon`, its extensions, `vcs`, and development tools are installed:
-   ```
-   sudo apt install python3-colcon-common-extensions python3-vcstool clang-format pre-commit
-   ```
-3. Create a new ROS 2 workspace if necessary:
-   ```
-   export COLCON_WS=~/workspace/foxy_ws
-   mkdir -p $COLCON_WS/src
-   ```
-4. Or just navigate to your workspace source folder:
-   ```
-   cd ~/workspace/foxy_ws/src
-   ```
-5. Clone the repo:
-   ```
-   git clone https://github.com/robosoft-ai/SMACC2.git
-   ```
-6. Checkout the Foxy branch:
-   ```
-   cd ~/workspace/foxy_ws/src/SMACC2
-   git checkout foxy
-   ```
-7. Navigate to the workspace:
-   ```
-   cd ~/workspace/foxy_ws
-   ```
-8. Update System:
-   ```
-   sudo apt update
-   sudo apt upgrade
-   ```
-9. Source the workspace:
-   ```
-   source /opt/ros/foxy/setup.bash
-   ```
-10. Update dependencies:
-   ```
-   rosdep update
-   ```
-11. Pull relevant packages and install dependencies:
-   ```
-   vcs import src --skip-existing --input src/SMACC2/.github/SMACC2.foxy.repos
-   rosdep install --ignore-src --from-paths src -y -r
-   ```
-12. Compile:
-   ```
-   colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
-   ```
 
 ## Features
  *  ***Powered by ROS 2:*** SMACC2 has been developed specifically to work with ROS 2. It supports ROS 2 topics, services and actions, right out of the box.
@@ -219,15 +112,6 @@ Each state machine in the reference library comes with it's own README.md file, 
   *  If you want to get started with the ROS Navigation stack right away, try [sm_nav2_test_7](https://github.com/robosoft-ai/nova_carter_sm_library/tree/main/sm_nav2_test_7).
 
 Operating instructions can be found in each reference state machines readme file.
-
-## Writing your State Machines
-There is a [state machine generator in the reference library](smacc2_sm_reference_library/create-sm-package.bash).
-To use it go to the `src` folder of your ROS 2 workspace and execute:
-  ```
-  smacc2/smacc2_sm_reference_library/create-sm-package.bash <name_of_state_machine>
-  ```
-After than compile your workspace and source it to set paths of the new package.
-Check `README.md` in new package about instructions to start newly created state machine.
 
 Happy Coding!
 
