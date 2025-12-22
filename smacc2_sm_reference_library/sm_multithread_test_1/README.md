@@ -1,4 +1,6 @@
 # sm_multithread_test_1 - SMACC2 Multi-threaded Executor Demonstration
+ 
+ ![sm_multithread_test_1](docs/SmMultithreadTest1_2025-12-21_213820.svg)
 
 **A reference implementation demonstrating SMACC2's multi-threaded executor capability.**
 
