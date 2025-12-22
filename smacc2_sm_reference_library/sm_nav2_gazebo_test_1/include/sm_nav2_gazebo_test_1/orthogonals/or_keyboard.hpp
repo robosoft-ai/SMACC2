@@ -12,10 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <sm_nav2_unit_test_1/sm_nav2_unit_test_1.hpp>
+#pragma once
 
-int main(int argc, char ** argv)
+#include <cl_keyboard/cl_keyboard.hpp>
+#include <smacc2/smacc_orthogonal.hpp>
+
+namespace sm_nav2_gazebo_test_1
 {
-  rclcpp::init(argc, argv);
-  smacc2::run<sm_nav2_unit_test_1::SmNav2UnitTest1>();
-}
+
+class OrKeyboard : public smacc2::Orthogonal<OrKeyboard>
+{
+public:
+  void onInitialize() override
+  {
+    auto client = this->createClient<cl_keyboard::ClKeyboard>();
+  }
+};
+
+}  // namespace sm_nav2_gazebo_test_1

@@ -16,7 +16,7 @@
 
 #include <smacc2/smacc.hpp>
 
-namespace sm_nav2_unit_test_1
+namespace sm_nav2_gazebo_test_1
 {
 
 using namespace cl_nav2z;
@@ -24,21 +24,21 @@ using namespace cl_keyboard;
 using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
-struct StNavigateToWaypoint2 : smacc2::SmaccState<StNavigateToWaypoint2, SmNav2UnitTest1>
+struct StRotate : smacc2::SmaccState<StRotate, SmNav2GazeboTest1>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<smacc2::EvActionSucceeded<ClNav2Z, OrNavigation>, StFinalState, SUCCESS>,
-    Transition<smacc2::EvActionAborted<ClNav2Z, OrNavigation>, StFinalState, ABORT>
+    Transition<EvCbSuccess<CbPureSpinning, OrNavigation>, StNavigateToWaypoint2, SUCCESS>,
+    Transition<EvCbFailure<CbPureSpinning, OrNavigation>, StFinalState, ABORT>
   > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // Navigate to waypoint 2: back near origin (x=0.0, y=0.0, yaw=0.0)
-    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(0.0, 0.0, 0.0);
+    // Rotate 180 degrees (PI radians) at 0.5 rad/s
+    configure_orthogonal<OrNavigation, CbPureSpinning>(M_PI, 0.5);
 
     // Keyboard behavior for manual control
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
@@ -46,18 +46,18 @@ struct StNavigateToWaypoint2 : smacc2::SmaccState<StNavigateToWaypoint2, SmNav2U
 
   void runtimeConfigure()
   {
-    RCLCPP_INFO(getLogger(), "StNavigateToWaypoint2: runtimeConfigure()");
+    RCLCPP_INFO(getLogger(), "StRotate: runtimeConfigure()");
   }
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "StNavigateToWaypoint2: onEntry() - Navigating to waypoint 2 (x=0.0, y=0.0)");
+    RCLCPP_INFO(getLogger(), "StRotate: onEntry() - Rotating 180 degrees");
   }
 
   void onExit()
   {
-    RCLCPP_INFO(getLogger(), "StNavigateToWaypoint2: onExit()");
+    RCLCPP_INFO(getLogger(), "StRotate: onExit()");
   }
 };
 
-}  // namespace sm_nav2_unit_test_1
+}  // namespace sm_nav2_gazebo_test_1

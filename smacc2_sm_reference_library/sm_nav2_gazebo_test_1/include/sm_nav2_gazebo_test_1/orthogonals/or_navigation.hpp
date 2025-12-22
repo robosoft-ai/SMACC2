@@ -22,7 +22,7 @@
 #include <cl_nav2z/components/amcl/cp_amcl.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 
-namespace sm_nav2_unit_test_1
+namespace sm_nav2_gazebo_test_1
 {
 
 class OrNavigation : public smacc2::Orthogonal<OrNavigation>
@@ -50,4 +50,4 @@ public:
   }
 };
 
-}  // namespace sm_nav2_unit_test_1
+}  // namespace sm_nav2_gazebo_test_1

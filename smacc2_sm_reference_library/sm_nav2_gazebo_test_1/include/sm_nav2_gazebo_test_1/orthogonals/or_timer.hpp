@@ -20,7 +20,7 @@
 
 using namespace std::chrono_literals;
 
-namespace sm_nav2_unit_test_1
+namespace sm_nav2_gazebo_test_1
 {
 
 class OrTimer : public smacc2::Orthogonal<OrTimer>
@@ -32,4 +32,4 @@ public:
   }
 };
 
-}  // namespace sm_nav2_unit_test_1
+}  // namespace sm_nav2_gazebo_test_1

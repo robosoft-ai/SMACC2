@@ -16,7 +16,7 @@
 
 #include <smacc2/smacc.hpp>
 
-namespace sm_nav2_unit_test_1
+namespace sm_nav2_gazebo_test_1
 {
 
 using namespace cl_nav2z;
@@ -24,21 +24,21 @@ using namespace cl_keyboard;
 using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
-struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, SmNav2UnitTest1>
+struct StNavigateToWaypoint2 : smacc2::SmaccState<StNavigateToWaypoint2, SmNav2GazeboTest1>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<smacc2::EvActionSucceeded<ClNav2Z, OrNavigation>, StRotate, SUCCESS>,
+    Transition<smacc2::EvActionSucceeded<ClNav2Z, OrNavigation>, StFinalState, SUCCESS>,
     Transition<smacc2::EvActionAborted<ClNav2Z, OrNavigation>, StFinalState, ABORT>
   > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // Navigate to waypoint 1: x=2.0, y=0.0, yaw=0.0
-    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(2.0, 0.0, 0.0);
+    // Navigate to waypoint 2: back near origin (x=0.0, y=0.0, yaw=0.0)
+    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(0.0, 0.0, 0.0);
 
     // Keyboard behavior for manual control
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
@@ -46,18 +46,18 @@ struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, SmNav2U
 
   void runtimeConfigure()
   {
-    RCLCPP_INFO(getLogger(), "StNavigateToWaypoint1: runtimeConfigure()");
+    RCLCPP_INFO(getLogger(), "StNavigateToWaypoint2: runtimeConfigure()");
   }
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "StNavigateToWaypoint1: onEntry() - Navigating to waypoint 1 (x=2.0, y=0.0)");
+    RCLCPP_INFO(getLogger(), "StNavigateToWaypoint2: onEntry() - Navigating to waypoint 2 (x=0.0, y=0.0)");
   }
 
   void onExit()
   {
-    RCLCPP_INFO(getLogger(), "StNavigateToWaypoint1: onExit()");
+    RCLCPP_INFO(getLogger(), "StNavigateToWaypoint2: onExit()");
   }
 };
 
-}  // namespace sm_nav2_unit_test_1
+}  // namespace sm_nav2_gazebo_test_1

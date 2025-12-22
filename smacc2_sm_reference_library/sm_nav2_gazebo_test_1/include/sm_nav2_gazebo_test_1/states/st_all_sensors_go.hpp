@@ -16,7 +16,7 @@
 
 #include <smacc2/smacc.hpp>
 
-namespace sm_nav2_unit_test_1
+namespace sm_nav2_gazebo_test_1
 {
 
 using namespace cl_ros2_timer;
@@ -25,7 +25,7 @@ using namespace cl_nav2z;
 using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
-struct StAllSensorsGo : smacc2::SmaccState<StAllSensorsGo, SmNav2UnitTest1>
+struct StAllSensorsGo : smacc2::SmaccState<StAllSensorsGo, SmNav2GazeboTest1>
 {
   using SmaccState::SmaccState;
 
@@ -69,4 +69,4 @@ struct StAllSensorsGo : smacc2::SmaccState<StAllSensorsGo, SmNav2UnitTest1>
   }
 };
 
-}  // namespace sm_nav2_unit_test_1
+}  // namespace sm_nav2_gazebo_test_1

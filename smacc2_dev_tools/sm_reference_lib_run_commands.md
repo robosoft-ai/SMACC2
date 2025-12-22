@@ -45,7 +45,9 @@ ros2 launch sm_pack_ml sm_pack_ml.py
 ```
 ros2 launch sm_panda_cl_moveit2z_cb_inventory sm_panda_cl_moveit2z_cb_inventory.py
 ```
-
+```
+ros2 launch sm_nav2_gazebo_test_1 sm_nav2_gazebo_test_1.py
+```
 ```
 ros2 launch sm_simple_action_client sm_simple_action_client.py
 ```

@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ![sm_nav2_unit_test_1](docs/SmNav2UnitTest1_2025-12-21_205429.svg)
+ ![sm_nav2_gazebo_test_1](docs/SmNav2GazeboTest1_2025-12-21_205429.svg)
 
  <h2>Description</h2> A Nav2 unit test state machine demonstrating basic navigation and rotation behaviors using the Nav2 stack with TurtleBot3 simulation. The state machine navigates to a waypoint, rotates 180 degrees, then navigates to a second waypoint.<br></br>
 
@@ -32,7 +32,7 @@ source install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_nav2_unit_test_1 sm_nav2_unit_test_1.py
+ros2 launch sm_nav2_gazebo_test_1 sm_nav2_gazebo_test_1.py
 ```
 
  <h2>Viewer Instructions</h2>

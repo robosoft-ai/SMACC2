@@ -25,7 +25,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
     # Get package share directory
-    pkg_share = get_package_share_directory("sm_nav2_unit_test_1")
+    pkg_share = get_package_share_directory("sm_nav2_gazebo_test_1")
 
     # Declare launch arguments
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
@@ -66,9 +66,9 @@ def generate_launch_description():
 
     # State machine node
     sm_node = Node(
-        package="sm_nav2_unit_test_1",
-        executable="sm_nav2_unit_test_1_node",
-        name="sm_nav2_unit_test_1",
+        package="sm_nav2_gazebo_test_1",
+        executable="sm_nav2_gazebo_test_1_node",
+        name="sm_nav2_gazebo_test_1",
         output="screen",
         parameters=[{"use_sim_time": True}],
     )

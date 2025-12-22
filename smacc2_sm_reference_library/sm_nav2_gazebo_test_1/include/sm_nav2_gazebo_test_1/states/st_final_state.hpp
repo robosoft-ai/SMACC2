@@ -16,11 +16,11 @@
 
 #include <smacc2/smacc.hpp>
 
-namespace sm_nav2_unit_test_1
+namespace sm_nav2_gazebo_test_1
 {
 
 // STATE DECLARATION
-struct StFinalState : smacc2::SmaccState<StFinalState, SmNav2UnitTest1>
+struct StFinalState : smacc2::SmaccState<StFinalState, SmNav2GazeboTest1>
 {
   using SmaccState::SmaccState;
 
@@ -49,4 +49,4 @@ struct StFinalState : smacc2::SmaccState<StFinalState, SmNav2UnitTest1>
   }
 };
 
-}  // namespace sm_nav2_unit_test_1
+}  // namespace sm_nav2_gazebo_test_1

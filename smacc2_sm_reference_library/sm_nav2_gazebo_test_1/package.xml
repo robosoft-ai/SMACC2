@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>sm_nav2_unit_test_1</name>
+  <name>sm_nav2_gazebo_test_1</name>
   <version>0.1.0</version>
   <description>Nav2 unit test state machine for SMACC2</description>
   <maintainer email="user@example.com">User</maintainer>

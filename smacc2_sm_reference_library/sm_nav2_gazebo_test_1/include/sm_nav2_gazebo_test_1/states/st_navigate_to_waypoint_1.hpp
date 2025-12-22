@@ -16,7 +16,7 @@
 
 #include <smacc2/smacc.hpp>
 
-namespace sm_nav2_unit_test_1
+namespace sm_nav2_gazebo_test_1
 {
 
 using namespace cl_nav2z;
@@ -24,21 +24,21 @@ using namespace cl_keyboard;
 using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
-struct StRotate : smacc2::SmaccState<StRotate, SmNav2UnitTest1>
+struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, SmNav2GazeboTest1>
 {
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvCbSuccess<CbPureSpinning, OrNavigation>, StNavigateToWaypoint2, SUCCESS>,
-    Transition<EvCbFailure<CbPureSpinning, OrNavigation>, StFinalState, ABORT>
+    Transition<smacc2::EvActionSucceeded<ClNav2Z, OrNavigation>, StRotate, SUCCESS>,
+    Transition<smacc2::EvActionAborted<ClNav2Z, OrNavigation>, StFinalState, ABORT>
   > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // Rotate 180 degrees (PI radians) at 0.5 rad/s
-    configure_orthogonal<OrNavigation, CbPureSpinning>(M_PI, 0.5);
+    // Navigate to waypoint 1: x=2.0, y=0.0, yaw=0.0
+    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(2.0, 0.0, 0.0);
 
     // Keyboard behavior for manual control
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
@@ -46,18 +46,18 @@ struct StRotate : smacc2::SmaccState<StRotate, SmNav2UnitTest1>
 
   void runtimeConfigure()
   {
-    RCLCPP_INFO(getLogger(), "StRotate: runtimeConfigure()");
+    RCLCPP_INFO(getLogger(), "StNavigateToWaypoint1: runtimeConfigure()");
   }
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "StRotate: onEntry() - Rotating 180 degrees");
+    RCLCPP_INFO(getLogger(), "StNavigateToWaypoint1: onEntry() - Navigating to waypoint 1 (x=2.0, y=0.0)");
   }
 
   void onExit()
   {
-    RCLCPP_INFO(getLogger(), "StRotate: onExit()");
+    RCLCPP_INFO(getLogger(), "StNavigateToWaypoint1: onExit()");
   }
 };
 
-}  // namespace sm_nav2_unit_test_1
+}  // namespace sm_nav2_gazebo_test_1

@@ -18,7 +18,7 @@
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <cl_nav2z/client_behaviors/cb_wait_nav2_nodes.hpp>
 
-namespace sm_nav2_unit_test_1
+namespace sm_nav2_gazebo_test_1
 {
 
 using namespace cl_nav2z;
@@ -39,7 +39,7 @@ struct StNavigateToWaypoint1;
 struct StFinalState;
 
 // STATE DECLARATION
-struct StSetInitialPose : smacc2::SmaccState<StSetInitialPose, SmNav2UnitTest1>
+struct StSetInitialPose : smacc2::SmaccState<StSetInitialPose, SmNav2GazeboTest1>
 {
   using SmaccState::SmaccState;
 
@@ -154,4 +154,4 @@ struct StSetInitialPose : smacc2::SmaccState<StSetInitialPose, SmNav2UnitTest1>
   }
 };
 
-}  // namespace sm_nav2_unit_test_1
+}  // namespace sm_nav2_gazebo_test_1

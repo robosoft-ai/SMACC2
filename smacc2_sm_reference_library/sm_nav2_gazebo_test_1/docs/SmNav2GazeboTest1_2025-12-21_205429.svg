@@ -3,7 +3,7 @@
  viewBox="0 0 4788 600"
  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  version="1.2" baseProfile="tiny">
 <title>smacc2_rta state machine render</title>
-<desc>/SmNav2UnitTest1</desc>
+<desc>/SmNav2GazeboTest1</desc>
 <defs>
 </defs>
 <g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel" >

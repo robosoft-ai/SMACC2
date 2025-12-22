@@ -41,7 +41,7 @@ using namespace cl_ros2_timer;
 using namespace cl_keyboard;
 using namespace cl_nav2z;
 
-namespace sm_nav2_unit_test_1
+namespace sm_nav2_gazebo_test_1
 {
 
 // FORWARD DECLARATIONS
@@ -54,7 +54,7 @@ class StFinalState;
 
 //--------------------------------------------------------------------
 // STATE MACHINE
-struct SmNav2UnitTest1 : public smacc2::SmaccStateMachineBase<SmNav2UnitTest1, StAllSensorsGo>
+struct SmNav2GazeboTest1 : public smacc2::SmaccStateMachineBase<SmNav2GazeboTest1, StAllSensorsGo>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -66,7 +66,7 @@ struct SmNav2UnitTest1 : public smacc2::SmaccStateMachineBase<SmNav2UnitTest1, S
   }
 };
 
-}  // namespace sm_nav2_unit_test_1
+}  // namespace sm_nav2_gazebo_test_1
 
 // STATE INCLUDES (must be after state machine definition)
 #include "states/st_all_sensors_go.hpp"

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(sm_nav2_unit_test_1)
+project(sm_nav2_gazebo_test_1)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
@@ -30,7 +30,7 @@ include_directories(
 
 # Executable
 add_executable(${PROJECT_NAME}_node
-  src/sm_nav2_unit_test_1/sm_nav2_unit_test_1_node.cpp
+  src/sm_nav2_gazebo_test_1/sm_nav2_gazebo_test_1_node.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}_node
