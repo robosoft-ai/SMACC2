@@ -1,3 +1,7 @@
+<h2>State Machine Diagram</h2>
+ 
+![sm_panda_cl_moveit2z_cb_inventory_isaacsim](docs/SmPandaClMoveit2zCbInventoryIsaacsim_2025-12-21_231757.svg)
+
  <h2>Build Instructions</h2>
 
 First, source your ros2 installation.
