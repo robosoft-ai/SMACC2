@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ![sm_cl_keyboard_unit_test_1](docs/SmClKeyboardUnitTest1_2025-9-18_93223.svg)
+ ![sm_cl_keyboard_unit_test_1](docs/SmClKeyboardUnitTest1_2025-12-21_213456.svg)
 
  <h2>Description</h2> A completely minimal state machine example.<br></br>
 
