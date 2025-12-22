@@ -1,5 +1,7 @@
 # SM Simple Action Client
 
+ ![sm_simple_action_client](docs/SmSimpleActionClient_2025-12-21_225014.svg)
+
 A SMACC2 tutorial demonstrating topic subscription and action client patterns.
 
 ## Overview
