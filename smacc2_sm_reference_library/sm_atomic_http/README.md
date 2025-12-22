@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
- ![sm_atomic_http](docs/SmAtomic_2021-10-18_93942.svg)
+ ![sm_atomic_http](docs/SmAtomicHttp_2025-12-22_073.svg)
 
  <h2>Description</h2> A completely minimal state machine example.<br></br>
 
@@ -35,7 +35,7 @@ source ~/workspace/jazzy_ws/install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_atomic_http sm_atomic_http.launch
+ros2 launch sm_atomic_http sm_atomic_http.py
 ```
 
  <h2>Viewer Instructions</h2>

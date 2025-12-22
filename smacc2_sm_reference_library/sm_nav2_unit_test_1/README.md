@@ -32,7 +32,7 @@ source install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_nav2_unit_test_1 sm_nav2_unit_test_1.launch.py
+ros2 launch sm_nav2_unit_test_1 sm_nav2_unit_test_1.py
 ```
 
  <h2>Viewer Instructions</h2>
