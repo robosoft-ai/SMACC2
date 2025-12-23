@@ -21,9 +21,9 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     config_file = os.path.join(
-        get_package_share_directory('sm_modbus_tcp_relay_test_1'),
-        'config',
-        'sm_modbus_tcp_relay_test_1_config.yaml'
+        get_package_share_directory("sm_modbus_tcp_relay_test_1"),
+        "config",
+        "sm_modbus_tcp_relay_test_1_config.yaml",
     )
 
     return LaunchDescription(

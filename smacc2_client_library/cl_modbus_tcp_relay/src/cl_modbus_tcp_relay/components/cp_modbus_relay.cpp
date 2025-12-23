@@ -23,13 +23,9 @@
 namespace cl_modbus_tcp_relay
 {
 
-CpModbusRelay::CpModbusRelay() : connectionComponent_(nullptr)
-{
-}
+CpModbusRelay::CpModbusRelay() : connectionComponent_(nullptr) {}
 
-CpModbusRelay::~CpModbusRelay()
-{
-}
+CpModbusRelay::~CpModbusRelay() {}
 
 void CpModbusRelay::onInitialize()
 {
@@ -75,8 +71,8 @@ bool CpModbusRelay::writeCoil(int channel, bool state)
   int value = state ? TRUE : FALSE;
 
   RCLCPP_INFO(
-    getLogger(), "[CpModbusRelay] Writing coil %d (channel %d) = %s",
-    address, channel, state ? "ON" : "OFF");
+    getLogger(), "[CpModbusRelay] Writing coil %d (channel %d) = %s", address, channel,
+    state ? "ON" : "OFF");
 
   int rc = modbus_write_bit(ctx, address, value);
 
@@ -99,8 +95,7 @@ bool CpModbusRelay::readCoil(int channel, bool & state)
 {
   if (!isValidChannel(channel))
   {
-    RCLCPP_ERROR(
-      getLogger(), "[CpModbusRelay] Invalid channel: %d (must be 1-8)", channel);
+    RCLCPP_ERROR(getLogger(), "[CpModbusRelay] Invalid channel: %d (must be 1-8)", channel);
     return false;
   }
 
@@ -120,15 +115,14 @@ bool CpModbusRelay::readCoil(int channel, bool & state)
 
   if (rc == -1)
   {
-    RCLCPP_ERROR(
-      getLogger(), "[CpModbusRelay] Read failed: %s", modbus_strerror(errno));
+    RCLCPP_ERROR(getLogger(), "[CpModbusRelay] Read failed: %s", modbus_strerror(errno));
     return false;
   }
 
   state = (status != 0);
   RCLCPP_DEBUG(
-    getLogger(), "[CpModbusRelay] Read coil %d (channel %d) = %s",
-    address, channel, state ? "ON" : "OFF");
+    getLogger(), "[CpModbusRelay] Read coil %d (channel %d) = %s", address, channel,
+    state ? "ON" : "OFF");
   return true;
 }
 
@@ -161,8 +155,7 @@ bool CpModbusRelay::writeAllCoils(uint8_t mask)
   }
 
   RCLCPP_INFO(
-    getLogger(), "[CpModbusRelay] Writing all %d coils with mask 0x%02X",
-    NUM_CHANNELS, mask);
+    getLogger(), "[CpModbusRelay] Writing all %d coils with mask 0x%02X", NUM_CHANNELS, mask);
 
   int rc = modbus_write_bits(ctx, COIL_BASE_ADDRESS, NUM_CHANNELS, coils);
 
@@ -204,8 +197,7 @@ bool CpModbusRelay::readAllCoils(uint8_t & states)
 
   if (rc == -1)
   {
-    RCLCPP_ERROR(
-      getLogger(), "[CpModbusRelay] Read all failed: %s", modbus_strerror(errno));
+    RCLCPP_ERROR(getLogger(), "[CpModbusRelay] Read all failed: %s", modbus_strerror(errno));
     return false;
   }
 

@@ -23,13 +23,9 @@
 namespace cl_modbus_tcp_relay
 {
 
-ClModbusTcpRelay::ClModbusTcpRelay()
-{
-}
+ClModbusTcpRelay::ClModbusTcpRelay() {}
 
-ClModbusTcpRelay::~ClModbusTcpRelay()
-{
-}
+ClModbusTcpRelay::~ClModbusTcpRelay() {}
 
 void ClModbusTcpRelay::onInitialize()
 {

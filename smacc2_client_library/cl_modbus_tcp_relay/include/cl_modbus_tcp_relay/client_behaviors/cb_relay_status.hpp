@@ -84,8 +84,7 @@ public:
    */
   virtual void onStatusRead(uint8_t channelStates)
   {
-    RCLCPP_INFO(
-      getLogger(), "[CbRelayStatus] Status read callback: 0x%02X", channelStates);
+    RCLCPP_INFO(getLogger(), "[CbRelayStatus] Status read callback: 0x%02X", channelStates);
   }
 
 private:
@@ -111,9 +110,7 @@ private:
     if (success)
     {
       channelStates_ = state ? (1 << (channel - 1)) : 0;
-      RCLCPP_INFO(
-        getLogger(), "[CbRelayStatus] Channel %d is %s",
-        channel, state ? "ON" : "OFF");
+      RCLCPP_INFO(getLogger(), "[CbRelayStatus] Channel %d is %s", channel, state ? "ON" : "OFF");
       onStatusRead(channelStates_);
       this->postSuccessEvent();
     }
@@ -145,9 +142,7 @@ private:
       for (int i = 0; i < 8; i++)
       {
         bool state = (channelStates_ & (1 << i)) != 0;
-        RCLCPP_INFO(
-          getLogger(), "[CbRelayStatus]   Channel %d: %s",
-          i + 1, state ? "ON" : "OFF");
+        RCLCPP_INFO(getLogger(), "[CbRelayStatus]   Channel %d: %s", i + 1, state ? "ON" : "OFF");
       }
 
       onStatusRead(channelStates_);

@@ -83,7 +83,8 @@ void CpModbusConnection::onInitialize()
   declareAndLoadParam("modbus_relay.connect_on_init", connect_on_init_, true);
 
   RCLCPP_INFO(
-    getLogger(), "[CpModbusConnection] Config: %s:%d (slave=%d, heartbeat=%dms, connect_on_init=%s)",
+    getLogger(),
+    "[CpModbusConnection] Config: %s:%d (slave=%d, heartbeat=%dms, connect_on_init=%s)",
     ip_address_.c_str(), port_, slave_id_, heartbeat_interval_ms_,
     connect_on_init_ ? "true" : "false");
 
@@ -132,8 +133,7 @@ bool CpModbusConnection::connect()
   int rc = modbus_connect(ctx_);
   if (rc == -1)
   {
-    std::string error_msg =
-      std::string("Connection failed: ") + modbus_strerror(errno);
+    std::string error_msg = std::string("Connection failed: ") + modbus_strerror(errno);
     RCLCPP_ERROR(getLogger(), "[CpModbusConnection] %s", error_msg.c_str());
     onConnectionError_(error_msg);
     return false;
@@ -169,15 +169,9 @@ bool CpModbusConnection::isConnected() const
   return connected_;
 }
 
-modbus_t * CpModbusConnection::getContext()
-{
-  return ctx_;
-}
+modbus_t * CpModbusConnection::getContext() { return ctx_; }
 
-std::mutex & CpModbusConnection::getMutex()
-{
-  return mutex_;
-}
+std::mutex & CpModbusConnection::getMutex() { return mutex_; }
 
 void CpModbusConnection::update()
 {
