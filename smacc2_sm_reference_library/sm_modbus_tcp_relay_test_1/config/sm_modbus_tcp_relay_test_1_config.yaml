@@ -1,0 +1,12 @@
+sm_modbus_tcp_relay_test_1:
+  ros__parameters:
+    # Signal detector frequency
+    signal_detector_loop_freq: 20
+
+    # Modbus relay configuration
+    modbus_relay:
+      ip_address: "192.168.1.254"
+      port: 502
+      slave_id: 1
+      heartbeat_interval_ms: 1000
+      connect_on_init: true
