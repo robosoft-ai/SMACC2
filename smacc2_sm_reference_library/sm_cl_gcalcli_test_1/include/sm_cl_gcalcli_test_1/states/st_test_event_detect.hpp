@@ -50,9 +50,9 @@ struct StTestEventDetect : smacc2::SmaccState<StTestEventDetect, SmClGcalcliTest
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // Test CbEventDetect - watch for events matching "TestEvent"
+    // Test CbDetectCalendarEvent - watch for events matching "TestEvent"
     // Using regex=false, minutes_before=5
-    configure_orthogonal<OrCalendar, CbEventDetect>("TestEvent", false, 5);
+    configure_orthogonal<OrCalendar, CbDetectCalendarEvent>("TestEvent", false, 0);
 
     // Test CbMonitorConnection - continuous connection monitoring
     configure_orthogonal<OrCalendar, CbMonitorConnection>();
@@ -66,7 +66,7 @@ struct StTestEventDetect : smacc2::SmaccState<StTestEventDetect, SmClGcalcliTest
   void onEntry()
   {
     RCLCPP_INFO(getLogger(), "====================================");
-    RCLCPP_INFO(getLogger(), "StTestEventDetect - Testing CbEventDetect + CbMonitorConnection");
+    RCLCPP_INFO(getLogger(), "StTestEventDetect - Testing CbDetectCalendarEvent + CbMonitorConnection");
     RCLCPP_INFO(getLogger(), "====================================");
     RCLCPP_INFO(getLogger(), "Watching for 'TestEvent' calendar events (5 min before)...");
     RCLCPP_INFO(getLogger(), "Monitoring connection health...");

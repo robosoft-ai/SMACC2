@@ -26,7 +26,7 @@ add_library(${PROJECT_NAME}
   src/cl_gcalcli/components/cp_gcalcli_connection.cpp
   src/cl_gcalcli/components/cp_calendar_poller.cpp
   src/cl_gcalcli/components/cp_calendar_event_listener.cpp
-  src/cl_gcalcli/client_behaviors/cb_event_detect.cpp
+  src/cl_gcalcli/client_behaviors/cb_detect_calendar_event.cpp
   src/cl_gcalcli/client_behaviors/cb_status.cpp
   src/cl_gcalcli/client_behaviors/cb_wait_connection.cpp
   src/cl_gcalcli/client_behaviors/cb_monitor_connection.cpp

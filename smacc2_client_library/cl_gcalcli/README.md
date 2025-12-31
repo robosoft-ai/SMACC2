@@ -31,12 +31,33 @@ ClGcalcli (Orchestrator)
 
 | Behavior | Type | Purpose |
 |----------|------|---------|
-| `CbEventDetect` | Async | Wait until matching event's start time arrives |
+| `CbDetectCalendarEvent` | Async | Wait until matching event's start time arrives |
 | `CbStatus` | Sync | Get connection state and current events |
 | `CbWaitConnection` | Async | Wait for gcalcli connection with timeout |
 | `CbMonitorConnection` | Sync | Continuous connection monitoring |
 | `CbQuickAdd` | Async | Add event via `gcalcli quick` |
 | `CbRefreshAgenda` | Sync | Force immediate agenda refresh |
+
+### CbDetectCalendarEvent Parameters
+
+```cpp
+configure_orthogonal<OrCalendar, CbDetectCalendarEvent>("TestEvent", false, 5);
+//                                                       pattern    regex  minutes_before
+```
+
+The `minutes_before` parameter controls when the behavior triggers relative to the event's start time. The value `5` means "trigger 5 minutes before the event's start time."
+
+This is intentional - it allows the robot/system to prepare before a meeting actually starts. You can change it:
+
+- `0` = trigger exactly at start time
+- `5` = trigger 5 minutes early
+- `10` = trigger 10 minutes early
+
+If you want to trigger at the actual start time, change it to:
+
+```cpp
+configure_orthogonal<OrCalendar, CbDetectCalendarEvent>("TestEvent", false, 0);
+```
 
 ## Events
 
@@ -104,7 +125,7 @@ struct StWaitForMeeting : smacc2::SmaccState<StWaitForMeeting, SmMain>
 {
   using reactions = mpl::list<
     // Transition when "Standup" event START TIME arrives (5 min before)
-    Transition<EvCbSuccess<CbEventDetect, OrCalendar>, StMeetingStarted>,
+    Transition<EvCbSuccess<CbDetectCalendarEvent, OrCalendar>, StMeetingStarted>,
     // Handle connection loss
     Transition<EvConnectionLost<CpGcalcliConnection, OrCalendar>, StConnectionError>
   >;
@@ -112,7 +133,7 @@ struct StWaitForMeeting : smacc2::SmaccState<StWaitForMeeting, SmMain>
   static void staticConfigure()
   {
     // Wait for "Standup" (regex), trigger 5 minutes before start time
-    configure<OrCalendar, CbEventDetect>(".*Standup.*", /*regex=*/true, /*minutes_before=*/5);
+    configure<OrCalendar, CbDetectCalendarEvent>(".*Standup.*", /*regex=*/true, /*minutes_before=*/5);
     // Monitor connection health
     configure<OrCalendar, CbMonitorConnection>();
   }
@@ -129,7 +150,7 @@ struct StMeetingStarted : smacc2::SmaccState<StMeetingStarted, SmMain>
   void onEntry()
   {
     // Access detected event from behavior
-    CbEventDetect* behavior;
+    CbDetectCalendarEvent* behavior;
     this->getOrthogonal<OrCalendar>()->getClientBehavior(behavior);
     if (behavior)
     {

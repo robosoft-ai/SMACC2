@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <cl_gcalcli/client_behaviors/cb_event_detect.hpp>
+#include <cl_gcalcli/client_behaviors/cb_detect_calendar_event.hpp>
 
 #include <algorithm>
 
@@ -21,7 +21,7 @@
 namespace cl_gcalcli
 {
 
-CbEventDetect::CbEventDetect(const std::string & pattern, bool use_regex, int minutes_before)
+CbDetectCalendarEvent::CbDetectCalendarEvent(const std::string & pattern, bool use_regex, int minutes_before)
 : pattern_(pattern),
   use_regex_(use_regex),
   minutes_before_(minutes_before),
@@ -31,11 +31,11 @@ CbEventDetect::CbEventDetect(const std::string & pattern, bool use_regex, int mi
 {
 }
 
-void CbEventDetect::onEntry()
+void CbDetectCalendarEvent::onEntry()
 {
   RCLCPP_INFO(
     getLogger(),
-    "[CbEventDetect] Waiting for event matching pattern '%s' (regex=%s, minutes_before=%d)",
+    "[CbDetectCalendarEvent] Waiting for event matching pattern '%s' (regex=%s, minutes_before=%d)",
     pattern_.c_str(), use_regex_ ? "true" : "false", minutes_before_);
 
   // Get the client and listener component
@@ -47,7 +47,7 @@ void CbEventDetect::onEntry()
 
   if (!listener_)
   {
-    RCLCPP_ERROR(getLogger(), "[CbEventDetect] CpCalendarEventListener not available");
+    RCLCPP_ERROR(getLogger(), "[CbDetectCalendarEvent] CpCalendarEventListener not available");
     this->postFailureEvent();
     return;
   }
@@ -67,12 +67,12 @@ void CbEventDetect::onEntry()
   listener_->addWatch(watch);
 
   // Connect to the event started signal
-  listener_->onEventStarted(&CbEventDetect::onEventStarted, this);
+  listener_->onEventStarted(&CbDetectCalendarEvent::onEventStarted, this);
 }
 
-void CbEventDetect::onExit() { RCLCPP_DEBUG(getLogger(), "[CbEventDetect] Exiting"); }
+void CbDetectCalendarEvent::onExit() { RCLCPP_DEBUG(getLogger(), "[CbDetectCalendarEvent] Exiting"); }
 
-void CbEventDetect::onEventStarted(const CalendarEvent & event)
+void CbDetectCalendarEvent::onEventStarted(const CalendarEvent & event)
 {
   if (triggered_)
   {
@@ -107,7 +107,7 @@ void CbEventDetect::onEventStarted(const CalendarEvent & event)
     triggered_ = true;
     detected_event_ = event;
 
-    RCLCPP_INFO(getLogger(), "[CbEventDetect] Event detected: %s", event.title.c_str());
+    RCLCPP_INFO(getLogger(), "[CbDetectCalendarEvent] Event detected: %s", event.title.c_str());
 
     this->postSuccessEvent();
   }

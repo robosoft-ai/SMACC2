@@ -19,7 +19,7 @@
  * @brief Convenience header that includes all cl_gcalcli client behaviors
  */
 
-#include <cl_gcalcli/client_behaviors/cb_event_detect.hpp>
+#include <cl_gcalcli/client_behaviors/cb_detect_calendar_event.hpp>
 #include <cl_gcalcli/client_behaviors/cb_monitor_connection.hpp>
 #include <cl_gcalcli/client_behaviors/cb_quick_add.hpp>
 #include <cl_gcalcli/client_behaviors/cb_refresh_agenda.hpp>

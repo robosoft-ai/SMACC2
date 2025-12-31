@@ -21,7 +21,7 @@ StInit → StWaitConnection → StTestRefresh → StTestEventDetect → StTestQu
 | StInit | Entry point | - |
 | StWaitConnection | Test connection behaviors | CbWaitConnection, CbStatus |
 | StTestRefresh | Test agenda refresh | CbRefreshAgenda |
-| StTestEventDetect | Test event detection | CbEventDetect, CbMonitorConnection |
+| StTestEventDetect | Test event detection | CbDetectCalendarEvent, CbMonitorConnection |
 | StTestQuickAdd | Test event creation | CbQuickAdd |
 | StDone | Test completion | - |
 

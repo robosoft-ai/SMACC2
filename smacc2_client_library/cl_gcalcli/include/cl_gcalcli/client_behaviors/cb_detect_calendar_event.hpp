@@ -36,11 +36,11 @@ namespace cl_gcalcli
  * @code
  * static void staticConfigure() {
  *   // Wait for "Standup" events, trigger 5 minutes before start
- *   configure<OrCalendar, CbEventDetect>(".*Standup.*", true, 5);
+ *   configure<OrCalendar, CbDetectCalendarEvent>(".*Standup.*", true, 5);
  * }
  * @endcode
  */
-class CbEventDetect : public smacc2::SmaccAsyncClientBehavior
+class CbDetectCalendarEvent : public smacc2::SmaccAsyncClientBehavior
 {
 public:
   /**
@@ -49,9 +49,9 @@ public:
    * @param use_regex If true, use regex matching; if false, substring match
    * @param minutes_before Trigger N minutes before event starts (0 = at start)
    */
-  CbEventDetect(const std::string & pattern, bool use_regex = false, int minutes_before = 0);
+  CbDetectCalendarEvent(const std::string & pattern, bool use_regex = false, int minutes_before = 0);
 
-  virtual ~CbEventDetect() = default;
+  virtual ~CbDetectCalendarEvent() = default;
 
   void onEntry() override;
   void onExit() override;
