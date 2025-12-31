@@ -72,7 +72,6 @@ struct CalendarEvent
   bool willStartWithinMinutes(int minutes) const
   {
     auto now = std::chrono::system_clock::now();
-    auto window_end = start_time + std::chrono::minutes(minutes);
     return now < start_time && now >= (start_time - std::chrono::minutes(minutes));
   }
 

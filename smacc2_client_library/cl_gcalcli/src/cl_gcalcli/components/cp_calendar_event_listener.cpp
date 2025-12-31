@@ -217,7 +217,7 @@ bool CpCalendarEventListener::shouldTriggerStart(
 }
 
 bool CpCalendarEventListener::shouldTriggerEnd(
-  const CalendarEvent & event, const EventWatch & watch) const
+  const CalendarEvent & event, const EventWatch & /* watch */) const
 {
   auto now = std::chrono::system_clock::now();
 

@@ -165,7 +165,6 @@ std::vector<CalendarEvent> CpCalendarPoller::getEventsInWindow(
 
 std::vector<CalendarEvent> CpCalendarPoller::getActiveEvents() const
 {
-  auto now = std::chrono::system_clock::now();
   std::lock_guard<std::mutex> lock(events_mutex_);
 
   std::vector<CalendarEvent> active;
