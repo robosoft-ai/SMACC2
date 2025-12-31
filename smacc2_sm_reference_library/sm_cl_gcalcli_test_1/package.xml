@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sm_cl_gcalcli_test_1</name>
+  <version>3.0.1</version>
+  <description>Unit test state machine for cl_gcalcli client library</description>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>cl_ros2_timer</depend>
+  <depend>cl_gcalcli</depend>
+  <depend>smacc2</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
