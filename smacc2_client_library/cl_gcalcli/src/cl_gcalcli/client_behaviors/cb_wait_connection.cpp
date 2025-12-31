@@ -20,14 +20,14 @@ namespace cl_gcalcli
 {
 
 CbWaitConnection::CbWaitConnection(std::chrono::seconds timeout)
-: timeout_(timeout),
-  client_(nullptr)
+: timeout_(timeout), client_(nullptr)
 {
 }
 
 void CbWaitConnection::onEntry()
 {
-  RCLCPP_INFO(getLogger(), "[CbWaitConnection] Waiting for gcalcli connection (timeout: %lds)",
+  RCLCPP_INFO(
+    getLogger(), "[CbWaitConnection] Waiting for gcalcli connection (timeout: %lds)",
     timeout_.count());
 
   this->requiresClient(client_);

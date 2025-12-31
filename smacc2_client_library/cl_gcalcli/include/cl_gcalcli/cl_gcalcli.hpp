@@ -78,8 +78,7 @@ public:
       smacc2::client_core_components::CpSubprocessExecutor, TOrthogonal, ClGcalcli>();
 
     // Create gcalcli-specific components
-    auto * connection =
-      this->createComponent<CpGcalcliConnection, TOrthogonal, ClGcalcli>();
+    auto * connection = this->createComponent<CpGcalcliConnection, TOrthogonal, ClGcalcli>();
     connection->configure(config_);
 
     this->createComponent<CpCalendarPoller, TOrthogonal, ClGcalcli>();
@@ -89,15 +88,9 @@ public:
   }
 
   // Convenience accessors for components
-  CpGcalcliConnection * getConnection()
-  {
-    return this->getComponent<CpGcalcliConnection>();
-  }
+  CpGcalcliConnection * getConnection() { return this->getComponent<CpGcalcliConnection>(); }
 
-  CpCalendarPoller * getPoller()
-  {
-    return this->getComponent<CpCalendarPoller>();
-  }
+  CpCalendarPoller * getPoller() { return this->getComponent<CpCalendarPoller>(); }
 
   CpCalendarEventListener * getEventListener()
   {

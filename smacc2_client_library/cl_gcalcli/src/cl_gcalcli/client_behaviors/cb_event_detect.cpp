@@ -33,7 +33,8 @@ CbEventDetect::CbEventDetect(const std::string & pattern, bool use_regex, int mi
 
 void CbEventDetect::onEntry()
 {
-  RCLCPP_INFO(getLogger(),
+  RCLCPP_INFO(
+    getLogger(),
     "[CbEventDetect] Waiting for event matching pattern '%s' (regex=%s, minutes_before=%d)",
     pattern_.c_str(), use_regex_ ? "true" : "false", minutes_before_);
 
@@ -69,10 +70,7 @@ void CbEventDetect::onEntry()
   listener_->onEventStarted(&CbEventDetect::onEventStarted, this);
 }
 
-void CbEventDetect::onExit()
-{
-  RCLCPP_DEBUG(getLogger(), "[CbEventDetect] Exiting");
-}
+void CbEventDetect::onExit() { RCLCPP_DEBUG(getLogger(), "[CbEventDetect] Exiting"); }
 
 void CbEventDetect::onEventStarted(const CalendarEvent & event)
 {

@@ -21,11 +21,7 @@
 namespace cl_gcalcli
 {
 
-CpCalendarPoller::CpCalendarPoller()
-: connection_(nullptr),
-  initialized_(false)
-{
-}
+CpCalendarPoller::CpCalendarPoller() : connection_(nullptr), initialized_(false) {}
 
 void CpCalendarPoller::onInitialize()
 {
@@ -78,8 +74,8 @@ bool CpCalendarPoller::refreshAgenda()
 
   if (result.exit_code != 0 || result.timed_out)
   {
-    RCLCPP_WARN(getLogger(), "[CpCalendarPoller] Agenda fetch failed: %s",
-      result.stdout_output.c_str());
+    RCLCPP_WARN(
+      getLogger(), "[CpCalendarPoller] Agenda fetch failed: %s", result.stdout_output.c_str());
     return false;
   }
 
@@ -150,8 +146,7 @@ std::vector<CalendarEvent> CpCalendarPoller::findEvents(
 }
 
 std::vector<CalendarEvent> CpCalendarPoller::getEventsInWindow(
-  std::chrono::system_clock::time_point start,
-  std::chrono::system_clock::time_point end) const
+  std::chrono::system_clock::time_point start, std::chrono::system_clock::time_point end) const
 {
   std::lock_guard<std::mutex> lock(events_mutex_);
 
@@ -253,8 +248,8 @@ std::optional<CalendarEvent> CpCalendarPoller::parseTsvLine(const std::string & 
   // We need at least 5 fields (date/time + title)
   if (fields.size() < 5)
   {
-    RCLCPP_DEBUG(getLogger(), "[CpCalendarPoller] Skipping line with insufficient fields: %s",
-      line.c_str());
+    RCLCPP_DEBUG(
+      getLogger(), "[CpCalendarPoller] Skipping line with insufficient fields: %s", line.c_str());
     return std::nullopt;
   }
 
@@ -264,8 +259,9 @@ std::optional<CalendarEvent> CpCalendarPoller::parseTsvLine(const std::string & 
   auto start = parseDateTime(fields[0], fields[1]);
   if (!start.has_value())
   {
-    RCLCPP_DEBUG(getLogger(), "[CpCalendarPoller] Failed to parse start time: %s %s",
-      fields[0].c_str(), fields[1].c_str());
+    RCLCPP_DEBUG(
+      getLogger(), "[CpCalendarPoller] Failed to parse start time: %s %s", fields[0].c_str(),
+      fields[1].c_str());
     return std::nullopt;
   }
   event.start_time = start.value();
@@ -274,8 +270,9 @@ std::optional<CalendarEvent> CpCalendarPoller::parseTsvLine(const std::string & 
   auto end = parseDateTime(fields[2], fields[3]);
   if (!end.has_value())
   {
-    RCLCPP_DEBUG(getLogger(), "[CpCalendarPoller] Failed to parse end time: %s %s",
-      fields[2].c_str(), fields[3].c_str());
+    RCLCPP_DEBUG(
+      getLogger(), "[CpCalendarPoller] Failed to parse end time: %s %s", fields[2].c_str(),
+      fields[3].c_str());
     return std::nullopt;
   }
   event.end_time = end.value();

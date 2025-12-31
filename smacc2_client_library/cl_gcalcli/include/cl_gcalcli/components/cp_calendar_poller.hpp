@@ -70,8 +70,7 @@ public:
    * @brief Get events happening within a time window
    */
   std::vector<CalendarEvent> getEventsInWindow(
-    std::chrono::system_clock::time_point start,
-    std::chrono::system_clock::time_point end) const;
+    std::chrono::system_clock::time_point start, std::chrono::system_clock::time_point end) const;
 
   /**
    * @brief Get currently active events
@@ -103,7 +102,8 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
-    postAgendaUpdatedEvent_ = [this](const std::vector<CalendarEvent> & events) {
+    postAgendaUpdatedEvent_ = [this](const std::vector<CalendarEvent> & events)
+    {
       auto ev = new EvAgendaUpdated<CpCalendarPoller, TOrthogonal>();
       ev->events = events;
       this->postEvent(ev);

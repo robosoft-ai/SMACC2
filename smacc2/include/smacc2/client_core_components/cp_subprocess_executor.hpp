@@ -177,7 +177,8 @@ public:
   }
 
   template <typename T>
-  smacc2::SmaccSignalConnection onCommandFailed(void (T::*callback)(const std::string &), T * object)
+  smacc2::SmaccSignalConnection onCommandFailed(
+    void (T::*callback)(const std::string &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onCommandFailed_, callback, object);
   }

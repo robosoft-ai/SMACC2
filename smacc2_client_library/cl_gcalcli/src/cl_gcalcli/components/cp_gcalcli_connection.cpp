@@ -34,15 +34,15 @@ void CpGcalcliConnection::onInitialize()
 
     if (subprocess_executor_ == nullptr)
     {
-      RCLCPP_ERROR(
-        getLogger(), "[CpGcalcliConnection] CpSubprocessExecutor component not found!");
+      RCLCPP_ERROR(getLogger(), "[CpGcalcliConnection] CpSubprocessExecutor component not found!");
       return;
     }
 
     last_heartbeat_time_ = std::chrono::steady_clock::now();
     initialized_ = true;
 
-    RCLCPP_INFO(getLogger(), "[CpGcalcliConnection] Initialized with gcalcli path: %s",
+    RCLCPP_INFO(
+      getLogger(), "[CpGcalcliConnection] Initialized with gcalcli path: %s",
       config_.gcalcli_path.c_str());
   }
 }
@@ -170,8 +170,8 @@ void CpGcalcliConnection::handleConnectionStateChange(bool success, const std::s
       connection_state_ = ConnectionState::CONNECTED;
       RCLCPP_INFO(getLogger(), "[CpGcalcliConnection] Connection established");
 
-      if (previous_state == ConnectionState::ERROR ||
-          previous_state == ConnectionState::DISCONNECTED)
+      if (
+        previous_state == ConnectionState::ERROR || previous_state == ConnectionState::DISCONNECTED)
       {
         onConnectionRestored_();
         if (postConnectionRestoredEvent_)
@@ -202,8 +202,8 @@ void CpGcalcliConnection::handleConnectionStateChange(bool success, const std::s
       if (connection_state_ != ConnectionState::ERROR)
       {
         connection_state_ = ConnectionState::ERROR;
-        RCLCPP_ERROR(getLogger(),
-          "[CpGcalcliConnection] Connection lost after %d consecutive failures",
+        RCLCPP_ERROR(
+          getLogger(), "[CpGcalcliConnection] Connection lost after %d consecutive failures",
           consecutive_failures_);
 
         onConnectionLost_();
@@ -215,9 +215,9 @@ void CpGcalcliConnection::handleConnectionStateChange(bool success, const std::s
     }
     else
     {
-      RCLCPP_WARN(getLogger(),
-        "[CpGcalcliConnection] Connection check failed (%d/%d)",
-        consecutive_failures_, config_.max_consecutive_failures);
+      RCLCPP_WARN(
+        getLogger(), "[CpGcalcliConnection] Connection check failed (%d/%d)", consecutive_failures_,
+        config_.max_consecutive_failures);
     }
   }
 }

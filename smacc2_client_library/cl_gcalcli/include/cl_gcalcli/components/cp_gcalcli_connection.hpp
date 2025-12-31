@@ -20,8 +20,8 @@
 #include <string>
 
 #include <rclcpp/rclcpp.hpp>
-#include <smacc2/smacc.hpp>
 #include <smacc2/client_core_components/cp_subprocess_executor.hpp>
+#include <smacc2/smacc.hpp>
 
 #include <cl_gcalcli/events.hpp>
 #include <cl_gcalcli/types.hpp>
@@ -123,17 +123,14 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
-    postConnectionLostEvent_ = [this]() {
-      this->postEvent<EvConnectionLost<CpGcalcliConnection, TOrthogonal>>();
-    };
+    postConnectionLostEvent_ = [this]()
+    { this->postEvent<EvConnectionLost<CpGcalcliConnection, TOrthogonal>>(); };
 
-    postConnectionRestoredEvent_ = [this]() {
-      this->postEvent<EvConnectionRestored<CpGcalcliConnection, TOrthogonal>>();
-    };
+    postConnectionRestoredEvent_ = [this]()
+    { this->postEvent<EvConnectionRestored<CpGcalcliConnection, TOrthogonal>>(); };
 
-    postAuthenticationRequiredEvent_ = [this]() {
-      this->postEvent<EvAuthenticationRequired<CpGcalcliConnection, TOrthogonal>>();
-    };
+    postAuthenticationRequiredEvent_ = [this]()
+    { this->postEvent<EvAuthenticationRequired<CpGcalcliConnection, TOrthogonal>>(); };
   }
 
 protected:

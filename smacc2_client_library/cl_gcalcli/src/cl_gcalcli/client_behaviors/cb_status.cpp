@@ -46,11 +46,12 @@ void CbStatus::onEntry()
     active_events_ = poller->getActiveEvents();
   }
 
-  RCLCPP_INFO(getLogger(),
-    "[CbStatus] Connection: %s, Events: %zu, Active: %zu",
-    connection_state_ == ConnectionState::CONNECTED ? "CONNECTED" :
-    connection_state_ == ConnectionState::DISCONNECTED ? "DISCONNECTED" :
-    connection_state_ == ConnectionState::AUTHENTICATING ? "AUTHENTICATING" : "ERROR",
+  RCLCPP_INFO(
+    getLogger(), "[CbStatus] Connection: %s, Events: %zu, Active: %zu",
+    connection_state_ == ConnectionState::CONNECTED        ? "CONNECTED"
+    : connection_state_ == ConnectionState::DISCONNECTED   ? "DISCONNECTED"
+    : connection_state_ == ConnectionState::AUTHENTICATING ? "AUTHENTICATING"
+                                                           : "ERROR",
     events_.size(), active_events_.size());
 }
 

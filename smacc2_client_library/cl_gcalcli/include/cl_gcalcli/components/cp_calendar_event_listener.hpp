@@ -91,8 +91,7 @@ public:
   }
 
   template <typename T>
-  smacc2::SmaccSignalConnection onEventEnded(
-    void (T::*callback)(const CalendarEvent &), T * object)
+  smacc2::SmaccSignalConnection onEventEnded(void (T::*callback)(const CalendarEvent &), T * object)
   {
     return this->getStateMachine()->createSignalConnection(onEventEnded_, callback, object);
   }
@@ -108,20 +107,23 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
-    postEventDetectedEvent_ = [this](const CalendarEvent & event, const std::string & pattern) {
+    postEventDetectedEvent_ = [this](const CalendarEvent & event, const std::string & pattern)
+    {
       auto ev = new EvCalendarEventDetected<CpCalendarEventListener, TOrthogonal>();
       ev->event = event;
       ev->matched_pattern = pattern;
       this->postEvent(ev);
     };
 
-    postEventStartedEvent_ = [this](const CalendarEvent & event) {
+    postEventStartedEvent_ = [this](const CalendarEvent & event)
+    {
       auto ev = new EvCalendarEventStarted<CpCalendarEventListener, TOrthogonal>();
       ev->event = event;
       this->postEvent(ev);
     };
 
-    postEventEndedEvent_ = [this](const CalendarEvent & event) {
+    postEventEndedEvent_ = [this](const CalendarEvent & event)
+    {
       auto ev = new EvCalendarEventEnded<CpCalendarEventListener, TOrthogonal>();
       ev->event = event;
       this->postEvent(ev);

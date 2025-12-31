@@ -36,8 +36,7 @@ public:
    * @brief Construct with optional timeout
    * @param timeout Maximum time to wait for connection
    */
-  explicit CbWaitConnection(
-    std::chrono::seconds timeout = std::chrono::seconds{30});
+  explicit CbWaitConnection(std::chrono::seconds timeout = std::chrono::seconds{30});
 
   virtual ~CbWaitConnection() = default;
 

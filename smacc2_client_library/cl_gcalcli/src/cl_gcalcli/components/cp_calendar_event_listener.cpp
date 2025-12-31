@@ -21,11 +21,7 @@
 namespace cl_gcalcli
 {
 
-CpCalendarEventListener::CpCalendarEventListener()
-: poller_(nullptr),
-  initialized_(false)
-{
-}
+CpCalendarEventListener::CpCalendarEventListener() : poller_(nullptr), initialized_(false) {}
 
 void CpCalendarEventListener::onInitialize()
 {
@@ -40,8 +36,7 @@ void CpCalendarEventListener::onInitialize()
     }
 
     // Subscribe to agenda updates
-    poller_->onAgendaUpdated(
-      &CpCalendarEventListener::onAgendaUpdated, this);
+    poller_->onAgendaUpdated(&CpCalendarEventListener::onAgendaUpdated, this);
 
     initialized_ = true;
     RCLCPP_INFO(getLogger(), "[CpCalendarEventListener] Initialized");
@@ -52,7 +47,8 @@ void CpCalendarEventListener::addWatch(const EventWatch & watch)
 {
   std::lock_guard<std::mutex> lock(mutex_);
   watches_.push_back(watch);
-  RCLCPP_INFO(getLogger(), "[CpCalendarEventListener] Added watch pattern: %s (regex=%s)",
+  RCLCPP_INFO(
+    getLogger(), "[CpCalendarEventListener] Added watch pattern: %s (regex=%s)",
     watch.pattern.c_str(), watch.use_regex ? "true" : "false");
 }
 
@@ -105,8 +101,9 @@ void CpCalendarEventListener::update()
         {
           triggered_events_.insert(key);
 
-          RCLCPP_INFO(getLogger(),
-            "[CpCalendarEventListener] Event start triggered: %s", event.title.c_str());
+          RCLCPP_INFO(
+            getLogger(), "[CpCalendarEventListener] Event start triggered: %s",
+            event.title.c_str());
 
           // Emit signals
           onEventStarted_(event);
@@ -126,8 +123,8 @@ void CpCalendarEventListener::update()
         {
           triggered_events_.insert(key);
 
-          RCLCPP_INFO(getLogger(),
-            "[CpCalendarEventListener] Event end triggered: %s", event.title.c_str());
+          RCLCPP_INFO(
+            getLogger(), "[CpCalendarEventListener] Event end triggered: %s", event.title.c_str());
 
           onEventEnded_(event);
           if (postEventEndedEvent_)
@@ -158,8 +155,8 @@ void CpCalendarEventListener::onAgendaUpdated(const std::vector<CalendarEvent> &
         {
           triggered_events_.insert(key);
 
-          RCLCPP_DEBUG(getLogger(),
-            "[CpCalendarEventListener] Event detected matching pattern '%s': %s",
+          RCLCPP_DEBUG(
+            getLogger(), "[CpCalendarEventListener] Event detected matching pattern '%s': %s",
             watch.pattern.c_str(), event.title.c_str());
 
           onEventDetected_(event, watch.pattern);
@@ -185,8 +182,8 @@ bool CpCalendarEventListener::matchesPattern(
     }
     catch (const boost::regex_error & e)
     {
-      RCLCPP_ERROR(getLogger(),
-        "[CpCalendarEventListener] Invalid regex pattern '%s': %s",
+      RCLCPP_ERROR(
+        getLogger(), "[CpCalendarEventListener] Invalid regex pattern '%s': %s",
         watch.pattern.c_str(), e.what());
       return false;
     }

@@ -17,18 +17,10 @@
 namespace cl_gcalcli
 {
 
-ClGcalcli::ClGcalcli()
-{
-}
+ClGcalcli::ClGcalcli() {}
 
-ClGcalcli::ClGcalcli(const GcalcliConfig & config)
-: config_(config)
-{
-}
+ClGcalcli::ClGcalcli(const GcalcliConfig & config) : config_(config) {}
 
-void ClGcalcli::configure(const GcalcliConfig & config)
-{
-  config_ = config;
-}
+void ClGcalcli::configure(const GcalcliConfig & config) { config_ = config; }
 
 }  // namespace cl_gcalcli

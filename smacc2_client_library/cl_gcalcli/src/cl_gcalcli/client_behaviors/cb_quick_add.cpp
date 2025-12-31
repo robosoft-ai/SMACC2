@@ -18,9 +18,7 @@ namespace cl_gcalcli
 {
 
 CbQuickAdd::CbQuickAdd(const std::string & text, const std::string & calendar)
-: text_(text),
-  calendar_(calendar),
-  client_(nullptr)
+: text_(text), calendar_(calendar), client_(nullptr)
 {
 }
 
@@ -74,8 +72,7 @@ void CbQuickAdd::onEntry()
   }
   else
   {
-    RCLCPP_ERROR(getLogger(), "[CbQuickAdd] Failed to add event: %s",
-      result.stdout_output.c_str());
+    RCLCPP_ERROR(getLogger(), "[CbQuickAdd] Failed to add event: %s", result.stdout_output.c_str());
     this->postFailureEvent();
   }
 }
