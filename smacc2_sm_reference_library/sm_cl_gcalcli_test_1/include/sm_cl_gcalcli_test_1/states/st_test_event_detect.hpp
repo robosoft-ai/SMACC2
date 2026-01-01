@@ -68,7 +68,7 @@ struct StTestEventDetect : smacc2::SmaccState<StTestEventDetect, SmClGcalcliTest
     RCLCPP_INFO(getLogger(), "====================================");
     RCLCPP_INFO(getLogger(), "StTestEventDetect - Testing CbDetectCalendarEvent + CbMonitorConnection");
     RCLCPP_INFO(getLogger(), "====================================");
-    RCLCPP_INFO(getLogger(), "Watching for 'TestEvent' calendar events (5 min before)...");
+    RCLCPP_INFO(getLogger(), "Watching for 'TestEvent' calendar events (0 min before)...");
     RCLCPP_INFO(getLogger(), "Monitoring connection health...");
   }
 
