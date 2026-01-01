@@ -21,7 +21,8 @@
 namespace cl_gcalcli
 {
 
-CbDetectCalendarEvent::CbDetectCalendarEvent(const std::string & pattern, bool use_regex, int minutes_before)
+CbDetectCalendarEvent::CbDetectCalendarEvent(
+  const std::string & pattern, bool use_regex, int minutes_before)
 : pattern_(pattern),
   use_regex_(use_regex),
   minutes_before_(minutes_before),
@@ -70,7 +71,10 @@ void CbDetectCalendarEvent::onEntry()
   listener_->onEventStarted(&CbDetectCalendarEvent::onEventStarted, this);
 }
 
-void CbDetectCalendarEvent::onExit() { RCLCPP_DEBUG(getLogger(), "[CbDetectCalendarEvent] Exiting"); }
+void CbDetectCalendarEvent::onExit()
+{
+  RCLCPP_DEBUG(getLogger(), "[CbDetectCalendarEvent] Exiting");
+}
 
 void CbDetectCalendarEvent::onEventStarted(const CalendarEvent & event)
 {

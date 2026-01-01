@@ -49,7 +49,8 @@ public:
    * @param use_regex If true, use regex matching; if false, substring match
    * @param minutes_before Trigger N minutes before event starts (0 = at start)
    */
-  CbDetectCalendarEvent(const std::string & pattern, bool use_regex = false, int minutes_before = 0);
+  CbDetectCalendarEvent(
+    const std::string & pattern, bool use_regex = false, int minutes_before = 0);
 
   virtual ~CbDetectCalendarEvent() = default;
 
