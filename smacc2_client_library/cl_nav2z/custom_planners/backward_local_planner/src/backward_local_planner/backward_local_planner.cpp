@@ -431,9 +431,8 @@ bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(
   // final_alpha_error =
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "[BackwardLocalPlanner] goal check. linear dist: "
-                         << goaldist << "(" << this->xy_goal_tolerance_ << ")"
-                         << ", angular dist: " << abs_angle_error << "("
-                         << this->yaw_goal_tolerance_ << ")");
+                         << goaldist << "(" << this->xy_goal_tolerance_ << ")" << ", angular dist: "
+                         << abs_angle_error << "(" << this->yaw_goal_tolerance_ << ")");
 
   linearGoalReached = goaldist < this->xy_goal_tolerance_;
 
