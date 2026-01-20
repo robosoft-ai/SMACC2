@@ -40,7 +40,10 @@ public:
 
   CpTopicSubscriber() { initialized_ = false; }
 
-  CpTopicSubscriber(std::string topicname) { topicName_ = topicname; }
+  CpTopicSubscriber(std::string topicname) {
+    topicName_ = topicname;
+    initialized_ = false;
+  }
 
   virtual ~CpTopicSubscriber() {}
 
