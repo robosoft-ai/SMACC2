@@ -21,8 +21,6 @@
 
 namespace cl_keyboard
 {
-using namespace cl_keyboard::components;
-
 class CbDefaultKeyboardBehavior : public smacc2::SmaccClientBehavior
 {
 public:

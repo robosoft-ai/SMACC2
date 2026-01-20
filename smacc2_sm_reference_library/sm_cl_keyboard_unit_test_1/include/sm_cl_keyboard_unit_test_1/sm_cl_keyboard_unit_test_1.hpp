@@ -35,7 +35,6 @@ using namespace boost;
 using namespace smacc2;
 using namespace cl_ros2_timer;
 using namespace cl_keyboard;
-using namespace cl_keyboard::components;
 
 namespace sm_cl_keyboard_unit_test_1
 {

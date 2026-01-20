@@ -18,7 +18,6 @@ namespace sm_cl_keyboard_unit_test_1
 {
 using namespace cl_ros2_timer;
 using namespace cl_keyboard;
-using namespace cl_keyboard::components;
 using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
