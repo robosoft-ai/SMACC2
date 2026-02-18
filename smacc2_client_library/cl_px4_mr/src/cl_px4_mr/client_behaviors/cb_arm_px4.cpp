@@ -1,9 +1,23 @@
+// Copyright 2025 Robosoft Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <cl_px4_mr/client_behaviors/cb_arm_px4.hpp>
 #include <cl_px4_mr/components/cp_vehicle_command.hpp>
 #include <cl_px4_mr/components/cp_vehicle_status.hpp>
 
-#include <thread>
 #include <chrono>
+#include <thread>
 
 namespace cl_px4_mr
 {
@@ -22,14 +36,13 @@ void CbArmPX4::onEntry()
   {
     if (attempt < 2)
     {
-      RCLCPP_INFO(getLogger(), "CbArmPX4: sending arm command (attempt %d/%d)",
-        attempt + 1, MAX_RETRIES);
+      RCLCPP_INFO(
+        getLogger(), "CbArmPX4: sending arm command (attempt %d/%d)", attempt + 1, MAX_RETRIES);
       vehicleCommand_->arm();
     }
     else
     {
-      RCLCPP_WARN(getLogger(), "CbArmPX4: force-arming (attempt %d/%d)",
-        attempt + 1, MAX_RETRIES);
+      RCLCPP_WARN(getLogger(), "CbArmPX4: force-arming (attempt %d/%d)", attempt + 1, MAX_RETRIES);
       vehicleCommand_->forceArm();
     }
 
@@ -47,8 +60,8 @@ void CbArmPX4::onEntry()
       return;
     }
 
-    RCLCPP_WARN(getLogger(), "CbArmPX4: attempt %d/%d timed out, retrying...",
-      attempt + 1, MAX_RETRIES);
+    RCLCPP_WARN(
+      getLogger(), "CbArmPX4: attempt %d/%d timed out, retrying...", attempt + 1, MAX_RETRIES);
   }
 
   RCLCPP_ERROR(getLogger(), "CbArmPX4: all %d attempts failed - posting failure", MAX_RETRIES);
@@ -57,9 +70,6 @@ void CbArmPX4::onEntry()
 
 void CbArmPX4::onExit() {}
 
-void CbArmPX4::onArmedCallback()
-{
-  armed_ = true;
-}
+void CbArmPX4::onArmedCallback() { armed_ = true; }
 
 }  // namespace cl_px4_mr

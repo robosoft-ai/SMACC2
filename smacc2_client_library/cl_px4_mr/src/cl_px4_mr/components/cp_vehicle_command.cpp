@@ -1,3 +1,17 @@
+// Copyright 2025 Robosoft Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <cl_px4_mr/components/cp_vehicle_command.hpp>
 
 namespace cl_px4_mr
@@ -16,8 +30,8 @@ void CpVehicleCommand::onInitialize()
 }
 
 void CpVehicleCommand::sendCommand(
-  uint32_t command, float param1, float param2, float param3,
-  float param4, double param5, double param6, float param7)
+  uint32_t command, float param1, float param2, float param3, float param4, double param5,
+  double param6, float param7)
 {
   auto node = this->getNode();
   px4_msgs::msg::VehicleCommand msg;
@@ -36,8 +50,9 @@ void CpVehicleCommand::sendCommand(
   msg.source_component = 1;
   msg.from_external = true;
   publisher_->publish(msg);
-  RCLCPP_INFO(getLogger(), "CpVehicleCommand: sent command %u (p1=%.1f p2=%.1f p7=%.1f)",
-    command, param1, param2, param7);
+  RCLCPP_INFO(
+    getLogger(), "CpVehicleCommand: sent command %u (p1=%.1f p2=%.1f p7=%.1f)", command, param1,
+    param2, param7);
 }
 
 void CpVehicleCommand::arm()
@@ -61,15 +76,13 @@ void CpVehicleCommand::setOffboardMode()
   sendCommand(px4_msgs::msg::VehicleCommand::VEHICLE_CMD_DO_SET_MODE, 1.0f, 6.0f);
 }
 
-void CpVehicleCommand::land()
-{
-  sendCommand(px4_msgs::msg::VehicleCommand::VEHICLE_CMD_NAV_LAND);
-}
+void CpVehicleCommand::land() { sendCommand(px4_msgs::msg::VehicleCommand::VEHICLE_CMD_NAV_LAND); }
 
 void CpVehicleCommand::takeoff(float altitude)
 {
-  sendCommand(px4_msgs::msg::VehicleCommand::VEHICLE_CMD_NAV_TAKEOFF,
-    0.0f, 0.0f, 0.0f, 0.0f, 0.0, 0.0, altitude);
+  sendCommand(
+    px4_msgs::msg::VehicleCommand::VEHICLE_CMD_NAV_TAKEOFF, 0.0f, 0.0f, 0.0f, 0.0f, 0.0, 0.0,
+    altitude);
 }
 
 }  // namespace cl_px4_mr

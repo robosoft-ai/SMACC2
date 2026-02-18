@@ -1,3 +1,17 @@
+// Copyright 2025 Robosoft Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <cl_px4_mr/components/cp_trajectory_setpoint.hpp>
 #include <cl_px4_mr/components/cp_vehicle_local_position.hpp>
 
@@ -25,7 +39,8 @@ void CpTrajectorySetpoint::onInitialize()
   lastSetpoint_.yaw = nan;
   lastSetpoint_.yawspeed = nan;
 
-  RCLCPP_INFO(getLogger(), "CpTrajectorySetpoint: publisher created on /fmu/in/trajectory_setpoint");
+  RCLCPP_INFO(
+    getLogger(), "CpTrajectorySetpoint: publisher created on /fmu/in/trajectory_setpoint");
 }
 
 void CpTrajectorySetpoint::setPositionNED(float x, float y, float z, float yaw)
@@ -50,8 +65,8 @@ void CpTrajectorySetpoint::setPositionNED(float x, float y, float z, float yaw)
     hasPublished_ = true;
   }
 
-  RCLCPP_INFO(getLogger(), "CpTrajectorySetpoint: position NED [%.2f, %.2f, %.2f] yaw=%.2f",
-    x, y, z, yaw);
+  RCLCPP_INFO(
+    getLogger(), "CpTrajectorySetpoint: position NED [%.2f, %.2f, %.2f] yaw=%.2f", x, y, z, yaw);
 }
 
 void CpTrajectorySetpoint::hold()
@@ -63,9 +78,7 @@ void CpTrajectorySetpoint::hold()
   }
 
   setPositionNED(
-    localPosition_->getX(),
-    localPosition_->getY(),
-    localPosition_->getZ(),
+    localPosition_->getX(), localPosition_->getY(), localPosition_->getZ(),
     localPosition_->getHeading());
 }
 

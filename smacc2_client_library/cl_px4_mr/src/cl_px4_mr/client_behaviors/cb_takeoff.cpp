@@ -1,12 +1,26 @@
+// Copyright 2025 Robosoft Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <cl_px4_mr/client_behaviors/cb_takeoff.hpp>
-#include <cl_px4_mr/components/cp_vehicle_command.hpp>
+#include <cl_px4_mr/components/cp_goal_checker.hpp>
 #include <cl_px4_mr/components/cp_offboard_keep_alive.hpp>
 #include <cl_px4_mr/components/cp_trajectory_setpoint.hpp>
-#include <cl_px4_mr/components/cp_goal_checker.hpp>
+#include <cl_px4_mr/components/cp_vehicle_command.hpp>
 #include <cl_px4_mr/components/cp_vehicle_local_position.hpp>
 
-#include <thread>
 #include <chrono>
+#include <thread>
 
 namespace cl_px4_mr
 {
@@ -47,8 +61,8 @@ void CbTakeOff::onEntry()
   float targetZ = -targetAltitude_;
   float currentHeading = localPosition_->getHeading();
 
-  RCLCPP_INFO(getLogger(), "CbTakeOff: commanding altitude %.2f m (NED z=%.2f)",
-    targetAltitude_, targetZ);
+  RCLCPP_INFO(
+    getLogger(), "CbTakeOff: commanding altitude %.2f m (NED z=%.2f)", targetAltitude_, targetZ);
   trajectorySetpoint_->setPositionNED(currentX, currentY, targetZ, currentHeading);
 
   // 7. Set goal checker for target altitude

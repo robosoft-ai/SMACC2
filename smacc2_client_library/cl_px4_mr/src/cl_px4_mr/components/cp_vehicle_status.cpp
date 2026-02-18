@@ -1,3 +1,17 @@
+// Copyright 2025 Robosoft Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <cl_px4_mr/components/cp_vehicle_status.hpp>
 
 namespace cl_px4_mr
@@ -11,8 +25,7 @@ void CpVehicleStatus::onInitialize()
 {
   auto node = this->getNode();
   subscriber_ = node->create_subscription<px4_msgs::msg::VehicleStatus>(
-    "/fmu/out/vehicle_status_v1",
-    rclcpp::SensorDataQoS(),
+    "/fmu/out/vehicle_status_v1", rclcpp::SensorDataQoS(),
     std::bind(&CpVehicleStatus::onStatusMessage, this, std::placeholders::_1));
   RCLCPP_INFO(getLogger(), "CpVehicleStatus: subscribed to /fmu/out/vehicle_status");
 }
@@ -43,7 +56,8 @@ void CpVehicleStatus::onStatusMessage(const px4_msgs::msg::VehicleStatus::Shared
   // Detect nav state changes
   if (navState_ != prevNavState_)
   {
-    RCLCPP_INFO(getLogger(), "CpVehicleStatus: nav_state changed %u -> %u", prevNavState_, navState_);
+    RCLCPP_INFO(
+      getLogger(), "CpVehicleStatus: nav_state changed %u -> %u", prevNavState_, navState_);
     onModeChanged_();
   }
 }
