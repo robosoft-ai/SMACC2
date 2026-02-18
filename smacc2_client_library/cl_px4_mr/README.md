@@ -1,0 +1,262 @@
+# PX4 Multirotor Client (cl_px4_mr)
+
+SMACC2 client library for PX4 multirotor control via ROS 2 XRCE-DDS.
+
+## Architecture
+
+The `cl_px4_mr` follows a pure component-based architecture where the client orchestrates seven specialized components:
+
+```
+ClPx4Mr (Client - Orchestrator)
+├── CpVehicleCommand        - Sends vehicle commands (arm, disarm, mode, land, takeoff)
+├── CpVehicleStatus         - Monitors arming state, landing, and nav mode
+├── CpVehicleLocalPosition  - Tracks vehicle position in NED frame
+├── CpTrajectorySetpoint    - Publishes position setpoints for offboard control
+├── CpOffboardKeepAlive     - Maintains offboard mode via periodic heartbeat
+├── CpVehicleCommandAck     - Monitors command acknowledgement responses
+└── CpGoalChecker           - Detects when vehicle reaches target position
+```
+
+### Components
+
+#### CpVehicleCommand
+**Responsibility**: Sends PX4 vehicle commands via `/fmu/in/vehicle_command`
+
+- `arm()` / `forceArm()` / `disarm()` - Vehicle arming control
+- `setOffboardMode()` - Switch to offboard control mode
+- `takeoff(altitude)` / `land()` - Flight commands
+- `sendCommand(...)` - Generic 7-parameter command interface
+
+**Signals**: None
+
+#### CpVehicleStatus
+**Responsibility**: Monitors vehicle state from `/fmu/out/vehicle_status_v1`
+
+- Tracks arming state and navigation mode transitions
+- Detects armed/disarmed and landed state changes
+
+**Signals**: `onArmed_`, `onDisarmed_`, `onModeChanged_`, `onLanded_`
+
+#### CpVehicleLocalPosition
+**Responsibility**: Tracks position from `/fmu/out/vehicle_local_position`
+
+- Provides NED position (x, y, z) and heading
+- Thread-safe accessors with validity checking
+
+**Signals**: `onPositionReceived_`
+
+#### CpTrajectorySetpoint
+**Responsibility**: Publishes position commands to `/fmu/in/trajectory_setpoint`
+
+- `setPositionNED(x, y, z, yaw)` - Set target position
+- `hold()` - Hold current position
+- `republishLast()` - Re-send last setpoint
+- Thread-safe with cached last setpoint
+
+**Signals**: None
+
+#### CpOffboardKeepAlive
+**Responsibility**: Publishes offboard control mode heartbeat to `/fmu/in/offboard_control_mode`
+
+- Inherits from `ISmaccUpdatable` for periodic ~20Hz updates
+- `enable()` / `disable()` - Toggle heartbeat publishing
+- PX4 requires continuous offboard heartbeat to stay in offboard mode
+
+**Signals**: None
+
+#### CpVehicleCommandAck
+**Responsibility**: Monitors command responses from `/fmu/out/vehicle_command_ack`
+
+- Tracks last command ID and result code
+
+**Signals**: `onAckReceived_`
+
+#### CpGoalChecker
+**Responsibility**: Monitors position and fires when goal is reached
+
+- Inherits from `ISmaccUpdatable` for periodic distance checking
+- `setGoal(x, y, z, xy_tolerance, z_tolerance)` - Set target with tolerances
+- `clearGoal()` - Deactivate goal checking
+- Default tolerances: 0.5m XY, 0.3m Z
+
+**Signals**: `onGoalReached_`
+
+### Signal Flow
+
+```
+PX4 SITL (via XRCE-DDS)
+    ↓ (subscriptions)
+CpVehicleStatus         → onArmed_ / onDisarmed_ / onLanded_
+CpVehicleLocalPosition  → onPositionReceived_
+CpVehicleCommandAck     → onAckReceived_
+CpGoalChecker (update)  → onGoalReached_
+    ↓ (signal connections)
+Client Behaviors (CbArmPX4, CbTakeOff, CbLand, etc.)
+    ↓ (postSuccessEvent / postFailureEvent)
+State Machine Transitions
+```
+
+```
+Client Behaviors
+    ↓ (component method calls)
+CpVehicleCommand       → /fmu/in/vehicle_command
+CpTrajectorySetpoint   → /fmu/in/trajectory_setpoint
+CpOffboardKeepAlive    → /fmu/in/offboard_control_mode
+    ↓ (publications)
+PX4 SITL (via XRCE-DDS)
+```
+
+## Client Behaviors
+
+| Behavior | Base Class | Purpose | Parameters |
+|----------|-----------|---------|------------|
+| CbArmPX4 | SmaccAsyncClientBehavior | Arm vehicle with retry logic | None (5 retries, force-arm after 2) |
+| CbDisarmPX4 | SmaccAsyncClientBehavior | Disarm vehicle | None (3 retries) |
+| CbTakeOff | SmaccAsyncClientBehavior | Enter offboard mode and climb to altitude | `targetAltitude` (default 5.0m) |
+| CbGoToLocation | SmaccAsyncClientBehavior | Fly to NED position | `targetX`, `targetY`, `targetZ`, `yaw` (optional) |
+| CbOrbitLocation | SmaccAsyncClientBehavior + ISmaccUpdatable | Orbit a center point | `centerX`, `centerY`, `altitude`, `radius`, `angularVelocity`, `numOrbits` |
+| CbLand | SmaccAsyncClientBehavior | Disable offboard and land | None (detects landing via disarm signal) |
+
+### CbArmPX4
+
+Arms the vehicle with automatic retry and force-arm escalation:
+- Attempts 1-2: Standard arm command
+- Attempts 3-5: Force-arm (param2=21196, bypasses pre-arm checks)
+- Posts `EvCbSuccess` on armed, `EvCbFailure` after all retries exhausted
+- Connects to `CpVehicleStatus::onArmed_` signal
+
+### CbTakeOff
+
+Full offboard entry sequence:
+1. Enable offboard keepalive heartbeat
+2. Send hold command (2s)
+3. Switch to offboard mode
+4. Set position setpoint at target altitude
+5. Posts `EvCbSuccess` when goal checker reports altitude reached
+
+### CbOrbitLocation
+
+Continuous orbit using `ISmaccUpdatable::update()`:
+- Computes start angle from current position via `atan2`
+- Advances angle at specified angular velocity each update cycle
+- Sends `setPositionNED` on circular path around center
+- Posts `EvCbSuccess` after completing `numOrbits` full rotations
+
+### CbLand
+
+Landing sequence:
+1. Disable offboard keepalive
+2. Send land command
+3. Posts `EvCbSuccess` when vehicle disarms (PX4 auto-disarms after touchdown)
+
+## Usage
+
+### Orthogonal Setup
+
+```cpp
+#include <cl_px4_mr/cl_px4_mr.hpp>
+
+class OrPx4 : public smacc2::Orthogonal<OrPx4>
+{
+public:
+  void onInitialize() override
+  {
+    auto client = this->createClient<cl_px4_mr::ClPx4Mr>();
+  }
+};
+```
+
+### State with Behavior
+
+```cpp
+#include <cl_px4_mr/client_behaviors/cb_go_to_location.hpp>
+
+class StGoToWaypoint : public smacc2::SmaccState<StGoToWaypoint, MsInFlight>
+{
+public:
+  using SmaccState::SmaccState;
+
+  using reactions = boost::mpl::list<
+    Transition<EvCbSuccess<cl_px4_mr::CbGoToLocation, OrPx4>, StNextState>
+  >;
+
+  static void staticConfigure()
+  {
+    // Fly to position (10, 0) at 5m altitude (NED: z = -5.0)
+    configure_orthogonal<OrPx4, cl_px4_mr::CbGoToLocation>(10.0f, 0.0f, -5.0f);
+  }
+};
+```
+
+### Direct Component Access
+
+```cpp
+class CbCustomFlight : public smacc2::SmaccAsyncClientBehavior
+{
+public:
+  void onEntry() override
+  {
+    this->requiresComponent(trajectorySetpoint_);
+    this->requiresComponent(goalChecker_);
+
+    this->getStateMachine()->createSignalConnection(
+      goalChecker_->onGoalReached_, &CbCustomFlight::onGoalReached, this);
+
+    trajectorySetpoint_->setPositionNED(5.0f, 5.0f, -3.0f);
+    goalChecker_->setGoal(5.0f, 5.0f, -3.0f, 0.5f, 0.3f);
+  }
+
+  void onExit() override { goalChecker_->clearGoal(); }
+
+private:
+  void onGoalReached() { this->postSuccessEvent(); }
+  cl_px4_mr::CpTrajectorySetpoint * trajectorySetpoint_ = nullptr;
+  cl_px4_mr::CpGoalChecker * goalChecker_ = nullptr;
+};
+```
+
+## PX4 XRCE-DDS Topics
+
+| Direction | Topic | Message Type | Component |
+|-----------|-------|-------------|-----------|
+| Subscribe | `/fmu/out/vehicle_status_v1` | VehicleStatus | CpVehicleStatus |
+| Subscribe | `/fmu/out/vehicle_local_position` | VehicleLocalPosition | CpVehicleLocalPosition |
+| Subscribe | `/fmu/out/vehicle_command_ack` | VehicleCommandAck | CpVehicleCommandAck |
+| Publish | `/fmu/in/vehicle_command` | VehicleCommand | CpVehicleCommand |
+| Publish | `/fmu/in/trajectory_setpoint` | TrajectorySetpoint | CpTrajectorySetpoint |
+| Publish | `/fmu/in/offboard_control_mode` | OffboardControlMode | CpOffboardKeepAlive |
+
+### QoS Settings
+- Publishers: `rclcpp::QoS(1).best_effort()`
+- Subscribers: `rclcpp::SensorDataQoS()`
+
+### Coordinate Frame
+PX4 uses NED (North-East-Down): altitude of 5m above ground = z = -5.0
+
+## Dependencies
+
+- **smacc2**: State machine framework
+- **px4_msgs**: PX4 ROS 2 message definitions
+- **rclcpp**: ROS 2 C++ client library
+
+## PX4 SITL Requirements
+
+- PX4 requires a GCS connection (QGroundControl) for arming, or disable the check via PX4 params: `param set COM_DL_LOSS_T 0`
+- PX4 v1.15+ publishes vehicle status on `vehicle_status_v1` (not `vehicle_status`)
+- XRCE-DDS agent must be running: `ros2 run micro_ros_agent micro_ros_agent udp4 -p 8888`
+
+## Testing
+
+Run the reference state machine:
+
+```bash
+ros2 launch sm_cl_px4_mr_test_1 sm_cl_px4_mr_test_1.launch.py
+```
+
+See [sm_cl_px4_mr_test_1 README](../../smacc2_sm_reference_library/sm_cl_px4_mr_test_1/README.md) for full launch instructions.
+
+## License
+
+Copyright 2024-2025 RobosoftAI Inc.
+
+Licensed under the Apache License, Version 2.0.

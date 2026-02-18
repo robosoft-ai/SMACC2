@@ -1,0 +1,34 @@
+#pragma once
+
+#include <smacc2/smacc.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <px4_msgs/msg/vehicle_command.hpp>
+
+namespace cl_px4_mr
+{
+
+class CpVehicleCommand : public smacc2::ISmaccComponent
+{
+public:
+  CpVehicleCommand();
+  virtual ~CpVehicleCommand();
+
+  void onInitialize() override;
+
+  void sendCommand(
+    uint32_t command, float param1 = 0.0f, float param2 = 0.0f,
+    float param3 = 0.0f, float param4 = 0.0f, double param5 = 0.0,
+    double param6 = 0.0, float param7 = 0.0f);
+
+  void arm();
+  void forceArm();
+  void disarm();
+  void setOffboardMode();
+  void land();
+  void takeoff(float altitude);
+
+private:
+  rclcpp::Publisher<px4_msgs::msg::VehicleCommand>::SharedPtr publisher_;
+};
+
+}  // namespace cl_px4_mr
