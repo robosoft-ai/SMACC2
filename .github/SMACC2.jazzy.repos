@@ -3,3 +3,7 @@ repositories:
     type: git
     url: https://github.com/PX4/px4_msgs.git
     version: release/1.16
+  micro-ROS-Agent:
+    type: git
+    url: https://github.com/micro-ROS/micro-ROS-Agent.git
+    version: jazzy
