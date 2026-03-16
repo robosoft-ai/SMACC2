@@ -195,7 +195,10 @@ void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
     event.event_object_tag = evinfo.getOrthogonalName();
     event.label = evinfo.label;
 
-    this->eventsLogPub_->publish(event);
+    if (this->eventsLogPub_)
+    {
+      this->eventsLogPub_->publish(event);
+    }
   }
 
   if (
