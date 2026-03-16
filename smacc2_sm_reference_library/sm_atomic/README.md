@@ -32,7 +32,7 @@ source install/setup.bash
 And then run the launch file...
 
 ```
-ros2 launch sm_atomic sm_atomic.launch
+ros2 launch sm_atomic sm_atomic.py
 ```
 
  <h2>Viewer Instructions</h2>
