@@ -23,6 +23,7 @@
 #include <smacc2/common.hpp>
 #include <smacc2/component.hpp>
 #include <smacc2/smacc_signal.hpp>
+#include <smacc2/smacc_state_machine.hpp>
 
 namespace smacc2
 {

@@ -91,7 +91,7 @@ CpVehicleLocalPosition  → onPositionReceived_
 CpVehicleCommandAck     → onAckReceived_
 CpGoalChecker (update)  → onGoalReached_
     ↓ (signal connections)
-Client Behaviors (CbArmPX4, CbTakeOff, CbLand, etc.)
+Client Behaviors (CbArmPX4, CbTakeOff, CbLand, CbHoldPosition, CbFollowWaypoints, etc.)
     ↓ (postSuccessEvent / postFailureEvent)
 State Machine Transitions
 ```
@@ -116,6 +116,13 @@ PX4 SITL (via XRCE-DDS)
 | CbGoToLocation | SmaccAsyncClientBehavior | Fly to NED position | `targetX`, `targetY`, `targetZ`, `yaw` (optional) |
 | CbOrbitLocation | SmaccAsyncClientBehavior + ISmaccUpdatable | Orbit a center point | `centerX`, `centerY`, `altitude`, `radius`, `angularVelocity`, `numOrbits` |
 | CbLand | SmaccAsyncClientBehavior | Disable offboard and land | None (detects landing via disarm signal) |
+| CbHoldPosition | SmaccAsyncClientBehavior + ISmaccUpdatable | Hold current position for a duration | `durationSeconds` (default 5.0) |
+| CbYawRotate | SmaccAsyncClientBehavior + ISmaccUpdatable | Rotate to a target heading | `targetYawRad`, `relative` (default false) |
+| CbChangeAltitude | SmaccAsyncClientBehavior | Ascend or descend to a target altitude | `targetAltitude` (positive meters above ground) |
+| CbFollowWaypoints | SmaccAsyncClientBehavior | Visit a sequence of NED waypoints | `waypoints` (vector of {x,y,z,yaw}), `xyTol` (0.5), `zTol` (0.3) |
+| CbFigureEight | SmaccAsyncClientBehavior + ISmaccUpdatable | Fly a lemniscate figure-8 pattern | `centerX`, `centerY`, `altitude`, `size` (5.0), `speed` (0.5), `numLoops` (1) |
+| CbReturnToHome | SmaccAsyncClientBehavior | Return to a specified home position | `homeX`, `homeY`, `homeZ`, `homeYaw` |
+| CbSpiralPattern | SmaccAsyncClientBehavior + ISmaccUpdatable | Fly an expanding Archimedean spiral (search & rescue) | `centerX`, `centerY`, `altitude`, `maxRadius` (20.0), `spacing` (3.0), `speed` (2.0) |
 
 ### CbArmPX4
 
@@ -148,6 +155,58 @@ Landing sequence:
 1. Disable offboard keepalive
 2. Send land command
 3. Posts `EvCbSuccess` when vehicle disarms (PX4 auto-disarms after touchdown)
+
+### CbHoldPosition
+
+Hold current position for a specified duration:
+- Calls `CpTrajectorySetpoint::hold()` to lock current position
+- Uses `ISmaccUpdatable::update()` to monitor elapsed time
+- Posts `EvCbSuccess` when duration reached
+
+### CbYawRotate
+
+Rotate in place to a target heading:
+- Supports absolute or relative yaw targets
+- Commands position setpoint with new yaw at current XY/Z
+- Monitors heading convergence (within ~0.1 rad tolerance)
+- Posts `EvCbSuccess` when target heading reached
+
+### CbChangeAltitude
+
+Ascend or descend to a target altitude while maintaining XY position:
+- Gets current XY and heading, sends setpoint with new Z = `-targetAltitude`
+- Uses `CpGoalChecker` signal for completion detection
+- Posts `EvCbSuccess` when altitude reached
+
+### CbFollowWaypoints
+
+Visit a sequence of NED waypoints in order:
+- Each waypoint is `{x, y, z, yaw}` — yaw = NaN to maintain current heading
+- Advances to next waypoint on each `CpGoalChecker::onGoalReached_` callback
+- Posts `EvCbSuccess` after the last waypoint is reached
+
+### CbFigureEight
+
+Fly a figure-8 (lemniscate of Bernoulli) pattern:
+- Parametric equations trace a lemniscate centered at the given point
+- Yaw faces direction of travel via derivatives
+- Uses `ISmaccUpdatable::update()` for continuous trajectory streaming
+- Posts `EvCbSuccess` after completing `numLoops` full loops
+
+### CbReturnToHome
+
+Return to a stored home position:
+- Home coordinates passed explicitly by the state machine
+- Uses `CpGoalChecker` signal for completion detection
+- Posts `EvCbSuccess` when home position reached
+
+### CbSpiralPattern
+
+Fly an expanding Archimedean spiral for search and rescue area coverage:
+- `r(θ) = (spacing / 2π) × θ` — each revolution expands radius by `spacing` meters
+- Adaptive angular velocity maintains constant linear ground speed
+- Yaw faces direction of travel
+- Posts `EvCbSuccess` when `maxRadius` is reached
 
 ## Usage
 
@@ -247,10 +306,16 @@ PX4 uses NED (North-East-Down): altitude of 5m above ground = z = -5.0
 
 ## Testing
 
-Run the reference state machine:
+Two reference state machines are available:
 
+**sm_cl_px4_mr_test_1** — Basic flight: arm, takeoff, go-to, orbit, return, land.
 ```bash
 ros2 launch sm_cl_px4_mr_test_1 sm_cl_px4_mr_test_1.launch.py
+```
+
+**sm_cl_px4_mr_test_2** — Extended behaviors: hold position, yaw rotate, change altitude, spiral pattern, follow waypoints, figure-eight, return to home.
+```bash
+ros2 launch sm_cl_px4_mr_test_2 sm_cl_px4_mr_test_2.launch.py
 ```
 
 See [sm_cl_px4_mr_test_1 README](../../smacc2_sm_reference_library/sm_cl_px4_mr_test_1/README.md) for full launch instructions.

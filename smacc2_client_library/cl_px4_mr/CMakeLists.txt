@@ -37,6 +37,13 @@ set(SOURCES
   src/cl_px4_mr/client_behaviors/cb_land.cpp
   src/cl_px4_mr/client_behaviors/cb_go_to_location.cpp
   src/cl_px4_mr/client_behaviors/cb_orbit_location.cpp
+  src/cl_px4_mr/client_behaviors/cb_hold_position.cpp
+  src/cl_px4_mr/client_behaviors/cb_yaw_rotate.cpp
+  src/cl_px4_mr/client_behaviors/cb_change_altitude.cpp
+  src/cl_px4_mr/client_behaviors/cb_follow_waypoints.cpp
+  src/cl_px4_mr/client_behaviors/cb_figure_eight.cpp
+  src/cl_px4_mr/client_behaviors/cb_return_to_home.cpp
+  src/cl_px4_mr/client_behaviors/cb_spiral_pattern.cpp
 )
 
 add_library(${PROJECT_NAME} ${SOURCES})
