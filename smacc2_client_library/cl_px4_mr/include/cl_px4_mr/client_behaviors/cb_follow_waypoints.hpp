@@ -16,8 +16,8 @@
 
 #include <array>
 #include <cmath>
-#include <vector>
 #include <smacc2/smacc.hpp>
+#include <vector>
 
 namespace cl_px4_mr
 {

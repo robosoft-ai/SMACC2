@@ -39,7 +39,8 @@ void CbHoldPosition::update()
 
   if (elapsed >= durationSeconds_)
   {
-    RCLCPP_INFO(getLogger(), "CbHoldPosition: duration reached (%.1f s) - posting success", elapsed);
+    RCLCPP_INFO(
+      getLogger(), "CbHoldPosition: duration reached (%.1f s) - posting success", elapsed);
     this->postSuccessEvent();
   }
 }

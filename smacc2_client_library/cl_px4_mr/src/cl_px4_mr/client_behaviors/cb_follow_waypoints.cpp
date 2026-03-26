@@ -40,8 +40,7 @@ void CbFollowWaypoints::onEntry()
     return;
   }
 
-  RCLCPP_INFO(
-    getLogger(), "CbFollowWaypoints: following %zu waypoints", waypoints_.size());
+  RCLCPP_INFO(getLogger(), "CbFollowWaypoints: following %zu waypoints", waypoints_.size());
 
   currentIndex_ = 0;
   commandCurrentWaypoint();

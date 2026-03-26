@@ -42,8 +42,7 @@ void CbFigureEight::onEntry()
   float z = -altitude_;  // NED
 
   RCLCPP_INFO(
-    getLogger(),
-    "CbFigureEight: starting figure-8 center=[%.2f, %.2f] alt=%.2f size=%.2f loops=%d",
+    getLogger(), "CbFigureEight: starting figure-8 center=[%.2f, %.2f] alt=%.2f size=%.2f loops=%d",
     centerX_, centerY_, altitude_, size_, numLoops_);
 
   trajectorySetpoint_->setPositionNED(x, y, z, 0.0f);
@@ -76,7 +75,8 @@ void CbFigureEight::update()
   float cosT2 = cosT * cosT;
   float denom2 = denom * denom;
   float dxdt = size_ * (-sinT * (1.0f + sinT2) - cosT * 2.0f * sinT * cosT) / denom2;
-  float dydt = size_ * ((cosT2 - sinT2) * (1.0f + sinT2) - sinT * cosT * 2.0f * sinT * cosT) / denom2;
+  float dydt =
+    size_ * ((cosT2 - sinT2) * (1.0f + sinT2) - sinT * cosT * 2.0f * sinT * cosT) / denom2;
   float yaw = std::atan2(dydt, dxdt);
 
   trajectorySetpoint_->setPositionNED(x, y, z, yaw);
@@ -85,8 +85,7 @@ void CbFigureEight::update()
   float requiredT = numLoops_ * 2.0f * M_PI;
   if (t_ >= requiredT)
   {
-    RCLCPP_INFO(
-      getLogger(), "CbFigureEight: %d loops completed - posting success", numLoops_);
+    RCLCPP_INFO(getLogger(), "CbFigureEight: %d loops completed - posting success", numLoops_);
     this->postSuccessEvent();
   }
 }
