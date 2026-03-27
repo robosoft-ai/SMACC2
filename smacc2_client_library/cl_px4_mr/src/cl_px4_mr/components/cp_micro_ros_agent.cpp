@@ -34,10 +34,7 @@ CpMicroRosAgent::CpMicroRosAgent(std::string command, std::string nodeName)
 {
 }
 
-CpMicroRosAgent::~CpMicroRosAgent()
-{
-  shutdown();
-}
+CpMicroRosAgent::~CpMicroRosAgent() { shutdown(); }
 
 void CpMicroRosAgent::launch()
 {
@@ -158,10 +155,7 @@ void CpMicroRosAgent::shutdown()
   RCLCPP_INFO(getLogger(), "CpMicroRosAgent: shutdown complete");
 }
 
-bool CpMicroRosAgent::isLaunched() const
-{
-  return launched_;
-}
+bool CpMicroRosAgent::isLaunched() const { return launched_; }
 
 pid_t CpMicroRosAgent::getPid() const
 {
@@ -169,10 +163,7 @@ pid_t CpMicroRosAgent::getPid() const
   return agentPid_;
 }
 
-std::string CpMicroRosAgent::getNodeName() const
-{
-  return nodeName_;
-}
+std::string CpMicroRosAgent::getNodeName() const { return nodeName_; }
 
 void CpMicroRosAgent::killProcessesRecursive(pid_t pid)
 {

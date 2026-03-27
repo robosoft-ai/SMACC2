@@ -14,9 +14,9 @@
 
 #pragma once
 
+#include <px4_msgs/msg/failsafe_flags.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <smacc2/smacc.hpp>
-#include <px4_msgs/msg/failsafe_flags.hpp>
 
 #include <atomic>
 

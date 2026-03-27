@@ -51,8 +51,8 @@ void CbConnectMicroRosAgent::onEntry()
     if (elapsedSec > timeoutSec_)
     {
       RCLCPP_ERROR(
-        getLogger(), "CbConnectMicroRosAgent: timeout (%.1fs) waiting for '%s'",
-        timeoutSec_, targetNodeName.c_str());
+        getLogger(), "CbConnectMicroRosAgent: timeout (%.1fs) waiting for '%s'", timeoutSec_,
+        targetNodeName.c_str());
       this->postFailureEvent();
       return;
     }
@@ -72,8 +72,7 @@ void CbConnectMicroRosAgent::onEntry()
     }
 
     RCLCPP_INFO_STREAM(
-      getLogger(), "[" << getName() << "] listing nodes (" << nodeNames.size() << ")"
-                       << std::endl
+      getLogger(), "[" << getName() << "] listing nodes (" << nodeNames.size() << ")" << std::endl
                        << ss.str());
 
     rate_.sleep();
@@ -98,7 +97,8 @@ void CbConnectMicroRosAgent::onEntry()
 
   failsafeSub_ = getNode()->create_subscription<px4_msgs::msg::FailsafeFlags>(
     "/fmu/out/failsafe_flags", rclcpp::SensorDataQoS(),
-    [this](const px4_msgs::msg::FailsafeFlags::SharedPtr msg) {
+    [this](const px4_msgs::msg::FailsafeFlags::SharedPtr msg)
+    {
       attitudeInvalid_.store(msg->attitude_invalid);
       localAltitudeInvalid_.store(msg->local_altitude_invalid);
       localPositionInvalid_.store(msg->local_position_invalid);
@@ -145,9 +145,6 @@ void CbConnectMicroRosAgent::onEntry()
   }
 }
 
-void CbConnectMicroRosAgent::onExit()
-{
-  failsafeSub_.reset();
-}
+void CbConnectMicroRosAgent::onExit() { failsafeSub_.reset(); }
 
 }  // namespace cl_px4_mr

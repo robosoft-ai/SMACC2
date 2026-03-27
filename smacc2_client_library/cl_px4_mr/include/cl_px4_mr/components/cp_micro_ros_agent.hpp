@@ -14,11 +14,11 @@
 
 #pragma once
 
+#include <sys/types.h>
 #include <atomic>
 #include <mutex>
-#include <string>
 #include <smacc2/smacc.hpp>
-#include <sys/types.h>
+#include <string>
 
 namespace cl_px4_mr
 {
@@ -27,7 +27,8 @@ class CpMicroRosAgent : public smacc2::ISmaccComponent
 {
 public:
   CpMicroRosAgent(
-    std::string command = "ros2 run micro_ros_agent micro_ros_agent udp4 -p 8888 2>&1 | tee /tmp/xrce_agent.log",
+    std::string command =
+      "ros2 run micro_ros_agent micro_ros_agent udp4 -p 8888 2>&1 | tee /tmp/xrce_agent.log",
     std::string nodeName = "/px4_micro_xrce_dds");
   virtual ~CpMicroRosAgent();
 
