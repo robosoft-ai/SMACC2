@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <cl_px4_mr/client_behaviors/cb_arm_px4.hpp>
+#include <cl_px4_mr/components/cp_offboard_keep_alive.hpp>
 #include <cl_px4_mr/components/cp_vehicle_command.hpp>
 #include <cl_px4_mr/components/cp_vehicle_status.hpp>
 
@@ -28,9 +29,27 @@ void CbArmPX4::onEntry()
 {
   this->requiresComponent(vehicleCommand_);
   this->requiresComponent(vehicleStatus_);
+  this->requiresComponent(offboardKeepAlive_);
 
   this->getStateMachine()->createSignalConnection(
     vehicleStatus_->onArmed_, &CbArmPX4::onArmedCallback, this);
+
+  // Enable offboard keepalive and set offboard mode so PX4's offboard signal
+  // requirement is satisfied before arming. Without this, canArm() fails because
+  // offboard_control_signal_lost is true when nav_state == OFFBOARD.
+  if (!offboardKeepAlive_->isEnabled())
+  {
+    RCLCPP_INFO(getLogger(), "CbArmPX4: enabling offboard keepalive");
+    offboardKeepAlive_->enable();
+  }
+
+  RCLCPP_INFO(getLogger(), "CbArmPX4: sending setOffboardMode command");
+  vehicleCommand_->setOffboardMode();
+
+  // Wait for PX4 to register offboard signal (needs at least one
+  // offboard_control_mode message processed by PX4's health checks)
+  RCLCPP_INFO(getLogger(), "CbArmPX4: waiting 2s for offboard signal registration...");
+  std::this_thread::sleep_for(std::chrono::seconds(2));
 
   for (int attempt = 0; attempt < MAX_RETRIES; attempt++)
   {

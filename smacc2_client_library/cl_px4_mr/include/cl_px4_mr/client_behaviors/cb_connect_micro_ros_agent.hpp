@@ -14,33 +14,35 @@
 
 #pragma once
 
-#include <atomic>
+#include <rclcpp/rclcpp.hpp>
 #include <smacc2/smacc.hpp>
+#include <px4_msgs/msg/failsafe_flags.hpp>
+
+#include <atomic>
 
 namespace cl_px4_mr
 {
 
-class CpVehicleCommand;
-class CpVehicleStatus;
-class CpOffboardKeepAlive;
+class CpMicroRosAgent;
 
-class CbArmPX4 : public smacc2::SmaccAsyncClientBehavior
+class CbConnectMicroRosAgent : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbArmPX4();
+  CbConnectMicroRosAgent(double timeoutSec = 30.0);
 
   void onEntry() override;
   void onExit() override;
 
 private:
-  void onArmedCallback();
+  CpMicroRosAgent * microRosAgent_ = nullptr;
+  double timeoutSec_;
+  rclcpp::Rate rate_;
 
-  CpVehicleCommand * vehicleCommand_ = nullptr;
-  CpVehicleStatus * vehicleStatus_ = nullptr;
-  CpOffboardKeepAlive * offboardKeepAlive_ = nullptr;
-  std::atomic<bool> armed_{false};
-  static constexpr int MAX_RETRIES = 5;
-  static constexpr int RETRY_INTERVAL_SEC = 5;
+  rclcpp::Subscription<px4_msgs::msg::FailsafeFlags>::SharedPtr failsafeSub_;
+  std::atomic<bool> healthOk_{false};
+  std::atomic<bool> attitudeInvalid_{true};
+  std::atomic<bool> localAltitudeInvalid_{true};
+  std::atomic<bool> localPositionInvalid_{true};
 };
 
 }  // namespace cl_px4_mr

@@ -31,6 +31,7 @@ set(SOURCES
   src/cl_px4_mr/components/cp_vehicle_local_position.cpp
   src/cl_px4_mr/components/cp_vehicle_command_ack.cpp
   src/cl_px4_mr/components/cp_goal_checker.cpp
+  src/cl_px4_mr/components/cp_micro_ros_agent.cpp
   src/cl_px4_mr/client_behaviors/cb_arm_px4.cpp
   src/cl_px4_mr/client_behaviors/cb_disarm_px4.cpp
   src/cl_px4_mr/client_behaviors/cb_takeoff.cpp
@@ -44,6 +45,7 @@ set(SOURCES
   src/cl_px4_mr/client_behaviors/cb_figure_eight.cpp
   src/cl_px4_mr/client_behaviors/cb_return_to_home.cpp
   src/cl_px4_mr/client_behaviors/cb_spiral_pattern.cpp
+  src/cl_px4_mr/client_behaviors/cb_connect_micro_ros_agent.cpp
 )
 
 add_library(${PROJECT_NAME} ${SOURCES})

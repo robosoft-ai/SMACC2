@@ -19,26 +19,34 @@
 namespace sm_cl_px4_mr_test_2
 {
 
-// MODE STATE: Vehicle is disarmed on the ground, waiting for readiness
-struct MsDisarmedOnGround
-: smacc2::SmaccState<MsDisarmedOnGround, SmClPx4MrTest2, StConnectMicroROSAgent>
+using namespace cl_px4_mr;
+using namespace smacc2::default_transition_tags;
+
+// STATE: Launch and wait for micro_ros_agent before proceeding
+struct StConnectMicroROSAgent
+: smacc2::SmaccState<StConnectMicroROSAgent, MsDisarmedOnGround>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
+    Transition<EvCbSuccess<CbConnectMicroRosAgent, OrPx4>, StWaitForReady, SUCCESS>
   > reactions;
 
-  static void staticConfigure() {}
+  static void staticConfigure()
+  {
+    configure_orthogonal<OrPx4, CbConnectMicroRosAgent>(30.0);
+  }
+
   void runtimeConfigure() {}
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "--- MsDisarmedOnGround ---");
+    RCLCPP_INFO(getLogger(), "StConnectMicroROSAgent: launching and waiting for micro_ros_agent...");
   }
 
   void onExit()
   {
-    RCLCPP_INFO(getLogger(), "--- Exiting MsDisarmedOnGround ---");
+    RCLCPP_INFO(getLogger(), "StConnectMicroROSAgent: micro_ros_agent connected, proceeding");
   }
 };
 

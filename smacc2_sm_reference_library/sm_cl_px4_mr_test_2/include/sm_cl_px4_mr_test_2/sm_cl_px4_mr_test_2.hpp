@@ -34,6 +34,7 @@
 #include <cl_px4_mr/client_behaviors/cb_spiral_pattern.hpp>
 #include <cl_px4_mr/client_behaviors/cb_takeoff.hpp>
 #include <cl_px4_mr/client_behaviors/cb_yaw_rotate.hpp>
+#include <cl_px4_mr/client_behaviors/cb_connect_micro_ros_agent.hpp>
 #include <cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp>
 
 // ORTHOGONALS
@@ -55,6 +56,7 @@ class MsLanding;
 class MsLanded;
 
 // STATES (forward declarations)
+class StConnectMicroROSAgent;
 class StWaitForReady;
 class StArmPx4;
 class StTakeoff;
@@ -97,6 +99,7 @@ struct SmClPx4MrTest2
 #include <sm_cl_px4_mr_test_2/states/ms_landed.hpp>
 
 // REGULAR STATE INCLUDES (must come after mode state definitions)
+#include <sm_cl_px4_mr_test_2/states/st_connect_micro_ros_agent.hpp>
 #include <sm_cl_px4_mr_test_2/states/st_wait_for_ready.hpp>
 #include <sm_cl_px4_mr_test_2/states/st_arm_px4.hpp>
 #include <sm_cl_px4_mr_test_2/states/st_takeoff.hpp>

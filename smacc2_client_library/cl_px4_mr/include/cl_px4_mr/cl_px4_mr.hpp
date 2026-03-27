@@ -17,6 +17,7 @@
 #include <smacc2/smacc.hpp>
 
 #include <cl_px4_mr/components/cp_goal_checker.hpp>
+#include <cl_px4_mr/components/cp_micro_ros_agent.hpp>
 #include <cl_px4_mr/components/cp_offboard_keep_alive.hpp>
 #include <cl_px4_mr/components/cp_trajectory_setpoint.hpp>
 #include <cl_px4_mr/components/cp_vehicle_command.hpp>
@@ -36,6 +37,7 @@ public:
   template <typename TOrthogonal, typename TClient>
   void onComponentInitialization()
   {
+    this->createComponent<CpMicroRosAgent, TOrthogonal, TClient>();
     this->createComponent<CpVehicleCommand, TOrthogonal, TClient>();
     this->createComponent<CpTrajectorySetpoint, TOrthogonal, TClient>();
     this->createComponent<CpVehicleLocalPosition, TOrthogonal, TClient>();

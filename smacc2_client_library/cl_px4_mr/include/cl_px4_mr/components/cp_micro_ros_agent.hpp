@@ -15,32 +15,38 @@
 #pragma once
 
 #include <atomic>
+#include <mutex>
+#include <string>
 #include <smacc2/smacc.hpp>
+#include <sys/types.h>
 
 namespace cl_px4_mr
 {
 
-class CpVehicleCommand;
-class CpVehicleStatus;
-class CpOffboardKeepAlive;
-
-class CbArmPX4 : public smacc2::SmaccAsyncClientBehavior
+class CpMicroRosAgent : public smacc2::ISmaccComponent
 {
 public:
-  CbArmPX4();
+  CpMicroRosAgent(
+    std::string command = "ros2 run micro_ros_agent micro_ros_agent udp4 -p 8888 2>&1 | tee /tmp/xrce_agent.log",
+    std::string nodeName = "/px4_micro_xrce_dds");
+  virtual ~CpMicroRosAgent();
 
-  void onEntry() override;
-  void onExit() override;
+  void launch();
+  void shutdown();
+  bool isLaunched() const;
+  pid_t getPid() const;
+  std::string getNodeName() const;
 
 private:
-  void onArmedCallback();
+  static void killProcessesRecursive(pid_t pid);
 
-  CpVehicleCommand * vehicleCommand_ = nullptr;
-  CpVehicleStatus * vehicleStatus_ = nullptr;
-  CpOffboardKeepAlive * offboardKeepAlive_ = nullptr;
-  std::atomic<bool> armed_{false};
-  static constexpr int MAX_RETRIES = 5;
-  static constexpr int RETRY_INTERVAL_SEC = 5;
+  pid_t agentPid_ = -1;
+  std::atomic<bool> launched_{false};
+  std::atomic<bool> shutdownRequested_{false};
+  std::string command_;
+  std::string nodeName_;
+  mutable std::mutex mutex_;
+  int pipeFd_ = -1;
 };
 
 }  // namespace cl_px4_mr

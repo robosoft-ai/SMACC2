@@ -110,7 +110,8 @@ PX4 SITL (via XRCE-DDS)
 
 | Behavior | Base Class | Purpose | Parameters |
 |----------|-----------|---------|------------|
-| CbArmPX4 | SmaccAsyncClientBehavior | Arm vehicle with retry logic | None (5 retries, force-arm after 2) |
+| CbConnectMicroRosAgent | SmaccAsyncClientBehavior | Launch agent, detect node, wait for health | `timeoutSec` (default 30.0) |
+| CbArmPX4 | SmaccAsyncClientBehavior | Enable offboard, set mode, arm with retry | None (5 retries, force-arm after 2) |
 | CbDisarmPX4 | SmaccAsyncClientBehavior | Disarm vehicle | None (3 retries) |
 | CbTakeOff | SmaccAsyncClientBehavior | Enter offboard mode and climb to altitude | `targetAltitude` (default 5.0m) |
 | CbGoToLocation | SmaccAsyncClientBehavior | Fly to NED position | `targetX`, `targetY`, `targetZ`, `yaw` (optional) |
@@ -124,18 +125,34 @@ PX4 SITL (via XRCE-DDS)
 | CbReturnToHome | SmaccAsyncClientBehavior | Return to a specified home position | `homeX`, `homeY`, `homeZ`, `homeYaw` |
 | CbSpiralPattern | SmaccAsyncClientBehavior + ISmaccUpdatable | Fly an expanding Archimedean spiral (search & rescue) | `centerX`, `centerY`, `altitude`, `maxRadius` (20.0), `spacing` (3.0), `speed` (2.0) |
 
+### CbConnectMicroRosAgent
+
+Launches the micro_ros_agent (if not already running) and waits for PX4 readiness:
+
+1. **Phase 1 — Node detection:** Polls `get_node_names()` at 5 Hz for the `/px4_micro_xrce_dds` node
+2. **Phase 2 — Health check:** Subscribes to `/fmu/out/failsafe_flags` and polls at 2 Hz until PX4's EKF has converged (`attitude_invalid`, `local_altitude_invalid`, and `local_position_invalid` all false)
+3. Posts `EvCbSuccess` when both phases pass, `EvCbFailure` on timeout or shutdown
+4. Resets the failsafe subscription on exit to prevent dangling callbacks
+
 ### CbArmPX4
 
-Arms the vehicle with automatic retry and force-arm escalation:
-- Attempts 1-2: Standard arm command
-- Attempts 3-5: Force-arm (param2=21196, bypasses pre-arm checks)
-- Posts `EvCbSuccess` on armed, `EvCbFailure` after all retries exhausted
-- Connects to `CpVehicleStatus::onArmed_` signal
+Enables offboard mode and arms the vehicle:
+
+1. Enables `CpOffboardKeepAlive` (starts publishing `offboard_control_mode` at ~20 Hz)
+2. Sends `setOffboardMode()` command
+3. Waits 2 s for PX4 to register the offboard signal
+4. Attempts arming with retry and force-arm escalation:
+   - Attempts 1-2: Standard arm command
+   - Attempts 3-5: Force-arm (param2=21196)
+5. Posts `EvCbSuccess` on armed, `EvCbFailure` after all retries exhausted
+6. Connects to `CpVehicleStatus::onArmed_` signal
+
+**Note:** PX4 ignores the force-arm flag for external commands (`from_external=true`), so the offboard keepalive step is essential — without it, `canArm()` fails because `offboard_control_signal_lost` is true when `nav_state == OFFBOARD`.
 
 ### CbTakeOff
 
 Full offboard entry sequence:
-1. Enable offboard keepalive heartbeat
+1. Enable offboard keepalive heartbeat (if not already enabled)
 2. Send hold command (2s)
 3. Switch to offboard mode
 4. Set position setpoint at target altitude
@@ -276,11 +293,12 @@ private:
 
 ## PX4 XRCE-DDS Topics
 
-| Direction | Topic | Message Type | Component |
+| Direction | Topic | Message Type | Component / Behavior |
 |-----------|-------|-------------|-----------|
 | Subscribe | `/fmu/out/vehicle_status_v1` | VehicleStatus | CpVehicleStatus |
 | Subscribe | `/fmu/out/vehicle_local_position` | VehicleLocalPosition | CpVehicleLocalPosition |
 | Subscribe | `/fmu/out/vehicle_command_ack` | VehicleCommandAck | CpVehicleCommandAck |
+| Subscribe | `/fmu/out/failsafe_flags` | FailsafeFlags | CbConnectMicroRosAgent (phase 2) |
 | Publish | `/fmu/in/vehicle_command` | VehicleCommand | CpVehicleCommand |
 | Publish | `/fmu/in/trajectory_setpoint` | TrajectorySetpoint | CpTrajectorySetpoint |
 | Publish | `/fmu/in/offboard_control_mode` | OffboardControlMode | CpOffboardKeepAlive |
@@ -300,9 +318,10 @@ PX4 uses NED (North-East-Down): altitude of 5m above ground = z = -5.0
 
 ## PX4 SITL Requirements
 
-- PX4 requires a GCS connection (QGroundControl) for arming, or disable the check via PX4 params: `param set COM_DL_LOSS_T 0`
 - PX4 v1.15+ publishes vehicle status on `vehicle_status_v1` (not `vehicle_status`)
 - XRCE-DDS agent must be running: `ros2 run micro_ros_agent micro_ros_agent udp4 -p 8888`
+- `CbConnectMicroRosAgent` manages agent launch automatically and waits for PX4 EKF convergence via failsafe flags before proceeding
+- PX4 ignores the force-arm flag (param2=21196) for external commands; `CbArmPX4` satisfies arming requirements by enabling offboard keepalive and setting offboard mode before arming
 
 ## Testing
 
