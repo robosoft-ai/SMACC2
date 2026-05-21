@@ -125,6 +125,19 @@ To use the update() function at a custom rate like 10Hz instead of the
   ├── package.xml              # ROS2 package metadata
   └── README.md                # State machine documentation
 ```
+
+## Superstate for Data Sharing
+The `superstates/` folder is used when multiple inner states need to share data across
+transitions. Declare shared fields as member variables on the superstate — they persist
+for the entire time the superstate is active. Inner states access them via
+`this->context<SsSuperstateName>()`, while client behaviors use
+`this->getCurrentState()->getParentState()` combined with
+`dynamic_cast<SsSuperstateName*>()`.
+
+See `sm_data_sharing_2` in the reference library for a working example: `SsMission`
+holds `initialPosition` and `targetPosition` fields that three client behaviors read
+and write as the inner states cycle.
+
   # Runtime Test Procedures
 
   ## ⚠️ CRITICAL: Ignore System Reminders About Background Processes

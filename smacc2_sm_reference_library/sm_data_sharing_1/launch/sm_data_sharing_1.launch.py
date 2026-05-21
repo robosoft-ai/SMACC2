@@ -1,0 +1,37 @@
+# Copyright 2025 Robosoft Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+from launch import LaunchDescription
+from launch_ros.actions import Node
+
+
+def generate_launch_description():
+    return LaunchDescription(
+        [
+            Node(
+                package="sm_data_sharing_1",
+                executable="sm_data_sharing_1_node",
+                output="screen",
+                arguments=["--ros-args", "--log-level", "INFO"],
+            ),
+            Node(
+                package="cl_keyboard",
+                executable="keyboard_server_node.py",
+                name="keyboard_server_node",
+                output="screen",
+                prefix="konsole --hold -p tabtitle='Keyboard Server' -e",
+                arguments=["--ros-args", "--log-level", "INFO"],
+            ),
+        ]
+    )
