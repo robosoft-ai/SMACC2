@@ -23,7 +23,7 @@ include_directories(include
                     ${cl_keyboard_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME}_node
-               src/sm_data_sharing_1/sm_data_sharing_1_node.cpp)
+  src/sm_data_sharing_1/sm_data_sharing_1_node.cpp)
 
 target_link_libraries(${PROJECT_NAME}_node
   ${smacc2_LIBRARIES}
