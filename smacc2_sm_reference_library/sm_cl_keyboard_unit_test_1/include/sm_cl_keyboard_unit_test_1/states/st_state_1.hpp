@@ -39,8 +39,8 @@ struct State1 : smacc2::SmaccState<State1, SmClKeyboardUnitTest1>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3);  // EvTimer triggers each 3 client ticks
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);  // EvTimer triggers once at 10 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3s);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10s);
 
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }

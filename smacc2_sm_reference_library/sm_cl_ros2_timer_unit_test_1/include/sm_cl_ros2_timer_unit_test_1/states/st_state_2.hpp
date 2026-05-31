@@ -31,7 +31,7 @@ struct State2 : smacc2::SmaccState<State2, SmClRos2TimerUnitTest1>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);  // EvTimer triggers once at 5 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5s);
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "runtimeConfigure() firing"); }

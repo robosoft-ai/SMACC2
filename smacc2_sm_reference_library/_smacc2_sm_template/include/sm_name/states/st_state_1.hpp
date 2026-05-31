@@ -55,8 +55,8 @@ struct State1 : smacc2::SmaccState<State1, $SmName$>
   static void staticConfigure()
   {
     // START: Example code - change needed
-    configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3);  // EvTimer triggers each 3 client ticks
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);  // EvTimer triggers once at 10 client ticks
+    configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3s);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5s);
     // END: Example code - change or delete as needed
   }
 

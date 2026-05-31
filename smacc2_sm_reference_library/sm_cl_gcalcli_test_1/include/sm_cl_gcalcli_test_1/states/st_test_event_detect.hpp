@@ -58,7 +58,7 @@ struct StTestEventDetect : smacc2::SmaccState<StTestEventDetect, SmClGcalcliTest
     configure_orthogonal<OrCalendar, CbMonitorConnection>();
 
     // Timeout fallback commented out - wait indefinitely for event detection
-    // configure_orthogonal<OrTimer, CbTimerCountdownOnce>(60);
+    // configure_orthogonal<OrTimer, CbTimerCountdownOnce>(60s);
   }
 
   void runtimeConfigure() {}

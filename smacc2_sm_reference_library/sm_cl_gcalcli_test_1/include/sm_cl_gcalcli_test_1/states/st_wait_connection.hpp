@@ -48,7 +48,7 @@ struct StWaitConnection : smacc2::SmaccState<StWaitConnection, SmClGcalcliTest1>
     configure_orthogonal<OrCalendar, CbStatus>();
 
     // Timeout fallback (10 seconds)
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10s);
   }
 
   void runtimeConfigure() {}

@@ -38,7 +38,7 @@ struct StAcquireData2 : smacc2::SmaccState<StAcquireData2, SmDataSharing1>
   static void staticConfigure()
   {
     configure_orthogonal<OrData, cl_data::CbStoreData2>();
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5s);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 

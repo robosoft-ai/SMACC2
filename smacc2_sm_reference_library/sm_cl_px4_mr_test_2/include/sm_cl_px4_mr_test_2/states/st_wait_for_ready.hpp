@@ -34,7 +34,7 @@ struct StWaitForReady : smacc2::SmaccState<StWaitForReady, MsDisarmedOnGround>
   static void staticConfigure()
   {
     // Wait 5 seconds for PX4 topics to stabilize
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5s);
   }
 
   void runtimeConfigure() {}

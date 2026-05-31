@@ -37,7 +37,7 @@ struct StInit : smacc2::SmaccState<StInit, SmClGcalcliTest1>
   static void staticConfigure()
   {
     // Quick timer to move to the test states
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(1);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(1s);
   }
 
   void runtimeConfigure() {}

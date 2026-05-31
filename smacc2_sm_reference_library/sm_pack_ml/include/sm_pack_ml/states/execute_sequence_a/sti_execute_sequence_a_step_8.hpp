@@ -42,7 +42,7 @@ struct StiExecuteSequenceAStep8 : smacc2::SmaccState<StiExecuteSequenceAStep8, S
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(20);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(2s);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
     
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

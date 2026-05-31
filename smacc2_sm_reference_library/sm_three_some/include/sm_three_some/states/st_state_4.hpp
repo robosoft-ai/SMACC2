@@ -28,7 +28,7 @@ struct StState4 : smacc2::SmaccState<StState4, MsRun>
   struct PREVIOUS : ABORT{};
 
   // STATE FUNCTIONS
-  static void staticConfigure() { configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10); }
+  static void staticConfigure() { configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5s); }
 
   void runtimeConfigure() {}
 

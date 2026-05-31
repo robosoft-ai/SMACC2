@@ -28,7 +28,7 @@ class OrTimerB : public smacc2::Orthogonal<OrTimerB>
 public:
   void onInitialize() override
   {
-    auto client = this->createClient<cl_ros2_timer::ClRos2Timer>(250ms);
+    auto client = this->createClient<cl_ros2_timer::ClRos2Timer>();
   }
 };
 }  // namespace sm_multithread_test_1

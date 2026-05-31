@@ -24,6 +24,6 @@ using namespace std::chrono_literals;
 class OrTimer : public smacc2::Orthogonal<OrTimer>
 {
 public:
-  void onInitialize() override { auto client = this->createClient<cl_ros2_timer::ClRos2Timer>(1s); }
+  void onInitialize() override { auto client = this->createClient<cl_ros2_timer::ClRos2Timer>(); }
 };
 }  // namespace sm_cl_ros2_timer_unit_test_1

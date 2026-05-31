@@ -41,7 +41,7 @@ struct StiMode5SequenceAStep5 : smacc2::SmaccState<StiMode5SequenceAStep5, SsMod
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(20);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(2s);
     
     
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

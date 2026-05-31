@@ -32,7 +32,7 @@ class OrTimer : public smacc2::Orthogonal<OrTimer>
 public:
     virtual void onInitialize() override
     {
-        auto client = this->createClient<cl_ros2_timer::ClRos2Timer>(rclcpp::Duration(1s));
+        auto client = this->createClient<cl_ros2_timer::ClRos2Timer>();
     }
 };
 } // namespace sm_atomic_mode_states

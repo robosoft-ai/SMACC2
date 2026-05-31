@@ -16,14 +16,8 @@
 
 namespace cl_ros2_timer
 {
-ClRos2Timer::ClRos2Timer(rclcpp::Duration duration, bool oneshot)
-: duration_(duration), oneshot_(oneshot)
-{
-}
+ClRos2Timer::ClRos2Timer() {}
 
-ClRos2Timer::~ClRos2Timer()
-{
-  // Components are automatically cleaned up by the framework
-}
+ClRos2Timer::~ClRos2Timer() {}
 
 }  // namespace cl_ros2_timer

@@ -33,8 +33,7 @@ struct State5b : smacc2::SmaccState<State5b, SmBranching>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // EvTimer triggers once at 10 client ticks
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5s);
   }
 
   void runtimeConfigure() { RCLCPP_INFO(getLogger(), "Entering State5"); }

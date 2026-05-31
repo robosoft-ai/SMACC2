@@ -16,8 +16,6 @@
 
 // CLIENTS
 #include <cl_ros2_timer/cl_ros2_timer.hpp>
-#include <cl_ros2_timer/components/cp_timer_listener_1.hpp>
-
 #include <cl_keyboard/cl_keyboard.hpp>
 #include <cl_keyboard/components/cp_keyboard_listener_1.hpp>
 

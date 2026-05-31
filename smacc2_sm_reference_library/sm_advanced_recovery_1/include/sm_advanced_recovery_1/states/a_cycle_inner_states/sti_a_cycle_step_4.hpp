@@ -42,7 +42,7 @@ struct StiACycleStep4 : smacc2::SmaccState<StiACycleStep4, SsACycle>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(40);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(4s);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }

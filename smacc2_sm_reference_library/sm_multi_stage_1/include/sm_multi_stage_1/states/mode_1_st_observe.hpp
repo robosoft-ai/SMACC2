@@ -36,7 +36,7 @@ struct Mode1StObserve : smacc2::SmaccState<Mode1StObserve, MsMode1>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(1s);
     
     
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

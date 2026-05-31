@@ -28,7 +28,7 @@ class OrTimer : public smacc2::Orthogonal<OrTimer>
 public:
   void onInitialize() override
   {
-    auto client = this->createClient<cl_ros2_timer::ClRos2Timer>(rclcpp::Duration(1s));
+    auto client = this->createClient<cl_ros2_timer::ClRos2Timer>();
   }
 };
 

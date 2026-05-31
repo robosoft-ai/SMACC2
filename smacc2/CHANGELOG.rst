@@ -1,6 +1,23 @@
 Changelog for package smacc2
 ================================
 
+3.1.0 (2026-05-31)
+-------------------
+### Changed
+- **cl_ros2_timer duration-based API** (`#61 <https://github.com/robosoft-ai/SMACC2/issues/61>`_)
+
+  ``CbTimerCountdownOnce`` and ``CbTimerCountdownLoop`` now use dedicated
+  ``rclcpp::WallTimer`` instances with exact ``rclcpp::Duration`` arguments
+  (C++ chrono literals). All 22 ``or_timer.hpp`` files across the reference
+  library updated accordingly.
+
+### Removed
+- ``CbRos2Timer`` client behavior (unused).
+- ``CpTimerListener1`` component (orphaned after tick-stack removal).
+
+### Contributors
+- Brett Aldrich
+
 3.0.1 (2025-01-16)
 -------------------
 ### Added

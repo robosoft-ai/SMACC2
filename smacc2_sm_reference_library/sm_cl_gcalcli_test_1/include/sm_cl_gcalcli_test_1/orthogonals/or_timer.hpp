@@ -27,7 +27,7 @@ namespace sm_cl_gcalcli_test_1
 class OrTimer : public smacc2::Orthogonal<OrTimer>
 {
 public:
-  void onInitialize() override { this->createClient<cl_ros2_timer::ClRos2Timer>(1s); }
+  void onInitialize() override { this->createClient<cl_ros2_timer::ClRos2Timer>(); }
 };
 
 }  // namespace sm_cl_gcalcli_test_1

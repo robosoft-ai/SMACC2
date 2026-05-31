@@ -47,7 +47,7 @@ struct StAllSensorsGo : smacc2::SmaccState<StAllSensorsGo, SmNav2GazeboTest1>
     configure_orthogonal<OrNavigation, CbWaitNav2Nodes>();
 
     // Timer countdown: triggers EvTimer after 15 seconds (backup if Nav2 ready signal not received)
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(15);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(15s);
 
     // Keyboard behavior: allows manual state advancement with 'N' key
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

@@ -41,7 +41,7 @@ struct StTestRefresh : smacc2::SmaccState<StTestRefresh, SmClGcalcliTest1>
     configure_orthogonal<OrCalendar, CbRefreshAgenda>();
 
     // Wait 3 seconds then proceed
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(3);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(3s);
   }
 
   void runtimeConfigure() {}

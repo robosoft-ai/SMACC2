@@ -39,7 +39,7 @@ struct StProcessData : smacc2::SmaccState<StProcessData, SmDataSharing1>
   static void staticConfigure()
   {
     configure_orthogonal<OrData, cl_data::CbProcessData>();
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5s);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 

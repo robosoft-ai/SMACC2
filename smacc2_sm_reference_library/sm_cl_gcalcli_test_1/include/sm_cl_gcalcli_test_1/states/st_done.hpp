@@ -37,7 +37,7 @@ struct StDone : smacc2::SmaccState<StDone, SmClGcalcliTest1>
   static void staticConfigure()
   {
     // Wait 5 seconds before looping
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5s);
   }
 
   void runtimeConfigure() {}

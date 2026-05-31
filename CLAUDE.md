@@ -72,7 +72,7 @@ SmaccSignal is a communication mechanism (template wrapper around boost::signals
 
   ### Example usage in Clients:
   - smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/cl_lifecycle_node.hpp
-  - smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/cl_ros_timer.hpp
+  - smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/cl_ros2_timer.hpp
   - smacc2_client_library/moveit2z_client/include/moveit2z_client/cl_moveit2z.hpp
   - smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/nav2z_client.hpp
   - smacc2_client_library/http_client/include/http_client/cl_http_client.hpp
@@ -280,7 +280,10 @@ SMACC2 uses what can be referred to as event-queue-mediated concurrency: async o
   SMACC2/.claude/settings.json
 
   ### Release Process
-  SMACC2/RELEASING.md - Comprehensive guide for creating SMACC2 releases
+  RELEASING.md was deleted in commit ade55f1b. Recover with: git show ec3acff0:RELEASING.md
+  Steps: bump package.xml versions → CHANGELOG entries → commit → tag on jazzy branch →
+  bloom-release smacc2 --rosdistro jazzy --track jazzy --unsafe → manual rosdistro PR →
+  GitHub release page → monitor buildfarm at build.ros2.org
 
 //////////////////////////////////////////////////////////////////////////////
 

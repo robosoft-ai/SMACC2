@@ -47,7 +47,7 @@ struct StTestQuickAdd : smacc2::SmaccState<StTestQuickAdd, SmClGcalcliTest1>
       "sm_cl_gcalcli_test_1 Test Event tomorrow 2pm for 30 minutes");
 
     // Timeout fallback (10 seconds)
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10s);
   }
 
   void runtimeConfigure() {}

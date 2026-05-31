@@ -26,7 +26,7 @@ class OrTimer : public smacc2::Orthogonal<OrTimer>
 public:
   virtual void onInitialize() override
   {
-    auto actionclient = this->createClient<cl_ros2_timer::ClRos2Timer>(rclcpp::Duration(0.1s));
+    auto actionclient = this->createClient<cl_ros2_timer::ClRos2Timer>();
   }
 };
 }  // namespace sm_multi_stage_1

@@ -22,24 +22,29 @@ namespace cl_ros2_timer
 class CbTimerCountdownLoop : public smacc2::SmaccClientBehavior
 {
 public:
-  explicit CbTimerCountdownLoop(int64_t triggerTickCount)
-  : tickTriggerCount_(triggerTickCount), tickCounter_(0)
-  {
-  }
+  explicit CbTimerCountdownLoop(rclcpp::Duration loopDuration) : loopDuration_(loopDuration) {}
 
   void onEntry() override
   {
-    this->requiresClient(timerClient_);
-
-    // Get the core timer component
-    smacc2::client_core_components::CpRos2Timer * timerComponent;
-    this->requiresComponent(timerComponent);
-
-    // Connect to the core timer component
-    timerComponent->onTimerTick(&CbTimerCountdownLoop::onClientTimerTickCallback, this);
+    auto node = this->getNode();
+    auto clock = node->get_clock();
+    wallTimer_ = rclcpp::create_timer(
+      node, clock, std::chrono::nanoseconds(loopDuration_.nanoseconds()),
+      [this]()
+      {
+        onTimerTick_();
+        postCountDownEvent_();
+      });
   }
 
-  void onExit() override {}
+  void onExit() override
+  {
+    if (wallTimer_)
+    {
+      wallTimer_->cancel();
+      wallTimer_.reset();
+    }
+  }
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
@@ -55,21 +60,10 @@ public:
   }
 
 private:
-  int64_t tickTriggerCount_;
-  int64_t tickCounter_;
+  rclcpp::Duration loopDuration_;
+  rclcpp::TimerBase::SharedPtr wallTimer_;
 
-  ClRos2Timer * timerClient_;
   std::function<void()> postCountDownEvent_;
   smacc2::SmaccSignal<void()> onTimerTick_;
-  void onClientTimerTickCallback()
-  {
-    tickCounter_++;
-
-    if (tickCounter_ % tickTriggerCount_ == 0)
-    {
-      onTimerTick_();
-      postCountDownEvent_();
-    }
-  }
 };
 }  // namespace cl_ros2_timer

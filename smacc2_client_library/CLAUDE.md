@@ -70,7 +70,7 @@ The SMACC2 Client Library provides modular, reusable clients for robot behaviors
 | `cl_nav2z` | Navigation with Nav2 | CpActionClient, CpNav2ActionInterface |
 | `cl_moveit2z` | Manipulation with MoveIt2 | CpMoveItInterface |
 | `cl_keyboard` | Keyboard input handling | CpTopicSubscriber, CpKeyboardListener1 |
-| `cl_ros2_timer` | Timer-based behaviors | CpRos2Timer, CpTimerListener1 |
+| `cl_ros2_timer` | Timer-based behaviors | CbTimerCountdownOnce, CbTimerCountdownLoop |
 | `cl_http` | HTTP requests | CpHttpConnectionManager, CpHttpRequestExecutor |
 | `cl_lifecycle_node` | ROS2 lifecycle management | CpLifecycleEventMonitor |
 | `cl_generic_sensor` | Generic sensor input | CpTopicSubscriber, CpMessageTimeout |
@@ -248,7 +248,6 @@ Behaviors access components via `requiresComponent()` and connect to component s
 |----------|-------------|-------|
 | cb_timer_countdown_once | Single timer expiration | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp) / `src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp` |
 | cb_timer_countdown_loop | Recurring timer events | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_timer_countdown_loop.hpp) / `src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_timer_countdown_loop.hpp` |
-| cb_ros2_timer | Generic timer behavior | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_ros2_timer.hpp) / `src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_ros2_timer.hpp` |
 | cb_detect_apriltag | AprilTag detection events | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/client_behaviors/cb_detect_apriltag.hpp) / `src/SMACC2/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/client_behaviors/cb_detect_apriltag.hpp` |
 
 ---
@@ -427,7 +426,6 @@ Behaviors access components via `requiresComponent()` and connect to component s
 
 | Component | Description | Links |
 |-----------|-------------|-------|
-| cp_timer_listener_1 | Timer tick event generator | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/components/cp_timer_listener_1.hpp) / `src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/components/cp_timer_listener_1.hpp` |
 | cp_lifecycle_event_monitor | Lifecycle transition event monitoring | [GitHub](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp) / `src/SMACC2/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/components/cp_lifecycle_event_monitor.hpp` |
 
 ---

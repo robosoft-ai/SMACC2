@@ -39,7 +39,7 @@ struct StRecoveryGenerate1 : smacc2::SmaccState<StRecoveryGenerate1, MsRecovery1
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(50);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5s);
     
     
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

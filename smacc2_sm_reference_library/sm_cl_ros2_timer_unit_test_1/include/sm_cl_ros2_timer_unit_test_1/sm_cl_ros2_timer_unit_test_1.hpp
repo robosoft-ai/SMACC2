@@ -16,8 +16,6 @@
 
 // CLIENTS
 #include <cl_ros2_timer/cl_ros2_timer.hpp>
-#include <cl_ros2_timer/components/cp_timer_listener_1.hpp>
-
 //CLIENT BEHAVIORS
 #include <cl_ros2_timer/client_behaviors/cb_timer_countdown_loop.hpp>
 #include <cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp>

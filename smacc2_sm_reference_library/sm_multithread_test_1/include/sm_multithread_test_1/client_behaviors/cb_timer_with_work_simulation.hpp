@@ -17,12 +17,11 @@
 #include <chrono>
 #include <thread>
 #include <string>
-#include <cl_ros2_timer/cl_ros2_timer.hpp>
+#include <rclcpp/rclcpp.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace sm_multithread_test_1
 {
-using namespace cl_ros2_timer;
 
 /**
  * @brief Custom timer behavior that simulates work and logs thread IDs
@@ -45,12 +44,15 @@ class CbTimerWithWorkSimulation : public smacc2::SmaccClientBehavior
 public:
   /**
    * @param timer_name Identifier for this timer (e.g., "A", "B", "C", "D")
+   * @param tick_period How often the timer fires
    * @param work_duration How long to simulate work on each tick
    */
   explicit CbTimerWithWorkSimulation(
     std::string timer_name,
+    std::chrono::milliseconds tick_period,
     std::chrono::milliseconds work_duration)
   : timerName_(timer_name),
+    tickPeriod_(tick_period),
     workDuration_(work_duration),
     tickCount_(0)
   {
@@ -58,72 +60,63 @@ public:
 
   void onEntry() override
   {
-    // Get the timer client
-    this->requiresClient(timerClient_);
-
-    // Get the core timer component
-    smacc2::client_core_components::CpRos2Timer * timerComponent;
-    this->requiresComponent(timerComponent);
-
-    // Connect to the timer tick callback
-    timerComponent->onTimerTick(&CbTimerWithWorkSimulation::onTimerCallback, this);
+    auto node = this->getNode();
+    auto clock = node->get_clock();
+    wallTimer_ = rclcpp::create_timer(
+      node, clock, tickPeriod_,
+      [this]() { onTimerCallback(); });
 
     RCLCPP_INFO(
       getLogger(),
-      "[Timer-%s] Behavior initialized - will simulate %ldms work per tick",
+      "[Timer-%s] Behavior initialized - period %ldms, simulating %ldms work per tick",
       timerName_.c_str(),
-      workDuration_.count()
-    );
+      tickPeriod_.count(),
+      workDuration_.count());
   }
 
   void onExit() override
   {
+    if (wallTimer_) {
+      wallTimer_->cancel();
+      wallTimer_.reset();
+    }
     RCLCPP_INFO(
       getLogger(),
       "[Timer-%s] Behavior exiting after %d ticks",
       timerName_.c_str(),
-      tickCount_
-    );
+      tickCount_);
   }
 
 private:
   std::string timerName_;
+  std::chrono::milliseconds tickPeriod_;
   std::chrono::milliseconds workDuration_;
   int tickCount_;
-  ClRos2Timer * timerClient_;
+  rclcpp::TimerBase::SharedPtr wallTimer_;
 
-  /**
-   * @brief Called on each timer tick - simulates work and logs thread info
-   */
   void onTimerCallback()
   {
     tickCount_++;
 
-    // Get current thread ID
     auto thread_id = std::this_thread::get_id();
     std::size_t thread_hash = std::hash<std::thread::id>{}(thread_id);
 
-    // Log START with thread ID
     RCLCPP_INFO(
       getLogger(),
       "[Timer-%s] Tick %3d START (Thread: %8zu) - simulating %3ldms work",
       timerName_.c_str(),
       tickCount_,
       thread_hash,
-      workDuration_.count()
-    );
+      workDuration_.count());
 
-    // Simulate work (this is where the thread would be doing actual computation)
     std::this_thread::sleep_for(workDuration_);
 
-    // Log END with thread ID
     RCLCPP_INFO(
       getLogger(),
       "[Timer-%s] Tick %3d END   (Thread: %8zu)",
       timerName_.c_str(),
       tickCount_,
-      thread_hash
-    );
+      thread_hash);
   }
 };
 
