@@ -24,6 +24,19 @@ class CbTimerCountdownOnce : public smacc2::SmaccClientBehavior
 public:
   CbTimerCountdownOnce(rclcpp::Duration targetDuration) : targetDuration_(targetDuration) {}
 
+  // Catch the old tick-count integer API and emit a migration hint at compile time.
+  template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
+  explicit CbTimerCountdownOnce(T)
+  {
+    static_assert(
+      !std::is_integral<T>::value,
+      "\n\nCbTimerCountdownOnce no longer accepts a tick count.\n"
+      "Pass a chrono duration literal instead:\n"
+      "  configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5s);    // 5 seconds\n"
+      "  configure_orthogonal<OrTimer, CbTimerCountdownOnce>(500ms); // 500 ms\n"
+      "Migration guide: https://smacc2.robosoft.ai/how-to/how-to-cl-ros2-timer.html\n");
+  }
+
   void onEntry() override
   {
     auto node = this->getNode();
