@@ -85,6 +85,14 @@ void SignalDetector::initialize(ISmaccStateMachine * stateMachine)
   findUpdatableClientsAndComponents();
   this->getNode()->declare_parameter("signal_detector_loop_freq", this->loop_rate_hz);
 
+  auto context = getNode()->get_node_base_interface()->get_context();
+  context->on_shutdown(
+    [this]()
+    {
+      this->stop();
+      this->terminateScheduler();
+    });
+
   initialized_ = true;
 }
 
@@ -340,9 +348,6 @@ void SignalDetector::pollOnce()
   {
     RCLCPP_ERROR(getLogger(), "Exception during Signal Detector update loop. %s.", ex.what());
   }
-
-  auto nh = this->getNode();
-  rclcpp::spin_some(nh);
   //smaccStateMachine_->unlockStateMachine("update behaviors");
 }
 
