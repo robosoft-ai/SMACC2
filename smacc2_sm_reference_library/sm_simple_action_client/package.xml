@@ -13,6 +13,7 @@
   <depend>libboost-thread-dev</depend>
 
   <depend>action_tutorials_interfaces</depend>
+  <depend>example_interfaces</depend>
   <depend>smacc2</depend>
   <depend>std_msgs</depend>
 
