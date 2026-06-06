@@ -8,7 +8,7 @@
     This state machine demonstrates the use of ExecutionModel::MULTI_THREAD_SPINNER
     for concurrent ROS2 callback processing. Addresses GitHub issue #571.
   </description>
-  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

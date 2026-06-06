@@ -4,7 +4,7 @@
   <name>sm_multi_stage_1</name>
   <version>3.1.0</version>
   <description>The sm_multi_stage_1 package</description>
-  <maintainer email="brett@robosoft.ai"></maintainer>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
   <license>Apache-2.0</license>
 
   <depend>smacc2</depend>

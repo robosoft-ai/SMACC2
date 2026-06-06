@@ -6,7 +6,6 @@
   <description>The sm_simple_action_client package</description>
   <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
   <license>Apache-2.0</license>
-  <license>MyLicense</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
