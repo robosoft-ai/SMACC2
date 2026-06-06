@@ -18,6 +18,7 @@
   <depend>nav_msgs</depend>
   <depend>nav2_core</depend>
   <depend>nav2_costmap_2d</depend>
+  <build_depend>boost</build_depend>
   <build_depend>pluginlib</build_depend>
   <depend>tf2</depend>
 
