@@ -20,7 +20,9 @@ from launch_ros.actions import Node
 
 def setup_log_directory():
     timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    log_dir = os.path.join(os.path.expanduser("~"), ".ros", "log", f"{timestamp}-sm_mode_state_behavior_1")
+    log_dir = os.path.join(
+        os.path.expanduser("~"), ".ros", "log", f"{timestamp}-sm_mode_state_behavior_1"
+    )
     try:
         os.makedirs(log_dir, mode=0o755, exist_ok=True)
         return log_dir, timestamp
