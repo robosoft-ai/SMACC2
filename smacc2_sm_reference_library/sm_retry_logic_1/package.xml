@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sm_retry_logic_1</name>
+  <version>3.1.0</version>
+  <description>Demonstrates SrEventCountdown in a superstate: counts failures (timer timeouts and 'f' keypresses) across inner state transitions, with a 3-attempt retry limit.</description>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>sr_event_countdown</depend>
+  <depend>cl_ros2_timer</depend>
+  <depend>cl_keyboard</depend>
+  <depend>smacc2</depend>
+  <depend>rclcpp</depend>
+
+  <exec_depend>xterm</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

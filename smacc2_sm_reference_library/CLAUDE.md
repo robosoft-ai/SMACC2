@@ -126,10 +126,10 @@ To use the update() function at a custom rate like 10Hz instead of the
   └── README.md                # State machine documentation
 ```
 
-## Superstate for Data Sharing
+## Container State for Data Sharing
 The `superstates/` folder is used when multiple inner states need to share data across
-transitions. Declare shared fields as member variables on the superstate — they persist
-for the entire time the superstate is active. Inner states access them via
+transitions. Declare shared fields as member variables on the container state — they
+persist for the entire time that container state is active. Inner states access them via
 `this->context<SsSuperstateName>()`, while client behaviors use
 `this->getCurrentState()->getParentState()` combined with
 `dynamic_cast<SsSuperstateName*>()`.
@@ -137,6 +137,34 @@ for the entire time the superstate is active. Inner states access them via
 See `sm_data_sharing_2` in the reference library for a working example: `SsMission`
 holds `initialPosition` and `targetPosition` fields that three client behaviors read
 and write as the inner states cycle.
+
+## Container State Reactors
+
+State reactors can be placed in **container states** (superstates and mode states),
+not just leaf states. A reactor in a container state persists across all inner state
+transitions and accumulates event history for as long as that container state is active.
+This is the correct pattern for retry logic, threshold counting, or any scenario where
+events must be tallied across multiple inner state cycles.
+
+The reactor is created once when the container state enters and destroyed when it exits.
+Inner transitions between its children do not reset the reactor's count.
+
+See `sm_retry_logic_1` for a complete working example with 3-attempt retry logic.
+
+## Container State Behaviors and the Double-Event Problem
+
+Client behaviors can be defined in **container states**, not only in leaf states. A
+behavior at the container state level is created once when that state enters and
+persists through all inner state transitions.
+
+**When to place a behavior at the container state level:**
+- The behavior should remain active across multiple inner states (e.g., a keyboard
+  listener that must work regardless of which inner state is active).
+- Placing the same behavior in every leaf state would create multiple instances,
+  each posting their own events — one keypress would generate N events (the
+  double-event problem).
+
+See `sm_mode_state_behavior_1` for a complete working example.
 
   # Runtime Test Procedures
 

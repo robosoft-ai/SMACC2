@@ -18,6 +18,27 @@ state transitions.
   - Clients (Cl)
   - Components (Cp)
 
+  ### Hierarchy Scope: Container States
+
+  State-scoped objects are tied to a specific state in the hierarchy, which may be a
+  leaf state or a container state (superstate or mode state). A `Cb`, `Sr`, or `Eg`
+  defined in a container state is created when that container state enters and destroyed
+  only when it exits — surviving every inner transition between that container
+  state's children.
+
+  This enables two important patterns:
+
+  1. **State reactor in a container state** — counts or accumulates events across inner
+     state cycles. The reactor is not reset by inner transitions. Use this for retry
+     logic, threshold detection, or any pattern where events must be tallied across
+     multiple inner states. See `sm_retry_logic_1`.
+
+  2. **Client behavior in a container state** — a single persistent behavior instance
+     (e.g., `CbDefaultKeyboardBehavior`) that generates events consumed by any inner
+     state. This avoids the double-event problem that occurs when the same behavior
+     class is instantiated in multiple simultaneously active states. See
+     `sm_mode_state_behavior_1`.
+
 //////////////////////////////////////////////////////////////////////////////
 
 # SMACC Signals

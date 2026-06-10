@@ -39,7 +39,7 @@ struct StState1 : smacc2::SmaccState<StState1, MsRun>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5s);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(30s);
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }

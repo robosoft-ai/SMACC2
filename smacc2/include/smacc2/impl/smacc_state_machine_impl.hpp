@@ -222,9 +222,9 @@ void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
   // some more events
 
   RCLCPP_DEBUG_STREAM(getLogger(), "[PostEvent entry point] " << eventtypename);
-  for (auto currentState : currentState_)
+  if (!currentState_.empty())
   {
-    propagateEventToStateReactors(currentState, ev);
+    propagateEventToStateReactors(currentState_.back(), ev);
   }
 
   this->signalDetector_->postEvent(ev);
