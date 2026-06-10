@@ -6,7 +6,7 @@
   <description>SMACC2 client for Modbus TCP relay control (8-channel Waveshare POE ETH Relay)</description>
 
   <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
-  <maintainer email="brettpac@gmail.com">Brett Aldrich</maintainer>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
 
   <license>Apache-2.0</license>
 

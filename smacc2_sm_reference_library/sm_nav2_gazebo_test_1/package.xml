@@ -3,7 +3,7 @@
   <name>sm_nav2_gazebo_test_1</name>
   <version>3.1.0</version>
   <description>Nav2 unit test state machine for SMACC2</description>
-  <maintainer email="user@example.com">User</maintainer>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
