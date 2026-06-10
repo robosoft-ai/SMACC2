@@ -48,7 +48,7 @@ APPROVED_PACKAGES = {
 
 
 def filter_distribution(path, dry_run=False):
-    with open(path, "r") as f:
+    with open(path) as f:
         lines = f.readlines()
 
     in_smacc2 = False
