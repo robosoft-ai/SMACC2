@@ -1,17 +1,15 @@
 # Package Release Summary
 
+Rosdistro reviewers will only reliably approve packages with `smacc2` in the name.
+All other packages are excluded from the apt release regardless of merit.
+
 | Category | Packages | apt Release |
 |----------|----------|:-----------:|
 | Core framework | `smacc2`, `smacc2_msgs` | ✅ |
-| Core libraries | `sr_*`, `eg_*` | ✅ |
-| Clients | `cl_keyboard`, `cl_ros2_timer`, `cl_lifecycle_node` | ✅ |
-| Reference state machines | `sm_atomic`, `sm_atomic_mode_states`, `sm_data_sharing_*`, `sm_three_some`, `sm_simple_action_client`, `sm_cl_keyboard_unit_test_1`, `sm_cl_ros2_timer_unit_test_1`, `sm_mode_state_behavior_1`, `sm_retry_logic_1` | ✅ |
-| Perf tool | `sm_coretest_transition_speed_1` | ✅ |
-| Nav clients + planners | `cl_nav2z`, `*_planner` packages | ❌ |
-| Other clients | `cl_http`, `cl_generic_sensor`, `cl_moveit2z`, `cl_mission_tracker`, `cl_foundation_pose`, `cl_isaac_apriltag`, `cl_gcalcli`, `cl_px4_mr`, `cl_modbus_tcp_relay` | ❌ |
-| Other reference SMs | `sm_atomic_http`, `sm_atomic_lifecycle`, `sm_branching`, `sm_multi_stage_1`, `sm_multithread_test_1`, `sm_advanced_recovery_1`, `sm_pack_ml` | ❌ |
-| Test/demo state machines | `sm_cl_gcalcli_test_1`, `sm_cl_px4_mr_*`, `sm_modbus_*`, `sm_nav2_gazebo_*`, `sm_panda_*` | ❌ |
-| Perf tools (unused) | `sm_atomic_performance_trace_1`, `sm_atomic_subscribers_performance_test` | ❌ |
+| Core libraries | `sr_*`, `eg_*` | ❌ |
+| Clients | `cl_keyboard`, `cl_ros2_timer`, `cl_lifecycle_node` | ❌ |
+| Reference state machines | `sm_atomic`, `sm_atomic_mode_states`, etc. | ❌ |
+| Everything else | all remaining packages | ❌ |
 
 ---
 
@@ -25,14 +23,14 @@ PR after bloom runs (see Phase 5: Post-Bloom Package Filtering).
 |---------|----------|:-----------:|--------|
 | `smacc2` | Core | ✅ | Core framework |
 | `smacc2_msgs` | Core | ✅ | Core messages |
-| `sr_all_events_go` | State Reactor | ✅ | Core library |
-| `sr_conditional` | State Reactor | ✅ | Core library |
-| `sr_event_countdown` | State Reactor | ✅ | Core library |
-| `eg_conditional_generator` | Event Generator | ✅ | Core library |
-| `eg_random_generator` | Event Generator | ✅ | Core library |
-| `cl_keyboard` | Client | ✅ | General purpose |
-| `cl_ros2_timer` | Client | ✅ | General purpose |
-| `cl_lifecycle_node` | Client | ✅ | Core ROS2 lifecycle management |
+| `sr_all_events_go` | State Reactor | ❌ | Name lacks `smacc2` prefix |
+| `sr_conditional` | State Reactor | ❌ | Name lacks `smacc2` prefix |
+| `sr_event_countdown` | State Reactor | ❌ | Name lacks `smacc2` prefix |
+| `eg_conditional_generator` | Event Generator | ❌ | Name lacks `smacc2` prefix |
+| `eg_random_generator` | Event Generator | ❌ | Name lacks `smacc2` prefix |
+| `cl_keyboard` | Client | ❌ | Name lacks `smacc2` prefix |
+| `cl_ros2_timer` | Client | ❌ | Name lacks `smacc2` prefix |
+| `cl_lifecycle_node` | Client | ❌ | Name lacks `smacc2` prefix |
 | `cl_http` | Client | ❌ | Not in current release scope |
 | `cl_nav2z` | Client | ❌ | Not in current release scope |
 | `backward_global_planner` | Nav Planner | ❌ | Not in current release scope |
@@ -50,17 +48,17 @@ PR after bloom runs (see Phase 5: Post-Bloom Package Filtering).
 | `cl_gcalcli` | Client | ❌ | Google Calendar — too specialized |
 | `cl_px4_mr` | Client | ❌ | PX4 drone hardware |
 | `cl_modbus_tcp_relay` | Client | ❌ | Modbus hardware |
-| `sm_atomic` | Reference SM | ✅ | Canonical minimal example |
-| `sm_atomic_mode_states` | Reference SM | ✅ | Mode states example |
-| `sm_data_sharing_1` | Reference SM | ✅ | Data sharing pattern |
-| `sm_data_sharing_2` | Reference SM | ✅ | Data sharing pattern |
-| `sm_three_some` | Reference SM | ✅ | Multi-orthogonal example |
-| `sm_simple_action_client` | Reference SM | ✅ | Action client example |
-| `sm_cl_keyboard_unit_test_1` | Reference SM | ✅ | Keyboard example |
-| `sm_cl_ros2_timer_unit_test_1` | Reference SM | ✅ | Timer example |
-| `sm_mode_state_behavior_1` | Reference SM | ✅ | Mode state behavior pattern |
-| `sm_retry_logic_1` | Reference SM | ✅ | Retry pattern |
-| `sm_coretest_transition_speed_1` | Perf Tool | ✅ | Transition speed benchmarking |
+| `sm_atomic` | Reference SM | ❌ | Name lacks `smacc2` prefix |
+| `sm_atomic_mode_states` | Reference SM | ❌ | Name lacks `smacc2` prefix |
+| `sm_data_sharing_1` | Reference SM | ❌ | Name lacks `smacc2` prefix |
+| `sm_data_sharing_2` | Reference SM | ❌ | Name lacks `smacc2` prefix |
+| `sm_three_some` | Reference SM | ❌ | Name lacks `smacc2` prefix |
+| `sm_simple_action_client` | Reference SM | ❌ | Name lacks `smacc2` prefix |
+| `sm_cl_keyboard_unit_test_1` | Reference SM | ❌ | Name lacks `smacc2` prefix |
+| `sm_cl_ros2_timer_unit_test_1` | Reference SM | ❌ | Name lacks `smacc2` prefix |
+| `sm_mode_state_behavior_1` | Reference SM | ❌ | Name lacks `smacc2` prefix |
+| `sm_retry_logic_1` | Reference SM | ❌ | Name lacks `smacc2` prefix |
+| `sm_coretest_transition_speed_1` | Perf Tool | ❌ | Name lacks `smacc2` prefix |
 | `sm_atomic_http` | Reference SM | ❌ | Not in current release scope |
 | `sm_atomic_lifecycle` | Reference SM | ❌ | Not in current release scope |
 | `sm_branching` | Reference SM | ❌ | Not in current release scope |
@@ -263,6 +261,31 @@ rosdep update
 
 - Release tracks: https://github.com/robosoft-ai/SMACC2-release/blob/master/tracks.yaml
 - rosdistro entry: https://github.com/ros/rosdistro/blob/master/jazzy/distribution.yaml
-- Buildfarm: https://build.ros2.org/
+- Buildfarm root: https://build.ros2.org/
 - Bloom docs: http://wiki.ros.org/bloom
 - ROS2 Release Process: https://docs.ros.org/en/rolling/How-To-Guides/Releasing/First-Time-Release.html
+
+## Buildfarm Monitoring Pages
+
+Check these after each release to confirm all targets build successfully.
+
+### smacc2
+
+| Build | Link |
+|-------|------|
+| Jazzy · Noble · amd64 · binary | https://build.ros2.org/view/Jbin_uN64/job/Jbin_uN64__smacc2__ubuntu_noble_amd64__binary/ |
+| Jazzy · Noble · arm64 · binary | https://build.ros2.org/view/Jbin_unv8_uNv8/job/Jbin_unv8_uNv8__smacc2__ubuntu_noble_arm64__binary/ |
+| Jazzy · Noble · source | https://build.ros2.org/view/Jsrc_uN/job/Jsrc_uN__smacc2__ubuntu_noble__source/ |
+| Jazzy · Noble · dev | https://build.ros2.org/view/Jdev/job/Jdev__smacc2__ubuntu_noble_amd64/ |
+| Humble · Jammy · amd64 · binary | https://build.ros2.org/view/Hbin_uJ64/job/Hbin_uJ64__smacc2__ubuntu_jammy_amd64__binary/ |
+| Humble · Jammy · arm64 · binary | https://build.ros2.org/view/Hbin_ujv8_uJv8/job/Hbin_ujv8_uJv8__smacc2__ubuntu_jammy_arm64__binary/ |
+
+### smacc2_msgs
+
+| Build | Link |
+|-------|------|
+| Jazzy · Noble · amd64 · binary | https://build.ros2.org/view/Jbin_uN64/job/Jbin_uN64__smacc2_msgs__ubuntu_noble_amd64__binary/ |
+| Jazzy · Noble · arm64 · binary | https://build.ros2.org/view/Jbin_unv8_uNv8/job/Jbin_unv8_uNv8__smacc2_msgs__ubuntu_noble_arm64__binary/ |
+| Jazzy · Noble · source | https://build.ros2.org/view/Jsrc_uN/job/Jsrc_uN__smacc2_msgs__ubuntu_noble__source/ |
+| Humble · Jammy · amd64 · binary | https://build.ros2.org/view/Hbin_uJ64/job/Hbin_uJ64__smacc2_msgs__ubuntu_jammy_amd64__binary/ |
+| Humble · Jammy · arm64 · binary | https://build.ros2.org/view/Hbin_ujv8_uJv8/job/Hbin_ujv8_uJv8__smacc2_msgs__ubuntu_jammy_arm64__binary/ |

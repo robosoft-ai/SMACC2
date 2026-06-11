@@ -29,34 +29,10 @@ import re
 import sys
 
 # Packages approved for apt release. See RELEASING.md for rationale.
+# Only packages with "smacc2" in the name are reliably approved by rosdistro reviewers.
 APPROVED_PACKAGES = {
-    # Core framework
     "smacc2",
     "smacc2_msgs",
-    # State reactors
-    "sr_all_events_go",
-    "sr_conditional",
-    "sr_event_countdown",
-    # Event generators
-    "eg_conditional_generator",
-    "eg_random_generator",
-    # Clients
-    "cl_keyboard",
-    "cl_ros2_timer",
-    "cl_lifecycle_node",
-    # Reference state machines
-    "sm_atomic",
-    "sm_atomic_mode_states",
-    "sm_data_sharing_1",
-    "sm_data_sharing_2",
-    "sm_three_some",
-    "sm_simple_action_client",
-    "sm_cl_keyboard_unit_test_1",
-    "sm_cl_ros2_timer_unit_test_1",
-    "sm_mode_state_behavior_1",
-    "sm_retry_logic_1",
-    # Performance
-    "sm_coretest_transition_speed_1",
 }
 
 
