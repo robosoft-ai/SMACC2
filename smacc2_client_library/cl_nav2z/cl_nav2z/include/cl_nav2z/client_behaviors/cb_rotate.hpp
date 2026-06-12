@@ -19,8 +19,6 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <tf2_ros/buffer.h>
-
 #include "cb_nav2z_client_behavior_base.hpp"
 
 namespace cl_nav2z
@@ -39,9 +37,5 @@ public:
   CbRotate(float rotate_degree, cl_nav2z::SpinningPlanner spinning_planner);
 
   void onEntry() override;
-
-private:
-  //TODO: replace this with the Pose Component in the same way it is done in the CbAbsoluteRotateBehavior
-  std::shared_ptr<tf2_ros::Buffer> listener;
 };
 }  // namespace cl_nav2z
