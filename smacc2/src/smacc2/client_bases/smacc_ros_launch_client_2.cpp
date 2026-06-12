@@ -113,8 +113,7 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
         else if (bytesRead == 0)
         {
           // No data available yet
-          std::this_thread::sleep_for(
-            std::chrono::milliseconds(100));  // Wait before retrying
+          std::this_thread::sleep_for(std::chrono::milliseconds(100));  // Wait before retrying
         }
         else
         {
@@ -257,4 +256,3 @@ void killProcessesRecursive(pid_t pid)
 void killGrandchildren(pid_t originalPid) { killProcessesRecursive(originalPid); }
 }  // namespace client_bases
 }  // namespace smacc2
-
