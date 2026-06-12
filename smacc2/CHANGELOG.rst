@@ -3,6 +3,16 @@ Changelog for package smacc2
 
 3.1.0 (2026-05-31)
 -------------------
+### Fixed
+- **Spelling: ``notifyOnStateExiting``** — corrected double-t typo
+  (``notifyOnStateExitting``) in declaration (``smacc_state_machine.hpp``),
+  definition (``smacc_state_machine_impl.hpp``), and call site
+  (``smacc_state_base.hpp``).
+- **Duplicate includes removed** from ``smacc_state_machine_impl.hpp`` — seven
+  headers that were listed twice (no-op under ``#pragma once``, but confusing).
+- **Dead commented-out include removed** from ``smacc_state_machine.hpp`` —
+  ``smacc_event_generator.hpp`` was already included via the impl header.
+
 ### Changed
 - **cl_ros2_timer duration-based API** (`#61 <https://github.com/robosoft-ai/SMACC2/issues/61>`_)
 

@@ -69,9 +69,9 @@ public:
 
   void stopWaitingResult();
 
-  smacc2::SmaccSignal<void()> onNavigationRequestSucceded;
-  smacc2::SmaccSignal<void()> onNavigationRequestAborted;
-  smacc2::SmaccSignal<void()> onNavigationRequestCancelled;
+  smacc2::SmaccSignal<void()> onNavigationRequestSucceeded_;
+  smacc2::SmaccSignal<void()> onNavigationRequestAborted_;
+  smacc2::SmaccSignal<void()> onNavigationRequestCancelled_;
 
 private:
   void onNavigationResult(const components::CpNav2ActionInterface::WrappedResult & r);
@@ -80,7 +80,7 @@ private:
   void onGoalCancelled(const components::CpNav2ActionInterface::WrappedResult & /*res*/);
   void onGoalAborted(const components::CpNav2ActionInterface::WrappedResult & /*res*/);
 
-  smacc2::SmaccSignalConnection succeddedNav2ZClientConnection_;
+  smacc2::SmaccSignalConnection succeededNav2ZClientConnection_;
   smacc2::SmaccSignalConnection abortedNav2ZClientConnection_;
   smacc2::SmaccSignalConnection cancelledNav2ZClientConnection_;
 };

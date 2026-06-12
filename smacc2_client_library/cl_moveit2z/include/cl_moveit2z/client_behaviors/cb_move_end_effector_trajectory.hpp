@@ -515,7 +515,7 @@ protected:
     if (executionSuccess)
     {
       RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] motion execution succeeded");
-      movegroupClient_->postEventMotionExecutionSucceded();
+      movegroupClient_->postEventMotionExecutionSucceeded();
       this->postSuccessEvent();
     }
     else

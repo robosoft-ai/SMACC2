@@ -55,7 +55,7 @@ void CpWaypointNavigator::onGoalCancelled(
 {
   stopWaitingResult();
 
-  this->onNavigationRequestCancelled();
+  this->onNavigationRequestCancelled_();
 }
 
 void CpWaypointNavigator::onGoalAborted(
@@ -63,7 +63,7 @@ void CpWaypointNavigator::onGoalAborted(
 {
   stopWaitingResult();
 
-  this->onNavigationRequestAborted();
+  this->onNavigationRequestAborted_();
 }
 
 void CpWaypointNavigator::onGoalReached(
@@ -78,7 +78,7 @@ void CpWaypointNavigator::onGoalReached(
 
   this->notifyGoalReached();
 
-  onNavigationRequestSucceded();
+  onNavigationRequestSucceeded_();
 }
 
 void CpWaypointNavigatorBase::rewind(int /*count*/)
@@ -187,9 +187,9 @@ void CpWaypointNavigatorBase::loadWaypointsFromYamlParameter(
 
 void CpWaypointNavigator::stopWaitingResult()
 {
-  if (succeddedNav2ZClientConnection_.connected())
+  if (succeededNav2ZClientConnection_.connected())
   {
-    this->succeddedNav2ZClientConnection_.disconnect();
+    this->succeededNav2ZClientConnection_.disconnect();
     this->cancelledNav2ZClientConnection_.disconnect();
     this->abortedNav2ZClientConnection_.disconnect();
   }
@@ -283,9 +283,9 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
     }
 
     // SEND GOAL
-    // if (!succeddedNav2ZClientConnection_.connected())
+    // if (!succeededNav2ZClientConnection_.connected())
     // {
-    //   this->succeddedNav2ZClientConnection_ =
+    //   this->succeededNav2ZClientConnection_ =
     //     client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
     //   this->cancelledNav2ZClientConnection_ =
     //     client_->onAborted(&WaypointNavigator::onGoalCancelled, this);
@@ -294,9 +294,9 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
     // }
 
     // Set up navigation result handling
-    if (!succeddedNav2ZClientConnection_.connected())
+    if (!succeededNav2ZClientConnection_.connected())
     {
-      succeddedNav2ZClientConnection_ =
+      succeededNav2ZClientConnection_ =
         nav2ActionInterface_->onNavigationSucceeded(&CpWaypointNavigator::onGoalReached, this);
       abortedNav2ZClientConnection_ =
         nav2ActionInterface_->onNavigationAborted(&CpWaypointNavigator::onGoalAborted, this);

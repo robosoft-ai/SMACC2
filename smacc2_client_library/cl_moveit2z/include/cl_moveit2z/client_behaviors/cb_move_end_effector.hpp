@@ -193,7 +193,7 @@ protected:
       // Post events
       if (executionSuccess)
       {
-        movegroupClient_->postEventMotionExecutionSucceded();
+        movegroupClient_->postEventMotionExecutionSucceeded();
         this->postSuccessEvent();
       }
       else

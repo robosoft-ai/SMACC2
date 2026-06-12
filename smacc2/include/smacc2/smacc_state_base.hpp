@@ -123,10 +123,10 @@ public:
   void exit()
   {
     auto * derivedThis = static_cast<MostDerived *>(this);
-    // this->getStateMachine().notifyOnStateExitting(derivedThis);
+    // this->getStateMachine().notifyOnStateExiting(derivedThis);
     {
       std::lock_guard<std::recursive_mutex> lock(this->getStateMachine().getMutex());
-      this->getStateMachine().notifyOnStateExitting(derivedThis);
+      this->getStateMachine().notifyOnStateExiting(derivedThis);
       try
       {
         TRACETOOLS_TRACEPOINT(smacc2_state_onExit_start, STATE_NAME);

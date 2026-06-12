@@ -34,8 +34,8 @@
 namespace cl_moveit2z
 {
 template <typename TSource, typename TOrthogonal>
-struct EvMoveGroupMotionExecutionSucceded
-: sc::event<EvMoveGroupMotionExecutionSucceded<TSource, TOrthogonal>>
+struct EvMoveGroupMotionExecutionSucceeded
+: sc::event<EvMoveGroupMotionExecutionSucceeded<TSource, TOrthogonal>>
 {
 };
 
@@ -99,10 +99,10 @@ public:
       options_.move_group_namespace);
   }
 
-  inline void postEventMotionExecutionSucceded()
+  inline void postEventMotionExecutionSucceeded()
   {
     RCLCPP_INFO(getLogger(), "[ClMoveit2z] Post Motion Success Event");
-    postEventMotionExecutionSucceded_();
+    postEventMotionExecutionSucceeded_();
   }
 
   inline void postEventMotionExecutionFailed()
@@ -114,10 +114,10 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
-    postEventMotionExecutionSucceded_ = [=]()
+    postEventMotionExecutionSucceeded_ = [=]()
     {
-      this->onSucceded_();
-      this->postEvent<EvMoveGroupMotionExecutionSucceded<TSourceObject, TOrthogonal>>();
+      this->onSucceeded_();
+      this->postEvent<EvMoveGroupMotionExecutionSucceeded<TSourceObject, TOrthogonal>>();
     };
 
     postEventMotionExecutionFailed_ = [=]()
@@ -128,9 +128,9 @@ public:
   }
 
   template <typename TCallback, typename T>
-  smacc2::SmaccSignalConnection onMotionExecutionSuccedded(TCallback callback, T * object)
+  smacc2::SmaccSignalConnection onMotionExecutionSucceeded(TCallback callback, T * object)
   {
-    return this->getStateMachine()->createSignalConnection(onSucceded_, callback, object);
+    return this->getStateMachine()->createSignalConnection(onSucceeded_, callback, object);
   }
 
   template <typename TCallback, typename T>
@@ -145,10 +145,10 @@ public:
   }
 
 private:
-  std::function<void()> postEventMotionExecutionSucceded_;
+  std::function<void()> postEventMotionExecutionSucceeded_;
   std::function<void()> postEventMotionExecutionFailed_;
 
-  smacc2::SmaccSignal<void()> onSucceded_;
+  smacc2::SmaccSignal<void()> onSucceeded_;
   smacc2::SmaccSignal<void()> onFailed_;
 
   // std::string groupName_;

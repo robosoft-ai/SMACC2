@@ -600,7 +600,7 @@ void ISmaccStateMachine::notifyOnRuntimeConfigured(StateType *)
 }
 
 template <typename StateType>
-void ISmaccStateMachine::notifyOnStateExitting(StateType * state)
+void ISmaccStateMachine::notifyOnStateExiting(StateType * state)
 {
   stateMachineCurrentAction = StateMachineInternalAction::STATE_EXITING;
   auto fullname = demangleSymbol(typeid(StateType).name());

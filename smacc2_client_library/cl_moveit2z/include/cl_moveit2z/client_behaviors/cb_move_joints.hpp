@@ -213,7 +213,7 @@ protected:
         RCLCPP_INFO_STREAM(
           getLogger(),
           "[" << this->getName() << "] motion execution succeeded. Throwing success event.");
-        movegroupClient_->postEventMotionExecutionSucceded();
+        movegroupClient_->postEventMotionExecutionSucceeded();
         this->postSuccessEvent();
       }
       else
