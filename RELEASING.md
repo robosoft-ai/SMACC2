@@ -87,6 +87,10 @@ PR after bloom runs (see Phase 5: Post-Bloom Package Filtering).
 - **Claude**: Analyzes code, bumps versions, generates CHANGELOG, runs `filter_rosdistro.py`, drafts PR descriptions and release notes
 - **Human**: Executes git commands on host, runs bloom-release, creates GitHub PR, publishes release
 
+> **Shell note:** All git commands in this document are written as single lines.
+> Do not split them across lines with backslash continuation — a stray leading space
+> turns into an invalid refspec (e.g. `fatal: invalid refspec ' debian/...'`).
+
 ## Prerequisites (Host System)
 
 ```bash
@@ -141,8 +145,19 @@ git push origin X.Y.Z
 
 ```bash
 # Fix rosdep if needed
-sudo mv /etc/ros/rosdep/sources.list.d/10-debian.list \
-        /etc/ros/rosdep/sources.list.d/10-debian.list.disabled
+sudo mv /etc/ros/rosdep/sources.list.d/10-debian.list /etc/ros/rosdep/sources.list.d/10-debian.list.disabled
+rosdep update
+
+# Add px4_msgs rosdep override BEFORE running bloom.
+# cl_px4_mr depends on px4_msgs which is not in Ubuntu Noble repos. Without this override,
+# the bloom rosdebian generator skips entirely, leaving all rolling branches at the old version
+# and creating no snapshot branches — the silent failure that broke the 3.1.0-2 release.
+cat > /tmp/local-rosdep.yaml << 'EOF'
+px4_msgs:
+  ubuntu:
+    noble: [ros-jazzy-px4-msgs]
+EOF
+echo "yaml file:///tmp/local-rosdep.yaml" | sudo tee /etc/ros/rosdep/sources.list.d/99-local.list
 rosdep update
 
 # If bloom picks up the wrong version, fix tracks.yaml first:
@@ -155,6 +170,29 @@ bloom-release smacc2 --rosdistro jazzy --track jazzy --unsafe
 # Prompt: missing optional dependencies → 'y'
 # Prompt: create automatic PR → 'y' (will likely fail with 403; proceed to Phase 5)
 ```
+
+**After bloom completes — verify snapshot branches were created:**
+```bash
+git ls-remote https://github.com/robosoft-ai/SMACC2-release.git \
+  | grep "ros-jazzy-smacc2_X.Y.Z"
+# Expected (replace X.Y.Z and REV):
+#   refs/heads/debian/ros-jazzy-smacc2_X.Y.Z-REV_noble
+#   refs/heads/debian/ros-jazzy-smacc2-msgs_X.Y.Z-REV_noble
+```
+
+If these branches are **missing**, create them manually before submitting the rosdistro PR:
+```bash
+cd /tmp/SMACC2-release
+git checkout debian/jazzy/noble/smacc2
+git checkout -b debian/ros-jazzy-smacc2_X.Y.Z-REV_noble
+git push origin debian/ros-jazzy-smacc2_X.Y.Z-REV_noble
+
+git checkout debian/jazzy/noble/smacc2_msgs
+git checkout -b debian/ros-jazzy-smacc2-msgs_X.Y.Z-REV_noble
+git push origin debian/ros-jazzy-smacc2-msgs_X.Y.Z-REV_noble
+```
+The Jenkins `Jsrc_` source jobs clone these exact branches; if absent, they fail and
+are eventually auto-disabled by Jenkins.
 
 ### Phase 5: rosdistro PR (Human + Claude)
 
@@ -194,19 +232,61 @@ Claude drafts; human publishes:
 1. GitHub release notes at `github.com/robosoft-ai/SMACC2/releases/new` (select tag X.Y.Z)
 2. Comment on any issues fixed by this release
 
-### Phase 7: Monitor
+### Phase 7: Cleanup (Human)
+
+Remove the px4_msgs rosdep override and all temporary release directories.
+
+```bash
+cd /tmp
+sudo rm /etc/ros/rosdep/sources.list.d/99-local.list
+sudo rm -f /tmp/local-rosdep.yaml
+rm -rf /tmp/SMACC2-release /tmp/rosdistro
+```
+
+### Phase 8: Monitor
+
+After the rosdistro PR merges, packages travel through three repositories before
+reaching end users. Each stage has its own timeline.
+
+#### Repository Pipeline
+
+| Stage | Repo | How it gets there | Typical delay after merge |
+|-------|------|-------------------|--------------------------|
+| **Building** | `repo.ros2.org/ubuntu/building` | Jenkins binary jobs run automatically | Day 2–4 |
+| **Testing** | `repo.ros2.org/ubuntu/testing` | Auto-synced from building | Day 3–5 |
+| **Main** (public) | `packages.ros.org/ros2/ubuntu` | **Manual sync** by ROS release manager | Day 3–17 |
+
+> The main sync is manual and runs **approximately every two weeks**. There is no fixed
+> schedule. A package can sit in testing for up to two weeks before `apt install` works
+> for regular users.
+
+#### Timeline
 
 | Day | Event |
 |-----|-------|
 | 0 | rosdistro PR submitted |
 | 1-2 | ROS maintainers merge PR |
-| 2-3 | Buildfarm compiles packages |
-| 3-4 | Packages sync to apt.ros.org |
+| 2-4 | Buildfarm source + binary builds complete |
+| 3-5 | Packages appear in **building** and **testing** repos |
+| 3-17 | Waiting for manual sync to **main** repo |
+| ~17 | `apt install ros-jazzy-smacc2` works for all users |
+
+#### Check current sync status
 
 ```bash
-apt-cache policy ros-jazzy-smacc2  # check version when available
+# Check which repo stage smacc2 is in right now:
+# https://repo.ros2.org/status_page/ros_jazzy_default.html
+# (look for smacc2 row; B=building, T=testing, M=main)
+
+# Install from testing while waiting for main sync:
+sudo apt install -y ros-jazzy-smacc2 \
+  --target-release=ros-testing
+
+# Check version available in main:
+apt-cache policy ros-jazzy-smacc2
 ```
 
+- Jazzy sync status page: https://repo.ros2.org/status_page/ros_jazzy_default.html
 - Buildfarm: https://build.ros2.org/
 - rosdistro PRs: https://github.com/ros/rosdistro/pulls
 
@@ -249,9 +329,12 @@ rosdep update
 - [ ] Claude updates all `package.xml` files
 - [ ] Claude generates CHANGELOG entry
 - [ ] Human commits, tags, pushes, merges PR to jazzy
+- [ ] Human adds px4_msgs rosdep override (see Phase 4)
 - [ ] Human runs bloom-release
+- [ ] Human verifies snapshot branches exist in SMACC2-release (see Phase 4)
 - [ ] Claude runs `filter_rosdistro.py` on distribution.yaml
 - [ ] Human commits filtered distribution.yaml and creates rosdistro PR
+- [ ] Human removes px4_msgs rosdep override: `sudo rm /etc/ros/rosdep/sources.list.d/99-local.list`
 - [ ] Claude drafts GitHub release notes
 - [ ] Human publishes GitHub release and posts issue updates
 - [ ] Human monitors rosdistro PR merge (1-2 days)
@@ -259,10 +342,19 @@ rosdep update
 
 ## Reference Links
 
+### Release Infrastructure
 - Release tracks: https://github.com/robosoft-ai/SMACC2-release/blob/master/tracks.yaml
 - rosdistro entry: https://github.com/ros/rosdistro/blob/master/jazzy/distribution.yaml
 - Buildfarm root: https://build.ros2.org/
-- Bloom docs: http://wiki.ros.org/bloom
+- **Jazzy sync status** (B/T/M pipeline): https://repo.ros2.org/status_page/ros_jazzy_default.html
+- Buildfarm overview docs: https://docs.ros.org/en/rolling/The-ROS2-Project/Contributing/Build-Farms.html
+- Buildfarm infrastructure issues: https://github.com/ros-infrastructure/ros_buildfarm/issues
+- Buildfarm Discourse (contact for job re-enablement): https://discourse.openrobotics.org/c/infrastructure-project/infra-buildfarm/20
+
+### Bloom
+- Bloom wiki: http://wiki.ros.org/bloom
+- Bloom readthedocs: https://bloom.readthedocs.io/en/latest/
+- Bloom GitHub: https://github.com/ros-infrastructure/bloom
 - ROS2 Release Process: https://docs.ros.org/en/rolling/How-To-Guides/Releasing/First-Time-Release.html
 
 ## Buildfarm Monitoring Pages
@@ -289,3 +381,21 @@ Check these after each release to confirm all targets build successfully.
 | Jazzy · Noble · source | https://build.ros2.org/view/Jsrc_uN/job/Jsrc_uN__smacc2_msgs__ubuntu_noble__source/ |
 | Humble · Jammy · amd64 · binary | https://build.ros2.org/view/Hbin_uJ64/job/Hbin_uJ64__smacc2_msgs__ubuntu_jammy_amd64__binary/ |
 | Humble · Jammy · arm64 · binary | https://build.ros2.org/view/Hbin_ujv8_uJv8/job/Hbin_ujv8_uJv8__smacc2_msgs__ubuntu_jammy_arm64__binary/ |
+
+---
+
+# Release Status Log
+
+## 3.1.0 — 2026-06-11
+
+| Item | Status |
+|------|--------|
+| bloom-release (3.1.0-2) | ✅ Complete |
+| Snapshot branches + tags in SMACC2-release at correct 3.1.0-2 SHA | ✅ Complete |
+| Original rosdistro PR (all 54 packages) | ✅ Merged — ros/rosdistro#51737 |
+| Corrective rosdistro PR (remove 52 packages) | ⏳ Submitted, awaiting merge |
+| Jenkins source jobs re-enabled | ⏳ Requested — ros-infrastructure/ros_buildfarm#1137 |
+| Source builds pass | ⏳ Blocked on re-enablement |
+| Binary builds pass | ⏳ Blocked on source builds |
+| apt availability | ⏳ Blocked on builds |
+| px4_msgs rosdep override cleanup | ✅ Complete |
