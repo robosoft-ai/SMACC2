@@ -6,6 +6,8 @@ jobs:
   ament_lint:
     name: ament_${{ matrix.linter }}
     runs-on: ubuntu-24.04
+    env:
+      AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS: 1
     strategy:
       fail-fast: false
       matrix:
