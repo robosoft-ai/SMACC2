@@ -33,10 +33,10 @@ repos:
 
   # Python hooks
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.31.0
+    rev: v3.15.2
     hooks:
     -   id: pyupgrade
-        args: [--py36-plus]
+        args: [--py311-plus]
 
   - repo: https://github.com/psf/black
     rev: 22.3.0
@@ -69,15 +69,16 @@ repos:
         args: ['-fallback-style=none', '-i']
         exclude: smacc2_sm_reference_library/
 
-  # - repo: local
-  #   hooks:
-  #     - id: ament_cppcheck
-  #       name: ament_cppcheck
-  #       description: Static code analysis of C/C++ files.
-  #       stages: [commit]
-  #       entry: ament_cppcheck
-  #       language: system
-  #       files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
+  - repo: local
+    hooks:
+      - id: ament_cppcheck
+        name: ament_cppcheck
+        description: Static code analysis of C/C++ files.
+        stages: [commit]
+        entry: env AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS=1 ament_cppcheck
+        language: system
+        files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
+        exclude: smacc2_sm_reference_library/
 
   # Maybe use https://github.com/cpplint/cpplint instead
   #- repo: local
