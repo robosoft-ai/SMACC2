@@ -38,7 +38,7 @@ public:
   {
     CpTrajectoryHistory * trajectoryHistory;
     this->requiresComponent(trajectoryHistory);
-    this->requiresClient(movegroupClient_);
+    this->requiresComponent(cpMoveGroup_);
 
     if (trajectoryHistory->getLastTrajectory(backIndex_, trajectory))
     {

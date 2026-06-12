@@ -22,7 +22,7 @@
 
 #include <smacc2/component.hpp>
 
-#include <cl_moveit2z/cl_moveit2z.hpp>
+#include <cl_moveit2z/components/cp_move_group_interface.hpp>
 #include <cl_moveit2z/components/cp_trajectory_history.hpp>
 
 #include <moveit/move_group_interface/move_group_interface.hpp>
@@ -84,7 +84,7 @@ public:
    */
   inline void onInitialize() override
   {
-    this->requiresClient(moveit2zClient_);
+    this->requiresComponent(cpMoveGroupInterface_);
 
     // CpTrajectoryHistory is optional but recommended
     this->requiresComponent(trajectoryHistory_, smacc2::ComponentRequirement::SOFT);
@@ -116,14 +116,14 @@ public:
   {
     ExecutionResult result;
 
-    if (!moveit2zClient_)
+    if (!cpMoveGroupInterface_)
     {
-      result.errorMessage = "ClMoveit2z client not available";
+      result.errorMessage = "CpMoveGroupInterface component not available";
       RCLCPP_ERROR(getLogger(), "[CpTrajectoryExecutor] %s", result.errorMessage.c_str());
       return result;
     }
 
-    auto & moveGroup = moveit2zClient_->moveGroupClientInterface;
+    auto & moveGroup = cpMoveGroupInterface_->moveGroupClientInterface;
 
     try
     {
@@ -198,13 +198,13 @@ public:
    */
   inline void cancel()
   {
-    if (!moveit2zClient_)
+    if (!cpMoveGroupInterface_)
     {
-      RCLCPP_ERROR(getLogger(), "[CpTrajectoryExecutor] Cannot cancel: client not available");
+      RCLCPP_ERROR(getLogger(), "[CpTrajectoryExecutor] Cannot cancel: component not available");
       return;
     }
 
-    auto & moveGroup = moveit2zClient_->moveGroupClientInterface;
+    auto & moveGroup = cpMoveGroupInterface_->moveGroupClientInterface;
 
     try
     {
@@ -226,7 +226,7 @@ public:
   inline CpTrajectoryHistory * getTrajectoryHistory() { return trajectoryHistory_; }
 
 private:
-  ClMoveit2z * moveit2zClient_ = nullptr;
+  CpMoveGroupInterface * cpMoveGroupInterface_ = nullptr;
   CpTrajectoryHistory * trajectoryHistory_ = nullptr;
 
   /**

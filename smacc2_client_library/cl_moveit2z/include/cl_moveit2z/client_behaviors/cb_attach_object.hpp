@@ -22,6 +22,7 @@
 
 #include <cl_moveit2z/cl_moveit2z.hpp>
 #include <cl_moveit2z/components/cp_grasping_objects.hpp>
+#include <cl_moveit2z/components/cp_move_group_interface.hpp>
 #include <moveit_msgs/msg/collision_object.hpp>
 #include <smacc2/smacc.hpp>
 
@@ -58,8 +59,8 @@ public:
    */
   inline void onEntry() override
   {
-    cl_moveit2z::ClMoveit2z * moveGroup;
-    this->requiresClient(moveGroup);
+    cl_moveit2z::CpMoveGroupInterface * cpMoveGroup;
+    this->requiresComponent(cpMoveGroup);
 
     cl_moveit2z::CpGraspingComponent * graspingComponent;
     this->requiresComponent(graspingComponent);
@@ -74,10 +75,10 @@ public:
       targetCollisionObject.operation = moveit_msgs::msg::CollisionObject::ADD;
       targetCollisionObject.header.stamp = getNode()->now();
 
-      moveGroup->planningSceneInterface->applyCollisionObject(targetCollisionObject);
+      cpMoveGroup->planningSceneInterface->applyCollisionObject(targetCollisionObject);
       graspingComponent->currentAttachedObjectName = targetObjectName_;
 
-      moveGroup->moveGroupClientInterface->attachObject(
+      cpMoveGroup->moveGroupClientInterface->attachObject(
         targetObjectName_, graspingComponent->gripperLink_, graspingComponent->fingerTipNames);
 
       this->postSuccessEvent();

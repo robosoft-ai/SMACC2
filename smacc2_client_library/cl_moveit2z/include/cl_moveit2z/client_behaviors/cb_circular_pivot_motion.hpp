@@ -236,7 +236,7 @@ private:
     {
       if (!tipLink_ || *tipLink_ == "")
       {
-        tipLink_ = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
+        tipLink_ = this->cpMoveGroup_->moveGroupClientInterface->getEndEffectorLink();
       }
 
       RCLCPP_INFO_STREAM(

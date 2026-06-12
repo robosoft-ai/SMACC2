@@ -52,10 +52,10 @@ public:
 
     int attempts = 3;
 
-    this->requiresClient(movegroupClient_);
+    this->requiresComponent(cpMoveGroup_);
     if (!tipLink_)
     {
-      tipLink_ = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
+      tipLink_ = this->cpMoveGroup_->moveGroupClientInterface->getEndEffectorLink();
       RCLCPP_WARN_STREAM(
         getLogger(),
         "[" << getName() << "] tip unspecified, using default end effector: " << *tipLink_);
@@ -65,8 +65,7 @@ public:
     {
       try
       {
-        auto pivotFrameName =
-          this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
+        auto pivotFrameName = this->cpMoveGroup_->moveGroupClientInterface->getEndEffectorLink();
 
         if (tfListener != nullptr)
         {

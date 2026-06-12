@@ -28,6 +28,7 @@
 
 #include <cl_moveit2z/cl_moveit2z.hpp>
 #include <cl_moveit2z/components/cp_motion_planner.hpp>
+#include <cl_moveit2z/components/cp_move_group_interface.hpp>
 #include <cl_moveit2z/components/cp_trajectory_executor.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
@@ -49,7 +50,7 @@ public:
 
   virtual void onEntry() override
   {
-    this->requiresClient(movegroupClient_);
+    this->requiresComponent(cpMoveGroup_);
 
     if (this->group_)
     {
@@ -59,7 +60,7 @@ public:
     }
     else
     {
-      this->moveJoints(*movegroupClient_->moveGroupClientInterface);
+      this->moveJoints(*cpMoveGroup_->moveGroupClientInterface);
     }
   }
 
@@ -94,7 +95,7 @@ protected:
     if (jointValueTarget_.size() == 0)
     {
       RCLCPP_WARN(getLogger(), "[CbMoveJoints] No joint value specified. Skipping planning call.");
-      movegroupClient_->postEventMotionExecutionFailed();
+      cpMoveGroup_->postEventMotionExecutionFailed();
       this->postFailureEvent();
       return;
     }
@@ -213,14 +214,14 @@ protected:
         RCLCPP_INFO_STREAM(
           getLogger(),
           "[" << this->getName() << "] motion execution succeeded. Throwing success event.");
-        movegroupClient_->postEventMotionExecutionSucceeded();
+        cpMoveGroup_->postEventMotionExecutionSucceeded();
         this->postSuccessEvent();
       }
       else
       {
         RCLCPP_WARN_STREAM(
           getLogger(), "[" << this->getName() << "] motion execution failed. Throwing fail event.");
-        movegroupClient_->postEventMotionExecutionFailed();
+        cpMoveGroup_->postEventMotionExecutionFailed();
         this->postFailureEvent();
       }
     }
@@ -231,11 +232,11 @@ protected:
         getLogger(), "[" << this->getName() << "] planning failed. Throwing fail event."
                          << std::endl
                          << statestr);
-      movegroupClient_->postEventMotionExecutionFailed();
+      cpMoveGroup_->postEventMotionExecutionFailed();
       this->postFailureEvent();
     }
   }
 
-  ClMoveit2z * movegroupClient_;
+  CpMoveGroupInterface * cpMoveGroup_ = nullptr;
 };
 }  // namespace cl_moveit2z

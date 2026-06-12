@@ -22,7 +22,7 @@
 
 #include <smacc2/component.hpp>
 
-#include <cl_moveit2z/cl_moveit2z.hpp>
+#include <cl_moveit2z/components/cp_move_group_interface.hpp>
 
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <moveit_msgs/msg/robot_trajectory.hpp>
@@ -102,7 +102,7 @@ public:
    */
   inline void onInitialize() override
   {
-    this->requiresClient(moveit2zClient_);
+    this->requiresComponent(cpMoveGroupInterface_);
 
     // Create IK service client
     ikClient_ = getNode()->create_client<moveit_msgs::srv::GetPositionIK>("/compute_ik");
@@ -131,16 +131,16 @@ public:
       return result;
     }
 
-    if (!moveit2zClient_)
+    if (!cpMoveGroupInterface_)
     {
-      result.errorMessage = "ClMoveit2z client not available";
+      result.errorMessage = "CpMoveGroupInterface component not available";
       RCLCPP_ERROR(getLogger(), "[CpJointSpaceTrajectoryPlanner] %s", result.errorMessage.c_str());
       return result;
     }
 
     try
     {
-      auto & moveGroup = moveit2zClient_->moveGroupClientInterface;
+      auto & moveGroup = cpMoveGroupInterface_->moveGroupClientInterface;
 
       // Get current robot state
       RCLCPP_INFO(
@@ -339,7 +339,7 @@ public:
   }
 
 private:
-  ClMoveit2z * moveit2zClient_ = nullptr;
+  CpMoveGroupInterface * cpMoveGroupInterface_ = nullptr;
   rclcpp::Client<moveit_msgs::srv::GetPositionIK>::SharedPtr ikClient_;
 };
 

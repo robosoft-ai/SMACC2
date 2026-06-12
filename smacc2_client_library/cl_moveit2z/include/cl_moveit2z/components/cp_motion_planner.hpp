@@ -22,7 +22,7 @@
 
 #include <smacc2/component.hpp>
 
-#include <cl_moveit2z/cl_moveit2z.hpp>
+#include <cl_moveit2z/components/cp_move_group_interface.hpp>
 
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <moveit/move_group_interface/move_group_interface.hpp>
@@ -87,7 +87,7 @@ public:
    */
   inline void onInitialize() override
   {
-    this->requiresClient(moveit2zClient_);
+    this->requiresComponent(cpMoveGroupInterface_);
     RCLCPP_INFO(getLogger(), "[CpMotionPlanner] Component initialized");
   }
 
@@ -105,14 +105,14 @@ public:
   {
     PlanningResult result;
 
-    if (!moveit2zClient_)
+    if (!cpMoveGroupInterface_)
     {
-      result.errorMessage = "ClMoveit2z client not available";
+      result.errorMessage = "CpMoveGroupInterface component not available";
       RCLCPP_ERROR(getLogger(), "[CpMotionPlanner] %s", result.errorMessage.c_str());
       return result;
     }
 
-    auto & moveGroup = moveit2zClient_->moveGroupClientInterface;
+    auto & moveGroup = cpMoveGroupInterface_->moveGroupClientInterface;
 
     try
     {
@@ -178,9 +178,9 @@ public:
   {
     PlanningResult result;
 
-    if (!moveit2zClient_)
+    if (!cpMoveGroupInterface_)
     {
-      result.errorMessage = "ClMoveit2z client not available";
+      result.errorMessage = "CpMoveGroupInterface component not available";
       RCLCPP_ERROR(getLogger(), "[CpMotionPlanner] %s", result.errorMessage.c_str());
       return result;
     }
@@ -192,7 +192,7 @@ public:
       return result;
     }
 
-    auto & moveGroup = moveit2zClient_->moveGroupClientInterface;
+    auto & moveGroup = cpMoveGroupInterface_->moveGroupClientInterface;
 
     try
     {
@@ -246,9 +246,9 @@ public:
   {
     PlanningResult result;
 
-    if (!moveit2zClient_)
+    if (!cpMoveGroupInterface_)
     {
-      result.errorMessage = "ClMoveit2z client not available";
+      result.errorMessage = "CpMoveGroupInterface component not available";
       RCLCPP_ERROR(getLogger(), "[CpMotionPlanner] %s", result.errorMessage.c_str());
       return result;
     }
@@ -260,7 +260,7 @@ public:
       return result;
     }
 
-    auto & moveGroup = moveit2zClient_->moveGroupClientInterface;
+    auto & moveGroup = cpMoveGroupInterface_->moveGroupClientInterface;
 
     try
     {
@@ -310,13 +310,13 @@ public:
    */
   inline moveit::core::RobotStatePtr getCurrentState(double waitTime = 1.0)
   {
-    if (!moveit2zClient_)
+    if (!cpMoveGroupInterface_)
     {
-      RCLCPP_ERROR(getLogger(), "[CpMotionPlanner] ClMoveit2z client not available");
+      RCLCPP_ERROR(getLogger(), "[CpMotionPlanner] CpMoveGroupInterface component not available");
       return nullptr;
     }
 
-    auto & moveGroup = moveit2zClient_->moveGroupClientInterface;
+    auto & moveGroup = cpMoveGroupInterface_->moveGroupClientInterface;
 
     try
     {
@@ -330,7 +330,7 @@ public:
   }
 
 private:
-  ClMoveit2z * moveit2zClient_ = nullptr;
+  CpMoveGroupInterface * cpMoveGroupInterface_ = nullptr;
 
   /**
    * @brief Apply planning options to MoveGroupInterface

@@ -22,6 +22,7 @@
 
 #include <cl_moveit2z/cl_moveit2z.hpp>
 #include <cl_moveit2z/components/cp_grasping_objects.hpp>
+#include <cl_moveit2z/components/cp_move_group_interface.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace cl_moveit2z
@@ -48,8 +49,8 @@ public:
     cl_moveit2z::CpGraspingComponent * graspingComponent;
     this->requiresComponent(graspingComponent);
 
-    cl_moveit2z::ClMoveit2z * moveGroupClient;
-    this->requiresClient(moveGroupClient);
+    cl_moveit2z::CpMoveGroupInterface * cpMoveGroup;
+    this->requiresComponent(cpMoveGroup);
 
     if (graspingComponent->currentAttachedObjectName)
     {
@@ -57,8 +58,8 @@ public:
         getLogger(),
         "[CbDetachObject] Detaching object: " << *(graspingComponent->currentAttachedObjectName));
 
-      auto & planningSceneInterface = moveGroupClient->planningSceneInterface;
-      auto res = moveGroupClient->moveGroupClientInterface->detachObject(
+      auto & planningSceneInterface = cpMoveGroup->planningSceneInterface;
+      auto res = cpMoveGroup->moveGroupClientInterface->detachObject(
         *(graspingComponent->currentAttachedObjectName));
 
       planningSceneInterface->removeCollisionObjects(

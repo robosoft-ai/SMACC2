@@ -25,6 +25,7 @@
 #include <cl_moveit2z/cl_moveit2z.hpp>
 #include <cl_moveit2z/common.hpp>
 #include <cl_moveit2z/components/cp_joint_space_trajectory_planner.hpp>
+#include <cl_moveit2z/components/cp_move_group_interface.hpp>
 #include <cl_moveit2z/components/cp_tf_listener.hpp>
 #include <cl_moveit2z/components/cp_trajectory_executor.hpp>
 #include <cl_moveit2z/components/cp_trajectory_history.hpp>
@@ -102,14 +103,14 @@ public:
     postMotionExecutionFailureEvents = [this]
     {
       RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] motion execution failed");
-      movegroupClient_->postEventMotionExecutionFailed();
+      cpMoveGroup_->postEventMotionExecutionFailed();
       this->postEvent<EvMoveGroupMotionExecutionFailed<TSourceObject, TOrthogonal>>();
     };
   }
 
   virtual void onEntry() override
   {
-    this->requiresClient(movegroupClient_);
+    this->requiresComponent(cpMoveGroup_);
 
     // Get optional components for visualization
     CpTrajectoryVisualizer * trajectoryVisualizer = nullptr;
@@ -167,7 +168,7 @@ public:
         trajectoryHistory->pushTrajectory(this->getName(), computedTrajectory, error);
       }
 
-      movegroupClient_->postEventMotionExecutionFailed();
+      cpMoveGroup_->postEventMotionExecutionFailed();
       this->postFailureEvent();
 
       if (errorcode == ComputeJointTrajectoryErrorCode::JOINT_TRAJECTORY_DISCONTINUITY)
@@ -271,8 +272,8 @@ protected:
       // LEGACY IMPLEMENTATION (keep for backward compatibility)
       RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] getting current state.. waiting");
 
-      auto currentState = movegroupClient_->moveGroupClientInterface->getCurrentState(100);
-      auto groupname = movegroupClient_->moveGroupClientInterface->getName();
+      auto currentState = cpMoveGroup_->moveGroupClientInterface->getCurrentState(100);
+      auto groupname = cpMoveGroup_->moveGroupClientInterface->getName();
 
       RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] getting joint names");
       auto currentjointnames =
@@ -280,7 +281,7 @@ protected:
 
       if (!tipLink_ || *tipLink_ == "")
       {
-        tipLink_ = movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
+        tipLink_ = cpMoveGroup_->moveGroupClientInterface->getEndEffectorLink();
       }
 
       std::vector<double> jointPositions;
@@ -503,7 +504,7 @@ protected:
         "execution (consider adding CpTrajectoryExecutor component)");
 
       auto executionResult =
-        this->movegroupClient_->moveGroupClientInterface->execute(computedJointTrajectory);
+        this->cpMoveGroup_->moveGroupClientInterface->execute(computedJointTrajectory);
       executionSuccess = (executionResult == moveit_msgs::msg::MoveItErrorCodes::SUCCESS);
 
       RCLCPP_INFO(
@@ -515,7 +516,7 @@ protected:
     if (executionSuccess)
     {
       RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] motion execution succeeded");
-      movegroupClient_->postEventMotionExecutionSucceeded();
+      cpMoveGroup_->postEventMotionExecutionSucceeded();
       this->postSuccessEvent();
     }
     else
@@ -579,7 +580,7 @@ protected:
 
   std::vector<geometry_msgs::msg::PoseStamped> endEffectorTrajectory_;
 
-  ClMoveit2z * movegroupClient_ = nullptr;
+  CpMoveGroupInterface * cpMoveGroup_ = nullptr;
 
   visualization_msgs::msg::MarkerArray beahiorMarkers_;
 
@@ -594,7 +595,7 @@ protected:
     {
       if (!tipLink_ || *tipLink_ == "")
       {
-        tipLink_ = this->movegroupClient_->moveGroupClientInterface->getEndEffectorLink();
+        tipLink_ = this->cpMoveGroup_->moveGroupClientInterface->getEndEffectorLink();
       }
 
       if (tfListener != nullptr)

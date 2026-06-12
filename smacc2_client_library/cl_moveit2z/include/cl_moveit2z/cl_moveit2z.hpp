@@ -20,123 +20,24 @@
 
 #pragma once
 
-//#include <smacc2/smacc_client.h>
-//#include <smacc2/smacc_signal.h>
+#include <cl_moveit2z/components/cp_move_group_interface.hpp>
 #include <smacc2/smacc.hpp>
-
-#include <moveit/move_group_interface/move_group_interface.hpp>
-#include <moveit/planning_scene_interface/planning_scene_interface.hpp>
-
-#include <geometry_msgs/msg/transform.hpp>
-#include <geometry_msgs/msg/vector3.hpp>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 namespace cl_moveit2z
 {
-template <typename TSource, typename TOrthogonal>
-struct EvMoveGroupMotionExecutionSucceeded
-: sc::event<EvMoveGroupMotionExecutionSucceeded<TSource, TOrthogonal>>
-{
-};
-
-template <typename TSource, typename TOrthogonal>
-struct EvMoveGroupMotionExecutionFailed
-: sc::event<EvMoveGroupMotionExecutionFailed<TSource, TOrthogonal>>
-{
-};
-
-/*
-moveit_msgs/MoveItErrorCodes
-----------------------------
-int32 SUCCESS=1
-int32 FAILURE=99999
-int32 PLANNING_FAILED=-1
-int32 INVALID_MOTION_PLAN=-2
-int32 MOTION_PLAN_INVALIDATED_BY_ENVIRONMENT_CHANGE=-3
-int32 CONTROL_FAILED=-4
-int32 UNABLE_TO_AQUIRE_SENSOR_DATA=-5
-int32 TIMED_OUT=-6
-int32 PREEMPTED=-7
-int32 START_STATE_IN_COLLISION=-10
-int32 START_STATE_VIOLATES_PATH_CONSTRAINTS=-11
-int32 GOAL_IN_COLLISION=-12
-int32 GOAL_VIOLATES_PATH_CONSTRAINTS=-13
-int32 GOAL_CONSTRAINTS_VIOLATED=-14
-int32 INVALID_GROUP_NAME=-15
-int32 INVALID_GOAL_CONSTRAINTS=-16
-int32 INVALID_ROBOT_STATE=-17
-int32 INVALID_LINK_NAME=-18
-int32 INVALID_OBJECT_NAME=-19
-int32 FRAME_TRANSFORM_FAILURE=-21
-int32 COLLISION_CHECKING_UNAVAILABLE=-22
-int32 ROBOT_STATE_STALE=-23
-int32 SENSOR_INFO_STALE=-24
-int32 NO_IK_SOLUTION=-31
-int32 val
-*/
-
 class ClMoveit2z : public smacc2::ISmaccClient
 {
 public:
-  // this structure contains the default move_group configuration for any arm motion through move_group
-  // the client behavior will override these default values in a copy of this object so that their changes
-  // are not persinstent. In the other hand, if you change this client configuration, the parameters will be persistent.
-  std::shared_ptr<moveit::planning_interface::MoveGroupInterface> moveGroupClientInterface;
-
-  std::shared_ptr<moveit::planning_interface::PlanningSceneInterface> planningSceneInterface;
-
   ClMoveit2z(std::string groupName);
 
   ClMoveit2z(const moveit::planning_interface::MoveGroupInterface::Options & options);
 
   virtual ~ClMoveit2z();
 
-  inline void onInitialize() override
+  template <typename TOrthogonal, typename TClient>
+  void onComponentInitialization()
   {
-    moveGroupClientInterface =
-      std::make_shared<moveit::planning_interface::MoveGroupInterface>(getNode(), options_);
-    planningSceneInterface = std::make_shared<moveit::planning_interface::PlanningSceneInterface>(
-      options_.move_group_namespace);
-  }
-
-  inline void postEventMotionExecutionSucceeded()
-  {
-    RCLCPP_INFO(getLogger(), "[ClMoveit2z] Post Motion Success Event");
-    postEventMotionExecutionSucceeded_();
-  }
-
-  inline void postEventMotionExecutionFailed()
-  {
-    RCLCPP_INFO(getLogger(), "[ClMoveit2z] Post Motion Failure Event");
-    postEventMotionExecutionFailed_();
-  }
-
-  template <typename TOrthogonal, typename TSourceObject>
-  void onStateOrthogonalAllocation()
-  {
-    postEventMotionExecutionSucceeded_ = [=]()
-    {
-      this->onSucceeded_();
-      this->postEvent<EvMoveGroupMotionExecutionSucceeded<TSourceObject, TOrthogonal>>();
-    };
-
-    postEventMotionExecutionFailed_ = [=]()
-    {
-      this->onFailed_();
-      this->postEvent<EvMoveGroupMotionExecutionFailed<TSourceObject, TOrthogonal>>();
-    };
-  }
-
-  template <typename TCallback, typename T>
-  smacc2::SmaccSignalConnection onMotionExecutionSucceeded(TCallback callback, T * object)
-  {
-    return this->getStateMachine()->createSignalConnection(onSucceeded_, callback, object);
-  }
-
-  template <typename TCallback, typename T>
-  smacc2::SmaccSignalConnection onMotionExecutionFailed(TCallback callback, T * object)
-  {
-    return this->getStateMachine()->createSignalConnection(onFailed_, callback, object);
+    this->createComponent<CpMoveGroupInterface, TOrthogonal, TClient>(options_);
   }
 
   inline const moveit::planning_interface::MoveGroupInterface::Options & getOptions() const
@@ -145,13 +46,6 @@ public:
   }
 
 private:
-  std::function<void()> postEventMotionExecutionSucceeded_;
-  std::function<void()> postEventMotionExecutionFailed_;
-
-  smacc2::SmaccSignal<void()> onSucceeded_;
-  smacc2::SmaccSignal<void()> onFailed_;
-
-  // std::string groupName_;
   moveit::planning_interface::MoveGroupInterface::Options options_;
 };
 }  // namespace cl_moveit2z
