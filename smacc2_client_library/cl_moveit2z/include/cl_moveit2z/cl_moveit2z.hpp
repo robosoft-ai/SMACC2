@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <cl_moveit2z/components/cp_motion_planner.hpp>
 #include <cl_moveit2z/components/cp_move_group_interface.hpp>
 #include <smacc2/smacc.hpp>
 
@@ -38,6 +39,7 @@ public:
   void onComponentInitialization()
   {
     this->createComponent<CpMoveGroupInterface, TOrthogonal, TClient>(options_);
+    this->createComponent<CpMotionPlanner, TOrthogonal, TClient>();
   }
 
   inline const moveit::planning_interface::MoveGroupInterface::Options & getOptions() const
