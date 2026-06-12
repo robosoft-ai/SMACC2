@@ -117,7 +117,7 @@ void CbSpiralMotion::onEntry()
     rclcpp::Duration elapsed = now - start_time;
     RCLCPP_INFO_STREAM(
       getLogger(), "[CbSpiralMotion] elapsed time: " << elapsed.seconds() << ", total duration: "
-                                                      << spiralMotionDuration.seconds());
+                                                     << spiralMotionDuration.seconds());
     if (elapsed > spiralMotionDuration)
     {
       RCLCPP_INFO_STREAM(getLogger(), "[CbSpiralMotion] spiralMotionDuration reached");
