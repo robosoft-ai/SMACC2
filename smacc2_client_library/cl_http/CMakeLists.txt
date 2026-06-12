@@ -19,8 +19,6 @@ include_directories(
   ${smacc2_INCLUDE_DIRS}
 )
 
-file(GLOB_RECURSE SRC_FILES src *.cpp)
-
 add_library(http_session
   src/cl_http/ssl_http_session.cpp
   src/cl_http/http_session.cpp

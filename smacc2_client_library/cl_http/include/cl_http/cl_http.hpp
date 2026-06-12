@@ -61,13 +61,6 @@ namespace cl_http
 class ClHttp : public smacc2::ISmaccClient
 {
 public:
-  enum class kHttpRequestMethod
-  {
-    GET = static_cast<int>(boost::beast::http::verb::get),
-    POST = static_cast<int>(boost::beast::http::verb::post),
-    PUT = static_cast<int>(boost::beast::http::verb::put),
-  };
-
   using TResponse = http_session_base::TResponse;
 
   explicit ClHttp(const std::string & server, const int & timeout = 1500);
