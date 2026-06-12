@@ -33,14 +33,6 @@
 #include <smacc2/smacc_state_machine.hpp>
 #include <smacc2/smacc_state_reactor.hpp>
 
-#include <smacc2/introspection/introspection.hpp>
-#include <smacc2/smacc_client.hpp>
-#include <smacc2/smacc_orthogonal.hpp>
-#include <smacc2/smacc_signal_detector.hpp>
-#include <smacc2/smacc_state.hpp>
-#include <smacc2/smacc_state_machine.hpp>
-#include <smacc2/smacc_state_reactor.hpp>
-
 #include <boost/function_types/function_arity.hpp>
 #include <boost/function_types/function_type.hpp>
 #include <boost/function_types/parameter_types.hpp>

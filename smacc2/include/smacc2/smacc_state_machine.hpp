@@ -37,7 +37,6 @@
 #include <smacc2/callback_counter_semaphore.hpp>
 #include <smacc2/smacc_state.hpp>
 #include <smacc2/smacc_state_reactor.hpp>
-//#include <smacc2/smacc_event_generator.hpp>
 
 namespace smacc2
 {
