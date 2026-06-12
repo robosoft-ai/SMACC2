@@ -21,11 +21,8 @@ include_directories(
   ${std_msgs_INCLUDE_DIRS}
 )
 
-file(GLOB_RECURSE SRC_FILES src *.cpp)
-#file(GLOB_RECURSE SRC_FILES "src/*.cpp" "src/client_behaviors/*.cpp")
-
 add_library(${PROJECT_NAME}
-  ${SRC_FILES}
+  src/cl_keyboard/cl_keyboard.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} ${smacc2_LIBRARIES} ${std_msgs_LIBRARIES})
