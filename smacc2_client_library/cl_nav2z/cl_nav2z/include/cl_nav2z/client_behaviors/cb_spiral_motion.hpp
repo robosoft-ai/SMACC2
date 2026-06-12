@@ -38,13 +38,13 @@ struct CbSpiralMotionOptions
   std::optional<float> finalRadius = 20.0f;  //meters
 };
 
-/* a basic client behavior has a simple onEntry and onExit functions. When we enter into a stae we call onEntry.
+/* a basic client behavior has a simple onEntry and onExit functions. When we enter into a state we call onEntry.
 This client behavior is asynchronous so that onEntry returns immediately, it opens a thread to run the behavior*/
 struct CbSpiralMotion : public smacc2::SmaccAsyncClientBehavior
 {
 public:
   //
-  // constructor, we accept an empty usag of the behavior, but also any other combination of parameters
+  // constructor, we accept an empty usage of the behavior, but also any other combination of parameters
   CbSpiralMotion(std::optional<CbSpiralMotionOptions> options = std::nullopt);
 
   void onEntry() override;

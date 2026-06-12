@@ -234,7 +234,7 @@ void BackwardLocalPlanner::setSpeedLimit(
 {
   RCLCPP_WARN_STREAM(
     nh_->get_logger(),
-    "BackwardLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not "
+    "BackwardLocalPlanner::setSpeedLimit invoked. Ignored, functionality not "
     "implemented.");
 }
 /**

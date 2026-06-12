@@ -39,8 +39,8 @@ geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(
   std::vector<geometry_msgs::msg::PoseStamped> & plan, double radstep)
 {
   double startYaw = tf2::getYaw(start.pose.orientation);
-  // RCLCPP_INFO(getLogger(),"pure spining start yaw: %lf", startYaw);
-  // RCLCPP_INFO(getLogger(),"pure spining goal yaw: %lf", dstRads);
+  // RCLCPP_INFO(getLogger(),"pure spinning start yaw: %lf", startYaw);
+  // RCLCPP_INFO(getLogger(),"pure spinning goal yaw: %lf", dstRads);
   // RCLCPP_WARN_STREAM(getLogger(),"pure spinning start pose: " << start);
 
   double goalAngleOffset = angles::shortest_angular_distance(startYaw, dstRads);
@@ -49,12 +49,12 @@ geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(
   if (goalAngleOffset >= 0)
   {
     // angle positive turn counterclockwise
-    // RCLCPP_INFO(getLogger(),"pure spining counterclockwise");
+    // RCLCPP_INFO(getLogger(),"pure spinning counterclockwise");
     for (double dangle = 0; dangle <= goalAngleOffset; dangle += radstep)
     {
       geometry_msgs::msg::PoseStamped p = start;
       double yaw = startYaw + dangle;
-      // RCLCPP_INFO(getLogger(),"pure spining counterclockwise, current path yaw: %lf, dangle: %lf,
+      // RCLCPP_INFO(getLogger(),"pure spinning counterclockwise, current path yaw: %lf, dangle: %lf,
       // angleoffset %lf, radstep %lf pathsize(%ld)", yaw, dangle, goalAngleOffset, radstep, plan.size());
       tf2::Quaternion q;
       q.setRPY(0, 0, yaw);
@@ -65,13 +65,13 @@ geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(
   else
   {
     // angle positive turn clockwise
-    // RCLCPP_INFO(getLogger(),"pure spining clockwise");
+    // RCLCPP_INFO(getLogger(),"pure spinning clockwise");
     for (double dangle = 0; dangle >= goalAngleOffset; dangle -= radstep)
     {
       // RCLCPP_INFO(getLogger(),"dangle: %lf", dangle);
       geometry_msgs::msg::PoseStamped p = start;
       double yaw = startYaw + dangle;
-      // RCLCPP_INFO(getLogger(),"pure spining clockwise, yaw: %lf, dangle: %lf, angleoffset %lf radstep
+      // RCLCPP_INFO(getLogger(),"pure spinning clockwise, yaw: %lf, dangle: %lf, angleoffset %lf radstep
       // %lf", yaw, dangle, goalAngleOffset,radstep);
       tf2::Quaternion q;
       q.setRPY(0, 0, yaw);
@@ -80,7 +80,7 @@ geometry_msgs::msg::PoseStamped makePureSpinningSubPlan(
     }
   }
 
-  // RCLCPP_INFO(getLogger(),"pure spining end yaw: %lf", dstRads);
+  // RCLCPP_INFO(getLogger(),"pure spinning end yaw: %lf", dstRads);
   geometry_msgs::msg::PoseStamped end = start;
   tf2::Quaternion q;
   q.setRPY(0, 0, dstRads);

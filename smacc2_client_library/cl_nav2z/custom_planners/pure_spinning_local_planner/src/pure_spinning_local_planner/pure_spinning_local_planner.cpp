@@ -183,7 +183,7 @@ void PureSpinningLocalPlanner::setSpeedLimit(
 {
   RCLCPP_WARN_STREAM(
     nh_->get_logger(),
-    "PureSpinningLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not "
+    "PureSpinningLocalPlanner::setSpeedLimit invoked. Ignored, functionality not "
     "implemented.");
 }
 

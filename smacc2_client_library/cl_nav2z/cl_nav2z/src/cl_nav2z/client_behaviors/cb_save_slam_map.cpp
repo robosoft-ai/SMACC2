@@ -41,7 +41,7 @@ CbSaveSlamMap::CbSaveSlamMap() : CbServiceCall("/map_saver/save_map", getRequest
 
   // map_name.data = "saved_map";
   // auto request = getRequest(map_name);
-  // RCLCPP_INFO_STREAM(getLogger(), "Save Slam Map builded");
+  // RCLCPP_INFO_STREAM(getLogger(), "Save Slam Map built");
 }
 
 // void onEntry() override {}

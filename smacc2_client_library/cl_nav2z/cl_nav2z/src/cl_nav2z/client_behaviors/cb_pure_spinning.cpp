@@ -72,7 +72,7 @@ void CbPureSpinning::onEntry()
       std::min(std::max(omega, -fabs(max_angular_yaw_speed_)), fabs(max_angular_yaw_speed_));
 
     RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] delta angle: " << deltaAngle);
-    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] cummulated angle: " << countAngle);
+    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] cumulated angle: " << countAngle);
     RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] k_betta_: " << k_betta_);
 
     RCLCPP_INFO_STREAM(

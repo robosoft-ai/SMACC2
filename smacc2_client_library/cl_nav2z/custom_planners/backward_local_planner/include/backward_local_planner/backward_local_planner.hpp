@@ -88,7 +88,7 @@ private:
   // returns true if found
   bool findInitialCarrotGoal(geometry_msgs::msg::PoseStamped & pose);
 
-  // returns true for a pure spining motion request
+  // returns true for a pure spinning motion request
   bool updateCarrotGoal(const geometry_msgs::msg::PoseStamped & pose);
 
   bool resamplePrecisePlan();

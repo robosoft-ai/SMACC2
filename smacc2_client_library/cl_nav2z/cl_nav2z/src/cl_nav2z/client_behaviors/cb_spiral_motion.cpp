@@ -101,9 +101,9 @@ void CbSpiralMotion::onEntry()
 
     // cmd_vel.angular.z -= signVal * angularAcceleration * dt;
 
-    float ellapsedTimeFactor = current_time.seconds() / spiralMotionDuration.seconds();
-    cmd_vel.angular.z = initialAngularVelocity * (1.0f - ellapsedTimeFactor) +
-                        finalAngularVelocity * ellapsedTimeFactor;
+    float elapsedTimeFactor = current_time.seconds() / spiralMotionDuration.seconds();
+    cmd_vel.angular.z = initialAngularVelocity * (1.0f - elapsedTimeFactor) +
+                        finalAngularVelocity * elapsedTimeFactor;
 
     RCLCPP_INFO(
       getLogger(), "[CbSpiralMotion] cmd_vel.linear.x = %f, cmd_vel.angular.z = %f",
@@ -114,11 +114,11 @@ void CbSpiralMotion::onEntry()
 
     auto now = getNode()->now();
 
-    rclcpp::Duration ellapsed = now - start_time;
+    rclcpp::Duration elapsed = now - start_time;
     RCLCPP_INFO_STREAM(
-      getLogger(), "[CbSpiralMotion] ellapsed time: " << ellapsed.seconds() << ", total duration: "
+      getLogger(), "[CbSpiralMotion] elapsed time: " << elapsed.seconds() << ", total duration: "
                                                       << spiralMotionDuration.seconds());
-    if (ellapsed > spiralMotionDuration)
+    if (elapsed > spiralMotionDuration)
     {
       RCLCPP_INFO_STREAM(getLogger(), "[CbSpiralMotion] spiralMotionDuration reached");
       end_condition = true;

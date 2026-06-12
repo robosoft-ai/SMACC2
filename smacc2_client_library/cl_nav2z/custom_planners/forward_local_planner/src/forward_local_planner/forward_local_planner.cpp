@@ -632,7 +632,7 @@ void ForwardLocalPlanner::setSpeedLimit(const double & /*speed_limit*/, const bo
 {
   RCLCPP_WARN_STREAM(
     nh_->get_logger(),
-    "ForwardLocalPlanner::setSpeedLimit invoked. Ignored, funcionality not "
+    "ForwardLocalPlanner::setSpeedLimit invoked. Ignored, functionality not "
     "implemented.");
 }
 

@@ -26,7 +26,7 @@ namespace cl_nav2z
 
 /// @cond
 // The purpose of the cond and endcond tags seen above and below in this file are there to prevent doxygen from indexing the 256 events
-// below which makes the documentation produced unuseable.
+// below which makes the documentation produced unusable.
 
 {
 template <typename TSource, typename TOrthogonal>
@@ -1600,7 +1600,7 @@ void configurePostEvWaypoint(
 template <typename TDerived, typename TOrthogonal>
 void WaypointEventDispatcher::initialize(ClNav2Z * client)
 {
-  // Doygen cond tag
+  // Doxygen cond tag
   /// @cond
   this->client_ = client;
   configurePostEvWaypoint<EvWaypoint0<TDerived, TOrthogonal>>(postWaypointFn, this, 0);

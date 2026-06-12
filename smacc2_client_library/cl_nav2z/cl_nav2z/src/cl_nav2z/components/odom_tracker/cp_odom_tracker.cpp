@@ -606,7 +606,7 @@ void CpOdomTracker::update()
 {
   RCLCPP_INFO(getLogger(), "odom_tracker update");
   auto pose = robotPose_->toPoseStampedMsg();
-  RCLCPP_INFO(getLogger(), "odom tracker updatd pose, frame: %s", pose.header.frame_id.c_str());
+  RCLCPP_INFO(getLogger(), "odom tracker updated pose, frame: %s", pose.header.frame_id.c_str());
   processNewPose(pose);
   RCLCPP_INFO(getLogger(), "odom_tracker update end");
 }

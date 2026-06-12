@@ -26,7 +26,7 @@ using namespace std::chrono;
 
 namespace sm_coretest_transition_speed_1
 {
-// SMACC2 clases
+// SMACC2 classes
 using smacc2::EvStateRequestFinish;
 using smacc2::Transition;
 

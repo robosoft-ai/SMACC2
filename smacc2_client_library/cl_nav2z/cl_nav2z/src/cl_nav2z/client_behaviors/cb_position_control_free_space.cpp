@@ -163,7 +163,7 @@ void CbPositionControlFreeSpace::onEntry()
 
       // RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] delta angle: "
       // << deltaAngle); RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "]
-      // cummulated angle: " << countAngle); RCLCPP_INFO_STREAM(getLogger(), "["
+      // cumulated angle: " << countAngle); RCLCPP_INFO_STREAM(getLogger(), "["
       // << getName() << "] k_betta_: " << k_betta_);
 
       // RCLCPP_INFO_STREAM(
