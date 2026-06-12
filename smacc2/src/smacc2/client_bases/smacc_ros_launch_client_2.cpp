@@ -164,7 +164,7 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
     });
 }
 
-/**Aditional functions**/
+/**Additional functions**/
 /////////////////////////////////////////////////////
 
 ProcessInfo runProcess(const char * command)

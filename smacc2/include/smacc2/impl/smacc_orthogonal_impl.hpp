@@ -71,7 +71,7 @@ void ISmaccOrthogonal::requiresComponent(SmaccComponentType *& storage)
   {
     RCLCPP_ERROR(
       getLogger(),
-      "Cannot use the requiresComponent funcionality from an orthogonal before onInitialize");
+      "Cannot use the requiresComponent functionality from an orthogonal before onInitialize");
   }
   else
   {

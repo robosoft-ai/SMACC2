@@ -77,7 +77,7 @@ void ISmaccClientBehavior::requiresComponent(
   {
     RCLCPP_ERROR(
       getLogger(),
-      "Cannot use the requiresComponent funcionality before assigning the client behavior to an "
+      "Cannot use the requiresComponent functionality before assigning the client behavior to an "
       "orthogonal. Try using the OnEntry method to capture required components.");
   }
   else
