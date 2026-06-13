@@ -332,9 +332,9 @@ void CpOdomTracker::logStateString(bool debug)
   }
 
   if (debug)
-    RCLCPP_DEBUG(getLogger(), ss.str().c_str());
+    RCLCPP_DEBUG(getLogger(), "%s", ss.str().c_str());
   else
-    RCLCPP_INFO(getLogger(), ss.str().c_str());
+    RCLCPP_INFO(getLogger(), "%s", ss.str().c_str());
 }
 
 void CpOdomTracker::clearPath()
