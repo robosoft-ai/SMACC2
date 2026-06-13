@@ -292,7 +292,8 @@ void SignalDetector::pollOnce()
       auto node = getNode();
       for (auto * updatableClient : this->updatableClients_)
       {
-        auto updatableElementName = demangleType(typeid(*updatableClient)).c_str();
+        auto updatableElementNameStr = demangleType(typeid(*updatableClient));
+        auto updatableElementName = updatableElementNameStr.c_str();
         try
         {
           RCLCPP_DEBUG_STREAM(

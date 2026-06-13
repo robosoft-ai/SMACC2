@@ -1157,8 +1157,8 @@ Eigen::Vector3f BackwardLocalPlanner::computeNewPositions(
   const Eigen::Vector3f & pos, const Eigen::Vector3f & vel, double dt)
 {
   Eigen::Vector3f new_pos = Eigen::Vector3f::Zero();
-  new_pos[0] = pos[0] + (vel[0] * cos(pos[2]) + vel[1] * cos(M_PI_2 + pos[2])) * dt;
-  new_pos[1] = pos[1] + (vel[0] * sin(pos[2]) + vel[1] * sin(M_PI_2 + pos[2])) * dt;
+  new_pos[0] = pos[0] + (static_cast<double>(vel[0]) * cos(pos[2]) + static_cast<double>(vel[1]) * cos(M_PI_2 + pos[2])) * dt;
+  new_pos[1] = pos[1] + (static_cast<double>(vel[0]) * sin(pos[2]) + static_cast<double>(vel[1]) * sin(M_PI_2 + pos[2])) * dt;
   new_pos[2] = pos[2] + vel[2] * dt;
   return new_pos;
 }

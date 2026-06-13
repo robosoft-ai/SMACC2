@@ -93,7 +93,7 @@ void CbSpiralMotion::onEntry()
   {
     auto current_time = getNode()->now() - start_time;
 
-    cmd_vel.linear.x += linearAceleration * dt;
+    cmd_vel.linear.x += static_cast<double>(linearAceleration) * dt;
     if (cmd_vel.linear.x > maxLinearVelocity)
     {
       cmd_vel.linear.x = maxLinearVelocity;
