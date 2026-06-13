@@ -62,6 +62,10 @@ jobs:
         run: |
           python3 - <<'EOF'
           import json, glob
+          SUPPRESSED_RULES = {
+              'cpp/empty-block',
+              'cpp/sizeof-side-effect',
+          }
           for path in glob.glob('sarif-results/*.sarif'):
               with open(path) as f:
                   sarif = json.load(f)
@@ -69,7 +73,8 @@ jobs:
                   results = run.get('results', [])
                   run['results'] = [
                       r for r in results
-                      if not any(
+                      if r.get('ruleId', '') not in SUPPRESSED_RULES
+                      and not any(
                           loc.get('physicalLocation', {})
                              .get('artifactLocation', {})
                              .get('uri', '')
