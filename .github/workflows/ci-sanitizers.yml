@@ -20,6 +20,8 @@ jobs:
       - name: Install dependencies
         run: |
           source /opt/ros/jazzy/setup.bash
+          sudo rosdep init
+          rosdep update
           rosdep install --from-paths . --ignore-src -r -y
 
       - name: Build with TSan + UBSan
