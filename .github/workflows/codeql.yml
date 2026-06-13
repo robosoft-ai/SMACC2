@@ -55,3 +55,34 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: /language:c-cpp
+          output: sarif-results
+          upload: false
+
+      - name: Filter generated paths from SARIF
+        run: |
+          python3 - <<'EOF'
+          import json, glob
+          for path in glob.glob('sarif-results/*.sarif'):
+              with open(path) as f:
+                  sarif = json.load(f)
+              for run in sarif.get('runs', []):
+                  results = run.get('results', [])
+                  run['results'] = [
+                      r for r in results
+                      if not any(
+                          loc.get('physicalLocation', {})
+                             .get('artifactLocation', {})
+                             .get('uri', '')
+                             .startswith(('build/', 'install/'))
+                          for loc in r.get('locations', [])
+                      )
+                  ]
+              with open(path, 'w') as f:
+                  json.dump(sarif, f)
+          EOF
+
+      - name: Upload filtered results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: sarif-results
+          category: /language:c-cpp
