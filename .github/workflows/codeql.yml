@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           source /opt/ros/jazzy/setup.bash
-          sudo rosdep init
+          sudo rosdep init || true
           rosdep update
           rosdep install --from-paths . --ignore-src -r -y
 
