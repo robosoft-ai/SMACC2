@@ -1,0 +1,55 @@
+name: Sanitizers
+
+on:
+  pull_request:
+
+jobs:
+  tsan:
+    name: ThreadSanitizer + UBSan
+    runs-on: ubuntu-24.04
+    env:
+      TSAN_OPTIONS: halt_on_error=1:second_deadlock_stack=1
+      UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: jazzy
+
+      - name: Install dependencies
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          rosdep install --from-paths . --ignore-src -r -y
+
+      - name: Build with TSan + UBSan
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          colcon build \
+            --packages-select \
+              smacc2 \
+              smacc2_msgs \
+              cl_ros2_timer \
+              sr_all_events_go \
+              sr_event_countdown \
+              sr_conditional \
+              eg_conditional_generator \
+              eg_random_generator \
+              sm_atomic \
+              sm_cl_ros2_timer_unit_test_1 \
+            --cmake-args \
+              -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+              -DCMAKE_CXX_FLAGS="-fsanitize=thread,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer" \
+              -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=thread,undefined" \
+              -DBUILD_TESTING=ON
+
+      - name: Run tests
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          source install/setup.bash
+          colcon test \
+            --packages-select sm_atomic sm_cl_ros2_timer_unit_test_1 \
+            --event-handlers console_direct+
+
+      - name: Check results
+        run: colcon test-result --verbose
