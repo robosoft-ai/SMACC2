@@ -1,11 +1,7 @@
 name: CodeQL
 
 on:
-  push:
-    branches: [jazzy]
-  pull_request:
-  schedule:
-    - cron: '30 1 * * 1'
+  workflow_dispatch:
 
 jobs:
   analyze:
