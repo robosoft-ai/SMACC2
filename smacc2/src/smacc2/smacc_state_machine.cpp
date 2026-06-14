@@ -225,8 +225,6 @@ std::string ISmaccStateMachine::getStateMachineName()
   return demangleSymbol(typeid(*this).name());
 }
 
-void ISmaccStateMachine::checkStateMachineConsistence()
-{
-}
+void ISmaccStateMachine::checkStateMachineConsistence() {}
 
 }  // namespace smacc2

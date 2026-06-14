@@ -112,10 +112,7 @@ public:
 
   std::string getShortName() { return smacc2::utils::cleanShortTypeName(typeid(MostDerived)); }
 
-  virtual ISmaccState * getParentState()
-  {
-    return parentState_;
-  }
+  virtual ISmaccState * getParentState() { return parentState_; }
 
   // this function is called by boot statechart before the destructor call
   void exit()
@@ -199,10 +196,7 @@ public:
   static void configure_orthogonal(Args &&... args)
   {
     configure_orthogonal_internal<TOrthogonal, TBehavior>(
-      [=](ISmaccState * state)
-      {
-        state->configure<TOrthogonal, TBehavior>(args...);
-      });
+      [=](ISmaccState * state) { state->configure<TOrthogonal, TBehavior>(args...); });
   }
 
   template <
