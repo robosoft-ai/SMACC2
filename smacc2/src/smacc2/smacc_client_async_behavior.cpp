@@ -46,7 +46,6 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(
     rclcpp::Rate r(100);
     while (rclcpp::ok())
     {
-      //bool valid = threadfut.valid();
       if (threadfut && threadfut->valid())
       {
         auto status = threadfut->wait_for(std::chrono::milliseconds(20));
@@ -74,10 +73,7 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(
               << "] waiting future onEntryThread. It was not even created. Skipping wait.");
         break;
       }
-
-      // r.sleep();
       rclcpp::sleep_for(100ms);
-      // rclcpp::spin_some(getNode());
       RCLCPP_WARN_THROTTLE(
         getLogger(), *(getNode()->get_clock()), 1000,
         "[%s] waiting for finishing client behavior, before leaving the state. Is the client "
@@ -169,8 +165,6 @@ bool SmaccAsyncClientBehavior::isShutdownRequested()
   {
     shut = "False";
   }
-  // RCLCPP_FATAL_STREAM_THROTTLE(
-  //   getLogger(), *(getNode()->get_clock()), 1000, "[" << getName() << "] " << ((uint64_t) this ) << " Is requestForceFinish active? " << shut );
   return isShutdownRequested_;
 }
 

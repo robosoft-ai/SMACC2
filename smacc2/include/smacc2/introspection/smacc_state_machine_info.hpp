@@ -309,14 +309,12 @@ template <typename Ev, typename Dst>
 void processTransition(
   statechart::transition<Ev, Dst> *, std::shared_ptr<SmaccStateInfo> & sourceState)
 {
-  // RCLCPP_INFO_STREAM(getLogger(),"GOTCHA");
 }
 
 template <typename Ev>
 void processTransition(
   statechart::custom_reaction<Ev> *, std::shared_ptr<SmaccStateInfo> & sourceState)
 {
-  // RCLCPP_INFO_STREAM(getLogger(),"GOTCHA");
 }
 
 //---------------------------------------------
@@ -353,33 +351,6 @@ typename std::enable_if<!HasOnDefinition<T>::value, void>::type CallOnDefinition
     "static OnDefinition: dont exist for " << demangleSymbol(typeid(T).name()));
   /* something when T has toString ... */
 }
-
-/*
-// only reached if it is a leaf transition in the mpl::list
-template <template <typename,typename,typename> typename TTransition, typename TevSource,
-template <typename> typename EvType, typename Tag, typename DestinyState >
-typename disable_if<boost::mpl::is_sequence<TTransition<EvType<TevSource>,DestinyState, Tag>>>::type
-processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
-{
-    RCLCPP_INFO(getLogger(),"DETECTED COMPLEX TRANSITION **************");
-    // RCLCPP_INFO_STREAM(getLogger(),"state transition from: " << sourceState->demangledStateName
-    << " of type: " << demangledTypeName<T>());
-    TTransition<EvType<TevSource>,DestinyState, Tag> *dummy;
-    processTransition(dummy, sourceState);
-}
-
-template <template <typename,typename> typename TTransition, typename TevSource,
-template <typename> typename EvType, typename DestinyState >
-typename disable_if<boost::mpl::is_sequence<TTransition<EvType<TevSource>,DestinyState>>>::type
-processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
-{
-    RCLCPP_INFO(getLogger(),"DETECTED COMPLEX TRANSITION **************");
-    // RCLCPP_INFO_STREAM(getLogger(),"state transition from: " << sourceState->demangledStateName
-    << " of type: " << demangledTypeName<T>());
-    TTransition<EvType<TevSource>,DestinyState> *dummy;
-    processTransition(dummy, sourceState);
-}
-*/
 
 //--------------------------------------------
 
@@ -426,12 +397,6 @@ void AddTransition::operator()(TTrans)
     currentState_->fullStateName.c_str());
 }
 
-/*
-void CallOnDefinition(...)
-{
-
-}*/
-
 //-----------------------------------------------------------------------------------
 template <typename InitialStateType>
 void WalkStatesExecutor<InitialStateType>::walkStates(
@@ -465,8 +430,6 @@ void WalkStatesExecutor<InitialStateType>::walkStates(
 
   // -------------------- REACTIONS --------------------
   typedef typename InitialStateType::reactions reactions;
-  // RCLCPP_INFO_STREAM(getLogger(),"state machine initial state reactions: "
-  // << demangledTypeName<reactions>());
 
   processTransitions<reactions>(targetState);
 }

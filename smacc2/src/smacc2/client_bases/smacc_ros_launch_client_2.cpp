@@ -38,10 +38,7 @@ namespace smacc2
 namespace client_bases
 {
 using namespace std::chrono_literals;
-ClRosLaunch2::ClRosLaunch2(/*std::string packageName, std::string launchFilename*/)
-: /*packageName_(std::nullopt), launchFileName_(std::nullopt),*/ cancellationToken_(false)
-{
-}
+ClRosLaunch2::ClRosLaunch2() : cancellationToken_(false) {}
 
 ClRosLaunch2::ClRosLaunch2(std::string packageName, std::string launchFilename)
 : packageName_(packageName), launchFileName_(launchFilename), cancellationToken_(false)
@@ -54,10 +51,8 @@ void ClRosLaunch2::launch()
 {
   cancellationToken_.store(false);
   // Start the launch execution thread
-  this->result_ = /*std::async([this]()*/
-                  // {
+  this->result_ =
     executeRosLaunch(packageName_, launchFileName_, [this]() { return cancellationToken_.load(); });
-  // });
 }
 
 void ClRosLaunch2::stop()
@@ -69,7 +64,6 @@ void ClRosLaunch2::stop()
 std::future<std::string> ClRosLaunch2::executeRosLaunch(
   std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition,
   ClRosLaunch2 * client)
-// std::string ClRosLaunch2::executeRosLaunch(std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition)
 {
   return std::async(
     std::launch::async,
@@ -157,7 +151,6 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
 
       RCLCPP_WARN_STREAM(rclcpp::get_logger("smacc2"), "[ClRosLaunch2] RESULT:\n" << result);
 
-      // return std::async(std::launch::async, [result]() { return result; });
       return result;
     });
 }
@@ -192,7 +185,7 @@ ProcessInfo runProcess(const char * command)
 
     // execl only returns on error
     std::cerr << "Error executing command: " << command << std::endl;
-    _exit(1);  // Use _exit to skip atexit handlers
+    _exit(1);  // Use _exit to skip at exit handlers
   }
   else if (pid > 0)
   {

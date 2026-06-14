@@ -168,7 +168,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
       }
     }
 
-    //refresh
+    // refresh
     for (auto & b : allbasetypes)
     {
       typesdict[b] = b;
@@ -236,7 +236,6 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
         auto pair = std::make_pair(index, t2);  // this line is important for the order of templates
         unorderedTemplateParameters.push_back(pair);
         replace(codedtypecopy, t2->tkey, "");  // consume token
-        //std::cout << "codedtypecopy: " << codedtypecopy << std::endl;
       }
     }
 
@@ -244,19 +243,12 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
       unorderedTemplateParameters.begin(), unorderedTemplateParameters.end(),
       [](auto & a, auto & b) -> bool { return a.first <= b.first; });
 
-    //RCLCPP_DEBUG_STREAM(nh_->get_logger(),"------------------");
-    //RCLCPP_DEBUG_STREAM(nh_->get_logger(),"CREATING TYPE:" << t->getFullName());
-
     for (auto & item : unorderedTemplateParameters)
     {
-      //RCLCPP_DEBUG_STREAM(nh_->get_logger()," - template parameter: " << item.second->getFullName());
       t->templateParameters.push_back(item.second);
     }
-    //RCLCPP_DEBUG_STREAM(nh_->get_logger(),"------------------");
   }
 
-  //RCLCPP_DEBUG_STREAM(nh_->get_logger(),"ADDING TYPE TO DATABASE: " << inputtext);
-  //RCLCPP_DEBUG_STREAM(nh_->get_logger(),"Current Database");
   for (auto & en : typeInfoDatabase)
   {
     if (globalNh_ != nullptr) RCLCPP_DEBUG_STREAM(globalNh_->get_logger(), "- " << en.first);

@@ -32,8 +32,8 @@ namespace client_bases
 {
 struct ProcessInfo
 {
-  pid_t pid;    // PID del proceso hijo
-  FILE * pipe;  // Pipe para la salida del proceso hijo
+  pid_t pid;    // PID of the child process
+  FILE * pipe;  // Pipe for the child process output
 };
 
 ProcessInfo runProcess(const char * command);
