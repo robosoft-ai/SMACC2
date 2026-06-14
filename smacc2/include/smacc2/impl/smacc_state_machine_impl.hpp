@@ -84,7 +84,6 @@ TOrthogonal * ISmaccStateMachine::getOrthogonal()
 template <typename TOrthogonal>
 void ISmaccStateMachine::createOrthogonal()
 {
-  //this->lockStateMachine("create orthogonal");
   std::lock_guard<std::recursive_mutex> guard(m_mutex_);
 
   std::string orthogonalkey = demangledTypeName<TOrthogonal>();
@@ -111,7 +110,6 @@ void ISmaccStateMachine::createOrthogonal()
     }
     RCLCPP_WARN_STREAM(getLogger(), ss.str());
   }
-  //this->unlockStateMachine("create orthogonal");
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -143,29 +141,6 @@ void ISmaccStateMachine::requiresComponent(
 
   if (throwsException)
     throw std::runtime_error("component is required but it was not found in any orthogonal");
-
-  // std::string componentkey = demangledTypeName<SmaccComponentType>();
-  // SmaccComponentType *ret;
-
-  // auto it = components_.find(componentkey);
-
-  // if (it == components_.end())
-  // {
-  //     RCLCPP_DEBUG(getLogger(),"%s smacc component is required. Creating a new instance.",
-  //     componentkey.c_str());
-
-  //     ret = new SmaccComponentType();
-  //     ret->setStateMachine(this);
-  //     components_[componentkey] = static_cast<smacc2::ISmaccComponent *>(ret);
-  //     RCLCPP_DEBUG(getLogger(),"%s resource is required. Done.", componentkey.c_str());
-  // }
-  // else
-  // {
-  //     RCLCPP_DEBUG(getLogger(),"%s resource is required. Found resource in cache.",
-  //     componentkey.c_str()); ret = dynamic_cast<SmaccComponentType *>(it->second);
-  // }
-
-  // storage = ret;
 }
 //-------------------------------------------------------------------------------------------------------
 template <typename EventType>
@@ -286,27 +261,6 @@ void ISmaccStateMachine::setGlobalSMData(std::string name, T value)
 
   this->updateStatusMessage();
 }
-
-//template <typename StateField, typename BehaviorType>
-//void ISmaccStateMachine::mapBehavior()
-//{
-//  std::string stateFieldName = demangleSymbol(typeid(StateField).name());
-//  std::string behaviorType = demangleSymbol(typeid(BehaviorType).name());
-//  RCLCPP_INFO(
-//    getLogger(), "Mapping state field '%s' to stateReactor '%s'", stateFieldName.c_str(),
-//    behaviorType.c_str());
-//  smacc2::ISmaccClientBehavior * globalreference;
-//  if (!this->getGlobalSMData(stateFieldName, globalreference))
-//  {
-//    // Using the requires component approach, we force a unique existence
-//    // of this component
-//    BehaviorType * behavior;
-//    this->requiresComponent(behavior);
-//    globalreference = dynamic_cast<smacc2::ISmaccClientBehavior *>(behavior);
-//
-//    this->setGlobalSMData(stateFieldName, globalreference);
-//  }
-//}
 
 namespace utils
 {
@@ -605,7 +559,6 @@ void ISmaccStateMachine::notifyOnStateExiting(StateType * state)
   stateMachineCurrentAction = StateMachineInternalAction::STATE_EXITING;
   auto fullname = demangleSymbol(typeid(StateType).name());
   RCLCPP_WARN_STREAM(getLogger(), "Exiting state: " << fullname);
-  // this->set_parameter("destroyed", true);
 
   RCLCPP_INFO_STREAM(getLogger(), "Notification state exit: leaving state " << state);
   for (auto pair : this->orthogonals_)

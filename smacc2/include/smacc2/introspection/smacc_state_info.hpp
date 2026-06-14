@@ -119,7 +119,6 @@ struct SmaccStateReactorInfo
   std::shared_ptr<SmaccStateInfo> ownerState;
   std::function<void(smacc2::ISmaccState *)> factoryFunction;
 
-  //const std::type_info *stateReactorType;
   std::shared_ptr<TypeInfo> stateReactorType;
   std::shared_ptr<TypeInfo> outputEventType;
   std::shared_ptr<TypeInfo> objectTagType;
@@ -153,7 +152,6 @@ struct SmaccEventGeneratorInfo
   std::shared_ptr<SmaccStateInfo> ownerState;
   std::function<void(smacc2::ISmaccState *)> factoryFunction;
 
-  // const std::type_info *eventGeneratorType;
   std::shared_ptr<TypeInfo> eventGeneratorType;
   std::shared_ptr<TypeInfo> outputEventType;
   std::shared_ptr<TypeInfo> objectTagType;

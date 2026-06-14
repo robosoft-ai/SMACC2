@@ -106,8 +106,6 @@ template <typename TStateReactor, typename... TEvArgs>
 std::shared_ptr<TStateReactor> ISmaccState::createStateReactor(TEvArgs... args)
 {
   auto sr = std::make_shared<TStateReactor>(args...);
-  // sb->initialize(this, mock);
-  // sb->setOutputEvent(typelist<TTriggerEvent>());
   stateReactors_.push_back(sr);
   return sr;
 }
@@ -203,16 +201,6 @@ TStateReactor * ISmaccState::getStateReactor()
   return ret;
 }
 
-// template <typename TStateReactor, typename TTriggerEvent, typename... TEvArgs>
-// std::shared_ptr<TStateReactor> ISmaccState::createStateReactor(TEvArgs... args)
-// {
-//     auto sb = std::make_shared<TStateReactor>(std::forward(args...));
-//     sb->initialize(this, typelist<TEvArgs...>());
-//     sb->setOutputEvent(typelist<TTriggerEvent>());
-//     stateReactors_.push_back(sb);
-
-//     return sb;
-// }
 //-------------------------------------------------------------------------------------------------------
 
 template <typename EventType>

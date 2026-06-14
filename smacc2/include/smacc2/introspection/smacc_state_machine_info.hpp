@@ -132,7 +132,6 @@ template <typename T>
 void AddSubState::operator()(T)
 {
   using type_t = typename T::type;
-  //auto childState = this->parentState_->createChildState<type_t>()
   WalkStatesExecutor<type_t>::walkStates(parentState_, false);
 }
 
@@ -239,16 +238,12 @@ void processTransitionAux(
     auto realparentState = sourceState->stateMachine_->getState<typename Dst::TContext>();
     auto siblingnode = sourceState->stateMachine_->createState<Dst>(realparentState);
 
-    // auto siblingnode = sourceState->stateMachine_->createState<Dst>(sourceState->parentState_);
     WalkStatesExecutor<Dst>::walkStates(siblingnode, true);
     sourceState->declareTransition<Ev>(
       siblingnode, transitionTag, transitionType, history, transitionTypeInfo);
   }
   else
   {
-    // auto realparentState = sourceState->stateMachine_->getState<typename Dst::TContext>();
-    // auto siblingnode = sourceState->stateMachine_->createState<Dst>(realparentState);
-
     auto siblingnode = sourceState->stateMachine_->getState<Dst>();
     sourceState->declareTransition<Ev>(
       siblingnode, transitionTag, transitionType, history, transitionTypeInfo);
@@ -308,31 +303,6 @@ public:
     value = sizeof(test<T>(0)) == sizeof(YesType)
   };
 };
-
-// template <typename TevSource, template <typename> typename EvType>
-// void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType, bool history)
-// {
-//     auto evtype = demangledTypeName<EvType<TevSource>>();
-
-//     SmaccTransitionInfo transitionInfo;
-//     transitionInfo.index = transitions_.size();
-//     transitionInfo.sourceState = shared_from_this();
-//     transitionInfo.destinyState = dstState;
-
-//     if (transitionTag != "")
-//         transitionInfo.transitionTag = transitionTag;
-//     else
-//         transitionInfo.transitionTag = "Transition_" + std::to_string(transitionInfo.index);
-
-//     transitionInfo.transitionType = transitionType;
-
-//     transitionInfo.eventInfo = std::make_shared<SmaccEventInfo>(TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name())));
-
-//     EventLabel<EvType<TevSource>>(transitionInfo.eventInfo->label);
-//     RCLCPP_ERROR_STREAM(getLogger(),"LABEL: " << transitionInfo.eventInfo->label);
-
-//     transitions_.push_back(transitionInfo);
-// }
 
 //---------------------------------------------
 template <typename Ev, typename Dst>
@@ -550,16 +520,6 @@ std::shared_ptr<SmaccStateInfo> SmaccStateInfo::createChildState()
 
   RCLCPP_WARN_STREAM(
     getLogger(), "Real parent state> " << demangleSymbol<typename StateType::TContext>());
-
-  /*auto contextInfo = TypeInfo::getTypeInfoFromType<InitialStateType>();
-    auto parentState2= getState<InitialStateType::TContext>();
-    parentState2->createChildState<InitialStateType>();*/
-
-  // this->stateMachine_->addState(childState);
-  // stateMachineInfo.addState(stateMachineInfo)
-  // stateNames.push_back(currentname);
-  // RCLCPP_INFO(getLogger(),"------------");
-  // RCLCPP_INFO_STREAM(getLogger(),"** STATE state: "<< this->demangledStateName);
 
   return childState;
 }

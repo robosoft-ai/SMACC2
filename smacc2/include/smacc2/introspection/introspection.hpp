@@ -54,14 +54,12 @@ typedef std::allocator<boost::statechart::none> SmaccAllocator;
 template <class T>
 auto optionalNodeHandle(std::shared_ptr<T> & obj) -> T *
 {
-  //return obj->getNode();
   return obj.get;
 }
 
 template <class T>
 auto optionalNodeHandle(boost::intrusive_ptr<T> & obj) -> T *
 {
-  //return obj->getNode();
   return obj.get();
 }
 
@@ -266,31 +264,6 @@ static std::string getTransitionType()
   boost::mpl::for_each<wrappedList>(op);
   return output;
 }
-
-// // BASE CASE
-// template <typename T>
-// static void walkStateReactorsSources(SmaccStateReactorInfo &sbinfo, typelist<T>)
-// {
-//     auto sourceType = TypeInfo::getFromStdTypeInfo(typeid(T));
-//     auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
-//     EventLabel<T>(evinfo->label);
-//     sbinfo.sourceEventTypes.push_back(evinfo);
-//     RCLCPP_INFO_STREAM(nh_->get_logger(),"event: " << sourceType->getFullName());
-//     RCLCPP_INFO_STREAM(nh_->get_logger(),"event parameters: " << sourceType->templateParameters.size());
-// }
-
-// // RECURSIVE CASE
-// template <typename TEvHead, typename... TEvArgs>
-// static void walkStateReactorsSources(SmaccStateReactorInfo &sbinfo, typelist<TEvHead, TEvArgs...>)
-// {
-//     auto sourceType = TypeInfo::getFromStdTypeInfo(typeid(TEvHead));
-//     auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
-//     EventLabel<TEvHead>(evinfo->label);
-//     sbinfo.sourceEventTypes.push_back(evinfo);
-//     RCLCPP_INFO_STREAM(nh_->get_logger(),"event: " << sourceType->getFullName());
-//     RCLCPP_INFO_STREAM(nh_->get_logger(),"event parameters: " << sourceType->templateParameters.size());
-//     walkStateReactorsSources(sbinfo, typelist<TEvArgs...>());
-// }
 
 }  // namespace introspection
 }  // namespace smacc2

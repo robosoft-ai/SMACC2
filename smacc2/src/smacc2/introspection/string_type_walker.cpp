@@ -59,16 +59,6 @@ std::string replace_back(
   }
 
   return roottype;
-
-  //   def replace_back(roottype, typesdict):
-  //     # replace back
-  //     while "$" in roottype:
-  //         #print roottype
-  //         for tkey in typesdict:
-  //             tval = typesdict[tkey]
-  //             roottype = roottype.replace(tkey, tval)
-
-  //     return roottype
 }
 
 std::map<std::string, TypeInfo::Ptr> TypeInfo::typeInfoDatabase;
@@ -95,11 +85,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 
   while (!ok)
   {
-    //simpletypeRE = r"[^<>,\s]+<[^<>]+>"
-    //print ("input: " + inputtext)
-
     const char * simpletypeRE = "[^\\<\\>,\\s]+\\<[^\\<\\>]+\\>";
-    //std::cout << inputtext << std::endl;
 
     // locate moste outer template
     std::smatch matches;
@@ -182,51 +168,35 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
       }
     }
 
-    // for b in allbasetypes:
-    // typesdict[b] = b
-
     //refresh
     for (auto & b : allbasetypes)
     {
       typesdict[b] = b;
     }
   }
-  // types = []
-  // for tkey in typesdict:
-  //     finaltype = replace_back(typesdict[tkey], typesdict)
-  //     t = TypeInfo(tkey, typesdict[tkey], finaltype)
-  //     types.append(t)
-
-  //     print t
-
   // append leaf types
   for (auto & b : allbasetypes)
   {
     orderedTypedict.push_back({b, b});
   }
 
-  //std::cout << "---------- TYPES -------" << std::endl;
   std::vector<TypeInfo::Ptr> types;
   std::vector<std::string> tokens;
 
   for (auto t : orderedTypedict)  // must be ordered. to avoid issue, ie: $11 to be replaced in $T14
   {
-    //auto t = *it;
     auto & tkey = t.first;
     auto & tval = t.second;
     auto finaltype = replace_back(tval, orderedTypedict);
     auto tinfo = std::make_shared<TypeInfo>(tkey, tval, finaltype);
     types.push_back(tinfo);
     tokens.push_back(tkey);
-
-    //std::cout << "replacing back: " << finaltype << std::endl;
   }
 
   // --------- FINDING THE CURRENT TYPE -------------
   TypeInfo::Ptr roottype = nullptr;
   for (auto & t : types)
   {
-    // std::cout << t->finaltype << " vs " <<originalinputtext;
     if (t->finaltype == originalinputtext)
     {
       roottype = t;
@@ -246,68 +216,24 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     RCLCPP_WARN_STREAM(globalNh_->get_logger(), strmsg);
   }
 
-  // std::sort(types.begin(), types.end(),[](auto& a, auto& b)
-  // {
-  //     return a->getFullName().size() > b->getFullName().size();
-  // });
-
-  /*
-    std::cout<<"types order:" << std::endl;
-    for(auto t: types)
-    {
-        std::cout<< t->codedtype << std::endl;
-    }
-    std::cout<<"---------" << std::endl;
-
-    std::cout<<"types order:" << std::endl;
-    for(auto t: types)
-    {
-        std::cout<< t->finaltype << std::endl;
-    }
-    std::cout<<"---------" << std::endl;
-    */
-
   // Replacing back tokens in strings to get the whole final name
   for (size_t i = 0; i < types.size(); i++)
   {
     auto t = types[i];
     auto ttoken = tokens[i];
 
-    //auto t = types[it1];
     std::vector<std::pair<int, TypeInfo::Ptr>> unorderedTemplateParameters;
 
-    //std::cout << "original typestr: " << codedtypecopy << std::endl;
-
-    //auto codedtypecopy = t->codedtype;
     auto codedtypecopy = typesdict_content[ttoken];
 
-    // std::cout << "original typestr: " << codedtypecopy << std::endl;
-    // std::cout << "original token: " << ttoken << std::endl;
-    // std::cout << "original typestr: " << typesdict_content[ttoken] << std::endl;
-
-    // size_t startindex = codedtypecopy.find("<");
-    // size_t endindex = codedtypecopy.find(">");
-
-    // if (startindex != std::string::npos)
-    // {
-    //     codedtypecopy = codedtypecopy.substr(startindex + 1, endindex - startindex - 1);
-    // }
-    //std::cout << "original typestr: " << codedtypecopy << std::endl;
-
     for (auto & t2 : types)
-    //for (auto it2= types.size() -1; it2 >=0; it2--)
     {
-      //std::cout << it2 << std::endl;
-      //auto t2 = types[it2];
-      //std::cout << t2->getFullName() << std::endl;
       if (t == t2) continue;
 
       auto index = codedtypecopy.find(t2->tkey);
       if (index != std::string::npos)
       {
         auto pair = std::make_pair(index, t2);  // this line is important for the order of templates
-        //auto pair = std::make_pair(0, t2);
-        //std::cout << "matches: " << t2->tkey <<std::endl;
         unorderedTemplateParameters.push_back(pair);
         replace(codedtypecopy, t2->tkey, "");  // consume token
         //std::cout << "codedtypecopy: " << codedtypecopy << std::endl;
@@ -374,28 +300,6 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 
   return roottype;
 }
-
-/*
-
-    print (typesdict)
-    roottype = [t for t in types if t.finaltype == originalinputtext][0]
-
-    print "---------------------------------"
-
-    # fill template parameters
-    for t in types:
-        for t2 in types:
-            if t2.tkey in t.codedtype:
-                index = t.codedtype.index(t2.tkey)
-                t.template_parameters.append((index, t2))
-
-        t.template_parameters = [x[1] for x in sorted(
-            t.template_parameters, key=lambda e: e[0])]
-
-    return roottype
-
-}
-*/
 
 }  // namespace introspection
 }  // namespace smacc2

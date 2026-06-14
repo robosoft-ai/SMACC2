@@ -51,8 +51,6 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(
       {
         auto status = threadfut->wait_for(std::chrono::milliseconds(20));
         if (status == std::future_status::ready)
-        // auto status = threadfut->wait();
-        // if(status)
         {
           // done
           threadfut->get();
@@ -129,10 +127,8 @@ void SmaccAsyncClientBehavior::dispose()
   {
     if (this->onExitThread_)
     {
-      // this->onExitThread_->get();
       this->onExitThread_->get();
     }
-    //this->onExitThread_->get();
   }
   catch (...)
   {
