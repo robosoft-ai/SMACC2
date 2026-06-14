@@ -58,7 +58,6 @@ public:
 
 private:
   std::string actionServerName_;
-
 };
 
 }  // namespace cl_nav2z
