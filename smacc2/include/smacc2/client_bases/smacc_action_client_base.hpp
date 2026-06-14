@@ -37,6 +37,7 @@ template <typename ActionType>
 class SmaccActionClientBase : public ISmaccActionClient
 {
 public:
+  // Inside this macro you can find the typedefs for Goal and other types
   typedef rclcpp_action::Client<ActionType> ActionClient;
 
   using Goal = typename ActionClient::Goal;
@@ -96,12 +97,16 @@ public:
 
   SmaccActionResultSignal onSucceeded_;
   SmaccActionResultSignal onAborted_;
+  // SmaccActionResultSignal onPreempted_;
+  // SmaccActionResultSignal onRejected_;
   SmaccActionResultSignal onCancelled_;
 
   // event creation/posting factory functions
   std::function<void(WrappedResult)> postSuccessEvent;
   std::function<void(WrappedResult)> postAbortedEvent;
   std::function<void(WrappedResult)> postCancelledEvent;
+  // std::function<void(WrappedResult)> postPreemptedEvent;
+  // std::function<void(WrappedResult)> postRejectedEvent;
 
   std::function<void(const Feedback &)> postFeedbackEvent;
 
