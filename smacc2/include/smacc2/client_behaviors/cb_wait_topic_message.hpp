@@ -48,16 +48,10 @@ public:
   void onEntry() override
   {
     rclcpp::SensorDataQoS qos;
-    // qos.reliable();
-    // rclcpp::SubscriptionOptions sub_option;
+
     RCLCPP_INFO_STREAM(
       getLogger(), "[CbWaitTopicMessage] waiting message from topic: "
                      << topicname_ << "[" << demangledTypeName<TMessage>() << "]");
-
-    // sub_ = getNode()->create_subscription<TMessage>(
-    //   topicname_, qos,
-    //   std::bind(&CbWaitTopicMessage<TMessage>::onMessageReceived, this, std::placeholders::_1),
-    //   sub_option);
 
     std::function<void(typename TMessage::SharedPtr)> fn = [this](auto msg)
     { this->onMessageReceived(msg); };

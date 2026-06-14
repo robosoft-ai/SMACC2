@@ -42,8 +42,6 @@ public:
 
   CbRosLaunch2(std::string package, std::string launchfile, RosLaunchMode);
 
-  // CbRosLaunch2(std::string packageName, std::string launchFileName);
-
   virtual ~CbRosLaunch2();
 
   template <typename TOrthogonal, typename TSourceObject>

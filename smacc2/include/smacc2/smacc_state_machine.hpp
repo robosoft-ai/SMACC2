@@ -107,9 +107,6 @@ public:
   template <typename T>
   void setGlobalSMData(std::string name, T value);
 
-  //template <typename StateField, typename BehaviorType>
-  //void mapBehavior();
-
   std::string getStateMachineName();
 
   void state_machine_visualization();

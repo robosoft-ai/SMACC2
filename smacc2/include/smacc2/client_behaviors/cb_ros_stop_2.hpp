@@ -36,8 +36,6 @@ public:
 
   CbRosStop2(pid_t launchPid);
 
-  // CbRosStop2(std::string packageName, std::string launchFileName);
-
   virtual ~CbRosStop2();
 
   template <typename TOrthogonal, typename TSourceObject>

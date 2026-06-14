@@ -29,7 +29,6 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transit
 {
   RCLCPP_INFO_STREAM(getLogger(), "TRANSITION RULE TRIGGERED: " << transitionType->getFullName());
 
-  //auto currstateinfo = this->getStateMachine().getCurrentStateInfo();
   auto currstateinfo = this->stateInfo_;
 
   if (currstateinfo != nullptr)

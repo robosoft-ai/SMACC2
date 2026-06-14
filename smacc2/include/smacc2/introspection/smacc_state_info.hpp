@@ -209,9 +209,6 @@ public:
     std::shared_ptr<SmaccStateInfo> & dstState, std::string transitionTag,
     std::string transitionType, bool history, TypeInfo::Ptr transitionTypeInfo);
 
-  // template <typename EvSource, template <typename> typename EvType>
-  // void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType, bool history);
-
   const std::string & toShortName() const;
 
   std::string getDemangledFullName() const;

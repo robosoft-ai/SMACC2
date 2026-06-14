@@ -33,17 +33,6 @@ class CbSequence : public smacc2::SmaccAsyncClientBehavior
 public:
   CbSequence();
 
-  // template <typename TOrthogonal, typename TBehavior>
-  // static void configure_orthogonal_runtime(
-  //   std::function<void(TBehavior & bh, MostDerived &)> initializationFunction)
-  // {
-  //   configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState * state) {
-  //     // auto bh = std::make_shared<TBehavior>(args...);
-  //     // auto bh = state->configure<TOrthogonal, TBehavior>();
-  //     initializationFunction(*bh, *(static_cast<MostDerived *>(state)));
-  //   });
-  // }
-
   void onEntry() override;
 
   void onExit() override { sequenceNodes_.clear(); }

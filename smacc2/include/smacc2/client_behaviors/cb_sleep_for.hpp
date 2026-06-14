@@ -41,7 +41,6 @@ public:
       rclcpp::sleep_for(10ms);
     }
 
-    //rclcpp::sleep_for(std::chrono::nanoseconds(sleeptime_.nanoseconds()));
     this->postSuccessEvent();
   }
 

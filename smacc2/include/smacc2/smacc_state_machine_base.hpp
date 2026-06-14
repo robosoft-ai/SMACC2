@@ -43,10 +43,7 @@ public:
   {
   }
 
-  virtual ~SmaccStateMachineBase()
-  {
-    //updateCurrentState<InitialStateType>(false);
-  }
+  virtual ~SmaccStateMachineBase() {}
 
   void reset() override
   {
