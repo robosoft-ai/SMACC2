@@ -17,7 +17,6 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-// #include <rclcpp/rclcpp.hpp>
 
 #include <angles/angles.h>
 #include <tf2/transform_datatypes.h>

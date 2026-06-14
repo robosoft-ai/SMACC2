@@ -25,7 +25,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
 
-// #include <tf2/utils.h>
 #include <boost/intrusive_ptr.hpp>
 #include <nav_2d_utils/tf_help.hpp>
 #include <pluginlib/class_list_macros.hpp>
@@ -153,13 +152,6 @@ void ForwardLocalPlanner::generateTrajectory(
   {
     // add the point to the trajectory so we can draw it later if we want
     // traj.addPoint(pos[0], pos[1], pos[2]);
-
-    // if (continued_acceleration_) {
-    //   //calculate velocities
-    //   loop_vel = computeNewVelocities(sample_target_vel, loop_vel, limits_->getAccLimits(), dt);
-    //   //RCLCPP_WARN_NAMED(nh_->get_logger(), "Generator", "Flag: %d, Loop_Vel %f, %f, %f", continued_acceleration_,
-    //   loop_vel[0], loop_vel[1], loop_vel[2]);
-    // }
 
     auto loop_vel = vel;
     // update the position of the robot using the velocities passed in

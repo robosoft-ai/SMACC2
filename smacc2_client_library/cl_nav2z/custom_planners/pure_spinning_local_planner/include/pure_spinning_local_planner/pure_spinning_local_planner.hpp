@@ -18,8 +18,7 @@
  *
  ******************************************************************************************************************/
 #pragma once
-//#include <dynamic_reconfigure/server.h>
-//#include <pure_spinning_local_planner/PureSpinningLocalPlannerConfig.h>
+
 #include <tf2/transform_datatypes.h>
 #include <tf2_ros/buffer.h>
 

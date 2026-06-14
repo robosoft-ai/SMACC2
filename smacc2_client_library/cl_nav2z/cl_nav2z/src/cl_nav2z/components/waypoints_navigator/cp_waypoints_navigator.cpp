@@ -282,17 +282,6 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
       odomTracker->setWorkingMode(cl_nav2z::odom_tracker::WorkingMode::RECORD_PATH);
     }
 
-    // SEND GOAL
-    // if (!succeededNav2ZClientConnection_.connected())
-    // {
-    //   this->succeededNav2ZClientConnection_ =
-    //     client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
-    //   this->cancelledNav2ZClientConnection_ =
-    //     client_->onAborted(&WaypointNavigator::onGoalCancelled, this);
-    //   this->abortedNav2ZClientConnection_ =
-    //     client_->onCancelled(&WaypointNavigator::onGoalAborted, this);
-    // }
-
     // Set up navigation result handling
     if (!succeededNav2ZClientConnection_.connected())
     {
