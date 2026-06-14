@@ -496,8 +496,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
     {
       xy_goal_tolerance_ = posetol.position.x;
       yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation);
-      //xy_goal_tolerance_ = posetol.position.x * 0.35;  // WORKAROUND ISSUE GOAL CHECKER NAV_CONTROLLER DIFF
-      //yaw_goal_tolerance_ = tf2::getYaw(posetol.orientation) * 0.35;
+
       RCLCPP_INFO_STREAM(
         nh_->get_logger(), "[BackwardLocalPlanner] xy_goal_tolerance_: "
                              << xy_goal_tolerance_
@@ -743,16 +742,6 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
 
       for (auto & p : trajectory)
       {
-        /*geometry_msgs::msg::Pose pg;
-        pg.position.x = p[0];
-        pg.position.y = p[1];
-        tf2::Quaternion q;
-        q.setRPY(0, 0, p[2]);
-        pg.orientation = tf2::toMsg(q);
-
-        // WARNING I CAN'T USE isGoalReached because I can change the state of a stateful goal checker
-        if (goal_checker->isGoalReached(pg, finalgoalpose.pose, mockzerospeed))*/
-
         float dx = p[0] - finalgoalpose.pose.position.x;
         float dy = p[1] - finalgoalpose.pose.position.y;
 
@@ -767,15 +756,6 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
         }
 
         costmap2d->worldToMap(p[0], p[1], mx, my);
-        //         unsigned int cost = costmap2d->getCost(mx, my);
-
-        // RCLCPP_INFO(nh_->get_logger(),"[BackwardLocalPlanner] checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i,
-        // p[0], p[1], mx, my, cost); RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] cost: " << cost);
-
-        // static const unsigned char NO_INFORMATION = 255;
-        // static const unsigned char LETHAL_OBSTACLE = 254;
-        // static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
-        // static const unsigned char FREE_SPACE = 0;
 
         if (costmap2d->getCost(mx, my) >= nav2_costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
         {
@@ -1074,8 +1054,6 @@ void BackwardLocalPlanner::setPlan(const nav_msgs::msg::Path & path)
   else
   {
     this->divergenceDetectionUpdate(tfpose);
-    // SANDARD AND PREFERRED CASE ON NEW PLAN
-    // return true;
     return;
   }
 }
@@ -1091,16 +1069,6 @@ void BackwardLocalPlanner::generateTrajectory(
   int i = 0;
   while (!end)
   {
-    // add the point to the trajectory so we can draw it later if we want
-    // traj.addPoint(pos[0], pos[1], pos[2]);
-
-    // if (continued_acceleration_) {
-    //   //calculate velocities
-    //   loop_vel = computeNewVelocities(sample_target_vel, loop_vel, limits_->getAccLimits(), dt);
-    //   //RCLCPP_WARN_NAMED(nh_->get_logger(), "Generator", "Flag: %d, Loop_Vel %f, %f, %f", continued_acceleration_,
-    //   loop_vel[0], loop_vel[1], loop_vel[2]);
-    // }
-
     auto loop_vel = vel;
     // update the position of the robot using the velocities passed in
     auto newpos = computeNewPositions(currentpos, loop_vel, dt);

@@ -486,8 +486,6 @@ bool CpOdomTracker::updateClearPath(const geometry_msgs::msg::PoseStamped & base
                                                             << ", anglerr: " << goalAngleOffset);
     }
 
-    // RCLCPP_INFO(getLogger(),"Backwards, last distance: %lf < %lf accept: %d", dist,
-    // minPointDistanceBackwardThresh_, acceptBackward);
     if (
       acceptBackward &&
       baseTrajectory_.poses.size() > 1) /* we always leave at least one item, specially interesting

@@ -412,11 +412,6 @@ nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(
       tf_, costmap_ros_->getGlobalFrameID(), pstart, transformedStart, ttol);
     transformedStart.header.frame_id = costmap_ros_->getGlobalFrameID();
 
-    // geometry_msgs::msg::PoseStamped pgoal = goal;
-    // pgoal.header.stamp = nh_->now();
-    // nav_2d_utils::transformPose(tf_, costmap_ros_->getGlobalFrameID(), pgoal, transformedGoal, ttol);
-    // transformedGoal.header.frame_id = costmap_ros_->getGlobalFrameID();
-
     //--------------- FORCE GOAL POSE----------------------------
     RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] Forced goal");
     auto forcedGoal =

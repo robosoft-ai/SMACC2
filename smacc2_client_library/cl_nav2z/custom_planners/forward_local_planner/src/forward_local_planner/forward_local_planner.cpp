@@ -445,7 +445,7 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
 
   if (
     rho_error >
-    xy_goal_tolerance_)  // reguular control rule, be careful, rho error is with the carrot not with the
+    xy_goal_tolerance_)  // regular control rule, be careful, rho error is with the carrot not with the
                          // final goal (this is something to improve like the backwards planner)
   {
     vetta = k_rho_ * rho_error;

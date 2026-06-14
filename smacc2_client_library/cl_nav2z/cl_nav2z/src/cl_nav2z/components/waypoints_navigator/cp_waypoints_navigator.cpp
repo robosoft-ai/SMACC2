@@ -263,9 +263,6 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
 
     plannerSwitcher->commitPublish();
 
-    // publish stuff
-    // rclcpp::sleep_for(5s);
-
     RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Getting odom tracker");
 
     cl_nav2z::odom_tracker::CpOdomTracker * odomTracker;
@@ -474,9 +471,6 @@ void CpWaypointNavigatorBase::loadWayPointsFromFile(std::string filepath)
 
         try
         {
-          // (*wp_node)[i]["name"] >> wp.name;
-          // (*wp_node)[i]["frame_id"] >> wp.header.frame_id;
-
           auto wpnodei = (*wp_node)[i];
           wp.position.x = wpnodei["position"]["x"].as<double>();
           wp.position.y = wpnodei["position"]["y"].as<double>();
@@ -547,8 +541,6 @@ void CpWaypointNavigatorBase::loadWayPointsFromFile2(std::string filepath)
 
         try
         {
-          // (*wp_node)[i]["name"] >> wp.name;
-          // (*wp_node)[i]["frame_id"] >> wp.header.frame_id;
           wp.position.x = (*wp_node)[i]["x"].as<double>();
           wp.position.y = (*wp_node)[i]["y"].as<double>();
           auto name = (*wp_node)[i]["name"].as<std::string>();

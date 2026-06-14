@@ -27,8 +27,6 @@
 
 namespace smacc2
 {
-// template <typename T>
-// using  event=sc::event<T>;
 
 namespace default_events
 {
@@ -41,7 +39,6 @@ struct EvActionFeedback : sc::event<EvActionFeedback<ActionFeedback, TOrthogonal
 {
   smacc2::client_bases::ISmaccActionClient * client;
   ActionFeedback feedbackMessage;
-  // boost::any feedbackMessage;
 };
 
 template <typename TSource, typename TOrthogonal>
