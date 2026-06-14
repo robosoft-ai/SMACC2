@@ -67,15 +67,28 @@ jobs:
               'cpp/sizeof-side-effect',
           }
           def is_rclcpp_comment(result):
-              """Return True if every flagged location is a commented-out RCLCPP_ call."""
-              for loc in result.get('locations', []):
-                  snippet = (loc.get('physicalLocation', {})
-                                .get('region', {})
-                                .get('snippet', {})
-                                .get('text', ''))
+              """Return True if every flagged location is a commented-out RCLCPP_ call.
+              Falls back to reading the source file when SARIF snippet.text is absent."""
+              locs = result.get('locations', [])
+              if not locs:
+                  return False
+              for loc in locs:
+                  phys = loc.get('physicalLocation', {})
+                  region = phys.get('region', {})
+                  snippet = region.get('snippet', {}).get('text', '')
+                  if not snippet:
+                      uri = phys.get('artifactLocation', {}).get('uri', '')
+                      start_line = region.get('startLine', 0)
+                      if uri and start_line:
+                          try:
+                              with open(uri) as src:
+                                  lines = src.readlines()
+                              snippet = lines[start_line - 1] if start_line <= len(lines) else ''
+                          except (IOError, OSError):
+                              return False
                   if not re.search(r'//\s*RCLCPP_', snippet):
                       return False
-              return bool(result.get('locations'))
+              return True
           def is_smacc_tracing_header_guard(result):
               """Suppress header-guard warnings for smacc_tracing files.
               trace_provider.hpp uses the lttng multi-include pattern which
