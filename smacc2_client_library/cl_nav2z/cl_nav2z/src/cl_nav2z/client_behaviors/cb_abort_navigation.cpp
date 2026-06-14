@@ -33,8 +33,6 @@ CbAbortNavigation::CbAbortNavigation() {}
 
 void CbAbortNavigation::onEntry()
 {
-  // this->sendGoal(goal);
-
   this->nav2ActionInterface_->cancelNavigation();
   this->postSuccessEvent();
 }

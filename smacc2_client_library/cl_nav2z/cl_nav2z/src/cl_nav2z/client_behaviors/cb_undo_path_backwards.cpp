@@ -56,12 +56,9 @@ void CbUndoPathBackwards::onEntry()
   CpGoalCheckerSwitcher * goalCheckerSwitcher;
   requiresComponent(goalCheckerSwitcher, ComponentRequirement::HARD);
 
-  // this line is used to flush/reset backward planner in the case it were already there
-  // plannerSwitcher->setDefaultPlanners();
   if (forwardpath.poses.size() > 0)
   {
     goal.pose = forwardpath.poses.front();
-    //goal.pose.header.stamp = getNode()->now();
     goal.pose.header.stamp = rclcpp::Time(0);
 
     if (options_ && options_->undoControllerName_)

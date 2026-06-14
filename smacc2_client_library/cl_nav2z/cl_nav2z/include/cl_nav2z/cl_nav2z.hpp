@@ -59,29 +59,6 @@ public:
 private:
   std::string actionServerName_;
 
-  // ✅ PURE ORCHESTRATOR PATTERN - ALL LEGACY METHODS REMOVED:
-  //
-  // ❌ REMOVED: sendGoal() methods - use CpNav2ActionInterface::sendGoal()
-  // ❌ REMOVED: signal connection proxy methods - use CpNav2ActionInterface::onNavigationSucceeded()
-  // ❌ REMOVED: signal getter methods - signals owned by components
-  // ❌ REMOVED: component accessor methods - use requiresComponent()
-  // ❌ REMOVED: convenience wrapper methods - use component APIs directly
-  // ❌ REMOVED: type aliases - use component types directly
-  //
-  // ✅ NEW BEHAVIOR PATTERN:
-  //   class CbNavigateForward : public CbNav2ZClientBehaviorBase {
-  //     void onEntry() override {
-  //       CpNav2ActionInterface* navInterface;
-  //       this->requiresComponent(navInterface);
-  //       navInterface->onNavigationSucceeded(&CbNavigateForward::onSuccess, this);
-  //       Goal goal = createForwardGoal();
-  //       navInterface->sendGoal(goal);
-  //     }
-  //   };
-  //
-  // ✅ SMACC2 SIGNAL COMPLIANCE: All signal connections use createSignalConnection()
-  // ✅ FRAMEWORK CONSISTENCY: Matches cl_keyboard pure component pattern
-  // ✅ CLEAN SEPARATION: Client orchestrates, components implement, behaviors consume
 };
 
 }  // namespace cl_nav2z

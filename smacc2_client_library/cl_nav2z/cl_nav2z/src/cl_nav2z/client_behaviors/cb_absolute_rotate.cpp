@@ -71,7 +71,6 @@ void CbAbsoluteRotate::onEntry()
 
   nav2_msgs::action::NavigateToPose::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
-  //goal.pose.header.stamp = getNode()->now();
 
   auto targetAngle = goal_angle * M_PI / 180.0;
   goal.pose.pose.position = currentPoseMsg.position;

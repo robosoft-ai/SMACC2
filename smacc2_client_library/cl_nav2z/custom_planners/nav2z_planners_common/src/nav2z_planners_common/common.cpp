@@ -98,13 +98,8 @@ geometry_msgs::msg::PoseStamped makePureStraightSubPlan(
   double steps = length / dx;
   double dt = 1.0 / steps;
 
-  // geometry_msgs::msg::PoseStamped end;
-  // end.pose.orientation = startOrientedPose.pose.orientation;
-  // end.pose.position = goal;
   plan.push_back(startOrientedPose);
 
-  // RCLCPP_INFO_STREAM(nh_->get_logger(),"Pure straight, start: " << startOrientedPose << std::endl << "end: " <<
-  // goal);
   for (double t = 0; t <= 1.0; t += dt)
   {
     geometry_msgs::msg::PoseStamped p = startOrientedPose;

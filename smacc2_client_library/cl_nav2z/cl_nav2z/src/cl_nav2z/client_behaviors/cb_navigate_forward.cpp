@@ -114,7 +114,6 @@ void CbNavigateForward::onEntry()
   // action goal
   nav2_msgs::action::NavigateToPose::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
-  //goal.pose.header.stamp = getNode()->now();
   tf2::toMsg(targetPose, goal.pose.pose);
   RCLCPP_INFO_STREAM(
     getLogger(), "[" << getName() << "]" << " TARGET POSE FORWARD: " << goal.pose.pose);

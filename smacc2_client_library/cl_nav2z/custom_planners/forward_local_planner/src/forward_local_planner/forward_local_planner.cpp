@@ -71,7 +71,6 @@ void ForwardLocalPlanner::configure(
   const std::shared_ptr<tf2_ros::Buffer> tf,
   const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
-  // nh_ = rclcpp::Node::make_shared("~/ForwardLocalPlanner");
   nh_ = node.lock();
   costmapRos_ = costmap_ros;
   tf_ = tf;
@@ -79,8 +78,6 @@ void ForwardLocalPlanner::configure(
   k_rho_ = 1.0;
   k_alpha_ = -0.4;
   k_betta_ = -1.0;  // set to zero means that orientation is not important
-  // k_betta_ = 1.0;
-  // betta_offset_=0;
 
   goalReached_ = false;
   carrot_distance_ = 0.4;
@@ -88,8 +85,6 @@ void ForwardLocalPlanner::configure(
   xy_goal_tolerance_ = -1;
   max_linear_x_speed_ = 1.0;
   max_angular_z_speed_ = 2.0;
-
-  // rclcpp::Node::SharedPtr private_nh("~");
 
   currentPoseIndex_ = 0;
 
@@ -500,10 +495,6 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
   cmd_vel.twist.linear.x = vetta;
   cmd_vel.twist.angular.z = gamma;
 
-  // clamp(cmd_vel, max_linear_x_speed_, max_angular_z_speed_);
-
-  // RCLCPP_INFO_STREAM(nh_->get_logger(), "Local planner: "<< cmd_vel);
-
   publishGoalMarker(goalposition.x, goalposition.y, betta);
 
   RCLCPP_DEBUG_STREAM(
@@ -521,15 +512,10 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
                          << " xy_goal_tolerance:" << xy_goal_tolerance_ << std::endl
                          << " yaw_goal_tolerance:" << yaw_goal_tolerance_ << std::endl);
 
-  // if(cmd_vel.linear.x==0 && cmd_vel.angular.z == 0 )
-  //{
-  //}
-
   // integrate trajectory and check collision
 
   assert(currentPose.header.frame_id == "odom" || currentPose.header.frame_id == "map");
   auto global_pose = currentPose;
-  //->getRobotPose(global_pose);
 
   auto * costmap2d = costmapRos_->getCostmap();
   auto yaw = tf2::getYaw(global_pose.pose.orientation);

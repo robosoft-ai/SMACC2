@@ -117,10 +117,6 @@ private:
 
   bool checkCarrotHalfPlainConstraint(const geometry_msgs::msg::PoseStamped & pose);
 
-  // void reconfigCB(::backward_local_planner::BackwardLocalPlannerConfig &config, uint32_t level);
-  // dynamic_reconfigure::Server<::backward_local_planner::BackwardLocalPlannerConfig> paramServer_;
-  // dynamic_reconfigure::Server<::backward_local_planner::BackwardLocalPlannerConfig>::CallbackType f;
-
   rclcpp_lifecycle::LifecycleNode::SharedPtr nh_;
   std::string name_;
 

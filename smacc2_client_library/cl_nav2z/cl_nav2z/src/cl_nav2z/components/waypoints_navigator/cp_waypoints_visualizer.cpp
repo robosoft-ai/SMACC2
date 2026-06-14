@@ -148,7 +148,6 @@ void CpWaypointsVisualizer::update()
     i++;
   }
 
-  //markers_.header.stamp = getNode()->now();
   markersPub_->publish(markers_);
   markersPub_->publish(markerLabels_);
 }

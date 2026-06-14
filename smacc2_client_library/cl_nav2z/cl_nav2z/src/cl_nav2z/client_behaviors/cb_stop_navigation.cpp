@@ -33,18 +33,12 @@ CbStopNavigation::CbStopNavigation() {}
 
 void CbStopNavigation::onEntry()
 {
-  // this->sendGoal(goal);
-
-  // this->cancelGoal();
-
   cl_nav2z::CpPose * poseComponent;
   this->requiresComponent(poseComponent, ComponentRequirement::HARD);
 
   this->setGoal(poseComponent->toPoseMsg());
 
   CbNavigateGlobalPosition::onEntry();
-
-  // this->sendGoal(goal);
 }
 
 void CbStopNavigation::onExit() {}

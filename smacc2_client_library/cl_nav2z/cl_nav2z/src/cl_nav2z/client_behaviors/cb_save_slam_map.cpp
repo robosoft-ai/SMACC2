@@ -34,40 +34,12 @@ namespace cl_nav2z
 {
 using namespace std::chrono_literals;
 
-CbSaveSlamMap::CbSaveSlamMap() : CbServiceCall("/map_saver/save_map", getRequest())
-{
-  // : CbServiceCall("/slam_toolbox/save_map",
-  //                   getRequest()) {
-
-  // map_name.data = "saved_map";
-  // auto request = getRequest(map_name);
-  // RCLCPP_INFO_STREAM(getLogger(), "Save Slam Map built");
-}
-
-// void onEntry() override {}
+CbSaveSlamMap::CbSaveSlamMap() : CbServiceCall("/map_saver/save_map", getRequest()) {}
 
 void CbSaveSlamMap::onExit() {}
 
-std::shared_ptr<nav2_msgs::srv::SaveMap::Request> CbSaveSlamMap::getRequest(
-  /*slam_toolbox::srv::SaveMap_Request_<std::allocator<void> >::_name_type saved_map_name*/)
+std::shared_ptr<nav2_msgs::srv::SaveMap::Request> CbSaveSlamMap::getRequest()
 {
-  nav2_msgs::srv::SaveMap_Request map_save;
-  std_msgs::msg::String map_name;
-
-  // // map_name.data = "saved_map";
-  // map_save.map_topic = "map";
-  // map_save.map_url = "${workspacesFolder}/maps/saved_map";
-  // map_save.image_format = "png";
-  // map_save.occupied_thresh = 0.65;
-  // map_save.free_thresh = 0.25;
-  // map_save.map_mode = "trinary";
-
-  // // auto request = std::make_shared<slam_toolbox::srv::SaveMap::Request>();
-  // // // request->name = saved_map_name;
-  // // request->name = map_name;
-  // // return request;
-  // auto request = std::make_shared<nav2_msgs::srv::SaveMap::Request>(map_save);
-
   auto request = std::make_shared<nav2_msgs::srv::SaveMap::Request>();
   request->map_topic = "map";
   request->map_url = "/tmp/saved_map";
@@ -79,7 +51,3 @@ std::shared_ptr<nav2_msgs::srv::SaveMap::Request> CbSaveSlamMap::getRequest(
   return request;
 }
 }  // namespace cl_nav2z
-
-// slam_toolbox::srv::SaveMap_Request_<std::allocator<void> >::_name_type
-
-// std_msgs::msg::String_<std::allocator<void> >

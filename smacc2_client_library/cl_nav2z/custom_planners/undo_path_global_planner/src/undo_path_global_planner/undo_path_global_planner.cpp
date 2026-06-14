@@ -453,9 +453,6 @@ nav_msgs::msg::Path UndoPathGlobalPlanner::createPlan(
     }
   }
 
-  // if(planMsg.poses.size() == 1)
-  //   planMsg.poses.clear();
-
   //--------  PUBLISHING RESULTS ---------------------------------------
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "[UndoPathGlobalPlanner] plan publishing. size: " << plan.size());

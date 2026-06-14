@@ -38,6 +38,5 @@ public:
   CbRotateLookAt(const geometry_msgs::msg::PoseStamped & lookAtPose);
 
   void onEntry() override;
-  // void onExit() override;
 };
 }  // namespace cl_nav2z

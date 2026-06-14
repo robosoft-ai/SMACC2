@@ -35,22 +35,6 @@ CbNavigateNamedWaypoint::~CbNavigateNamedWaypoint() {}
 
 void CbNavigateNamedWaypoint::onEntry()
 {
-  // waypointsNavigator_ = this->getComponent<CpWaypointNavigator>();
-  // waypointsNavigator_->sendNextGoal(options_);
-
-  // auto waypointname = waypointsNavigator_->getCurrentWaypointName();
-
-  // if(waypointname)
-  // {
-  // RCLCPP_INFO(
-  //   getLogger(), "[CbNavigateNamedWaypoint] current iteration waypoints i: %ld with name '%s'",
-  //   waypointsNavigator_->getCurrentWaypointIndex(), waypointname->c_str());  }
-  // else
-  // {
-  // RCLCPP_INFO(
-  //   getLogger(), "[CbNavigateNamedWaypoint] current iteration waypoints i: %ld",
-  //   waypointsNavigator_->getCurrentWaypointIndex());  }
-
   CpWaypointNavigator * waypointsNavigator_;
   this->requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);
 

@@ -49,27 +49,9 @@ void CpGoalCheckerSwitcher::setGoalCheckerId(std::string goalcheckerid)
   RCLCPP_INFO_STREAM(
     getLogger(), "[CpGoalCheckerSwitcher] Setting goal checker: " << goalcheckerid);
 
-  // controller_server_node_->wait_for_service();
-  // std::vector<rclcpp::Parameter> params{ rclcpp::Parameter("current_goal_checker", goalcheckerid) };
-  // auto futureResults = controller_server_node_->set_parameters(params);
-
   std_msgs::msg::String msg;
   msg.data = goalcheckerid;
   this->goal_checker_selector_pub_->publish(msg);
-
-  // int i = 0;
-  // for (auto& res : futureResults.get())
-  // {
-  //   RCLCPP_INFO_STREAM(getLogger(), "[CpGoalCheckerSwitcher] parameter result: "
-  //                                                   << params[i].get_name() << "=" << params[i].as_string()
-  //                                                   << ". Result: " << res.successful);
-  //   i++;
-
-  //   if (!res.successful)
-  //     RCLCPP_ERROR_STREAM(this->getLogger(), "[CpGoalCheckerSwitcher] goal checker could not properly
-  //     switch "
-  //                                                        "the goal checker of the controller_server");
-  // }
 }
 
 }  // namespace cl_nav2z

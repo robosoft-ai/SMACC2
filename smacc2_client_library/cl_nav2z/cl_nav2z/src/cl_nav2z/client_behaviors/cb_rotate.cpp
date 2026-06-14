@@ -65,7 +65,6 @@ void CbRotate::onEntry()
 
   nav2_msgs::action::NavigateToPose::Goal goal;
   goal.pose.header.frame_id = referenceFrame;
-  //goal.pose.header.stamp = getNode()->now();
 
   auto currentAngle = tf2::getYaw(currentPoseMsg.orientation);
   auto targetAngle = currentAngle + angle_increment_degree * M_PI / 180.0;

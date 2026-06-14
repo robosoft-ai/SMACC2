@@ -34,13 +34,9 @@ void CbTrackPathOdometry::onEntry()
   requiresComponent(poseComponent, ComponentRequirement::HARD);
   poseComponent->freezeReferenceFrame();
 
-  // poseComponent->setReferenceFrame("odom");
-
   RCLCPP_INFO(this->getLogger(), "Odom tracker clear path");
   cl_nav2z::odom_tracker::CpOdomTracker * odomTracker;
   this->requiresComponent(odomTracker, ComponentRequirement::HARD);
-  // odomTracker->setOdomFrame("odom");
-
   odomTracker->clearPath();
 }
 

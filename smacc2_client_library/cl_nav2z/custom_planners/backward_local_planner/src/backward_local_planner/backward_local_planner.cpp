@@ -99,7 +99,6 @@ void BackwardLocalPlanner::configure(
   const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {
   this->costmapRos_ = costmap_ros;
-  // rclcpp::Node::SharedPtr nh("~/BackwardLocalPlanner");
   this->nh_ = parent.lock();
   this->name_ = name;
   this->tf_ = tf;
@@ -428,7 +427,6 @@ bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(
   double goaldist = sqrt(gdx * gdx + gdy * gdy);
 
   auto abs_angle_error = fabs(angle_error);
-  // final_alpha_error =
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "[BackwardLocalPlanner] goal check. linear dist: "
                          << goaldist << "(" << this->xy_goal_tolerance_ << ")" << ", angular dist: "
@@ -437,7 +435,6 @@ bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(
   linearGoalReached = goaldist < this->xy_goal_tolerance_;
 
   return linearGoalReached && abs_angle_error < this->yaw_goal_tolerance_;
-  // return goal_checker->isGoalReached(tfpose.pose, finalgoal.pose, currentTwist);
 }
 
 /**
@@ -713,9 +710,6 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   }
 
   // ---------------------- TRAJECTORY PREDICTION AND COLLISION AVOIDANCE ---------------------
-  // cmd_vel.twist.linear.x=0;
-  // cmd_vel.twist.angular.z = 0;
-
   geometry_msgs::msg::PoseStamped global_pose;
   costmapRos_->getRobotPose(global_pose);
 
@@ -868,8 +862,6 @@ bool BackwardLocalPlanner::findInitialCarrotGoal(geometry_msgs::msg::PoseStamped
 
   // initial state check
   computeCurrentEuclideanAndAngularErrorsToCarrotGoal(tfpose, lineardisterr, angleerr);
-
-  // double minpointdist = std::numeric_limits<double>::max();
 
   // lets set the carrot-goal in the correct place with this loop
   while (currentCarrotPoseIndex_ < (int)backwardsPlanPath_.size() && !inCarrotRange)

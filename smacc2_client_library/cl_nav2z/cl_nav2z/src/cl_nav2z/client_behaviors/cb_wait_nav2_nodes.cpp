@@ -87,7 +87,6 @@ void CbWaitNav2Nodes::onEntry()
   }
   RCLCPP_INFO(getLogger(), ss.str().c_str());
 
-  //rclcpp::SensorDataQoS qos;
   rclcpp::SubscriptionOptions sub_option;
 
   sub_ = getNode()->create_subscription<bond::msg::Status>(

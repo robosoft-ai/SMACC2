@@ -119,44 +119,11 @@ CpCostmapProxy::CpCostmapProxy(
   std::string /*costmap_name*/, std::string /*enablePropertyName*/, rclcpp::Node::SharedPtr nh)
 : nh_(nh)
 {
-  // this->costmapName_ = costmap_name + "/set_parameters";
-  // dynamic_reconfigure::BoolParameter enableField;
-  // enableField.name = "enabled";
-  // enableField.value = true;
-
-  // enableReq.bools.push_back(enableField);
-
-  // enableField.value = false;
-  // disableReq.bools.push_back(enableField);
   RCLCPP_ERROR(nh->get_logger(), "costmap switch not implemented %s", costmapName_.c_str());
 }
 
 void CpCostmapProxy::setCostmapEnabled(bool /*value*/)
 {
-  // dynamic_reconfigure::ReconfigureRequest srv_req;
-  // dynamic_reconfigure::ReconfigureResponse srv_resp;
-
-  // if (value)
-  //     srv_req.config = enableReq;
-  // else
-  //     srv_req.config = disableReq;
-
-  // if (ros::service::exists(costmapName_, true))
-  // {
-  //     RCLCPP_INFO(getLogger(),"sending dynamic reconfigure request: %s", costmapName_.c_str());
-  //     ros::service::call(costmapName_, srv_req, srv_resp);
-  // }
-  // else
-  // {
-  //     RCLCPP_WARN(getLogger(),"could not call dynamic reconfigure server. It does not exist: %s", costmapName_.c_str());
-  // }
-
   RCLCPP_ERROR(nh_->get_logger(), "costmap switch not implemented %s", costmapName_.c_str());
 }
-
-// void CpCostmapProxy::dynreconfCallback(const dynamic_reconfigure::Config::ConstPtr &configuration_update)
-// {
-//     // auto gp = std::find_if(configuration_update->strs.begin(), configuration_update->strs.begin(),
-//     //                        [&](const dynamic_reconfigure::StrParameter &p) { return p.name == "base_global_planner" && p.value == desired_global_planner_; });
-// }
 }  // namespace cl_nav2z

@@ -100,14 +100,7 @@ protected:
   smacc2::client_core_components::CpActionClient<nav2_msgs::action::NavigateToPose> *
     actionClient_ = nullptr;
 
-  // Common legacy member for result tracking
   rclcpp_action::ResultCode navigationResult_;
-
-  // REMOVED: All legacy client-based members
-  // ❌ cl_nav2z::ClNav2Z * nav2zClient_
-  // ❌ cl_nav2z::ClNav2Z::SmaccNavigateResultSignal::SharedPtr navigationCallback_
-  // ❌ rclcpp_action::ResultCode navigationResult_
-  // ❌ goalHandleFuture_
 
   // Virtual methods for derived classes - now use component types
   virtual void onNavigationResult(const components::CpNav2ActionInterface::WrappedResult &) {}

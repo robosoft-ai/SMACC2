@@ -145,45 +145,6 @@ void CbPositionControlFreeSpace::onEntry()
       integral_linear_ += distance_to_target;
       integral_angular_ += yaw_error;
 
-      // tf2::fromMsg(currentPose.orientation, q);
-      // auto currentYaw = tf2::getYaw(currentPose.orientation);
-      // auto deltaAngle = angles::shortest_angular_distance(prevyaw,
-      // currentYaw); countAngle += deltaAngle;
-
-      // prevyaw = currentYaw;
-      // double angular_error = targetYaw_ - countAngle;
-
-      // auto omega = angular_error * k_betta_;
-      // cmd_vel.linear.x = 0;
-      // cmd_vel.linear.y = 0;
-      // cmd_vel.linear.z = 0;
-      // cmd_vel.angular.z =
-      //   std::min(std::max(omega, -fabs(max_angular_yaw_speed_)),
-      //   fabs(max_angular_yaw_speed_));
-
-      // RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] delta angle: "
-      // << deltaAngle); RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "]
-      // cumulated angle: " << countAngle); RCLCPP_INFO_STREAM(getLogger(), "["
-      // << getName() << "] k_betta_: " << k_betta_);
-
-      // RCLCPP_INFO_STREAM(
-      //   getLogger(), "[" << getName() << "] angular error: " << angular_error
-      //   << "("
-      //                    << yaw_goal_tolerance_rads_ << ")");
-      // RCLCPP_INFO_STREAM(
-      //   getLogger(), "[" << getName() << "] command angular speed: " <<
-      //   cmd_vel.angular.z);
-
-      // if (fabs(angular_error) < yaw_goal_tolerance_rads_)
-      // {
-      //   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] GOAL REACHED.
-      //   Sending stop command."); goalReached_ = true; cmd_vel.linear.x = 0;
-      //   cmd_vel.angular.z = 0;
-      //   break;
-      // }
-
-      // this->cmd_vel_pub_->publish(cmd_vel);
-
       loop_rate.sleep();
     }
   }

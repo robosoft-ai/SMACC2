@@ -36,11 +36,9 @@ struct CbSaveSlamMap : public CbServiceCall<nav2_msgs::srv::SaveMap>
 {
 public:
   CbSaveSlamMap();
-  // void onEntry() override {}
 
   void onExit() override;
 
-  std::shared_ptr<nav2_msgs::srv::SaveMap::Request> getRequest(
-    /*slam_toolbox::srv::SaveMap_Request_<std::allocator<void> >::_name_type saved_map_name*/);
+  std::shared_ptr<nav2_msgs::srv::SaveMap::Request> getRequest();
 };
 }  // namespace cl_nav2z
