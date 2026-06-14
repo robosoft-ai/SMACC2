@@ -61,11 +61,33 @@ jobs:
       - name: Filter generated paths from SARIF
         run: |
           python3 - <<'EOF'
-          import json, glob
+          import json, glob, re
           SUPPRESSED_RULES = {
               'cpp/empty-block',
               'cpp/sizeof-side-effect',
           }
+          def is_rclcpp_comment(result):
+              """Return True if every flagged location is a commented-out RCLCPP_ call."""
+              for loc in result.get('locations', []):
+                  snippet = (loc.get('physicalLocation', {})
+                                .get('region', {})
+                                .get('snippet', {})
+                                .get('text', ''))
+                  if not re.search(r'//\s*RCLCPP_', snippet):
+                      return False
+              return bool(result.get('locations'))
+          def is_smacc_tracing_header_guard(result):
+              """Suppress header-guard warnings for smacc_tracing files.
+              trace_provider.hpp uses the lttng multi-include pattern which
+              is intentionally incompatible with #pragma once."""
+              if 'header' not in result.get('ruleId', '').lower():
+                  return False
+              return any(
+                  'smacc_tracing' in loc.get('physicalLocation', {})
+                                        .get('artifactLocation', {})
+                                        .get('uri', '')
+                  for loc in result.get('locations', [])
+              )
           for path in glob.glob('sarif-results/*.sarif'):
               with open(path) as f:
                   sarif = json.load(f)
@@ -74,6 +96,8 @@ jobs:
                   run['results'] = [
                       r for r in results
                       if r.get('ruleId', '') not in SUPPRESSED_RULES
+                      and not is_rclcpp_comment(r)
+                      and not is_smacc_tracing_header_guard(r)
                       and not any(
                           loc.get('physicalLocation', {})
                              .get('artifactLocation', {})
