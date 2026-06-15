@@ -93,7 +93,6 @@ void CbNavigateGlobalPosition::execute()
   this->requiresComponent(p, ComponentRequirement::HARD);
 
   auto referenceFrame = p->getReferenceFrame();
-  // auto currentPoseMsg = p->toPoseMsg();
 
   RCLCPP_INFO(getLogger(), "Sending Goal to MoveBase");
   nav2_msgs::action::NavigateToPose::Goal goal;

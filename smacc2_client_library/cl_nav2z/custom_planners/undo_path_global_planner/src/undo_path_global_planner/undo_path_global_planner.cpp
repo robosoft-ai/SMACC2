@@ -335,8 +335,6 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(
   // REVERSE FORWARD PASS
   if (mindistindex != -1)
   {
-    // plan.push_back(start);
-
     RCLCPP_WARN_STREAM(
       nh_->get_logger(),
       "[UndoPathGlobalPlanner] Creating the backwards plan from odom tracker path (, "

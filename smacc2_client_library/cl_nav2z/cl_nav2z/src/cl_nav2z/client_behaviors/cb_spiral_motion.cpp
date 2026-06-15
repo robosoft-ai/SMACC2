@@ -42,17 +42,6 @@ CbSpiralMotion::CbSpiralMotion(std::optional<CbSpiralMotionOptions> options)
 
 void CbSpiralMotion::onEntry()
 {
-  /*
- struct CbSpiralMotionOptions
-{
-  std::optional<float> linearVelocity = 0.0f;
-  std::optional<float> maxLinearVelocity = 1.0f;
-  std::optional<float> initialAngularVelocity = 1.0f;
-  std::optional<rclcpp::Duration> spiralMotionDuration = rclcpp::Duration::from_seconds(120);
-  std::optional <float> finalRadius=10.0f;//meters
-};
-   */
-
   auto linearVelocity = *(options_.linearVelocity);
   auto maxLinearVelocity = *(options_.maxLinearVelocity);
   auto initialAngularVelocity = *(options_.initialAngularVelocity);
@@ -98,8 +87,6 @@ void CbSpiralMotion::onEntry()
     {
       cmd_vel.linear.x = maxLinearVelocity;
     }
-
-    // cmd_vel.angular.z -= signVal * angularAcceleration * dt;
 
     float elapsedTimeFactor = current_time.seconds() / spiralMotionDuration.seconds();
     cmd_vel.angular.z = initialAngularVelocity * (1.0f - elapsedTimeFactor) +

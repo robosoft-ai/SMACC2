@@ -30,10 +30,6 @@
 #include <cl_nav2z/cl_nav2z.hpp>
 #include <smacc2/component.hpp>
 
-// #include <dynamic_reconfigure/DoubleParameter.h>
-// #include <dynamic_reconfigure/Reconfigure.h>
-// #include <dynamic_reconfigure/Config.h>
-
 namespace cl_nav2z
 {
 class CpCostmapProxy;

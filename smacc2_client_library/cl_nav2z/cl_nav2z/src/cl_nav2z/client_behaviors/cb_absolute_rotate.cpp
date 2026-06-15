@@ -123,7 +123,6 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
   std::string localPlannerName;
   std::vector<rclcpp::Parameter> parameters;
 
-  // dynamic_reconfigure::DoubleParameter yaw_goal_tolerance;
   rclcpp::Parameter yaw_goal_tolerance("goal_checker.yaw_goal_tolerance");
 
   rclcpp::Parameter max_vel_theta, min_vel_theta;
@@ -173,9 +172,6 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
     {
       if (isRosBasePlanner)
       {
-        // nh.getParam(nodename + "/"  + localPlannerName+"/min_vel_theta", oldMinVelTheta);
-        // getCurrentState()->getParam(nodename + "/" + localPlannerName + "/max_vel_theta", oldMaxVelTheta);
-
         // save old yaw tolerance
         auto fut = parameters_client->get_parameters(
           {localPlannerName + ".max_vel_theta"},

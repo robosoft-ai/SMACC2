@@ -36,6 +36,5 @@ void declareOrSet(rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::string
   if (!node->has_parameter(param))
   {
     node->declare_parameter(param, value);
-    // node->set_parameter(rclcpp::Parameter(param, value));
   }
 }

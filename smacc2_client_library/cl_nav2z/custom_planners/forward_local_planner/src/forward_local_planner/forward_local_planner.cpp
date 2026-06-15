@@ -407,7 +407,6 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
       // RCLCPP_INFO(nh_->get_logger(), "End Local planner");
       ok = true;
       currentPoseIndex_ = (int)plan_.size() - 1;
-      // return true;
     }
   }
 

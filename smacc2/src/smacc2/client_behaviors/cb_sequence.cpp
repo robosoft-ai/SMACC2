@@ -76,7 +76,6 @@ void CbSequence::onEntry()
 
     if (consume_)
     {
-      // bh_->waitOnEntryThread();
       this->conn_.disconnect();
       this->conn2_.disconnect();
 
@@ -113,7 +112,6 @@ void CbSequence::onSubNodeAbort()
 {
   RCLCPP_INFO(
     getLogger(), "[CbSequence %ld] Abort NextCbSequence %ld", (long)this, sequenceNodes_.size());
-  // bh_->waitOnEntryThread();
   this->conn_.disconnect();
   this->conn2_.disconnect();
 

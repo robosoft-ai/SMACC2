@@ -543,7 +543,6 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
     cmd_vel.twist.angular.z = 0;
     RCLCPP_INFO_STREAM(
       nh_->get_logger(), "[BackwardLocalPlanner] emergency stop, exit compute commands");
-    // return false;
     return cmd_vel;
   }
 
@@ -599,7 +598,6 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   if (currentPoseInGoal && carrotInFinalGoalIndex)
   {
     goalReached_ = true;
-    // backwardsPlanPath_.clear();
     RCLCPP_INFO_STREAM(
       nh_->get_logger(),
       "[BackwardLocalPlanner] GOAL REACHED. Send stop command and skipping trajectory collision: "
@@ -777,7 +775,6 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
         backwardsPlanPath_.size());
       cmd_vel.twist.angular.z = 0;
       cmd_vel.twist.linear.x = 0;
-      // return false;
     }
   }
 
@@ -789,7 +786,6 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
       "[BackwardLocalPlanner] accepted local trajectory free of obstacle. Local planner "
       "continues.");
     return cmd_vel;
-    // return true;
   }
   else  // that is not appceted because existence of obstacles
   {
@@ -813,7 +809,6 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
         RCLCPP_WARN(
           nh_->get_logger(), "[BackwardLocalPlanner][Abort local] timeout! duration %lf/%f",
           waitingduration.seconds(), waitingTimeout_.seconds());
-        // return false;
         cmd_vel.twist.linear.x = 0;
         cmd_vel.twist.angular.z = 0;
         return cmd_vel;
@@ -1035,7 +1030,6 @@ void BackwardLocalPlanner::setPlan(const nav_msgs::msg::Path & path)
   if (path.poses.size() == 0)
   {
     RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] received plan without any pose");
-    // return true;
     return;
   }
 

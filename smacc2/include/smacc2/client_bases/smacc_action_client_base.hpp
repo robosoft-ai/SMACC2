@@ -206,12 +206,6 @@ public:
         getLogger(), "[" << getName() << "]  Action client Result goal id: "
                          << rclcpp_action::to_string(result.goal_id));
 
-      // if (goalHandle_->get_goal_id() == result.goal_id)
-      // {
-      //   // goal_result_available_ = true;
-      //   // result_ = result;
-      //   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "]  Result CB Goal id matches with last request");
-
       auto resultCallbackPtr = resultCallback.lock();
 
       if (resultCallbackPtr != nullptr)

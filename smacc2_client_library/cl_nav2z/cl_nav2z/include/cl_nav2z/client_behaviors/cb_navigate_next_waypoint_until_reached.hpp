@@ -54,14 +54,6 @@ public:
   void onNavigationActionSuccess(
     const components::CpNav2ActionInterface::WrappedResult & r) override
   {
-    // if (!isOwnActionResponse(r))
-    // {
-    //   RCLCPP_WARN(
-    //     getLogger(), "[%s] Propagating success event skipped. Action response is not ours.",
-    //     getName().c_str());
-    //   return;
-    // }
-
     navigationResult_ = r.code;
 
     RCLCPP_INFO(
