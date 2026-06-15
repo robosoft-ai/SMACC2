@@ -67,7 +67,6 @@ public:
   pid_t launchPid_;
 
 protected:
-  // std::future<std::string> result_;
   std::future<std::string> result_;
 
   typedef std::function<void> cancelCallback;

@@ -64,7 +64,6 @@ void CbRosLaunch2::onEntry()
                                                 << "LaunchMode: " << (int)launchMode_);
 
     auto result_ = smacc2::client_bases::ClRosLaunch2::executeRosLaunch(
-      // this->result_ = smacc2::client_bases::ClRosLaunch2::executeRosLaunch(
       *packageName_, *launchFileName_, breakfunction);
   }
   else if (launchMode_ == RosLaunchMode::LAUNCH_DETTACHED)

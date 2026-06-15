@@ -402,7 +402,6 @@ template <typename InitialStateType>
 void WalkStatesExecutor<InitialStateType>::walkStates(
   std::shared_ptr<SmaccStateInfo> & parentState, bool rootInitialNode)
 {
-  //rclcpp::Duration(1).sleep();
   auto currentname = demangledTypeName<InitialStateType>();
 
   std::shared_ptr<SmaccStateInfo> targetState;
@@ -411,7 +410,6 @@ void WalkStatesExecutor<InitialStateType>::walkStates(
   {
     if (parentState->stateMachine_->containsState<InitialStateType>())
     {
-      // it already exist: break;
       return;
     }
 

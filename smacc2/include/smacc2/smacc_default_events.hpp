@@ -178,7 +178,6 @@ template <
   typename TSource, typename TOrthogonal, typename TMessageType = typename TSource::TMessageType>
 struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource, TOrthogonal, TMessageType>>
 {
-  // typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
   static std::string getEventLabel()
   {
     auto typeinfo = TypeInfo::getTypeInfoFromType<TMessageType>();

@@ -190,7 +190,6 @@ public:
     postFeedbackEvent = [this](const Feedback & feedback)
     {
       auto actionFeedbackEvent = new EvActionFeedback<Feedback, TOrthogonal>();
-      // actionFeedbackEvent->client = this->owner_;
       actionFeedbackEvent->feedbackMessage = feedback;
       this->postEvent(actionFeedbackEvent);
       RCLCPP_DEBUG(getLogger(), "[%s] FEEDBACK EVENT", this->getName().c_str());

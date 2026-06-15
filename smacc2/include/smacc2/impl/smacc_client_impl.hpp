@@ -112,8 +112,7 @@ SmaccComponentType * ISmaccClient::createNamedComponent(std::string name, TArgs.
 
     ret->template onComponentInitialization<TOrthogonal, TClient>();
 
-    this->components_[componentkey] =
-      ret;  //std::dynamic_pointer_cast<smacc2::ISmaccComponent>(ret);
+    this->components_[componentkey] = ret;
     RCLCPP_DEBUG(getLogger(), "%s resource is required. Done.", tname.c_str());
   }
   else

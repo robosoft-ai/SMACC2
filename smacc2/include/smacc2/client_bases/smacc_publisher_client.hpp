@@ -69,7 +69,6 @@ public:
   template <typename MessageType>
   void publish(const MessageType & msg)
   {
-    //pub_->publish(msg);
     std::dynamic_pointer_cast<rclcpp::Publisher<MessageType>>(pub_)->publish(msg);
   }
 

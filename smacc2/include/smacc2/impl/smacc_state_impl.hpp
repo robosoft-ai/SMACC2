@@ -20,14 +20,12 @@
 
 #pragma once
 #include <smacc2/introspection/introspection.hpp>
+#include <smacc2/introspection/smacc_type_info.hpp>
 #include <smacc2/smacc_client_behavior.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 #include <smacc2/smacc_state.hpp>
-#include <smacc2/smacc_state_reactor.hpp>
-//#include <smacc2/smacc_event_generator.hpp>
-#include <smacc2/introspection/smacc_type_info.hpp>
-#include <smacc2/smacc_client_behavior.hpp>
 #include <smacc2/smacc_state_machine.hpp>
+#include <smacc2/smacc_state_reactor.hpp>
 
 namespace smacc2
 {
