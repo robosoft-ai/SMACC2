@@ -78,7 +78,6 @@ public:
     std::function<bool()> cancel_checker) override;
 
 private:
-  // rclcpp::Node::SharedPtr nh_;
   rclcpp_lifecycle::LifecycleNode::SharedPtr nh_;
   rclcpp::Subscription<nav_msgs::msg::Path>::SharedPtr forwardPathSub_;
 

@@ -84,7 +84,6 @@ void CbUndoPathBackwards::onEntry()
                        << "] Waiting for 5 seconds to get planer/controller and wait goal checker "
                           "ready");
 
-    // rclcpp::sleep_for(5s);
     RCLCPP_ERROR_STREAM(getLogger(), "[" << getName() << "] activating undo navigation planner");
 
     if (options_ && options_->goalCheckerId_)

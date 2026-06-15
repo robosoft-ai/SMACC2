@@ -77,7 +77,6 @@ void CbRosLaunch2::onEntry()
 
     RCLCPP_INFO_STREAM(getLogger(), "[CbRosLaunch2] finding Ros Launch client");
 
-    // this->requiresClient(client_);
     if (client_ != nullptr)
     {
       RCLCPP_INFO_STREAM(

@@ -223,7 +223,6 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
 
     // configuring goal
     goal.pose.header.frame_id = p->getReferenceFrame();
-    //goal.pose.header.stamp = getNode()->now();
     goal.pose.pose = next;
 
     cl_nav2z::CpPlannerSwitcher * plannerSwitcher;
@@ -244,7 +243,6 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
     }
 
     cl_nav2z::CpGoalCheckerSwitcher * goalCheckerSwitcher;
-    // this->requiresComponent(goalCheckerSwitcher, ComponentRequirement::HARD);
     this->requiresComponent(goalCheckerSwitcher, ComponentRequirement::SOFT);
 
     if (options && options->goalCheckerName_)
