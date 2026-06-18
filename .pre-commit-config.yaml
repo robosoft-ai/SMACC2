@@ -31,11 +31,17 @@ repos:
       #- id: trailing-whitespace
       - id: fix-byte-order-marker
 
+  # Check XML files against their schema
+  - repo: https://github.com/nobleo/nobleo-pre-commit
+    rev: 26.6.0
+    hooks:
+      - id: xml-schema
+
   # Python hooks
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.15.2
     hooks:
-    -   id: pyupgrade
+      - id: pyupgrade
         args: [--py311-plus]
 
   - repo: https://github.com/psf/black
