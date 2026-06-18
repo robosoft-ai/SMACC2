@@ -39,6 +39,10 @@ set_source_files_properties(
 )
 
 ament_target_dependencies(smacc2 ${dependencies})
+target_compile_definitions(smacc2 PRIVATE
+  TRACETOOLS_LTTNG_ENABLED
+  TRACETOOLS_TRACEPOINT_PROVIDER=ros2
+)
 target_link_libraries(smacc2
   ${Boost_LIBRARIES}
   ${LTTNGUST_LIBRARIES}
