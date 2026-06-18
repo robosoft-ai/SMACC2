@@ -15,14 +15,13 @@
 
   <build_depend>libboost-thread-dev</build_depend>
 
-  <depend>liblttng-ust-dev</depend>
+  <build_depend>liblttng-ust-dev</build_depend>
   <depend>rcl</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_action</depend>
   <depend>smacc2_msgs</depend>
   <depend>tracetools</depend>
-  <depend>tracetools_trace</depend>
-  <depend>tracetools_launch</depend>
+  <exec_depend>tracetools_trace</exec_depend>
 
   <exec_depend>libboost-thread</exec_depend>
 
