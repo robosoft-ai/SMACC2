@@ -17,7 +17,7 @@ find_package(rclcpp_action REQUIRED)
 find_package(smacc2_msgs REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 find_package(tracetools)
-find_package(LTTngUST REQUIRED)
+find_package(LTTngUST)
 
 set(dependencies
   rclcpp
@@ -26,7 +26,10 @@ set(dependencies
   tracetools
 )
 
-include_directories(include ${LTTNGUST_INCLUDE_DIRS})
+include_directories(include)
+if(LTTNGUST_FOUND)
+  include_directories(${LTTNGUST_INCLUDE_DIRS})
+endif()
 
 file(GLOB_RECURSE SRC_FILES src *.cpp)
 add_library(smacc2 SHARED ${SRC_FILES})
@@ -39,14 +42,20 @@ set_source_files_properties(
 )
 
 ament_target_dependencies(smacc2 ${dependencies})
-target_compile_definitions(smacc2 PRIVATE
-  TRACETOOLS_LTTNG_ENABLED
-  TRACETOOLS_TRACEPOINT_PROVIDER=ros2
-)
-target_link_libraries(smacc2
-  ${Boost_LIBRARIES}
-  ${LTTNGUST_LIBRARIES}
-)
+if(LTTNGUST_FOUND)
+  target_compile_definitions(smacc2 PRIVATE
+    TRACETOOLS_LTTNG_ENABLED
+    TRACETOOLS_TRACEPOINT_PROVIDER=ros2
+  )
+  target_link_libraries(smacc2
+    ${Boost_LIBRARIES}
+    ${LTTNGUST_LIBRARIES}
+  )
+  message(STATUS "smacc2: LTTng tracing enabled")
+else()
+  target_link_libraries(smacc2 ${Boost_LIBRARIES})
+  message(STATUS "smacc2: LTTng tracing disabled (liblttng-ust-dev not found)")
+endif()
 
 ament_export_include_directories(include)
 ament_export_libraries(smacc2)

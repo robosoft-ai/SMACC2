@@ -183,7 +183,7 @@ sessions that have already been stopped.
 
 ---
 
-## Available SMACC2 Tracepoints
+
 
 All tracepoints use the `ros2` LTTng provider.
 
