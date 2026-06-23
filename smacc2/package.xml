@@ -13,6 +13,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <build_depend>libboost-dev</build_depend>  <!-- boost/statechart -->
   <build_depend>libboost-thread-dev</build_depend>
 
   <depend>liblttng-ust-dev</depend>

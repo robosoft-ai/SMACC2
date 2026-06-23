@@ -24,7 +24,7 @@ include_directories(
 add_library(${PROJECT_NAME}
   src/cl_ros2_timer.cpp
 )
-target_link_libraries(${PROJECT_NAME} SHARED ${Boost_LIBRARIES} smacc2)
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} smacc2)
 ament_target_dependencies(${PROJECT_NAME} smacc2)
 
 ament_export_include_directories(include)
