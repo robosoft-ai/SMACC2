@@ -21,7 +21,7 @@ include_directories(
   ${smacc2_INCLUDE_DIRS}
 )
 
-add_library(${PROJECT_NAME} SHARED
+add_library(${PROJECT_NAME}
   src/cl_ros2_timer.cpp
 )
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} smacc2)
