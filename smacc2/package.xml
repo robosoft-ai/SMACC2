@@ -6,10 +6,10 @@
 
   <description>An Event-Driven, Asynchronous, Behavioral State Machine Library for ROS2 (Robotic Operating System) applications written in C++.</description>
 
-  <author email="pablo@ibrobotics.com">Pablo Inigo Blasco</author>
-  <author email="brett@robosoft.ai">Brett Aldrich</author>
   <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
   <license>Apache-2.0</license>
+  <author email="pablo@ibrobotics.com">Pablo Inigo Blasco</author>
+  <author email="brett@robosoft.ai">Brett Aldrich</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
