@@ -21,6 +21,7 @@
   <depend>forward_global_planner</depend>
   <depend>visualization_msgs</depend>
   <depend>nav_2d_utils</depend>
+  <depend>nav2z_planners_common</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
