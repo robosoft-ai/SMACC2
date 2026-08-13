@@ -106,6 +106,7 @@ void BackwardLocalPlanner::configure(
   k_rho_ = -1.0;
   k_alpha_ = 0.5;
   k_betta_ = -1.0;  // set to zero means that orientation is not important
+  carrot_distance_ = 0.4;
   carrot_angular_distance_ = 0.4;
   linear_mode_rho_error_threshold_ = 0.02;
   straightBackwardsAndPureSpinningMode_ = true;
@@ -113,6 +114,7 @@ void BackwardLocalPlanner::configure(
   max_angular_z_speed_ = 2.0;
   yaw_goal_tolerance_ = -1;
   xy_goal_tolerance_ = -1;
+  transform_tolerance_ = 0.1;
   waitingTimeout_ = rclcpp::Duration(10s);
 
   this->currentCarrotPoseIndex_ = 0;
@@ -131,6 +133,7 @@ void BackwardLocalPlanner::configure(
 
   declareOrSet(nh_, name_ + ".max_linear_x_speed", max_linear_x_speed_);
   declareOrSet(nh_, name_ + ".max_angular_z_speed", max_angular_z_speed_);
+  declareOrSet(nh_, name_ + ".transform_tolerance", transform_tolerance_);
 
   // we have to do this, for example for the case we are refining the final orientation.
   // check at some point if the carrot is reached in "goal linear distance", then we go into
@@ -617,7 +620,10 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   }
 
   // --------------------
-  double vetta, gamma;
+  // zero-initialized: straightBackwardsAndPureSpinCmd leaves them untouched when the
+  // robot is within both the linear threshold and the yaw tolerance (safe stop)
+  double vetta = 0;
+  double gamma = 0;
   if (straightBackwardsAndPureSpinningMode_)
   {
     // decorated control rule for this mode
@@ -838,8 +844,9 @@ bool BackwardLocalPlanner::findInitialCarrotGoal(geometry_msgs::msg::PoseStamped
   // initial state check
   computeCurrentEuclideanAndAngularErrorsToCarrotGoal(tfpose, lineardisterr, angleerr);
 
-  // lets set the carrot-goal in the correct place with this loop
-  while (currentCarrotPoseIndex_ < (int)backwardsPlanPath_.size() && !inCarrotRange)
+  // lets set the carrot-goal in the correct place with this loop: advance through the
+  // contiguous in-range poses and stop at the last one before leaving the carrot range
+  while (currentCarrotPoseIndex_ < (int)backwardsPlanPath_.size())
   {
     computeCurrentEuclideanAndAngularErrorsToCarrotGoal(tfpose, lineardisterr, angleerr);
 
@@ -858,16 +865,13 @@ bool BackwardLocalPlanner::findInitialCarrotGoal(geometry_msgs::msg::PoseStamped
         "[BackwardLocalPlanner] Finding initial carrot goal i=%d - in carrot Range",
         currentCarrotPoseIndex_);
       inCarrotRange = true;
-      // we are inside the goal range
+      // we are inside the goal range, keep advancing to find the last in-range pose
     }
-    else if (
-      inCarrotRange && (lineardisterr > carrot_distance_ || angleerr > carrot_angular_distance_))
+    else if (inCarrotRange)
     {
-      // we were inside the carrot range but not anymore, now we are just leaving. we want to continue forward
-      // (currentCarrotPoseIndex_++) unless we go out of the carrot range
-
-      // but we rollback last index increment (to go back inside the carrot goal scope) and start motion with that
-      // carrot goal we found
+      // we were inside the carrot range but not anymore, now we are just leaving.
+      // rollback last index increment (to go back inside the carrot goal scope) and
+      // start motion with that carrot goal we found
       currentCarrotPoseIndex_--;
       break;
     }
@@ -883,6 +887,12 @@ bool BackwardLocalPlanner::findInitialCarrotGoal(geometry_msgs::msg::PoseStamped
     currentCarrotPoseIndex_++;
     RCLCPP_INFO_STREAM(
       nh_->get_logger(), "[BackwardLocalPlanner] setPlan: fw" << currentCarrotPoseIndex_);
+  }
+
+  // the whole remaining path was in range: the carrot is the final pose
+  if (currentCarrotPoseIndex_ >= (int)backwardsPlanPath_.size())
+  {
+    currentCarrotPoseIndex_ = (int)backwardsPlanPath_.size() - 1;
   }
 
   RCLCPP_INFO_STREAM(
@@ -1025,6 +1035,10 @@ void BackwardLocalPlanner::setPlan(const nav_msgs::msg::Path & path)
   goalReached_ = false;
   inGoalPureSpinningState_ = false;
   currentCarrotPoseIndex_ = 0;
+  // re-read the tolerances from the goal checker on the next control cycle: the selected
+  // goal checker may have changed since the previous navigation (goal_checker_selector)
+  xy_goal_tolerance_ = -1;
+  yaw_goal_tolerance_ = -1;
   this->resetDivergenceDetection();
 
   if (path.poses.size() == 0)
