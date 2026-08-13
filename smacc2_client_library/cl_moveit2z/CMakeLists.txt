@@ -11,12 +11,14 @@ find_package(ament_index_cpp REQUIRED)
 
 find_package(smacc2 REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
+find_package(moveit_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
 
 set(dependencies
 moveit_ros_planning_interface
+moveit_msgs
 tf2
 tf2_ros
 smacc2

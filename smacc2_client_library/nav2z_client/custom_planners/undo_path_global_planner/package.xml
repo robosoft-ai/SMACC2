@@ -12,6 +12,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>angles</depend>
   <depend>geometry_msgs</depend>
   <depend>nav_2d_utils</depend>
   <depend>nav_msgs</depend>

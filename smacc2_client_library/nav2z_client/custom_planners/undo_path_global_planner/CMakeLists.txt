@@ -21,6 +21,7 @@ find_package(nav2_costmap_2d)
 find_package(tf2)
 find_package(tf2_geometry_msgs)
 find_package(pluginlib)
+find_package(angles)
 find_package(nav2z_planners_common)
 
 set(dependencies
@@ -32,6 +33,7 @@ set(dependencies
   tf2
   tf2_geometry_msgs
   pluginlib
+  angles
   nav_2d_utils
   nav2z_planners_common
 )

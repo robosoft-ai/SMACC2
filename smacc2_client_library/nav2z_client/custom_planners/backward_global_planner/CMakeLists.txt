@@ -22,6 +22,7 @@ find_package(pluginlib)
 find_package(forward_global_planner)
 find_package(angles)
 find_package(nav_2d_utils)
+find_package(nav2z_planners_common)
 
 set(dependencies
   nav2_core
@@ -34,6 +35,7 @@ set(dependencies
   forward_global_planner
   angles
   nav_2d_utils
+  nav2z_planners_common
 )
 
 include_directories(include)
