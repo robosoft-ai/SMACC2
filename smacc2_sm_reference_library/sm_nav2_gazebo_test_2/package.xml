@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>sm_nav2_gazebo_test_2</name>
+  <version>3.1.0</version>
+  <description>Nav2 undo path backwards test state machine for SMACC2 (radial pattern superstate)</description>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>smacc2</depend>
+  <depend>cl_ros2_timer</depend>
+  <depend>cl_keyboard</depend>
+  <depend>cl_nav2z</depend>
+  <depend>geometry_msgs</depend>
+
+  <exec_depend>nav2_bringup</exec_depend>
+  <exec_depend>forward_global_planner</exec_depend>
+  <exec_depend>forward_local_planner</exec_depend>
+  <exec_depend>backward_global_planner</exec_depend>
+  <exec_depend>backward_local_planner</exec_depend>
+  <exec_depend>pure_spinning_local_planner</exec_depend>
+  <exec_depend>undo_path_global_planner</exec_depend>
+  <exec_depend>xterm</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
