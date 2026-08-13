@@ -38,7 +38,6 @@ CbUndoPathBackwards::CbUndoPathBackwards(std::optional<CbUndoPathBackwardsOption
 
 void CbUndoPathBackwards::onEntry()
 {
-  listener = std::make_shared<tf2_ros::Buffer>(this->getNode()->get_clock());
   requiresComponent(odomTracker, ComponentRequirement::HARD);
 
   odomTracker->logStateString(false);
@@ -79,12 +78,7 @@ void CbUndoPathBackwards::onEntry()
     // received yet, thee goal switcher
     // TODO: waiting notification from global planner that it is loaded
 
-    RCLCPP_ERROR_STREAM(
-      getLogger(), "[" << getName()
-                       << "] Waiting for 5 seconds to get planer/controller and wait goal checker "
-                          "ready");
-
-    RCLCPP_ERROR_STREAM(getLogger(), "[" << getName() << "] activating undo navigation planner");
+    RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] activating undo navigation planner");
 
     if (options_ && options_->goalCheckerId_)
     {
@@ -103,15 +97,17 @@ void CbUndoPathBackwards::onExit()
 {
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Exiting: undo navigation ");
 
+  // NOTE: odomTracker was resolved in onEntry. Do NOT call requiresComponent here:
+  // this method runs in the asynchronous onExit thread while the state machine
+  // thread holds m_mutex_ during state disposal and joins this thread - a
+  // requiresComponent lookup (which locks m_mutex_) deadlocks the state machine.
   if (this->navigationResult_ == rclcpp_action::ResultCode::SUCCEEDED)
   {
     RCLCPP_INFO_STREAM(
       getLogger(), getName() << " - [CbUndoPathBackwards] Exiting: undo navigation successful, "
                                 "popping odom tracker path");
 
-    requiresComponent(odomTracker, ComponentRequirement::HARD);
     odomTracker->popPath();
-
     odomTracker->logStateString(false);
   }
   else
@@ -120,12 +116,16 @@ void CbUndoPathBackwards::onExit()
       getLogger(), getName() << " - [CbUndoPathBackwards] Exiting: undo navigation abort, avoiding "
                                 "popping current path");
 
-    requiresComponent(odomTracker, ComponentRequirement::HARD);
     odomTracker->logStateString(false);
     // navigation interrupted or aborted. The path may be not totally undone.
     // We keep the odom tracker in its current state, probably in the middle of the undoing process.
     // Could you try to repeat the behavior?
   }
+
+  // Stop consuming the recorded path once the behavior is over: CLEAR_PATH must not
+  // outlive this behavior, otherwise the tracker keeps eating paths recorded by
+  // subsequent behaviors.
+  odomTracker->setWorkingMode(WorkingMode::IDLE);
 }
 
 }  // namespace cl_nav2z

@@ -24,11 +24,45 @@ namespace cl_nav2z
 {
 CbNav2ZClientBehaviorBase::~CbNav2ZClientBehaviorBase() {}
 
-// REMOVED: All legacy implementation - behaviors now use component APIs directly
-// The base class provides component access but no complex logic
-// Individual behaviors should use:
-//   nav2ActionInterface_->sendGoal(goal)
-//   nav2ActionInterface_->onNavigationSucceeded(&Behavior::onSuccess, this)
-//   etc.
+void CbNav2ZClientBehaviorBase::sendGoal(nav2_msgs::action::NavigateToPose::Goal & goal)
+{
+  if (!nav2ActionInterface_)
+  {
+    RCLCPP_ERROR(
+      getLogger(), "[%s] Cannot send goal, CpNav2ActionInterface not available",
+      getName().c_str());
+    return;
+  }
+
+  if (!resultConnectionsInitialized_)
+  {
+    // Connect the action result signals so the behavior propagates results as
+    // EvCbSuccess/EvCbFailure and records navigationResult_. Connection lifetime is
+    // managed by the state machine (disconnected when this behavior is destroyed).
+    this->onNavigationSucceeded(&CbNav2ZClientBehaviorBase::onNavigationActionSuccess, this);
+    this->onNavigationAborted(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
+    this->onNavigationCancelled(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
+    resultConnectionsInitialized_ = true;
+  }
+
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Sending goal");
+  nav2ActionInterface_->sendGoal(goal);
+}
+
+void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(
+  const components::CpNav2ActionInterface::WrappedResult & r)
+{
+  navigationResult_ = r.code;
+  RCLCPP_INFO(getLogger(), "[%s] Propagating success event from action server", getName().c_str());
+  this->postSuccessEvent();
+}
+
+void CbNav2ZClientBehaviorBase::onNavigationActionAbort(
+  const components::CpNav2ActionInterface::WrappedResult & r)
+{
+  navigationResult_ = r.code;
+  RCLCPP_INFO(getLogger(), "[%s] Propagating failure event from action server", getName().c_str());
+  this->postFailureEvent();
+}
 
 }  // namespace cl_nav2z
