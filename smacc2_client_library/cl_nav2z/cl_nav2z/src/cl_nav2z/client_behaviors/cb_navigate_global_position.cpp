@@ -57,7 +57,6 @@ void CbNavigateGlobalPosition::onEntry()
 
   cl_nav2z::CpPose * cpPose;
   this->requiresComponent(cpPose, ComponentRequirement::HARD);
-  auto pose = cpPose->toPoseMsg();
 
   CpOdomTracker * odomTracker;
   this->requiresComponent(odomTracker, ComponentRequirement::HARD);
@@ -80,7 +79,11 @@ void CbNavigateGlobalPosition::onEntry()
 
   auto pathname = this->getCurrentState()->getName() + " - " + getName();
   odomTracker->pushPath(pathname);
-  odomTracker->setStartPoint(pose);
+  // Pass the STAMPED pose: CpPose poses are in the map frame, and the bare-Pose
+  // setStartPoint overload would mislabel the coordinates with the odom frame -
+  // producing a recorded trail whose start point (the future undo goal) is
+  // displaced by the whole map->odom offset
+  odomTracker->setStartPoint(cpPose->toPoseStampedMsg());
   odomTracker->setWorkingMode(WorkingMode::RECORD_PATH);
 
   execute();

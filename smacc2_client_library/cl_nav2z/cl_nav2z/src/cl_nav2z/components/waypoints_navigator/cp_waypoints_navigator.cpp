@@ -219,7 +219,6 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
     nav2_msgs::action::NavigateToPose::Goal goal;
     CpPose * p;
     this->requiresComponent(p, ComponentRequirement::HARD);
-    auto pose = p->toPoseMsg();
 
     // configuring goal
     goal.pose.header.frame_id = p->getReferenceFrame();
@@ -273,7 +272,9 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
       auto pathname = this->owner_->getStateMachine()->getCurrentState()->getName() + " - " +
                       getName() + " - " + nextName;
       odomTracker->pushPath(pathname);
-      odomTracker->setStartPoint(pose);
+      // Stamped pose: the bare-Pose overload would mislabel these map-frame
+      // coordinates with the odom frame (see cb_navigate_global_position.cpp)
+      odomTracker->setStartPoint(p->toPoseStampedMsg());
       odomTracker->setWorkingMode(cl_nav2z::odom_tracker::WorkingMode::RECORD_PATH);
     }
 
