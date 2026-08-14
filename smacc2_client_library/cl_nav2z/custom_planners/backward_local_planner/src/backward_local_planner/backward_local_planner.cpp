@@ -109,6 +109,7 @@ void BackwardLocalPlanner::configure(
   carrot_distance_ = 0.4;
   carrot_angular_distance_ = 0.4;
   linear_mode_rho_error_threshold_ = 0.02;
+  initial_rotation_alpha_error_threshold_ = 0.35;
   straightBackwardsAndPureSpinningMode_ = true;
   max_linear_x_speed_ = 1.0;
   max_angular_z_speed_ = 2.0;
@@ -126,6 +127,9 @@ void BackwardLocalPlanner::configure(
   declareOrSet(nh_, name_ + ".k_alpha", k_alpha_);
   declareOrSet(nh_, name_ + ".k_betta", k_betta_);
   declareOrSet(nh_, name_ + ".linear_mode_rho_error_threshold", linear_mode_rho_error_threshold_);
+  declareOrSet(
+    nh_, name_ + ".initial_rotation_alpha_error_threshold",
+    initial_rotation_alpha_error_threshold_);
 
   declareOrSet(nh_, name_ + ".carrot_distance", carrot_distance_);
   declareOrSet(nh_, name_ + ".carrot_angular_distance", carrot_angular_distance_);
@@ -177,6 +181,12 @@ void BackwardLocalPlanner::updateParameters()
   RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".k_alpha:" << k_alpha_);
   tryGetOrSet(nh_, name_ + ".k_betta", k_betta_);
   RCLCPP_INFO_STREAM(nh_->get_logger(), name_ + ".k_betta:" << k_betta_);
+  tryGetOrSet(
+    nh_, name_ + ".initial_rotation_alpha_error_threshold",
+    initial_rotation_alpha_error_threshold_);
+  RCLCPP_INFO_STREAM(
+    nh_->get_logger(), name_ + ".initial_rotation_alpha_error_threshold: "
+                         << initial_rotation_alpha_error_threshold_);
 
   tryGetOrSet(nh_, name_ + ".enable_obstacle_checking", enable_obstacle_checking_);
   RCLCPP_INFO_STREAM(
@@ -451,8 +461,21 @@ void BackwardLocalPlanner::straightBackwardsAndPureSpinCmd(
 {
   if (rho_error > linear_mode_rho_error_threshold_)  // works in straight motion mode
   {
-    vetta = k_rho_ * rho_error;
-    gamma = k_alpha_ * alpha_error;
+    if (fabs(alpha_error) > initial_rotation_alpha_error_threshold_)
+    {
+      // backward heading is misaligned with the carrot direction: spin in place to
+      // align before translating. Without this gate the robot orbits the goal on
+      // curved-path endgames: at full backward speed the angular authority
+      // (max_angular_z_speed) yields a minimum turning radius larger than the goal
+      // tolerance, so a misaligned approach can never converge.
+      vetta = 0;
+      gamma = k_alpha_ * alpha_error;
+    }
+    else
+    {
+      vetta = k_rho_ * rho_error;
+      gamma = k_alpha_ * alpha_error;
+    }
   }
   else if (fabs(betta_error) >= this->yaw_goal_tolerance_)  // works in pure spinning mode
   {

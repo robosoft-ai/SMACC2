@@ -133,6 +133,10 @@ private:
   double pure_spinning_allowed_betta_error_;
   double linear_mode_rho_error_threshold_;
 
+  // backward-heading misalignment above which linear motion is disabled and the
+  // robot spins in place to align with the carrot direction first
+  double initial_rotation_alpha_error_threshold_;
+
   const double alpha_offset_ = M_PI;
   const double betta_offset_ = 0;
 
