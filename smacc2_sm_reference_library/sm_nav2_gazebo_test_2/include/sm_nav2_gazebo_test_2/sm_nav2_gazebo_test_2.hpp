@@ -48,6 +48,8 @@ namespace sm_nav2_gazebo_test_2
 // STATE FORWARD DECLARATIONS
 class StAllSensorsGo;
 class StSetInitialPose;
+class StNavigateWithCurve;
+class StUndoCurve;
 class StNavigateToWaypoint1;
 class StFinalState;
 
@@ -79,5 +81,7 @@ struct SmNav2GazeboTest2 : public smacc2::SmaccStateMachineBase<SmNav2GazeboTest
 // STATE INCLUDES (must be after state machine definition)
 #include "states/st_all_sensors_go.hpp"
 #include "states/st_set_initial_pose.hpp"
+#include "states/st_navigate_with_curve.hpp"
+#include "states/st_undo_curve.hpp"
 #include "states/st_navigate_to_waypoint_1.hpp"
 #include "states/st_final_state.hpp"

@@ -7,8 +7,16 @@ Nav2 TurtleBot3 Gazebo simulation.
 ## Mission
 
 ```
-StAllSensorsGo → StSetInitialPose → StNavigateToWaypoint1 → SsRadialPattern1 → StFinalState
+StAllSensorsGo → StSetInitialPose → StNavigateWithCurve → StUndoCurve
+                                                              │
+              StFinalState ← SsRadialPattern1 ← StNavigateToWaypoint1
 ```
+
+**Curved-path undo phase**: `StNavigateWithCurve` navigates from the spawn area to
+(-2.0, 2.5); the pillar at (-2.0, 1.0) sits directly on the straight line, so the
+driven (and recorded) trajectory bows around it. `StUndoCurve` then retraces that
+curved path exactly backwards with `CbUndoPathBackwards` — exercising undo on a
+curve, unlike the straight rays of the radial pattern.
 
 `SsRadialPattern1` is a superstate that loops 4 times (radial pattern, modeled on
 `sm_nav2_test_7` from the nova_carter_sm_library):

@@ -83,53 +83,76 @@
         <real_time_factor>1</real_time_factor>
     </physics>
 
-    <!-- Rectangular arena: interior x in [-5, 5], y in [-4, 4], wall height 0.5 -->
+    <!-- Single pillar forcing a curved path on the StNavigateWithCurve leg:
+         directly between the robot spawn (-2, -0.5) and the curve goal (-2, 2.5),
+         and >2.5 m away from the radial pattern around (0.5, 0) -->
+    <model name="curve_pillar">
+      <static>1</static>
+      <link name="pillar">
+        <collision name="pillar_collision">
+          <pose>-2.0 1.0 0.25 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>0.5</length></cylinder></geometry>
+        </collision>
+        <visual name="pillar_visual">
+          <pose>-2.0 1.0 0.25 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>0.5</length></cylinder></geometry>
+          <material>
+            <ambient>0.6 0.3 0.3 1</ambient>
+            <diffuse>0.6 0.3 0.3 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Rectangular arena: interior x in [-4.5, 2.5], y in [-2.5, 3.5], wall height 0.5.
+         Sized so the TB3 lidar (3.5 m range) always sees at least two walls: AMCL
+         stays constrained everywhere the mission drives. -->
     <model name="arena_walls">
       <static>1</static>
       <link name="walls">
         <collision name="north_collision">
-          <pose>0 4.075 0.25 0 0 0</pose>
-          <geometry><box><size>10.3 0.15 0.5</size></box></geometry>
+          <pose>-1.0 3.575 0.25 0 0 0</pose>
+          <geometry><box><size>7.6 0.15 0.5</size></box></geometry>
         </collision>
         <visual name="north_visual">
-          <pose>0 4.075 0.25 0 0 0</pose>
-          <geometry><box><size>10.3 0.15 0.5</size></box></geometry>
+          <pose>-1.0 3.575 0.25 0 0 0</pose>
+          <geometry><box><size>7.6 0.15 0.5</size></box></geometry>
           <material>
             <ambient>0.4 0.4 0.4 1</ambient>
             <diffuse>0.4 0.4 0.4 1</diffuse>
           </material>
         </visual>
         <collision name="south_collision">
-          <pose>0 -4.075 0.25 0 0 0</pose>
-          <geometry><box><size>10.3 0.15 0.5</size></box></geometry>
+          <pose>-1.0 -2.575 0.25 0 0 0</pose>
+          <geometry><box><size>7.6 0.15 0.5</size></box></geometry>
         </collision>
         <visual name="south_visual">
-          <pose>0 -4.075 0.25 0 0 0</pose>
-          <geometry><box><size>10.3 0.15 0.5</size></box></geometry>
+          <pose>-1.0 -2.575 0.25 0 0 0</pose>
+          <geometry><box><size>7.6 0.15 0.5</size></box></geometry>
           <material>
             <ambient>0.4 0.4 0.4 1</ambient>
             <diffuse>0.4 0.4 0.4 1</diffuse>
           </material>
         </visual>
         <collision name="east_collision">
-          <pose>5.075 0 0.25 0 0 0</pose>
-          <geometry><box><size>0.15 8.0 0.5</size></box></geometry>
+          <pose>2.575 0.5 0.25 0 0 0</pose>
+          <geometry><box><size>0.15 6.0 0.5</size></box></geometry>
         </collision>
         <visual name="east_visual">
-          <pose>5.075 0 0.25 0 0 0</pose>
-          <geometry><box><size>0.15 8.0 0.5</size></box></geometry>
+          <pose>2.575 0.5 0.25 0 0 0</pose>
+          <geometry><box><size>0.15 6.0 0.5</size></box></geometry>
           <material>
             <ambient>0.4 0.4 0.4 1</ambient>
             <diffuse>0.4 0.4 0.4 1</diffuse>
           </material>
         </visual>
         <collision name="west_collision">
-          <pose>-5.075 0 0.25 0 0 0</pose>
-          <geometry><box><size>0.15 8.0 0.5</size></box></geometry>
+          <pose>-4.575 0.5 0.25 0 0 0</pose>
+          <geometry><box><size>0.15 6.0 0.5</size></box></geometry>
         </collision>
         <visual name="west_visual">
-          <pose>-5.075 0 0.25 0 0 0</pose>
-          <geometry><box><size>0.15 8.0 0.5</size></box></geometry>
+          <pose>-4.575 0.5 0.25 0 0 0</pose>
+          <geometry><box><size>0.15 6.0 0.5</size></box></geometry>
           <material>
             <ambient>0.4 0.4 0.4 1</ambient>
             <diffuse>0.4 0.4 0.4 1</diffuse>

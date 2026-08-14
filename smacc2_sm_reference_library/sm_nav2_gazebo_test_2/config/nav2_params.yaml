@@ -41,8 +41,8 @@ amcl:
     sigma_hit: 0.2
     tf_broadcast: true
     transform_tolerance: 1.0
-    update_min_a: 0.2
-    update_min_d: 0.25
+    update_min_a: 0.1
+    update_min_d: 0.1
     z_hit: 0.5
     z_max: 0.05
     z_rand: 0.5
@@ -116,7 +116,7 @@ controller_server:
       stateful: True
     undo_path_backwards_goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.05
+      xy_goal_tolerance: 0.15
       yaw_goal_tolerance: 0.4
       stateful: True
 
@@ -230,7 +230,8 @@ controller_server:
       k_betta: -1.0
       carrot_distance: 0.4
       carrot_angular_distance: 3.14
-      linear_mode_rho_error_threshold: 0.001
+      linear_mode_rho_error_threshold: 0.02
+      initial_rotation_alpha_error_threshold: 0.09
       pure_spinning_straight_line_mode: true
       enable_obstacle_checking: false
       max_linear_x_speed: 0.15
@@ -241,16 +242,19 @@ controller_server:
     UndoBackwardLocalPlanner:
       plugin: "backward_local_planner::BackwardLocalPlanner"
       transform_tolerance: 0.5
-      k_rho: -2.0
-      k_alpha: -4.0
-      k_betta: -1.0
-      carrot_distance: 0.4
+      # free navigation mode: continuous blended arc steering for curved retraces
+      # (straight-line mode degenerates to stop-spin-creep on high-curvature bends)
+      k_rho: -1.0
+      k_alpha: -2.0
+      k_betta: -0.5
+      carrot_distance: 0.2
       carrot_angular_distance: 3.14
-      linear_mode_rho_error_threshold: 0.001
-      pure_spinning_straight_line_mode: true
+      linear_mode_rho_error_threshold: 0.02
+      initial_rotation_alpha_error_threshold: 0.09
+      pure_spinning_straight_line_mode: false
       enable_obstacle_checking: false
       max_linear_x_speed: 0.15
-      max_angular_z_speed: 0.4
+      max_angular_z_speed: 1.0
 
     # SMACC2 in-place rotation controller (CbAbsoluteRotate, CbPureSpinning)
     PureSpinningLocalPlanner:

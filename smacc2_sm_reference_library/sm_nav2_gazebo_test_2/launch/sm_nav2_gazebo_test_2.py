@@ -85,13 +85,24 @@ def generate_launch_description():
         arguments=["--ros-args", "--log-level", "INFO"],
     )
 
-    # State machine node
+    # State machine node.
+    # Odom tracker clearing thresholds: CLEAR_PATH consumption is the undo pipeline's
+    # path-cut mechanism - the trail must keep being consumed from the tail as the robot
+    # retraces. The angular gate is disabled (recorded headings vary along curves) and
+    # the point threshold matches the curve-tracking error envelope, otherwise clearing
+    # stalls on curved paths and the replanned undo plan flaps at bends.
     sm_node = Node(
         package="sm_nav2_gazebo_test_2",
         executable="sm_nav2_gazebo_test_2_node",
         name="sm_nav2_gazebo_test_2",
         output="screen",
-        parameters=[{"use_sim_time": True}],
+        parameters=[
+            {
+                "use_sim_time": True,
+                "clear_point_distance_threshold": 0.1,
+                "clear_angular_distance_threshold": 3.14,
+            }
+        ],
     )
 
     return LaunchDescription(

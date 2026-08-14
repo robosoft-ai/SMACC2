@@ -15,7 +15,7 @@
       <ControllerSelector selected_controller="{selected_controller}" default_controller="FollowPath" topic_name="controller_selector"/>
       <PlannerSelector selected_planner="{selected_planner}" default_planner="GridBased" topic_name="planner_selector"/>
       <GoalCheckerSelector selected_goal_checker="{selected_goal_checker}" default_goal_checker="goal_checker" topic_name="goal_checker_selector"/>
-      <RateController hz="1.0">
+      <RateController hz="0.333">
         <ComputePathToPose goal="{goal}" path="{path}" planner_id="{selected_planner}" error_code_id="{compute_path_error_code}"/>
       </RateController>
       <FollowPath path="{path}" controller_id="{selected_controller}" goal_checker_id="{selected_goal_checker}" error_code_id="{follow_path_error_code}"/>

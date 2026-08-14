@@ -32,9 +32,12 @@ struct StNavigateToWaypoint1 : smacc2::SmaccState<StNavigateToWaypoint1, SmNav2G
   using SmaccState::SmaccState;
 
   // TRANSITION TABLE
+  // Behavior events (EvCbSuccess/EvCbFailure) are state-scoped and cannot go
+  // stale: machine-scoped EvActionSucceeded events posted by the previous
+  // state's navigation can survive the transition and fire spuriously here.
   typedef mpl::list<
-    Transition<smacc2::EvActionSucceeded<ClNav2Z, OrNavigation>, SS1::SsRadialPattern1, SUCCESS>,
-    Transition<smacc2::EvActionAborted<ClNav2Z, OrNavigation>, StFinalState, ABORT>
+    Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, SS1::SsRadialPattern1, SUCCESS>,
+    Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StFinalState, ABORT>
   > reactions;
 
   // STATE FUNCTIONS

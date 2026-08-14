@@ -50,13 +50,13 @@ struct StSetInitialPose : smacc2::SmaccState<StSetInitialPose, SmNav2GazeboTest2
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvCbSuccess<CbWaitNav2Nodes, OrNavigation>, StNavigateToWaypoint1, SUCCESS>,
+    Transition<EvCbSuccess<CbWaitNav2Nodes, OrNavigation>, StNavigateWithCurve, SUCCESS>,
     Transition<EvCbFailure<CbWaitNav2Nodes, OrNavigation>, StSetInitialPose, RETRY>,
     Transition<EvMaxRetriesExceeded<CbWaitNav2Nodes, OrNavigation>, StFinalState, ABORT>,
     // Fallbacks: CbWaitNav2Nodes sniffs /bond heartbeats and can miss them on a
     // busy bond topic even when Nav2 is fully active - see StAllSensorsGo
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StNavigateToWaypoint1, SUCCESS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StNavigateToWaypoint1, NEXT>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StNavigateWithCurve, SUCCESS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StNavigateWithCurve, NEXT>
   > reactions;
 
   // STATE FUNCTIONS
