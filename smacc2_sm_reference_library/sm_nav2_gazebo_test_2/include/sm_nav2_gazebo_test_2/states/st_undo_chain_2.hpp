@@ -25,11 +25,13 @@ using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
 //
-// Retraces the curved path recorded during StNavigateWithCurve exactly
-// backwards, ending at the curve start near the spawn point. This exercises
-// CbUndoPathBackwards on a curved trajectory, unlike the straight rays of the
-// radial pattern.
-struct StUndoCurve : smacc2::SmaccState<StUndoCurve, SmNav2GazeboTest2>
+// First undo of the chain: retraces leg 2 back to P1. On success
+// CbUndoPathBackwards pops the odom tracker stack, restoring leg 1's trail as
+// the active path for StUndoChain1.
+//
+// IMPORTANT: no clearPath() in onExit here - it would destroy the just-popped
+// leg 1 trail that the next state needs. Only the FINAL undo of a chain clears.
+struct StUndoChain2 : smacc2::SmaccState<StUndoChain2, SmNav2GazeboTest2>
 {
   using SmaccState::SmaccState;
 
@@ -38,17 +40,15 @@ struct StUndoCurve : smacc2::SmaccState<StUndoCurve, SmNav2GazeboTest2>
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StNavigateChain1, SUCCESS>,
-    // On failure the mission still proceeds to the chained-undo phase; the path
-    // stack is cleared on exit either way
-    Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StNavigateChain1, ABORT>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StNavigateChain1, NEXT>
+    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StUndoChain1, SUCCESS>,
+    // On failure the chain is broken (no pop happened): skip the second undo
+    Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StNavigateToWaypoint1, ABORT>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StUndoChain1, NEXT>
   > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // See config/nav2_params.yaml for the plugin instances referenced here
     cl_nav2z::CbUndoPathBackwardsOptions options;
     options.undoControllerName_ = "UndoBackwardLocalPlanner";
     configure_orthogonal<OrNavigation, CbUndoPathBackwards>(options);
@@ -58,20 +58,7 @@ struct StUndoCurve : smacc2::SmaccState<StUndoCurve, SmNav2GazeboTest2>
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "StUndoCurve: onEntry() - Undoing the curved path backwards");
-  }
-
-  void onExit()
-  {
-    // Drop whatever remains of the curve recording: the radial pattern phase
-    // starts with a clean odom tracker
-    ClNav2Z * navClient;
-    this->requiresClient(navClient);
-
-    auto odomTracker = navClient->getComponent<cl_nav2z::odom_tracker::CpOdomTracker>();
-    odomTracker->clearPath();
-
-    RCLCPP_INFO(getLogger(), "StUndoCurve: onExit()");
+    RCLCPP_INFO(getLogger(), "StUndoChain2: onEntry() - undoing chain leg 2 (back to P1)");
   }
 };
 

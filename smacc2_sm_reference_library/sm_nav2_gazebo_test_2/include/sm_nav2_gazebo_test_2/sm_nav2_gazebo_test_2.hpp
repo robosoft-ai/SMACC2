@@ -50,13 +50,23 @@ class StAllSensorsGo;
 class StSetInitialPose;
 class StNavigateWithCurve;
 class StUndoCurve;
+class StNavigateChain1;
+class StNavigateChain2;
+class StUndoChain2;
+class StUndoChain1;
 class StNavigateToWaypoint1;
+class StNavigateToFPattern;
 class StFinalState;
 
 // SUPERSTATE FORWARD DECLARATIONS
 namespace SS1
 {
 class SsRadialPattern1;
+}
+
+namespace SS2
+{
+class SsFPattern1;
 }
 
 //--------------------------------------------------------------------
@@ -77,11 +87,17 @@ struct SmNav2GazeboTest2 : public smacc2::SmaccStateMachineBase<SmNav2GazeboTest
 
 // SUPERSTATES (must be after state machine definition)
 #include "superstates/ss_radial_pattern_1.hpp"
+#include "superstates/ss_f_pattern_1.hpp"
 
 // STATE INCLUDES (must be after state machine definition)
 #include "states/st_all_sensors_go.hpp"
 #include "states/st_set_initial_pose.hpp"
 #include "states/st_navigate_with_curve.hpp"
 #include "states/st_undo_curve.hpp"
+#include "states/st_navigate_chain_1.hpp"
+#include "states/st_navigate_chain_2.hpp"
+#include "states/st_undo_chain_2.hpp"
+#include "states/st_undo_chain_1.hpp"
 #include "states/st_navigate_to_waypoint_1.hpp"
+#include "states/st_navigate_to_f_pattern.hpp"
 #include "states/st_final_state.hpp"

@@ -9,14 +9,32 @@ Nav2 TurtleBot3 Gazebo simulation.
 ```
 StAllSensorsGo → StSetInitialPose → StNavigateWithCurve → StUndoCurve
                                                               │
-              StFinalState ← SsRadialPattern1 ← StNavigateToWaypoint1
+   StUndoChain1 ← StUndoChain2 ← StNavigateChain2 ← StNavigateChain1
+        │
+        └→ StNavigateToWaypoint1 → SsRadialPattern1 → StNavigateToFPattern
+                                                              │
+                                     StFinalState ← SsFPattern1
 ```
+
+Ten undo navigations per mission: 1 curved, 2 chained, 4 radial rays, 3 F rays.
 
 **Curved-path undo phase**: `StNavigateWithCurve` navigates from the spawn area to
 (-2.0, 2.5); the pillar at (-2.0, 1.0) sits directly on the straight line, so the
 driven (and recorded) trajectory bows around it. `StUndoCurve` then retraces that
 curved path exactly backwards with `CbUndoPathBackwards` — exercising undo on a
 curve, unlike the straight rays of the radial pattern.
+
+**Chained-undo phase** (path stack): the robot drives TWO curved legs — back to
+(-2.0, 2.5) around the first pillar, then to (1.5, 2.0) around the second — and
+undoes them both in sequence. Each navigation pushes the previous trail onto the
+odom tracker stack; `CbUndoPathBackwards` pops the stack on success, restoring the
+earlier leg for the next undo. The first undo of the chain must NOT clear the path
+on exit (that would destroy the just-popped trail); only the final undo clears.
+
+**F pattern phase**: `SsFPattern1` (ported from nova_carter sm_nav2_test_7) runs a
+boustrophedon pattern from (0.0, -1.5): 3 east-pointing rays of 1.2 m, each
+retraced backwards with `CbUndoPathBackwards`, with 0.4 m north pitches between
+rows.
 
 `SsRadialPattern1` is a superstate that loops 4 times (radial pattern, modeled on
 `sm_nav2_test_7` from the nova_carter_sm_library):

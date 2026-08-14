@@ -25,11 +25,10 @@ using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
 //
-// Retraces the curved path recorded during StNavigateWithCurve exactly
-// backwards, ending at the curve start near the spawn point. This exercises
-// CbUndoPathBackwards on a curved trajectory, unlike the straight rays of the
-// radial pattern.
-struct StUndoCurve : smacc2::SmaccState<StUndoCurve, SmNav2GazeboTest2>
+// Second undo of the chain: retraces the restored leg 1 trail back to the
+// start. This is the final undo of the chain, so the remaining path is cleared
+// on exit.
+struct StUndoChain1 : smacc2::SmaccState<StUndoChain1, SmNav2GazeboTest2>
 {
   using SmaccState::SmaccState;
 
@@ -38,17 +37,14 @@ struct StUndoCurve : smacc2::SmaccState<StUndoCurve, SmNav2GazeboTest2>
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StNavigateChain1, SUCCESS>,
-    // On failure the mission still proceeds to the chained-undo phase; the path
-    // stack is cleared on exit either way
-    Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StNavigateChain1, ABORT>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StNavigateChain1, NEXT>
+    Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StNavigateToWaypoint1, SUCCESS>,
+    Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StNavigateToWaypoint1, ABORT>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StNavigateToWaypoint1, NEXT>
   > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // See config/nav2_params.yaml for the plugin instances referenced here
     cl_nav2z::CbUndoPathBackwardsOptions options;
     options.undoControllerName_ = "UndoBackwardLocalPlanner";
     configure_orthogonal<OrNavigation, CbUndoPathBackwards>(options);
@@ -58,20 +54,19 @@ struct StUndoCurve : smacc2::SmaccState<StUndoCurve, SmNav2GazeboTest2>
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "StUndoCurve: onEntry() - Undoing the curved path backwards");
+    RCLCPP_INFO(getLogger(), "StUndoChain1: onEntry() - undoing chain leg 1 (back to start)");
   }
 
   void onExit()
   {
-    // Drop whatever remains of the curve recording: the radial pattern phase
-    // starts with a clean odom tracker
+    // End of the chain: drop whatever remains of the recorded paths
     ClNav2Z * navClient;
     this->requiresClient(navClient);
 
     auto odomTracker = navClient->getComponent<cl_nav2z::odom_tracker::CpOdomTracker>();
     odomTracker->clearPath();
 
-    RCLCPP_INFO(getLogger(), "StUndoCurve: onExit()");
+    RCLCPP_INFO(getLogger(), "StUndoChain1: onExit()");
   }
 };
 

@@ -49,7 +49,7 @@ public:
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvLoopEnd<StiRadialLoopStart>, StFinalState, ENDLOOP>
+    Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateToFPattern, ENDLOOP>
   > reactions;
 
   // Pattern geometry: 4 diagonal rays (45, 135, 225, 315 degrees) of 1.5 meters

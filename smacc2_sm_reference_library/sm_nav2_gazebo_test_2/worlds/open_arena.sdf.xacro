@@ -104,6 +104,26 @@
       </link>
     </model>
 
+    <!-- Second pillar forcing a curve on the chained leg StNavigateChain2:
+         directly between P1 (-2.0, 2.5) and P2 (1.5, 2.0) -->
+    <model name="chain_pillar">
+      <static>1</static>
+      <link name="pillar2">
+        <collision name="pillar2_collision">
+          <pose>-0.25 2.25 0.25 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>0.5</length></cylinder></geometry>
+        </collision>
+        <visual name="pillar2_visual">
+          <pose>-0.25 2.25 0.25 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>0.5</length></cylinder></geometry>
+          <material>
+            <ambient>0.3 0.3 0.6 1</ambient>
+            <diffuse>0.3 0.3 0.6 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
     <!-- Rectangular arena: interior x in [-4.5, 2.5], y in [-2.5, 3.5], wall height 0.5.
          Sized so the TB3 lidar (3.5 m range) always sees at least two walls: AMCL
          stays constrained everywhere the mission drives. -->
