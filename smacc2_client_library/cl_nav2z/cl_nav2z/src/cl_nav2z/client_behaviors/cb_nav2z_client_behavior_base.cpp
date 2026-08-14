@@ -34,17 +34,8 @@ void CbNav2ZClientBehaviorBase::sendGoal(nav2_msgs::action::NavigateToPose::Goal
     return;
   }
 
-  if (!resultConnectionsInitialized_)
-  {
-    // Connect the action result signals so the behavior propagates results as
-    // EvCbSuccess/EvCbFailure and records navigationResult_. Connection lifetime is
-    // managed by the state machine (disconnected when this behavior is destroyed).
-    this->onNavigationSucceeded(&CbNav2ZClientBehaviorBase::onNavigationActionSuccess, this);
-    this->onNavigationAborted(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
-    this->onNavigationCancelled(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
-    resultConnectionsInitialized_ = true;
-  }
-
+  // result signal connections are established in onStateOrthogonalAllocation
+  // (state machine thread) - see the header for the threading rationale
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Sending goal");
   nav2ActionInterface_->sendGoal(goal);
 }

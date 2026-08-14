@@ -40,6 +40,18 @@ public:
     this->requiresComponent(nav2ActionInterface_, ComponentRequirement::HARD);
     this->requiresComponent(actionClient_, ComponentRequirement::HARD);
 
+    // Connect the action result signals here, on the state machine thread during
+    // state configuration: connecting from the behavior's asynchronous onEntry
+    // thread (as sendGoal used to) contends for the state machine mutex and can
+    // deadlock against a concurrent state transition.
+    if (!resultConnectionsInitialized_ && nav2ActionInterface_)
+    {
+      this->onNavigationSucceeded(&CbNav2ZClientBehaviorBase::onNavigationActionSuccess, this);
+      this->onNavigationAborted(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
+      this->onNavigationCancelled(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
+      resultConnectionsInitialized_ = true;
+    }
+
     smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 
