@@ -25,7 +25,8 @@ curved path exactly backwards with `CbUndoPathBackwards` — exercising undo on 
 curve, unlike the straight rays of the radial pattern.
 
 **Chained-undo phase** (path stack): the robot drives TWO curved legs — back to
-(-2.0, 2.5) around the first pillar, then to (1.5, 2.0) around the second — and
+(-2.0, 2.5) around the first pillar's east flank, then to (-3.5, -0.5) around its
+west flank — and
 undoes them both in sequence. Each navigation pushes the previous trail onto the
 odom tracker stack; `CbUndoPathBackwards` pops the stack on success, restoring the
 earlier leg for the next undo. The first undo of the chain must NOT clear the path

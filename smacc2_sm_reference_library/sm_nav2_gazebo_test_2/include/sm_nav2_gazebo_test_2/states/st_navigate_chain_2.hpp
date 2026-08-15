@@ -25,9 +25,10 @@ using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
 //
-// Second leg of the chained-undo phase: curve around the second pillar from
-// P1 to P2 (1.5, 2.0). Leg 1's trail is pushed onto the odom tracker stack;
-// after StUndoChain2 retraces this leg, popPath restores leg 1 for StUndoChain1.
+// Second leg of the chained-undo phase: from P1 to P2 (-3.5, -0.5) on the west
+// side of the arena, curving around the first pillar's west flank in open space.
+// Leg 1's trail is pushed onto the odom tracker stack; after StUndoChain2
+// retraces this leg, popPath restores leg 1 for StUndoChain1.
 struct StNavigateChain2 : smacc2::SmaccState<StNavigateChain2, SmNav2GazeboTest2>
 {
   using SmaccState::SmaccState;
@@ -45,8 +46,8 @@ struct StNavigateChain2 : smacc2::SmaccState<StNavigateChain2, SmNav2GazeboTest2
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // Chain leg 2: around the chain_pillar at (-0.25, 2.25)
-    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(1.5, 2.0, 0.0);
+    // Chain leg 2: west side of the arena, curving around the first pillar
+    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(-3.5, -0.5, M_PI);
 
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
@@ -54,7 +55,7 @@ struct StNavigateChain2 : smacc2::SmaccState<StNavigateChain2, SmNav2GazeboTest2
   void onEntry()
   {
     RCLCPP_INFO(
-      getLogger(), "StNavigateChain2: onEntry() - chained-undo phase, leg 2 to P2 (1.5, 2.0)");
+      getLogger(), "StNavigateChain2: onEntry() - chained-undo phase, leg 2 to P2 (-3.5, -0.5)");
   }
 };
 

@@ -51,6 +51,9 @@ struct StUndoChain2 : smacc2::SmaccState<StUndoChain2, SmNav2GazeboTest2>
   {
     cl_nav2z::CbUndoPathBackwardsOptions options;
     options.undoControllerName_ = "UndoBackwardLocalPlanner";
+    // Tight goal checker: this undo's end pose is the START of the next undo's
+    // retrace, so any handoff error becomes StUndoChain1's initial tracking error
+    options.goalCheckerId_ = "undo_path_backwards_goal_checker_2";
     configure_orthogonal<OrNavigation, CbUndoPathBackwards>(options);
 
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

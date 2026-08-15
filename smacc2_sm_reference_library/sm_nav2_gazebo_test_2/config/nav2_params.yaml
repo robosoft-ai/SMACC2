@@ -81,7 +81,7 @@ controller_server:
     min_theta_velocity_threshold: 0.001
     failure_tolerance: 0.3
     progress_checker_plugins: ["progress_checker"]
-    goal_checker_plugins: ["goal_checker", "forward_goal_checker", "backward_goal_checker", "absolute_rotate_goal_checker", "undo_path_backwards_goal_checker"]
+    goal_checker_plugins: ["goal_checker", "forward_goal_checker", "backward_goal_checker", "absolute_rotate_goal_checker", "undo_path_backwards_goal_checker", "undo_path_backwards_goal_checker_2"]
     controller_plugins: ["FollowPath", "ForwardLocalPlanner", "BackwardLocalPlanner", "PureSpinningLocalPlanner", "UndoBackwardLocalPlanner"]
     use_realtime_priority: false
 
@@ -118,6 +118,14 @@ controller_server:
       plugin: "nav2_controller::SimpleGoalChecker"
       xy_goal_tolerance: 0.15
       yaw_goal_tolerance: 0.4
+      stateful: True
+    # Tight variant for intermediate chained undos: the next undo retraces the
+    # popped trail, so the handoff position/heading error becomes its initial
+    # tracking error (Pablo's undo_path_backwards_goal_checker_2 concept)
+    undo_path_backwards_goal_checker_2:
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 0.08
+      yaw_goal_tolerance: 0.15
       stateful: True
 
     # Stock Jazzy MPPI controller for regular GridBased navigation
@@ -253,7 +261,7 @@ controller_server:
       initial_rotation_alpha_error_threshold: 0.09
       pure_spinning_straight_line_mode: false
       enable_obstacle_checking: false
-      max_linear_x_speed: 0.15
+      max_linear_x_speed: 0.1
       max_angular_z_speed: 1.0
 
     # SMACC2 in-place rotation controller (CbAbsoluteRotate, CbPureSpinning)
