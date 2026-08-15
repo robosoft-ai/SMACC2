@@ -74,9 +74,15 @@ void CbUndoPathBackwards::onEntry()
       plannerSwitcher->setUndoPathBackwardPlanner();
     }
 
-    // WARNING: There might be some race condition with the remote undo global planner/controller were the global path was not
-    // received yet, thee goal switcher
-    // TODO: waiting notification from global planner that it is loaded
+    // The remote UndoPathGlobalPlanner receives the recorded trail via the
+    // odom_tracker_path topic. Right after a popPath (chained undo) its cache may
+    // still hold the previous, fully-consumed trail - a few poses under the robot -
+    // which would make the goal checker succeed instantly without moving. The
+    // tracker republishes at odom rate (~20-30 Hz), so a short settle guarantees
+    // the planner sees the restored trail before the goal is accepted.
+    // (This runs in the asynchronous onEntry thread: it does not block the state
+    // machine. TODO: replace with an explicit ready handshake from the planner.)
+    rclcpp::sleep_for(std::chrono::milliseconds(500));
 
     RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] activating undo navigation planner");
 
