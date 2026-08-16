@@ -25,41 +25,36 @@ using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
 //
-// Collision-abort demo, step 2: command a drive straight AT the pillar (2.5 m
-// requested, obstacle at ~1.15 m). The behavior server's collision checking
-// must abort the goal before impact - the EXPECTED outcome here is
-// EvCbFailure, proving the genuine server-abort path end to end. Success
-// would mean the collision checking failed to intervene.
-struct StDriveAtPillar : smacc2::SmaccState<StDriveAtPillar, SmNav2GazeboTest3>
+// Collision-abort demo, step 1: quarter turn to face the south wall (~2 m away).
+// The wall spans the whole arena, so accumulated dead-reckoning drift from the
+// primitive laps cannot make the approach miss (a pillar target proved too
+// fragile: ~13 degrees of subtended angle at 1.5 m).
+struct StSpinToWall : smacc2::SmaccState<StSpinToWall, SmNav2GazeboTest3>
 {
   using SmaccState::SmaccState;
 
   // CUSTOM TRANSITION TAGS
   struct NEXT : SUCCESS {};
-  struct COLLISION_ABORT_OK : SUCCESS {};
 
   // TRANSITION TABLE
   typedef mpl::list<
-    // expected: collision checking aborts the goal -> failure event
-    Transition<EvCbFailure<CbDriveOnHeading, OrNavigation>, StBackUpSafe, COLLISION_ABORT_OK>,
-    // unexpected but non-fatal: server let the full distance through
-    Transition<EvCbSuccess<CbDriveOnHeading, OrNavigation>, StBackUpSafe, ABORT>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StBackUpSafe, NEXT>
+    Transition<EvCbSuccess<CbSpin, OrNavigation>, StDriveAtWall, SUCCESS>,
+    Transition<EvCbFailure<CbSpin, OrNavigation>, StDriveAtWall, ABORT>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StDriveAtWall, NEXT>
   > reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // slow approach so the abort is clearly visible
-    configure_orthogonal<OrNavigation, CbDriveOnHeading>(2.5f, 0.1f);
+    // face the south wall: quarter turn clockwise from east
+    configure_orthogonal<OrNavigation, CbSpin>(-M_PI / 2);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   void onEntry()
   {
     RCLCPP_INFO(
-      getLogger(),
-      "StDriveAtPillar: onEntry() - driving at the pillar, expecting a collision abort");
+      getLogger(), "StSpinToWall: onEntry() - collision-abort demo, turning to face the pillar");
   }
 };
 

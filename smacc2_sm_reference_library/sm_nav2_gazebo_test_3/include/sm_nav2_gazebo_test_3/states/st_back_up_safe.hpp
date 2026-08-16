@@ -25,7 +25,7 @@ using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
 //
-// Collision-abort demo, step 3: back away from the pillar to a safe distance
+// Collision-abort demo, step 3: back away from the wall to a safe distance
 struct StBackUpSafe : smacc2::SmaccState<StBackUpSafe, SmNav2GazeboTest3>
 {
   using SmaccState::SmaccState;
@@ -49,7 +49,7 @@ struct StBackUpSafe : smacc2::SmaccState<StBackUpSafe, SmNav2GazeboTest3>
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "StBackUpSafe: onEntry() - backing away from the pillar");
+    RCLCPP_INFO(getLogger(), "StBackUpSafe: onEntry() - backing away from the wall");
   }
 };
 

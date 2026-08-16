@@ -50,7 +50,7 @@ public:
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvLoopEnd<StiPrimitiveLoopStart>, StSpinToPillar, ENDLOOP>
+    Transition<EvLoopEnd<StiPrimitiveLoopStart>, StSpinToWall, ENDLOOP>
   > reactions;
 
   static constexpr int total_iterations() { return 3; }

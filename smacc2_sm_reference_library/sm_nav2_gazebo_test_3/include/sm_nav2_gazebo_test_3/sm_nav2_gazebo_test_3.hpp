@@ -47,8 +47,8 @@ namespace sm_nav2_gazebo_test_3
 // STATE FORWARD DECLARATIONS
 class StAllSensorsGo;
 class StSetInitialPose;
-class StSpinToPillar;
-class StDriveAtPillar;
+class StSpinToWall;
+class StDriveAtWall;
 class StBackUpSafe;
 class StFinalState;
 
@@ -84,7 +84,7 @@ struct SmNav2GazeboTest3 : public smacc2::SmaccStateMachineBase<SmNav2GazeboTest
 // STATE INCLUDES (must be after state machine definition)
 #include "states/st_all_sensors_go.hpp"
 #include "states/st_set_initial_pose.hpp"
-#include "states/st_spin_to_pillar.hpp"
-#include "states/st_drive_at_pillar.hpp"
+#include "states/st_spin_to_wall.hpp"
+#include "states/st_drive_at_wall.hpp"
 #include "states/st_back_up_safe.hpp"
 #include "states/st_final_state.hpp"
