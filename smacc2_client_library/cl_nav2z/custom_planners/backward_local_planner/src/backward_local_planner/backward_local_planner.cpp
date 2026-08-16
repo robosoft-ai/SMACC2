@@ -185,8 +185,8 @@ void BackwardLocalPlanner::updateParameters()
     nh_, name_ + ".initial_rotation_alpha_error_threshold",
     initial_rotation_alpha_error_threshold_);
   RCLCPP_INFO_STREAM(
-    nh_->get_logger(), name_ + ".initial_rotation_alpha_error_threshold: "
-                         << initial_rotation_alpha_error_threshold_);
+    nh_->get_logger(),
+    name_ + ".initial_rotation_alpha_error_threshold: " << initial_rotation_alpha_error_threshold_);
 
   tryGetOrSet(nh_, name_ + ".enable_obstacle_checking", enable_obstacle_checking_);
   RCLCPP_INFO_STREAM(

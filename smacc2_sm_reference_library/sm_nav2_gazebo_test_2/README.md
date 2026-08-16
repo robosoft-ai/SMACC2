@@ -1,20 +1,12 @@
 # sm_nav2_gazebo_test_2
 
+ ![sm_nav2_gazebo_test_1](docs/SmNav2GazeboTest2_2026-8-15_193144.svg)
+
 SMACC2 state machine that exercises **undo path backwards navigation**
 (`CbUndoPathBackwards` + `UndoPathGlobalPlanner` + `BackwardLocalPlanner`) in the
 Nav2 TurtleBot3 Gazebo simulation.
 
 ## Mission
-
-```
-StAllSensorsGo → StSetInitialPose → StNavigateWithCurve → StUndoCurve
-                                                              │
-   StUndoChain1 ← StUndoChain2 ← StNavigateChain2 ← StNavigateChain1
-        │
-        └→ StNavigateToWaypoint1 → SsRadialPattern1 → StNavigateToFPattern
-                                                              │
-                                     StFinalState ← SsFPattern1
-```
 
 Ten undo navigations per mission: 1 curved, 2 chained, 4 radial rays, 3 F rays.
 
@@ -39,19 +31,6 @@ rows.
 
 `SsRadialPattern1` is a superstate that loops 4 times (radial pattern, modeled on
 `sm_nav2_test_7` from the nova_carter_sm_library):
-
-```
-StiRadialLoopStart ──EvLoopContinue──> StiRadialRotate     (CbAbsoluteRotate, pure spinning)
-                                             │ success
-                                             v
-                                       StiRadialEndPoint   (CbNavigateForward 1 m, odom tracker RECORDS path)
-                                             │ success
-                                             v
-                                       StiRadialReturn     (CbUndoPathBackwards retraces the recorded path)
-                                             │ success
-                                             v
-                                       StiRadialLoopStart  (next ray: 45°, 135°, 225°, 315°)
-```
 
 After 4 iterations `EvLoopEnd` exits the superstate to `StFinalState`.
 

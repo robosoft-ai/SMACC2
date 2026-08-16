@@ -29,8 +29,7 @@ void CbNav2ZClientBehaviorBase::sendGoal(nav2_msgs::action::NavigateToPose::Goal
   if (!nav2ActionInterface_)
   {
     RCLCPP_ERROR(
-      getLogger(), "[%s] Cannot send goal, CpNav2ActionInterface not available",
-      getName().c_str());
+      getLogger(), "[%s] Cannot send goal, CpNav2ActionInterface not available", getName().c_str());
     return;
   }
 
