@@ -40,6 +40,17 @@ struct StiSpin : smacc2::SmaccState<StiSpin, SS>
   {
     configure_orthogonal<OrNavigation, CbSpin>(2 * M_PI);
   }
+
+  void runtimeConfigure()
+  {
+    // alternate the spin direction each lap: odd iterations counter-clockwise,
+    // even iterations clockwise (exercises negative target yaw + runtime goal
+    // configuration between staticConfigure and onEntry)
+    auto & superstate = this->context<SS>();
+    auto cbSpin = this->getClientBehavior<OrNavigation, CbSpin>();
+    float direction = (superstate.iteration_count % 2 == 1) ? 1.0f : -1.0f;
+    cbSpin->setTargetYaw(direction * 2 * M_PI);
+  }
 };
 
 }  // namespace primitive_loop_states
