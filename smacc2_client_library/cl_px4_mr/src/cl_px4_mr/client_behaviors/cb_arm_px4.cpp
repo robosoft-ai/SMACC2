@@ -27,12 +27,6 @@ CbArmPX4::CbArmPX4() {}
 
 void CbArmPX4::onEntry()
 {
-  this->requiresComponent(vehicleCommand_);
-  this->requiresComponent(vehicleStatus_);
-  this->requiresComponent(offboardKeepAlive_);
-
-  this->getStateMachine()->createSignalConnection(
-    vehicleStatus_->onArmed_, &CbArmPX4::onArmedCallback, this);
 
   // Enable offboard keepalive and set offboard mode so PX4's offboard signal
   // requirement is satisfied before arming. Without this, canArm() fails because
@@ -75,7 +69,7 @@ void CbArmPX4::onEntry()
     if (armed_)
     {
       RCLCPP_INFO(getLogger(), "CbArmPX4: vehicle ARMED - posting success");
-      this->postSuccessEvent();
+      this->postPx4Success();
       return;
     }
 
@@ -84,11 +78,24 @@ void CbArmPX4::onEntry()
   }
 
   RCLCPP_ERROR(getLogger(), "CbArmPX4: all %d attempts failed - posting failure", MAX_RETRIES);
-  this->postFailureEvent();
+  this->postPx4Failure();
 }
 
 void CbArmPX4::onExit() {}
 
 void CbArmPX4::onArmedCallback() { armed_ = true; }
+
+void CbArmPX4::wireCompletionSignals()
+{
+  if (vehicleStatus_ != nullptr)
+  {
+    this->getStateMachine()->createSignalConnection(
+      vehicleStatus_->onArmed_, &CbArmPX4::onArmedCallback, this);
+  }
+  else
+  {
+    RCLCPP_WARN(getLogger(), "CbArmPX4: completion component missing, no completion signal wired");
+  }
+}
 
 }  // namespace cl_px4_mr

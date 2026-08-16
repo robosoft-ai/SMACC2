@@ -23,11 +23,6 @@ CbDisarmPX4::CbDisarmPX4() {}
 
 void CbDisarmPX4::onEntry()
 {
-  this->requiresComponent(vehicleCommand_);
-  this->requiresComponent(vehicleStatus_);
-
-  this->getStateMachine()->createSignalConnection(
-    vehicleStatus_->onDisarmed_, &CbDisarmPX4::onDisarmedCallback, this);
 
   RCLCPP_INFO(
     getLogger(), "CbDisarmPX4: sending disarm command (attempt %d/%d)", retryCount_ + 1,
@@ -40,7 +35,20 @@ void CbDisarmPX4::onExit() {}
 void CbDisarmPX4::onDisarmedCallback()
 {
   RCLCPP_INFO(getLogger(), "CbDisarmPX4: vehicle DISARMED - posting success");
-  this->postSuccessEvent();
+  this->postPx4Success();
+}
+
+void CbDisarmPX4::wireCompletionSignals()
+{
+  if (vehicleStatus_ != nullptr)
+  {
+    this->getStateMachine()->createSignalConnection(
+      vehicleStatus_->onDisarmed_, &CbDisarmPX4::onDisarmedCallback, this);
+  }
+  else
+  {
+    RCLCPP_WARN(getLogger(), "CbDisarmPX4: completion component missing, no completion signal wired");
+  }
 }
 
 }  // namespace cl_px4_mr

@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
+
 #include <atomic>
 #include <smacc2/smacc.hpp>
 
@@ -24,20 +26,18 @@ class CpVehicleCommand;
 class CpVehicleStatus;
 class CpOffboardKeepAlive;
 
-class CbArmPX4 : public smacc2::SmaccAsyncClientBehavior
+class CbArmPX4 : public CbPx4ClientBehaviorBase
 {
 public:
   CbArmPX4();
 
   void onEntry() override;
+
+  void wireCompletionSignals() override;
   void onExit() override;
 
 private:
   void onArmedCallback();
-
-  CpVehicleCommand * vehicleCommand_ = nullptr;
-  CpVehicleStatus * vehicleStatus_ = nullptr;
-  CpOffboardKeepAlive * offboardKeepAlive_ = nullptr;
   std::atomic<bool> armed_{false};
   static constexpr int MAX_RETRIES = 5;
   static constexpr int RETRY_INTERVAL_SEC = 5;

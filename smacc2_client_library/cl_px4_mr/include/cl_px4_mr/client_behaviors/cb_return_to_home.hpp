@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
+
 #include <smacc2/smacc.hpp>
 
 namespace cl_px4_mr
@@ -22,12 +24,14 @@ namespace cl_px4_mr
 class CpTrajectorySetpoint;
 class CpGoalChecker;
 
-class CbReturnToHome : public smacc2::SmaccAsyncClientBehavior
+class CbReturnToHome : public CbPx4ClientBehaviorBase
 {
 public:
   CbReturnToHome(float homeX, float homeY, float homeZ, float homeYaw);
 
   void onEntry() override;
+
+  void wireCompletionSignals() override;
   void onExit() override;
 
 private:
@@ -37,9 +41,6 @@ private:
   float homeY_;
   float homeZ_;
   float homeYaw_;
-
-  CpTrajectorySetpoint * trajectorySetpoint_ = nullptr;
-  CpGoalChecker * goalChecker_ = nullptr;
 };
 
 }  // namespace cl_px4_mr

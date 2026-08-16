@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
+
 #include <smacc2/smacc.hpp>
 
 namespace cl_px4_mr
@@ -22,19 +24,18 @@ namespace cl_px4_mr
 class CpVehicleCommand;
 class CpVehicleStatus;
 
-class CbDisarmPX4 : public smacc2::SmaccAsyncClientBehavior
+class CbDisarmPX4 : public CbPx4ClientBehaviorBase
 {
 public:
   CbDisarmPX4();
 
   void onEntry() override;
+
+  void wireCompletionSignals() override;
   void onExit() override;
 
 private:
   void onDisarmedCallback();
-
-  CpVehicleCommand * vehicleCommand_ = nullptr;
-  CpVehicleStatus * vehicleStatus_ = nullptr;
   int retryCount_ = 0;
   static constexpr int MAX_RETRIES = 3;
 };

@@ -31,7 +31,6 @@ CbFigureEight::CbFigureEight(
 
 void CbFigureEight::onEntry()
 {
-  this->requiresComponent(trajectorySetpoint_);
 
   t_ = 0.0f;
   lastUpdateTime_ = std::chrono::steady_clock::now();
@@ -52,6 +51,8 @@ void CbFigureEight::onExit() {}
 
 void CbFigureEight::update()
 {
+  CbPx4ClientBehaviorBase::update();
+
   auto now = std::chrono::steady_clock::now();
   double dt = std::chrono::duration<double>(now - lastUpdateTime_).count();
   lastUpdateTime_ = now;
@@ -86,7 +87,7 @@ void CbFigureEight::update()
   if (t_ >= requiredT)
   {
     RCLCPP_INFO(getLogger(), "CbFigureEight: %d loops completed - posting success", numLoops_);
-    this->postSuccessEvent();
+    this->postPx4Success();
   }
 }
 

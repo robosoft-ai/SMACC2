@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
+
 #include <array>
 #include <cmath>
 #include <smacc2/smacc.hpp>
@@ -25,13 +27,15 @@ namespace cl_px4_mr
 class CpTrajectorySetpoint;
 class CpGoalChecker;
 
-class CbFollowWaypoints : public smacc2::SmaccAsyncClientBehavior
+class CbFollowWaypoints : public CbPx4ClientBehaviorBase
 {
 public:
   CbFollowWaypoints(
     std::vector<std::array<float, 4>> waypoints, float xyTol = 0.5f, float zTol = 0.3f);
 
   void onEntry() override;
+
+  void wireCompletionSignals() override;
   void onExit() override;
 
 private:
@@ -42,9 +46,6 @@ private:
   float xyTol_;
   float zTol_;
   size_t currentIndex_ = 0;
-
-  CpTrajectorySetpoint * trajectorySetpoint_ = nullptr;
-  CpGoalChecker * goalChecker_ = nullptr;
 };
 
 }  // namespace cl_px4_mr

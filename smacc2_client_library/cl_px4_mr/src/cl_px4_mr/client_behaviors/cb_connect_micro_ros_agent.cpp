@@ -27,7 +27,6 @@ CbConnectMicroRosAgent::CbConnectMicroRosAgent(double timeoutSec)
 
 void CbConnectMicroRosAgent::onEntry()
 {
-  this->requiresComponent(microRosAgent_);
 
   if (!microRosAgent_->isLaunched())
   {
@@ -53,7 +52,7 @@ void CbConnectMicroRosAgent::onEntry()
       RCLCPP_ERROR(
         getLogger(), "CbConnectMicroRosAgent: timeout (%.1fs) waiting for '%s'", timeoutSec_,
         targetNodeName.c_str());
-      this->postFailureEvent();
+      this->postPx4Failure();
       return;
     }
 
@@ -81,7 +80,7 @@ void CbConnectMicroRosAgent::onEntry()
   if (!found)
   {
     RCLCPP_WARN(getLogger(), "CbConnectMicroRosAgent: shutdown requested before node found");
-    this->postFailureEvent();
+    this->postPx4Failure();
     return;
   }
 
@@ -119,7 +118,7 @@ void CbConnectMicroRosAgent::onEntry()
         "attitude_invalid=%d, local_altitude_invalid=%d, local_position_invalid=%d",
         timeoutSec_, attitudeInvalid_.load(), localAltitudeInvalid_.load(),
         localPositionInvalid_.load());
-      this->postFailureEvent();
+      this->postPx4Failure();
       return;
     }
 
@@ -135,13 +134,13 @@ void CbConnectMicroRosAgent::onEntry()
   if (healthOk_.load())
   {
     RCLCPP_INFO(getLogger(), "CbConnectMicroRosAgent: health check passed - posting success");
-    this->postSuccessEvent();
+    this->postPx4Success();
   }
   else
   {
     RCLCPP_WARN(
       getLogger(), "CbConnectMicroRosAgent: shutdown requested before health check passed");
-    this->postFailureEvent();
+    this->postPx4Failure();
   }
 }
 

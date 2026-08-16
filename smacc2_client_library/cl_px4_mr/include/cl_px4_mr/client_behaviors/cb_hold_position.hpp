@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
+
 #include <chrono>
 #include <smacc2/smacc.hpp>
 
@@ -22,7 +24,7 @@ namespace cl_px4_mr
 
 class CpTrajectorySetpoint;
 
-class CbHoldPosition : public smacc2::SmaccAsyncClientBehavior, public smacc2::ISmaccUpdatable
+class CbHoldPosition : public CbPx4ClientBehaviorBase
 {
 public:
   explicit CbHoldPosition(float durationSeconds = 5.0f);
@@ -34,8 +36,6 @@ public:
 private:
   float durationSeconds_;
   std::chrono::steady_clock::time_point startTime_;
-
-  CpTrajectorySetpoint * trajectorySetpoint_ = nullptr;
 };
 
 }  // namespace cl_px4_mr

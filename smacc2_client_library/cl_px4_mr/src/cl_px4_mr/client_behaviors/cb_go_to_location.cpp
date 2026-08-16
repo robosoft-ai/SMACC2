@@ -26,11 +26,6 @@ CbGoToLocation::CbGoToLocation(float targetX, float targetY, float targetZ, floa
 
 void CbGoToLocation::onEntry()
 {
-  this->requiresComponent(trajectorySetpoint_);
-  this->requiresComponent(goalChecker_);
-
-  this->getStateMachine()->createSignalConnection(
-    goalChecker_->onGoalReached_, &CbGoToLocation::onGoalReachedCallback, this);
 
   RCLCPP_INFO(
     getLogger(), "CbGoToLocation: navigating to [%.2f, %.2f, %.2f] yaw=%.2f", targetX_, targetY_,
@@ -45,7 +40,20 @@ void CbGoToLocation::onExit() { goalChecker_->clearGoal(); }
 void CbGoToLocation::onGoalReachedCallback()
 {
   RCLCPP_INFO(getLogger(), "CbGoToLocation: goal reached - posting success");
-  this->postSuccessEvent();
+  this->postPx4Success();
+}
+
+void CbGoToLocation::wireCompletionSignals()
+{
+  if (goalChecker_ != nullptr)
+  {
+    this->getStateMachine()->createSignalConnection(
+      goalChecker_->onGoalReached_, &CbGoToLocation::onGoalReachedCallback, this);
+  }
+  else
+  {
+    RCLCPP_WARN(getLogger(), "CbGoToLocation: completion component missing, no completion signal wired");
+  }
 }
 
 }  // namespace cl_px4_mr

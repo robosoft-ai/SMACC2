@@ -16,6 +16,7 @@
 
 #include <chrono>
 #include <cmath>
+#include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
 #include <smacc2/smacc.hpp>
 
 namespace cl_px4_mr
@@ -23,7 +24,7 @@ namespace cl_px4_mr
 
 class CpTrajectorySetpoint;
 
-class CbFigureEight : public smacc2::SmaccAsyncClientBehavior, public smacc2::ISmaccUpdatable
+class CbFigureEight : public CbPx4ClientBehaviorBase
 {
 public:
   CbFigureEight(
@@ -44,8 +45,6 @@ private:
 
   float t_ = 0.0f;
   std::chrono::steady_clock::time_point lastUpdateTime_;
-
-  CpTrajectorySetpoint * trajectorySetpoint_ = nullptr;
 };
 
 }  // namespace cl_px4_mr

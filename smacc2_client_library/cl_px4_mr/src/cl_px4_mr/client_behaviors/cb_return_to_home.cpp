@@ -26,11 +26,6 @@ CbReturnToHome::CbReturnToHome(float homeX, float homeY, float homeZ, float home
 
 void CbReturnToHome::onEntry()
 {
-  this->requiresComponent(trajectorySetpoint_);
-  this->requiresComponent(goalChecker_);
-
-  this->getStateMachine()->createSignalConnection(
-    goalChecker_->onGoalReached_, &CbReturnToHome::onGoalReachedCallback, this);
 
   RCLCPP_INFO(
     getLogger(), "CbReturnToHome: returning to home [%.2f, %.2f, %.2f] yaw=%.2f", homeX_, homeY_,
@@ -45,7 +40,20 @@ void CbReturnToHome::onExit() { goalChecker_->clearGoal(); }
 void CbReturnToHome::onGoalReachedCallback()
 {
   RCLCPP_INFO(getLogger(), "CbReturnToHome: home position reached - posting success");
-  this->postSuccessEvent();
+  this->postPx4Success();
+}
+
+void CbReturnToHome::wireCompletionSignals()
+{
+  if (goalChecker_ != nullptr)
+  {
+    this->getStateMachine()->createSignalConnection(
+      goalChecker_->onGoalReached_, &CbReturnToHome::onGoalReachedCallback, this);
+  }
+  else
+  {
+    RCLCPP_WARN(getLogger(), "CbReturnToHome: completion component missing, no completion signal wired");
+  }
 }
 
 }  // namespace cl_px4_mr

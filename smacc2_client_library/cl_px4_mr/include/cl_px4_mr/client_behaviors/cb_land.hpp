@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
+
 #include <smacc2/smacc.hpp>
 
 namespace cl_px4_mr
@@ -23,20 +25,18 @@ class CpVehicleCommand;
 class CpVehicleStatus;
 class CpOffboardKeepAlive;
 
-class CbLand : public smacc2::SmaccAsyncClientBehavior
+class CbLand : public CbPx4ClientBehaviorBase
 {
 public:
   CbLand();
 
   void onEntry() override;
+
+  void wireCompletionSignals() override;
   void onExit() override;
 
 private:
   void onLandedCallback();
-
-  CpVehicleCommand * vehicleCommand_ = nullptr;
-  CpVehicleStatus * vehicleStatus_ = nullptr;
-  CpOffboardKeepAlive * offboardKeepAlive_ = nullptr;
 };
 
 }  // namespace cl_px4_mr

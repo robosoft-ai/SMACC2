@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
+
 #include <chrono>
 #include <cmath>
 #include <smacc2/smacc.hpp>
@@ -24,7 +26,7 @@ namespace cl_px4_mr
 class CpTrajectorySetpoint;
 class CpVehicleLocalPosition;
 
-class CbOrbitLocation : public smacc2::SmaccAsyncClientBehavior, public smacc2::ISmaccUpdatable
+class CbOrbitLocation : public CbPx4ClientBehaviorBase
 {
 public:
   CbOrbitLocation(
@@ -46,9 +48,6 @@ private:
   float currentAngle_ = 0.0f;
   float startAngle_ = 0.0f;
   std::chrono::steady_clock::time_point lastUpdateTime_;
-
-  CpTrajectorySetpoint * trajectorySetpoint_ = nullptr;
-  CpVehicleLocalPosition * localPosition_ = nullptr;
 };
 
 }  // namespace cl_px4_mr

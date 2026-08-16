@@ -24,12 +24,6 @@ CbChangeAltitude::CbChangeAltitude(float targetAltitude) : targetAltitude_(targe
 
 void CbChangeAltitude::onEntry()
 {
-  this->requiresComponent(trajectorySetpoint_);
-  this->requiresComponent(goalChecker_);
-  this->requiresComponent(localPosition_);
-
-  this->getStateMachine()->createSignalConnection(
-    goalChecker_->onGoalReached_, &CbChangeAltitude::onGoalReachedCallback, this);
 
   float currentX = localPosition_->getX();
   float currentY = localPosition_->getY();
@@ -49,7 +43,20 @@ void CbChangeAltitude::onExit() { goalChecker_->clearGoal(); }
 void CbChangeAltitude::onGoalReachedCallback()
 {
   RCLCPP_INFO(getLogger(), "CbChangeAltitude: target altitude reached - posting success");
-  this->postSuccessEvent();
+  this->postPx4Success();
+}
+
+void CbChangeAltitude::wireCompletionSignals()
+{
+  if (goalChecker_ != nullptr)
+  {
+    this->getStateMachine()->createSignalConnection(
+      goalChecker_->onGoalReached_, &CbChangeAltitude::onGoalReachedCallback, this);
+  }
+  else
+  {
+    RCLCPP_WARN(getLogger(), "CbChangeAltitude: completion component missing, no completion signal wired");
+  }
 }
 
 }  // namespace cl_px4_mr

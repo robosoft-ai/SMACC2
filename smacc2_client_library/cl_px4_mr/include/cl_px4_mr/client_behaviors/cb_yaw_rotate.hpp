@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
+
 #include <cmath>
 #include <smacc2/smacc.hpp>
 
@@ -23,7 +25,7 @@ namespace cl_px4_mr
 class CpTrajectorySetpoint;
 class CpVehicleLocalPosition;
 
-class CbYawRotate : public smacc2::SmaccAsyncClientBehavior, public smacc2::ISmaccUpdatable
+class CbYawRotate : public CbPx4ClientBehaviorBase
 {
 public:
   CbYawRotate(float targetYawRad, bool relative = false);
@@ -36,9 +38,6 @@ private:
   float targetYawRad_;
   bool relative_;
   float absoluteTargetYaw_ = 0.0f;
-
-  CpTrajectorySetpoint * trajectorySetpoint_ = nullptr;
-  CpVehicleLocalPosition * localPosition_ = nullptr;
 };
 
 }  // namespace cl_px4_mr

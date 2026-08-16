@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
+
 #include <cmath>
 #include <smacc2/smacc.hpp>
 
@@ -23,7 +25,7 @@ namespace cl_px4_mr
 class CpTrajectorySetpoint;
 class CpGoalChecker;
 
-class CbGoToLocation : public smacc2::SmaccAsyncClientBehavior
+class CbGoToLocation : public CbPx4ClientBehaviorBase
 {
 public:
   CbGoToLocation(
@@ -31,6 +33,8 @@ public:
     float yaw = std::numeric_limits<float>::quiet_NaN());
 
   void onEntry() override;
+
+  void wireCompletionSignals() override;
   void onExit() override;
 
 private:
@@ -40,8 +44,6 @@ private:
   float targetY_;
   float targetZ_;
   float yaw_;
-  CpTrajectorySetpoint * trajectorySetpoint_ = nullptr;
-  CpGoalChecker * goalChecker_ = nullptr;
 };
 
 }  // namespace cl_px4_mr

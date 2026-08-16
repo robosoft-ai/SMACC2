@@ -24,13 +24,8 @@ CbLand::CbLand() {}
 
 void CbLand::onEntry()
 {
-  this->requiresComponent(vehicleCommand_);
-  this->requiresComponent(vehicleStatus_);
-  this->requiresComponent(offboardKeepAlive_);
 
   // Connect to disarmed signal - PX4 auto-disarms after landing
-  this->getStateMachine()->createSignalConnection(
-    vehicleStatus_->onDisarmed_, &CbLand::onLandedCallback, this);
 
   // Disable offboard keepalive - land command uses its own mode
   offboardKeepAlive_->disable();
@@ -44,7 +39,20 @@ void CbLand::onExit() {}
 void CbLand::onLandedCallback()
 {
   RCLCPP_INFO(getLogger(), "CbLand: vehicle landed and disarmed - posting success");
-  this->postSuccessEvent();
+  this->postPx4Success();
+}
+
+void CbLand::wireCompletionSignals()
+{
+  if (vehicleStatus_ != nullptr)
+  {
+    this->getStateMachine()->createSignalConnection(
+      vehicleStatus_->onDisarmed_, &CbLand::onLandedCallback, this);
+  }
+  else
+  {
+    RCLCPP_WARN(getLogger(), "CbLand: completion component missing, no completion signal wired");
+  }
 }
 
 }  // namespace cl_px4_mr

@@ -32,8 +32,6 @@ CbSpiralPattern::CbSpiralPattern(
 
 void CbSpiralPattern::onEntry()
 {
-  this->requiresComponent(trajectorySetpoint_);
-  this->requiresComponent(localPosition_);
 
   theta_ = 0.0f;
   lastUpdateTime_ = std::chrono::steady_clock::now();
@@ -54,6 +52,8 @@ void CbSpiralPattern::onExit() {}
 
 void CbSpiralPattern::update()
 {
+  CbPx4ClientBehaviorBase::update();
+
   auto now = std::chrono::steady_clock::now();
   double dt = std::chrono::duration<double>(now - lastUpdateTime_).count();
   lastUpdateTime_ = now;
@@ -94,7 +94,7 @@ void CbSpiralPattern::update()
     RCLCPP_INFO(
       getLogger(), "CbSpiralPattern: max radius %.2f reached (r=%.2f) - posting success",
       maxRadius_, r_new);
-    this->postSuccessEvent();
+    this->postPx4Success();
   }
 }
 

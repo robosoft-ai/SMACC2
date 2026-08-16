@@ -29,14 +29,6 @@ CbTakeOff::CbTakeOff(float targetAltitude) : targetAltitude_(targetAltitude) {}
 
 void CbTakeOff::onEntry()
 {
-  this->requiresComponent(vehicleCommand_);
-  this->requiresComponent(offboardKeepAlive_);
-  this->requiresComponent(trajectorySetpoint_);
-  this->requiresComponent(goalChecker_);
-  this->requiresComponent(localPosition_);
-
-  this->getStateMachine()->createSignalConnection(
-    goalChecker_->onGoalReached_, &CbTakeOff::onGoalReachedCallback, this);
 
   // 1. Enable offboard keepalive heartbeat
   offboardKeepAlive_->enable();
@@ -74,7 +66,20 @@ void CbTakeOff::onExit() {}
 void CbTakeOff::onGoalReachedCallback()
 {
   RCLCPP_INFO(getLogger(), "CbTakeOff: target altitude reached - posting success");
-  this->postSuccessEvent();
+  this->postPx4Success();
+}
+
+void CbTakeOff::wireCompletionSignals()
+{
+  if (goalChecker_ != nullptr)
+  {
+    this->getStateMachine()->createSignalConnection(
+      goalChecker_->onGoalReached_, &CbTakeOff::onGoalReachedCallback, this);
+  }
+  else
+  {
+    RCLCPP_WARN(getLogger(), "CbTakeOff: completion component missing, no completion signal wired");
+  }
 }
 
 }  // namespace cl_px4_mr

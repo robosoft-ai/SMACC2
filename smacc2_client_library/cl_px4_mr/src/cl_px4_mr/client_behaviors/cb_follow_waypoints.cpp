@@ -27,16 +27,11 @@ CbFollowWaypoints::CbFollowWaypoints(
 
 void CbFollowWaypoints::onEntry()
 {
-  this->requiresComponent(trajectorySetpoint_);
-  this->requiresComponent(goalChecker_);
-
-  this->getStateMachine()->createSignalConnection(
-    goalChecker_->onGoalReached_, &CbFollowWaypoints::onGoalReachedCallback, this);
 
   if (waypoints_.empty())
   {
     RCLCPP_WARN(getLogger(), "CbFollowWaypoints: no waypoints provided - posting success");
-    this->postSuccessEvent();
+    this->postPx4Success();
     return;
   }
 
@@ -73,11 +68,24 @@ void CbFollowWaypoints::onGoalReachedCallback()
     RCLCPP_INFO(
       getLogger(), "CbFollowWaypoints: all %zu waypoints reached - posting success",
       waypoints_.size());
-    this->postSuccessEvent();
+    this->postPx4Success();
   }
   else
   {
     commandCurrentWaypoint();
+  }
+}
+
+void CbFollowWaypoints::wireCompletionSignals()
+{
+  if (goalChecker_ != nullptr)
+  {
+    this->getStateMachine()->createSignalConnection(
+      goalChecker_->onGoalReached_, &CbFollowWaypoints::onGoalReachedCallback, this);
+  }
+  else
+  {
+    RCLCPP_WARN(getLogger(), "CbFollowWaypoints: completion component missing, no completion signal wired");
   }
 }
 
