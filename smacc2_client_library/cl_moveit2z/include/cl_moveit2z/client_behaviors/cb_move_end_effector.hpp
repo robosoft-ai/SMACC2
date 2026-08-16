@@ -22,19 +22,16 @@
 
 #include <tf2/impl/utils.h>
 #include <cl_moveit2z/cl_moveit2z.hpp>
+#include <cl_moveit2z/client_behaviors/cb_moveit2z_client_behavior_base.hpp>
 #include <cl_moveit2z/common.hpp>
-#include <cl_moveit2z/components/cp_motion_planner.hpp>
-#include <cl_moveit2z/components/cp_move_group_interface.hpp>
-#include <cl_moveit2z/components/cp_trajectory_executor.hpp>
 #include <future>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 using namespace std::chrono_literals;
 
 namespace cl_moveit2z
 {
-class CbMoveEndEffector : public smacc2::SmaccAsyncClientBehavior
+class CbMoveEndEffector : public CbMoveit2zClientBehaviorBase
 {
 public:
   geometry_msgs::msg::PoseStamped targetPose;
@@ -51,8 +48,7 @@ public:
 
   virtual void onEntry() override
   {
-    this->requiresComponent(cpMoveGroup_);
-
+    // components resolved in onStateOrthogonalAllocation (base class)
     if (this->group_)
     {
       RCLCPP_DEBUG(
@@ -81,9 +77,7 @@ protected:
     rclcpp::sleep_for(500ms);
 
     // Try to use CpMotionPlanner component (preferred)
-    CpMotionPlanner * motionPlanner = nullptr;
-    this->requiresComponent(
-      motionPlanner, smacc2::ComponentRequirement::SOFT);  // Optional component
+    CpMotionPlanner * motionPlanner = cpMotionPlanner_;
 
     bool success = false;
     moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
@@ -144,9 +138,7 @@ protected:
     if (success)
     {
       // Try to use CpTrajectoryExecutor component (preferred)
-      CpTrajectoryExecutor * trajectoryExecutor = nullptr;
-      this->requiresComponent(
-        trajectoryExecutor, smacc2::ComponentRequirement::SOFT);  // Optional component
+      CpTrajectoryExecutor * trajectoryExecutor = cpTrajectoryExecutor_;
 
       bool executionSuccess = false;
 
@@ -194,20 +186,17 @@ protected:
       // Post events
       if (executionSuccess)
       {
-        cpMoveGroup_->postEventMotionExecutionSucceeded();
-        this->postSuccessEvent();
+        this->postMotionSuccess();
       }
       else
       {
-        cpMoveGroup_->postEventMotionExecutionFailed();
-        this->postFailureEvent();
+        this->postMotionFailure();
       }
     }
     else
     {
       RCLCPP_INFO(getLogger(), "[CbMoveEndEffector] planning failed, skipping execution");
-      cpMoveGroup_->postEventMotionExecutionFailed();
-      this->postFailureEvent();
+      this->postMotionFailure();
     }
 
     RCLCPP_DEBUG(getLogger(), "[CbMoveEndEffector] Synchronous sleep of 1 seconds");
@@ -215,7 +204,5 @@ protected:
 
     return success;
   }
-
-  CpMoveGroupInterface * cpMoveGroup_ = nullptr;
 };
 }  // namespace cl_moveit2z

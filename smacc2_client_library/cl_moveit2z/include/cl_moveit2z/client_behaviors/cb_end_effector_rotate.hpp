@@ -44,15 +44,13 @@ public:
 
   virtual void onEntry() override
   {
-    // Use CpTfListener component for transform lookups
-    CpTfListener * tfListener = nullptr;
-    this->requiresComponent(tfListener, smacc2::ComponentRequirement::SOFT);  // Optional component
+    // components resolved in onStateOrthogonalAllocation (base chain)
+    CpTfListener * tfListener = cpTfListener_;
 
     tf2::Stamped<tf2::Transform> endEffectorInPivotFrame;
 
     int attempts = 3;
 
-    this->requiresComponent(cpMoveGroup_);
     if (!tipLink_)
     {
       tipLink_ = this->cpMoveGroup_->moveGroupClientInterface->getEndEffectorLink();

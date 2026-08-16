@@ -226,9 +226,8 @@ protected:
 private:
   void computeCurrentEndEffectorPoseRelativeToPivot()
   {
-    // Use CpTfListener component for transform lookups
-    CpTfListener * tfListener = nullptr;
-    this->requiresComponent(tfListener, smacc2::ComponentRequirement::SOFT);  // Optional component
+    // components resolved in onStateOrthogonalAllocation (base chain)
+    CpTfListener * tfListener = cpTfListener_;
 
     tf2::Stamped<tf2::Transform> endEffectorInPivotFrame;
 

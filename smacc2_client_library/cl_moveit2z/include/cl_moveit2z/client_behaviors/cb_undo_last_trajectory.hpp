@@ -36,11 +36,10 @@ public:
 
   virtual void onEntry() override
   {
-    CpTrajectoryHistory * trajectoryHistory;
-    this->requiresComponent(trajectoryHistory);
-    this->requiresComponent(cpMoveGroup_);
+    // components resolved in onStateOrthogonalAllocation (base chain)
+    CpTrajectoryHistory * trajectoryHistory = cpTrajectoryHistory_;
 
-    if (trajectoryHistory->getLastTrajectory(backIndex_, trajectory))
+    if (trajectoryHistory != nullptr && trajectoryHistory->getLastTrajectory(backIndex_, trajectory))
     {
       RCLCPP_WARN_STREAM(
         getLogger(), "[" << getName() << "] reversing last trajectory [" << backIndex_ << "]");
@@ -63,6 +62,8 @@ public:
     {
       RCLCPP_WARN_STREAM(
         getLogger(), "[" << getName() << "] could not undo last trajectory, trajectory not found.");
+      // previously this path posted nothing and the state machine waited forever
+      this->postMotionFailure();
     }
   }
 

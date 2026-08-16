@@ -21,8 +21,8 @@
 #pragma once
 
 #include <cl_moveit2z/cl_moveit2z.hpp>
+#include <cl_moveit2z/client_behaviors/cb_moveit2z_client_behavior_base.hpp>
 #include <cl_moveit2z/components/cp_grasping_objects.hpp>
-#include <cl_moveit2z/components/cp_move_group_interface.hpp>
 #include <moveit_msgs/msg/collision_object.hpp>
 #include <smacc2/smacc.hpp>
 
@@ -36,7 +36,7 @@ namespace cl_moveit2z
  * map. Upon successful attachment, the object is added to the planning scene
  * and attached to the gripper using the finger tip links.
  */
-class CbAttachObject : public smacc2::SmaccAsyncClientBehavior
+class CbAttachObject : public CbMoveit2zClientBehaviorBase
 {
 public:
   /**
@@ -50,6 +50,13 @@ public:
    */
   inline CbAttachObject() {}
 
+  template <typename TOrthogonal, typename TSourceObject>
+  void onStateOrthogonalAllocation()
+  {
+    this->requiresComponent(graspingComponent_, smacc2::ComponentRequirement::HARD);
+    CbMoveit2zClientBehaviorBase::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
+  }
+
   /**
    * @brief Called when the behavior is entered
    *
@@ -59,11 +66,9 @@ public:
    */
   inline void onEntry() override
   {
-    cl_moveit2z::CpMoveGroupInterface * cpMoveGroup;
-    this->requiresComponent(cpMoveGroup);
-
-    cl_moveit2z::CpGraspingComponent * graspingComponent;
-    this->requiresComponent(graspingComponent);
+    // components resolved in onStateOrthogonalAllocation
+    auto * cpMoveGroup = cpMoveGroup_;
+    auto * graspingComponent = graspingComponent_;
 
     moveit_msgs::msg::CollisionObject targetCollisionObject;
     bool found = graspingComponent->getGraspingObject(targetObjectName_, targetCollisionObject);
@@ -99,6 +104,9 @@ public:
 
   /// Name of the target object to attach
   std::string targetObjectName_;
+
+private:
+  cl_moveit2z::CpGraspingComponent * graspingComponent_ = nullptr;
 };
 
 }  // namespace cl_moveit2z

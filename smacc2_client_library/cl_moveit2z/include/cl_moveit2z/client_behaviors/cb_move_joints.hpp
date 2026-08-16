@@ -27,14 +27,11 @@
 #include <string>
 
 #include <cl_moveit2z/cl_moveit2z.hpp>
-#include <cl_moveit2z/components/cp_motion_planner.hpp>
-#include <cl_moveit2z/components/cp_move_group_interface.hpp>
-#include <cl_moveit2z/components/cp_trajectory_executor.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
+#include <cl_moveit2z/client_behaviors/cb_moveit2z_client_behavior_base.hpp>
 
 namespace cl_moveit2z
 {
-class CbMoveJoints : public smacc2::SmaccAsyncClientBehavior
+class CbMoveJoints : public CbMoveit2zClientBehaviorBase
 {
 public:
   std::optional<double> scalingFactor_;
@@ -50,8 +47,7 @@ public:
 
   virtual void onEntry() override
   {
-    this->requiresComponent(cpMoveGroup_);
-
+    // components resolved in onStateOrthogonalAllocation (base class)
     if (this->group_)
     {
       moveit::planning_interface::MoveGroupInterface move_group(
@@ -95,15 +91,12 @@ protected:
     if (jointValueTarget_.size() == 0)
     {
       RCLCPP_WARN(getLogger(), "[CbMoveJoints] No joint value specified. Skipping planning call.");
-      cpMoveGroup_->postEventMotionExecutionFailed();
-      this->postFailureEvent();
+      this->postMotionFailure();
       return;
     }
 
-    // Try to use CpMotionPlanner component (preferred)
-    CpMotionPlanner * motionPlanner = nullptr;
-    this->requiresComponent(
-      motionPlanner, smacc2::ComponentRequirement::SOFT);  // Optional component
+    // Use the CpMotionPlanner component when present (preferred)
+    CpMotionPlanner * motionPlanner = cpMotionPlanner_;
 
     bool success = false;
     moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
@@ -158,10 +151,8 @@ protected:
     // Execution
     if (success)
     {
-      // Try to use CpTrajectoryExecutor component (preferred)
-      CpTrajectoryExecutor * trajectoryExecutor = nullptr;
-      this->requiresComponent(
-        trajectoryExecutor, smacc2::ComponentRequirement::SOFT);  // Optional component
+      // Use the CpTrajectoryExecutor component when present (preferred)
+      CpTrajectoryExecutor * trajectoryExecutor = cpTrajectoryExecutor_;
 
       bool executionSuccess = false;
 
@@ -211,32 +202,21 @@ protected:
       // Post events
       if (executionSuccess)
       {
-        RCLCPP_INFO_STREAM(
-          getLogger(),
-          "[" << this->getName() << "] motion execution succeeded. Throwing success event.");
-        cpMoveGroup_->postEventMotionExecutionSucceeded();
-        this->postSuccessEvent();
+        this->postMotionSuccess();
       }
       else
       {
-        RCLCPP_WARN_STREAM(
-          getLogger(), "[" << this->getName() << "] motion execution failed. Throwing fail event.");
-        cpMoveGroup_->postEventMotionExecutionFailed();
-        this->postFailureEvent();
+        this->postMotionFailure();
       }
     }
     else
     {
       auto statestr = currentJointStatesToString(moveGroupInterface, jointValueTarget_);
       RCLCPP_WARN_STREAM(
-        getLogger(), "[" << this->getName() << "] planning failed. Throwing fail event."
-                         << std::endl
+        getLogger(), "[" << this->getName() << "] planning failed." << std::endl
                          << statestr);
-      cpMoveGroup_->postEventMotionExecutionFailed();
-      this->postFailureEvent();
+      this->postMotionFailure();
     }
   }
-
-  CpMoveGroupInterface * cpMoveGroup_ = nullptr;
 };
 }  // namespace cl_moveit2z

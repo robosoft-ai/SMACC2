@@ -23,15 +23,12 @@
 #include <tf2/transform_datatypes.h>
 #include <tf2_ros/transform_listener.h>
 #include <cl_moveit2z/cl_moveit2z.hpp>
+#include <cl_moveit2z/client_behaviors/cb_moveit2z_client_behavior_base.hpp>
 #include <cl_moveit2z/common.hpp>
 #include <cl_moveit2z/components/cp_joint_space_trajectory_planner.hpp>
-#include <cl_moveit2z/components/cp_move_group_interface.hpp>
 #include <cl_moveit2z/components/cp_tf_listener.hpp>
-#include <cl_moveit2z/components/cp_trajectory_executor.hpp>
-#include <cl_moveit2z/components/cp_trajectory_history.hpp>
 #include <cl_moveit2z/components/cp_trajectory_visualizer.hpp>
 #include <moveit_msgs/srv/get_position_ik.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
 
 using namespace std::chrono_literals;
@@ -58,7 +55,7 @@ enum class ComputeJointTrajectoryErrorCode
 };
 
 // this is a base behavior to define any kind of parameterized family of trajectories or motions
-class CbMoveEndEffectorTrajectory : public smacc2::SmaccAsyncClientBehavior
+class CbMoveEndEffectorTrajectory : public CbMoveit2zClientBehaviorBase
 {
 public:
   // std::string tip_link_;
@@ -84,7 +81,13 @@ public:
   {
     this->initializeROS();
 
-    smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    // optional components specific to this behavior family; the shared ones
+    // (move group, motion planner, executor, history) come from the base chain
+    this->requiresComponent(cpTrajectoryVisualizer_, smacc2::ComponentRequirement::SOFT);
+    this->requiresComponent(cpJointSpaceTrajectoryPlanner_, smacc2::ComponentRequirement::SOFT);
+    this->requiresComponent(cpTfListener_, smacc2::ComponentRequirement::SOFT);
+
+    CbMoveit2zClientBehaviorBase::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
     postJointDiscontinuityEvent = [this](auto traj)
     {
@@ -110,12 +113,8 @@ public:
 
   virtual void onEntry() override
   {
-    this->requiresComponent(cpMoveGroup_);
-
-    // Get optional components for visualization
-    CpTrajectoryVisualizer * trajectoryVisualizer = nullptr;
-    this->requiresComponent(
-      trajectoryVisualizer, smacc2::ComponentRequirement::SOFT);  // Optional component
+    // components resolved in onStateOrthogonalAllocation
+    CpTrajectoryVisualizer * trajectoryVisualizer = cpTrajectoryVisualizer_;
 
     RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Generating end effector trajectory");
 
@@ -154,8 +153,7 @@ public:
 
     bool trajectoryGenerationSuccess = errorcode == ComputeJointTrajectoryErrorCode::SUCCESS;
 
-    CpTrajectoryHistory * trajectoryHistory;
-    this->requiresComponent(trajectoryHistory);
+    CpTrajectoryHistory * trajectoryHistory = cpTrajectoryHistory_;
 
     if (!trajectoryGenerationSuccess)
     {
@@ -196,19 +194,17 @@ public:
     // handle finishing events
   }
 
-  // onExit removed - requiresComponent() during state disposal causes deadlock
-  // Components and markers are automatically cleaned up when state is destroyed
-  // If manual cleanup needed in future, use empty onExit like CbMoveJoints
+  // Components are resolved in onStateOrthogonalAllocation (state machine
+  // thread); never call requiresComponent from onEntry/onExit - they run on
+  // asynchronous behavior threads and deadlock against state transitions
   virtual void onExit() override {}
 
 protected:
   ComputeJointTrajectoryErrorCode computeJointSpaceTrajectory(
     moveit_msgs::msg::RobotTrajectory & computedJointTrajectory)
   {
-    // Try to use CpJointSpaceTrajectoryPlanner component (preferred)
-    CpJointSpaceTrajectoryPlanner * trajectoryPlanner = nullptr;
-    this->requiresComponent(
-      trajectoryPlanner, smacc2::ComponentRequirement::SOFT);  // Optional component
+    // Use the CpJointSpaceTrajectoryPlanner component when present (preferred)
+    CpJointSpaceTrajectoryPlanner * trajectoryPlanner = cpJointSpaceTrajectoryPlanner_;
 
     if (trajectoryPlanner != nullptr)
     {
@@ -461,10 +457,8 @@ protected:
   {
     RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Executing joint trajectory");
 
-    // Try to use CpTrajectoryExecutor component (preferred)
-    CpTrajectoryExecutor * trajectoryExecutor = nullptr;
-    this->requiresComponent(
-      trajectoryExecutor, smacc2::ComponentRequirement::SOFT);  // Optional component
+    // Use the CpTrajectoryExecutor component when present (preferred)
+    CpTrajectoryExecutor * trajectoryExecutor = cpTrajectoryExecutor_;
 
     bool executionSuccess = false;
 
@@ -515,9 +509,7 @@ protected:
     // Post events
     if (executionSuccess)
     {
-      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] motion execution succeeded");
-      cpMoveGroup_->postEventMotionExecutionSucceeded();
-      this->postSuccessEvent();
+      this->postMotionSuccess();
     }
     else
     {
@@ -580,16 +572,17 @@ protected:
 
   std::vector<geometry_msgs::msg::PoseStamped> endEffectorTrajectory_;
 
-  CpMoveGroupInterface * cpMoveGroup_ = nullptr;
+  CpTrajectoryVisualizer * cpTrajectoryVisualizer_ = nullptr;
+  CpJointSpaceTrajectoryPlanner * cpJointSpaceTrajectoryPlanner_ = nullptr;
+  CpTfListener * cpTfListener_ = nullptr;
 
   visualization_msgs::msg::MarkerArray beahiorMarkers_;
 
   void getCurrentEndEffectorPose(
     std::string globalFrame, tf2::Stamped<tf2::Transform> & currentEndEffectorTransform)
   {
-    // Use CpTfListener component for transform lookups
-    CpTfListener * tfListener = nullptr;
-    this->requiresComponent(tfListener, smacc2::ComponentRequirement::SOFT);  // Optional component
+    // components resolved in onStateOrthogonalAllocation
+    CpTfListener * tfListener = cpTfListener_;
 
     try
     {
