@@ -202,15 +202,20 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onComponentInitialization()
   {
-    // Set up event posting functions with proper template parameters
+    // Event source type is THIS COMPONENT, not the owning client: the event
+    // payload type is TSource::WrappedResult, and typing it on the client would
+    // wrongly assume the client's WrappedResult typedef matches this component's
+    // action - which breaks as soon as a client owns action clients of more than
+    // one action type. Nothing in-tree listens to client-typed events from this
+    // component (domain interfaces like CpNav2ActionInterface post those).
     postSuccessEvent = [this](const WrappedResult & result)
-    { this->postResultEvent<EvActionSucceeded<TSourceObject, TOrthogonal>>(result); };
+    { this->postResultEvent<EvActionSucceeded<CpActionClient<ActionType>, TOrthogonal>>(result); };
 
     postAbortedEvent = [this](const WrappedResult & result)
-    { this->postResultEvent<EvActionAborted<TSourceObject, TOrthogonal>>(result); };
+    { this->postResultEvent<EvActionAborted<CpActionClient<ActionType>, TOrthogonal>>(result); };
 
     postCancelledEvent = [this](const WrappedResult & result)
-    { this->postResultEvent<EvActionCancelled<TSourceObject, TOrthogonal>>(result); };
+    { this->postResultEvent<EvActionCancelled<CpActionClient<ActionType>, TOrthogonal>>(result); };
 
     postFeedbackEvent = [this](const Feedback & feedback)
     {
