@@ -98,6 +98,7 @@ SmaccSignal is a communication mechanism (template wrapper around boost::signals
 
   ### Important Client Library Related Files
   - smacc2/include/smacc2/smacc_asynchronous_client_behavior.hpp
+  - smacc2/include/smacc2/client_behavior_bases/cb_action_client_behavior_base.hpp
   - smacc2/include/smacc2/client_core_components/cp_topic_subscriber.hpp
   - smacc2/include/smacc2/impl/smacc_asynchronous_client_behavior_impl.hpp
   - smacc2/include/smacc2/client_bases/smacc_action_client_base.hpp
