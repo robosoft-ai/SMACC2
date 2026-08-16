@@ -56,9 +56,9 @@ public:
   }
 
 protected:
-  // Sends the goal through CpNav2ActionInterface and connects the action result
-  // signals (once) so that navigationResult_ is updated and EvCbSuccess/EvCbFailure
-  // are posted when the navigation finishes.
+  // Sends the goal through CpNav2ActionInterface. The action result signals are
+  // connected in onStateOrthogonalAllocation, so navigationResult_ is updated and
+  // EvCbSuccess/EvCbFailure are posted when the navigation finishes.
   void sendGoal(nav2_msgs::action::NavigateToPose::Goal & goal);
 
   void cancelGoal()
