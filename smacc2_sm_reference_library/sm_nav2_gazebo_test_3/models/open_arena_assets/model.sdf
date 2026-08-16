@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="open_arena_assets">
+    <static>true</static>
+    <link name="empty"/>
+  </model>
+</sdf>

@@ -1,0 +1,24 @@
+<!--
+  Custom NavigateToPose behavior tree for sm_nav2_gazebo_test_2.
+
+  Extends the selector concept of the stock Jazzy BT with the GoalCheckerSelector
+  node so that the SMACC2 CpPlannerSwitcher / CpGoalCheckerSwitcher components can
+  switch planner, controller AND goal checker at runtime via the latched
+  planner_selector / controller_selector / goal_checker_selector topics.
+
+  Recovery behaviors (Spin/BackUp) are deliberately omitted: they would drive the
+  robot off the odom-tracker recorded trail in the middle of an undo navigation.
+-->
+<root BTCPP_format="4" main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <PipelineSequence name="NavigateWithReplanning">
+      <ControllerSelector selected_controller="{selected_controller}" default_controller="FollowPath" topic_name="controller_selector"/>
+      <PlannerSelector selected_planner="{selected_planner}" default_planner="GridBased" topic_name="planner_selector"/>
+      <GoalCheckerSelector selected_goal_checker="{selected_goal_checker}" default_goal_checker="goal_checker" topic_name="goal_checker_selector"/>
+      <RateController hz="0.333">
+        <ComputePathToPose goal="{goal}" path="{path}" planner_id="{selected_planner}" error_code_id="{compute_path_error_code}"/>
+      </RateController>
+      <FollowPath path="{path}" controller_id="{selected_controller}" goal_checker_id="{selected_goal_checker}" error_code_id="{follow_path_error_code}"/>
+    </PipelineSequence>
+  </BehaviorTree>
+</root>

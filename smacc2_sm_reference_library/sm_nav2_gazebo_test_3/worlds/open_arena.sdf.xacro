@@ -1,0 +1,221 @@
+<?xml version="1.0"?>
+<!--
+  Open arena world for sm_nav2_gazebo_test_2: a 10 x 8 m rectangular room with
+  boundary walls and NO interior obstacles. The walls give AMCL laser features to
+  localize against while leaving the whole interior free for the radial undo
+  pattern. Matches maps/open_arena.yaml.
+-->
+<sdf version="1.6" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="headless" default="true"/>
+
+  <world name="default">
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+  <xacro:unless value="$(arg headless)">
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+  </xacro:unless>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin
+      filename="gz-sim-imu-system"
+      name="gz::sim::systems::Imu">
+    </plugin>
+
+    <light name='sun' type='directional'>
+        <cast_shadows>1</cast_shadows>
+        <pose>0 0 10 0 0 0</pose>
+        <diffuse>0.8 0.8 0.8 1</diffuse>
+        <specular>0.8 0.8 0.8 1</specular>
+        <attenuation>
+            <range>1000</range>
+            <constant>0.9</constant>
+            <linear>0.01</linear>
+            <quadratic>0.001</quadratic>
+        </attenuation>
+        <direction>-0.4 0.3 -0.85</direction>
+    </light>
+    <model name='ground_plane'>
+        <static>1</static>
+        <link name='link'>
+            <collision name='collision'>
+                <geometry>
+                    <plane>
+                        <normal>0 0 1</normal>
+                        <size>100 100</size>
+                    </plane>
+                </geometry>
+                <max_contacts>10</max_contacts>
+            </collision>
+            <visual name='visual'>
+                <geometry>
+                    <plane>
+                        <normal>0 0 1</normal>
+                        <size>100 100</size>
+                    </plane>
+                </geometry>
+                <material>
+                    <ambient>0.75 0.74 0.72 1</ambient>
+                    <diffuse>0.75 0.74 0.72 1</diffuse>
+                    <specular>0.2 0.2 0.2 1</specular>
+                </material>
+            </visual>
+            <visual name='arena_floor'>
+                <pose>-1.0 0.5 0.001 0 0 0</pose>
+                <geometry>
+                    <plane>
+                        <normal>0 0 1</normal>
+                        <size>7.3 6.3</size>
+                    </plane>
+                </geometry>
+                <material>
+                    <diffuse>1 1 1 1</diffuse>
+                    <specular>0.15 0.15 0.15 1</specular>
+                    <pbr><metal>
+                        <albedo_map>model://open_arena_assets/materials/textures/concrete.png</albedo_map>
+                        <roughness>0.85</roughness>
+                    </metal></pbr>
+                </material>
+            </visual>
+        </link>
+    </model>
+
+    <scene>
+      <shadows>1</shadows>
+      <ambient>0.55 0.55 0.55 1</ambient>
+      <background>0.65 0.78 0.9 1</background>
+      <sky></sky>
+    </scene>
+
+    <physics name='3ms' type='ode'>
+        <max_step_size>0.003</max_step_size>
+        <real_time_factor>1</real_time_factor>
+    </physics>
+
+    <!-- Single pillar forcing a curved path on the StNavigateWithCurve leg:
+         directly between the robot spawn (-2, -0.5) and the curve goal (-2, 2.5),
+         and >2.5 m away from the radial pattern around (0.5, 0) -->
+    <model name="curve_pillar">
+      <static>1</static>
+      <link name="pillar">
+        <collision name="pillar_collision">
+          <pose>-2.0 1.0 0.25 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>0.5</length></cylinder></geometry>
+        </collision>
+        <visual name="pillar_visual">
+          <pose>-2.0 1.0 0.25 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>0.5</length></cylinder></geometry>
+          <material>
+            <ambient>0.6 0.3 0.3 1</ambient>
+            <diffuse>0.6 0.3 0.3 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Second pillar forcing a curve on the chained leg StNavigateChain2:
+         directly between P1 (-2.0, 2.5) and P2 (1.5, 2.0) -->
+    <model name="chain_pillar">
+      <static>1</static>
+      <link name="pillar2">
+        <collision name="pillar2_collision">
+          <pose>-0.25 2.25 0.25 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>0.5</length></cylinder></geometry>
+        </collision>
+        <visual name="pillar2_visual">
+          <pose>-0.25 2.25 0.25 0 0 0</pose>
+          <geometry><cylinder><radius>0.35</radius><length>0.5</length></cylinder></geometry>
+          <material>
+            <ambient>0.3 0.3 0.6 1</ambient>
+            <diffuse>0.3 0.3 0.6 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Rectangular arena: interior x in [-4.5, 2.5], y in [-2.5, 3.5], wall height 0.5.
+         Sized so the TB3 lidar (3.5 m range) always sees at least two walls: AMCL
+         stays constrained everywhere the mission drives. -->
+    <model name="arena_walls">
+      <static>1</static>
+      <link name="walls">
+        <collision name="north_collision">
+          <pose>-1.0 3.575 0.25 0 0 0</pose>
+          <geometry><box><size>7.6 0.15 0.5</size></box></geometry>
+        </collision>
+        <visual name="north_visual">
+          <pose>-1.0 3.575 0.25 0 0 0</pose>
+          <geometry><box><size>7.6 0.15 0.5</size></box></geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <pbr><metal>
+              <albedo_map>model://open_arena_assets/materials/textures/wall_long.png</albedo_map>
+              <roughness>0.9</roughness>
+            </metal></pbr>
+          </material>
+        </visual>
+        <collision name="south_collision">
+          <pose>-1.0 -2.575 0.25 0 0 0</pose>
+          <geometry><box><size>7.6 0.15 0.5</size></box></geometry>
+        </collision>
+        <visual name="south_visual">
+          <pose>-1.0 -2.575 0.25 0 0 0</pose>
+          <geometry><box><size>7.6 0.15 0.5</size></box></geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <pbr><metal>
+              <albedo_map>model://open_arena_assets/materials/textures/wall_long.png</albedo_map>
+              <roughness>0.9</roughness>
+            </metal></pbr>
+          </material>
+        </visual>
+        <collision name="east_collision">
+          <pose>2.575 0.5 0.25 0 0 0</pose>
+          <geometry><box><size>0.15 6.0 0.5</size></box></geometry>
+        </collision>
+        <visual name="east_visual">
+          <pose>2.575 0.5 0.25 0 0 0</pose>
+          <geometry><box><size>0.15 6.0 0.5</size></box></geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <pbr><metal>
+              <albedo_map>model://open_arena_assets/materials/textures/wall_side.png</albedo_map>
+              <roughness>0.9</roughness>
+            </metal></pbr>
+          </material>
+        </visual>
+        <collision name="west_collision">
+          <pose>-4.575 0.5 0.25 0 0 0</pose>
+          <geometry><box><size>0.15 6.0 0.5</size></box></geometry>
+        </collision>
+        <visual name="west_visual">
+          <pose>-4.575 0.5 0.25 0 0 0</pose>
+          <geometry><box><size>0.15 6.0 0.5</size></box></geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <pbr><metal>
+              <albedo_map>model://open_arena_assets/materials/textures/wall_side.png</albedo_map>
+              <roughness>0.9</roughness>
+            </metal></pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
