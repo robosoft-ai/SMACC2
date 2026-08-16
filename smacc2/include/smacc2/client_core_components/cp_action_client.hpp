@@ -81,10 +81,35 @@ public:
   {
     std::lock_guard<std::mutex> lock(actionMutex_);
 
+    if (client_ == nullptr)
+    {
+      RCLCPP_ERROR_STREAM(
+        getLogger(), "[" << this->getName()
+                         << "] Cannot send goal: action client not initialized (was the "
+                            "component created with an action server name?)");
+      return std::shared_future<typename GoalHandle::SharedPtr>();
+    }
+
     SendGoalOptions options;
 
     // Set up feedback callback
     options.feedback_callback = feedbackCallback_;
+
+    // Goal acceptance/rejection notification. Without this a rejected goal is
+    // silent: the result callback never fires and no signal is emitted.
+    options.goal_response_callback = [this](typename GoalHandle::SharedPtr goalHandle)
+    {
+      if (goalHandle != nullptr)
+      {
+        RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Goal accepted by server");
+        onGoalAccepted_();
+      }
+      else
+      {
+        RCLCPP_ERROR_STREAM(getLogger(), "[" << this->getName() << "] Goal rejected by server");
+        onGoalRejected_();
+      }
+    };
 
     // Set up result callback
     options.result_callback = [this, resultCallback](const WrappedResult & result)
@@ -123,7 +148,7 @@ public:
   {
     std::lock_guard<std::mutex> lock(actionMutex_);
 
-    if (lastRequest_ && lastRequest_->valid())
+    if (client_ != nullptr && lastRequest_ && lastRequest_->valid())
     {
       RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Cancelling current goal");
 
