@@ -124,8 +124,7 @@ protected:
           return true;
         }
 
-        RCLCPP_ERROR(
-          getLogger(), "[%s] Goal was rejected by the action server", getName().c_str());
+        RCLCPP_ERROR(getLogger(), "[%s] Goal was rejected by the action server", getName().c_str());
         this->postFailureEvent();
         return false;
       }
@@ -156,8 +155,7 @@ protected:
   {
     goalInFlight_ = false;
     actionResult_ = result.code;
-    RCLCPP_INFO(
-      getLogger(), "[%s] Action succeeded, propagating success event", getName().c_str());
+    RCLCPP_INFO(getLogger(), "[%s] Action succeeded, propagating success event", getName().c_str());
     this->postSuccessEvent();
   }
 

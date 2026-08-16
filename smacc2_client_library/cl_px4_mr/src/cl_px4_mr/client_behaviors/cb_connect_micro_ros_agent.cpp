@@ -27,7 +27,6 @@ CbConnectMicroRosAgent::CbConnectMicroRosAgent(double timeoutSec)
 
 void CbConnectMicroRosAgent::onEntry()
 {
-
   if (!microRosAgent_->isLaunched())
   {
     RCLCPP_INFO(getLogger(), "CbConnectMicroRosAgent: launching micro_ros_agent...");

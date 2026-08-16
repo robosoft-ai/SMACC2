@@ -24,7 +24,6 @@ CbLand::CbLand() {}
 
 void CbLand::onEntry()
 {
-
   // Connect to disarmed signal - PX4 auto-disarms after landing
 
   // Disable offboard keepalive - land command uses its own mode

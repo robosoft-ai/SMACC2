@@ -39,7 +39,8 @@ public:
     // components resolved in onStateOrthogonalAllocation (base chain)
     CpTrajectoryHistory * trajectoryHistory = cpTrajectoryHistory_;
 
-    if (trajectoryHistory != nullptr && trajectoryHistory->getLastTrajectory(backIndex_, trajectory))
+    if (
+      trajectoryHistory != nullptr && trajectoryHistory->getLastTrajectory(backIndex_, trajectory))
     {
       RCLCPP_WARN_STREAM(
         getLogger(), "[" << getName() << "] reversing last trajectory [" << backIndex_ << "]");

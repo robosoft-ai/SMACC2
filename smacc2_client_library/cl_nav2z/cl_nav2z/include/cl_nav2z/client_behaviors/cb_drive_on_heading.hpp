@@ -24,9 +24,8 @@ namespace cl_nav2z
 // the Nav2 behavior server's DriveOnHeading action: odometry-relative dead
 // reckoning - works even when localization is degraded (compare
 // CbNavigateForward, which needs the full planner/controller/localization stack).
-class CbDriveOnHeading
-: public smacc2::client_behavior_bases::CbActionClientBehaviorBase<
-    nav2_msgs::action::DriveOnHeading>
+class CbDriveOnHeading : public smacc2::client_behavior_bases::CbActionClientBehaviorBase<
+                           nav2_msgs::action::DriveOnHeading>
 {
 public:
   CbDriveOnHeading(

@@ -14,9 +14,9 @@
 
 #pragma once
 
+#include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
 #include <px4_msgs/msg/failsafe_flags.hpp>
 #include <rclcpp/rclcpp.hpp>
-#include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
 #include <smacc2/smacc.hpp>
 
 #include <atomic>

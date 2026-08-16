@@ -26,7 +26,6 @@ CbReturnToHome::CbReturnToHome(float homeX, float homeY, float homeZ, float home
 
 void CbReturnToHome::onEntry()
 {
-
   RCLCPP_INFO(
     getLogger(), "CbReturnToHome: returning to home [%.2f, %.2f, %.2f] yaw=%.2f", homeX_, homeY_,
     homeZ_, homeYaw_);
@@ -52,7 +51,8 @@ void CbReturnToHome::wireCompletionSignals()
   }
   else
   {
-    RCLCPP_WARN(getLogger(), "CbReturnToHome: completion component missing, no completion signal wired");
+    RCLCPP_WARN(
+      getLogger(), "CbReturnToHome: completion component missing, no completion signal wired");
   }
 }
 

@@ -24,7 +24,6 @@ CbChangeAltitude::CbChangeAltitude(float targetAltitude) : targetAltitude_(targe
 
 void CbChangeAltitude::onEntry()
 {
-
   float currentX = localPosition_->getX();
   float currentY = localPosition_->getY();
   float currentHeading = localPosition_->getHeading();
@@ -55,7 +54,8 @@ void CbChangeAltitude::wireCompletionSignals()
   }
   else
   {
-    RCLCPP_WARN(getLogger(), "CbChangeAltitude: completion component missing, no completion signal wired");
+    RCLCPP_WARN(
+      getLogger(), "CbChangeAltitude: completion component missing, no completion signal wired");
   }
 }
 

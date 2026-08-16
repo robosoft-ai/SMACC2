@@ -22,7 +22,6 @@ CbHoldPosition::CbHoldPosition(float durationSeconds) : durationSeconds_(duratio
 
 void CbHoldPosition::onEntry()
 {
-
   RCLCPP_INFO(getLogger(), "CbHoldPosition: holding position for %.1f seconds", durationSeconds_);
 
   trajectorySetpoint_->hold();

@@ -31,7 +31,6 @@ CbFigureEight::CbFigureEight(
 
 void CbFigureEight::onEntry()
 {
-
   t_ = 0.0f;
   lastUpdateTime_ = std::chrono::steady_clock::now();
 

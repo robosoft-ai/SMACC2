@@ -26,7 +26,6 @@ CbYawRotate::CbYawRotate(float targetYawRad, bool relative)
 
 void CbYawRotate::onEntry()
 {
-
   float currentYaw = localPosition_->getHeading();
 
   if (relative_)

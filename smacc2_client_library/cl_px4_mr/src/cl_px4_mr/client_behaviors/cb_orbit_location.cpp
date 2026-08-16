@@ -32,7 +32,6 @@ CbOrbitLocation::CbOrbitLocation(
 
 void CbOrbitLocation::onEntry()
 {
-
   // Compute starting angle from current position relative to center
   float dx = localPosition_->getX() - centerX_;
   float dy = localPosition_->getY() - centerY_;

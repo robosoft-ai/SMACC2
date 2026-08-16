@@ -27,7 +27,6 @@ CbArmPX4::CbArmPX4() {}
 
 void CbArmPX4::onEntry()
 {
-
   // Enable offboard keepalive and set offboard mode so PX4's offboard signal
   // requirement is satisfied before arming. Without this, canArm() fails because
   // offboard_control_signal_lost is true when nav_state == OFFBOARD.

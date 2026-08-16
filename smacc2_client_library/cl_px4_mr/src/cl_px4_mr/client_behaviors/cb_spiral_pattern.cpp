@@ -32,7 +32,6 @@ CbSpiralPattern::CbSpiralPattern(
 
 void CbSpiralPattern::onEntry()
 {
-
   theta_ = 0.0f;
   lastUpdateTime_ = std::chrono::steady_clock::now();
 

@@ -23,7 +23,6 @@ CbDisarmPX4::CbDisarmPX4() {}
 
 void CbDisarmPX4::onEntry()
 {
-
   RCLCPP_INFO(
     getLogger(), "CbDisarmPX4: sending disarm command (attempt %d/%d)", retryCount_ + 1,
     MAX_RETRIES);
@@ -47,7 +46,8 @@ void CbDisarmPX4::wireCompletionSignals()
   }
   else
   {
-    RCLCPP_WARN(getLogger(), "CbDisarmPX4: completion component missing, no completion signal wired");
+    RCLCPP_WARN(
+      getLogger(), "CbDisarmPX4: completion component missing, no completion signal wired");
   }
 }
 

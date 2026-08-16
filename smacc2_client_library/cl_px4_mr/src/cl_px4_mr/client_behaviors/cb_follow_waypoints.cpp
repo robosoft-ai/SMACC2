@@ -27,7 +27,6 @@ CbFollowWaypoints::CbFollowWaypoints(
 
 void CbFollowWaypoints::onEntry()
 {
-
   if (waypoints_.empty())
   {
     RCLCPP_WARN(getLogger(), "CbFollowWaypoints: no waypoints provided - posting success");
@@ -85,7 +84,8 @@ void CbFollowWaypoints::wireCompletionSignals()
   }
   else
   {
-    RCLCPP_WARN(getLogger(), "CbFollowWaypoints: completion component missing, no completion signal wired");
+    RCLCPP_WARN(
+      getLogger(), "CbFollowWaypoints: completion component missing, no completion signal wired");
   }
 }
 

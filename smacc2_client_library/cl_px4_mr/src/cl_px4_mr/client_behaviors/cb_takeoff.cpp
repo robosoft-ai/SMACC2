@@ -29,7 +29,6 @@ CbTakeOff::CbTakeOff(float targetAltitude) : targetAltitude_(targetAltitude) {}
 
 void CbTakeOff::onEntry()
 {
-
   // 1. Enable offboard keepalive heartbeat
   offboardKeepAlive_->enable();
 
