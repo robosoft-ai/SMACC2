@@ -61,7 +61,7 @@ public:
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StFinalState, ENDLOOP>
+    Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StFinalSpin, ENDLOOP>
   > reactions;
 
   // Pattern geometry: 3 east-pointing rays of 1.2 m, rows pitched 0.4 m north,

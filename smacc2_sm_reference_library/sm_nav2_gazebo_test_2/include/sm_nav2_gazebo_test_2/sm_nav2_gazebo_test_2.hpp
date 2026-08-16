@@ -28,6 +28,7 @@
 #include <cl_nav2z/client_behaviors/cb_navigate_forward.hpp>
 #include <cl_nav2z/client_behaviors/cb_absolute_rotate.hpp>
 #include <cl_nav2z/client_behaviors/cb_undo_path_backwards.hpp>
+#include <cl_nav2z/client_behaviors/cb_pure_spinning.hpp>
 #include <cl_nav2z/client_behaviors/cb_wait_nav2_nodes.hpp>
 #include <cl_nav2z/components/amcl/cp_amcl.hpp>
 
@@ -56,6 +57,7 @@ class StUndoChain2;
 class StUndoChain1;
 class StNavigateToWaypoint1;
 class StNavigateToFPattern;
+class StFinalSpin;
 class StFinalState;
 
 // SUPERSTATE FORWARD DECLARATIONS
@@ -100,4 +102,5 @@ struct SmNav2GazeboTest2 : public smacc2::SmaccStateMachineBase<SmNav2GazeboTest
 #include "states/st_undo_chain_1.hpp"
 #include "states/st_navigate_to_waypoint_1.hpp"
 #include "states/st_navigate_to_f_pattern.hpp"
+#include "states/st_final_spin.hpp"
 #include "states/st_final_state.hpp"
