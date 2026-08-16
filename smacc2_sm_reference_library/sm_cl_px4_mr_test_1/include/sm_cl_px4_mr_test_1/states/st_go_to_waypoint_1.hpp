@@ -28,7 +28,9 @@ struct StGoToWaypoint1 : smacc2::SmaccState<StGoToWaypoint1, MsInFlight>
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-    Transition<EvCbSuccess<CbGoToLocation, OrPx4>, StOrbitLocation, SUCCESS>
+    Transition<EvCbSuccess<CbGoToLocation, OrPx4>, StOrbitLocation, SUCCESS>,
+    // timeout watchdog leg: waypoint not reached in time -> abort home
+    Transition<EvCbFailure<CbGoToLocation, OrPx4>, StReturnToBase, ABORT>
   > reactions;
 
   static void staticConfigure()
@@ -37,7 +39,11 @@ struct StGoToWaypoint1 : smacc2::SmaccState<StGoToWaypoint1, MsInFlight>
     configure_orthogonal<OrPx4, CbGoToLocation>(10.0f, 0.0f, -5.0f);
   }
 
-  void runtimeConfigure() {}
+  void runtimeConfigure()
+  {
+    // generous bound; the leg completes in ~15 s
+    this->getClientBehavior<OrPx4, CbGoToLocation>()->setTimeout(std::chrono::seconds(60));
+  }
 
   void onEntry()
   {
