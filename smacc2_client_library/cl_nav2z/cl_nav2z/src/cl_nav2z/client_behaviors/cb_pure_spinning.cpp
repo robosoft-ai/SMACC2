@@ -52,7 +52,7 @@ void CbPureSpinning::onEntry()
   rclcpp::Rate loop_rate(10);
   double countAngle = 0;
   auto prevyaw = tf2::getYaw(currentPose.orientation);
-  while (rclcpp::ok() && !goalReached_)
+  while (rclcpp::ok() && !goalReached_ && !this->isShutdownRequested())
   {
     tf2::Quaternion q;
     currentPose = pose->toPoseMsg();
@@ -85,8 +85,6 @@ void CbPureSpinning::onEntry()
     {
       RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] GOAL REACHED. Sending stop command.");
       goalReached_ = true;
-      cmd_vel.linear.x = 0;
-      cmd_vel.angular.z = 0;
       break;
     }
 
@@ -94,6 +92,12 @@ void CbPureSpinning::onEntry()
 
     loop_rate.sleep();
   }
+
+  // Always leave the robot stopped: on goal reached the loop above breaks BEFORE
+  // publishing (the last sent command was still spinning), and on an early state
+  // exit (isShutdownRequested) the last command must be cancelled too
+  geometry_msgs::msg::Twist stop_cmd;
+  this->cmd_vel_pub_->publish(stop_cmd);
 
   this->postSuccessEvent();
 }
