@@ -59,7 +59,7 @@ struct StDriveAtWall : smacc2::SmaccState<StDriveAtWall, SmNav2GazeboTest3>
   {
     RCLCPP_INFO(
       getLogger(),
-      "StDriveAtWall: onEntry() - driving at the pillar, expecting a collision abort");
+      "StDriveAtWall: onEntry() - driving at the south wall, expecting a collision abort");
   }
 };
 
