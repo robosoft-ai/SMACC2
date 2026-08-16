@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <chrono>
 
 #include <smacc2/client_core_components/cp_action_client.hpp>
@@ -53,6 +54,7 @@ public:
   using Goal = typename TAction::Goal;
   using GoalHandle = rclcpp_action::ClientGoalHandle<TAction>;
   using WrappedResult = typename GoalHandle::WrappedResult;
+  using Feedback = typename TAction::Feedback;
   using ActionClientComponent = smacc2::client_core_components::CpActionClient<TAction>;
 
   template <typename TOrthogonal, typename TSourceObject>
@@ -65,6 +67,7 @@ public:
       actionClient_->onSucceeded(&CbActionClientBehaviorBase::onActionSuccess, this);
       actionClient_->onAborted(&CbActionClientBehaviorBase::onActionAbort, this);
       actionClient_->onCancelled(&CbActionClientBehaviorBase::onActionAbort, this);
+      actionClient_->onFeedback(&CbActionClientBehaviorBase::onActionFeedback, this);
       resultConnectionsInitialized_ = true;
     }
 
@@ -72,6 +75,22 @@ public:
   }
 
   virtual ~CbActionClientBehaviorBase() {}
+
+  // If the state exits while a goal is still in flight (e.g. a keyboard or
+  // timeout transition), cancel it: unlike bt_navigator navigation - where the
+  // next goal implicitly preempts - each behavior/docking server action keeps
+  // executing an abandoned goal, leaving the robot moving under a command
+  // nobody owns. Derived classes overriding onExit must chain to this.
+  void onExit() override
+  {
+    if (goalInFlight_)
+    {
+      RCLCPP_WARN(
+        getLogger(), "[%s] State exited with the action goal still in flight - cancelling",
+        getName().c_str());
+      cancelGoal();
+    }
+  }
 
 protected:
   // Sends the goal and waits (in the calling asynchronous onEntry thread) for the
@@ -101,7 +120,8 @@ protected:
       {
         if (goalHandleFuture.get() != nullptr)
         {
-          return true;  // accepted; the result signals will finish the behavior
+          goalInFlight_ = true;  // accepted; the result signals will finish the behavior
+          return true;
         }
 
         RCLCPP_ERROR(
@@ -134,6 +154,7 @@ protected:
   // derived classes may override to customize result handling.
   virtual void onActionSuccess(const WrappedResult & result)
   {
+    goalInFlight_ = false;
     actionResult_ = result.code;
     RCLCPP_INFO(
       getLogger(), "[%s] Action succeeded, propagating success event", getName().c_str());
@@ -142,10 +163,14 @@ protected:
 
   virtual void onActionAbort(const WrappedResult & result)
   {
+    goalInFlight_ = false;
     actionResult_ = result.code;
     RCLCPP_INFO(getLogger(), "[%s] Action failed, propagating failure event", getName().c_str());
     this->postFailureEvent();
   }
+
+  // optional: override to consume action feedback (distance traveled etc.)
+  virtual void onActionFeedback(const Feedback & /*feedback*/) {}
 
   ActionClientComponent * actionClient_ = nullptr;
 
@@ -156,6 +181,7 @@ protected:
 
 private:
   bool resultConnectionsInitialized_ = false;
+  std::atomic<bool> goalInFlight_{false};
 };
 
 }  // namespace client_behavior_bases

@@ -32,6 +32,9 @@ public:
 
   void onEntry() override;
 
+  // adjust the spin target between staticConfigure and onEntry (runtimeConfigure)
+  void setTargetYaw(float targetYaw) { targetYaw_ = targetYaw; }
+
 private:
   float targetYaw_;
   std::chrono::seconds timeAllowance_;
