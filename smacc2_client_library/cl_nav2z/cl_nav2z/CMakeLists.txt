@@ -54,6 +54,9 @@ add_library(${PROJECT_NAME} SHARED
 
   src/${PROJECT_NAME}/client_behaviors/cb_nav2z_client_behavior_base.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_absolute_rotate.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_spin.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_back_up.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_drive_on_heading.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_rotate_look_at.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_backward.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_forward.cpp

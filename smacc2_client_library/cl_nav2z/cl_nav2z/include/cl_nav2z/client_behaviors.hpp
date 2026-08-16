@@ -24,6 +24,9 @@
 #include <cl_nav2z/client_behaviors/cb_navigate_global_position.hpp>
 #include <cl_nav2z/client_behaviors/cb_retry_behavior.hpp>
 #include <cl_nav2z/client_behaviors/cb_undo_path_backwards.hpp>
+#include <cl_nav2z/client_behaviors/cb_spin.hpp>
+#include <cl_nav2z/client_behaviors/cb_back_up.hpp>
+#include <cl_nav2z/client_behaviors/cb_drive_on_heading.hpp>
 
 // nav2 synchronization behaviors
 #include <cl_nav2z/client_behaviors/cb_wait_nav2_nodes.hpp>
