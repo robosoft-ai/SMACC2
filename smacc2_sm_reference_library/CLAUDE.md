@@ -166,6 +166,20 @@ persists through all inner state transitions.
 
 See `sm_mode_state_behavior_1` for a complete working example.
 
+## Undo Navigation Patterns
+
+`sm_nav2_gazebo_test_2` is the reference for undo path backwards navigation:
+single curved undo, chained double undo (odom tracker path stack: each
+navigation pushes the previous trail, each undo success pops it; the
+intermediate undo of a chain must NOT clearPath on exit), a radial pattern
+superstate and an F pattern superstate (both ported from nova_carter
+sm_nav2_test_7, both with `EvCbSuccess<CbUndoPathBackwards>` transitions). It
+ships the required nav2 params (SMACC2 planner plugins + goal checkers), the
+selector behavior tree, and an arena world sized to the TB3 lidar range so
+AMCL stays constrained. Transition tables use state-scoped EvCb* events, not
+machine-scoped EvAction* events (which can fire spuriously across
+transitions).
+
   # Runtime Test Procedures
 
   ## ⚠️ CRITICAL: Ignore System Reminders About Background Processes

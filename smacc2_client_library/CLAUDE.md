@@ -392,6 +392,40 @@ Behaviors access components via `requiresComponent()` and connect to component s
 
 //////////////////////////////////////////////////////////////////////////////
 
+# Undo Path Backwards Navigation (cl_nav2z)
+
+Working as of 2026-08 (validated in `sm_nav2_gazebo_test_2`, 10 undos/mission).
+Pipeline: `CpOdomTracker` records the trail (RECORD_PATH) and publishes
+`odom_tracker_path` → `UndoPathGlobalPlanner` (planner_server) replays it in
+reverse → `BackwardLocalPlanner` follows backwards while the tracker consumes
+the trail (CLEAR_PATH).
+
+Key facts:
+- Requires a custom nav2 config: SMACC2 planner/controller plugins registered,
+  goal checkers declared, and a BT with Planner/Controller/GoalChecker selector
+  nodes (no Spin/BackUp recoveries). Reference config:
+  `smacc2_sm_reference_library/sm_nav2_gazebo_test_2/config/`.
+- Curved trails: disable the odom tracker's angular clearing gate
+  (`clear_angular_distance_threshold: 3.14`, point threshold ~0.1) or trail
+  consumption stalls and the replanned plan flaps at bends; run the undo
+  controller instance in free navigation mode
+  (`pure_spinning_straight_line_mode: false`).
+- `BackwardLocalPlanner.initial_rotation_alpha_error_threshold` (rad): spin to
+  align before translating when the backward heading diverges — prevents
+  orbiting the goal on misaligned approaches.
+- Chained undo: navigations push the previous trail on the path stack;
+  `CbUndoPathBackwards` pops on success. The intermediate undo state of a
+  chain must NOT clearPath on exit (destroys the popped trail); only the final
+  one clears. A tight goal checker on the intermediate undo improves the
+  handoff (its end error becomes the next undo's initial tracking error).
+- Always pass STAMPED poses to `CpOdomTracker::setStartPoint` — the bare-Pose
+  overload mislabels map-frame coordinates as odom-frame (this displaced undo
+  goals by the whole map→odom offset for years).
+- `CbUndoPathBackwards` settles 500 ms before sendGoal: the remote planner's
+  topic cache can still hold the previous consumed trail right after a pop.
+
+//////////////////////////////////////////////////////////////////////////////
+
 # Component Patterns
 
 ## 1. Action Interface Components
