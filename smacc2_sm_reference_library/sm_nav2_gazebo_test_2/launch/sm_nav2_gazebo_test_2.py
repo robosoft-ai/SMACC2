@@ -16,7 +16,7 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import AppendEnvironmentVariable, DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
@@ -43,6 +43,11 @@ def generate_launch_description():
 
     declare_headless = DeclareLaunchArgument(
         "headless", default_value="False", description="Run Gazebo in headless mode if true"
+    )
+
+    # Let gz sim resolve the model:// texture URIs of the arena world
+    set_gz_resources = AppendEnvironmentVariable(
+        "GZ_SIM_RESOURCE_PATH", os.path.join(pkg_share, "models")
     )
 
     # Inject the absolute path of the custom selector behavior tree into the nav2
@@ -107,6 +112,7 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            set_gz_resources,
             declare_use_sim_time,
             declare_headless,
             nav2_bringup_launch,

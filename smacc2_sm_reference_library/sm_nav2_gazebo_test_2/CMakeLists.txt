@@ -51,7 +51,7 @@ ament_target_dependencies(${PROJECT_NAME}_node
 
 # Install
 install(DIRECTORY include/ DESTINATION include)
-install(DIRECTORY launch config worlds maps DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY launch config worlds maps models DESTINATION share/${PROJECT_NAME})
 install(TARGETS ${PROJECT_NAME}_node DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

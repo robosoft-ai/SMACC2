@@ -34,7 +34,7 @@
     </plugin>
 
     <light name='sun' type='directional'>
-        <cast_shadows>0</cast_shadows>
+        <cast_shadows>1</cast_shadows>
         <pose>0 0 10 0 0 0</pose>
         <diffuse>0.8 0.8 0.8 1</diffuse>
         <specular>0.8 0.8 0.8 1</specular>
@@ -44,7 +44,7 @@
             <linear>0.01</linear>
             <quadratic>0.001</quadratic>
         </attenuation>
-        <direction>-0.5 0.1 -0.9</direction>
+        <direction>-0.4 0.3 -0.85</direction>
     </light>
     <model name='ground_plane'>
         <static>1</static>
@@ -66,16 +66,36 @@
                     </plane>
                 </geometry>
                 <material>
-                    <ambient>0.8 0.8 0.8 1</ambient>
-                    <diffuse>0.8 0.8 0.8 1</diffuse>
-                    <specular>0.8 0.8 0.8 1</specular>
+                    <ambient>0.75 0.74 0.72 1</ambient>
+                    <diffuse>0.75 0.74 0.72 1</diffuse>
+                    <specular>0.2 0.2 0.2 1</specular>
+                </material>
+            </visual>
+            <visual name='arena_floor'>
+                <pose>-1.0 0.5 0.001 0 0 0</pose>
+                <geometry>
+                    <plane>
+                        <normal>0 0 1</normal>
+                        <size>7.3 6.3</size>
+                    </plane>
+                </geometry>
+                <material>
+                    <diffuse>1 1 1 1</diffuse>
+                    <specular>0.15 0.15 0.15 1</specular>
+                    <pbr><metal>
+                        <albedo_map>model://open_arena_assets/materials/textures/concrete.png</albedo_map>
+                        <roughness>0.85</roughness>
+                    </metal></pbr>
                 </material>
             </visual>
         </link>
     </model>
 
     <scene>
-      <shadows>0</shadows>
+      <shadows>1</shadows>
+      <ambient>0.55 0.55 0.55 1</ambient>
+      <background>0.65 0.78 0.9 1</background>
+      <sky></sky>
     </scene>
 
     <physics name='3ms' type='ode'>
@@ -138,8 +158,12 @@
           <pose>-1.0 3.575 0.25 0 0 0</pose>
           <geometry><box><size>7.6 0.15 0.5</size></box></geometry>
           <material>
-            <ambient>0.4 0.4 0.4 1</ambient>
-            <diffuse>0.4 0.4 0.4 1</diffuse>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <pbr><metal>
+              <albedo_map>model://open_arena_assets/materials/textures/wall_long.png</albedo_map>
+              <roughness>0.9</roughness>
+            </metal></pbr>
           </material>
         </visual>
         <collision name="south_collision">
@@ -150,8 +174,12 @@
           <pose>-1.0 -2.575 0.25 0 0 0</pose>
           <geometry><box><size>7.6 0.15 0.5</size></box></geometry>
           <material>
-            <ambient>0.4 0.4 0.4 1</ambient>
-            <diffuse>0.4 0.4 0.4 1</diffuse>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <pbr><metal>
+              <albedo_map>model://open_arena_assets/materials/textures/wall_long.png</albedo_map>
+              <roughness>0.9</roughness>
+            </metal></pbr>
           </material>
         </visual>
         <collision name="east_collision">
@@ -162,8 +190,12 @@
           <pose>2.575 0.5 0.25 0 0 0</pose>
           <geometry><box><size>0.15 6.0 0.5</size></box></geometry>
           <material>
-            <ambient>0.4 0.4 0.4 1</ambient>
-            <diffuse>0.4 0.4 0.4 1</diffuse>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <pbr><metal>
+              <albedo_map>model://open_arena_assets/materials/textures/wall_side.png</albedo_map>
+              <roughness>0.9</roughness>
+            </metal></pbr>
           </material>
         </visual>
         <collision name="west_collision">
@@ -174,8 +206,12 @@
           <pose>-4.575 0.5 0.25 0 0 0</pose>
           <geometry><box><size>0.15 6.0 0.5</size></box></geometry>
           <material>
-            <ambient>0.4 0.4 0.4 1</ambient>
-            <diffuse>0.4 0.4 0.4 1</diffuse>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+            <pbr><metal>
+              <albedo_map>model://open_arena_assets/materials/textures/wall_side.png</albedo_map>
+              <roughness>0.9</roughness>
+            </metal></pbr>
           </material>
         </visual>
       </link>
