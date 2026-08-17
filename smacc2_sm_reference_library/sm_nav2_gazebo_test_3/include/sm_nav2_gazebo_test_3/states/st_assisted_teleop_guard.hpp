@@ -27,7 +27,7 @@ using namespace smacc2::default_transition_tags;
 // STATE DECLARATION
 //
 // Collision-guard demo, final act: assisted teleop in front of the south wall.
-// The robot arrives ~0.4 m from the wall, facing it. CbKeyboardTwistTeleop's
+// The robot arrives ~1.2 m from the wall, facing it. CbKeyboardTwistTeleop's
 // idle twist pushes gently forward like an operator leaning on the stick; the
 // behavior server's assisted_teleop filter projects the command through the
 // costmap and clamps it at the wall - prevention, where StDriveAtWall showed

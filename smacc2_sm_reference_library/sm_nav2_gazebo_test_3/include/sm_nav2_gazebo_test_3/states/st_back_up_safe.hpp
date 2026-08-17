@@ -25,7 +25,9 @@ using namespace smacc2::default_transition_tags;
 
 // STATE DECLARATION
 //
-// Collision-abort demo, step 3: back away from the wall to a safe distance
+// Collision-abort demo, step 3: back away from the wall - far enough to leave
+// the inflated cost zone (0.7 m inflation radius), or the assisted-teleop
+// guard that follows will zero every command from an in-collision-margin pose
 struct StBackUpSafe : smacc2::SmaccState<StBackUpSafe, SmNav2GazeboTest3>
 {
   using SmaccState::SmaccState;
@@ -43,7 +45,7 @@ struct StBackUpSafe : smacc2::SmaccState<StBackUpSafe, SmNav2GazeboTest3>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbBackUp>(0.4f, 0.1f);
+    configure_orthogonal<OrNavigation, CbBackUp>(1.2f, 0.1f);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 

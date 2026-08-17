@@ -34,4 +34,21 @@ void CbAssistedTeleop::onEntry()
   sendGoal(goal);
 }
 
+void CbAssistedTeleop::onActionAbort(const WrappedResult & result)
+{
+  if (
+    result.result != nullptr &&
+    result.result->error_code == nav2_msgs::action::AssistedTeleop::Result::TIMEOUT)
+  {
+    RCLCPP_INFO(
+      getLogger(), "[%s] Teleop window completed (time allowance expired) - success",
+      getName().c_str());
+    this->postSuccessEvent();
+    return;
+  }
+
+  smacc2::client_behavior_bases::CbActionClientBehaviorBase<
+    nav2_msgs::action::AssistedTeleop>::onActionAbort(result);
+}
+
 }  // namespace cl_nav2z

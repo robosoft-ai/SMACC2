@@ -33,6 +33,12 @@ public:
 
   void onEntry() override;
 
+protected:
+  // The server reports time-allowance expiry as an abort (error code TIMEOUT)
+  // - but for this action the window running its course IS the normal ending,
+  // so map it to success. Genuine failures (TF_ERROR, rejection) keep failing.
+  void onActionAbort(const WrappedResult & result) override;
+
 private:
   std::chrono::seconds timeAllowance_;
 };

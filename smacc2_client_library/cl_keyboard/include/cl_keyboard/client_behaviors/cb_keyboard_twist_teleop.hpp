@@ -87,13 +87,19 @@ public:
     }
 
     geometry_msgs::msg::Twist out;
+    bool held;
     {
       std::lock_guard<std::mutex> lock(mutex_);
       auto now = std::chrono::steady_clock::now();
-      bool held = lastArrowTime_ && (now - *lastArrowTime_) < deadman_;
+      held = lastArrowTime_ && (now - *lastArrowTime_) < deadman_;
       out = held ? heldTwist_ : idleTwist_;
     }
     twistPublisher_->publish(out);
+
+    RCLCPP_INFO_THROTTLE(
+      getLogger(), *getNode()->get_clock(), 2000,
+      "[%s] publishing %s twist: linear=%.2f angular=%.2f", getName().c_str(),
+      held ? "held" : "idle", out.linear.x, out.angular.z);
   }
 
 private:
