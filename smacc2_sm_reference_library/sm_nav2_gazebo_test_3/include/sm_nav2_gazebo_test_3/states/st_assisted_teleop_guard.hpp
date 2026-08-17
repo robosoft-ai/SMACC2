@@ -27,13 +27,13 @@ using namespace smacc2::default_transition_tags;
 // STATE DECLARATION
 //
 // Collision-guard demo, final act: assisted teleop in front of the south wall.
-// The robot arrives ~1.2 m from the wall, facing it. CbKeyboardTwistTeleop's
-// idle twist pushes gently forward like an operator leaning on the stick; the
-// behavior server's assisted_teleop filter projects the command through the
-// costmap and clamps it at the wall - prevention, where StDriveAtWall showed
-// abort. With the keyboard server terminal focused, the arrow keys override
-// the idle push and drive the robot live through the same guard; letters keep
-// working (N skips ahead, cancelling the action through the behavior base).
+// The robot arrives ~1.2 m from the wall, facing it, and waits for input. With
+// the keyboard server terminal focused, the arrow keys drive the robot through
+// the behavior server's assisted_teleop filter, which projects every command
+// through the costmap and clamps it before a collision - prevention, where
+// StDriveAtWall showed abort (try to ram the wall). Letters keep working from
+// the same terminal; N ends the session, cancelling the action through the
+// behavior base.
 struct StAssistedTeleopGuard : smacc2::SmaccState<StAssistedTeleopGuard, SmNav2GazeboTest3>
 {
   using SmaccState::SmaccState;
@@ -57,11 +57,8 @@ struct StAssistedTeleopGuard : smacc2::SmaccState<StAssistedTeleopGuard, SmNav2G
     // action through the behavior base
     configure_orthogonal<OrNavigation, CbAssistedTeleop>(std::chrono::seconds(0));
 
-    // synthetic operator: idle push toward the wall for unattended runs;
-    // arrow keys override it live
-    geometry_msgs::msg::Twist idlePush;
-    idlePush.linear.x = 0.08;
-    configure_orthogonal<OrKeyboard, CbKeyboardTwistTeleop>(0.15f, 0.4f, idlePush);
+    // arrow-key driving only: zero idle twist, the robot moves when driven
+    configure_orthogonal<OrKeyboard, CbKeyboardTwistTeleop>(0.15f, 0.4f);
 
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
