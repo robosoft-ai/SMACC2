@@ -69,7 +69,7 @@ The SMACC2 Client Library provides modular, reusable clients for robot behaviors
 |--------|---------|-----------------|
 | `cl_nav2z` | Navigation with Nav2 | CpActionClient, CpNav2ActionInterface |
 | `cl_moveit2z` | Manipulation with MoveIt2 | CpMoveGroupInterface |
-| `cl_keyboard` | Keyboard input handling | CpTopicSubscriber, CpKeyboardListener1 |
+| `cl_keyboard` | Keyboard input handling (letters + arrow keys; arrow-driven Twist teleop via CbKeyboardTwistTeleop) | CpTopicSubscriber, CpKeyboardListener1 |
 | `cl_ros2_timer` | Timer-based behaviors | CpRos2Timer (core) |
 | `cl_http` | HTTP requests | CpHttpConnectionManager, CpHttpRequestExecutor |
 | `cl_lifecycle_node` | ROS2 lifecycle management | CpLifecycleEventMonitor |
