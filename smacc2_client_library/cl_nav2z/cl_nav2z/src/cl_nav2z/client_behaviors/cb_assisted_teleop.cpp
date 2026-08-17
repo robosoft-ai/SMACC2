@@ -27,9 +27,19 @@ void CbAssistedTeleop::onEntry()
   Goal goal;
   goal.time_allowance = rclcpp::Duration(timeAllowance_);
 
-  RCLCPP_INFO(
-    getLogger(), "[%s] Assisted teleop for %ld s (collision-guarded, behavior server)",
-    getName().c_str(), static_cast<long>(timeAllowance_.count()));
+  if (timeAllowance_.count() > 0)
+  {
+    RCLCPP_INFO(
+      getLogger(), "[%s] Assisted teleop for %ld s (collision-guarded, behavior server)",
+      getName().c_str(), static_cast<long>(timeAllowance_.count()));
+  }
+  else
+  {
+    RCLCPP_INFO(
+      getLogger(),
+      "[%s] Assisted teleop, unlimited window (collision-guarded; ends on cancellation)",
+      getName().c_str());
+  }
 
   sendGoal(goal);
 }

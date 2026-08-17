@@ -52,8 +52,10 @@ struct StAssistedTeleopGuard : smacc2::SmaccState<StAssistedTeleopGuard, SmNav2G
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // collision-guarded teleop window: success arrives when the allowance ends
-    configure_orthogonal<OrNavigation, CbAssistedTeleop>(std::chrono::seconds(20));
+    // zero allowance = unlimited window (nav2 only arms the timeout when
+    // allowance > 0): teleop runs until N ends the state, which cancels the
+    // action through the behavior base
+    configure_orthogonal<OrNavigation, CbAssistedTeleop>(std::chrono::seconds(0));
 
     // synthetic operator: idle push toward the wall for unattended runs;
     // arrow keys override it live
@@ -69,7 +71,7 @@ struct StAssistedTeleopGuard : smacc2::SmaccState<StAssistedTeleopGuard, SmNav2G
     RCLCPP_INFO(
       getLogger(),
       "StAssistedTeleopGuard: onEntry() - assisted teleop at the wall (idle push forward; "
-      "arrow keys drive, N skips)");
+      "arrow keys drive, N ends the state)");
   }
 };
 

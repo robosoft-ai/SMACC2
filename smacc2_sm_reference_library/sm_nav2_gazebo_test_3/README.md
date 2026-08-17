@@ -59,16 +59,20 @@ instead of continuing under an abandoned goal.
 
 Keyboard `N` advances any state manually.
 
-**Assisted-teleop finale** (`StAssistedTeleopGuard`): the mission ends with a
-20 s collision-guarded teleop window in front of the south wall, driving the
-behavior server's `assisted_teleop` action. Two modes, no configuration change:
+**Assisted-teleop finale** (`StAssistedTeleopGuard`): the mission ends with an
+unlimited collision-guarded teleop window in front of the south wall, driving
+the behavior server's `assisted_teleop` action (zero time allowance disables
+the server-side timeout). Pressing `N` in the Keyboard Server konsole ends the
+state, cancelling the action through the behavior base. Two modes, no
+configuration change:
 
 - *Unattended*: `CbKeyboardTwistTeleop` publishes a gentle idle push
   (0.08 m/s forward) on `/cmd_vel_teleop` — the guard clamps it at the wall,
   demonstrating collision *prevention* where the drive-at-wall leg demonstrated
-  *abort*. `EvCbSuccess` fires when the time allowance expires.
+  *abort*. The state then holds until `N` is pressed (the mission no longer
+  finishes hands-off).
 - *Interactive*: focus the keyboard server terminal and drive with the
   **arrow keys** (Up/Down = forward/reverse, Left/Right = rotate; hold to move,
   release to stop). The guard filters every command — try to ram the wall.
-  Letter keys still work simultaneously from the same terminal: `N` skips
-  ahead, cancelling the action mid-flight.
+  Letter keys still work simultaneously from the same terminal: `N` ends the
+  teleop session and finishes the mission.
