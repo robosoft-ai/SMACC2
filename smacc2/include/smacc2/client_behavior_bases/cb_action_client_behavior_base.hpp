@@ -60,7 +60,16 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
-    this->requiresComponent(actionClient_, ComponentRequirement::HARD);
+    if (actionClientName_.empty())
+    {
+      this->requiresComponent(actionClient_, ComponentRequirement::HARD);
+    }
+    else
+    {
+      // target a specific named instance when the client holds several
+      // CpActionClient components of the same action type
+      this->requiresComponent(actionClientName_, actionClient_, ComponentRequirement::HARD);
+    }
 
     if (!resultConnectionsInitialized_ && actionClient_ != nullptr)
     {
@@ -170,7 +179,14 @@ protected:
   // optional: override to consume action feedback (distance traveled etc.)
   virtual void onActionFeedback(const Feedback & /*feedback*/) {}
 
+  // set from the derived constructor to bind to a named CpActionClient
+  // instance; empty binds the first of matching type. Must be set before
+  // onStateOrthogonalAllocation runs (i.e. NOT in runtimeConfigure, which
+  // executes after allocation)
+  void setActionClientName(std::string name) { actionClientName_ = std::move(name); }
+
   ActionClientComponent * actionClient_ = nullptr;
+  std::string actionClientName_;
 
   rclcpp_action::ResultCode actionResult_ = rclcpp_action::ResultCode::UNKNOWN;
 

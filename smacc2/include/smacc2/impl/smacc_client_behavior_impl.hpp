@@ -86,6 +86,23 @@ void ISmaccClientBehavior::requiresComponent(
   }
 }
 
+template <typename SmaccComponentType>
+void ISmaccClientBehavior::requiresComponent(
+  std::string name, SmaccComponentType *& storage, ComponentRequirement requirementType)
+{
+  if (stateMachine_ == nullptr)
+  {
+    RCLCPP_ERROR(
+      getLogger(),
+      "Cannot use the requiresComponent functionality before assigning the client behavior to an "
+      "orthogonal. Try using the OnEntry method to capture required components.");
+  }
+  else
+  {
+    stateMachine_->requiresComponent(name, storage, requirementType);
+  }
+}
+
 template <typename TOrthogonal, typename TSourceObject>
 void ISmaccClientBehavior::onStateOrthogonalAllocation()
 {

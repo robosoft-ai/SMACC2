@@ -93,6 +93,10 @@ public:
   template <typename SmaccComponentType>
   void requiresComponent(SmaccComponentType *& storage, ComponentRequirement requirementType);
 
+  template <typename SmaccComponentType>
+  void requiresComponent(
+    std::string name, SmaccComponentType *& storage, ComponentRequirement requirementType);
+
   template <typename EventType>
   void postEvent(EventType * ev, EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
 

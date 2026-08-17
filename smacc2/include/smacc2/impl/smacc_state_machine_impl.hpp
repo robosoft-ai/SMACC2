@@ -143,6 +143,36 @@ void ISmaccStateMachine::requiresComponent(
     throw std::runtime_error("component is required but it was not found in any orthogonal");
 }
 //-------------------------------------------------------------------------------------------------------
+template <typename SmaccComponentType>
+void ISmaccStateMachine::requiresComponent(
+  std::string name, SmaccComponentType *& storage, ComponentRequirement requirementType)
+{
+  bool throwsException = requirementType == ComponentRequirement::HARD;
+  RCLCPP_DEBUG(
+    getLogger(), "component %s (named '%s') is required",
+    demangleSymbol(typeid(SmaccComponentType).name()).c_str(), name.c_str());
+  std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+
+  for (auto ortho : this->orthogonals_)
+  {
+    for (auto & client : ortho.second->clients_)
+    {
+      storage = client->getComponent<SmaccComponentType>(name);
+      if (storage != nullptr)
+      {
+        return;
+      }
+    }
+  }
+
+  RCLCPP_WARN(
+    getLogger(), "component %s (named '%s') is required but it was not found in any orthogonal",
+    demangleSymbol(typeid(SmaccComponentType).name()).c_str(), name.c_str());
+
+  if (throwsException)
+    throw std::runtime_error("named component is required but it was not found in any orthogonal");
+}
+//-------------------------------------------------------------------------------------------------------
 template <typename EventType>
 void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
 {

@@ -46,6 +46,14 @@ public:
     SmaccComponentType *& storage,
     ComponentRequirement requirementType = ComponentRequirement::SOFT);
 
+  // named variant: resolves the component instance created with this name
+  // (e.g. createComponent<CpActionClient<Spin>>("/spin")), for clients holding
+  // several components of the same type
+  template <typename SmaccComponentType>
+  void requiresComponent(
+    std::string name, SmaccComponentType *& storage,
+    ComponentRequirement requirementType = ComponentRequirement::SOFT);
+
   virtual void onEntry() {}
 
   virtual void onExit() {}
