@@ -66,6 +66,16 @@ SmaccSignal is a communication mechanism (template wrapper around boost::signals
   deadlocks were found and fixed in cl_nav2z (CbUndoPathBackwards onExit,
   CbNav2ZClientBehaviorBase sendGoal).
 
+  ### ⚠️ Container-Behavior Connection Rule (hard-won, 2026-08)
+  Signal connections are tracked per OBJECT (stateCallbackConnections) and
+  finalized when the owning object is disposed. State exit must never clear
+  that map wholesale: container-state behaviors (the double-event-avoidance
+  pattern) outlive inner state exits, and dropping their entries without
+  finalizing leaves live boost connections aimed at soon-to-be-freed
+  objects - a use-after-free that fires on the next signal emission
+  (segfault in a keyboard callback found this; fixed in
+  notifyOnStateExited).
+
   ### ⚠️ Event Lifetime Rule (hard-won, 2026-08)
   Behavior events (`EvCbSuccess`/`EvCbFailure<TBehavior, TOrthogonal>`) are
   state-scoped and are discarded on state transition. Component/client events
