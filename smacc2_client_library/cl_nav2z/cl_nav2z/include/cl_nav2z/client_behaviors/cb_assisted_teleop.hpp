@@ -25,9 +25,8 @@ namespace cl_nav2z
 // through the local costmap and scaled/zeroed before a collision. The action
 // runs for the whole time allowance (success on expiry); leaving the state
 // early cancels it through the behavior base.
-class CbAssistedTeleop
-: public smacc2::client_behavior_bases::CbActionClientBehaviorBase<
-    nav2_msgs::action::AssistedTeleop>
+class CbAssistedTeleop : public smacc2::client_behavior_bases::CbActionClientBehaviorBase<
+                           nav2_msgs::action::AssistedTeleop>
 {
 public:
   explicit CbAssistedTeleop(std::chrono::seconds timeAllowance = std::chrono::seconds(30));

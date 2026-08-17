@@ -36,8 +36,8 @@ using namespace smacc2;
 // nav-domain component (CpNav2ActionInterface, which posts the machine-scoped
 // EvAction* navigation events) and keeps the historical nav-named result
 // virtuals for existing overriders.
-class CbNav2ZClientBehaviorBase
-: public smacc2::client_behavior_bases::CbActionClientBehaviorBase<nav2_msgs::action::NavigateToPose>
+class CbNav2ZClientBehaviorBase : public smacc2::client_behavior_bases::CbActionClientBehaviorBase<
+                                    nav2_msgs::action::NavigateToPose>
 {
   using CbActionBase =
     smacc2::client_behavior_bases::CbActionClientBehaviorBase<nav2_msgs::action::NavigateToPose>;
