@@ -22,102 +22,54 @@
 #include <cl_nav2z/cl_nav2z.hpp>
 #include <cl_nav2z/components/nav2_action_interface/cp_nav2_action_interface.hpp>
 #include <cl_nav2z/components/planner_switcher/cp_planner_switcher.hpp>
-#include <smacc2/client_core_components/cp_action_client.hpp>
-#include <smacc2/smacc_asynchronous_client_behavior.hpp>
+#include <smacc2/client_behavior_bases/cb_action_client_behavior_base.hpp>
 
 namespace cl_nav2z
 {
 using namespace smacc2;
-class CbNav2ZClientBehaviorBase : public smacc2::SmaccAsyncClientBehavior
+
+// Navigation behavior base, built on the generic action-client behavior
+// template: goal sending (server-ready guard + rejection watchdog), result
+// signal wiring (state machine thread), in-flight goal cancellation on early
+// state exit and EvCbSuccess/EvCbFailure termination all come from
+// CbActionClientBehaviorBase<NavigateToPose>. This class adds the
+// nav-domain component (CpNav2ActionInterface, which posts the machine-scoped
+// EvAction* navigation events) and keeps the historical nav-named result
+// virtuals for existing overriders.
+class CbNav2ZClientBehaviorBase
+: public smacc2::client_behavior_bases::CbActionClientBehaviorBase<nav2_msgs::action::NavigateToPose>
 {
+  using CbActionBase =
+    smacc2::client_behavior_bases::CbActionClientBehaviorBase<nav2_msgs::action::NavigateToPose>;
+
 public:
   virtual ~CbNav2ZClientBehaviorBase();
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()
   {
-    // NEW: Pure component-based approach - no client dependencies
     this->requiresComponent(nav2ActionInterface_, ComponentRequirement::HARD);
-    this->requiresComponent(actionClient_, ComponentRequirement::HARD);
 
-    // Connect the action result signals here, on the state machine thread during
-    // state configuration: connecting from the behavior's asynchronous onEntry
-    // thread (as sendGoal used to) contends for the state machine mutex and can
-    // deadlock against a concurrent state transition.
-    if (!resultConnectionsInitialized_ && nav2ActionInterface_)
-    {
-      this->onNavigationSucceeded(&CbNav2ZClientBehaviorBase::onNavigationActionSuccess, this);
-      this->onNavigationAborted(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
-      this->onNavigationCancelled(&CbNav2ZClientBehaviorBase::onNavigationActionAbort, this);
-      resultConnectionsInitialized_ = true;
-    }
-
-    smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    // resolves actionClient_ and wires the result signals (see the template
+    // header for the threading rationale); chain-break => bad_function_call
+    CbActionBase::template onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 
 protected:
-  // Sends the goal through CpNav2ActionInterface. The action result signals are
-  // connected in onStateOrthogonalAllocation, so navigationResult_ is updated and
-  // EvCbSuccess/EvCbFailure are posted when the navigation finishes.
-  void sendGoal(nav2_msgs::action::NavigateToPose::Goal & goal);
-
-  void cancelGoal()
-  {
-    if (nav2ActionInterface_)
-    {
-      nav2ActionInterface_->cancelNavigation();
-    }
-  }
-
-  // Component-based signal connections
-  template <typename T>
-  smacc2::SmaccSignalConnection onNavigationSucceeded(
-    void (T::*callback)(const components::CpNav2ActionInterface::WrappedResult &), T * object)
-  {
-    if (nav2ActionInterface_)
-    {
-      return nav2ActionInterface_->onNavigationSucceeded(callback, object);
-    }
-    return smacc2::SmaccSignalConnection();
-  }
-
-  template <typename T>
-  smacc2::SmaccSignalConnection onNavigationAborted(
-    void (T::*callback)(const components::CpNav2ActionInterface::WrappedResult &), T * object)
-  {
-    if (nav2ActionInterface_)
-    {
-      return nav2ActionInterface_->onNavigationAborted(callback, object);
-    }
-    return smacc2::SmaccSignalConnection();
-  }
-
-  template <typename T>
-  smacc2::SmaccSignalConnection onNavigationCancelled(
-    void (T::*callback)(const components::CpNav2ActionInterface::WrappedResult &), T * object)
-  {
-    if (nav2ActionInterface_)
-    {
-      return nav2ActionInterface_->onNavigationCancelled(callback, object);
-    }
-    return smacc2::SmaccSignalConnection();
-  }
-
-  // NEW: Component references instead of client reference
-  components::CpNav2ActionInterface * nav2ActionInterface_ = nullptr;
-  smacc2::client_core_components::CpActionClient<nav2_msgs::action::NavigateToPose> *
-    actionClient_ = nullptr;
-
-  rclcpp_action::ResultCode navigationResult_ = rclcpp_action::ResultCode::UNKNOWN;
-
-  // Result handlers connected by sendGoal(). The base implementations store the
-  // result code and post the behavior success/failure events; derived classes may
-  // override to customize result handling (see CbNavigateNextWaypointUntilReached).
+  // Result handlers dispatched by the template. The base implementations
+  // record the result code and post the behavior success/failure events;
+  // derived classes may override to customize result handling (see
+  // CbNavigateNextWaypointUntilReached).
   virtual void onNavigationActionSuccess(const components::CpNav2ActionInterface::WrappedResult &);
   virtual void onNavigationActionAbort(const components::CpNav2ActionInterface::WrappedResult &);
 
-private:
-  bool resultConnectionsInitialized_ = false;
+  // route the template's result handlers into the nav-named virtuals
+  void onActionSuccess(const WrappedResult & result) override;
+  void onActionAbort(const WrappedResult & result) override;
+
+  components::CpNav2ActionInterface * nav2ActionInterface_ = nullptr;
+
+  rclcpp_action::ResultCode navigationResult_ = rclcpp_action::ResultCode::UNKNOWN;
 };
 
 enum class SpinningPlanner

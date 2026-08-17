@@ -17,6 +17,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
+
 #include <cl_nav2z/client_behaviors/cb_nav2z_client_behavior_base.hpp>
 #include <cl_nav2z/common.hpp>
 
@@ -24,33 +25,30 @@ namespace cl_nav2z
 {
 CbNav2ZClientBehaviorBase::~CbNav2ZClientBehaviorBase() {}
 
-void CbNav2ZClientBehaviorBase::sendGoal(nav2_msgs::action::NavigateToPose::Goal & goal)
+void CbNav2ZClientBehaviorBase::onActionSuccess(const WrappedResult & r)
 {
-  if (!nav2ActionInterface_)
-  {
-    RCLCPP_ERROR(
-      getLogger(), "[%s] Cannot send goal, CpNav2ActionInterface not available", getName().c_str());
-    return;
-  }
+  navigationResult_ = r.code;
+  actionResult_ = r.code;
+  this->onNavigationActionSuccess(r);
+}
 
-  // result signal connections are established in onStateOrthogonalAllocation
-  // (state machine thread) - see the header for the threading rationale
-  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Sending goal");
-  nav2ActionInterface_->sendGoal(goal);
+void CbNav2ZClientBehaviorBase::onActionAbort(const WrappedResult & r)
+{
+  navigationResult_ = r.code;
+  actionResult_ = r.code;
+  this->onNavigationActionAbort(r);
 }
 
 void CbNav2ZClientBehaviorBase::onNavigationActionSuccess(
-  const components::CpNav2ActionInterface::WrappedResult & r)
+  const components::CpNav2ActionInterface::WrappedResult &)
 {
-  navigationResult_ = r.code;
   RCLCPP_INFO(getLogger(), "[%s] Propagating success event from action server", getName().c_str());
   this->postSuccessEvent();
 }
 
 void CbNav2ZClientBehaviorBase::onNavigationActionAbort(
-  const components::CpNav2ActionInterface::WrappedResult & r)
+  const components::CpNav2ActionInterface::WrappedResult &)
 {
-  navigationResult_ = r.code;
   RCLCPP_INFO(getLogger(), "[%s] Propagating failure event from action server", getName().c_str());
   this->postFailureEvent();
 }

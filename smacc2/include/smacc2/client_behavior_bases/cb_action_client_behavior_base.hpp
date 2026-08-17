@@ -73,9 +73,9 @@ public:
 
     if (!resultConnectionsInitialized_ && actionClient_ != nullptr)
     {
-      actionClient_->onSucceeded(&CbActionClientBehaviorBase::onActionSuccess, this);
-      actionClient_->onAborted(&CbActionClientBehaviorBase::onActionAbort, this);
-      actionClient_->onCancelled(&CbActionClientBehaviorBase::onActionAbort, this);
+      actionClient_->onSucceeded(&CbActionClientBehaviorBase::dispatchActionSuccess, this);
+      actionClient_->onAborted(&CbActionClientBehaviorBase::dispatchActionAbort, this);
+      actionClient_->onCancelled(&CbActionClientBehaviorBase::dispatchActionAbort, this);
       actionClient_->onFeedback(&CbActionClientBehaviorBase::onActionFeedback, this);
       resultConnectionsInitialized_ = true;
     }
@@ -162,7 +162,6 @@ protected:
   // derived classes may override to customize result handling.
   virtual void onActionSuccess(const WrappedResult & result)
   {
-    goalInFlight_ = false;
     actionResult_ = result.code;
     RCLCPP_INFO(getLogger(), "[%s] Action succeeded, propagating success event", getName().c_str());
     this->postSuccessEvent();
@@ -170,7 +169,6 @@ protected:
 
   virtual void onActionAbort(const WrappedResult & result)
   {
-    goalInFlight_ = false;
     actionResult_ = result.code;
     RCLCPP_INFO(getLogger(), "[%s] Action failed, propagating failure event", getName().c_str());
     this->postFailureEvent();
@@ -194,6 +192,21 @@ protected:
   std::chrono::milliseconds goalResponseTimeout_ = std::chrono::milliseconds(10000);
 
 private:
+  // trampolines wired to the component signals: clear the in-flight flag
+  // regardless of what a derived handler override does, then dispatch to the
+  // overridable virtuals
+  void dispatchActionSuccess(const WrappedResult & result)
+  {
+    goalInFlight_ = false;
+    this->onActionSuccess(result);
+  }
+
+  void dispatchActionAbort(const WrappedResult & result)
+  {
+    goalInFlight_ = false;
+    this->onActionAbort(result);
+  }
+
   bool resultConnectionsInitialized_ = false;
   std::atomic<bool> goalInFlight_{false};
 };
