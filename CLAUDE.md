@@ -115,16 +115,16 @@ SmaccSignal is a communication mechanism (template wrapper around boost::signals
   ### Example usage in Clients:
   - smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/cl_lifecycle_node.hpp
   - smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/cl_ros2_timer.hpp
-  - smacc2_client_library/moveit2z_client/include/moveit2z_client/cl_moveit2z.hpp
-  - smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/nav2z_client.hpp
-  - smacc2_client_library/http_client/include/http_client/cl_http_client.hpp
+  - smacc2_client_library/cl_moveit2z/include/cl_moveit2z/cl_moveit2z.hpp
+  - smacc2_client_library/cl_nav2z/cl_nav2z/include/cl_nav2z/cl_nav2z.hpp
+  - smacc2_client_library/cl_http/include/cl_http/cl_http.hpp
   - smacc2_client_library/cl_keyboard/include/cl_keyboard/cl_keyboard.hpp
 
   ### Example usage in Client Behaviors:
   - smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp
 
   ### Example usage in Components:
-  - smacc2_client_library/nav2z_client/nav2z_client/include/nav2z_client/components/waypoints_navigator/cp_waypoints_navigator.hpp
+  - smacc2_client_library/cl_nav2z/cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator.hpp
 
   ### Boost Signals2 Documentation
   https://www.boost.org/doc/libs/1_89_0/doc/html/signals2.html

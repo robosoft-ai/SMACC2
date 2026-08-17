@@ -68,9 +68,9 @@ The SMACC2 Client Library provides modular, reusable clients for robot behaviors
 | Client | Purpose | Core Components |
 |--------|---------|-----------------|
 | `cl_nav2z` | Navigation with Nav2 | CpActionClient, CpNav2ActionInterface |
-| `cl_moveit2z` | Manipulation with MoveIt2 | CpMoveItInterface |
+| `cl_moveit2z` | Manipulation with MoveIt2 | CpMoveGroupInterface |
 | `cl_keyboard` | Keyboard input handling | CpTopicSubscriber, CpKeyboardListener1 |
-| `cl_ros2_timer` | Timer-based behaviors | CbTimerCountdownOnce, CbTimerCountdownLoop |
+| `cl_ros2_timer` | Timer-based behaviors | CpRos2Timer (core) |
 | `cl_http` | HTTP requests | CpHttpConnectionManager, CpHttpRequestExecutor |
 | `cl_lifecycle_node` | ROS2 lifecycle management | CpLifecycleEventMonitor |
 | `cl_generic_sensor` | Generic sensor input | CpTopicSubscriber, CpMessageTimeout |
@@ -178,11 +178,11 @@ Timer component for periodic or one-shot execution.
 
 | Client | Purpose | Main Header |
 |--------|---------|-------------|
-| cl_nav2z | Navigation with Nav2 | [cl_nav2z.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/include/cl_nav2z/cl_nav2z.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/include/cl_nav2z/cl_nav2z.hpp` |
+| cl_nav2z | Navigation with Nav2 | [cl_nav2z.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_nav2z/cl_nav2z/include/cl_nav2z/cl_nav2z.hpp) / `src/SMACC2/smacc2_client_library/cl_nav2z/cl_nav2z/include/cl_nav2z/cl_nav2z.hpp` |
 | cl_moveit2z | Manipulation with MoveIt2 | [cl_moveit2z.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/cl_moveit2z.hpp) / `src/SMACC2/smacc2_client_library/cl_moveit2z/include/cl_moveit2z/cl_moveit2z.hpp` |
 | cl_keyboard | Keyboard input handling | [cl_keyboard.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_keyboard/include/cl_keyboard/cl_keyboard.hpp) / `src/SMACC2/smacc2_client_library/cl_keyboard/include/cl_keyboard/cl_keyboard.hpp` |
-| cl_ros2_timer | Timer-based behaviors | [cl_ros_timer.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/cl_ros_timer.hpp) / `src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/cl_ros_timer.hpp` |
-| cl_http | HTTP requests | [cl_http_client.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_http/include/cl_http/cl_http_client.hpp) / `src/SMACC2/smacc2_client_library/cl_http/include/cl_http/cl_http_client.hpp` |
+| cl_ros2_timer | Timer-based behaviors | [cl_ros2_timer.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/cl_ros2_timer.hpp) / `src/SMACC2/smacc2_client_library/cl_ros2_timer/include/cl_ros2_timer/cl_ros2_timer.hpp` |
+| cl_http | HTTP requests | [cl_http.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_http/include/cl_http/cl_http.hpp) / `src/SMACC2/smacc2_client_library/cl_http/include/cl_http/cl_http.hpp` |
 | cl_lifecycle_node | ROS2 lifecycle management | [cl_lifecycle_node.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/cl_lifecycle_node.hpp) / `src/SMACC2/smacc2_client_library/cl_lifecycle_node/include/cl_lifecycle_node/cl_lifecycle_node.hpp` |
 | cl_mission_tracker | Mission state management | [cl_mission_tracker.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_mission_tracker/include/cl_mission_tracker/cl_mission_tracker.hpp) / `src/SMACC2/smacc2_client_library/cl_mission_tracker/include/cl_mission_tracker/cl_mission_tracker.hpp` |
 | cl_isaac_apriltag | AprilTag detection | [cl_isaac_apriltag.hpp](https://github.com/robosoft-ai/SMACC2/blob/jazzy/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/cl_isaac_apriltag.hpp) / `src/SMACC2/smacc2_client_library/cl_isaac_apriltag/include/cl_isaac_apriltag/cl_isaac_apriltag.hpp` |
