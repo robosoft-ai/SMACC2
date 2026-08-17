@@ -25,6 +25,7 @@
 #include <cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp>
 #include <cl_keyboard/client_behaviors/cb_default_keyboard_behavior.hpp>
 #include <cl_nav2z/client_behaviors/cb_wait_nav2_nodes.hpp>
+#include <cl_nav2z/client_behaviors/cb_assisted_teleop.hpp>
 #include <cl_nav2z/client_behaviors/cb_spin.hpp>
 #include <cl_nav2z/client_behaviors/cb_back_up.hpp>
 #include <cl_nav2z/client_behaviors/cb_drive_on_heading.hpp>
@@ -50,6 +51,7 @@ class StSetInitialPose;
 class StSpinToWall;
 class StDriveAtWall;
 class StBackUpSafe;
+class StAssistedTeleopGuard;
 class StFinalState;
 
 // SUPERSTATE FORWARD DECLARATIONS
@@ -87,4 +89,5 @@ struct SmNav2GazeboTest3 : public smacc2::SmaccStateMachineBase<SmNav2GazeboTest
 #include "states/st_spin_to_wall.hpp"
 #include "states/st_drive_at_wall.hpp"
 #include "states/st_back_up_safe.hpp"
+#include "states/st_assisted_teleop_guard.hpp"
 #include "states/st_final_state.hpp"

@@ -35,9 +35,9 @@ struct StBackUpSafe : smacc2::SmaccState<StBackUpSafe, SmNav2GazeboTest3>
 
   // TRANSITION TABLE
   typedef mpl::list<
-    Transition<EvCbSuccess<CbBackUp, OrNavigation>, StFinalState, SUCCESS>,
+    Transition<EvCbSuccess<CbBackUp, OrNavigation>, StAssistedTeleopGuard, SUCCESS>,
     Transition<EvCbFailure<CbBackUp, OrNavigation>, StFinalState, ABORT>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StFinalState, NEXT>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StAssistedTeleopGuard, NEXT>
   > reactions;
 
   // STATE FUNCTIONS

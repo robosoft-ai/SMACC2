@@ -15,6 +15,8 @@
 #pragma once
 
 #include <cl_keyboard/cl_keyboard.hpp>
+#include <geometry_msgs/msg/twist.hpp>
+#include <smacc2/client_core_components/cp_topic_publisher.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 
 namespace sm_nav2_gazebo_test_3
@@ -26,6 +28,12 @@ public:
   void onInitialize() override
   {
     auto client = this->createClient<cl_keyboard::ClKeyboard>();
+
+    // arrow-key teleop output, consumed by the behavior server's
+    // assisted_teleop collision guard (CbKeyboardTwistTeleop publishes here)
+    client->createComponent<
+      smacc2::client_core_components::CpTopicPublisher<geometry_msgs::msg::Twist>>(
+      "/cmd_vel_teleop");
   }
 };
 

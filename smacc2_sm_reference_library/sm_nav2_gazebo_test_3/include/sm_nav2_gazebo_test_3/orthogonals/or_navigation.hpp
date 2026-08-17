@@ -17,6 +17,7 @@
 #include <cl_nav2z/cl_nav2z.hpp>
 #include <cl_nav2z/components/amcl/cp_amcl.hpp>
 #include <nav2_msgs/action/back_up.hpp>
+#include <nav2_msgs/action/assisted_teleop.hpp>
 #include <nav2_msgs/action/drive_on_heading.hpp>
 #include <nav2_msgs/action/spin.hpp>
 #include <smacc2/client_core_components/cp_action_client.hpp>
@@ -44,6 +45,8 @@ public:
       smacc2::client_core_components::CpActionClient<nav2_msgs::action::BackUp>>("/backup");
     client->createComponent<smacc2::client_core_components::CpActionClient<
       nav2_msgs::action::DriveOnHeading>>("/drive_on_heading");
+    client->createComponent<smacc2::client_core_components::CpActionClient<
+      nav2_msgs::action::AssistedTeleop>>("/assisted_teleop");
   }
 };
 
