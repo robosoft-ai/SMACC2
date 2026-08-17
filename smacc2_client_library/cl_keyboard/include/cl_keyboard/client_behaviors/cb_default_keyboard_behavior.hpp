@@ -26,11 +26,13 @@ class CbDefaultKeyboardBehavior : public smacc2::SmaccClientBehavior
 public:
   components::CpKeyboardListener1 * cpSubscriber1;
   std::function<void(char)> postEventKeyPress;
+  std::function<void(ArrowKey)> postEventArrowPress;
 
   void onEntry()
   {
     this->requiresComponent(this->cpSubscriber1);
     this->cpSubscriber1->OnKeyPress(&CbDefaultKeyboardBehavior::OnKeyPress, this);
+    this->cpSubscriber1->OnArrowPress(&CbDefaultKeyboardBehavior::OnArrowPress, this);
   }
 
   template <typename TOrthogonal, typename TSourceObject>
@@ -91,9 +93,30 @@ public:
       else if (character == 'z')
         postKeyEvent<EvKeyPressZ<CbDefaultKeyboardBehavior, TOrthogonal>>();
     };
+
+    postEventArrowPress = [=](ArrowKey arrow)
+    {
+      switch (arrow)
+      {
+        case ArrowKey::Up:
+          postKeyEvent<EvKeyPressArrowUp<CbDefaultKeyboardBehavior, TOrthogonal>>();
+          break;
+        case ArrowKey::Down:
+          postKeyEvent<EvKeyPressArrowDown<CbDefaultKeyboardBehavior, TOrthogonal>>();
+          break;
+        case ArrowKey::Left:
+          postKeyEvent<EvKeyPressArrowLeft<CbDefaultKeyboardBehavior, TOrthogonal>>();
+          break;
+        case ArrowKey::Right:
+          postKeyEvent<EvKeyPressArrowRight<CbDefaultKeyboardBehavior, TOrthogonal>>();
+          break;
+      }
+    };
   }
 
   void OnKeyPress(char character) { postEventKeyPress(character); }
+
+  void OnArrowPress(ArrowKey arrow) { postEventArrowPress(arrow); }
 
   template <typename TEv>
   void postKeyEvent()

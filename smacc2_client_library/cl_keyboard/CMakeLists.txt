@@ -14,11 +14,13 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
 include_directories(
   include
   ${smacc2_INCLUDE_DIRS}
   ${std_msgs_INCLUDE_DIRS}
+  ${geometry_msgs_INCLUDE_DIRS}
 )
 
 add_library(${PROJECT_NAME}
@@ -26,8 +28,9 @@ add_library(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME} ${smacc2_LIBRARIES} ${std_msgs_LIBRARIES})
-ament_target_dependencies(${PROJECT_NAME} smacc2 std_msgs)
+ament_target_dependencies(${PROJECT_NAME} smacc2 std_msgs geometry_msgs)
 ament_export_include_directories(include)
+ament_export_dependencies(smacc2 std_msgs geometry_msgs)
 ament_export_libraries(${PROJECT_NAME})
 
 install(

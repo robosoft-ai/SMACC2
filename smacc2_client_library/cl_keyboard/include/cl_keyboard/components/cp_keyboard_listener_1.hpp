@@ -157,6 +157,36 @@ struct EvKeyPressZ : sc::event<EvKeyPressZ<TSource, TOrthogonal>>
 {
 };
 
+// Arrow keys: the keyboard server decodes the terminal escape sequences and
+// publishes the unicode arrow codepoints (8592-8595), above the char range.
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressArrowUp : sc::event<EvKeyPressArrowUp<TSource, TOrthogonal>>
+{
+};
+
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressArrowDown : sc::event<EvKeyPressArrowDown<TSource, TOrthogonal>>
+{
+};
+
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressArrowLeft : sc::event<EvKeyPressArrowLeft<TSource, TOrthogonal>>
+{
+};
+
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressArrowRight : sc::event<EvKeyPressArrowRight<TSource, TOrthogonal>>
+{
+};
+
+enum class ArrowKey
+{
+  Up,
+  Down,
+  Left,
+  Right
+};
+
 //------------------  KEYBOARD LISTENER COMPONENT ---------------------------------------------
 namespace components
 {
@@ -179,6 +209,35 @@ public:
 
     postEventKeyPress = [=](auto unicode_keychar)
     {
+      // arrow codepoints (8592-8595) from the keyboard server's escape-sequence
+      // decoding: dispatch through the arrow signal/events, not the char path
+      switch (unicode_keychar.data)
+      {
+        case 8593:
+          this->postKeyEvent<EvKeyPressArrowUp<CpKeyboardListener1, TOrthogonal>>();
+          OnArrowPress_(ArrowKey::Up);
+          return;
+        case 8595:
+          this->postKeyEvent<EvKeyPressArrowDown<CpKeyboardListener1, TOrthogonal>>();
+          OnArrowPress_(ArrowKey::Down);
+          return;
+        case 8592:
+          this->postKeyEvent<EvKeyPressArrowLeft<CpKeyboardListener1, TOrthogonal>>();
+          OnArrowPress_(ArrowKey::Left);
+          return;
+        case 8594:
+          this->postKeyEvent<EvKeyPressArrowRight<CpKeyboardListener1, TOrthogonal>>();
+          OnArrowPress_(ArrowKey::Right);
+          return;
+        default:
+          break;
+      }
+
+      if (unicode_keychar.data > 255)
+      {
+        return;  // other non-char codes have no dispatch
+      }
+
       char character = (char)unicode_keychar.data;
       RCLCPP_WARN(getLogger(), "detected keyboard: %c", character);
 
@@ -242,11 +301,21 @@ public:
   // This signal is created to be used in client behaviors
   smacc2::SmaccSignal<void(char keypress)> OnKeyPress_;
 
+  // Arrow keypresses (decoded escape sequences) - char-typed OnKeyPress_ never
+  // sees them
+  smacc2::SmaccSignal<void(ArrowKey arrow)> OnArrowPress_;
+
   // This is the signal subscription method for client behaviors and other components
   template <typename T>
   void OnKeyPress(void (T::*callback)(char keypress), T * object)
   {
     this->getStateMachine()->createSignalConnection(OnKeyPress_, callback, object);
+  }
+
+  template <typename T>
+  void OnArrowPress(void (T::*callback)(ArrowKey arrow), T * object)
+  {
+    this->getStateMachine()->createSignalConnection(OnArrowPress_, callback, object);
   }
 
   void onKeyboardMessage(const std_msgs::msg::UInt16 & unicode_keychar)
