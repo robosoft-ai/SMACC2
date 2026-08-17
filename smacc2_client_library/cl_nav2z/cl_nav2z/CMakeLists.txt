@@ -57,6 +57,9 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/client_behaviors/cb_spin.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_back_up.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_drive_on_heading.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_assisted_teleop.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_dock_robot.cpp
+  src/${PROJECT_NAME}/client_behaviors/cb_undock_robot.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_rotate_look_at.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_backward.cpp
   src/${PROJECT_NAME}/client_behaviors/cb_navigate_forward.cpp
