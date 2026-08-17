@@ -707,7 +707,13 @@ void ISmaccStateMachine::notifyOnStateExited(StateType * state)
     }
   }
 
-  this->stateCallbackConnections.clear();
+  // NOTE: do NOT clear stateCallbackConnections here. Entries are erased
+  // per-object by disconnectSmaccSignalObject when each owner is disposed
+  // (behaviors via orthogonal onDispose, state reactors and event generators
+  // above). A blanket clear also dropped - without finalizing - the entries of
+  // container-state behaviors that outlive this inner state exit, so their
+  // boost connections were never disconnected and the next signal emission
+  // invoked a callback on a destroyed object (use-after-free segfault).
   currentState_.pop_back();
 
   // then call exit state
