@@ -1,0 +1,1 @@
+#include <sm_dance_bot_coverage/clients/cl_navigation_coverage/client_behaviors/cb_navigate_coverage.hpp>
