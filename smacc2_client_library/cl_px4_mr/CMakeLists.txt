@@ -45,6 +45,8 @@ set(SOURCES
   src/cl_px4_mr/client_behaviors/cb_figure_eight.cpp
   src/cl_px4_mr/client_behaviors/cb_return_to_home.cpp
   src/cl_px4_mr/client_behaviors/cb_spiral_pattern.cpp
+  src/cl_px4_mr/client_behaviors/cb_sine_altitude_cruise.cpp
+  src/cl_px4_mr/client_behaviors/cb_yaw_scan.cpp
   src/cl_px4_mr/client_behaviors/cb_connect_micro_ros_agent.cpp
 )
 

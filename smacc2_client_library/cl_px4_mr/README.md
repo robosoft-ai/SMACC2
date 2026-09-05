@@ -124,6 +124,8 @@ PX4 SITL (via XRCE-DDS)
 | CbFigureEight | SmaccAsyncClientBehavior + ISmaccUpdatable | Fly a lemniscate figure-8 pattern | `centerX`, `centerY`, `altitude`, `size` (5.0), `speed` (0.5), `numLoops` (1) |
 | CbReturnToHome | SmaccAsyncClientBehavior | Return to a specified home position | `homeX`, `homeY`, `homeZ`, `homeYaw` |
 | CbSpiralPattern | SmaccAsyncClientBehavior + ISmaccUpdatable | Fly an expanding Archimedean spiral (search & rescue) | `centerX`, `centerY`, `altitude`, `maxRadius` (20.0), `spacing` (3.0), `speed` (2.0) |
+| CbSineAltitudeCruise | SmaccAsyncClientBehavior + ISmaccUpdatable | **Continuous**: cruise along a heading with sinusoidal altitude around the entry altitude; never posts success — the state machine must provide the exit event; ground track is unbounded (use a timer/mission exit + geofence backstop). On exit, settles at the entry altitude. | `groundSpeed` (2.0), `amplitude` (1.5), `wavelength` (20.0), `heading` (NaN = current) |
+| CbYawScan | SmaccAsyncClientBehavior + ISmaccUpdatable | **Continuous**: hold the entry position while heading sweeps sinusoidally around a base heading; never posts success — the state machine must provide the exit event. On exit, restores the base heading. | `amplitude` (0.6 rad), `period` (6.0 s), `baseHeading` (NaN = current) |
 
 ### CbConnectMicroRosAgent
 
