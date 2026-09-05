@@ -78,8 +78,7 @@ void CbYawScan::onExit()
     // Restore the base heading; the offboard keep-alive republishes this until
     // the next state commands otherwise.
     trajectorySetpoint_->setPositionNED(holdX_, holdY_, holdZ_, baseHeading_);
-    RCLCPP_INFO(
-      getLogger(), "CbYawScan: exiting - restoring base heading %.2f rad", baseHeading_);
+    RCLCPP_INFO(getLogger(), "CbYawScan: exiting - restoring base heading %.2f rad", baseHeading_);
   }
 }
 
