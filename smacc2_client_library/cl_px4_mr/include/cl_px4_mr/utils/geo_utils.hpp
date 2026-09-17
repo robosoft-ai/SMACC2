@@ -111,8 +111,8 @@ public:
       k = c / std::sin(c);
     }
 
-    x = static_cast<float>(
-      k * (refCosLat_ * sinLat - refSinLat_ * cosLat * cosDLon) * kEarthRadiusM);
+    x =
+      static_cast<float>(k * (refCosLat_ * sinLat - refSinLat_ * cosLat * cosDLon) * kEarthRadiusM);
     y = static_cast<float>(k * cosLat * std::sin(lonRad - refLon_) * kEarthRadiusM);
   }
 

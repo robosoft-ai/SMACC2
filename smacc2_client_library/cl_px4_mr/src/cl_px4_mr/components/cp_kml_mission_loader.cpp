@@ -152,7 +152,8 @@ void CpKmlMissionLoader::onInitialize()
   RCLCPP_INFO(getLogger(), "CpKmlMissionLoader: ready (first LineString backbone only)");
 }
 
-std::vector<GeoPoint> CpKmlMissionLoader::parseKmlString(const std::string & xml, std::string & error)
+std::vector<GeoPoint> CpKmlMissionLoader::parseKmlString(
+  const std::string & xml, std::string & error)
 {
   tinyxml2::XMLDocument doc;
   if (doc.Parse(xml.c_str(), xml.size()) != tinyxml2::XML_SUCCESS)
@@ -171,8 +172,8 @@ KmlLoadResult CpKmlMissionLoader::loadFile(const std::string & absolutePath)
   const tinyxml2::XMLError status = doc.LoadFile(absolutePath.c_str());
   if (status != tinyxml2::XML_SUCCESS)
   {
-    result.error = std::string("cannot load '") + absolutePath + "': " +
-                   (doc.ErrorStr() ? doc.ErrorStr() : "unknown error");
+    result.error = std::string("cannot load '") + absolutePath +
+                   "': " + (doc.ErrorStr() ? doc.ErrorStr() : "unknown error");
     RCLCPP_WARN(getLogger(), "CpKmlMissionLoader: %s", result.error.c_str());
     return result;
   }
@@ -195,9 +196,10 @@ KmlLoadResult CpKmlMissionLoader::loadFile(const std::string & absolutePath)
   result.ok = true;
   result.pointCount = points.size();
   RCLCPP_INFO(
-    getLogger(), "CpKmlMissionLoader: loaded %zu backbone points from '%s' (first %.6f,%.6f last %.6f,%.6f)",
-    points.size(), absolutePath.c_str(), points.front().lat, points.front().lon,
-    points.back().lat, points.back().lon);
+    getLogger(),
+    "CpKmlMissionLoader: loaded %zu backbone points from '%s' (first %.6f,%.6f last %.6f,%.6f)",
+    points.size(), absolutePath.c_str(), points.front().lat, points.front().lon, points.back().lat,
+    points.back().lon);
   return result;
 }
 

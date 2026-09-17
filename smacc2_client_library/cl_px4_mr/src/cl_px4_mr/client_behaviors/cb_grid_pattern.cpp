@@ -32,7 +32,8 @@ std::vector<NedPoint> CbGridPattern::buildPath(const NedPoint & current)
 {
   followerParams_.yawMode = YawMode::TANGENT;
   RCLCPP_INFO(
-    getLogger(), "CbGridPattern: %.0f x %.0f m rectangle, spacing %.0f m, %s, centre (%.1f, %.1f), %.0f m",
+    getLogger(),
+    "CbGridPattern: %.0f x %.0f m rectangle, spacing %.0f m, %s, centre (%.1f, %.1f), %.0f m",
     params_.base.laneLength, params_.base.width, params_.base.laneSpacing,
     params_.secondPass ? "two passes" : "single pass",
     std::isnan(params_.base.originX) ? current.x : params_.base.originX,

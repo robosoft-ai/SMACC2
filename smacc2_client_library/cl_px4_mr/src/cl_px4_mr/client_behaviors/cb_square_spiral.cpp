@@ -40,7 +40,8 @@ std::vector<NedPoint> CbSquareSpiral::buildPath(const NedPoint & current)
     getLogger(), "CbSquareSpiral: %s, %d legs, spacing %.1f m, origin (%.1f, %.1f), %.0f m total",
     turnName(params_.direction), params_.numLegs, params_.spacing,
     std::isnan(params_.originX) ? current.x : params_.originX,
-    std::isnan(params_.originY) ? current.y : params_.originY, flightPatternSquareSpiralLength(params_));
+    std::isnan(params_.originY) ? current.y : params_.originY,
+    flightPatternSquareSpiralLength(params_));
   return generateFlightPatternSquareSpiral(params_, current);
 }
 

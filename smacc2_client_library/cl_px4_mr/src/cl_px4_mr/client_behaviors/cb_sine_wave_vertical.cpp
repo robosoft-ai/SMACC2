@@ -23,7 +23,8 @@
 namespace cl_px4_mr
 {
 
-CbSineWaveVertical::CbSineWaveVertical(FlightPatternSineWaveVerticalParams params, PathFollowerParams follower)
+CbSineWaveVertical::CbSineWaveVertical(
+  FlightPatternSineWaveVerticalParams params, PathFollowerParams follower)
 : CbPx4PathFollowerBase(follower), params_(params)
 {
 }

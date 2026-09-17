@@ -33,7 +33,8 @@ namespace cl_px4_mr
 class CbAscendToAltitude : public CbPx4PathFollowerBase
 {
 public:
-  explicit CbAscendToAltitude(FlightPatternAscendParams params = {}, PathFollowerParams follower = {});
+  explicit CbAscendToAltitude(
+    FlightPatternAscendParams params = {}, PathFollowerParams follower = {});
   explicit CbAscendToAltitude(float altitudeAgl, float climbRate = 1.5f);
 
   void setParams(const FlightPatternAscendParams & params) { params_ = params; }

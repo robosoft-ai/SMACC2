@@ -25,7 +25,8 @@
 namespace cl_px4_mr
 {
 
-CbAscendToAltitude::CbAscendToAltitude(FlightPatternAscendParams params, PathFollowerParams follower)
+CbAscendToAltitude::CbAscendToAltitude(
+  FlightPatternAscendParams params, PathFollowerParams follower)
 : CbPx4PathFollowerBase(follower), params_(params)
 {
 }

@@ -32,7 +32,8 @@ namespace cl_px4_mr
 class CbSquareSpiral : public CbPx4PathFollowerBase
 {
 public:
-  explicit CbSquareSpiral(FlightPatternSquareSpiralParams params = {}, PathFollowerParams follower = {});
+  explicit CbSquareSpiral(
+    FlightPatternSquareSpiralParams params = {}, PathFollowerParams follower = {});
   explicit CbSquareSpiral(Turn direction);
 
   void setParams(const FlightPatternSquareSpiralParams & params) { params_ = params; }

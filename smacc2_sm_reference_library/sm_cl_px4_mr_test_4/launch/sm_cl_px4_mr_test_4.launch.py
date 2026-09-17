@@ -35,7 +35,7 @@ def generate_launch_description():
         description="Run a single railway leg in place (empty = full mission)",
     )
 
-    tee_prefix = "bash -c 'stdbuf -oL -eL \"$@\" 2>&1 | tee " + RUNTIME_LOG + "' --"
+    tee_prefix = 'bash -c \'stdbuf -oL -eL "$@" 2>&1 | tee ' + RUNTIME_LOG + "' --"
 
     return LaunchDescription(
         [

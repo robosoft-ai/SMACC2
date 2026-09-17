@@ -29,7 +29,8 @@ using pattern_detail::altitudeToZ;
 using pattern_detail::kNaN;
 using pattern_detail::pick;
 
-std::vector<NedPoint> generateFlightPatternAscend(const FlightPatternAscendParams & p, const NedPoint & current)
+std::vector<NedPoint> generateFlightPatternAscend(
+  const FlightPatternAscendParams & p, const NedPoint & current)
 {
   NedPoint target;
   target.x = pick(p.targetX, current.x);
@@ -46,7 +47,8 @@ std::vector<NedPoint> generateFlightPatternAscend(const FlightPatternAscendParam
   return {start, target};
 }
 
-std::vector<NedPoint> generateFlightPatternLoiter(const FlightPatternLoiterParams & p, const NedPoint & current)
+std::vector<NedPoint> generateFlightPatternLoiter(
+  const FlightPatternLoiterParams & p, const NedPoint & current)
 {
   const float cx = pick(p.centerX, current.x);
   const float cy = pick(p.centerY, current.y);
@@ -69,8 +71,8 @@ std::vector<NedPoint> generateFlightPatternLoiter(const FlightPatternLoiterParam
   // use the entry heading to pick a start
   const float dx = current.x - cx;
   const float dy = current.y - cy;
-  float theta0 = std::hypot(dx, dy) > 0.1f ? std::atan2(dy, dx)
-                                           : (std::isnan(current.yaw) ? 0.0f : current.yaw);
+  float theta0 =
+    std::hypot(dx, dy) > 0.1f ? std::atan2(dy, dx) : (std::isnan(current.yaw) ? 0.0f : current.yaw);
 
   std::vector<NedPoint> path;
   path.reserve(static_cast<size_t>(count * n + 1));
@@ -181,7 +183,8 @@ std::vector<NedPoint> generateFlightPatternSineWaveHorizontal(
   return path;
 }
 
-std::vector<NedPoint> generateFlightPatternSquareSpiral(const FlightPatternSquareSpiralParams & p, const NedPoint & current)
+std::vector<NedPoint> generateFlightPatternSquareSpiral(
+  const FlightPatternSquareSpiralParams & p, const NedPoint & current)
 {
   const float ox = pick(p.originX, current.x);
   const float oy = pick(p.originY, current.y);
@@ -229,7 +232,8 @@ float flightPatternSquareSpiralLength(const FlightPatternSquareSpiralParams & p)
   return total;
 }
 
-std::vector<NedPoint> generateFlightPatternSpiral(const FlightPatternSpiralParams & p, const NedPoint & current)
+std::vector<NedPoint> generateFlightPatternSpiral(
+  const FlightPatternSpiralParams & p, const NedPoint & current)
 {
   const float cx = pick(p.centerX, current.x);
   const float cy = pick(p.centerY, current.y);
@@ -244,8 +248,8 @@ std::vector<NedPoint> generateFlightPatternSpiral(const FlightPatternSpiralParam
   // angular origin: bearing of the vehicle from the centre, else entry heading
   const float dx = current.x - cx;
   const float dy = current.y - cy;
-  const float theta0 = std::hypot(dx, dy) > 0.1f ? std::atan2(dy, dx)
-                                                 : (std::isnan(current.yaw) ? 0.0f : current.yaw);
+  const float theta0 =
+    std::hypot(dx, dy) > 0.1f ? std::atan2(dy, dx) : (std::isnan(current.yaw) ? 0.0f : current.yaw);
 
   const float thetaStart = rStart / a;
   const float thetaEnd = rEnd / a;
@@ -296,7 +300,8 @@ float flightPatternLawnmowerLength(const FlightPatternLawnmowerParams & p)
   return lanes * std::max(p.laneLength, 0.0f) + (lanes - 1) * std::max(p.laneSpacing, 0.5f);
 }
 
-std::vector<NedPoint> generateFlightPatternLawnmower(const FlightPatternLawnmowerParams & p, const NedPoint & current)
+std::vector<NedPoint> generateFlightPatternLawnmower(
+  const FlightPatternLawnmowerParams & p, const NedPoint & current)
 {
   const float z = altitudeToZ(p.altitudeAgl, current.z);
   const float heading = pick(p.laneHeading, std::isnan(current.yaw) ? 0.0f : current.yaw);
@@ -351,10 +356,12 @@ float flightPatternGridPatternLength(const FlightPatternGridPatternParams & p)
   FlightPatternLawnmowerParams second = p.base;
   second.laneLength = p.base.width;
   second.width = p.base.laneLength;
-  return flightPatternLawnmowerLength(p.base) + (p.secondPass ? flightPatternLawnmowerLength(second) : 0.0f);
+  return flightPatternLawnmowerLength(p.base) +
+         (p.secondPass ? flightPatternLawnmowerLength(second) : 0.0f);
 }
 
-std::vector<NedPoint> generateFlightPatternGridPattern(const FlightPatternGridPatternParams & p, const NedPoint & current)
+std::vector<NedPoint> generateFlightPatternGridPattern(
+  const FlightPatternGridPatternParams & p, const NedPoint & current)
 {
   FlightPatternLawnmowerParams first = p.base;
   first.originIsCenter = true;  // the grid is always centred on the origin
@@ -403,7 +410,8 @@ float flightPatternVSSearchLength(const FlightPatternVSSearchParams & p)
   return 9.0f * std::max(p.radius, 1.0f) * static_cast<float>(std::max(p.cycles, 1));
 }
 
-std::vector<NedPoint> generateFlightPatternVSSearch(const FlightPatternVSSearchParams & p, const NedPoint & current)
+std::vector<NedPoint> generateFlightPatternVSSearch(
+  const FlightPatternVSSearchParams & p, const NedPoint & current)
 {
   const float dx = pick(p.datumX, current.x);
   const float dy = pick(p.datumY, current.y);

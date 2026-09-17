@@ -32,7 +32,8 @@ namespace cl_px4_mr
 class CbGridPattern : public CbPx4PathFollowerBase
 {
 public:
-  explicit CbGridPattern(FlightPatternGridPatternParams params = {}, PathFollowerParams follower = {});
+  explicit CbGridPattern(
+    FlightPatternGridPatternParams params = {}, PathFollowerParams follower = {});
 
   void setParams(const FlightPatternGridPatternParams & params) { params_ = params; }
   const FlightPatternGridPatternParams & params() const { return params_; }

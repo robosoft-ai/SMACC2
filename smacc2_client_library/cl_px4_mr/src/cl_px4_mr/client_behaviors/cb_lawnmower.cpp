@@ -43,7 +43,8 @@ std::vector<NedPoint> CbLawnmower::buildPath(const NedPoint & current)
     std::isnan(params_.laneHeading) ? current.yaw : params_.laneHeading,
     params_.originIsCenter ? "centred" : "cornered",
     std::isnan(params_.originX) ? current.x : params_.originX,
-    std::isnan(params_.originY) ? current.y : params_.originY, flightPatternLawnmowerLength(params_));
+    std::isnan(params_.originY) ? current.y : params_.originY,
+    flightPatternLawnmowerLength(params_));
   return generateFlightPatternLawnmower(params_, current);
 }
 

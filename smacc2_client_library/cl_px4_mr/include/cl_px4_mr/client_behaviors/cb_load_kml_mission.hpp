@@ -44,7 +44,10 @@ public:
     std::string absoluteKmlPath, std::vector<GeoPoint> fallbackBackbone = {});
 
   void setFilePath(const std::string & absoluteKmlPath) { path_ = absoluteKmlPath; }
-  void setFallback(std::vector<GeoPoint> fallbackBackbone) { fallback_ = std::move(fallbackBackbone); }
+  void setFallback(std::vector<GeoPoint> fallbackBackbone)
+  {
+    fallback_ = std::move(fallbackBackbone);
+  }
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()

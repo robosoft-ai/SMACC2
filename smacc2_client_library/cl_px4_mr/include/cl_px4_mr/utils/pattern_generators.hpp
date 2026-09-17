@@ -79,7 +79,8 @@ struct FlightPatternAscendParams
   float targetX = pattern_detail::kNaN;
   float targetY = pattern_detail::kNaN;
 };
-std::vector<NedPoint> generateFlightPatternAscend(const FlightPatternAscendParams & p, const NedPoint & current);
+std::vector<NedPoint> generateFlightPatternAscend(
+  const FlightPatternAscendParams & p, const NedPoint & current);
 
 // ---------------------------------------------------------------------------
 // N circles about a centre, entered at the nearest point
@@ -94,7 +95,8 @@ struct FlightPatternLoiterParams
   int pointsPerCircle = 36;
   bool faceCenter = true;  // per-vertex yaw toward the centre; else tangent
 };
-std::vector<NedPoint> generateFlightPatternLoiter(const FlightPatternLoiterParams & p, const NedPoint & current);
+std::vector<NedPoint> generateFlightPatternLoiter(
+  const FlightPatternLoiterParams & p, const NedPoint & current);
 
 // ---------------------------------------------------------------------------
 // Straight transit with sinusoidal altitude about the base altitude
@@ -137,7 +139,8 @@ struct FlightPatternSquareSpiralParams
   int numLegs = 12;
   float maxLegLength = 0.0f;  // 0 = unbounded; otherwise stop before a longer leg
 };
-std::vector<NedPoint> generateFlightPatternSquareSpiral(const FlightPatternSquareSpiralParams & p, const NedPoint & current);
+std::vector<NedPoint> generateFlightPatternSquareSpiral(
+  const FlightPatternSquareSpiralParams & p, const NedPoint & current);
 float flightPatternSquareSpiralLength(const FlightPatternSquareSpiralParams & p);
 
 // ---------------------------------------------------------------------------
@@ -154,7 +157,8 @@ struct FlightPatternSpiralParams
   bool inward = false;         // fly from endRadius in to startRadius
   float sampleSpacing = 2.0f;  // arc length between vertices (m)
 };
-std::vector<NedPoint> generateFlightPatternSpiral(const FlightPatternSpiralParams & p, const NedPoint & current);
+std::vector<NedPoint> generateFlightPatternSpiral(
+  const FlightPatternSpiralParams & p, const NedPoint & current);
 float flightPatternSpiralLength(const FlightPatternSpiralParams & p);
 
 // ---------------------------------------------------------------------------
@@ -174,7 +178,8 @@ struct FlightPatternLawnmowerParams
   float laneSpacing = 10.0f;
   Turn firstTurn = Turn::RIGHT;  // side the lanes step toward
 };
-std::vector<NedPoint> generateFlightPatternLawnmower(const FlightPatternLawnmowerParams & p, const NedPoint & current);
+std::vector<NedPoint> generateFlightPatternLawnmower(
+  const FlightPatternLawnmowerParams & p, const NedPoint & current);
 float flightPatternLawnmowerLength(const FlightPatternLawnmowerParams & p);
 int flightPatternLawnmowerLaneCount(const FlightPatternLawnmowerParams & p);
 
@@ -186,7 +191,8 @@ struct FlightPatternGridPatternParams
   FlightPatternLawnmowerParams base;
   bool secondPass = true;
 };
-std::vector<NedPoint> generateFlightPatternGridPattern(const FlightPatternGridPatternParams & p, const NedPoint & current);
+std::vector<NedPoint> generateFlightPatternGridPattern(
+  const FlightPatternGridPatternParams & p, const NedPoint & current);
 float flightPatternGridPatternLength(const FlightPatternGridPatternParams & p);
 
 // ---------------------------------------------------------------------------
@@ -205,7 +211,8 @@ struct FlightPatternVSSearchParams
   int cycles = 1;
   float reorientation = static_cast<float>(M_PI) / 6.0f;
 };
-std::vector<NedPoint> generateFlightPatternVSSearch(const FlightPatternVSSearchParams & p, const NedPoint & current);
+std::vector<NedPoint> generateFlightPatternVSSearch(
+  const FlightPatternVSSearchParams & p, const NedPoint & current);
 float flightPatternVSSearchLength(const FlightPatternVSSearchParams & p);
 
 // heading (NED yaw) of the leg from `from` to `to`

@@ -29,10 +29,7 @@
 namespace cl_px4_mr
 {
 
-CbPx4PathFollowerBase::CbPx4PathFollowerBase(PathFollowerParams params)
-: followerParams_(params)
-{
-}
+CbPx4PathFollowerBase::CbPx4PathFollowerBase(PathFollowerParams params) : followerParams_(params) {}
 
 void CbPx4PathFollowerBase::onEntry()
 {
@@ -62,7 +59,8 @@ void CbPx4PathFollowerBase::onEntry()
   std::vector<NedPoint> raw = buildPath(current);
   if (raw.empty())
   {
-    RCLCPP_ERROR(getLogger(), "%s: buildPath() returned no vertices - posting failure", behaviorName());
+    RCLCPP_ERROR(
+      getLogger(), "%s: buildPath() returned no vertices - posting failure", behaviorName());
     this->postPx4Failure();
     return;
   }
