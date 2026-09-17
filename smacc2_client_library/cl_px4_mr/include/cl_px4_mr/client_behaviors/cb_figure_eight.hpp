@@ -31,6 +31,16 @@ public:
     float centerX, float centerY, float altitude, float size = 5.0f, float speed = 0.5f,
     int numLoops = 1);
 
+  // Override the centre before onEntry (e.g. from the owning state's
+  // runtimeConfigure when the centre is only known at runtime).
+  void setCenter(float centerX, float centerY)
+  {
+    centerX_ = centerX;
+    centerY_ = centerY;
+  }
+  // Rotate the lobe axis (NED yaw, radians; default 0 = lobes north-south).
+  void setHeading(float headingRad) { heading_ = headingRad; }
+
   void onEntry() override;
   void onExit() override;
   void update() override;
@@ -42,6 +52,7 @@ private:
   float size_;
   float speed_;
   int numLoops_;
+  float heading_ = 0.0f;
 
   float t_ = 0.0f;
   std::chrono::steady_clock::time_point lastUpdateTime_;

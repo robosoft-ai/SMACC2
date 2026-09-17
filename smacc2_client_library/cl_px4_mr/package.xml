@@ -12,6 +12,8 @@
   <depend>smacc2</depend>
   <depend>px4_msgs</depend>
   <depend>rclcpp</depend>
+  <depend>boost</depend>
+  <depend>tinyxml2_vendor</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

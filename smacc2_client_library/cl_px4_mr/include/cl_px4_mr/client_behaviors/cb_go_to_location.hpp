@@ -32,6 +32,13 @@ public:
     float targetX, float targetY, float targetZ,
     float yaw = std::numeric_limits<float>::quiet_NaN());
 
+  // Override the target before onEntry (e.g. from the owning state's
+  // runtimeConfigure, when the destination is only known at runtime).
+  // targetZ is raw NED (negative = up).
+  void setTarget(
+    float targetX, float targetY, float targetZ,
+    float yaw = std::numeric_limits<float>::quiet_NaN());
+
   void onEntry() override;
 
   void wireCompletionSignals() override;

@@ -24,6 +24,14 @@ CbGoToLocation::CbGoToLocation(float targetX, float targetY, float targetZ, floa
 {
 }
 
+void CbGoToLocation::setTarget(float targetX, float targetY, float targetZ, float yaw)
+{
+  targetX_ = targetX;
+  targetY_ = targetY;
+  targetZ_ = targetZ;
+  yaw_ = yaw;
+}
+
 void CbGoToLocation::onEntry()
 {
   RCLCPP_INFO(

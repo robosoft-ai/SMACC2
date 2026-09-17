@@ -22,6 +22,7 @@
 
 #include <atomic>
 #include <chrono>
+#include <cstdint>
 #include <optional>
 
 #include <cl_px4_mr/components/cp_goal_checker.hpp>
@@ -79,12 +80,19 @@ public:
   virtual ~CbPx4ClientBehaviorBase() {}
 
   // arm the completion watchdog (checked from update() on the SignalDetector
-  // thread); disabled when never called
-  void setTimeout(std::chrono::milliseconds timeout) { timeout_ = timeout; }
+  // thread); disabled when never called. Atomic so it may be armed from the
+  // state machine thread (runtimeConfigure) or from the async onEntry thread
+  // (auto-timeouts derived from path length); a value set by the state machine
+  // always wins because runtimeConfigure runs before onEntry.
+  void setTimeout(std::chrono::milliseconds timeout) { timeoutMs_ = timeout.count(); }
+
+  // true once a timeout has been armed (by the state machine or the behavior)
+  bool hasTimeout() const { return timeoutMs_.load() > 0; }
 
   void update() override
   {
-    if (!timeout_ || completed_)
+    const int64_t timeoutMs = timeoutMs_.load();
+    if (timeoutMs <= 0 || completed_)
     {
       return;
     }
@@ -96,11 +104,11 @@ public:
       return;
     }
 
-    if (now - *watchdogStart_ > *timeout_)
+    if (now - *watchdogStart_ > std::chrono::milliseconds(timeoutMs))
     {
       RCLCPP_ERROR(
         getLogger(), "[%s] Timed out after %ld ms without completing - posting failure",
-        getName().c_str(), static_cast<long>(timeout_->count()));
+        getName().c_str(), static_cast<long>(timeoutMs));
       this->postPx4Failure();
     }
   }
@@ -135,7 +143,7 @@ protected:
 
 private:
   std::atomic<bool> completed_{false};
-  std::optional<std::chrono::milliseconds> timeout_;
+  std::atomic<int64_t> timeoutMs_{0};  // 0 = watchdog disabled
   std::optional<std::chrono::steady_clock::time_point> watchdogStart_;
 };
 

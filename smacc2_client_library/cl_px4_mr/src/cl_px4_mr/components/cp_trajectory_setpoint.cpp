@@ -65,7 +65,8 @@ void CpTrajectorySetpoint::setPositionNED(float x, float y, float z, float yaw)
     hasPublished_ = true;
   }
 
-  RCLCPP_INFO(
+  // DEBUG: streaming path followers call this at ~20 Hz
+  RCLCPP_DEBUG(
     getLogger(), "CpTrajectorySetpoint: position NED [%.2f, %.2f, %.2f] yaw=%.2f", x, y, z, yaw);
 }
 
