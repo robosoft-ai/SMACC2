@@ -34,16 +34,18 @@ void CbFigureEight::onEntry()
   t_ = 0.0f;
   lastUpdateTime_ = std::chrono::steady_clock::now();
 
-  // Command initial position (t=0: x=size, y=0 relative to center)
-  float x = centerX_ + size_;
-  float y = centerY_;
+  // Command initial position (t=0: x=size, y=0 relative to center, rotated by heading_)
+  float x = centerX_ + size_ * std::cos(heading_);
+  float y = centerY_ + size_ * std::sin(heading_);
   float z = -altitude_;  // NED
 
   RCLCPP_INFO(
-    getLogger(), "CbFigureEight: starting figure-8 center=[%.2f, %.2f] alt=%.2f size=%.2f loops=%d",
-    centerX_, centerY_, altitude_, size_, numLoops_);
+    getLogger(),
+    "CbFigureEight: starting figure-8 center=[%.2f, %.2f] alt=%.2f size=%.2f axis=%.2f rad "
+    "loops=%d",
+    centerX_, centerY_, altitude_, size_, heading_, numLoops_);
 
-  trajectorySetpoint_->setPositionNED(x, y, z, 0.0f);
+  trajectorySetpoint_->setPositionNED(x, y, z, heading_);
 }
 
 void CbFigureEight::onExit() {}
@@ -66,8 +68,11 @@ void CbFigureEight::update()
   float localX = size_ * cosT / denom;
   float localY = size_ * sinT * cosT / denom;
 
-  float x = centerX_ + localX;
-  float y = centerY_ + localY;
+  // rotate the lemniscate so its lobe axis lies along heading_
+  const float ch = std::cos(heading_);
+  const float sh = std::sin(heading_);
+  float x = centerX_ + localX * ch - localY * sh;
+  float y = centerY_ + localX * sh + localY * ch;
   float z = -altitude_;  // NED
 
   // Compute derivatives for yaw (face direction of travel)
@@ -77,7 +82,7 @@ void CbFigureEight::update()
   float dxdt = size_ * (-sinT * (1.0f + sinT2) - cosT * 2.0f * sinT * cosT) / denom2;
   float dydt =
     size_ * ((cosT2 - sinT2) * (1.0f + sinT2) - sinT * cosT * 2.0f * sinT * cosT) / denom2;
-  float yaw = std::atan2(dydt, dxdt);
+  float yaw = std::atan2(dydt, dxdt) + heading_;
 
   trajectorySetpoint_->setPositionNED(x, y, z, yaw);
 

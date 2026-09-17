@@ -1,6 +1,6 @@
  <h2>State Machine Diagram</h2>
 
-(diagram pending first run)
+ ![sm_cl_px4_mr_test_3](docs/SmClPx4MrTest3_2026-9-17_141111.svg)
 
 
 <h2>Description</h2>
@@ -56,11 +56,11 @@ ros2 launch sm_cl_px4_mr_test_3 sm_cl_px4_mr_test_3.launch.py
 
 | State | Mode State | Behavior | Action |
 |-------|-----------|----------|--------|
-| StWaitForReady | MsDisarmedOnGround | CbTimerCountdownOnce(5) | Wait 5 seconds for system readiness |
+| StWaitForReady | MsDisarmedOnGround | CbTimerCountdownOnce(5 s) | Wait for system readiness |
 | StArmPx4 | MsArmedOnGround | CbArmPX4 | Arm vehicle (5 retries, force-arm after 2) |
-| StTakeoff | MsTakeoff | CbTakeOff(5.0) | Enable offboard mode, climb to 5m |
-| StGoToWaypoint1 | MsInFlight | CbGoToLocation(10, 0, -5) | Fly to waypoint at (10, 0) NED |
-| StOrbitLocation | MsInFlight | CbOrbitLocation(10, 0, 5, 5, 0.5, 3) | Orbit 3x around waypoint, r=5m |
+| StTakeoff | MsTakeoff | CbTakeOff(5) | Enable offboard mode, climb to 5 m |
+| StSineAltitudeCruise | MsInFlight | CbSineAltitudeCruise(2 m/s, +-1.5 m, 20 m) + CbTimerCountdownOnce(30 s) | Cruise along the entry heading with sinusoidal altitude for 30 s (3 cycles); timer exits |
+| StYawScan | MsInFlight | CbYawScan(+-0.6 rad, 6 s) + CbTimerCountdownOnce(30 s) | Hold position, sweep heading sinusoidally for 30 s (5 sweeps); timer exits |
 | StReturnToBase | MsInFlight | CbGoToLocation(0, 0, -5) | Return to origin |
 | StLand | MsLanding | CbLand | Land and wait for auto-disarm |
 | StLanded | MsLanded | (none) | Mission complete |

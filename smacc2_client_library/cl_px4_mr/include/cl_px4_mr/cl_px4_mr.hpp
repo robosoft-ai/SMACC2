@@ -17,6 +17,7 @@
 #include <smacc2/smacc.hpp>
 
 #include <cl_px4_mr/components/cp_goal_checker.hpp>
+#include <cl_px4_mr/components/cp_kml_mission_loader.hpp>
 #include <cl_px4_mr/components/cp_micro_ros_agent.hpp>
 #include <cl_px4_mr/components/cp_offboard_keep_alive.hpp>
 #include <cl_px4_mr/components/cp_trajectory_setpoint.hpp>
@@ -45,6 +46,7 @@ public:
     this->createComponent<CpVehicleStatus, TOrthogonal, TClient>();
     this->createComponent<CpVehicleCommandAck, TOrthogonal, TClient>();
     this->createComponent<CpGoalChecker, TOrthogonal, TClient>();
+    this->createComponent<CpKmlMissionLoader, TOrthogonal, TClient>();
   }
 };
 
