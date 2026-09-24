@@ -18,7 +18,8 @@
 
 #include <cl_px4_mr/client_behaviors/cb_go_to_location.hpp>
 #include <config/mission_constants.hpp>
-#include <sm_cl_px4_mr_test_4/states/st_figure_eight_1.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_go_to_square_centre.hpp>
+
 
 #include <algorithm>
 
@@ -28,43 +29,46 @@ namespace sm_cl_px4_mr_test_4
 using namespace cl_px4_mr;
 using namespace smacc2::default_transition_tags;
 
-// STATE: fly from the centroid back over the island at mission altitude, then
-// hand over to the precision pre-landing descent
-struct StGoToLandingZone : smacc2::SmaccState<StGoToLandingZone, MsInFlight>
+// NAV STATE: straight leg south past the island to the SouthWaypoint
+struct StGoToSouthWaypoint : smacc2::SmaccState<StGoToSouthWaypoint, MsInFlight>
 {
   using SmaccState::SmaccState;
 
+  // south past the island; the figure-eight centroid hangs off this point
+  static NedXY target()
+  {
+    NedXY p;
+    p.x = -kSouthWaypointSouthM;
+    p.y = -kSouthWaypointWestM;
+    return p;
+  }
+
   typedef mpl::list<
-    Transition<EvCbSuccess<CbGoToLocation, OrPx4>, StPreLandDescent, SUCCESS>,
+    Transition<EvCbSuccess<CbGoToLocation, OrPx4>, StGoToFigureEight, SUCCESS>,
     Transition<EvCbFailure<CbGoToLocation, OrPx4>, StReturnHome, ABORT>
   > reactions;
 
   static void staticConfigure()
   {
-    const NedXY lz = island();
-    configure_orthogonal<OrPx4, CbGoToLocation>(lz.x, lz.y, -kMissionAltitudeM);
+    const NedXY to = target();
+    configure_orthogonal<OrPx4, CbGoToLocation>(to.x, to.y, -kMissionAltitudeM);
   }
 
   void runtimeConfigure()
   {
-    const NedXY from = StFigureEight1::centre();  // the loiter ends on the centroid
-    const NedXY lz = island();
-    const float lengthM = distanceM(from, lz);
+    const NedXY from = StGoToSquareCentre::target();
+    const NedXY to = target();
+    const float lengthM = distanceM(from, to);
     this->getClientBehavior<OrPx4, CbGoToLocation>()->setTimeout(
-      transitTimeout(std::max(lengthM, 100.0f)));
+      transitTimeout(std::max(lengthM, 50.0f)));
 
     RCLCPP_INFO(
-      getLogger(), "StGoToLandingZone: -> Island NED (%.1f, %.1f, %.1f), %.0f m",
-      static_cast<double>(lz.x), static_cast<double>(lz.y),
-      static_cast<double>(-kMissionAltitudeM), static_cast<double>(lengthM));
+      getLogger(), "StGoToSouthWaypoint: -> SouthWaypoint NED (%.1f, %.1f), %.0f m", static_cast<double>(to.x),
+      static_cast<double>(to.y), static_cast<double>(lengthM));
   }
 
   void onEntry() {}
-
-  void onExit()
-  {
-    RCLCPP_INFO(getLogger(), "StGoToLandingZone: leaving");
-  }
+  void onExit() {}
 };
 
 }  // namespace sm_cl_px4_mr_test_4

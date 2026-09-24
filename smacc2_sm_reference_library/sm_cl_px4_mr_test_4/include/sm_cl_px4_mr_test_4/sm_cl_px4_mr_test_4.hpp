@@ -29,7 +29,6 @@
 #include <cl_px4_mr/client_behaviors/cb_lawnmower.hpp>
 #include <cl_px4_mr/client_behaviors/cb_go_to_location.hpp>
 #include <cl_px4_mr/client_behaviors/cb_land.hpp>
-#include <cl_px4_mr/client_behaviors/cb_load_kml_mission.hpp>
 #include <cl_px4_mr/client_behaviors/cb_loiter.hpp>
 #include <cl_px4_mr/client_behaviors/cb_sine_wave_horizontal.hpp>
 #include <cl_px4_mr/client_behaviors/cb_sine_wave_vertical.hpp>
@@ -42,12 +41,8 @@
 // ORTHOGONALS
 #include <sm_cl_px4_mr_test_4/orthogonals/or_px4.hpp>
 
-// RAILWAY (plan model, planner, dispatch events)
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_plan.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_planner.hpp>
-#include <sm_cl_px4_mr_test_4/railway/pattern_params.hpp>
-#include <sm_cl_px4_mr_test_4/railway/railway_events.hpp>
+// CONFIG (mission constants and the helpers derived from them)
+#include <config/mission_constants.hpp>
 
 using namespace boost;
 using namespace smacc2;
@@ -89,26 +84,31 @@ class StiVSChain1Run;
 class StiVSChain2Run;
 class StiVSChain3Run;
 
-// STATES (forward declarations)
+// STATES (forward declarations), in mission order
 class StPause;
 class StConnectMicroROSAgent;
 class StWaitForReady;
-class StLoadMission;
-class StMissionAborted;
 class StArmPX4;
 class StPrepareForTakeoff;
 class StTakeoff;
 class StAscend;
 class StSpiralOffIsland;
-class StRailway;
-class StSineWaveVertical;
-class StSineWaveHorizontal;
-class StGoToWaypoint;
+class StTransitToSquareSpiral1;
+class StTransitToSquareSpiral2;
+class StTransitToLawnmower1;
+class StTransitToLawnmower2;
+class StTransitToGridPattern1;
+class StTransitToVSSearch;
+class StTransitToVSChain1;
+class StTransitToVSChain2;
+class StTransitToVSChain3;
+class StGoToSquareCentre;
+class StGoToSouthWaypoint;
+class StGoToFigureEight;
 class StFigureEight1;
 class StFigureEight2;
 class StLoiterCentroid;
 class StGoToLandingZone;
-class StLoiterHotel;
 class StPreLandDescent;
 class StReturnHome;
 class StLand;
@@ -122,24 +122,6 @@ struct SmClPx4MrTest4 : public smacc2::SmaccStateMachineBase<SmClPx4MrTest4, MsD
   void onInitialize() override
   {
     this->createOrthogonal<OrPx4>();
-
-    // test_leg: "" = full mission; a superstate / nav state name runs that
-    // single leg centred on the takeoff point (see railway::buildTestLegPlan)
-    auto node = this->getNode();
-    if (!node->has_parameter("test_leg"))
-    {
-      node->declare_parameter<std::string>("test_leg", "");
-    }
-    const std::string testLeg = node->get_parameter("test_leg").as_string();
-    this->setGlobalSMData("test_leg", testLeg);
-    if (testLeg.empty())
-    {
-      RCLCPP_INFO(getLogger(), "SmClPx4MrTest4: full mission (test_leg not set)");
-    }
-    else
-    {
-      RCLCPP_WARN(getLogger(), "SmClPx4MrTest4: TEST LEG MODE - '%s' only", testLeg.c_str());
-    }
   }
 };
 
@@ -153,7 +135,8 @@ struct SmClPx4MrTest4 : public smacc2::SmaccStateMachineBase<SmClPx4MrTest4, MsD
 #include <sm_cl_px4_mr_test_4/modestates/ms_landing.hpp>
 #include <sm_cl_px4_mr_test_4/modestates/ms_landed.hpp>
 
-// SUPERSTATE INCLUDES (after mode states, before leaf states)
+// SUPERSTATE INCLUDES (after mode states, before leaf states: the transits
+// call their neighbours' entry() / exit(), which need the complete type)
 #include <sm_cl_px4_mr_test_4/superstates/ss_square_spiral_1.hpp>
 #include <sm_cl_px4_mr_test_4/superstates/ss_square_spiral_2.hpp>
 #include <sm_cl_px4_mr_test_4/superstates/ss_lawnmower_1.hpp>
@@ -166,32 +149,38 @@ struct SmClPx4MrTest4 : public smacc2::SmaccStateMachineBase<SmClPx4MrTest4, MsD
 #include <sm_cl_px4_mr_test_4/superstates/ss_vs_chain_2.hpp>
 #include <sm_cl_px4_mr_test_4/superstates/ss_vs_chain_3.hpp>
 
-// REGULAR STATE INCLUDES
+// REGULAR STATE INCLUDES, in mission order. One exception: st_figure_eight_1
+// comes before st_go_to_figure_eight, whose target is StFigureEight1::entry().
 #include <sm_cl_px4_mr_test_4/states/st_pause.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_connect_micro_ros_agent.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_wait_for_ready.hpp>
-#include <sm_cl_px4_mr_test_4/states/st_load_mission.hpp>
-#include <sm_cl_px4_mr_test_4/states/st_mission_aborted.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_arm_px4.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_prepare_for_takeoff.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_takeoff.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_ascend.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_spiral_off_island.hpp>
-#include <sm_cl_px4_mr_test_4/states/st_railway.hpp>
-#include <sm_cl_px4_mr_test_4/states/st_sine_wave_vertical.hpp>
-#include <sm_cl_px4_mr_test_4/states/st_sine_wave_horizontal.hpp>
-#include <sm_cl_px4_mr_test_4/states/st_go_to_waypoint.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_transit_to_square_spiral_1.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_transit_to_square_spiral_2.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_transit_to_lawnmower_1.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_transit_to_lawnmower_2.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_transit_to_grid_pattern_1.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_transit_to_vs_search.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_transit_to_vs_chain_1.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_transit_to_vs_chain_2.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_transit_to_vs_chain_3.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_go_to_square_centre.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_go_to_south_waypoint.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_figure_eight_1.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_go_to_figure_eight.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_figure_eight_2.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_loiter_centroid.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_go_to_landing_zone.hpp>
-#include <sm_cl_px4_mr_test_4/states/st_loiter_hotel.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_pre_land_descent.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_return_home.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_land.hpp>
 #include <sm_cl_px4_mr_test_4/states/st_landed.hpp>
 
-// INNER STATE INCLUDES (after their superstates and the railway)
+// INNER STATE INCLUDES (after their superstates and the states they lead to)
 #include <sm_cl_px4_mr_test_4/states/square_spiral_1_inner_states/sti_square_spiral_1_run.hpp>
 #include <sm_cl_px4_mr_test_4/states/square_spiral_2_inner_states/sti_square_spiral_2_run.hpp>
 #include <sm_cl_px4_mr_test_4/states/lawnmower_1_inner_states/sti_lawnmower_1_run.hpp>

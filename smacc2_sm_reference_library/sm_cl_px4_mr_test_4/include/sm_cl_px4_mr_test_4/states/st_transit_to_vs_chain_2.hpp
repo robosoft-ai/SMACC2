@@ -16,8 +16,11 @@
 
 #include <smacc2/smacc.hpp>
 
-#include <cl_px4_mr/client_behaviors/cb_spiral.hpp>
+#include <cl_px4_mr/client_behaviors/cb_sine_wave_horizontal.hpp>
 #include <config/mission_constants.hpp>
+#include <sm_cl_px4_mr_test_4/superstates/ss_vs_chain_1.hpp>
+#include <sm_cl_px4_mr_test_4/superstates/ss_vs_chain_2.hpp>
+
 
 namespace sm_cl_px4_mr_test_4
 {
@@ -25,31 +28,34 @@ namespace sm_cl_px4_mr_test_4
 using namespace cl_px4_mr;
 using namespace smacc2::default_transition_tags;
 
-// STATE: outward spiral off the island after reaching mission altitude, then
-// the first transit of the ring
-struct StSpiralOffIsland : smacc2::SmaccState<StSpiralOffIsland, MsInFlight>
+// TRANSIT STATE: horizontal sine-wave leg from pearl 1 to pearl 2 (P10)
+struct StTransitToVSChain2 : smacc2::SmaccState<StTransitToVSChain2, MsInFlight>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-    Transition<EvCbSuccess<CbSpiral, OrPx4>, StTransitToSquareSpiral1, SUCCESS>,
-    Transition<EvCbFailure<CbSpiral, OrPx4>, StReturnHome, ABORT>
+    Transition<EvCbSuccess<CbSineWaveHorizontal, OrPx4>, SsVSChain2, SUCCESS>,
+    Transition<EvCbFailure<CbSineWaveHorizontal, OrPx4>, StReturnHome, ABORT>
   > reactions;
 
   static void staticConfigure()
   {
-    configure_orthogonal<OrPx4, CbSpiral>();
+    configure_orthogonal<OrPx4, CbSineWaveHorizontal>();
   }
 
   void runtimeConfigure()
   {
-    auto * cb = this->getClientBehavior<OrPx4, CbSpiral>();
-    FlightPatternSpiralParams p = cb->params();  // centre = current position
+    const NedXY from = SsVSChain1::exit();
+    const NedXY to = SsVSChain2::entry();
+    const float lengthM = distanceM(from, to);
+
+    auto * cb = this->getClientBehavior<OrPx4, CbSineWaveHorizontal>();
+    FlightPatternSineWaveHorizontalParams p = cb->params();
+    p.endX = to.x;
+    p.endY = to.y;
     p.altitudeAgl = kMissionAltitudeM;
-    p.startRadius = 0.0f;
-    p.spacing = kTrackSpacingM;
-    p.endRadius = kSpiralOffIslandTurns * kTrackSpacingM;
-    p.direction = kSpiralOffIslandDirection;
+    p.amplitude = kSineAmplitudeM;
+    p.wavelength = kSineWavelengthM;
     cb->setParams(p);
 
     PathFollowerParams f = cb->followerParams();
@@ -57,16 +63,14 @@ struct StSpiralOffIsland : smacc2::SmaccState<StSpiralOffIsland, MsInFlight>
     f.leash = kCruiseLeashM;
     cb->setFollowerParams(f);
 
-    cb->setTimeout(patternTimeout(flightPatternSpiralLength(p), kCruiseSpeedMps));
-  }
+    cb->setTimeout(transitTimeout(lengthM));
 
-  void onEntry()
-  {
     RCLCPP_INFO(
-      getLogger(), "StSpiralOffIsland: spiralling out %.1f turns to %.0f m", kSpiralOffIslandTurns,
-      kSpiralOffIslandTurns * kTrackSpacingM);
+      getLogger(), "StTransitToVSChain2: -> P10 entry NED (%.1f, %.1f), %.0f m", static_cast<double>(to.x),
+      static_cast<double>(to.y), static_cast<double>(lengthM));
   }
 
+  void onEntry() {}
   void onExit() {}
 };
 

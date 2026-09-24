@@ -17,8 +17,7 @@
 #include <smacc2/smacc.hpp>
 
 #include <cl_px4_mr/client_behaviors/cb_ascend_to_altitude.hpp>
-#include <sm_cl_px4_mr_test_4/modestates/ms_in_flight.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
+#include <config/mission_constants.hpp>
 
 namespace sm_cl_px4_mr_test_4
 {
@@ -42,30 +41,29 @@ struct StPreLandDescent : smacc2::SmaccState<StPreLandDescent, MsInFlight>
   static void staticConfigure()
   {
     configure_orthogonal<OrPx4, CbAscendToAltitude>(
-      railway::kPreLandAltitudeM, railway::kPreLandDescentRateMps);
+      kPreLandAltitudeM, kPreLandDescentRateMps);
   }
 
   void runtimeConfigure()
   {
-    const auto & plan = this->context<MsInFlight>().plan;
-    const auto & lz = plan.landingNode();
+    const NedXY lz = island();
     auto * cb = this->getClientBehavior<OrPx4, CbAscendToAltitude>();
     cb->setTargetXy(lz.x, lz.y);
 
     PathFollowerParams f = cb->followerParams();
-    f.arrivalXyTol = railway::kPreLandXyTolM;
-    f.arrivalZTol = railway::kPreLandXyTolM;
+    f.arrivalXyTol = kPreLandXyTolM;
+    f.arrivalZTol = kPreLandXyTolM;
     cb->setFollowerParams(f);
 
     const float seconds =
-      (railway::kMissionAltitudeM - railway::kPreLandAltitudeM) / railway::kPreLandDescentRateMps;
+      (kMissionAltitudeM - kPreLandAltitudeM) / kPreLandDescentRateMps;
     cb->setTimeout(std::chrono::seconds(static_cast<long>(
-      seconds * railway::kTimeoutMarginFactor + railway::kTimeoutBaseS)));
+      seconds * kTimeoutMarginFactor + kTimeoutBaseS)));
 
     RCLCPP_INFO(
-      getLogger(), "StPreLandDescent: descending to %.1f m over '%s' NED (%.1f, %.1f), xy tol %.2f m",
-      railway::kPreLandAltitudeM, lz.name.c_str(), static_cast<double>(lz.x),
-      static_cast<double>(lz.y), railway::kPreLandXyTolM);
+      getLogger(), "StPreLandDescent: descending to %.1f m over the island NED (%.1f, %.1f), xy tol %.2f m",
+      kPreLandAltitudeM, static_cast<double>(lz.x), static_cast<double>(lz.y),
+      kPreLandXyTolM);
   }
 
   void onEntry() {}

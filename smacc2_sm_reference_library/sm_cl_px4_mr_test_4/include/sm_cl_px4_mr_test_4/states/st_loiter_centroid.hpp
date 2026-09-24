@@ -17,11 +17,8 @@
 #include <smacc2/smacc.hpp>
 
 #include <cl_px4_mr/client_behaviors/cb_loiter.hpp>
-#include <sm_cl_px4_mr_test_4/modestates/ms_in_flight.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_planner.hpp>
-#include <sm_cl_px4_mr_test_4/railway/pattern_params.hpp>
-#include <sm_cl_px4_mr_test_4/railway/railway_events.hpp>
+#include <config/mission_constants.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_figure_eight_1.hpp>
 
 namespace sm_cl_px4_mr_test_4
 {
@@ -29,38 +26,46 @@ namespace sm_cl_px4_mr_test_4
 using namespace cl_px4_mr;
 using namespace smacc2::default_transition_tags;
 
-// TAIL PATTERN STATE: loiter circles about the figure-eight centroid
+// TAIL PATTERN STATE: loiter circles about the figure-eight centroid, then
+// head home to land
 struct StLoiterCentroid : smacc2::SmaccState<StLoiterCentroid, MsInFlight>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-    Transition<EvCbSuccess<CbLoiter, OrPx4>, StRailway, NEXT>,
+    Transition<EvCbSuccess<CbLoiter, OrPx4>, StGoToLandingZone, SUCCESS>,
     Transition<EvCbFailure<CbLoiter, OrPx4>, StReturnHome, ABORT>
   > reactions;
 
   static void staticConfigure()
   {
-    configure_orthogonal<OrPx4, CbLoiter>(railway::kCentroidLoiterCount, railway::kLoiterRadiusM);
+    configure_orthogonal<OrPx4, CbLoiter>(kCentroidLoiterCount, kLoiterRadiusM);
   }
 
   void runtimeConfigure()
   {
-    const auto & plan = this->context<MsInFlight>().plan;
-    const auto & node = plan.currentTargetNode();
+    const NedXY c = StFigureEight1::centre();
     auto * cb = this->getClientBehavior<OrPx4, CbLoiter>();
-    FlightPatternLoiterParams p = railway::centroidLoiterParams();
-    p.centerX = node.x;
-    p.centerY = node.y;
+
+    FlightPatternLoiterParams p = cb->params();
+    p.centerX = c.x;
+    p.centerY = c.y;
+    p.altitudeAgl = kMissionAltitudeM;
     cb->setParams(p);
-    cb->setFollowerParams(railway::patternFollowerParams());
+
+    PathFollowerParams f = cb->followerParams();
+    f.groundSpeed = kPatternSpeedMps;
+    f.leash = kPatternLeashM;
+    cb->setFollowerParams(f);
+
     const float circumference =
-      2.0f * static_cast<float>(M_PI) * railway::kLoiterRadiusM * railway::kCentroidLoiterCount;
-    cb->setTimeout(railway::patternTimeout(circumference, railway::kPatternSpeedMps));
+      2.0f * kPi * kLoiterRadiusM * kCentroidLoiterCount;
+    cb->setTimeout(patternTimeout(circumference, kPatternSpeedMps));
+
     RCLCPP_INFO(
-      getLogger(), "StLoiterCentroid: %d x r=%.0f m about '%s' NED (%.1f, %.1f)",
-      railway::kCentroidLoiterCount, railway::kLoiterRadiusM, node.name.c_str(),
-      static_cast<double>(node.x), static_cast<double>(node.y));
+      getLogger(), "StLoiterCentroid: %d x r=%.0f m about NED (%.1f, %.1f)",
+      kCentroidLoiterCount, kLoiterRadiusM, static_cast<double>(c.x),
+      static_cast<double>(c.y));
   }
 
   void onEntry() {}

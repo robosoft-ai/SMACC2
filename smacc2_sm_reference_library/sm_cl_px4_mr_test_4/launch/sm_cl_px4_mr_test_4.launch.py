@@ -13,8 +13,6 @@
 # limitations under the License.
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 # Every run's complete console output (stdout + stderr, unbuffered, no color
@@ -24,22 +22,10 @@ RUNTIME_LOG = "/tmp/sm_cl_px4_mr_test_4_latest.log"
 
 
 def generate_launch_description():
-    # test_leg: "" (default) flies the full mission. Any superstate or nav
-    # state name (SsSquareSpiral1, SsSquareSpiral2, SsLawnmower1, SsLawnmower2,
-    # SsGridPattern1, SsVSSearch1/2/3, SsVSChain1/2/3, StSineWaveVertical, StSineWaveHorizontal,
-    # StGoToLandingZone) runs only that leg, centred on the takeoff point, and
-    # then lands at home.
-    test_leg_arg = DeclareLaunchArgument(
-        "test_leg",
-        default_value="",
-        description="Run a single railway leg in place (empty = full mission)",
-    )
-
     tee_prefix = 'bash -c \'stdbuf -oL -eL "$@" 2>&1 | tee ' + RUNTIME_LOG + "' --"
 
     return LaunchDescription(
         [
-            test_leg_arg,
             Node(
                 package="sm_cl_px4_mr_test_4",
                 executable="sm_cl_px4_mr_test_4_node",
@@ -49,7 +35,6 @@ def generate_launch_description():
                     "RCUTILS_LOGGING_BUFFERED_STREAM": "0",
                     "RCUTILS_COLORIZED_OUTPUT": "0",
                 },
-                parameters=[{"test_leg": LaunchConfiguration("test_leg")}],
                 arguments=["--ros-args", "--log-level", "INFO"],
             ),
         ]

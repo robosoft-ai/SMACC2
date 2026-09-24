@@ -17,9 +17,7 @@
 #include <smacc2/smacc.hpp>
 
 #include <cl_px4_mr/client_behaviors/cb_grid_pattern.hpp>
-#include <sm_cl_px4_mr_test_4/modestates/ms_in_flight.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_planner.hpp>
-#include <sm_cl_px4_mr_test_4/railway/railway_events.hpp>
+#include <config/mission_constants.hpp>
 #include <sm_cl_px4_mr_test_4/superstates/ss_grid_pattern_1.hpp>
 
 namespace sm_cl_px4_mr_test_4
@@ -28,13 +26,13 @@ namespace sm_cl_px4_mr_test_4
 using namespace cl_px4_mr;
 using namespace smacc2::default_transition_tags;
 
-// INNER STATE: run the pattern at the pin, then return to StRailway
+// INNER STATE: fly the pattern at the pin, then on to StTransitToVSSearch
 struct StiGridPattern1Run : smacc2::SmaccState<StiGridPattern1Run, SsGridPattern1>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-    Transition<EvCbSuccess<CbGridPattern, OrPx4>, StRailway, NEXT>,
+    Transition<EvCbSuccess<CbGridPattern, OrPx4>, StTransitToVSSearch, SUCCESS>,
     Transition<EvCbFailure<CbGridPattern, OrPx4>, StReturnHome, ABORT>
   > reactions;
 
@@ -45,21 +43,16 @@ struct StiGridPattern1Run : smacc2::SmaccState<StiGridPattern1Run, SsGridPattern
 
   void runtimeConfigure()
   {
-    const auto & plan = this->context<MsInFlight>().plan;
-    const auto & pin = plan.currentTargetNode();
-    const auto & params = this->context<SsGridPattern1>().params;
-
+    const auto p = SsGridPattern1::patternParams();
     auto * cb = this->getClientBehavior<OrPx4, CbGridPattern>();
-    FlightPatternGridPatternParams p = params.pattern;
-    p.base.originX = pin.x;
-    p.base.originY = pin.y;
     cb->setParams(p);
-    cb->setFollowerParams(params.follower);
-    cb->setTimeout(railway::patternTimeout(flightPatternGridPatternLength(p), params.follower.groundSpeed));
+    cb->setFollowerParams(SsGridPattern1::followerParams());
+    cb->setTimeout(patternTimeout(flightPatternGridPatternLength(p), kPatternSpeedMps));
 
+    const NedXY pin = SsGridPattern1::pin();
     RCLCPP_INFO(
-      getLogger(), "StiGridPattern1Run: pin '%s' NED (%.1f, %.1f)", pin.name.c_str(),
-      static_cast<double>(pin.x), static_cast<double>(pin.y));
+      getLogger(), "StiGridPattern1Run: pin P5 NED (%.1f, %.1f)", static_cast<double>(pin.x),
+      static_cast<double>(pin.y));
   }
 
   void onEntry() {}

@@ -17,9 +17,7 @@
 #include <smacc2/smacc.hpp>
 
 #include <cl_px4_mr/client_behaviors/cb_square_spiral.hpp>
-#include <sm_cl_px4_mr_test_4/modestates/ms_in_flight.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_planner.hpp>
-#include <sm_cl_px4_mr_test_4/railway/railway_events.hpp>
+#include <config/mission_constants.hpp>
 #include <sm_cl_px4_mr_test_4/superstates/ss_square_spiral_2.hpp>
 
 namespace sm_cl_px4_mr_test_4
@@ -28,13 +26,13 @@ namespace sm_cl_px4_mr_test_4
 using namespace cl_px4_mr;
 using namespace smacc2::default_transition_tags;
 
-// INNER STATE: run the square spiral at the pin, then return to StRailway
+// INNER STATE: fly the pattern at the pin, then on to StTransitToLawnmower1
 struct StiSquareSpiral2Run : smacc2::SmaccState<StiSquareSpiral2Run, SsSquareSpiral2>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-    Transition<EvCbSuccess<CbSquareSpiral, OrPx4>, StRailway, NEXT>,
+    Transition<EvCbSuccess<CbSquareSpiral, OrPx4>, StTransitToLawnmower1, SUCCESS>,
     Transition<EvCbFailure<CbSquareSpiral, OrPx4>, StReturnHome, ABORT>
   > reactions;
 
@@ -45,21 +43,16 @@ struct StiSquareSpiral2Run : smacc2::SmaccState<StiSquareSpiral2Run, SsSquareSpi
 
   void runtimeConfigure()
   {
-    const auto & plan = this->context<MsInFlight>().plan;
-    const auto & pin = plan.currentTargetNode();
-    const auto & params = this->context<SsSquareSpiral2>().params;
-
+    const auto p = SsSquareSpiral2::patternParams();
     auto * cb = this->getClientBehavior<OrPx4, CbSquareSpiral>();
-    FlightPatternSquareSpiralParams p = params.pattern;
-    p.originX = pin.x;
-    p.originY = pin.y;
     cb->setParams(p);
-    cb->setFollowerParams(params.follower);
-    cb->setTimeout(railway::patternTimeout(flightPatternSquareSpiralLength(p), params.follower.groundSpeed));
+    cb->setFollowerParams(SsSquareSpiral2::followerParams());
+    cb->setTimeout(patternTimeout(flightPatternSquareSpiralLength(p), kPatternSpeedMps));
 
+    const NedXY pin = SsSquareSpiral2::pin();
     RCLCPP_INFO(
-      getLogger(), "StiSquareSpiral2Run: pin '%s' NED (%.1f, %.1f)", pin.name.c_str(),
-      static_cast<double>(pin.x), static_cast<double>(pin.y));
+      getLogger(), "StiSquareSpiral2Run: pin P2 NED (%.1f, %.1f)", static_cast<double>(pin.x),
+      static_cast<double>(pin.y));
   }
 
   void onEntry() {}

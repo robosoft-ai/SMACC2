@@ -17,7 +17,7 @@
 #include <smacc2/client_behaviors/cb_sleep_for.hpp>
 #include <smacc2/smacc.hpp>
 
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
+#include <config/mission_constants.hpp>
 
 namespace sm_cl_px4_mr_test_4
 {
@@ -37,7 +37,7 @@ struct StPause : smacc2::SmaccState<StPause, MsDisarmedOnGround>
 
   static void staticConfigure()
   {
-    configure_orthogonal<OrPx4, CbSleepFor>(rclcpp::Duration(railway::kInitialPause));
+    configure_orthogonal<OrPx4, CbSleepFor>(rclcpp::Duration(kInitialPause));
   }
 
   void runtimeConfigure() {}
@@ -46,7 +46,7 @@ struct StPause : smacc2::SmaccState<StPause, MsDisarmedOnGround>
   {
     RCLCPP_INFO(
       getLogger(), "StPause: holding %ld s before starting the mission",
-      static_cast<long>(std::chrono::duration_cast<std::chrono::seconds>(railway::kInitialPause).count()));
+      static_cast<long>(std::chrono::duration_cast<std::chrono::seconds>(kInitialPause).count()));
   }
 
   void onExit()

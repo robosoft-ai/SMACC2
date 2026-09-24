@@ -17,9 +17,7 @@
 #include <smacc2/smacc.hpp>
 
 #include <cl_px4_mr/client_behaviors/cb_vs_search.hpp>
-#include <sm_cl_px4_mr_test_4/modestates/ms_in_flight.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_planner.hpp>
-#include <sm_cl_px4_mr_test_4/railway/railway_events.hpp>
+#include <config/mission_constants.hpp>
 #include <sm_cl_px4_mr_test_4/superstates/ss_vs_search_2.hpp>
 
 namespace sm_cl_px4_mr_test_4
@@ -28,13 +26,13 @@ namespace sm_cl_px4_mr_test_4
 using namespace cl_px4_mr;
 using namespace smacc2::default_transition_tags;
 
-// INNER STATE: run sector search #2 at the pin, then return to StRailway
+// INNER STATE: fly the pattern at the pin, then on to SsVSSearch3
 struct StiVSSearch2Run : smacc2::SmaccState<StiVSSearch2Run, SsVSSearch2>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-    Transition<EvCbSuccess<CbVSSearch, OrPx4>, StRailway, NEXT>,
+    Transition<EvCbSuccess<CbVSSearch, OrPx4>, SsVSSearch3, SUCCESS>,
     Transition<EvCbFailure<CbVSSearch, OrPx4>, StReturnHome, ABORT>
   > reactions;
 
@@ -45,21 +43,16 @@ struct StiVSSearch2Run : smacc2::SmaccState<StiVSSearch2Run, SsVSSearch2>
 
   void runtimeConfigure()
   {
-    const auto & plan = this->context<MsInFlight>().plan;
-    const auto & pin = plan.currentTargetNode();
-    const auto & params = this->context<SsVSSearch2>().params;
-
+    const auto p = SsVSSearch2::patternParams();
     auto * cb = this->getClientBehavior<OrPx4, CbVSSearch>();
-    FlightPatternVSSearchParams p = params.pattern;
-    p.datumX = pin.x;
-    p.datumY = pin.y;
     cb->setParams(p);
-    cb->setFollowerParams(params.follower);
-    cb->setTimeout(railway::patternTimeout(flightPatternVSSearchLength(p), params.follower.groundSpeed));
+    cb->setFollowerParams(SsVSSearch2::followerParams());
+    cb->setTimeout(patternTimeout(flightPatternVSSearchLength(p), kPatternSpeedMps));
 
+    const NedXY pin = SsVSSearch2::pin();
     RCLCPP_INFO(
-      getLogger(), "StiVSSearch2Run: pin '%s' NED (%.1f, %.1f)", pin.name.c_str(),
-      static_cast<double>(pin.x), static_cast<double>(pin.y));
+      getLogger(), "StiVSSearch2Run: pin P7 NED (%.1f, %.1f)", static_cast<double>(pin.x),
+      static_cast<double>(pin.y));
   }
 
   void onEntry() {}

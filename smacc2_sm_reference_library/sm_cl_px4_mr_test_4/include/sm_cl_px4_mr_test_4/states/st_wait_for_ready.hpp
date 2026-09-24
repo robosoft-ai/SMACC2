@@ -24,13 +24,13 @@ using namespace smacc2::default_transition_tags;
 using smacc2::client_behaviors::CbSleepFor;
 using namespace std::chrono_literals;
 
-// STATE: let PX4 topics settle before loading the mission
+// STATE: let PX4 topics settle before arming
 struct StWaitForReady : smacc2::SmaccState<StWaitForReady, MsDisarmedOnGround>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-    Transition<EvCbSuccess<CbSleepFor, OrPx4>, StLoadMission, SUCCESS>
+    Transition<EvCbSuccess<CbSleepFor, OrPx4>, StArmPX4, SUCCESS>
   > reactions;
 
   static void staticConfigure()

@@ -16,7 +16,7 @@
 
 #include <smacc2/smacc.hpp>
 
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
+#include <config/mission_constants.hpp>
 
 namespace sm_cl_px4_mr_test_4
 {
@@ -35,14 +35,14 @@ struct StTakeoff : smacc2::SmaccState<StTakeoff, MsTakeoff>
 
   static void staticConfigure()
   {
-    configure_orthogonal<OrPx4, CbTakeOff>(railway::kTakeoffAltitudeM);
+    configure_orthogonal<OrPx4, CbTakeOff>(kTakeoffAltitudeM);
   }
 
   void runtimeConfigure() {}
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "StTakeoff: taking off to %.1f m", railway::kTakeoffAltitudeM);
+    RCLCPP_INFO(getLogger(), "StTakeoff: taking off to %.1f m", kTakeoffAltitudeM);
   }
 
   void onExit()

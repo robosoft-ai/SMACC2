@@ -17,9 +17,7 @@
 #include <smacc2/smacc.hpp>
 
 #include <cl_px4_mr/client_behaviors/cb_ascend_to_altitude.hpp>
-#include <sm_cl_px4_mr_test_4/modestates/ms_in_flight.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
-#include <sm_cl_px4_mr_test_4/railway/railway_events.hpp>
+#include <config/mission_constants.hpp>
 
 namespace sm_cl_px4_mr_test_4
 {
@@ -40,26 +38,20 @@ struct StAscend : smacc2::SmaccState<StAscend, MsInFlight>
   static void staticConfigure()
   {
     configure_orthogonal<OrPx4, CbAscendToAltitude>(
-      railway::kMissionAltitudeM, railway::kAscendClimbRateMps);
+      kMissionAltitudeM, kAscendClimbRateMps);
   }
 
   void runtimeConfigure()
   {
-    const auto & plan = this->context<MsInFlight>().plan;
-    auto * cb = this->getClientBehavior<OrPx4, CbAscendToAltitude>();
     const float climbSeconds =
-      (railway::kMissionAltitudeM - railway::kTakeoffAltitudeM) / railway::kAscendClimbRateMps;
-    cb->setTimeout(std::chrono::seconds(
-      static_cast<long>(climbSeconds * railway::kTimeoutMarginFactor + railway::kTimeoutBaseS)));
-    if (!plan.valid)
-    {
-      RCLCPP_ERROR(getLogger(), "StAscend: mission plan invalid - the railway will land");
-    }
+      (kMissionAltitudeM - kTakeoffAltitudeM) / kAscendClimbRateMps;
+    this->getClientBehavior<OrPx4, CbAscendToAltitude>()->setTimeout(std::chrono::seconds(
+      static_cast<long>(climbSeconds * kTimeoutMarginFactor + kTimeoutBaseS)));
   }
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "StAscend: climbing to %.1f m", railway::kMissionAltitudeM);
+    RCLCPP_INFO(getLogger(), "StAscend: climbing to %.1f m", kMissionAltitudeM);
   }
 
   void onExit() {}

@@ -3,7 +3,7 @@
 <package format="3">
   <name>sm_cl_px4_mr_test_4</name>
   <version>3.1.0</version>
-  <description>PX4 multirotor railway mission over the Strait of Hormuz backbone: KML-loaded waypoints, central dispatcher state, pattern superstates (square spiral, lawnmower, grid, Victor Sierra) and sine-wave transit nav states</description>
+  <description>PX4 multirotor demo-ring mission: a sequential chain of pattern superstates (square spiral, lawnmower, grid, Victor Sierra) joined by sine-wave transit states, a figure-eight and loiter tail, and a precision landing at the island</description>
   <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
   <license>Apache-2.0</license>
 
@@ -13,7 +13,6 @@
   <depend>cl_px4_mr</depend>
   <depend>px4_msgs</depend>
   <depend>rclcpp</depend>
-  <depend>ament_index_cpp</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

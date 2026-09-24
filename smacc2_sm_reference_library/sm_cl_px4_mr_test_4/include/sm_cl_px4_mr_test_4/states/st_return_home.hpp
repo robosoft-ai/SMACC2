@@ -16,7 +16,10 @@
 
 #include <smacc2/smacc.hpp>
 
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
+#include <cl_px4_mr/client_behaviors/cb_go_to_location.hpp>
+#include <config/mission_constants.hpp>
+
+#include <cmath>
 
 namespace sm_cl_px4_mr_test_4
 {
@@ -37,14 +40,17 @@ struct StReturnHome : smacc2::SmaccState<StReturnHome, MsInFlight>
 
   static void staticConfigure()
   {
-    configure_orthogonal<OrPx4, CbGoToLocation>(0.0f, 0.0f, -railway::kMissionAltitudeM);
+    const NedXY home = island();
+    configure_orthogonal<OrPx4, CbGoToLocation>(home.x, home.y, -kMissionAltitudeM);
   }
 
   void runtimeConfigure()
   {
-    // generous bound: a return from the far end of the backbone is ~48 km
-    this->getClientBehavior<OrPx4, CbGoToLocation>()->setTimeout(
-      railway::transitTimeout(50000.0f));
+    // bound the return by the farthest place in the mission (a chain pearl,
+    // one spacing along the tangent at the ring radius) plus a pattern's extent
+    const float farthestM =
+      std::hypot(kDemoRingRadiusM, kDemoChainSpacingM) + kPatternSquareSideM;
+    this->getClientBehavior<OrPx4, CbGoToLocation>()->setTimeout(transitTimeout(farthestM));
   }
 
   void onEntry()

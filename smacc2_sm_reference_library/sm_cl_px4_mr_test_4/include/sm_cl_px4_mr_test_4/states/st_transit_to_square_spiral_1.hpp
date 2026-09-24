@@ -17,10 +17,9 @@
 #include <smacc2/smacc.hpp>
 
 #include <cl_px4_mr/client_behaviors/cb_sine_wave_vertical.hpp>
-#include <sm_cl_px4_mr_test_4/modestates/ms_in_flight.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_planner.hpp>
-#include <sm_cl_px4_mr_test_4/railway/railway_events.hpp>
+#include <config/mission_constants.hpp>
+#include <sm_cl_px4_mr_test_4/superstates/ss_square_spiral_1.hpp>
+
 
 namespace sm_cl_px4_mr_test_4
 {
@@ -28,13 +27,13 @@ namespace sm_cl_px4_mr_test_4
 using namespace cl_px4_mr;
 using namespace smacc2::default_transition_tags;
 
-// NAV STATE: vertical sine-wave transit leg to the plan's current target node; returns to StRailway
-struct StSineWaveVertical : smacc2::SmaccState<StSineWaveVertical, MsInFlight>
+// TRANSIT STATE: vertical sine-wave leg from the island to the entry of square spiral 1 (P1)
+struct StTransitToSquareSpiral1 : smacc2::SmaccState<StTransitToSquareSpiral1, MsInFlight>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-    Transition<EvCbSuccess<CbSineWaveVertical, OrPx4>, StRailway, NEXT>,
+    Transition<EvCbSuccess<CbSineWaveVertical, OrPx4>, SsSquareSpiral1, SUCCESS>,
     Transition<EvCbFailure<CbSineWaveVertical, OrPx4>, StReturnHome, ABORT>
   > reactions;
 
@@ -45,30 +44,29 @@ struct StSineWaveVertical : smacc2::SmaccState<StSineWaveVertical, MsInFlight>
 
   void runtimeConfigure()
   {
-    const auto & plan = this->context<MsInFlight>().plan;
-    const auto & leg = plan.current();
-    const auto & to = plan.currentTargetNode();
+    const NedXY from = island();
+    const NedXY to = SsSquareSpiral1::entry();
+    const float lengthM = distanceM(from, to);
 
     auto * cb = this->getClientBehavior<OrPx4, CbSineWaveVertical>();
     FlightPatternSineWaveVerticalParams p = cb->params();
-    p.endX = to.entryX;
-    p.endY = to.entryY;
-    p.baseAltitudeAgl = railway::kMissionAltitudeM;
-    p.amplitude = railway::kSineAmplitudeM;
-    p.wavelength = railway::kSineWavelengthM;
+    p.endX = to.x;
+    p.endY = to.y;
+    p.baseAltitudeAgl = kMissionAltitudeM;
+    p.amplitude = kSineAmplitudeM;
+    p.wavelength = kSineWavelengthM;
     cb->setParams(p);
 
     PathFollowerParams f = cb->followerParams();
-    f.groundSpeed = railway::kCruiseSpeedMps;
-    f.leash = railway::kCruiseLeashM;
+    f.groundSpeed = kCruiseSpeedMps;
+    f.leash = kCruiseLeashM;
     cb->setFollowerParams(f);
 
-    cb->setTimeout(railway::transitTimeout(leg.lengthM));
+    cb->setTimeout(transitTimeout(lengthM));
 
     RCLCPP_INFO(
-      getLogger(), "StSineWaveVertical: leg L%d %s -> '%s' NED (%.1f, %.1f), %.0f m", leg.index,
-      plan.node(leg.fromNode).name.c_str(), to.name.c_str(), static_cast<double>(to.entryX),
-      static_cast<double>(to.entryY), static_cast<double>(leg.lengthM));
+      getLogger(), "StTransitToSquareSpiral1: -> P1 entry NED (%.1f, %.1f), %.0f m", static_cast<double>(to.x),
+      static_cast<double>(to.y), static_cast<double>(lengthM));
   }
 
   void onEntry() {}

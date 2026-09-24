@@ -16,9 +16,13 @@
 
 #include <smacc2/smacc.hpp>
 
-#include <cl_px4_mr/client_behaviors/cb_square_spiral.hpp>
+#include <cl_px4_mr/client_behaviors/cb_go_to_location.hpp>
 #include <config/mission_constants.hpp>
 #include <sm_cl_px4_mr_test_4/superstates/ss_square_spiral_1.hpp>
+#include <sm_cl_px4_mr_test_4/superstates/ss_vs_chain_3.hpp>
+
+
+#include <algorithm>
 
 namespace sm_cl_px4_mr_test_4
 {
@@ -26,33 +30,39 @@ namespace sm_cl_px4_mr_test_4
 using namespace cl_px4_mr;
 using namespace smacc2::default_transition_tags;
 
-// INNER STATE: fly the pattern at the pin, then on to StTransitToSquareSpiral2
-struct StiSquareSpiral1Run : smacc2::SmaccState<StiSquareSpiral1Run, SsSquareSpiral1>
+// NAV STATE: straight leg from the last pearl back to the centre of square spiral 1
+struct StGoToSquareCentre : smacc2::SmaccState<StGoToSquareCentre, MsInFlight>
 {
   using SmaccState::SmaccState;
 
+  // the centre of square spiral 1 (P1)
+  static NedXY target()
+  {
+    return SsSquareSpiral1::pin();
+  }
+
   typedef mpl::list<
-    Transition<EvCbSuccess<CbSquareSpiral, OrPx4>, StTransitToSquareSpiral2, SUCCESS>,
-    Transition<EvCbFailure<CbSquareSpiral, OrPx4>, StReturnHome, ABORT>
+    Transition<EvCbSuccess<CbGoToLocation, OrPx4>, StGoToSouthWaypoint, SUCCESS>,
+    Transition<EvCbFailure<CbGoToLocation, OrPx4>, StReturnHome, ABORT>
   > reactions;
 
   static void staticConfigure()
   {
-    configure_orthogonal<OrPx4, CbSquareSpiral>();
+    const NedXY to = target();
+    configure_orthogonal<OrPx4, CbGoToLocation>(to.x, to.y, -kMissionAltitudeM);
   }
 
   void runtimeConfigure()
   {
-    const auto p = SsSquareSpiral1::patternParams();
-    auto * cb = this->getClientBehavior<OrPx4, CbSquareSpiral>();
-    cb->setParams(p);
-    cb->setFollowerParams(SsSquareSpiral1::followerParams());
-    cb->setTimeout(patternTimeout(flightPatternSquareSpiralLength(p), kPatternSpeedMps));
+    const NedXY from = SsVSChain3::exit();
+    const NedXY to = target();
+    const float lengthM = distanceM(from, to);
+    this->getClientBehavior<OrPx4, CbGoToLocation>()->setTimeout(
+      transitTimeout(std::max(lengthM, 50.0f)));
 
-    const NedXY pin = SsSquareSpiral1::pin();
     RCLCPP_INFO(
-      getLogger(), "StiSquareSpiral1Run: pin P1 NED (%.1f, %.1f)", static_cast<double>(pin.x),
-      static_cast<double>(pin.y));
+      getLogger(), "StGoToSquareCentre: -> SquareCentre NED (%.1f, %.1f), %.0f m", static_cast<double>(to.x),
+      static_cast<double>(to.y), static_cast<double>(lengthM));
   }
 
   void onEntry() {}

@@ -17,10 +17,10 @@
 #include <smacc2/smacc.hpp>
 
 #include <cl_px4_mr/client_behaviors/cb_sine_wave_horizontal.hpp>
-#include <sm_cl_px4_mr_test_4/modestates/ms_in_flight.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_planner.hpp>
-#include <sm_cl_px4_mr_test_4/railway/railway_events.hpp>
+#include <config/mission_constants.hpp>
+#include <sm_cl_px4_mr_test_4/superstates/ss_lawnmower_1.hpp>
+#include <sm_cl_px4_mr_test_4/superstates/ss_lawnmower_2.hpp>
+
 
 namespace sm_cl_px4_mr_test_4
 {
@@ -28,13 +28,13 @@ namespace sm_cl_px4_mr_test_4
 using namespace cl_px4_mr;
 using namespace smacc2::default_transition_tags;
 
-// NAV STATE: horizontal sine-wave transit leg to the plan's current target node; returns to StRailway
-struct StSineWaveHorizontal : smacc2::SmaccState<StSineWaveHorizontal, MsInFlight>
+// TRANSIT STATE: horizontal sine-wave leg from lawnmower 1 to the entry of lawnmower 2 (P4)
+struct StTransitToLawnmower2 : smacc2::SmaccState<StTransitToLawnmower2, MsInFlight>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-    Transition<EvCbSuccess<CbSineWaveHorizontal, OrPx4>, StRailway, NEXT>,
+    Transition<EvCbSuccess<CbSineWaveHorizontal, OrPx4>, SsLawnmower2, SUCCESS>,
     Transition<EvCbFailure<CbSineWaveHorizontal, OrPx4>, StReturnHome, ABORT>
   > reactions;
 
@@ -45,30 +45,29 @@ struct StSineWaveHorizontal : smacc2::SmaccState<StSineWaveHorizontal, MsInFligh
 
   void runtimeConfigure()
   {
-    const auto & plan = this->context<MsInFlight>().plan;
-    const auto & leg = plan.current();
-    const auto & to = plan.currentTargetNode();
+    const NedXY from = SsLawnmower1::exit();
+    const NedXY to = SsLawnmower2::entry();
+    const float lengthM = distanceM(from, to);
 
     auto * cb = this->getClientBehavior<OrPx4, CbSineWaveHorizontal>();
     FlightPatternSineWaveHorizontalParams p = cb->params();
-    p.endX = to.entryX;
-    p.endY = to.entryY;
-    p.altitudeAgl = railway::kMissionAltitudeM;
-    p.amplitude = railway::kSineAmplitudeM;
-    p.wavelength = railway::kSineWavelengthM;
+    p.endX = to.x;
+    p.endY = to.y;
+    p.altitudeAgl = kMissionAltitudeM;
+    p.amplitude = kSineAmplitudeM;
+    p.wavelength = kSineWavelengthM;
     cb->setParams(p);
 
     PathFollowerParams f = cb->followerParams();
-    f.groundSpeed = railway::kCruiseSpeedMps;
-    f.leash = railway::kCruiseLeashM;
+    f.groundSpeed = kCruiseSpeedMps;
+    f.leash = kCruiseLeashM;
     cb->setFollowerParams(f);
 
-    cb->setTimeout(railway::transitTimeout(leg.lengthM));
+    cb->setTimeout(transitTimeout(lengthM));
 
     RCLCPP_INFO(
-      getLogger(), "StSineWaveHorizontal: leg L%d %s -> '%s' NED (%.1f, %.1f), %.0f m", leg.index,
-      plan.node(leg.fromNode).name.c_str(), to.name.c_str(), static_cast<double>(to.entryX),
-      static_cast<double>(to.entryY), static_cast<double>(leg.lengthM));
+      getLogger(), "StTransitToLawnmower2: -> P4 entry NED (%.1f, %.1f), %.0f m", static_cast<double>(to.x),
+      static_cast<double>(to.y), static_cast<double>(lengthM));
   }
 
   void onEntry() {}

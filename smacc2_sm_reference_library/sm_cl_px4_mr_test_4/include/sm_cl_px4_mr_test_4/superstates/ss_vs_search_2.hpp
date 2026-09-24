@@ -16,25 +16,49 @@
 
 #include <smacc2/smacc.hpp>
 
+#include <cl_px4_mr/client_behaviors/cb_px4_path_follower_base.hpp>
 #include <cl_px4_mr/utils/pattern_generators.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
-#include <sm_cl_px4_mr_test_4/railway/pattern_params.hpp>
+#include <config/mission_constants.hpp>
 
 namespace sm_cl_px4_mr_test_4
 {
 
-// SUPERSTATE: Victor Sierra sector search #2 at its pin. The three VS
-// superstates run consecutively, each rotated 30 deg from the previous, so
-// together they form the classic re-oriented sector search.
+// SUPERSTATE: Victor Sierra sector search #2, rotated 30 deg, same datum as #1.
+// Owns where it is (the pin), its pattern parameters and where the pattern
+// starts and ends; the inner run state injects the parameters into the
+// behavior.
 struct SsVSSearch2 : smacc2::SmaccState<SsVSSearch2, MsInFlight, StiVSSearch2Run>
 {
   using SmaccState::SmaccState;
 
-  struct Params
+  // P7: ring station 5, same datum as SsVSSearch1
+  static NedXY pin() { return ringPinAt(5, 0.0f); }
+
+  static cl_px4_mr::FlightPatternVSSearchParams patternParams()
   {
-    cl_px4_mr::FlightPatternVSSearchParams pattern = railway::vsSearchParams(2);
-    cl_px4_mr::PathFollowerParams follower = railway::patternFollowerParams();
-  } params;
+    const NedXY c = pin();
+    cl_px4_mr::FlightPatternVSSearchParams p;
+    p.datumX = c.x;
+    p.datumY = c.y;
+    p.altitudeAgl = kMissionAltitudeM;
+    p.radius = kVSRotatedRadiusM;
+    p.initialHeading = kVSSearchInitialHeading2;
+    p.direction = cl_px4_mr::Turn::RIGHT;
+    p.cycles = kVSSearchCycles;
+    return p;
+  }
+
+  static cl_px4_mr::PathFollowerParams followerParams()
+  {
+    cl_px4_mr::PathFollowerParams f;
+    f.groundSpeed = kPatternSpeedMps;
+    f.leash = kPatternLeashM;
+    return f;
+  }
+
+  // a sector search starts and ends on its datum
+  static NedXY entry() { return pin(); }
+  static NedXY exit() { return pin(); }
 
   typedef mpl::list<
   > reactions;
@@ -44,10 +68,10 @@ struct SsVSSearch2 : smacc2::SmaccState<SsVSSearch2, MsInFlight, StiVSSearch2Run
 
   void onEntry()
   {
+    const auto p = patternParams();
     RCLCPP_INFO(
-      getLogger(), "=== SsVSSearch2: sector search, r=%.0f m, first leg %.0f deg, ~%.0f m ===",
-      params.pattern.radius, params.pattern.initialHeading * 180.0 / M_PI,
-      cl_px4_mr::flightPatternVSSearchLength(params.pattern));
+      getLogger(), "=== SsVSSearch2: sector search, r=%.0f m, first leg %.0f deg, ~%.0f m, pin P7 ===",
+      p.radius, p.initialHeading * 180.0 / M_PI, cl_px4_mr::flightPatternVSSearchLength(p));
   }
 
   void onExit()

@@ -17,9 +17,7 @@
 #include <smacc2/smacc.hpp>
 
 #include <cl_px4_mr/client_behaviors/cb_lawnmower.hpp>
-#include <sm_cl_px4_mr_test_4/modestates/ms_in_flight.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_planner.hpp>
-#include <sm_cl_px4_mr_test_4/railway/railway_events.hpp>
+#include <config/mission_constants.hpp>
 #include <sm_cl_px4_mr_test_4/superstates/ss_lawnmower_2.hpp>
 
 namespace sm_cl_px4_mr_test_4
@@ -28,13 +26,13 @@ namespace sm_cl_px4_mr_test_4
 using namespace cl_px4_mr;
 using namespace smacc2::default_transition_tags;
 
-// INNER STATE: run the pattern at the pin, then return to StRailway
+// INNER STATE: fly the pattern at the pin, then on to StTransitToGridPattern1
 struct StiLawnmower2Run : smacc2::SmaccState<StiLawnmower2Run, SsLawnmower2>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-    Transition<EvCbSuccess<CbLawnmower, OrPx4>, StRailway, NEXT>,
+    Transition<EvCbSuccess<CbLawnmower, OrPx4>, StTransitToGridPattern1, SUCCESS>,
     Transition<EvCbFailure<CbLawnmower, OrPx4>, StReturnHome, ABORT>
   > reactions;
 
@@ -45,21 +43,16 @@ struct StiLawnmower2Run : smacc2::SmaccState<StiLawnmower2Run, SsLawnmower2>
 
   void runtimeConfigure()
   {
-    const auto & plan = this->context<MsInFlight>().plan;
-    const auto & pin = plan.currentTargetNode();
-    const auto & params = this->context<SsLawnmower2>().params;
-
+    const auto p = SsLawnmower2::patternParams();
     auto * cb = this->getClientBehavior<OrPx4, CbLawnmower>();
-    FlightPatternLawnmowerParams p = params.pattern;
-    p.originX = pin.x;
-    p.originY = pin.y;
     cb->setParams(p);
-    cb->setFollowerParams(params.follower);
-    cb->setTimeout(railway::patternTimeout(flightPatternLawnmowerLength(p), params.follower.groundSpeed));
+    cb->setFollowerParams(SsLawnmower2::followerParams());
+    cb->setTimeout(patternTimeout(flightPatternLawnmowerLength(p), kPatternSpeedMps));
 
+    const NedXY pin = SsLawnmower2::pin();
     RCLCPP_INFO(
-      getLogger(), "StiLawnmower2Run: pin '%s' NED (%.1f, %.1f)", pin.name.c_str(),
-      static_cast<double>(pin.x), static_cast<double>(pin.y));
+      getLogger(), "StiLawnmower2Run: pin P4 NED (%.1f, %.1f)", static_cast<double>(pin.x),
+      static_cast<double>(pin.y));
   }
 
   void onEntry() {}
