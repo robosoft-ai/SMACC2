@@ -566,37 +566,6 @@ bool CpOdomTracker::updateRecordPath(const geometry_msgs::msg::PoseStamped & bas
 
 /**
  ******************************************************************************************************************
- * reconfigCB()
- ******************************************************************************************************************
- */
-void CpOdomTracker::updateConfiguration()
-{
-  return;
-
-  if (!getNode()->get_parameter("odom_frame", this->odomFrame_))
-  {
-  }
-
-  if (!getNode()->get_parameter("record_point_distance_threshold", recordPointDistanceThreshold_))
-  {
-  }
-
-  if (!getNode()->get_parameter(
-        "record_angular_distance_threshold", recordAngularDistanceThreshold_))
-  {
-  }
-
-  if (!getNode()->get_parameter("clear_point_distance_threshold", clearPointDistanceThreshold_))
-  {
-  }
-
-  if (!getNode()->get_parameter("clear_angular_distance_threshold", clearAngularDistanceThreshold_))
-  {
-  }
-}
-
-/**
- ******************************************************************************************************************
  * update()
  ******************************************************************************************************************
  */
@@ -634,8 +603,6 @@ void CpOdomTracker::processNewPose(const geometry_msgs::msg::PoseStamped & odom)
     getLogger(), *getNode()->get_clock(), 5000,
     "[odom_tracker] processing odom msg update heartbeat");
   std::lock_guard<std::mutex> lock(m_mutex_);
-
-  updateConfiguration();
 
   if (workingMode_ == WorkingMode::RECORD_PATH)
   {
