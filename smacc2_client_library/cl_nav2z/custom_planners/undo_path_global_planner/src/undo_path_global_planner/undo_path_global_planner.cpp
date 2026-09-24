@@ -210,7 +210,9 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(
   //---------------------------------------------------------------------------
 
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[UndoPathGlobalPlanner] finding goal closest point");
-  int i = lastForwardPathMsg_.poses.size() - 1;
+  // reverse index of the pose being examined in the first pass (the last pose
+  // of the recorded forward path is the one closest to the robot now)
+  int reverseIndex = lastForwardPathMsg_.poses.size() - 1;
   double linear_mindist = std::numeric_limits<double>::max();
   int mindistindex = -1;
   double startPoseAngle = tf2::getYaw(start.pose.orientation);
@@ -233,24 +235,24 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(
     double angleError = fabs(angles::shortest_angular_distance(angleOrientation, startPoseAngle));
     if (dist <= linear_mindist)
     {
-      mindistindex = i;
+      mindistindex = reverseIndex;
       linear_mindist = dist;
       startPositionProjected = pose.pose;
 
       RCLCPP_INFO_STREAM(
         nh_->get_logger(), "[UndoPathGlobalPlanner] initial start point search, NEWBEST_LINEAR= "
-                             << i << ". error, linear: " << linear_mindist
+                             << reverseIndex << ". error, linear: " << linear_mindist
                              << ", angular: " << angleError);
     }
     else
     {
       RCLCPP_INFO_STREAM(
         nh_->get_logger(), "[UndoPathGlobalPlanner] initial start point search, skipped= "
-                             << i << ". best linear error: " << linear_mindist
+                             << reverseIndex << ". best linear error: " << linear_mindist
                              << ". current error, linear: " << dist << " angular: " << angleError);
     }
 
-    i--;
+    reverseIndex--;
   }
 
   double const ERROR_DISTANCE_PURE_SPINNING_FACTOR = 1.5;
