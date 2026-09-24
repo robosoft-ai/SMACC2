@@ -31,7 +31,7 @@ using ::cl_nav2z::odom_tracker::WorkingMode;
 using namespace std::chrono_literals;
 using namespace smacc2;
 
-CbUndoPathBackwards::CbUndoPathBackwards(std::optional<CbUndoPathBackwardsOptions> options)
+CbUndoPathBackwards::CbUndoPathBackwards(const std::optional<CbUndoPathBackwardsOptions> & options)
 {
   options_ = options;
 }

@@ -38,7 +38,7 @@ struct CbUndoPathBackwardsOptions
 class CbUndoPathBackwards : public CbNav2ZClientBehaviorBase
 {
 public:
-  CbUndoPathBackwards(std::optional<CbUndoPathBackwardsOptions> options = std::nullopt);
+  CbUndoPathBackwards(const std::optional<CbUndoPathBackwardsOptions> & options = std::nullopt);
 
   void onEntry() override;
 

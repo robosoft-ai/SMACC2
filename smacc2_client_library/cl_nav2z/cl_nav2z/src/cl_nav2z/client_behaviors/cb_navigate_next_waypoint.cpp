@@ -24,7 +24,8 @@ namespace cl_nav2z
 {
 using namespace smacc2;
 
-CbNavigateNextWaypoint::CbNavigateNextWaypoint(std::optional<NavigateNextWaypointOptions> options)
+CbNavigateNextWaypoint::CbNavigateNextWaypoint(
+  const std::optional<NavigateNextWaypointOptions> & options)
 {
   if (options) options_ = *options;
 }

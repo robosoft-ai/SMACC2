@@ -30,7 +30,8 @@ class CbNavigateNamedWaypoint : public CbNavigateNextWaypoint
 {
 public:
   CbNavigateNamedWaypoint(
-    std::string waypointname, std::optional<NavigateNextWaypointOptions> options = std::nullopt);
+    std::string waypointname,
+    const std::optional<NavigateNextWaypointOptions> & options = std::nullopt);
 
   virtual ~CbNavigateNamedWaypoint();
 

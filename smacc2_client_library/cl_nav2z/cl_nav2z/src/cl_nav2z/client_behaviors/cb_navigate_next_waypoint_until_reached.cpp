@@ -23,7 +23,7 @@
 namespace cl_nav2z
 {
 CbNavigateNextWaypointUntilReached::CbNavigateNextWaypointUntilReached(
-  std::string goalWaypointName, std::optional<NavigateNextWaypointOptions> options)
+  std::string goalWaypointName, const std::optional<NavigateNextWaypointOptions> & options)
 : CbNavigateNextWaypoint(options), goalWaypointName_(goalWaypointName)
 {
 }
