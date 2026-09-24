@@ -34,7 +34,7 @@ class CbNavigateNextWaypointUntilReached : public CbNavigateNextWaypoint
 public:
   CbNavigateNextWaypointUntilReached(
     std::string goalWaypointName,
-    std::optional<NavigateNextWaypointOptions> options = std::nullopt);
+    const std::optional<NavigateNextWaypointOptions> & options = std::nullopt);
 
   virtual ~CbNavigateNextWaypointUntilReached();
 

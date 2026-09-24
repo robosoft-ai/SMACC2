@@ -25,7 +25,7 @@ namespace cl_nav2z
 using namespace smacc2;
 
 CbNavigateNamedWaypoint::CbNavigateNamedWaypoint(
-  std::string waypointname, std::optional<NavigateNextWaypointOptions> options)
+  std::string waypointname, const std::optional<NavigateNextWaypointOptions> & options)
 : CbNavigateNextWaypoint(options)
 {
   waypointname_ = waypointname;
