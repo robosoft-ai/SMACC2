@@ -16,27 +16,56 @@
 
 #include <smacc2/smacc.hpp>
 
+#include <cl_px4_mr/client_behaviors/cb_px4_path_follower_base.hpp>
 #include <cl_px4_mr/utils/pattern_generators.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
-#include <sm_cl_px4_mr_test_4/railway/pattern_params.hpp>
-
-#include <chrono>
+#include <config/mission_constants.hpp>
 
 namespace sm_cl_px4_mr_test_4
 {
 
-// SUPERSTATE: expanding square spiral (LEFT) at its backbone pin. Holds the
-// pattern parameters in one place; the inner run state injects them into the
-// behavior together with the pin read from the mission plan.
+// SUPERSTATE: expanding square spiral (LEFT), a full revolution more than the first.
+// Owns where it is (the pin), its pattern parameters and where the pattern
+// starts and ends; the inner run state injects the parameters into the
+// behavior.
 struct SsSquareSpiral2 : smacc2::SmaccState<SsSquareSpiral2, MsInFlight, StiSquareSpiral2Run>
 {
   using SmaccState::SmaccState;
 
-  struct Params
+  // P2: ring station 1
+  static NedXY pin() { return ringPinAt(1, 0.0f); }
+
+  static cl_px4_mr::FlightPatternSquareSpiralParams patternParams()
   {
-    cl_px4_mr::FlightPatternSquareSpiralParams pattern = railway::squareSpiral2Params();
-    cl_px4_mr::PathFollowerParams follower = railway::patternFollowerParams();
-  } params;
+    const NedXY c = pin();
+    cl_px4_mr::FlightPatternSquareSpiralParams p;
+    p.originX = c.x;
+    p.originY = c.y;
+    p.direction = cl_px4_mr::Turn::LEFT;
+    p.altitudeAgl = kMissionAltitudeM;
+    p.initialHeading = kSquareSpiralInitialHeading;
+    p.spacing = kTrackSpacingM;
+    p.numLegs = kSquareSpiral2NumLegs;
+    return p;
+  }
+
+  static cl_px4_mr::PathFollowerParams followerParams()
+  {
+    cl_px4_mr::PathFollowerParams f;
+    f.groundSpeed = kPatternSpeedMps;
+    f.leash = kPatternLeashM;
+    return f;
+  }
+
+  // where the pattern starts / ends: the next transit flies to entry(), its
+  // leg length runs from exit()
+  static NedXY entry()
+  {
+    return pathEntry(cl_px4_mr::generateFlightPatternSquareSpiral(patternParams(), patternOrigin(pin())), pin());
+  }
+  static NedXY exit()
+  {
+    return pathExit(cl_px4_mr::generateFlightPatternSquareSpiral(patternParams(), patternOrigin(pin())), pin());
+  }
 
   typedef mpl::list<
   > reactions;
@@ -46,9 +75,10 @@ struct SsSquareSpiral2 : smacc2::SmaccState<SsSquareSpiral2, MsInFlight, StiSqua
 
   void onEntry()
   {
+    const auto p = patternParams();
     RCLCPP_INFO(
-      getLogger(), "=== SsSquareSpiral2: %s square spiral, spacing %.0f m, %d legs ===",
-      cl_px4_mr::turnName(params.pattern.direction), params.pattern.spacing, params.pattern.numLegs);
+      getLogger(), "=== SsSquareSpiral2: %s square spiral, spacing %.0f m, %d legs, pin P2 ===",
+      cl_px4_mr::turnName(p.direction), p.spacing, p.numLegs);
   }
 
   void onExit()

@@ -17,11 +17,8 @@
 #include <smacc2/smacc.hpp>
 
 #include <cl_px4_mr/client_behaviors/cb_figure_eight.hpp>
-#include <sm_cl_px4_mr_test_4/modestates/ms_in_flight.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_planner.hpp>
-#include <sm_cl_px4_mr_test_4/railway/pattern_params.hpp>
-#include <sm_cl_px4_mr_test_4/railway/railway_events.hpp>
+#include <config/mission_constants.hpp>
+#include <sm_cl_px4_mr_test_4/states/st_go_to_south_waypoint.hpp>
 
 namespace sm_cl_px4_mr_test_4
 {
@@ -30,40 +27,58 @@ using namespace cl_px4_mr;
 using namespace smacc2::default_transition_tags;
 
 // TAIL PATTERN STATE: figure-eight loiter (CbFigureEight, parametric
-// lemniscate) at the plan's current node, lobes north-south
+// lemniscate), lobes north-south. Owns the centroid that StFigureEight2 and
+// StLoiterCentroid share, and the lobe-tip entry StGoToFigureEight flies to.
 struct StFigureEight1 : smacc2::SmaccState<StFigureEight1, MsInFlight>
 {
   using SmaccState::SmaccState;
 
+  // the centroid: kFigureEightOffsetSouthM south of the SouthWaypoint
+  static NedXY centre()
+  {
+    NedXY c = StGoToSouthWaypoint::target();
+    c.x -= kFigureEightOffsetSouthM;
+    return c;
+  }
+
+  static constexpr float heading() { return kFigureEightHeading1; }  // lobe axis, NED yaw
+
+  // CbFigureEight starts (and ends) at the lobe tip along its axis
+  static NedXY entry()
+  {
+    NedXY e = centre();
+    e.x += kFigureEightHalfLengthM * std::cos(heading());
+    e.y += kFigureEightHalfLengthM * std::sin(heading());
+    return e;
+  }
+
   typedef mpl::list<
-    Transition<EvCbSuccess<CbFigureEight, OrPx4>, StRailway, NEXT>,
+    Transition<EvCbSuccess<CbFigureEight, OrPx4>, StFigureEight2, SUCCESS>,
     Transition<EvCbFailure<CbFigureEight, OrPx4>, StReturnHome, ABORT>
   > reactions;
 
   static void staticConfigure()
   {
-    // centre overridden from the plan in runtimeConfigure
-    const railway::FigureEightSpec s = railway::figureEightSpec(1);
-    configure_orthogonal<OrPx4, CbFigureEight>(0.0f, 0.0f, s.altitudeAgl, s.size, s.speed, s.loops);
+    const NedXY c = centre();
+    configure_orthogonal<OrPx4, CbFigureEight>(
+      c.x, c.y, kMissionAltitudeM, kFigureEightHalfLengthM,
+      kFigureEightSpeedRad, kFigureEightLoops);
   }
 
   void runtimeConfigure()
   {
-    const auto & plan = this->context<MsInFlight>().plan;
-    const auto & node = plan.currentTargetNode();
     auto * cb = this->getClientBehavior<OrPx4, CbFigureEight>();
-    const railway::FigureEightSpec s = railway::figureEightSpec(1);
-    cb->setCenter(node.x, node.y);
-    cb->setHeading(s.heading);
+    cb->setHeading(heading());
 
-    const float loopSeconds = 2.0f * static_cast<float>(M_PI) / s.speed;
+    const float loopSeconds = 2.0f * kPi / kFigureEightSpeedRad;
     cb->setTimeout(std::chrono::seconds(static_cast<long>(
-      loopSeconds * s.loops * railway::kTimeoutMarginFactor + railway::kTimeoutBaseS)));
+      loopSeconds * kFigureEightLoops * kTimeoutMarginFactor + kTimeoutBaseS)));
 
+    const NedXY c = centre();
     RCLCPP_INFO(
-      getLogger(), "StFigureEight1: centre '%s' NED (%.1f, %.1f), axis %.0f deg, %d loop(s), ~%.0f s",
-      node.name.c_str(), static_cast<double>(node.x), static_cast<double>(node.y),
-      s.heading * 180.0 / M_PI, s.loops, static_cast<double>(loopSeconds * s.loops));
+      getLogger(), "StFigureEight1: centre NED (%.1f, %.1f), axis %.0f deg, %d loop(s), ~%.0f s",
+      static_cast<double>(c.x), static_cast<double>(c.y), heading() * 180.0 / M_PI,
+      kFigureEightLoops, static_cast<double>(loopSeconds * kFigureEightLoops));
   }
 
   void onEntry() {}

@@ -1,15 +1,14 @@
 <h2>State Machine Diagram</h2>
 
- ![sm_cl_px4_mr_test_4](docs/SmClPx4MrTest4_2026-9-17_141232.svg)
+ ![sm_cl_px4_mr_test_4](docs/SmClPx4MrTest4_2026-9-23_16351.svg)
 
 <h2>Description</h2>
 
-All tunables (altitudes, speeds, ring radius, pattern sizes, sine amplitude, loiter count, timeouts,
-fallback backbone) live in `mission_constants.hpp`; every pattern's parameter set is assembled once in
-`railway/pattern_params.hpp`, which both the superstates and the planner read. Each plan node carries the
-pattern centroid (the pin) and the pattern's entry/exit points computed from those parameters, so transit
-legs fly straight to where a pattern starts (a lawnmower corner, a figure-eight lobe tip) rather than to
-its centre.
+All tunables (altitudes, speeds, ring radius, pattern sizes, sine amplitude, loiter count, timeouts)
+live in `config/mission_constants.hpp`. Each pattern superstate owns its place on the ring, its pattern
+parameters and where its pattern starts and ends; each transit state flies to the next superstate's
+entry point (a lawnmower corner, a figure-eight lobe tip) rather than to its centre. The order of the
+mission is the chain of state transitions.
 
 Uses one orthogonal:
 - **OrPx4** - `cl_px4_mr::ClPx4Mr` client for all PX4 vehicle control (plus `CbSleepFor` for ground waits)
@@ -29,7 +28,7 @@ colcon build --packages-select cl_px4_mr sm_cl_px4_mr_test_4
 <h2>Operating Instructions</h2>
 
 PX4 SITL must home on the island (the `default.sdf` world's spherical origin is 26.478999,
-56.538333, ~18 m west of B0). Requires four processes, started in this order. The micro-ROS
+56.538333). Requires four processes, started in this order. The micro-ROS
 agent must be running before the state machine starts: `StConnectMicroROSAgent` waits for the
 agent's node and for PX4 to report a healthy position estimate, then proceeds.
 

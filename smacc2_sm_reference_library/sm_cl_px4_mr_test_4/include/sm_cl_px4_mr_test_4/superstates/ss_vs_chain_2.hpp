@@ -16,25 +16,49 @@
 
 #include <smacc2/smacc.hpp>
 
+#include <cl_px4_mr/client_behaviors/cb_px4_path_follower_base.hpp>
 #include <cl_px4_mr/utils/pattern_generators.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
-#include <sm_cl_px4_mr_test_4/railway/pattern_params.hpp>
+#include <config/mission_constants.hpp>
 
 namespace sm_cl_px4_mr_test_4
 {
 
-// SUPERSTATE: sector search pearl #2. The three SsVSChain superstates sit at
-// three datums spaced kDemoChainSpacingM along a line so their search circles
-// touch - pearls on a chain.
+// SUPERSTATE: sector search pearl #2.
+// Owns where it is (the pin), its pattern parameters and where the pattern
+// starts and ends; the inner run state injects the parameters into the
+// behavior.
 struct SsVSChain2 : smacc2::SmaccState<SsVSChain2, MsInFlight, StiVSChain2Run>
 {
   using SmaccState::SmaccState;
 
-  struct Params
+  // P10: ring station 6
+  static NedXY pin() { return ringPinAt(6, 0.0f); }
+
+  static cl_px4_mr::FlightPatternVSSearchParams patternParams()
   {
-    cl_px4_mr::FlightPatternVSSearchParams pattern = railway::vsChainParams();
-    cl_px4_mr::PathFollowerParams follower = railway::patternFollowerParams();
-  } params;
+    const NedXY c = pin();
+    cl_px4_mr::FlightPatternVSSearchParams p;
+    p.datumX = c.x;
+    p.datumY = c.y;
+    p.altitudeAgl = kMissionAltitudeM;
+    p.radius = kVSSearchRadiusM;
+    p.initialHeading = kVSChainInitialHeading;
+    p.direction = cl_px4_mr::Turn::RIGHT;
+    p.cycles = kVSSearchCycles;
+    return p;
+  }
+
+  static cl_px4_mr::PathFollowerParams followerParams()
+  {
+    cl_px4_mr::PathFollowerParams f;
+    f.groundSpeed = kPatternSpeedMps;
+    f.leash = kPatternLeashM;
+    return f;
+  }
+
+  // a sector search starts and ends on its datum
+  static NedXY entry() { return pin(); }
+  static NedXY exit() { return pin(); }
 
   typedef mpl::list<
   > reactions;
@@ -44,10 +68,10 @@ struct SsVSChain2 : smacc2::SmaccState<SsVSChain2, MsInFlight, StiVSChain2Run>
 
   void onEntry()
   {
+    const auto p = patternParams();
     RCLCPP_INFO(
-      getLogger(), "=== SsVSChain2: pearl, r=%.0f m, first leg %.0f deg, ~%.0f m ===",
-      params.pattern.radius, params.pattern.initialHeading * 180.0 / M_PI,
-      cl_px4_mr::flightPatternVSSearchLength(params.pattern));
+      getLogger(), "=== SsVSChain2: pearl, r=%.0f m, first leg %.0f deg, ~%.0f m, pin P10 ===",
+      p.radius, p.initialHeading * 180.0 / M_PI, cl_px4_mr::flightPatternVSSearchLength(p));
   }
 
   void onExit()

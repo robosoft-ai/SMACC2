@@ -16,25 +16,59 @@
 
 #include <smacc2/smacc.hpp>
 
+#include <cl_px4_mr/client_behaviors/cb_px4_path_follower_base.hpp>
 #include <cl_px4_mr/utils/pattern_generators.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
-#include <sm_cl_px4_mr_test_4/railway/pattern_params.hpp>
+#include <config/mission_constants.hpp>
 
 namespace sm_cl_px4_mr_test_4
 {
 
-// SUPERSTATE: lawnmower, lanes flown east to west (orientation A) at its backbone pin. Holds the pattern parameters in one
-// place; the inner run state injects them into the behavior together with the
-// pin read from the mission plan.
+// SUPERSTATE: lawnmower, lanes flown east to west (orientation A), stepping south
+// from the north-east corner nearest the approach from P2.
+// Owns where it is (the pin), its pattern parameters and where the pattern
+// starts and ends; the inner run state injects the parameters into the
+// behavior.
 struct SsLawnmower1 : smacc2::SmaccState<SsLawnmower1, MsInFlight, StiLawnmower1Run>
 {
   using SmaccState::SmaccState;
 
-  struct Params
+  // P3: ring station 2
+  static NedXY pin() { return ringPinAt(2, 0.0f); }
+
+  static cl_px4_mr::FlightPatternLawnmowerParams patternParams()
   {
-    cl_px4_mr::FlightPatternLawnmowerParams pattern = railway::lawnmower1Params();
-    cl_px4_mr::PathFollowerParams follower = railway::patternFollowerParams();
-  } params;
+    const NedXY c = pin();
+    cl_px4_mr::FlightPatternLawnmowerParams p;
+    p.originX = c.x;
+    p.originY = c.y;
+    p.laneHeading = kLawnmowerHeadingA;
+    p.firstTurn = kLawnmowerFirstTurnA;
+    p.altitudeAgl = kMissionAltitudeM;
+    p.laneLength = kPatternSquareSideM;
+    p.width = kPatternSquareSideM;
+    p.laneSpacing = kTrackSpacingM;
+    p.originIsCenter = true;
+    return p;
+  }
+
+  static cl_px4_mr::PathFollowerParams followerParams()
+  {
+    cl_px4_mr::PathFollowerParams f;
+    f.groundSpeed = kPatternSpeedMps;
+    f.leash = kPatternLeashM;
+    return f;
+  }
+
+  // where the pattern starts / ends: the next transit flies to entry(), its
+  // leg length runs from exit()
+  static NedXY entry()
+  {
+    return pathEntry(cl_px4_mr::generateFlightPatternLawnmower(patternParams(), patternOrigin(pin())), pin());
+  }
+  static NedXY exit()
+  {
+    return pathExit(cl_px4_mr::generateFlightPatternLawnmower(patternParams(), patternOrigin(pin())), pin());
+  }
 
   typedef mpl::list<
   > reactions;
@@ -44,7 +78,10 @@ struct SsLawnmower1 : smacc2::SmaccState<SsLawnmower1, MsInFlight, StiLawnmower1
 
   void onEntry()
   {
-    RCLCPP_INFO(getLogger(), "=== SsLawnmower1: lawnmower, lanes flown east to west (orientation A), ~%.0f m ===", cl_px4_mr::flightPatternLawnmowerLength(params.pattern));
+    const auto p = patternParams();
+    RCLCPP_INFO(
+      getLogger(), "=== SsLawnmower1: lawnmower, lanes flown east to west (orientation A), ~%.0f m, pin P3 ===",
+      cl_px4_mr::flightPatternLawnmowerLength(p));
   }
 
   void onExit()

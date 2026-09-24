@@ -14,26 +14,24 @@
 
 #pragma once
 
-#include <cl_px4_mr/utils/geo_utils.hpp>
 #include <cl_px4_mr/utils/pattern_generators.hpp>
 
+#include <algorithm>
 #include <chrono>
 #include <cmath>
-#include <string>
 #include <vector>
 
-// Every mission tunable, in one place, in four blocks:
+// Every mission tunable, in one place, in three blocks, plus the few helpers
+// every state derives its places and watchdogs from:
 //   1. flight envelope            - altitudes, speeds, leashes, watchdogs
 //   2. shared pattern geometry    - the two master values every pattern derives from
-//   3. DEMO_RING layout           - the demo, in the order it is flown
-//   4. BACKBONE layout + infra    - the Hormuz mission, KML, test-leg support
+//   3. demo ring layout           - the mission, in the order it is flown
+//   4. derived helpers            - the NED frame type, the ring trig, the watchdog formulas
 // This build hardcodes them; a later phase may populate the same values from
 // ROS 2 parameters or a config file without touching states or behaviors.
 // Values marked "derived" are computed from the masters and are not tunables.
 
 namespace sm_cl_px4_mr_test_4
-{
-namespace railway
 {
 
 using cl_px4_mr::Turn;
@@ -70,23 +68,18 @@ constexpr float kTrackSpacingM = 10.0f;
 // outer extent, the lawnmower/grid rectangles, the sector-search diameter,
 // the figure-eight length.
 constexpr float kPatternSquareSideM = 180.0f;
-// loiter circles (landing zone and the figure-eight centroid)
+// loiter circles (the figure-eight centroid)
 constexpr float kLoiterRadiusM = 10.0f;
 
 // ===========================================================================
-// 3. DEMO_RING layout, in flight order
+// 3. Demo ring layout, in flight order (~3 h)
 // ===========================================================================
-enum class Layout
-{
-  DEMO_RING,  // pins on a ring around the takeoff point (~3 h demo)
-  BACKBONE    // pins interpolated along the Hormuz backbone (~48 km)
-};
-constexpr Layout kLayout = Layout::DEMO_RING;
-
 // --- ring ---
 constexpr float kDemoRingRadiusM = 550.0f;     // pins on this circle about the takeoff point
 constexpr float kDemoRingStartBearing = 0.0f;  // first pin due north (NED yaw, rad)
 constexpr bool kDemoRingClockwise = true;      // visiting direction around the ring
+constexpr int kDemoRingStations = 7;           // pattern stations on the ring (the sector-search
+                                               // triple shares one, the three pearls share one)
 
 // --- spiral off the island (StSpiralOffIsland, flown before the ring) ---
 constexpr float kSpiralOffIslandTurns = 8.5f;
@@ -157,71 +150,73 @@ constexpr float kFigureEightSpeedRad = kPatternSpeedMps / kFigureEightHalfLength
 constexpr int kCentroidLoiterCount = 3;
 
 // ===========================================================================
-// 4. BACKBONE layout and infrastructure
+// 4. Derived helpers - not tunables. Each superstate owns its own place and
+//    pattern; these are the few pieces they all share.
 // ===========================================================================
-// where the mission ends: the island (takeoff point) or the hotel (backbone
-// vertex B4, 42 km away - only sensible with Layout::BACKBONE)
-enum class LandingSite
+struct NedXY
 {
-  ISLAND,
-  HOTEL
-};
-constexpr LandingSite kLandingSite = LandingSite::ISLAND;
-// loiter over the landing zone before landing; the demo already loitered at
-// the figure-eight centroid, so only the backbone mission does
-constexpr int kLandingLoiterCount = kLayout == Layout::BACKBONE ? 3 : 0;
-// pins sit at k/(N+1) of the backbone arc length; node gaps longer than this
-// are subdivided so the sine-wave transits get more anchor points
-constexpr float kInterpolationSpacingM = 3500.0f;
-
-// --- KML backbone (loaded at startup in every layout) ---
-inline const char * kPackageName = "sm_cl_px4_mr_test_4";
-inline const char * kKmlFileName = "Hormuz_3.kml";
-
-// Compiled-in backbone: used only when config/Hormuz_3.kml is absent or
-// unparseable. Must match the KML's LineString vertices.
-struct BackboneVertex
-{
-  const char * name;
-  double lat;
-  double lon;
+  float x = 0.0f;  // north (m) from the takeoff point
+  float y = 0.0f;  // east (m)
 };
 
-inline const std::vector<BackboneVertex> & fallbackBackboneVertices()
+inline NedXY island() { return NedXY{}; }
+
+inline float distanceM(NedXY a, NedXY b) { return std::hypot(b.x - a.x, b.y - a.y); }
+
+// pin at a ring station, offset along the ring's tangent in the visiting direction
+inline NedXY ringPinAt(int station, float tangentOffsetM)
 {
-  static const std::vector<BackboneVertex> vertices = {
-    {"TakeOff", 26.478986, 56.538518},
-    {"StraitWaypoint1", 26.400958, 56.318406},
-    {"GridAreaApproach", 26.210850, 56.256207},
-    {"Harbor", 26.211050, 56.243102},
-    {"LandingZoneHotel", 26.213792, 56.233753},
-  };
-  return vertices;
+  const float sign = kDemoRingClockwise ? 1.0f : -1.0f;
+  const float angle = kDemoRingStartBearing + sign * 2.0f * kPi * station / kDemoRingStations;
+  const float tx = -sign * std::sin(angle);
+  const float ty = sign * std::cos(angle);
+  NedXY p;
+  p.x = kDemoRingRadiusM * std::cos(angle) + tangentOffsetM * tx;
+  p.y = kDemoRingRadiusM * std::sin(angle) + tangentOffsetM * ty;
+  return p;
 }
 
-inline std::vector<cl_px4_mr::GeoPoint> fallbackBackbone()
+// a pattern generator's start point at a pin, at mission altitude
+inline cl_px4_mr::NedPoint patternOrigin(NedXY pin)
 {
-  std::vector<cl_px4_mr::GeoPoint> points;
-  for (const auto & v : fallbackBackboneVertices())
-  {
-    points.push_back(cl_px4_mr::GeoPoint{v.lat, v.lon, 0.0});
-  }
-  return points;
+  cl_px4_mr::NedPoint p;
+  p.x = pin.x;
+  p.y = pin.y;
+  p.z = -kMissionAltitudeM;
+  p.yaw = 0.0f;  // nominal entry heading for generators that default to it
+  return p;
 }
 
-// Role name for backbone vertex i (falls back to "B<i>" beyond the known list)
-inline std::string backboneName(size_t i)
+// first / last point of a generated path (the pin itself when the path is empty)
+inline NedXY pathEntry(const std::vector<cl_px4_mr::NedPoint> & path, NedXY pin)
 {
-  const auto & vertices = fallbackBackboneVertices();
-  if (i < vertices.size())
-  {
-    return vertices[i].name;
-  }
-  return "B" + std::to_string(i);
+  if (path.empty()) return pin;
+  NedXY p;
+  p.x = path.front().x;
+  p.y = path.front().y;
+  return p;
 }
 
-// --- isolated testing (test_leg) ---
-constexpr float kTestLegSyntheticDistanceM = 150.0f;  // transit target for nav-state test legs
+inline NedXY pathExit(const std::vector<cl_px4_mr::NedPoint> & path, NedXY pin)
+{
+  if (path.empty()) return pin;
+  NedXY p;
+  p.x = path.back().x;
+  p.y = path.back().y;
+  return p;
+}
 
-}  // namespace railway
+// watchdogs: timeout = length / speed * margin + base
+inline std::chrono::seconds transitTimeout(float lengthM)
+{
+  const float seconds = lengthM / kCruiseSpeedMps * kTimeoutMarginFactor + kTimeoutBaseS;
+  return std::chrono::seconds(static_cast<long>(std::ceil(seconds)));
+}
+
+inline std::chrono::seconds patternTimeout(float pathLengthM, float speed)
+{
+  const float seconds = pathLengthM / std::max(speed, 0.1f) * kTimeoutMarginFactor + kTimeoutBaseS;
+  return std::chrono::seconds(static_cast<long>(std::ceil(seconds)));
+}
+
 }  // namespace sm_cl_px4_mr_test_4

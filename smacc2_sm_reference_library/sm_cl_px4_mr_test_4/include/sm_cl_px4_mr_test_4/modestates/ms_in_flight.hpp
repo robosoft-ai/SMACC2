@@ -16,27 +16,14 @@
 
 #include <smacc2/smacc.hpp>
 
-#include <cl_px4_mr/cl_px4_mr.hpp>
-#include <cl_px4_mr/components/cp_kml_mission_loader.hpp>
-#include <cl_px4_mr/components/cp_vehicle_local_position.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_constants.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_plan.hpp>
-#include <sm_cl_px4_mr_test_4/railway/mission_planner.hpp>
-
 namespace sm_cl_px4_mr_test_4
 {
 
-// MODE STATE: airborne, executing the railway mission.
-//
-// Owns the MissionPlan: built once here (container onEntry runs before the
-// first inner state is constructed) and read by StRailway, the nav states and
-// the pattern superstates through context<MsInFlight>().plan. It survives
-// every inner transition because MsInFlight itself never exits until landing.
+// MODE STATE: airborne, flying the mission. The route is the chain of inner
+// state transitions; every state logs its own target on entry.
 struct MsInFlight : smacc2::SmaccState<MsInFlight, SmClPx4MrTest4, StAscend>
 {
   using SmaccState::SmaccState;
-
-  railway::MissionPlan plan;
 
   typedef mpl::list<
   > reactions;
@@ -47,60 +34,6 @@ struct MsInFlight : smacc2::SmaccState<MsInFlight, SmClPx4MrTest4, StAscend>
   void onEntry()
   {
     RCLCPP_INFO(getLogger(), "--- MsInFlight ---");
-
-    std::string testLeg;
-    this->getGlobalSMData("test_leg", testLeg);
-
-    if (!testLeg.empty())
-    {
-      plan = railway::buildTestLegPlan(testLeg, railway::kMissionAltitudeM, getLogger());
-    }
-    else
-    {
-      cl_px4_mr::ClPx4Mr * px4Client = nullptr;
-      this->requiresClient(px4Client);
-      cl_px4_mr::CpKmlMissionLoader * loader =
-        px4Client ? px4Client->getComponent<cl_px4_mr::CpKmlMissionLoader>() : nullptr;
-      cl_px4_mr::CpVehicleLocalPosition * localPosition =
-        px4Client ? px4Client->getComponent<cl_px4_mr::CpVehicleLocalPosition>() : nullptr;
-
-      const bool haveRef = localPosition != nullptr && localPosition->globalRefValid();
-      railway::Projector project = [localPosition, haveRef](double lat, double lon, float & x, float & y) {
-        return haveRef && localPosition->projectToNed(lat, lon, x, y);
-      };
-      railway::Reprojector reproject = [localPosition, haveRef](float x, float y, double & lat, double & lon) {
-        return haveRef && localPosition->reprojectFromNed(x, y, lat, lon);
-      };
-      const std::vector<cl_px4_mr::GeoPoint> backbone =
-        loader != nullptr && loader->hasMission() ? loader->getMission()
-                                                  : std::vector<cl_px4_mr::GeoPoint>{};
-      const std::string source = loader != nullptr ? loader->getSource() : "none";
-
-      if (railway::kLayout == railway::Layout::DEMO_RING)
-      {
-        plan = railway::buildDemoRingPlan(
-          backbone, project, reproject, railway::kMissionAltitudeM, railway::kLandingSite, source,
-          getLogger());
-      }
-      else if (backbone.empty())
-      {
-        RCLCPP_ERROR(getLogger(), "MsInFlight: no mission backbone - plan invalid");
-        plan.valid = false;
-      }
-      else if (!haveRef)
-      {
-        RCLCPP_ERROR(
-          getLogger(), "MsInFlight: PX4 global reference (ref_lat/ref_lon) not valid - plan invalid");
-        plan.valid = false;
-      }
-      else
-      {
-        plan = railway::buildMissionPlan(
-          backbone, project, railway::kMissionAltitudeM, source, getLogger());
-      }
-    }
-
-    RCLCPP_INFO(getLogger(), "%s", plan.toTable().c_str());
   }
 
   void onExit()
