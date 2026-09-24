@@ -28,11 +28,14 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
   std::stringstream ss;
 
   ss << "----------- PRINT STATE MACHINE STRUCTURE -------------------" << std::endl;
+  // Rebuild the state message list from scratch on every call.
   stateMsgs.clear();
+  // Walk every registered state and describe it in a message and in the text summary.
   for (auto & val : this->states)
   {
     smacc2_msgs::msg::SmaccState stateMsg;
     auto state = val.second;
+    // Basic identity: index, demangled name and depth in the state hierarchy.
     stateMsg.index = state->stateIndex_;
 
     ss << "**** State: " << demangleSymbol(val.first.c_str()) << std::endl;
@@ -45,6 +48,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
 
     ss << " Childstates:" << std::endl;
 
+    // List the direct child states.
     for (auto & child : state->children_)
     {
       auto childStateName = child->getDemangledFullName();
@@ -55,6 +59,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
 
     ss << " Transitions:" << std::endl;
 
+    // Convert each transition table row into a message and print its details.
     for (auto & transition : state->transitions_)
     {
       smacc2_msgs::msg::SmaccTransition transitionMsg;
@@ -70,7 +75,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
       ss << "      - Event ObjectTag: " << transitionMsg.event.event_object_tag << std::endl;
       ss << "      - Event Label: " << transitionMsg.event.label << std::endl;
       ss << "      - Destiny State: " << transitionMsg.destiny_state_name << std::endl;
-      ss << "      - Owner State: " << transitionMsg.destiny_state_name << std::endl;
+      ss << "      - Owner State: " << transitionMsg.source_state_name << std::endl;
       ss << "      - Is History Node: " << std::to_string(transitionMsg.history_node) << std::endl;
       ss << "      - TransitionC++Type: " << transition.transitionTypeInfo->getFullName()
          << std::endl;
@@ -81,6 +86,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
 
     const std::type_info * statetid = state->tid_;
 
+    // Group the client behaviors statically configured for this state by orthogonal type.
     std::map<const std::type_info *, std::vector<smacc2::ClientBehaviorInfoEntry *>>
       smaccBehaviorInfoMappingByOrthogonalType;
 
@@ -99,6 +105,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
       }
     }
 
+    // Describe every runtime orthogonal with the behaviors and clients it holds for this state.
     auto & runtimeOrthogonals = sm->getOrthogonals();
 
     for (auto & orthogonal : runtimeOrthogonals)
@@ -110,6 +117,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
 
       ss << " - orthogonal: " << orthogonalMsg.name << std::endl;
 
+      // Client behaviors this state configures in this orthogonal.
       if (smaccBehaviorInfoMappingByOrthogonalType[orthogonaltid].size() > 0)
       {
         auto & behaviors = smaccBehaviorInfoMappingByOrthogonalType[orthogonaltid];
@@ -125,6 +133,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
         ss << "          - NO CLIENT BEHAVIORS -" << std::endl;
       }
 
+      // Clients owned by the orthogonal for the whole state machine lifetime.
       auto & clients = orthogonal.second->getClients();
       if (clients.size() > 0)
       {
@@ -143,6 +152,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
       stateMsg.orthogonals.push_back(orthogonalMsg);
     }
 
+    // Event generators attached to this state.
     ss << " State event generators:" << std::endl;
     if (SmaccStateInfo::eventGeneratorsInfo.count(statetid) > 0)
     {
@@ -163,6 +173,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
       }
     }
 
+    // State reactors attached to this state, with the events each one listens to.
     ss << " State reactors:" << std::endl;
     if (SmaccStateInfo::stateReactorsInfo.count(statetid) > 0)
     {
@@ -180,6 +191,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
           ss << "        - object tag: " << stateReactorMsg.object_tag << std::endl;
         }
 
+        // Record every source event that can trigger this reactor.
         for (auto & tev : srinfo->sourceEventTypes)
         {
           // WE SHOULD CREATE A SMACC_EVENT_INFO TYPE, also using in typewalker transition
@@ -211,6 +223,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
 
     ss << "----------------------------------------------------------" << std::endl;
 
+    // Emit the text summary at debug level and keep the message for the description topic.
     auto resumeMsg = ss.str();
     RCLCPP_DEBUG(getLogger(), "%s", resumeMsg.c_str());
     stateMsgs.push_back(stateMsg);
