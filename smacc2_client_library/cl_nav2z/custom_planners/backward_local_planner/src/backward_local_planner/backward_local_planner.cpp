@@ -944,7 +944,20 @@ bool BackwardLocalPlanner::resamplePrecisePlan()
   double maxallowedAngularError = 0.45 * this->carrot_angular_distance_;  // nyquist
   double maxallowedLinearError = 0.45 * this->carrot_distance_;           // nyquist
 
-  for (int i = 0; i < (int)backwardsPlanPath_.size() - 1; i++)
+  // the bisection below only terminates for positive tolerances
+  if (maxallowedLinearError <= 0.0 || maxallowedAngularError <= 0.0)
+  {
+    RCLCPP_WARN_STREAM(
+      nh_->get_logger(), "[BackwardLocalPlanner] resample precise skipping: carrot_distance ("
+                           << carrot_distance_ << ") and carrot_angular_distance ("
+                           << carrot_angular_distance_ << ") must both be positive");
+    return false;
+  }
+
+  // Each segment is bisected until both its linear and angular extent fit the
+  // tolerances: an insert re-examines the same index against the new midpoint.
+  int i = 0;
+  while (i < (int)backwardsPlanPath_.size() - 1)
   {
     RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] resample precise, check: " << i);
     auto & currpose = backwardsPlanPath_[i];
@@ -995,12 +1008,13 @@ bool BackwardLocalPlanner::resamplePrecisePlan()
       tf2::Quaternion intermediateQuat = tf2::slerp(qCurrent, qNext, 0.5);
       pintermediate.pose.orientation = tf2::toMsg(intermediateQuat);
 
+      // currpose / nextpose are references into the vector: not used past this insert
       this->backwardsPlanPath_.insert(this->backwardsPlanPath_.begin() + i + 1, pintermediate);
-
-      // retry this point
-      i--;
       counter++;
+      continue;  // retry this point against the inserted midpoint
     }
+
+    i++;
   }
 
   RCLCPP_INFO_STREAM(
