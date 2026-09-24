@@ -125,8 +125,6 @@ public:
 protected:
   void onInitialize() override;
 
-  void updateConfiguration();
-
   virtual void rtPublishPaths(rclcpp::Time timestamp);
 
   // this is called when a new odom message is received in record path mode
