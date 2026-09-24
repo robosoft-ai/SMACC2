@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(sm_nav2_gazebo_test_3)
 
 # Default to C++17

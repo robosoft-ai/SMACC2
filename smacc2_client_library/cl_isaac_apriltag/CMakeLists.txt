@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(cl_isaac_apriltag)
 
 if(NOT CMAKE_CXX_STANDARD)

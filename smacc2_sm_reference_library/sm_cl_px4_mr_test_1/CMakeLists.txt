@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(sm_cl_px4_mr_test_1)
 
 if(NOT CMAKE_CXX_STANDARD)
