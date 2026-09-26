@@ -21,6 +21,7 @@
 #pragma once
 
 #include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
+#include <cl_px4_mr/components/cp_tunnel_centering.hpp>
 #include <cl_px4_mr/utils/geo_utils.hpp>
 
 #include <atomic>
@@ -56,6 +57,10 @@ struct PathFollowerParams
   // If the state machine armed no timeout: timeout = max(30 s, factor * length / speed).
   // 0 disables the auto-timeout.
   float autoTimeoutFactor = 2.5f;
+  // Add CpTunnelCentering's lateral / vertical offsets to every carrot (the
+  // component is looked up in any orthogonal; silently off if absent or stale).
+  // The completion test then compares the vehicle with the offset carrot.
+  bool useTunnelCentering = false;
 };
 
 // Streaming polyline follower. A derived behavior supplies buildPath() (a pure
@@ -79,6 +84,14 @@ public:
   explicit CbPx4PathFollowerBase(PathFollowerParams params = {});
   virtual ~CbPx4PathFollowerBase() {}
 
+  template <typename TOrthogonal, typename TSourceObject>
+  void onStateOrthogonalAllocation()
+  {
+    // optional, may live in another orthogonal (state machine thread, see the locking rule)
+    this->requiresComponent(tunnelCentering_, smacc2::ComponentRequirement::SOFT);
+    CbPx4ClientBehaviorBase::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
+  }
+
   void setFollowerParams(const PathFollowerParams & params) { followerParams_ = params; }
   const PathFollowerParams & followerParams() const { return followerParams_; }
 
@@ -99,17 +112,25 @@ protected:
 
   float totalLength() const { return totalLen_; }
   float progressFraction() const { return totalLen_ > 0.0f ? sCarrot_ / totalLen_ : 1.0f; }
+  // Index into the followed polyline (vertex 0 = the prepended entry position
+  // when prependCurrentPosition is set) of the vertex the carrot has passed
+  // most recently. Atomic: written from update(), readable from the state
+  // machine thread (e.g. a state's onExit, where updates are barred).
+  size_t carrotVertexIndex() const { return carrotVertex_.load(); }
 
   PathFollowerParams followerParams_;
+  CpTunnelCentering * tunnelCentering_ = nullptr;
 
 private:
   NedPoint commandFor(float s);
+  void applyCentering(NedPoint & cmd) const;
   float tangentYawAt(size_t segmentIndex) const;
 
   std::vector<NedPoint> path_;
   std::vector<float> cumLen_;
   float totalLen_ = 0.0f;
   float sCarrot_ = 0.0f;
+  std::atomic<size_t> carrotVertex_{0};
   float entryHeading_ = 0.0f;
   NedPoint lastCmd_;
   int lastProgressDecile_ = -1;

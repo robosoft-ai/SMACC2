@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="lidar_3d">
+    <link name="lidar_link">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0.0435 0 0 0</pose>
+        <mass>0.37</mass>
+        <inertia>
+          <ixx>0.0003443775</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0003443775</iyy>
+          <iyz>0</iyz>
+          <izz>0.000222</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision_base">
+        <pose>0 0 0.0205 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.06 0.06 0.041</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="collision_mid">
+        <pose>0 0 0.055 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.025</radius>
+            <length>0.028</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="collision_top">
+        <pose>0 0 0.078 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.056 0.056 0.018</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual_base">
+        <pose>0 0 0.0205 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.06 0.06 0.041</size>
+          </box>
+        </geometry>
+        <visibility_flags>33554432</visibility_flags>
+        <material>
+          <diffuse>0.08 0.08 0.08 1</diffuse>
+        </material>
+      </visual>
+      <visual name="visual_mid">
+        <pose>0 0 0.055 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.025</radius>
+            <length>0.028</length>
+          </cylinder>
+        </geometry>
+        <visibility_flags>33554432</visibility_flags>
+        <material>
+          <diffuse>0.05 0.05 0.05 1</diffuse>
+        </material>
+      </visual>
+      <visual name="visual_top">
+        <pose>0 0 0.078 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.056 0.056 0.018</size>
+          </box>
+        </geometry>
+        <visibility_flags>33554432</visibility_flags>
+        <material>
+          <diffuse>0.02 0.02 0.02 1</diffuse>
+        </material>
+      </visual>
+      <sensor name="lidar_3d" type="gpu_lidar">
+        <gz_frame_id>lidar_link</gz_frame_id>
+        <!-- gz-sensors publishes the LaserScan on <topic> and the PointCloudPacked on <topic>/points -->
+        <topic>lidar_3d</topic>
+        <pose>0 0 0.055 0 0 0</pose>
+        <ray>
+          <scan>
+            <horizontal>
+              <!-- 1 deg columns and rows (360 x 181 = 65k rays at 10 Hz) -->
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.141592653589793</min_angle>
+              <max_angle>3.141592653589793</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>181</samples>
+              <resolution>1</resolution>
+              <min_angle>-1.5707963267948966</min_angle>
+              <max_angle>1.5707963267948966</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.2</min>
+            <max>35</max>
+            <resolution>0.02</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.001</stddev>
+          </noise>
+          <!-- everything except the airframe's own visuals (visibility_flags 33554432) -->
+          <visibility_mask>33554431</visibility_mask>
+        </ray>
+        <always_on>true</always_on>
+        <update_rate>10</update_rate>
+        <visualize>false</visualize>
+      </sensor>
+    </link>
+  </model>
+</sdf>

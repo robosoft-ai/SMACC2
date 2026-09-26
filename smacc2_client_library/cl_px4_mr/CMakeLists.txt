@@ -15,6 +15,11 @@ find_package(ament_cmake REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(px4_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 find_package(tinyxml2_vendor REQUIRED)
 find_package(TinyXML2 MODULE REQUIRED)
@@ -36,12 +41,16 @@ set(SOURCES
   src/cl_px4_mr/components/cp_goal_checker.cpp
   src/cl_px4_mr/components/cp_micro_ros_agent.cpp
   src/cl_px4_mr/components/cp_kml_mission_loader.cpp
+  src/cl_px4_mr/components/cp_tf_broadcaster.cpp
+  src/cl_px4_mr/components/cp_forward_obstacle_guard.cpp
+  src/cl_px4_mr/components/cp_tunnel_centering.cpp
   src/cl_px4_mr/client_behaviors/cb_arm_px4.cpp
   src/cl_px4_mr/client_behaviors/cb_disarm_px4.cpp
   src/cl_px4_mr/client_behaviors/cb_takeoff.cpp
   src/cl_px4_mr/client_behaviors/cb_land.cpp
   src/cl_px4_mr/client_behaviors/cb_go_to_location.cpp
   src/cl_px4_mr/client_behaviors/cb_orbit_location.cpp
+  src/cl_px4_mr/client_behaviors/cb_spiral_up.cpp
   src/cl_px4_mr/client_behaviors/cb_hold_position.cpp
   src/cl_px4_mr/client_behaviors/cb_yaw_rotate.cpp
   src/cl_px4_mr/client_behaviors/cb_change_altitude.cpp
@@ -52,6 +61,7 @@ set(SOURCES
   src/cl_px4_mr/client_behaviors/cb_sine_altitude_cruise.cpp
   src/cl_px4_mr/client_behaviors/cb_yaw_scan.cpp
   src/cl_px4_mr/client_behaviors/cb_connect_micro_ros_agent.cpp
+  src/cl_px4_mr/client_behaviors/cb_wait_for_heading_stable.cpp
   src/cl_px4_mr/client_behaviors/cb_load_kml_mission.cpp
   src/cl_px4_mr/utils/pattern_generators.cpp
   src/cl_px4_mr/client_behaviors/cb_px4_path_follower_base.cpp
@@ -64,14 +74,16 @@ set(SOURCES
   src/cl_px4_mr/client_behaviors/cb_lawnmower.cpp
   src/cl_px4_mr/client_behaviors/cb_grid_pattern.cpp
   src/cl_px4_mr/client_behaviors/cb_vs_search.cpp
+  src/cl_px4_mr/client_behaviors/cb_follow_ned_path.cpp
+  src/cl_px4_mr/client_behaviors/cb_obstacle_guard.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${TinyXML2_LIBRARIES})
-ament_target_dependencies(${PROJECT_NAME} smacc2 px4_msgs rclcpp)
+ament_target_dependencies(${PROJECT_NAME} smacc2 px4_msgs rclcpp sensor_msgs geometry_msgs nav_msgs tf2 tf2_ros)
 
 ament_export_include_directories(include)
-ament_export_dependencies(smacc2 px4_msgs rclcpp Boost tinyxml2_vendor TinyXML2)
+ament_export_dependencies(smacc2 px4_msgs rclcpp sensor_msgs geometry_msgs nav_msgs tf2 tf2_ros Boost tinyxml2_vendor TinyXML2)
 ament_export_libraries(${PROJECT_NAME})
 
 install(

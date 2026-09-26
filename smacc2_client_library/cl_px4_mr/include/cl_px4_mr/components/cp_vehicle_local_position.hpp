@@ -46,6 +46,11 @@ public:
   float getZ() const;
   float getHeading() const;
   bool isValid() const;
+  // VehicleLocalPosition.heading_good_for_control. With a magnetometer heading PX4 sets
+  // this only after the in-flight yaw alignment, so it is FALSE on the ground by design;
+  // do not gate arming on it
+  bool isHeadingGoodForControl() const;
+  bool isVelocityValid() const;  // v_xy_valid && v_z_valid
 
   // --- global reference of the local frame ---
   bool globalRefValid() const;  // xy_global and a reference has been received
@@ -73,6 +78,8 @@ private:
   float z_ = 0.0f;
   float heading_ = 0.0f;
   bool valid_ = false;
+  bool headingGoodForControl_ = false;
+  bool velocityValid_ = false;
 
   bool xyGlobal_ = false;
   bool zGlobal_ = false;

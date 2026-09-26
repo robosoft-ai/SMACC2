@@ -81,6 +81,25 @@ ClPx4Mr (Client - Orchestrator)
 
 **Signals**: `onGoalReached_`
 
+#### CpTfBroadcaster (opt-in)
+**Responsibility**: Publishes PX4's state estimate as a ROS TF tree so sensors on the airframe can be
+placed in RViz: `map -> base_link` (translation from `CpVehicleLocalPosition`, rotation from
+`/fmu/out/vehicle_attitude`, converted NED/FRD -> ENU/FLU), a translation-only `map -> base_link_follow`
+(an RViz orbit target that does not spin with yaw) and a static `base_link -> lidar_link` from
+`TfBroadcasterParams`. Not created by `ClPx4Mr`; an orthogonal adds it with
+`createClient<ClPx4Mr>()->createComponent<CpTfBroadcaster>(params)`. `map` is the FMU's local NED
+origin expressed ENU (x east, y north, z up).
+
+**Signals**: None
+
+#### CpForwardObstacleGuard
+**Responsibility**: Watches a `sensor_msgs/PointCloud2` (from a `CpTopicSubscriber<PointCloud2>` on the
+same client, e.g. `cl_generic_sensor::ClGenericSensor<PointCloud2>`) for returns inside a forward cone
+about the sensor +x axis and raises / clears an obstacle flag with hysteresis
+(`ForwardObstacleGuardParams`: half angle, trigger / clear ranges, hit count, cloud debounce).
+
+**Signals**: `onObstacleTooClose_`, `onObstacleCleared_` (see `CbObstacleGuard`)
+
 ### Signal Flow
 
 ```
@@ -119,6 +138,8 @@ PX4 SITL (via XRCE-DDS)
 | CbLand | SmaccAsyncClientBehavior | Disable offboard and land | None (detects landing via disarm signal) |
 | CbHoldPosition | SmaccAsyncClientBehavior + ISmaccUpdatable | Hold current position for a duration | `durationSeconds` (default 5.0) |
 | CbYawRotate | SmaccAsyncClientBehavior + ISmaccUpdatable | Rotate to a target heading | `targetYawRad`, `relative` (default false) |
+| CbSpiralUp | SmaccAsyncClientBehavior + ISmaccUpdatable | Climbing orbit (helix) about a point | `SpiralUpParams` |
+| CbWaitForHeadingStable | SmaccAsyncClientBehavior | Preflight gate: EKF heading must hold still (and match the parked heading) | `HeadingStableParams` |
 | CbChangeAltitude | SmaccAsyncClientBehavior | Ascend or descend to a target altitude | `targetAltitude` (positive meters above ground) |
 | CbFollowWaypoints | SmaccAsyncClientBehavior | Visit a sequence of NED waypoints | `waypoints` (vector of {x,y,z,yaw}), `xyTol` (0.5), `zTol` (0.3) |
 | CbFigureEight | SmaccAsyncClientBehavior + ISmaccUpdatable | Fly a lemniscate figure-8 pattern | `centerX`, `centerY`, `altitude`, `size` (5.0), `speed` (0.5), `numLoops` (1) |
@@ -135,6 +156,16 @@ Launches the micro_ros_agent (if not already running) and waits for PX4 readines
 2. **Phase 2 — Health check:** Subscribes to `/fmu/out/failsafe_flags` and polls at 2 Hz until PX4's EKF has converged (`attitude_invalid`, `local_altitude_invalid`, and `local_position_invalid` all false)
 3. Posts `EvCbSuccess` when both phases pass, `EvCbFailure` on timeout or shutdown
 4. Resets the failsafe subscription on exit to prevent dangling callbacks
+
+### CbWaitForHeadingStable
+
+Preflight gate on the EKF heading, for use between the health check and arming. A
+parked vehicle must report a constant heading; a drifting one means the yaw gyro bias
+has not converged or the magnetometer has been rejected, and a takeoff in that state
+flips the vehicle (a large heading error makes the position loop push the wrong way).
+Success when the heading moved less than `maxDriftRadS * windowS` over the last
+`windowS` seconds and, when `expectedHeadingRad` is finite, is within `headingTolRad`
+of it. Failure on `timeoutS`, logging the drift rate.
 
 ### CbArmPX4
 
@@ -159,6 +190,14 @@ Full offboard entry sequence:
 3. Switch to offboard mode
 4. Set position setpoint at target altitude
 5. Posts `EvCbSuccess` when goal checker reports altitude reached
+
+### CbSpiralUp
+
+Helix about a vertical axis: a constant-radius orbit that climbs `climbPerOrbitM` per
+revolution until `climbTotalM` has been gained, nose toward the axis (`SpiralUpParams`).
+Starts at the vehicle's current bearing from the centre and at `startAltitudeM` (NaN = the
+current altitude), so fly to a point on the circle first (`CbGoToLocation`). Posts success at
+the top, on the circle - hand over to `CbOrbitLocation` at that altitude for level laps.
 
 ### CbOrbitLocation
 
@@ -226,6 +265,23 @@ Fly an expanding Archimedean spiral for search and rescue area coverage:
 - Adaptive angular velocity maintains constant linear ground speed
 - Yaw faces direction of travel
 - Posts `EvCbSuccess` when `maxRadius` is reached
+
+### CbFollowNedPath
+
+Stream a caller-supplied NED polyline through the carrot follower (`CbPx4PathFollowerBase`):
+- `CbFollowNedPath(std::vector<NedPoint> path, PathFollowerParams follower = {})`, or `setPath()` from
+  the owning state's `runtimeConfigure()`
+- one continuous, leashed flight along arbitrary vertices (a cave passage, a retrace of an earlier route)
+- `reachedCount()` = route vertices the carrot has passed; read it in the state's `onExit()` to record
+  how far the vehicle got (an abort can then retrace only the traversed prefix)
+- Posts `EvCbSuccess` at the last vertex, `EvCbFailure` on the watchdog
+
+### CbObstacleGuard
+
+Synchronous behavior that turns `CpForwardObstacleGuard`'s signals into state machine events
+`EvObstacleTooClose` / `EvObstacleCleared<CbObstacleGuard, TOrthogonal>`. Configure it once on a
+container state (e.g. the in-flight mode state) so one instance covers every inner flight state.
+Reference: `sm_cl_px4_mr_test_5` (obstacle hold + retrace home, lidar cloud watchdog).
 
 ## Usage
 

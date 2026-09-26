@@ -42,6 +42,8 @@ void CpVehicleLocalPosition::onPositionMessage(
     z_ = msg->z;
     heading_ = msg->heading;
     valid_ = msg->xy_valid && msg->z_valid;
+    headingGoodForControl_ = msg->heading_good_for_control;
+    velocityValid_ = msg->v_xy_valid && msg->v_z_valid;
 
     // global reference of the local frame
     xyGlobal_ = msg->xy_global;
@@ -123,6 +125,18 @@ bool CpVehicleLocalPosition::isValid() const
 {
   std::lock_guard<std::mutex> lock(mutex_);
   return valid_;
+}
+
+bool CpVehicleLocalPosition::isHeadingGoodForControl() const
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  return headingGoodForControl_;
+}
+
+bool CpVehicleLocalPosition::isVelocityValid() const
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  return velocityValid_;
 }
 
 bool CpVehicleLocalPosition::globalRefValid() const
