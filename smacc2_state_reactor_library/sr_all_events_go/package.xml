@@ -4,7 +4,7 @@
   <name>sr_all_events_go</name>
   <version>3.1.0</version>
   <description>The sr_all_events_go package</description>
-  <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
