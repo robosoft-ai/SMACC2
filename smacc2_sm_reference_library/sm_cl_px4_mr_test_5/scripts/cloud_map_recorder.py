@@ -60,17 +60,24 @@ class CloudMapRecorder(Node):
         self.count = 0
         self.used = 0
         self.last_save = time.monotonic()
-        self.sub = self.create_subscription(PointCloud2, self.topic, self.on_cloud, qos_profile_sensor_data)
+        self.sub = self.create_subscription(
+            PointCloud2, self.topic, self.on_cloud, qos_profile_sensor_data
+        )
         self.get_logger().info(
-            f"recording {self.topic} into {self.output} (voxel {self.voxel} m, every {self.every_nth}th cloud)")
+            f"recording {self.topic} into {self.output} (voxel {self.voxel} m, every {self.every_nth}th cloud)"
+        )
 
     def on_cloud(self, msg: PointCloud2):
         self.count += 1
         if self.count % self.every_nth:
             return
         try:
-            tf = self.tf_buffer.lookup_transform(self.map_frame, msg.header.frame_id, msg.header.stamp,
-                                                 timeout=rclpy.duration.Duration(seconds=0.2))
+            tf = self.tf_buffer.lookup_transform(
+                self.map_frame,
+                msg.header.frame_id,
+                msg.header.stamp,
+                timeout=rclpy.duration.Duration(seconds=0.2),
+            )
         except (LookupException, ConnectivityException, ExtrapolationException) as e:
             if self.used == 0 and self.count % 50 == 0:
                 self.get_logger().warn(f"no TF {self.map_frame} <- {msg.header.frame_id} yet: {e}")

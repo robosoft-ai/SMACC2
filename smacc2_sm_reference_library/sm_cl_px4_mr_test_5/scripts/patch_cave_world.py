@@ -104,7 +104,9 @@ def main() -> int:
 
     print(f"world: {world.get('name')}")
     print(f"uris rewritten: {rewritten}")
-    print(f"dropped: {len(dropped)} ({', '.join(dropped[:6])}{', ...' if len(dropped) > 6 else ''})")
+    print(
+        f"dropped: {len(dropped)} ({', '.join(dropped[:6])}{', ...' if len(dropped) > 6 else ''})"
+    )
     print(f"written: {dst}")
     return 0
 

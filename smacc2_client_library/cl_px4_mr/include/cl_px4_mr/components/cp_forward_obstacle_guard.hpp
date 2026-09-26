@@ -55,9 +55,9 @@ struct ForwardObstacleGuardParams
   // the floor of a passage flown at low altitude must not count as an obstacle
   // ahead; anything reaching up to within this of the vehicle still does. 0 disables.
   float floorCutoffM = 0.8f;
-  int minHits = 10;             // cone points below triggerRangeM per cloud to count
-  int triggerClouds = 2;        // consecutive triggering clouds before "too close"
-  int clearClouds = 10;         // consecutive clear clouds before "cleared"
+  int minHits = 10;       // cone points below triggerRangeM per cloud to count
+  int triggerClouds = 2;  // consecutive triggering clouds before "too close"
+  int clearClouds = 10;   // consecutive clear clouds before "cleared"
   // Clouds captured while the vehicle yaws faster than this (rad/s, derived from
   // successive /fmu/out/vehicle_attitude headings) are ignored: the cone is
   // sweeping the walls, not looking along the direction of travel (e.g. the

@@ -24,8 +24,8 @@
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 
-#include <cmath>
 #include <tf2/LinearMath/Quaternion.h>
+#include <cmath>
 
 #include <vector>
 
@@ -83,7 +83,8 @@ void CpTfBroadcaster::onInitialize()
 
   if (params_.publishTrail)
   {
-    trailPub_ = node->create_publisher<nav_msgs::msg::Path>(params_.trailTopic, rclcpp::QoS(1).transient_local());
+    trailPub_ = node->create_publisher<nav_msgs::msg::Path>(
+      params_.trailTopic, rclcpp::QoS(1).transient_local());
     trail_.header.frame_id = params_.mapFrame;
     RCLCPP_INFO(
       getLogger(), "CpTfBroadcaster: publishing the flown trail on %s (every %.2f m, <= %.0f Hz)",
@@ -95,7 +96,8 @@ void CpTfBroadcaster::onInitialize()
     std::bind(&CpTfBroadcaster::onAttitude, this, std::placeholders::_1));
 
   RCLCPP_INFO(
-    getLogger(), "CpTfBroadcaster: broadcasting %s -> %s (and %s) from /fmu/out/vehicle_attitude at <= %.0f Hz",
+    getLogger(),
+    "CpTfBroadcaster: broadcasting %s -> %s (and %s) from /fmu/out/vehicle_attitude at <= %.0f Hz",
     params_.mapFrame.c_str(), params_.baseFrame.c_str(), params_.followFrame.c_str(),
     params_.maxRateHz);
 }

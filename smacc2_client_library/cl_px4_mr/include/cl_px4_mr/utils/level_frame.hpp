@@ -27,8 +27,7 @@ namespace cl_px4_mr
 // FRD body -> NED earth): maps a body-FLU vector (x forward, y left, z up -
 // the frame of a level-mounted sensor) into a LEVEL frame with the same
 // heading: x = horizontal forward, y = horizontal left, z = up. Row-major 3x3.
-inline void levelRotationFromPx4Quaternion(
-  const std::array<float, 4> & q, std::array<float, 9> & r)
+inline void levelRotationFromPx4Quaternion(const std::array<float, 4> & q, std::array<float, 9> & r)
 {
   // px4_ros_com frame_transforms constants (tf2 order x, y, z, w)
   const tf2::Quaternion kNedEnuQ(0.70710678118654752, 0.70710678118654752, 0.0, 0.0);

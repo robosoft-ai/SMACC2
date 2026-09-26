@@ -27,8 +27,8 @@ void CbSpiralUp::onEntry()
   const float dy = localPosition_->getY() - params_.centerY;
   startAngle_ = std::atan2(dy, dx);
   currentAngle_ = startAngle_;
-  startAltitude_ = std::isfinite(params_.startAltitudeM) ? params_.startAltitudeM
-                                                          : -localPosition_->getZ();
+  startAltitude_ =
+    std::isfinite(params_.startAltitudeM) ? params_.startAltitudeM : -localPosition_->getZ();
   lastReportedOrbit_ = -1;
   lastUpdateTime_ = std::chrono::steady_clock::now();
 
@@ -51,7 +51,7 @@ void CbSpiralUp::command()
   const float climb = std::min(orbits * params_.climbPerOrbitM, params_.climbTotalM);
   const float x = params_.centerX + params_.radiusM * std::cos(currentAngle_);
   const float y = params_.centerY + params_.radiusM * std::sin(currentAngle_);
-  const float z = -(startAltitude_ + climb);           // NED: up is negative
+  const float z = -(startAltitude_ + climb);                   // NED: up is negative
   const float yaw = currentAngle_ + static_cast<float>(M_PI);  // nose toward the axis
   trajectorySetpoint_->setPositionNED(x, y, z, yaw);
 

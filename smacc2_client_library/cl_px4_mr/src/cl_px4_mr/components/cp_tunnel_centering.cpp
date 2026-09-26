@@ -154,7 +154,9 @@ void CpTunnelCentering::onCloud(const sensor_msgs::msg::PointCloud2 & msg)
     }
     const bool ahead = x >= params_.lookAheadMinM;
     // walls: the band at flight height, in the slab ahead
-    if (ahead && std::fabs(z) <= params_.wallBandHalfHeightM && std::fabs(y) <= params_.lateralSearchM)
+    if (
+      ahead && std::fabs(z) <= params_.wallBandHalfHeightM &&
+      std::fabs(y) <= params_.lateralSearchM)
     {
       if (y > 0.0f)
       {

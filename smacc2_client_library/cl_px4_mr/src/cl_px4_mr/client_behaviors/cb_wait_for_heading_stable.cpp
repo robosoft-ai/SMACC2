@@ -68,8 +68,8 @@ void CbWaitForHeadingStable::onEntry()
       samples.pop_front();
     }
 
-    bool windowFull = !samples.empty() && samples.back().first - samples.front().first >=
-                                            0.9 * params_.windowS;
+    bool windowFull =
+      !samples.empty() && samples.back().first - samples.front().first >= 0.9 * params_.windowS;
     float drift = 0.0f, offset = 0.0f;
     bool stable = false, aligned = true;
     if (windowFull)
@@ -120,10 +120,10 @@ void CbWaitForHeadingStable::onEntry()
           "CbWaitForHeadingStable: heading %.1f deg NOT ready: drift %.2f deg/s%s - the EKF "
           "yaw is not trustworthy for takeoff",
           samples.back().second * 180.0 / M_PI, drift / params_.windowS * 180.0 / M_PI,
-          checkExpected ? (", offset from parked heading " +
-                           std::to_string(offset * 180.0 / M_PI) + " deg")
-                            .c_str()
-                        : "");
+          checkExpected
+            ? (", offset from parked heading " + std::to_string(offset * 180.0 / M_PI) + " deg")
+                .c_str()
+            : "");
       }
     }
 

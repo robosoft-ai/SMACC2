@@ -47,7 +47,11 @@ def generate_launch_description():
     sm_start_delay = LaunchConfiguration("sm_start_delay")
 
     tee_prefix = (
-        'bash -c \'stdbuf -oL -eL "$@" 2>&1 | tee ' + RUNTIME_LOG + " " + RUNTIME_LOG_DATED + "' --"
+        'bash -c \'stdbuf -oL -eL "$@" 2>&1 | tee '
+        + RUNTIME_LOG
+        + " "
+        + RUNTIME_LOG_DATED
+        + "' --"
     )
 
     rviz_config = PathJoinSubstitution(
@@ -68,7 +72,9 @@ def generate_launch_description():
             ),
             DeclareLaunchArgument("rviz", default_value="true"),
             DeclareLaunchArgument(
-                "record_map", default_value="true", description="accumulate the lidar voxel map to /tmp"
+                "record_map",
+                default_value="true",
+                description="accumulate the lidar voxel map to /tmp",
             ),
             DeclareLaunchArgument(
                 "sm_start_delay",
@@ -110,7 +116,9 @@ def generate_launch_description():
                 executable="cloud_map_recorder.py",
                 name="cloud_map_recorder",
                 output="screen",
-                parameters=[{"use_sim_time": True, "topic": lidar_ros_topic, "output": MAP_FILE_DATED}],
+                parameters=[
+                    {"use_sim_time": True, "topic": lidar_ros_topic, "output": MAP_FILE_DATED}
+                ],
                 condition=IfCondition(LaunchConfiguration("record_map")),
             ),
             Node(
@@ -118,7 +126,9 @@ def generate_launch_description():
                 executable="cloud_map_recorder.py",
                 name="cloud_map_recorder_latest",
                 output="log",
-                parameters=[{"use_sim_time": True, "topic": lidar_ros_topic, "output": MAP_FILE_LATEST}],
+                parameters=[
+                    {"use_sim_time": True, "topic": lidar_ros_topic, "output": MAP_FILE_LATEST}
+                ],
                 condition=IfCondition(LaunchConfiguration("record_map")),
             ),
             TimerAction(

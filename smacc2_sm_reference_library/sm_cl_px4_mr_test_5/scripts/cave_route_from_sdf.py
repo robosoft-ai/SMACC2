@@ -103,7 +103,9 @@ def main():
         model, pose = tiles.get(name, ("?", [0] * 6))
         if z0 is None:
             z0 = pose[2]
-        flag = "" if abs(pose[2] - z0) < 0.5 else "   <- floor height changes; stop before this tile"
+        flag = (
+            "" if abs(pose[2] - z0) < 0.5 else "   <- floor height changes; stop before this tile"
+        )
         print(f"  {name:<10}{model:<52}{pose[0]:8.1f} {pose[1]:8.1f} {pose[2]:7.1f}{flag}")
         if flag:
             break

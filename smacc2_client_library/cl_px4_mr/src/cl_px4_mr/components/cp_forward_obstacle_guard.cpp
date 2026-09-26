@@ -20,9 +20,9 @@
 
 #include <cl_px4_mr/components/cp_forward_obstacle_guard.hpp>
 
-#include <sensor_msgs/point_cloud2_iterator.hpp>
 #include <tf2/LinearMath/Matrix3x3.h>
 #include <tf2/LinearMath/Quaternion.h>
+#include <sensor_msgs/point_cloud2_iterator.hpp>
 
 #include <limits>
 
@@ -147,7 +147,8 @@ void CpForwardObstacleGuard::onCloud(const sensor_msgs::msg::PointCloud2 & msg)
   }
   if (gatedClouds_ > 0)
   {
-    RCLCPP_INFO(getLogger(), "CpForwardObstacleGuard: cone active again after %d gated clouds", gatedClouds_);
+    RCLCPP_INFO(
+      getLogger(), "CpForwardObstacleGuard: cone active again after %d gated clouds", gatedClouds_);
     gatedClouds_ = 0;
     triggerStreak_ = 0;
   }
@@ -217,8 +218,8 @@ void CpForwardObstacleGuard::onCloud(const sensor_msgs::msg::PointCloud2 & msg)
       tooClose_ = true;
       clearStreak_ = 0;
       RCLCPP_WARN(
-        getLogger(), "CpForwardObstacleGuard: OBSTACLE min range %.2f m (%d hits in cone)", minRange,
-        hits);
+        getLogger(), "CpForwardObstacleGuard: OBSTACLE min range %.2f m (%d hits in cone)",
+        minRange, hits);
       onObstacleTooClose_();
     }
   }
