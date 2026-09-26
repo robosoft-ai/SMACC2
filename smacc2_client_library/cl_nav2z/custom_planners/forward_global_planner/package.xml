@@ -5,7 +5,7 @@
   <version>3.1.0</version>
   <description>The forward_global_planner package.</description>
 
-  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
 
   <license>Apache-2.0</license>
 
