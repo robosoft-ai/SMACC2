@@ -40,8 +40,10 @@ public:
   {
     this->createComponent<CpMicroRosAgent, TOrthogonal, TClient>();
     this->createComponent<CpVehicleCommand, TOrthogonal, TClient>();
-    this->createComponent<CpTrajectorySetpoint, TOrthogonal, TClient>();
+    // local position before the setpoint publisher: CpTrajectorySetpoint resolves it
+    // in onInitialize (hold() was a silent no-op while the order was reversed)
     this->createComponent<CpVehicleLocalPosition, TOrthogonal, TClient>();
+    this->createComponent<CpTrajectorySetpoint, TOrthogonal, TClient>();
     this->createComponent<CpOffboardKeepAlive, TOrthogonal, TClient>();
     this->createComponent<CpVehicleStatus, TOrthogonal, TClient>();
     this->createComponent<CpVehicleCommandAck, TOrthogonal, TClient>();

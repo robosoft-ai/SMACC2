@@ -166,6 +166,18 @@ persists through all inner state transitions.
 
 See `sm_mode_state_behavior_1` for a complete working example.
 
+## Container-State Reactions Are External Transitions (hard-won, 2026-09)
+
+Boost.Statechart has no local transitions: a reaction declared on a container state
+(superstate or mode state) whose target is one of its OWN inner states exits the container
+and re-enters it - every container-scoped behavior, reactor and shared member is destroyed
+and recreated. To catch an event from all inner states without losing container-scoped
+objects, put the nominal inner states in a superstate one level down and make the reaction
+targets siblings of that superstate. `sm_cl_px4_mr_test_5` does this: `MsInFlight` hosts the
+lidar guard behavior and the retrace data, `SsCaveMission` (inside it) declares the
+obstacle/timeout reactions, and `StObstacleHold` / `StReturnHome` are `MsInFlight`-level
+siblings of `SsCaveMission`.
+
 ## Undo Navigation Patterns
 
 `sm_nav2_gazebo_test_2` is the reference for undo path backwards navigation:

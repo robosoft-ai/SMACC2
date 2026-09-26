@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version='1.9'>
+  <!-- PX4 x500 with the lidar_3d sensor on top: the x500_lidar_2d wrapper with the 3D lidar.
+       Spawned by PX4 (px4-rc.gzsim) from ${PX4_GZ_MODELS}/x500_lidar_3d/model.sdf; the nested
+       <uri>x500</uri> resolves through GZ_SIM_RESOURCE_PATH (PX4's Tools/simulation/gz/models). -->
+  <model name='x500_lidar_3d'>
+    <include merge='true'>
+      <uri>x500</uri>
+    </include>
+    <include merge='true'>
+      <uri>model://lidar_3d</uri>
+      <pose>0.12 0 0.26 0 0 0</pose>
+    </include>
+    <joint name="LidarJoint" type="fixed">
+      <parent>base_link</parent>
+      <child>lidar_link</child>
+      <pose relative_to="base_link">0.12 0 0.26 0 0 0</pose>
+    </joint>
+  </model>
+</sdf>

@@ -14,6 +14,7 @@
 
 #include <cl_px4_mr/client_behaviors/cb_connect_micro_ros_agent.hpp>
 #include <cl_px4_mr/components/cp_micro_ros_agent.hpp>
+#include <cl_px4_mr/components/cp_vehicle_local_position.hpp>
 
 #include <chrono>
 
@@ -104,8 +105,19 @@ void CbConnectMicroRosAgent::onEntry()
         !msg->attitude_invalid && !msg->local_altitude_invalid && !msg->local_position_invalid);
     });
 
+  // the failsafe flags say an estimate exists; the local position and velocity
+  // also have to be valid. NOT heading_good_for_control: with a magnetometer
+  // heading PX4 only sets it after the in-flight yaw alignment (moving with GPS
+  // course), so on the ground it is false by design; it is logged for diagnosis.
+  auto controlReady = [this]()
+  {
+    return localPosition_ == nullptr ||
+           (localPosition_->isValid() && localPosition_->isVelocityValid());
+  };
+  auto flag = [this](bool (CpVehicleLocalPosition::*f)() const)
+  { return localPosition_ ? static_cast<int>((localPosition_->*f)()) : -1; };
   rclcpp::Rate healthRate(2.0);
-  while (!this->isShutdownRequested() && !healthOk_.load())
+  while (!this->isShutdownRequested() && !(healthOk_.load() && controlReady()))
   {
     auto elapsed = std::chrono::steady_clock::now() - startTime;
     double elapsedSec = std::chrono::duration<double>(elapsed).count();
@@ -114,23 +126,25 @@ void CbConnectMicroRosAgent::onEntry()
       RCLCPP_ERROR(
         getLogger(),
         "CbConnectMicroRosAgent: timeout (%.1fs) waiting for health check. "
-        "attitude_invalid=%d, local_altitude_invalid=%d, local_position_invalid=%d",
+        "attitude_invalid=%d, local_altitude_invalid=%d, local_position_invalid=%d, "
+        "heading_good_for_control=%d, velocity_valid=%d",
         timeoutSec_, attitudeInvalid_.load(), localAltitudeInvalid_.load(),
-        localPositionInvalid_.load());
+        localPositionInvalid_.load(), flag(&CpVehicleLocalPosition::isHeadingGoodForControl),
+        flag(&CpVehicleLocalPosition::isVelocityValid));
       this->postPx4Failure();
       return;
     }
-
     RCLCPP_INFO(
       getLogger(),
       "CbConnectMicroRosAgent: health check: attitude_invalid=%d, "
-      "local_altitude_invalid=%d, local_position_invalid=%d",
-      attitudeInvalid_.load(), localAltitudeInvalid_.load(), localPositionInvalid_.load());
-
+      "local_altitude_invalid=%d, local_position_invalid=%d, heading_good_for_control=%d, "
+      "velocity_valid=%d",
+      attitudeInvalid_.load(), localAltitudeInvalid_.load(), localPositionInvalid_.load(),
+      flag(&CpVehicleLocalPosition::isHeadingGoodForControl),
+      flag(&CpVehicleLocalPosition::isVelocityValid));
     healthRate.sleep();
   }
-
-  if (healthOk_.load())
+  if (healthOk_.load() && controlReady())
   {
     RCLCPP_INFO(getLogger(), "CbConnectMicroRosAgent: health check passed - posting success");
     this->postPx4Success();

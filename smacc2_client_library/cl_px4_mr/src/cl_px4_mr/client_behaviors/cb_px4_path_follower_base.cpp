@@ -20,6 +20,7 @@
 
 #include <cl_px4_mr/client_behaviors/cb_px4_path_follower_base.hpp>
 #include <cl_px4_mr/components/cp_trajectory_setpoint.hpp>
+#include <cl_px4_mr/components/cp_tunnel_centering.hpp>
 #include <cl_px4_mr/components/cp_vehicle_local_position.hpp>
 #include <cl_px4_mr/utils/angle_utils.hpp>
 
@@ -86,6 +87,7 @@ void CbPx4PathFollowerBase::onEntry()
   cumLen_ = cumulativeLengths(path_);
   totalLen_ = cumLen_.empty() ? 0.0f : cumLen_.back();
   sCarrot_ = 0.0f;
+  carrotVertex_ = 0;
   lastProgressDecile_ = -1;
 
   const float speed = std::max(followerParams_.groundSpeed, 0.05f);
@@ -109,9 +111,13 @@ void CbPx4PathFollowerBase::onEntry()
   RCLCPP_INFO(
     getLogger(),
     "%s: following %zu vertices, %.1f m at %.1f m/s (leash %.1f m) from NED (%.1f, %.1f, %.1f) "
-    "to (%.1f, %.1f, %.1f)",
+    "to (%.1f, %.1f, %.1f)%s",
     behaviorName(), path_.size(), totalLen_, speed, followerParams_.leash, path_.front().x,
-    path_.front().y, path_.front().z, path_.back().x, path_.back().y, path_.back().z);
+    path_.front().y, path_.front().z, path_.back().x, path_.back().y, path_.back().z,
+    followerParams_.useTunnelCentering
+      ? (tunnelCentering_ ? " + tunnel centering"
+                          : " (tunnel centering requested but no component)")
+      : "");
   onPathStarted(path_);
 
   lastCmd_ = commandFor(0.0f);
@@ -158,9 +164,10 @@ void CbPx4PathFollowerBase::update()
   vehicle.y = localPosition_->getY();
   vehicle.z = localPosition_->getZ();
 
-  // advance the carrot, throttled by the leash
+  // advance the carrot, throttled by the leash (measured to the carrot as it
+  // will actually be commanded, centering offsets included)
   const float sNext = std::min(sCarrot_ + followerParams_.groundSpeed * dt, totalLen_);
-  const NedPoint candidate = sampleAtArcLength(path_, cumLen_, sNext);
+  const NedPoint candidate = commandFor(sNext);
   if (nedDistance(candidate, vehicle) <= followerParams_.leash)
   {
     sCarrot_ = sNext;
@@ -168,6 +175,14 @@ void CbPx4PathFollowerBase::update()
 
   lastCmd_ = commandFor(sCarrot_);
   trajectorySetpoint_->setPositionNED(lastCmd_.x, lastCmd_.y, lastCmd_.z, lastCmd_.yaw);
+
+  // vertex most recently passed by the carrot (cumLen_[0] == 0, so the
+  // upper_bound is never begin())
+  {
+    const size_t ub = std::upper_bound(cumLen_.begin(), cumLen_.end(), sCarrot_) - cumLen_.begin();
+    const size_t idx = ub == 0 ? 0 : ub - 1;
+    carrotVertex_ = path_.empty() ? 0 : std::min(idx, path_.size() - 1);
+  }
 
   const int decile = static_cast<int>(progressFraction() * 10.0f);
   if (decile != lastProgressDecile_ && decile > 0 && decile < 10)
@@ -177,10 +192,11 @@ void CbPx4PathFollowerBase::update()
       getLogger(), "%s: %d%% (%.0f / %.0f m)", behaviorName(), decile * 10, sCarrot_, totalLen_);
   }
 
-  // completion: carrot at the end and vehicle within tolerance of the last vertex
+  // completion: carrot at the end and vehicle within tolerance of the final
+  // commanded carrot (== the last vertex unless centering offsets it)
   if (sCarrot_ >= totalLen_)
   {
-    const NedPoint & end = path_.back();
+    const NedPoint & end = lastCmd_;
     const float dxy = nedDistanceXY(vehicle, end);
     const float dz = std::fabs(vehicle.z - end.z);
     if (dxy <= followerParams_.arrivalXyTol && dz <= followerParams_.arrivalZTol)
@@ -238,7 +254,35 @@ NedPoint CbPx4PathFollowerBase::commandFor(float s)
       break;
   }
   cmd.yaw = wrapPi(cmd.yaw);
+  applyCentering(cmd);
   return cmd;
+}
+
+void CbPx4PathFollowerBase::applyCentering(NedPoint & cmd) const
+{
+  if (
+    !followerParams_.useTunnelCentering || tunnelCentering_ == nullptr ||
+    !tunnelCentering_->valid() || localPosition_ == nullptr)
+  {
+    return;
+  }
+  const float up = tunnelCentering_->verticalOffsetM();  // > 0: climb
+  cmd.z -= up;
+  // the lateral offset is measured in the vehicle's own heading frame (the
+  // lidar's); apply it only while that heading agrees with the path tangent -
+  // mid-turn "left" can point straight at the wall the path leads away from
+  const float heading = localPosition_->getHeading();
+  const float misalign = wrapPi(heading - cmd.yaw);
+  if (std::fabs(misalign) > 0.7854f)
+  {
+    return;
+  }
+  const float lateral = tunnelCentering_->lateralOffsetM();  // > 0: left of the vehicle
+  // NED: heading psi from north toward east; left of forward = (sin psi, -cos psi)
+  const float s = std::sin(heading);
+  const float c = std::cos(heading);
+  cmd.x += lateral * s;
+  cmd.y -= lateral * c;
 }
 
 }  // namespace cl_px4_mr
