@@ -21,6 +21,7 @@
 #pragma once
 
 #include <cl_px4_mr/client_behaviors/cb_px4_client_behavior_base.hpp>
+#include <cl_px4_mr/components/cp_tunnel_centering.hpp>
 #include <cl_px4_mr/utils/geo_utils.hpp>
 
 #include <atomic>
@@ -30,8 +31,6 @@
 
 namespace cl_px4_mr
 {
-
-class CpTunnelCentering;
 
 enum class YawMode
 {
