@@ -1,6 +1,6 @@
 <h2>State Machine Diagram</h2>
 
- ![sm_cl_px4_mr_test_5](docs/SmClPx4MrTest4_2026-9-26_105355.svg)
+ ![sm_cl_px4_mr_test_5](docs/SmClPx4MrTest5_2026-9-26_105355.svg)
 
 <h2>Description</h2>
 
