@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #pragma once
 
 #include <cl_px4_mr/client_behaviors/cb_px4_path_follower_base.hpp>
@@ -30,7 +29,8 @@ namespace cl_px4_mr
 class CbLemniscate : public CbPx4PathFollowerBase
 {
 public:
-  explicit CbLemniscate(FlightPatternFigureEightParams params = {}, PathFollowerParams follower = {});
+  explicit CbLemniscate(
+    FlightPatternFigureEightParams params = {}, PathFollowerParams follower = {});
   explicit CbLemniscate(int count, float size = 5.0f);
 
   void setParams(const FlightPatternFigureEightParams & params) { params_ = params; }

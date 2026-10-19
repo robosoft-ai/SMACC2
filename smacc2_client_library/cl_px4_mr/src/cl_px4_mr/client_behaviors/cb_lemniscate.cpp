@@ -41,7 +41,8 @@ std::vector<NedPoint> CbLemniscate::buildPath(const NedPoint & current)
     getLogger(), "CbLemniscate: %d x %s figure eight(s), lobe %.1f m, centre (%.1f, %.1f), ~%.0f m",
     params_.count, turnName(params_.direction), params_.size,
     std::isnan(params_.centerX) ? current.x : params_.centerX,
-    std::isnan(params_.centerY) ? current.y : params_.centerY, flightPatternFigureEightLength(params_));
+    std::isnan(params_.centerY) ? current.y : params_.centerY,
+    flightPatternFigureEightLength(params_));
   return generateFlightPatternFigureEight(params_, current);
 }
 
