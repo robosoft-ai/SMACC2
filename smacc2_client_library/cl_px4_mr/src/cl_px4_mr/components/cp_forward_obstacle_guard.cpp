@@ -171,6 +171,14 @@ void CpForwardObstacleGuard::onCloud(const sensor_msgs::msg::PointCloud2 & msg)
     {
       continue;  // gz reports no-return as inf (is_dense = false)
     }
+    if (params_.opticalFrameInput)
+    {
+      // optical (z forward, x right, y down) -> sensor (x forward, y left, z up)
+      const float ox = x, oy = y, oz = z;
+      x = oz;
+      y = -ox;
+      z = -oy;
+    }
     if (level)
     {
       const float lx = r[0] * x + r[1] * y + r[2] * z;
