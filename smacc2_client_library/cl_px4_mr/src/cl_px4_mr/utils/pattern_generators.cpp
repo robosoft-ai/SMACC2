@@ -21,6 +21,7 @@
 #include <cl_px4_mr/utils/pattern_generators.hpp>
 
 #include <algorithm>
+#include <limits>
 
 namespace cl_px4_mr
 {
@@ -113,6 +114,77 @@ Leg legFrom(const NedPoint & start, float endX, float endY)
 }
 
 }  // namespace
+
+std::vector<NedPoint> generateFlightPatternFigureEight(
+  const FlightPatternFigureEightParams & p, const NedPoint & current)
+{
+  const float cx = pick(p.centerX, current.x);
+  const float cy = pick(p.centerY, current.y);
+  const float z = altitudeToZ(p.altitudeAgl, current.z);
+  const float a = std::max(p.size, 0.5f);
+  const int n = std::max(p.pointsPerLoop, 16);
+  const float sign = turnSign(p.direction);
+
+  if (p.count <= 0)
+  {
+    NedPoint here = current;
+    here.z = z;
+    here.yaw = kNaN;
+    return {here};
+  }
+
+  // lobe axis: given, else the entry heading, else north
+  const float heading =
+    std::isnan(p.heading) ? (std::isnan(current.yaw) ? 0.0f : current.yaw) : p.heading;
+  const float ch = std::cos(heading);
+  const float sh = std::sin(heading);
+
+  // one loop of the lemniscate x = a cos t / (1 + sin^2 t), y = a sin t cos t / (1 + sin^2 t)
+  std::vector<NedPoint> loop;
+  loop.reserve(static_cast<size_t>(n));
+  for (int k = 0; k < n; ++k)
+  {
+    const float t = sign * 2.0f * static_cast<float>(M_PI) * k / n;
+    const float st = std::sin(t);
+    const float ct = std::cos(t);
+    const float denom = 1.0f + st * st;
+    const float lx = a * ct / denom;
+    const float ly = a * st * ct / denom;
+    NedPoint v;
+    v.x = cx + lx * ch - ly * sh;
+    v.y = cy + lx * sh + ly * ch;
+    v.z = z;
+    v.yaw = kNaN;
+    loop.push_back(v);
+  }
+
+  // enter at the sample nearest the vehicle
+  int start = 0;
+  float best = std::numeric_limits<float>::infinity();
+  for (int k = 0; k < n; ++k)
+  {
+    const float d = std::hypot(loop[k].x - current.x, loop[k].y - current.y);
+    if (d < best)
+    {
+      best = d;
+      start = k;
+    }
+  }
+
+  std::vector<NedPoint> path;
+  path.reserve(static_cast<size_t>(p.count * n + 1));
+  for (int k = 0; k <= p.count * n; ++k)
+  {
+    path.push_back(loop[static_cast<size_t>((start + k) % n)]);
+  }
+  return path;
+}
+
+float flightPatternFigureEightLength(const FlightPatternFigureEightParams & p)
+{
+  // perimeter of the lemniscate of Bernoulli = 5.2441 a
+  return 5.2441f * std::max(p.size, 0.5f) * std::max(p.count, 0);
+}
 
 std::vector<NedPoint> generateFlightPatternSineWaveVertical(
   const FlightPatternSineWaveVerticalParams & p, const NedPoint & current)

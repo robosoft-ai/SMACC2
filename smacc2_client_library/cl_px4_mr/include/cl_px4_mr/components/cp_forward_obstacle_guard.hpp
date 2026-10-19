@@ -68,6 +68,10 @@ struct ForwardObstacleGuardParams
   // true heading and floorCutoffM is true height below the sensor. Without it
   // a nose-down pitch tilts the floor up into the cone.
   bool levelFrame = true;
+  // The cloud is in a camera OPTICAL frame (z forward, x right, y down - e.g. a
+  // depth_image_proc point cloud) rather than the sensor frame assumed above
+  // (x forward, y left, z up): remap every point before the cone test.
+  bool opticalFrameInput = false;
 };
 
 // Watches a PointCloud2 (sensor frame) for returns inside a forward cone and

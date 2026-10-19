@@ -99,6 +99,26 @@ std::vector<NedPoint> generateFlightPatternLoiter(
   const FlightPatternLoiterParams & p, const NedPoint & current);
 
 // ---------------------------------------------------------------------------
+// Figure eight (lemniscate of Bernoulli) about a centre: two lobes reaching
+// `size` from the centre along the `heading` axis, flown `count` times, entered
+// at the point of the curve nearest the vehicle. Yaw is left to the follower
+// (tangent): the camera looks along the path.
+struct FlightPatternFigureEightParams
+{
+  float centerX = pattern_detail::kNaN;
+  float centerY = pattern_detail::kNaN;
+  float altitudeAgl = pattern_detail::kNaN;
+  float size = 5.0f;                     // centre to lobe tip (m); lobes are ~0.35 * size wide
+  float heading = pattern_detail::kNaN;  // NED yaw of the lobe axis; NaN = entry heading
+  int count = 1;  // loops; 0 -> single vertex at the entry point, immediate success
+  int pointsPerLoop = 72;
+  Turn direction = Turn::RIGHT;  // sense of travel along the curve
+};
+std::vector<NedPoint> generateFlightPatternFigureEight(
+  const FlightPatternFigureEightParams & p, const NedPoint & current);
+float flightPatternFigureEightLength(const FlightPatternFigureEightParams & p);
+
+// ---------------------------------------------------------------------------
 // Straight transit with sinusoidal altitude about the base altitude
 struct FlightPatternSineWaveVerticalParams
 {

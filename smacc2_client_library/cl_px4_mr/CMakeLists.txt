@@ -67,6 +67,7 @@ set(SOURCES
   src/cl_px4_mr/client_behaviors/cb_px4_path_follower_base.cpp
   src/cl_px4_mr/client_behaviors/cb_ascend_to_altitude.cpp
   src/cl_px4_mr/client_behaviors/cb_loiter.cpp
+  src/cl_px4_mr/client_behaviors/cb_lemniscate.cpp
   src/cl_px4_mr/client_behaviors/cb_sine_wave_vertical.cpp
   src/cl_px4_mr/client_behaviors/cb_sine_wave_horizontal.cpp
   src/cl_px4_mr/client_behaviors/cb_square_spiral.cpp
