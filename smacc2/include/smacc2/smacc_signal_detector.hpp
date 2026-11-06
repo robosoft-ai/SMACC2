@@ -114,9 +114,6 @@ private:
 
 void onSigQuit(int sig);
 
-// Signal handler for graceful shutdown (SIGINT/SIGTERM)
-void onSignalShutdown(int sig);
-
 // Singleton class managing SMACC execution lifecycle
 // Replaces global g_signal_detector for signal handler access
 class SmExecution
@@ -150,9 +147,11 @@ private:
 template <typename StateMachineType>
 void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
 {
-  // Register signal handlers for graceful shutdown
-  ::signal(SIGINT, onSignalShutdown);
-  ::signal(SIGTERM, onSignalShutdown);
+  // SIGINT and SIGTERM are left to the handlers rclcpp::init installed. Those only signal a
+  // semaphore; a dedicated rclcpp thread then calls rclcpp::shutdown(), and the on_shutdown
+  // callback registered in SignalDetector::initialize stops the polling loop and
+  // terminates the scheduler. Replacing them here with a handler that called
+  // rclcpp::shutdown() directly ran DDS teardown inside the signal context.
   ::signal(SIGQUIT, onSigQuit);
 
   // Get singleton instance
@@ -204,9 +203,11 @@ void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
 template <typename StateMachineType>
 SmExecution & run_async()
 {
-  // Register signal handlers for graceful shutdown
-  ::signal(SIGINT, onSignalShutdown);
-  ::signal(SIGTERM, onSignalShutdown);
+  // SIGINT and SIGTERM are left to the handlers rclcpp::init installed. Those only signal a
+  // semaphore; a dedicated rclcpp thread then calls rclcpp::shutdown(), and the on_shutdown
+  // callback registered in SignalDetector::initialize stops the polling loop and
+  // terminates the scheduler. Replacing them here with a handler that called
+  // rclcpp::shutdown() directly ran DDS teardown inside the signal context.
   ::signal(SIGQUIT, onSigQuit);
 
   // Get singleton instance

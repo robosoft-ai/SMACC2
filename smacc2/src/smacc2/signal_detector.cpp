@@ -25,6 +25,8 @@
 #include <vector>
 
 #include <lttng/tracepoint.h>
+#include <unistd.h>
+
 #include <smacc2/client_bases/smacc_action_client_base.hpp>
 #include <smacc2/smacc_signal_detector.hpp>
 #include <smacc2/smacc_state_machine.hpp>
@@ -398,15 +400,24 @@ void SignalDetector::pollingLoop()
   {
     RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] Running in single-threaded mode.");
 
+    // One executor for the whole loop. rclcpp::spin_some(nh) built a new executor on every
+    // iteration, and an executor constructor creates a guard condition, which throws
+    // RCLError if rclcpp::shutdown() lands between the loop condition and that call.
+    // Shutdown now runs on rclcpp's signal thread, concurrently with this loop, so the loop
+    // must tolerate it: an existing executor's spin_some() simply returns once the context
+    // is invalid.
+    rclcpp::executors::SingleThreadedExecutor executor;
+    executor.add_node(nh);
     rclcpp::Rate r(loop_rate_hz);
     while (rclcpp::ok() && !end_)
     {
       RCLCPP_INFO_STREAM_THROTTLE(
         getLogger(), *getNode()->get_clock(), 10000, "[SignalDetector] Heartbeat");
       pollOnce();
-      rclcpp::spin_some(nh);
+      executor.spin_some();
       r.sleep();
     }
+    executor.remove_node(nh);
   }
   else
   {
@@ -418,29 +429,14 @@ void SignalDetector::pollingLoop()
   }
 }
 
-void onSignalShutdown(int /*sig*/)
-{
-  // IMPORTANT: Signal handlers can only call async-signal-safe functions
-  // We must NOT call complex C++ methods here (like terminateScheduler)
-  // as they may use mutexes/condition variables which are not signal-safe
-
-  // Stop the signal detector loop (atomic operation - signal-safe)
-  SmExecution & smExecution = SmExecution::getInstance();
-  if (smExecution.signalDetector)
-  {
-    smExecution.signalDetector->stop();
-  }
-
-  // Trigger ROS2 shutdown (this handles its own signal safety)
-  rclcpp::shutdown();
-
-  // Note: Scheduler termination will happen from main thread after polling loop exits
-}
-
+// Hard escape hatch. Only async-signal-safe calls: no logging (takes a mutex), no exit()
+// (runs static destructors and atexit handlers in signal context).
 void onSigQuit(int)
 {
-  RCLCPP_INFO(rclcpp::get_logger("SMACC"), "SignalDetector: SIGQUIT received.");
-  exit(0);
+  static const char msg[] = "SMACC: SIGQUIT received, exiting immediately\n";
+  ssize_t unused = ::write(STDERR_FILENO, msg, sizeof(msg) - 1);
+  (void)unused;
+  ::_exit(128 + SIGQUIT);
 }
 
 }  // namespace smacc2
