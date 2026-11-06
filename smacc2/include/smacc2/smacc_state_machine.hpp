@@ -22,8 +22,8 @@
 #include <atomic>
 #include <boost/any.hpp>
 #include <map>
-#include <type_traits>
 #include <mutex>
+#include <type_traits>
 
 #include <smacc2/common.hpp>
 #include <smacc2/introspection/introspection.hpp>

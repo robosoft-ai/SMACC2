@@ -33,10 +33,14 @@ public:
     tick_->onTimerTick(&CbMixinFirstSubscriber::onTick, this);
     RCLCPP_INFO(
       getLogger(), "[CbMixinFirstSubscriber] subscribed to onTimerTick; this=%p base=%p",
-      static_cast<void *>(this), static_cast<void *>(static_cast<smacc2::ISmaccClientBehavior *>(this)));
+      static_cast<void *>(this),
+      static_cast<void *>(static_cast<smacc2::ISmaccClientBehavior *>(this)));
   }
 
-  void onExit() override { RCLCPP_INFO(getLogger(), "[CbMixinFirstSubscriber] onExit, ticks=%d", ticks_); }
+  void onExit() override
+  {
+    RCLCPP_INFO(getLogger(), "[CbMixinFirstSubscriber] onExit, ticks=%d", ticks_);
+  }
 
   void update() override {}
 
