@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sm_coretest_forced_finish_1</name>
+  <version>3.1.0</version>
+  <description>Core test: an asynchronous client behavior forced to finish by a transition on every cycle. Drives requestForceFinish/isShutdownRequested, the stateMachineCurrentAction discard check and the CURRENT_STATE event discard path in ISmaccStateMachine::postEvent.</description>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>smacc2</depend>
+  <depend>cl_ros2_timer</depend>
+  <depend>sr_event_countdown</depend>
+  <depend>rclcpp</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
