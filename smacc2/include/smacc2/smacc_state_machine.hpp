@@ -99,6 +99,8 @@ public:
   void requiresComponent(
     std::string name, SmaccComponentType *& storage, ComponentRequirement requirementType);
 
+  // Takes ownership of `ev` (must be allocated with `new`); the caller must not use it after
+  // this call. Released by the scheduler after dispatch, or here if discarded or on exception.
   template <typename EventType>
   void postEvent(EventType * ev, EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
 
