@@ -154,18 +154,6 @@ void SmaccAsyncClientBehavior::requestForceFinish()
   isShutdownRequested_ = true;
 }
 
-bool SmaccAsyncClientBehavior::isShutdownRequested()
-{
-  std::string shut = "";
-  if (isShutdownRequested_)
-  {
-    shut = "True";
-  }
-  else
-  {
-    shut = "False";
-  }
-  return isShutdownRequested_;
-}
+bool SmaccAsyncClientBehavior::isShutdownRequested() { return isShutdownRequested_; }
 
 }  // namespace smacc2
