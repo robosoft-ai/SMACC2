@@ -1,7 +1,7 @@
 # sm_coretest_signal_key_1
 
-Core test for the `stateCallbackConnections` key path (defect E in
-`smacc2_core_defect_fix_study.md`).
+Core test for the `stateCallbackConnections` map: the key path (defect E) and the
+state-entry finalization (defect F) in `smacc2_core_defect_fix_study.md`.
 
 `CbMixinFirstSubscriber` is declared `: public ISmaccUpdatable, public SmaccClientBehavior`, so
 its `ISmaccClientBehavior` subobject is not at offset 0. In `StA` it subscribes to a 5 Hz
@@ -16,3 +16,14 @@ disposed and destroyed; the tick keeps firing into `StRest`.
 
 Run the binary directly for sanitizer runs (see the study's "Builds" section); the launch file
 tees to `/tmp/sm_coretest_signal_key_1_latest.log`.
+
+## Defect F: the state subscribes too
+
+`StA` subscribes to the same tick with `this` from its own `onEntry`. Boost.Statechart destroys
+the state object right after `exit()`.
+
+- Unfixed core: nothing erases the state's map entry, so the connection stays live and the next
+  tick calls `StA::onStateTick` on freed memory: `[StA] STATE TICK` lines during `StRest`, ASan
+  `heap-use-after-free`.
+- Fixed core: `notifyOnStateExited` finalizes the state's entry last, after behaviors, reactors
+  and generators; no `STATE TICK` line appears while `StRest` is active.

@@ -72,7 +72,9 @@ ISmaccStateMachine::~ISmaccStateMachine()
 
 void ISmaccStateMachine::disconnectSmaccSignalObject(void * object_ptr)
 {
-  RCLCPP_INFO(nh_->get_logger(), "[SmaccSignal] Object signal disconnecting %ld", (long)object_ptr);
+  // DEBUG: this runs for every disposed behavior, reactor, generator and state.
+  RCLCPP_DEBUG(
+    nh_->get_logger(), "[SmaccSignal] Object signal disconnecting %ld", (long)object_ptr);
   if (stateCallbackConnections.count(object_ptr) > 0)
   {
     auto callbackSemaphore = stateCallbackConnections[object_ptr];
@@ -81,7 +83,7 @@ void ISmaccStateMachine::disconnectSmaccSignalObject(void * object_ptr)
   }
   else
   {
-    RCLCPP_INFO(nh_->get_logger(), "[SmaccSignal] No signals found %ld", (long)object_ptr);
+    RCLCPP_DEBUG(nh_->get_logger(), "[SmaccSignal] No signals found %ld", (long)object_ptr);
   }
 }
 
