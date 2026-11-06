@@ -169,7 +169,8 @@ void ISmaccOrthogonal::onDispose()
   for (auto & clBehavior : clientBehaviors_.back())
   {
     clBehavior->dispose();
-    this->getStateMachine()->disconnectSmaccSignalObject((void *)clBehavior.get());
+    // No cast: the typed overload normalizes the key to the complete object's address.
+    this->getStateMachine()->disconnectSmaccSignalObject(clBehavior.get());
   }
 
   clientBehaviors_.back().clear();

@@ -453,15 +453,19 @@ smacc2::SmaccSignalConnection ISmaccStateMachine::createSignalConnection(
       demangledTypeName<TSmaccObjectType>().c_str());
 
     std::shared_ptr<CallbackCounterSemaphore> callbackCounterSemaphore;
-    if (stateCallbackConnections.count(object))
+    // Key on the complete object's address, not on whichever base pointer the subscriber
+    // happened to pass: disconnectSmaccSignalObject is called with a base-class pointer on
+    // dispose, and with multiple inheritance those addresses differ.
+    void * key = dynamic_cast<void *>(object);
+    if (stateCallbackConnections.count(key))
     {
-      callbackCounterSemaphore = stateCallbackConnections[object];
+      callbackCounterSemaphore = stateCallbackConnections[key];
     }
     else
     {
       callbackCounterSemaphore =
         std::make_shared<CallbackCounterSemaphore>(demangledTypeName<TSmaccObjectType>().c_str());
-      stateCallbackConnections[object] = callbackCounterSemaphore;
+      stateCallbackConnections[key] = callbackCounterSemaphore;
     }
 
     connection = binder.bindaux(signal, callback, object, callbackCounterSemaphore);
