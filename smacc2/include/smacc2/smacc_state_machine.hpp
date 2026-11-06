@@ -23,6 +23,7 @@
 #include <boost/any.hpp>
 #include <map>
 #include <mutex>
+#include <type_traits>
 
 #include <smacc2/common.hpp>
 #include <smacc2/introspection/introspection.hpp>
@@ -135,7 +136,17 @@ public:
   smacc2::SmaccSignalConnection createSignalConnection(
     TSmaccSignal & signal, TMemberFunctionPrototype callback, TSmaccObjectType * object);
 
+  // Finalizes and erases the signal connections registered by a state-scoped object.
+  // The typed overload normalizes the key with dynamic_cast<void *> (the complete object's
+  // address), as createSignalConnection does, so a base-subobject pointer and the
+  // most-derived pointer of the same object always map to the same entry.
   void disconnectSmaccSignalObject(void * object);
+
+  template <typename T>
+  std::enable_if_t<std::is_polymorphic<T>::value> disconnectSmaccSignalObject(T * object)
+  {
+    disconnectSmaccSignalObject(dynamic_cast<void *>(object));
+  }
 
   template <typename StateType>
   void notifyOnStateEntryStart(StateType * state);
