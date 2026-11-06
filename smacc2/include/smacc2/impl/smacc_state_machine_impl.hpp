@@ -719,13 +719,20 @@ void ISmaccStateMachine::notifyOnStateExited(StateType * state)
     }
   }
 
+  // The state itself may have subscribed to signals with `this`. Boost.Statechart destroys
+  // the state object right after exit() returns, so its entry must be finalized here, and
+  // last: behaviors, reactors and generators are disposed above, and a behavior's onExit
+  // thread may still emit a signal the state subscribed to. finalize() waits for in-flight
+  // callbacks while m_mutex_ is held (same as the behavior path in orthogonal.cpp).
+  this->disconnectSmaccSignalObject(state);
+
   // NOTE: do NOT clear stateCallbackConnections here. Entries are erased
   // per-object by disconnectSmaccSignalObject when each owner is disposed
-  // (behaviors via orthogonal onDispose, state reactors and event generators
-  // above). A blanket clear also dropped - without finalizing - the entries of
-  // container-state behaviors that outlive this inner state exit, so their
-  // boost connections were never disconnected and the next signal emission
-  // invoked a callback on a destroyed object (use-after-free segfault).
+  // (behaviors via orthogonal onDispose, state reactors, event generators and
+  // the state itself above). A blanket clear also dropped - without finalizing -
+  // the entries of container-state behaviors that outlive this inner state exit,
+  // so their boost connections were never disconnected and the next signal
+  // emission invoked a callback on a destroyed object (use-after-free segfault).
   currentState_.pop_back();
 
   // then call exit state
