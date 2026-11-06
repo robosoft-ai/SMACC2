@@ -7,22 +7,36 @@ jobs:
   tsan:
     name: ThreadSanitizer + UBSan
     runs-on: ubuntu-24.04
+    # ROS Jazzy comes preinstalled in the container. ros-tooling/setup-ros was
+    # pulling ros-jazzy-desktop and its toolchain (965 packages, 591 MB) through
+    # the runner's Ubuntu mirror, which took hours on a slow mirror. The same
+    # container pattern is used by jazzy-binary-build.yml.
+    container:
+      image: ros:jazzy-ros-base
+    timeout-minutes: 90
     env:
       TSAN_OPTIONS: halt_on_error=1:second_deadlock_stack=1
       UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
     steps:
       - uses: actions/checkout@v5
 
-      - uses: ros-tooling/setup-ros@v0.7
-        with:
-          required-ros-distributions: jazzy
-
       - name: Install dependencies
+        # Only the packages the build step selects. A whole-tree rosdep would
+        # pull nav2, MoveIt and Gazebo, which this job does not build.
         run: |
-          source /opt/ros/jazzy/setup.bash
-          sudo rosdep init || true
+          apt-get update
           rosdep update
-          rosdep install --from-paths . --ignore-src -r -y
+          rosdep install --ignore-src -r -y --from-paths \
+            smacc2 \
+            smacc2_msgs \
+            smacc2_client_library/cl_ros2_timer \
+            smacc2_state_reactor_library/sr_all_events_go \
+            smacc2_state_reactor_library/sr_event_countdown \
+            smacc2_state_reactor_library/sr_conditional \
+            smacc2_event_generator_library/eg_conditional_generator \
+            smacc2_event_generator_library/eg_random_generator \
+            smacc2_sm_reference_library/sm_atomic \
+            smacc2_sm_reference_library/sm_cl_ros2_timer_unit_test_1
 
       - name: Build with TSan + UBSan
         run: |
