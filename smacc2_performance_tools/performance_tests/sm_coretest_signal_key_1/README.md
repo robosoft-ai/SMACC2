@@ -1,29 +1,63 @@
 # sm_coretest_signal_key_1
 
-Core test for the `stateCallbackConnections` map: the key path (defect E) and the
-state-entry finalization (defect F) in `smacc2_core_defect_fix_study.md`.
+Core test for signal-connection cleanup of state-scoped subscribers. It checks that when a
+client behavior or a state subscribes to a signal with `this`, the connection is finalized when
+the subscriber is destroyed, so that later emissions never reach a dead object.
 
-`CbMixinFirstSubscriber` is declared `: public ISmaccUpdatable, public SmaccClientBehavior`, so
-its `ISmaccClientBehavior` subobject is not at offset 0. In `StA` it subscribes to a 5 Hz
-`CpRos2Timer::onTimerTick` signal with `this`. `StA` exits after 1 s and the behavior is
-disposed and destroyed; the tick keeps firing into `StRest`.
+## Design
 
-- Unfixed core: the dispose erases under the base-subobject address, finds nothing, and the
-  Boost connection stays live. The next tick calls `onTick` on freed memory: ASan reports
-  `heap-use-after-free`; the plain build logs `TICK` lines during `StRest` or crashes.
-- Fixed core: both sides key on `dynamic_cast<void *>`, the semaphore is finalized on dispose,
-  and no `TICK` line appears while `StRest` is active.
+- `ClTickSource` (in `OrTick`) owns a free-running `CpRos2Timer` at 5 Hz. The component lives
+  for the whole state machine, so its `onTimerTick` signal keeps firing after any state has
+  exited.
+- `CbMixinFirstSubscriber` is deliberately declared `: public ISmaccUpdatable, public
+  SmaccClientBehavior`, with the non-SMACC base first. That layout places the
+  `ISmaccClientBehavior` subobject away from the start of the object, so the pointer the
+  behavior subscribes with and the base pointer the orthogonal disposes it with are different
+  addresses. The behavior subscribes to the tick in `onEntry` and logs `[CbMixinFirstSubscriber]
+  TICK n`.
+- `StA` runs the behavior for 1 s and also subscribes to the same tick itself, with `this`,
+  from its own `onEntry`, logging `[StA] STATE TICK n`. Boost.Statechart destroys the state
+  object right after `exit()`.
+- `StRest` (1 s) has no subscriber of either kind. The machine cycles `StA -> StRest -> StA`
+  every 2 s.
 
-Run the binary directly for sanitizer runs (see the study's "Builds" section); the launch file
-tees to `/tmp/sm_coretest_signal_key_1_latest.log`.
+## Pass criteria
 
-## Defect F: the state subscribes too
+- No `TICK` or `STATE TICK` line is logged while `StRest` is active. Any such line is a
+  callback delivered into a destroyed behavior or state.
+- Each `StA` lifetime logs about 5 ticks for the behavior and about 5 for the state, reported
+  at exit (`onExit, ticks=` and `Exiting. state ticks=`).
+- Under AddressSanitizer: no `heap-use-after-free`, no `SEGV`.
 
-`StA` subscribes to the same tick with `this` from its own `onEntry`. Boost.Statechart destroys
-the state object right after `exit()`.
+The failure signature, if the cleanup regresses, is a `heap-use-after-free` inside the bound
+signal lambda under `CpRos2Timer::timerCallback`, with the memory freed either by the
+orthogonal's `shared_ptr` release (behavior case) or by `boost::statechart::detail::deallocate`
+(state case). In a plain build the state case segfaults on the first tick after the first
+`StA` exit.
 
-- Unfixed core: nothing erases the state's map entry, so the connection stays live and the next
-  tick calls `StA::onStateTick` on freed memory: `[StA] STATE TICK` lines during `StRest`, ASan
-  `heap-use-after-free`.
-- Fixed core: `notifyOnStateExited` finalizes the state's entry last, after behaviors, reactors
-  and generators; no `STATE TICK` line appears while `StRest` is active.
+## Running
+
+Plain:
+
+```bash
+ros2 launch sm_coretest_signal_key_1 sm_coretest_signal_key_1.launch.py
+```
+
+The launch file tees the node output to `/tmp/sm_coretest_signal_key_1_latest.log`.
+
+For sanitizer runs, build in a separate build and install base with the sanitizer flags and
+run the node binary directly, without a launch prefix (a `stdbuf` prefix preloads a library
+ahead of the sanitizer runtime and ASan refuses to start):
+
+```bash
+install_asan/sm_coretest_signal_key_1/lib/sm_coretest_signal_key_1/sm_coretest_signal_key_1_node --ros-args --log-level INFO
+```
+
+Twelve seconds, six cycles, is enough to see every pass criterion.
+
+## Note
+
+`StA` reaches the timer component through
+`getOrthogonal<OrTick>()->getClients().front()->getComponent<CpRos2Timer>()` rather than
+`requiresComponent`, because the state-level `requiresComponent` forwarder does not compile
+on this tree.
