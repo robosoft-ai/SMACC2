@@ -673,8 +673,10 @@ void ISmaccStateMachine::notifyOnStateExited(StateType * state)
 
   for (auto & sr : state->getStateReactors())
   {
-    auto srname = smacc2::demangleSymbol(typeid(*sr).name()).c_str();
-    RCLCPP_INFO(getLogger(), "State reactor disposing: %s", srname);
+    // Keep the std::string alive for the whole iteration; taking c_str() of the temporary
+    // returned by demangleSymbol left a dangling pointer that the log lines below read.
+    auto srname = smacc2::demangleSymbol(typeid(*sr).name());
+    RCLCPP_INFO(getLogger(), "State reactor disposing: %s", srname.c_str());
     try
     {
       this->disconnectSmaccSignalObject(sr.get());
@@ -685,14 +687,14 @@ void ISmaccStateMachine::notifyOnStateExited(StateType * state)
         getLogger(),
         "[State Reactor %s] Exception on OnDispose - continuing with next state reactor. Exception "
         "info: %s",
-        srname, e.what());
+        srname.c_str(), e.what());
     }
   }
 
   for (auto & eg : state->getEventGenerators())
   {
-    auto egname = smacc2::demangleSymbol(typeid(*eg).name()).c_str();
-    RCLCPP_INFO(getLogger(), "Event generator disposing: %s", egname);
+    auto egname = smacc2::demangleSymbol(typeid(*eg).name());
+    RCLCPP_INFO(getLogger(), "Event generator disposing: %s", egname.c_str());
     try
     {
       this->disconnectSmaccSignalObject(eg.get());
@@ -701,9 +703,9 @@ void ISmaccStateMachine::notifyOnStateExited(StateType * state)
     {
       RCLCPP_ERROR(
         getLogger(),
-        "[State Reactor %s] Exception on OnDispose - continuing with next state reactor. Exception "
-        "info: %s",
-        egname, e.what());
+        "[Event Generator %s] Exception on OnDispose - continuing with next event generator. "
+        "Exception info: %s",
+        egname.c_str(), e.what());
     }
   }
 
