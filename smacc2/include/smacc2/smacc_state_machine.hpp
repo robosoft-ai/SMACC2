@@ -19,6 +19,7 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <atomic>
 #include <boost/any.hpp>
 #include <map>
 #include <mutex>
@@ -54,7 +55,8 @@ enum class StateMachineInternalAction
   STATE_ENTERING,
   STATE_RUNNING,
   STATE_EXITING,
-  TRANSITIONING
+  TRANSITIONING,
+  STATE_MACHINE_INITIALIZING  // before the initial state is constructed
 };
 
 // This class describes the concept of Smacc State Machine in an abastract way.
@@ -206,7 +208,12 @@ private:
   std::recursive_mutex m_mutex_;
   std::recursive_mutex eventQueueMutex_;
 
-  StateMachineInternalAction stateMachineCurrentAction;
+  // Written on the state machine thread (notifyOnState* / notifyOnRuntimeConfigured), read
+  // by SignalDetector::pollOnce on the polling thread and by postEvent on any thread.
+  // Atomic so every reader sees the latest phase; initialized so pollOnce has a defined
+  // value before the first state exists.
+  std::atomic<StateMachineInternalAction> stateMachineCurrentAction{
+    StateMachineInternalAction::STATE_MACHINE_INITIALIZING};
 
   std::map<void *, std::shared_ptr<CallbackCounterSemaphore>> stateCallbackConnections;
 

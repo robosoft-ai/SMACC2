@@ -308,15 +308,16 @@ void SignalDetector::pollOnce()
     }
 
     // STATE UPDATABLE ELEMENTS
+    // One load, one decision: the state machine thread can change the phase between two
+    // reads, so the gate must be evaluated on a single snapshot.
+    const StateMachineInternalAction currentAction =
+      this->smaccStateMachine_->stateMachineCurrentAction.load();
     if (
-      this->smaccStateMachine_->stateMachineCurrentAction !=
-        StateMachineInternalAction::TRANSITIONING &&
-      this->smaccStateMachine_->stateMachineCurrentAction !=
-        StateMachineInternalAction::STATE_CONFIGURING &&
-      this->smaccStateMachine_->stateMachineCurrentAction !=
-        StateMachineInternalAction::STATE_ENTERING &&
-      this->smaccStateMachine_->stateMachineCurrentAction !=
-        StateMachineInternalAction::STATE_EXITING)
+      currentAction != StateMachineInternalAction::TRANSITIONING &&
+      currentAction != StateMachineInternalAction::STATE_CONFIGURING &&
+      currentAction != StateMachineInternalAction::STATE_ENTERING &&
+      currentAction != StateMachineInternalAction::STATE_EXITING &&
+      currentAction != StateMachineInternalAction::STATE_MACHINE_INITIALIZING)
     {
       RCLCPP_DEBUG_STREAM(
         getLogger(), "Updatable states: " << this->updatableStateElements_.size());
