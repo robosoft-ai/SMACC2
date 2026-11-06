@@ -53,8 +53,7 @@ struct StA;
 struct StRest;
 struct StTrap;
 
-struct SmCoretestForcedFinish1
-: public smacc2::SmaccStateMachineBase<SmCoretestForcedFinish1, StA>
+struct SmCoretestForcedFinish1 : public smacc2::SmaccStateMachineBase<SmCoretestForcedFinish1, StA>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 

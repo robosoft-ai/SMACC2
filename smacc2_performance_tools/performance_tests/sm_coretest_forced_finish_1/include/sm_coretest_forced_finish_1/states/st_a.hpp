@@ -25,8 +25,8 @@ struct StA : smacc2::SmaccState<StA, SmCoretestForcedFinish1>
     // The 30 s sleep cannot finish within the 1 s StA lifetime, so a sleep event
     // processed here is a leftover that crossed a previous StA exit.
     Transition<EvCbSuccess<CbSleepFor, OrSleep>, StTrap>,
-    Transition<EvCbFinished<CbSleepFor, OrSleep>, StTrap>
-    > reactions;
+    Transition<EvCbFinished<CbSleepFor, OrSleep>, StTrap>>
+    reactions;
 
   static void staticConfigure()
   {
@@ -37,8 +37,7 @@ struct StA : smacc2::SmaccState<StA, SmCoretestForcedFinish1>
     // One EvTimer ends the countdown; the reactor is disposed with the state
     // (exercises the state-reactor loop in notifyOnStateExited).
     static_createStateReactor<
-      SrEventCountdown,
-      EvCountdownEnd<SrEventCountdown, StA>,
+      SrEventCountdown, EvCountdownEnd<SrEventCountdown, StA>,
       mpl::list<EvTimer<CbTimerCountdownOnce, OrTimer>>>(1);
   }
 

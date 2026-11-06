@@ -29,8 +29,7 @@ struct StTrap : smacc2::SmaccState<StTrap, SmCoretestForcedFinish1>
   void onEntry()
   {
     RCLCPP_FATAL(
-      getLogger(),
-      "TRAP ENTERED: a CURRENT_STATE event from CbSleepFor crossed the StA exit.");
+      getLogger(), "TRAP ENTERED: a CURRENT_STATE event from CbSleepFor crossed the StA exit.");
   }
 };
 }  // namespace sm_coretest_forced_finish_1

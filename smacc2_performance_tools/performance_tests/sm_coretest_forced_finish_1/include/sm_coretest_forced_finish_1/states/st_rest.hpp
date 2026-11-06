@@ -28,8 +28,8 @@ struct StRest : smacc2::SmaccState<StRest, SmCoretestForcedFinish1>
     Transition<EvTimer<CbTimerCountdownLoop, OrTimer>, StA>,
     // Either sleep event here crossed the StA exit instead of being discarded.
     Transition<EvCbSuccess<CbSleepFor, OrSleep>, StTrap>,
-    Transition<EvCbFinished<CbSleepFor, OrSleep>, StTrap>
-    > reactions;
+    Transition<EvCbFinished<CbSleepFor, OrSleep>, StTrap> >
+    reactions;
 
   static void staticConfigure() { configure_orthogonal<OrTimer, CbTimerCountdownLoop>(1s); }
 
