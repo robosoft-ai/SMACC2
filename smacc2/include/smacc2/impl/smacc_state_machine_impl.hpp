@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <boost/intrusive_ptr.hpp>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -177,6 +178,11 @@ template <typename EventType>
 void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
 {
   std::lock_guard<std::recursive_mutex> guard(eventQueueMutex_);
+
+  // Own the event from here on so the discard return below and any exception free it. The
+  // refcount lives inside the event, so the scheduler's intrusive_ptr created later in
+  // SignalDetector::postEvent shares ownership; on the normal path nothing changes.
+  boost::intrusive_ptr<EventType> evHolder(ev);
 
 #define eventtypename demangleSymbol<EventType>().c_str()
 

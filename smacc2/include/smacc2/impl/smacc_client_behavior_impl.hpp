@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <type_traits>
+
 #include <smacc2/smacc_client_behavior.hpp>
 #include <smacc2/smacc_state_machine.hpp>
 
@@ -34,6 +36,12 @@ void ISmaccClientBehavior::postEvent(const EventType & ev)
       getLogger(),
       "The client behavior cannot post events before being assigned to an orthogonal. Ignoring "
       "post event call.");
+    // ev is a raw heap pointer we own (EventType deduces to the pointer type); without a
+    // state machine nobody else frees it. The guard keeps non-pointer instantiations compiling.
+    if constexpr (std::is_pointer_v<EventType>)
+    {
+      delete ev;
+    }
   }
   else
   {
