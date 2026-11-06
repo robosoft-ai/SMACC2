@@ -19,6 +19,7 @@
  ******************************************************************************************************************/
 
 #pragma once
+#include <atomic>
 #include <future>
 #include <smacc2/smacc_client_behavior_base.hpp>
 #include <smacc2/smacc_signal.hpp>
@@ -105,7 +106,10 @@ private:
   SmaccSignal<void()> onSuccess_;
   SmaccSignal<void()> onFailure_;
 
-  bool isShutdownRequested_ = false;
+  // Written by requestForceFinish() on the state machine thread, read by onEntry/onExit on
+  // the behavior's std::async thread. Atomic so the write is visible across threads and the
+  // compiler cannot hoist the read out of a behavior's wait loop.
+  std::atomic<bool> isShutdownRequested_{false};
 };
 }  // namespace smacc2
 
