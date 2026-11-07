@@ -76,7 +76,6 @@ void ISmaccState::requiresComponent(
 template <typename SmaccClientType>
 void ISmaccState::requiresClient(SmaccClientType *& storage)
 {
-  const char * sname = (demangleSymbol(typeid(*this).name()).c_str());
   storage = nullptr;
   auto & orthogonals = this->getStateMachine().getOrthogonals();
   for (auto & ortho : orthogonals)
@@ -85,11 +84,15 @@ void ISmaccState::requiresClient(SmaccClientType *& storage)
     if (storage != nullptr) return;
   }
 
+  // Keep the std::string alive across the log call. This used to take c_str() of the temporary
+  // returned by demangleSymbol into a const char *, which read freed memory here. The name is
+  // only needed on this path, so it is demangled here rather than on every lookup.
+  const std::string sname = demangleSymbol(typeid(*this).name());
   RCLCPP_ERROR(
     getLogger(),
     "[%s] Client of type '%s' not found in any orthogonal of the current state machine. This may "
     "produce a segmentation fault if the returned reference is used.",
-    sname, demangleSymbol<SmaccClientType>().c_str());
+    sname.c_str(), demangleSymbol<SmaccClientType>().c_str());
 }
 //-------------------------------------------------------------------------------------------------------
 

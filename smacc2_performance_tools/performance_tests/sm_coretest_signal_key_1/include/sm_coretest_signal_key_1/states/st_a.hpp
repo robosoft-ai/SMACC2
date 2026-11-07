@@ -48,6 +48,13 @@ struct StA : smacc2::SmaccState<StA, SmCoretestSignalKey1>
         getLogger(), "[StA] named and unnamed requiresComponent disagree: %p vs %p",
         static_cast<void *>(namedTick), static_cast<void *>(tick_));
     }
+    // State-level client lookup for a type no orthogonal holds. The core logs an ERROR naming
+    // this state and leaves the pointer null; the name in that line must be intact.
+    ClAbsent * absent = nullptr;
+    this->requiresClient(absent);
+    RCLCPP_INFO(
+      getLogger(), "[StA] requiresClient for the absent client returned %s",
+      absent == nullptr ? "null" : "NON-NULL");
     if (tick_ != nullptr)
     {
       tick_->onTimerTick(&StA::onStateTick, this);
