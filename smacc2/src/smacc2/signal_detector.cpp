@@ -63,6 +63,7 @@ SmExecution & SmExecution::getInstance()
 SignalDetector::SignalDetector(SmaccFifoScheduler * scheduler, ExecutionModel executionModel)
 {
   scheduler_ = scheduler;
+  smaccStateMachine_ = nullptr;
   loop_rate_hz = 20.0;
   end_ = false;
   initialized_ = false;
@@ -251,6 +252,14 @@ void SignalDetector::join() { signalDetectorThread_.join(); }
  ******************************************************************************************************************
  */
 void SignalDetector::stop() { end_ = true; }
+
+void SignalDetector::joinAsyncClientBehaviorThreads()
+{
+  if (smaccStateMachine_ != nullptr)
+  {
+    smaccStateMachine_->joinAsyncClientBehaviorThreads();
+  }
+}
 
 /**
  ******************************************************************************************************************

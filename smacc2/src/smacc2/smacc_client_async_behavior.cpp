@@ -41,38 +41,39 @@ void SmaccAsyncClientBehavior::executeOnEntry()
 void SmaccAsyncClientBehavior::waitFutureIfNotFinished(
   std::optional<std::future<int>> & threadfut, bool requestFinish)
 {
+  if (!threadfut || !threadfut->valid())
+  {
+    RCLCPP_DEBUG_STREAM(
+      getLogger(),
+      "[" << getName() << "] onEntry thread not created or already joined. Skipping wait.");
+    return;
+  }
+
   try
   {
-    rclcpp::Rate r(100);
-    while (rclcpp::ok())
+    // The wait does not stop at rclcpp shutdown: the thread must be joined before this object
+    // can be released, or it finishes on a destroyed behavior. At shutdown the finish is
+    // requested at once instead of after the usual grace lap.
+    while (true)
     {
-      if (threadfut && threadfut->valid())
+      if (requestFinish && !rclcpp::ok())
       {
-        auto status = threadfut->wait_for(std::chrono::milliseconds(20));
-        if (status == std::future_status::ready)
-        {
-          // done
-          threadfut->get();
-          break;
-        }
-        else
-        {
-          // in progress
-          RCLCPP_INFO_STREAM(
-            getLogger(),
-            "[" << getName()
-                << "] fut valid but waiting for asynchronous onEntry thread to finish: state: "
-                << (int)status);
-        }
+        requestForceFinish();
       }
-      else
+
+      auto status = threadfut->wait_for(std::chrono::milliseconds(20));
+      if (status == std::future_status::ready)
       {
-        RCLCPP_INFO_STREAM(
-          getLogger(),
-          "[" << getName()
-              << "] waiting future onEntryThread. It was not even created. Skipping wait.");
+        threadfut->get();
         break;
       }
+
+      RCLCPP_INFO_STREAM(
+        getLogger(),
+        "[" << getName()
+            << "] fut valid but waiting for asynchronous onEntry thread to finish: state: "
+            << (int)status);
+
       rclcpp::sleep_for(100ms);
       RCLCPP_WARN_THROTTLE(
         getLogger(), *(getNode()->get_clock()), 1000,
@@ -134,13 +135,41 @@ void SmaccAsyncClientBehavior::dispose()
       "finished.");
   }
 
+  // Backstop: executeOnExit has normally joined the onEntry thread by now. No behavior may
+  // be released with that thread live.
+  this->waitOnEntryThread(true);
+
   RCLCPP_DEBUG_STREAM(
     getLogger(), "[" << getName()
                      << "] Destroying client behavior-  onExit thread finished. Proccedding "
                         "destruction.");
 }
 
-SmaccAsyncClientBehavior::~SmaccAsyncClientBehavior() {}
+SmaccAsyncClientBehavior::~SmaccAsyncClientBehavior()
+{
+  // Last line of defense. Every release path joins the threads first (executeOnExit and
+  // dispose on state exit, ISmaccStateMachine::joinAsyncClientBehaviorThreads at shutdown).
+  // If one is missed, join here, before the members the thread uses are destroyed, rather
+  // than let ~future block after them.
+  if (this->onEntryThread_ && this->onEntryThread_->valid())
+  {
+    RCLCPP_ERROR_STREAM(
+      getLogger(), "[" << getName() << "] destroyed with a live onEntry thread; joining it");
+    this->waitOnEntryThread(true);
+  }
+  if (this->onExitThread_ && this->onExitThread_->valid())
+  {
+    RCLCPP_ERROR_STREAM(
+      getLogger(), "[" << getName() << "] destroyed with a live onExit thread; joining it");
+    try
+    {
+      this->onExitThread_->get();
+    }
+    catch (...)
+    {
+    }
+  }
+}
 
 void SmaccAsyncClientBehavior::postSuccessEvent() { postSuccessEventFn_(); }
 

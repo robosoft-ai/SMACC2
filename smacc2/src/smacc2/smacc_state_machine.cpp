@@ -22,6 +22,7 @@
 #include <chrono>
 #include <functional>
 #include <smacc2/client_bases/smacc_action_client.hpp>
+#include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include <smacc2/smacc_orthogonal.hpp>
 #include <smacc2/smacc_signal_detector.hpp>
 #include <smacc2/smacc_state_machine.hpp>
@@ -94,6 +95,26 @@ void ISmaccStateMachine::reset() {}
 void ISmaccStateMachine::stop() {}
 
 void ISmaccStateMachine::eStop() {}
+
+void ISmaccStateMachine::joinAsyncClientBehaviorThreads()
+{
+  // No lock: the scheduler thread has joined, so no transition touches the orthogonals, and
+  // the threads being joined must never take m_mutex_ (Async Thread Locking Rule).
+  for (auto & orthogonalEntry : this->orthogonals_)
+  {
+    for (auto & behaviorsOfOneState : orthogonalEntry.second->getClientBehaviors())
+    {
+      for (auto & clBehavior : behaviorsOfOneState)
+      {
+        auto * asyncBehavior = dynamic_cast<SmaccAsyncClientBehavior *>(clBehavior.get());
+        if (asyncBehavior != nullptr)
+        {
+          asyncBehavior->waitOnEntryThread(true);
+        }
+      }
+    }
+  }
+}
 
 const std::map<std::string, std::shared_ptr<smacc2::ISmaccOrthogonal>> &
 ISmaccStateMachine::getOrthogonals() const
