@@ -86,7 +86,16 @@ private:
   std::vector<std::vector<std::shared_ptr<smacc2::ISmaccClientBehavior>>> clientBehaviors_;
   friend class ISmaccStateMachine;
 
+  // Guards clientBehaviors_. It is a leaf lock: it is never held while behavior code runs or
+  // while any other lock is taken. runtimeConfigure(), onEntry() and onExit() copy the current
+  // state's behavior list under it and then call the behaviors without it, so a behavior that
+  // takes the state machine's m_mutex_ (requiresComponent, createSignalConnection) does not
+  // create an orthogonal-then-state-machine lock order; the exit path already holds m_mutex_
+  // when it locks this mutex. CbSequence adds behaviors through addClientBehavior from its own
+  // thread, which is what the lock is for.
   std::mutex mutex_;
+
+  std::vector<std::shared_ptr<smacc2::ISmaccClientBehavior>> currentClientBehaviors();
 };
 
 }  // namespace smacc2

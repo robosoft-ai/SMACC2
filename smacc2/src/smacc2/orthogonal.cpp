@@ -80,11 +80,22 @@ void ISmaccOrthogonal::initState(ISmaccState * state)
 
 std::string ISmaccOrthogonal::getName() const { return demangleSymbol(typeid(*this).name()); }
 
-void ISmaccOrthogonal::runtimeConfigure()
+// Snapshot of the current state's behavior list, taken under mutex_. The callers iterate the
+// copy with the mutex released, so behavior code never runs while this orthogonal's mutex is
+// held (see the comment on mutex_ in the header). The copied shared_ptrs keep the behaviors
+// alive for the duration of the loop; disposal runs on the same thread, after these loops.
+std::vector<std::shared_ptr<smacc2::ISmaccClientBehavior>>
+ISmaccOrthogonal::currentClientBehaviors()
 {
   std::lock_guard<std::mutex> lock(this->mutex_);
+  return clientBehaviors_.back();
+}
 
-  for (auto & clBehavior : clientBehaviors_.back())
+void ISmaccOrthogonal::runtimeConfigure()
+{
+  const auto behaviors = this->currentClientBehaviors();
+
+  for (auto & clBehavior : behaviors)
   {
     RCLCPP_INFO(
       getLogger(), "[Orthogonal: %s] runtimeConfigure(), current behavior: %s.",
@@ -96,11 +107,11 @@ void ISmaccOrthogonal::runtimeConfigure()
 
 void ISmaccOrthogonal::onEntry()
 {
-  std::lock_guard<std::mutex> lock(this->mutex_);
+  const auto behaviors = this->currentClientBehaviors();
 
-  if (clientBehaviors_.back().size() > 0)
+  if (behaviors.size() > 0)
   {
-    for (auto & clBehavior : clientBehaviors_.back())
+    for (auto & clBehavior : behaviors)
     {
       RCLCPP_INFO(
         getLogger(), "[Orthogonal: %s] OnEntry, current Behavior: %s", orthogonalName, cbName);
@@ -133,11 +144,11 @@ void ISmaccOrthogonal::onEntry()
 
 void ISmaccOrthogonal::onExit()
 {
-  std::lock_guard<std::mutex> lock(this->mutex_);
+  const auto behaviors = this->currentClientBehaviors();
 
-  if (clientBehaviors_.back().size() > 0)
+  if (behaviors.size() > 0)
   {
-    for (auto & clBehavior : clientBehaviors_.back())
+    for (auto & clBehavior : behaviors)
     {
       RCLCPP_INFO(
         getLogger(), "[Orthogonal: %s] OnExit, current Behavior: %s", orthogonalName, cbName);
