@@ -30,8 +30,11 @@ struct State1;
 struct State2;
 
 //VARIABLES - shared between states (using "_<name>_"-syntax to make this obvious)
+// Values only. A ROS entity must not live here: a global rclcpp::Node is destroyed by the
+// static destructors after main() returns, after the rclcpp context has finalized the DDS
+// participant, and its node destructor crashed in Fast DDS at every exit. The states use the
+// state machine's own node through getNode() and getLogger().
 static unsigned int _counter_ = 1;
-std::shared_ptr<rclcpp::Node> _node_;
 rclcpp::Time _start_time_;
 
 unsigned int _sum_of_iterations_ = 0.0;
@@ -44,11 +47,7 @@ struct SmCoretestTransitionSpeed1
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  void onInitialize() override
-  {
-    _node_ = std::make_shared<rclcpp::Node>("sm_coretest_transition_speed_1");
-    _start_time_ = _node_->now();
-  }
+  void onInitialize() override { _start_time_ = getNode()->now(); }
 };
 
 }  // namespace sm_coretest_transition_speed_1
