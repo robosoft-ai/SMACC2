@@ -28,8 +28,8 @@ namespace cl_nav2z
 using namespace std::chrono_literals;
 
 // static
-std::shared_ptr<tf2_ros::TransformListener> CpPose::tfListener_;
-std::shared_ptr<tf2_ros::Buffer> CpPose::tfBuffer_;
+std::weak_ptr<tf2_ros::Buffer> CpPose::sharedTfBuffer_;
+std::weak_ptr<tf2_ros::TransformListener> CpPose::sharedTfListener_;
 std::mutex CpPose::listenerMutex_;
 
 CpPose::CpPose(std::string targetFrame, std::string referenceFrame)
@@ -64,12 +64,17 @@ void CpPose::onInitialize()
     poseFrameName_.c_str(), referenceFrame_.c_str());
 
   {
-    // singleton
+    // Shared by all CpPose instances, owned by them (see the header). Take a strong reference to
+    // the live pair if there is one, otherwise create it and publish it to the weak statics.
     std::lock_guard<std::mutex> guard(listenerMutex_);
-    if (tfListener_ == nullptr)
+    tfBuffer_ = sharedTfBuffer_.lock();
+    tfListener_ = sharedTfListener_.lock();
+    if (!tfBuffer_ || !tfListener_)
     {
       tfBuffer_ = std::make_shared<tf2_ros::Buffer>(getNode()->get_clock());
       tfListener_ = std::make_shared<tf2_ros::TransformListener>(*tfBuffer_);
+      sharedTfBuffer_ = tfBuffer_;
+      sharedTfListener_ = tfListener_;
     }
   }
 }
