@@ -77,6 +77,9 @@ public:
 
   // executes onExit in a new thread, waits first onEntry thread if it is still running
   void executeOnExit() override;
+
+  // Joins the onEntry thread if it is live, optionally asking it to finish first. Does not
+  // give up at rclcpp shutdown; see waitFutureIfNotFinished.
   void waitOnEntryThread(bool requestFinish);
 
 protected:

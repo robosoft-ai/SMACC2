@@ -78,6 +78,12 @@ public:
 
   virtual void eStop();
 
+  // Asks every async client behavior of the active state(s) to finish and joins its onEntry
+  // thread. Called from run<> after the scheduler thread has joined and before this object
+  // is destroyed; ~state_machine destroys the active states without exit actions, so nothing
+  // else stops those threads at shutdown. Runs no onExit code.
+  void joinAsyncClientBehaviorThreads();
+
   template <typename TOrthogonal>
   TOrthogonal * getOrthogonal();
 

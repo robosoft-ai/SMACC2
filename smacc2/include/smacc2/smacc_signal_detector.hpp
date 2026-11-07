@@ -55,6 +55,9 @@ public:
 
   void terminateScheduler();
 
+  // Forwards to ISmaccStateMachine::joinAsyncClientBehaviorThreads; no-op before initialize().
+  void joinAsyncClientBehaviorThreads();
+
   void pollingLoop();
 
   template <typename EventType>
@@ -192,6 +195,11 @@ void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
   // Wait for scheduler thread to finish
   RCLCPP_INFO(rclcpp::get_logger("SMACC"), "Waiting for scheduler thread to join...");
   schedulerThread.join();
+
+  // No transition is in progress now. Stop and join the onEntry threads of the active state's
+  // async behaviors while the state machine and this signal detector are still alive; the
+  // destructors below would otherwise do it with both half-destroyed.
+  signalDetector.joinAsyncClientBehaviorThreads();
   RCLCPP_INFO(rclcpp::get_logger("SMACC"), "Scheduler thread terminated. Shutdown complete.");
 
   // Clear singleton references
