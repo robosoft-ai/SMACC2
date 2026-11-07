@@ -357,6 +357,29 @@ void SignalDetector::pollOnce()
   }
 }
 
+// rclcpp::Rate::sleep() goes through rclcpp::Clock::sleep_until, which throws std::runtime_error
+// when the context was shut down between the caller's rclcpp::ok() check and the sleep. Shutdown
+// runs on rclcpp's signal thread, concurrently with the polling loop, so the window is everything
+// an iteration does: pollOnce (including waiting for m_mutex_ during a transition and every
+// update()), spin_some, and the Rate arithmetic. At shutdown the throw is the expected end of
+// the loop, not an error; anything else is rethrown. Returns false once the context is invalid.
+static bool sleepUnlessShutdown(rclcpp::Rate & rate)
+{
+  try
+  {
+    rate.sleep();
+  }
+  catch (const std::runtime_error &)
+  {
+    if (rclcpp::ok())
+    {
+      throw;
+    }
+    return false;
+  }
+  return true;
+}
+
 /**
  ******************************************************************************************************************
  * pollingLoop()
@@ -374,7 +397,10 @@ void SignalDetector::pollingLoop()
   // before we start polling and accessing them.
   while ((!initialized_ || !rosInitialized_) && rclcpp::ok() && !end_)
   {
-    r0.sleep();
+    if (!sleepUnlessShutdown(r0))
+    {
+      break;
+    }
   }
 
   if (!rclcpp::ok() || end_)
@@ -424,7 +450,10 @@ void SignalDetector::pollingLoop()
         getLogger(), *getNode()->get_clock(), 10000, "[SignalDetector] Heartbeat");
       pollOnce();
       executor.spin_some();
-      r.sleep();
+      if (!sleepUnlessShutdown(r))
+      {
+        break;
+      }
     }
     executor.remove_node(nh);
   }
