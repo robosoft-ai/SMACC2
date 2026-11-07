@@ -14,7 +14,10 @@
 
 #pragma once
 
-#include <smacc2/component.hpp>
+// The umbrella header is needed, not component.hpp alone: the subscribe helpers below call
+// ISmaccStateMachine::createSignalConnection, and this header is parsed by the library's own
+// translation units before anything else has completed that class.
+#include <smacc2/smacc.hpp>
 #include <smacc2/smacc_signal.hpp>
 
 #include <lifecycle_msgs/msg/transition_event.hpp>
@@ -163,6 +166,221 @@ public:
   smacc2::SmaccSignal<void()> onTransitionOnErrorSuccess_;
   smacc2::SmaccSignal<void()> onTransitionOnErrorFailure_;
   smacc2::SmaccSignal<void()> onTransitionOnErrorError_;
+
+  // Typed subscribe helpers, one per signal. They go through the state machine's
+  // createSignalConnection, so a connection made by a state-scoped object (a client behavior
+  // subscribing with `this`) is tracked by that object's address and finalized when the object
+  // is disposed at its state's exit: a transition event arriving after the exit cannot reach a
+  // destroyed subscriber. Behaviors must use these from onStateOrthogonalAllocation (state
+  // machine thread), never a raw connect() on the signal members above (finding T) and never
+  // from an asynchronous onEntry/onExit thread (Async Thread Locking Rule).
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionCreate(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(onTransitionCreate_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionConfigure(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionConfigure_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionActivate(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(onTransitionActivate_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionDeactivate(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionDeactivate_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionCleanup(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(onTransitionCleanup_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionUnconfiguredShutdown(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionUnconfiguredShutdown_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionInactiveShutdown(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionInactiveShutdown_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionActiveShutdown(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionActiveShutdown_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionDestroy(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(onTransitionDestroy_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnConfigureSuccess(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnConfigureSuccess_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnConfigureFailure(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnConfigureFailure_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnConfigureError(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnConfigureError_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnActivateSuccess(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnActivateSuccess_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnActivateFailure(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnActivateFailure_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnActivateError(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnActivateError_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnDeactivateSuccess(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnDeactivateSuccess_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnDeactivateFailure(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnDeactivateFailure_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnDeactivateError(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnDeactivateError_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnCleanupSuccess(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnCleanupSuccess_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnCleanupFailure(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnCleanupFailure_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnCleanupError(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnCleanupError_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnShutdownSuccess(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnShutdownSuccess_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnShutdownFailure(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnShutdownFailure_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnShutdownError(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnShutdownError_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnActiveShutdownSuccess(
+    void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnActiveShutdownSuccess_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnActiveShutdownFailure(
+    void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnActiveShutdownFailure_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnActiveShutdownError(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnActiveShutdownError_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnErrorSuccess(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnErrorSuccess_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnErrorFailure(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnErrorFailure_, callback, object);
+  }
+
+  template <typename T>
+  smacc2::SmaccSignalConnection onTransitionOnErrorError(void (T::*callback)(), T * object)
+  {
+    return this->getStateMachine()->createSignalConnection(
+      onTransitionOnErrorError_, callback, object);
+  }
 
   /**
    * @brief Get the last received transition event
