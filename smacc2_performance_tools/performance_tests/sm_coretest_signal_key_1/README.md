@@ -57,7 +57,7 @@ Twelve seconds, six cycles, is enough to see every pass criterion.
 
 ## Note
 
-`StA` reaches the timer component through
-`getOrthogonal<OrTick>()->getClients().front()->getComponent<CpRos2Timer>()` rather than
-`requiresComponent`, because the state-level `requiresComponent` forwarder does not compile
-on this tree.
+`StA` reaches the timer component through the state-level `requiresComponent`, once by type and
+once by name (the empty default name), and logs an error if the two disagree. Until the
+forwarders were fixed the state had to go through
+`getOrthogonal<OrTick>()->getClients().front()->getComponent<CpRos2Timer>()`.
