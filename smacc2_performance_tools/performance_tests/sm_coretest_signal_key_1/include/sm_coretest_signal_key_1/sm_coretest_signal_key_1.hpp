@@ -20,6 +20,7 @@
 #include <cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp>
 
 #include <sm_coretest_signal_key_1/client_behaviors/cb_mixin_first_subscriber.hpp>
+#include <sm_coretest_signal_key_1/clients/cl_absent.hpp>
 #include <sm_coretest_signal_key_1/orthogonals/or_tick.hpp>
 #include <sm_coretest_signal_key_1/orthogonals/or_timer.hpp>
 

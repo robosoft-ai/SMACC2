@@ -61,3 +61,9 @@ Twelve seconds, six cycles, is enough to see every pass criterion.
 once by name (the empty default name), and logs an error if the two disagree. Until the
 forwarders were fixed the state had to go through
 `getOrthogonal<OrTick>()->getClients().front()->getComponent<CpRos2Timer>()`.
+
+`StA` also asks for `ClAbsent`, a client type no orthogonal holds, through the state-level
+`requiresClient` on every entry. The core answers with a null pointer and one ERROR line naming
+the state (`[sm_coretest_signal_key_1::StA] Client of type ... not found`); that line is
+expected, six times in a 12 s run. The state name in it must be intact: the core used to take
+`c_str()` of a temporary for it, which read freed memory (a `heap-use-after-free` under ASan).
