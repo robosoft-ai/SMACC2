@@ -39,10 +39,13 @@ public:
 
     this->requiresClient(this->lifecycleNodeClient_);
     this->requiresComponent(eventMonitor_);
-
-    eventMonitor_->onTransitionOnShutdownSuccess_.connect([this]() { this->postSuccessEvent(); });
-    eventMonitor_->onTransitionOnShutdownFailure_.connect([this]() { this->postFailureEvent(); });
-    eventMonitor_->onTransitionOnShutdownError_.connect([this]() { this->postFailureEvent(); });
+    // State-scoped signal connections, made on the state machine thread. Each is tracked by this
+    // behavior's address and finalized when the behavior is disposed at state exit, so a
+    // transition event that arrives after the exit cannot call into a destroyed behavior. The
+    // raw connect() calls this replaces were never disconnected (finding T).
+    eventMonitor_->onTransitionOnShutdownSuccess(&CbShutdown::onTransitionSuccess, this);
+    eventMonitor_->onTransitionOnShutdownFailure(&CbShutdown::onTransitionFailure, this);
+    eventMonitor_->onTransitionOnShutdownError(&CbShutdown::onTransitionFailure, this);
   }
 
   virtual void onEntry() override
@@ -58,6 +61,18 @@ public:
     {
       this->postFailureEvent();
     }
+  }
+
+  void onTransitionSuccess()
+  {
+    RCLCPP_INFO(getLogger(), "[CbShutdown] Shutdown transition succeeded");
+    this->postSuccessEvent();
+  }
+
+  void onTransitionFailure()
+  {
+    RCLCPP_WARN(getLogger(), "[CbShutdown] Shutdown transition failed or errored");
+    this->postFailureEvent();
   }
 
 private:

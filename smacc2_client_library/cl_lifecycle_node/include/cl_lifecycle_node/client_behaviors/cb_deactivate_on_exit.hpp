@@ -39,10 +39,13 @@ public:
 
     this->requiresClient(lifecycleNodeClient_);
     this->requiresComponent(eventMonitor_);
-
-    eventMonitor_->onTransitionOnDeactivateSuccess_.connect([this]() { this->postSuccessEvent(); });
-    eventMonitor_->onTransitionOnDeactivateFailure_.connect([this]() { this->postFailureEvent(); });
-    eventMonitor_->onTransitionOnDeactivateError_.connect([this]() { this->postFailureEvent(); });
+    // State-scoped signal connections, made on the state machine thread. Each is tracked by this
+    // behavior's address and finalized when the behavior is disposed at state exit, so a
+    // transition event that arrives after the exit cannot call into a destroyed behavior. The
+    // raw connect() calls this replaces were never disconnected (finding T).
+    eventMonitor_->onTransitionOnDeactivateSuccess(&CbDeactivateOnExit::onTransitionSuccess, this);
+    eventMonitor_->onTransitionOnDeactivateFailure(&CbDeactivateOnExit::onTransitionFailure, this);
+    eventMonitor_->onTransitionOnDeactivateError(&CbDeactivateOnExit::onTransitionFailure, this);
   }
 
   virtual void onExit() override
@@ -51,6 +54,18 @@ public:
     // or on ROS shutdown. A rejection is logged by the client; the state is already leaving, so
     // nothing is posted here.
     lifecycleNodeClient_->deactivate([this]() { return this->isShutdownRequested(); });
+  }
+
+  void onTransitionSuccess()
+  {
+    RCLCPP_INFO(getLogger(), "[CbDeactivateOnExit] Deactivate transition succeeded");
+    this->postSuccessEvent();
+  }
+
+  void onTransitionFailure()
+  {
+    RCLCPP_WARN(getLogger(), "[CbDeactivateOnExit] Deactivate transition failed or errored");
+    this->postFailureEvent();
   }
 
 private:

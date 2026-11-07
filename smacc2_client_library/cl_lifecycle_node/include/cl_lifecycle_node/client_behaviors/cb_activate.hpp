@@ -39,10 +39,13 @@ public:
 
     this->requiresClient(lifecycleNodeClient_);
     this->requiresComponent(eventMonitor_);
-
-    eventMonitor_->onTransitionOnActivateSuccess_.connect([this]() { this->postSuccessEvent(); });
-    eventMonitor_->onTransitionOnActivateFailure_.connect([this]() { this->postFailureEvent(); });
-    eventMonitor_->onTransitionOnActivateError_.connect([this]() { this->postFailureEvent(); });
+    // State-scoped signal connections, made on the state machine thread. Each is tracked by this
+    // behavior's address and finalized when the behavior is disposed at state exit, so a
+    // transition event that arrives after the exit cannot call into a destroyed behavior. The
+    // raw connect() calls this replaces were never disconnected (finding T).
+    eventMonitor_->onTransitionOnActivateSuccess(&CbActivate::onTransitionSuccess, this);
+    eventMonitor_->onTransitionOnActivateFailure(&CbActivate::onTransitionFailure, this);
+    eventMonitor_->onTransitionOnActivateError(&CbActivate::onTransitionFailure, this);
   }
 
   virtual void onEntry() override
@@ -58,6 +61,18 @@ public:
     {
       this->postFailureEvent();
     }
+  }
+
+  void onTransitionSuccess()
+  {
+    RCLCPP_INFO(getLogger(), "[CbActivate] Activate transition succeeded");
+    this->postSuccessEvent();
+  }
+
+  void onTransitionFailure()
+  {
+    RCLCPP_WARN(getLogger(), "[CbActivate] Activate transition failed or errored");
+    this->postFailureEvent();
   }
 
 private:
