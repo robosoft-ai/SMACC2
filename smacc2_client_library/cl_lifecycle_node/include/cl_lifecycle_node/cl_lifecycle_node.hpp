@@ -27,6 +27,8 @@
 #include <smacc2/smacc.hpp>
 #include <smacc2/smacc_client_behavior_base.hpp>
 
+#include <functional>
+
 namespace cl_lifecycle_node
 {
 template <typename TSourceObject, typename TOrthogonal>
@@ -200,23 +202,32 @@ public:
 
   void onInitialize() override;
 
-  // @brief execute this method to trigger a transition to some state
-  void changeState(uint8_t state);
+  // Predicate polled between the 100 ms waits inside changeState(); returning true abandons the
+  // request. Behaviors pass their isShutdownRequested(), so a state exit or a process shutdown
+  // ends the wait instead of leaving the behavior thread blocked.
+  using CancelPredicate = std::function<bool()>;
+
+  // @brief trigger a lifecycle transition on the node. Waits until the change_state service has
+  // been discovered, sends the request and waits for the response, checking `cancelled` and
+  // rclcpp::ok() between waits. Returns true if the server accepted the transition. Returns false
+  // if the wait was abandoned (predicate true or ROS shut down) or the server rejected the
+  // transition; a rejection is logged at ERROR, and no transition event will follow it.
+  bool changeState(uint8_t transition, const CancelPredicate & cancelled = CancelPredicate());
 
   // @brief execute this method to trigger the configure transition
-  void configure();
+  bool configure(const CancelPredicate & cancelled = CancelPredicate());
 
   // @brief execute this method to trigger the activate transition
-  void activate();
+  bool activate(const CancelPredicate & cancelled = CancelPredicate());
 
   // @brief execute this method to trigger the deactivate transition
-  void deactivate();
+  bool deactivate(const CancelPredicate & cancelled = CancelPredicate());
 
   // @brief execute this method to trigger the cleanup transition
-  void cleanup();
+  bool cleanup(const CancelPredicate & cancelled = CancelPredicate());
 
   // @brief execute this method to trigger the shutdown transition
-  void shutdown();
+  bool shutdown(const CancelPredicate & cancelled = CancelPredicate());
 
   // @brief execute this method to trigger the destroy transition
   void destroy();

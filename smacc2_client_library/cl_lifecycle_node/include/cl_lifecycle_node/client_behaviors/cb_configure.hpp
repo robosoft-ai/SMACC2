@@ -50,7 +50,20 @@ public:
     eventMonitor_->onTransitionOnConfigureError_.connect([this]() { this->postFailureEvent(); });
   }
 
-  virtual void onEntry() override { lifecycleNodeClient_->configure(); }
+  virtual void onEntry() override
+  {
+    // Runs on this behavior's thread. The wait inside the client ends when the request is
+    // answered, when this behavior is asked to finish (state exit, shutdown) or when ROS shuts
+    // down. If the request was abandoned nothing is posted: the state is already leaving. If the
+    // node rejected it, no transition event will ever arrive for this attempt, so the behavior
+    // reports the failure itself.
+    const bool accepted =
+      lifecycleNodeClient_->configure([this]() { return this->isShutdownRequested(); });
+    if (!accepted && !this->isShutdownRequested())
+    {
+      this->postFailureEvent();
+    }
+  }
 
 private:
   ClLifecycleNode * lifecycleNodeClient_;
