@@ -40,8 +40,20 @@ public:
   template <typename TOrthogonal, typename TBehavior, typename... Args>
   std::shared_ptr<TBehavior> configure(Args &&... args);
 
+  // Component lookup across every orthogonal of the state machine, with the same shape and
+  // defaults as ISmaccClientBehavior::requiresComponent and ISmaccComponent::requiresComponent.
+  // Takes the state machine mutex; do not call it from an async behavior thread.
   template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *& storage);
+  void requiresComponent(
+    SmaccComponentType *& storage,
+    ComponentRequirement requirementType = ComponentRequirement::SOFT);
+
+  // Named variant: resolves the component instance created with this name, for clients
+  // holding several components of the same type.
+  template <typename SmaccComponentType>
+  void requiresComponent(
+    std::string name, SmaccComponentType *& storage,
+    ComponentRequirement requirementType = ComponentRequirement::SOFT);
 
   template <typename SmaccClientType>
   void requiresClient(SmaccClientType *& storage);

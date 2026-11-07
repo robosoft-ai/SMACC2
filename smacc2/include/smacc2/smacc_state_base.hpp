@@ -160,11 +160,8 @@ public:
     base_type::outermost_context().setGlobalSMData(name, value);
   }
 
-  template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *& storage)
-  {
-    base_type::outermost_context().requiresComponent(storage);
-  }
+  // requiresComponent and requiresClient come from ISmaccState; a copy here would shadow the
+  // base overload set.
 
   virtual ISmaccStateMachine & getStateMachine() { return base_type::outermost_context(); }
 

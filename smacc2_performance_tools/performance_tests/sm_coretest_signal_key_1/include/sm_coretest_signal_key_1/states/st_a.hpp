@@ -37,12 +37,17 @@ struct StA : smacc2::SmaccState<StA, SmCoretestSignalKey1>
   void onEntry()
   {
     RCLCPP_INFO(getLogger(), "[StA] Entered. Subscriber alive for 1s.");
-    // The state-level requiresComponent forwarder does not compile on this tree; reach the
-    // component through the orthogonal and client instead.
-    tick_ = this->getOrthogonal<OrTick>()
-              ->getClients()
-              .front()
-              ->template getComponent<smacc2::client_core_components::CpRos2Timer>();
+    // State-level component lookup, both forwarders: by type, and by name with the empty
+    // default name, which matches the same component. Both must resolve to the one timer.
+    this->requiresComponent(tick_);
+    smacc2::client_core_components::CpRos2Timer * namedTick = nullptr;
+    this->requiresComponent(std::string(""), namedTick);
+    if (namedTick != tick_)
+    {
+      RCLCPP_ERROR(
+        getLogger(), "[StA] named and unnamed requiresComponent disagree: %p vs %p",
+        static_cast<void *>(namedTick), static_cast<void *>(tick_));
+    }
     if (tick_ != nullptr)
     {
       tick_->onTimerTick(&StA::onStateTick, this);

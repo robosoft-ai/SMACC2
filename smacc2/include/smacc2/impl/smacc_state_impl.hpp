@@ -59,9 +59,17 @@ std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
 //-------------------------------------------------------------------------------------------------------
 
 template <typename SmaccComponentType>
-void ISmaccState::requiresComponent(SmaccComponentType *& storage)
+void ISmaccState::requiresComponent(
+  SmaccComponentType *& storage, ComponentRequirement requirementType)
 {
-  this->getStateMachine().requiresComponent(storage);
+  this->getStateMachine().requiresComponent(storage, requirementType);
+}
+
+template <typename SmaccComponentType>
+void ISmaccState::requiresComponent(
+  std::string name, SmaccComponentType *& storage, ComponentRequirement requirementType)
+{
+  this->getStateMachine().requiresComponent(name, storage, requirementType);
 }
 //-------------------------------------------------------------------------------------------------------
 
