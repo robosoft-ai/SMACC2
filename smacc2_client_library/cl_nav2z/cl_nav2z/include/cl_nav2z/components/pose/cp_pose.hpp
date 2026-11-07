@@ -93,9 +93,19 @@ public:
 private:
   geometry_msgs::msg::PoseStamped pose_;
 
-  static std::shared_ptr<tf2_ros::Buffer> tfBuffer_;
-  static std::shared_ptr<tf2_ros::TransformListener> tfListener_;
+  // One TF buffer and listener per process, shared by every CpPose instance and owned by them:
+  // each instance holds a strong reference, the statics hold only weak ones. The last CpPose
+  // to be destroyed, inside the state machine's destruction in run<>, releases the listener
+  // while the rclcpp context is still alive. Held as static shared_ptrs, they were released by
+  // the library's static destructors after main() returned, after the context had finalized
+  // the DDS participant, and the listener's own node crashed in Fast DDS on every shutdown.
+  // Member order matters: the listener references the buffer, so it is declared after it and
+  // destroyed before it.
+  std::shared_ptr<tf2_ros::Buffer> tfBuffer_;
+  std::shared_ptr<tf2_ros::TransformListener> tfListener_;
 
+  static std::weak_ptr<tf2_ros::Buffer> sharedTfBuffer_;
+  static std::weak_ptr<tf2_ros::TransformListener> sharedTfListener_;
   static std::mutex listenerMutex_;
 
   std::string poseFrameName_;
