@@ -61,8 +61,11 @@ struct SmaccTransitionInfo
 {
   SmaccTransitionInfo() {}
 
-  bool historyNode;
-  int index;
+  // Default-initialized: the startup transition-log entry in SmaccStateMachineBase::initiate_impl
+  // builds this struct with make_shared and never assigns these two, and the user-provided
+  // constructor leaves them indeterminate otherwise.
+  bool historyNode = false;
+  int index = 0;
   std::shared_ptr<const SmaccStateInfo> sourceState;
   std::shared_ptr<const SmaccStateInfo> destinyState;
 
