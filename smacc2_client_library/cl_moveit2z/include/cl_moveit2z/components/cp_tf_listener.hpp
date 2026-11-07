@@ -36,9 +36,10 @@ namespace cl_moveit2z
 /**
  * @brief Component for shared TF2 transform management across all behaviors
  *
- * This component provides centralized access to TF2 transforms using static
- * resource sharing to avoid creating multiple tf2_ros::Buffer and
- * tf2_ros::TransformListener instances across different behaviors.
+ * This component provides centralized access to TF2 transforms: all instances in a process
+ * share one tf2_ros::Buffer and one tf2_ros::TransformListener, owned by the instances
+ * themselves (process-wide weak references), so the pair lives exactly as long as some
+ * CpTfListener does and is destroyed before the rclcpp context.
  *
  * Pattern: Static resource sharing (similar to nav2z_client's Pose component)
  */
@@ -49,20 +50,30 @@ public:
   virtual ~CpTfListener() = default;
 
   /**
-   * @brief Initialize the shared TF2 buffer and listener
+   * @brief Take, or create, the shared TF2 buffer and listener
    *
-   * This method initializes the static tf2_ros::Buffer and tf2_ros::TransformListener
-   * on first use. Subsequent component instances will reuse the same resources.
+   * The first instance creates the tf2_ros::Buffer and tf2_ros::TransformListener; later
+   * instances created while one is alive share them. Each instance holds its own strong
+   * reference.
    */
   inline void onInitialize() override
   {
+    // Take strong references to the process-wide buffer and listener, creating them if no
+    // other instance holds them. This instance then owns them for its own lifetime; the statics
+    // below are weak, so the pair is destroyed with the last CpTfListener, inside the state
+    // machine's destruction and before the rclcpp context is finalized. A static shared_ptr used
+    // to hold the listener until static destruction after main() returned, when its node's
+    // teardown ran against a finalized DDS participant and crashed (finding R, cl_nav2z sibling).
     std::lock_guard<std::mutex> guard(tfMutex_);
-
-    if (!tfBuffer_)
+    tfBuffer_ = sharedTfBuffer_.lock();
+    tfListener_ = sharedTfListener_.lock();
+    if (!tfBuffer_ || !tfListener_)
     {
       RCLCPP_INFO(getLogger(), "[CpTfListener] Initializing shared TF2 buffer and listener");
       tfBuffer_ = std::make_shared<tf2_ros::Buffer>(getNode()->get_clock());
       tfListener_ = std::make_shared<tf2_ros::TransformListener>(*tfBuffer_);
+      sharedTfBuffer_ = tfBuffer_;
+      sharedTfListener_ = tfListener_;
     }
     else
     {
@@ -179,15 +190,17 @@ public:
   }
 
 private:
-  // Shared static resources across all CpTfListener instances
-  static std::shared_ptr<tf2_ros::Buffer> tfBuffer_;
-  static std::shared_ptr<tf2_ros::TransformListener> tfListener_;
-  static std::mutex tfMutex_;
-};
+  // Per-instance strong references. Buffer before listener: the listener references the buffer
+  // and must be destroyed first.
+  std::shared_ptr<tf2_ros::Buffer> tfBuffer_;
+  std::shared_ptr<tf2_ros::TransformListener> tfListener_;
 
-// Static member initialization
-std::shared_ptr<tf2_ros::Buffer> CpTfListener::tfBuffer_ = nullptr;
-std::shared_ptr<tf2_ros::TransformListener> CpTfListener::tfListener_ = nullptr;
-std::mutex CpTfListener::tfMutex_;
+  // Process-wide weak references so every instance shares one buffer and listener while any
+  // instance is alive, without extending their lifetime past the last instance. `inline static`
+  // so a header-only component defines each once per program, not once per translation unit.
+  inline static std::weak_ptr<tf2_ros::Buffer> sharedTfBuffer_;
+  inline static std::weak_ptr<tf2_ros::TransformListener> sharedTfListener_;
+  inline static std::mutex tfMutex_;
+};
 
 }  // namespace cl_moveit2z
