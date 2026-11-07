@@ -45,7 +45,13 @@ public:
     eventMonitor_->onTransitionOnDeactivateError_.connect([this]() { this->postFailureEvent(); });
   }
 
-  virtual void onExit() override { lifecycleNodeClient_->deactivate(); }
+  virtual void onExit() override
+  {
+    // Runs on this behavior's onExit thread; the wait ends on the response, on a finish request
+    // or on ROS shutdown. A rejection is logged by the client; the state is already leaving, so
+    // nothing is posted here.
+    lifecycleNodeClient_->deactivate([this]() { return this->isShutdownRequested(); });
+  }
 
 private:
   ClLifecycleNode * lifecycleNodeClient_;
