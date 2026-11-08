@@ -226,8 +226,13 @@ public:
   // @brief execute this method to trigger the cleanup transition
   bool cleanup(const CancelPredicate & cancelled = CancelPredicate());
 
-  // @brief execute this method to trigger the shutdown transition
+  // @brief trigger the shutdown transition that matches the node's current primary state
+  // (unconfigured, inactive or active), read through get_state; false if the state has none.
   bool shutdown(const CancelPredicate & cancelled = CancelPredicate());
+
+  // @brief read the node's current lifecycle state id (lifecycle_msgs::msg::State constants).
+  // Same waits and cancellation as changeState(); returns false if abandoned.
+  bool getState(uint8_t & state, const CancelPredicate & cancelled = CancelPredicate());
 
   /**
    * @brief Configure component for event posting during orthogonal allocation
