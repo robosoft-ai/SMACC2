@@ -32,9 +32,12 @@ void transitionInfoToMsg(
 {
   transitionMsg.index = transition.index;
 
-  if (transition.sourceState != nullptr)
+  // The transition holds its states weakly (see smacc_state_info.hpp). An expired pointer leaves
+  // the name empty, as a null pointer did before.
+  auto sourceState = transition.sourceState.lock();
+  if (sourceState != nullptr)
   {
-    transitionMsg.source_state_name = transition.sourceState->demangledStateName;
+    transitionMsg.source_state_name = sourceState->demangledStateName;
   }
 
   transitionMsg.transition_name = transition.transitionTag;
@@ -50,11 +53,17 @@ void transitionInfoToMsg(
 
   transitionMsg.history_node = transition.historyNode;
 
-  if (transition.historyNode)
+  auto destinyState = transition.destinyState.lock();
+  if (destinyState == nullptr)
   {
-    if (transition.destinyState->parentState_ != nullptr)
+    transitionMsg.destiny_state_name = "";
+  }
+  else if (transition.historyNode)
+  {
+    auto destinyParent = destinyState->getParentState();
+    if (destinyParent != nullptr)
     {
-      transitionMsg.destiny_state_name = transition.destinyState->parentState_->demangledStateName;
+      transitionMsg.destiny_state_name = destinyParent->demangledStateName;
     }
     else
     {
@@ -63,7 +72,7 @@ void transitionInfoToMsg(
   }
   else
   {
-    transitionMsg.destiny_state_name = transition.destinyState->demangledStateName;
+    transitionMsg.destiny_state_name = destinyState->demangledStateName;
   }
 }
 }  // namespace introspection

@@ -69,6 +69,13 @@ ISmaccStateMachine::ISmaccStateMachine(
 ISmaccStateMachine::~ISmaccStateMachine()
 {
   RCLCPP_INFO(nh_->get_logger(), "Finishing State Machine");
+
+  // initiate_impl stored this state machine's node in the static introspection::globalNh_ for the
+  // type walker's logging. Release it here so that nh_, destroyed with the other members below,
+  // is the node's last owner and the node is finalized inside run<>, while the rclcpp context is
+  // still valid. Left in the static, the node would be destroyed by the exit handlers after
+  // rclcpp::shutdown() has finalized the DDS participant, which crashes in rcl_service_fini.
+  introspection::globalNh_.reset();
 }
 
 void ISmaccStateMachine::disconnectSmaccSignalObject(void * object_ptr)

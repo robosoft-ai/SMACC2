@@ -28,6 +28,13 @@ namespace smacc2
 {
 namespace introspection
 {
+// Ownership of the introspection graph. The SmaccStateMachineInfo owns every SmaccStateInfo
+// through its `states` map; a SmaccStateInfo owns its `children_` and its `transitions_`; the
+// static maps SmaccStateInfo::stateReactorsInfo and eventGeneratorsInfo own the reactor and
+// generator infos, which own their handlers. Every pointer in the other direction (a state to its
+// machine or parent, a transition to its states, a handler to its info) is a std::weak_ptr, so the
+// graph is released when the state machine releases its SmaccStateMachineInfo. Readers of a weak
+// pointer lock it; all of them run while the state machine is alive.
 //-------------------------------------------------------------
 struct ClientBehaviorInfoEntry
 {
@@ -66,8 +73,9 @@ struct SmaccTransitionInfo
   // constructor leaves them indeterminate otherwise.
   bool historyNode = false;
   int index = 0;
-  std::shared_ptr<const SmaccStateInfo> sourceState;
-  std::shared_ptr<const SmaccStateInfo> destinyState;
+  // Weak: the source state owns this transition, and the destiny state may own a transition back.
+  std::weak_ptr<const SmaccStateInfo> sourceState;
+  std::weak_ptr<const SmaccStateInfo> destinyState;
 
   std::string transitionTag;
   std::string transitionType;
@@ -89,7 +97,13 @@ private:
   std::vector<StateReactorCallbackFunctor> callbacks_;
 
 public:
-  StateReactorHandler(rclcpp::Node::SharedPtr nh) : nh_(nh) {}
+  // Only the node's logger is kept. This object is owned by a static map and outlives the state
+  // machine; holding the node here would make a static the node's last owner and destroy it after
+  // rclcpp::shutdown() has finalized the DDS participant.
+  explicit StateReactorHandler(rclcpp::Node::SharedPtr nh)
+  : logger_(nh ? nh->get_logger() : rclcpp::get_logger("StateReactorHandler"))
+  {
+  }
 
   void configureStateReactor(std::shared_ptr<smacc2::StateReactor> sr);
 
@@ -99,12 +113,11 @@ public:
   template <typename TEv>
   void setOutputEvent();
 
-  rclcpp::Node::SharedPtr getNode();
-
-  std::shared_ptr<smacc2::introspection::SmaccStateReactorInfo> srInfo_;
+  // Weak: the SmaccStateReactorInfo owns this handler (and its factoryFunction captures it).
+  std::weak_ptr<smacc2::introspection::SmaccStateReactorInfo> srInfo_;
 
 private:
-  rclcpp::Node::SharedPtr nh_;
+  rclcpp::Logger logger_;
 };
 //-------------------------------------------------------------
 
@@ -119,7 +132,8 @@ public:
 // contains metainformation about some specific state reactor in the statechart
 struct SmaccStateReactorInfo
 {
-  std::shared_ptr<SmaccStateInfo> ownerState;
+  // Never assigned or read by the core; kept weak so that it can never own a state.
+  std::weak_ptr<SmaccStateInfo> ownerState;
   std::function<void(smacc2::ISmaccState *)> factoryFunction;
 
   std::shared_ptr<TypeInfo> stateReactorType;
@@ -146,13 +160,15 @@ public:
   template <typename TEv>
   void setOutputEvent();
 
-  std::shared_ptr<smacc2::introspection::SmaccEventGeneratorInfo> egInfo_;
+  // Weak: the SmaccEventGeneratorInfo owns this handler (and its factoryFunction captures it).
+  std::weak_ptr<smacc2::introspection::SmaccEventGeneratorInfo> egInfo_;
 };
 
 // contains metainformation about some specific event generator in the statechart
 struct SmaccEventGeneratorInfo
 {
-  std::shared_ptr<SmaccStateInfo> ownerState;
+  // Never assigned or read by the core; kept weak so that it can never own a state.
+  std::weak_ptr<SmaccStateInfo> ownerState;
   std::function<void(smacc2::ISmaccState *)> factoryFunction;
 
   std::shared_ptr<TypeInfo> eventGeneratorType;
@@ -184,8 +200,10 @@ public:
   std::string fullStateName;
   std::string demangledStateName;
 
-  std::shared_ptr<SmaccStateMachineInfo> stateMachine_;
-  std::shared_ptr<SmaccStateInfo> parentState_;
+  // Weak back-references: the machine info owns this state through `states`, and the parent owns
+  // it through `children_`. Use getStateMachineInfo() and getParentState().
+  std::weak_ptr<SmaccStateMachineInfo> stateMachine_;
+  std::weak_ptr<SmaccStateInfo> parentState_;
   std::vector<SmaccTransitionInfo> transitions_;
 
   std::vector<std::shared_ptr<SmaccStateInfo>> children_;
@@ -197,6 +215,16 @@ public:
     std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo);
 
   SmaccStateType getStateLevel();
+
+  // Null once the SmaccStateMachineInfo has been destroyed, which only happens after the state
+  // machine itself is gone.
+  inline std::shared_ptr<SmaccStateMachineInfo> getStateMachineInfo() const
+  {
+    return stateMachine_.lock();
+  }
+
+  // Null for the root state, and once the parent has been destroyed.
+  inline std::shared_ptr<SmaccStateInfo> getParentState() const { return parentState_.lock(); }
 
   inline int depth() const { return depth_; }
 

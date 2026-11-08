@@ -233,10 +233,10 @@ void processTransitionAux(
 
   RCLCPP_INFO_STREAM(globalNh_->get_logger(), "Transition tag: " << transitionTag);
 
-  if (!sourceState->stateMachine_->containsState<Dst>())
+  if (!sourceState->getStateMachineInfo()->containsState<Dst>())
   {
-    auto realparentState = sourceState->stateMachine_->getState<typename Dst::TContext>();
-    auto siblingnode = sourceState->stateMachine_->createState<Dst>(realparentState);
+    auto realparentState = sourceState->getStateMachineInfo()->getState<typename Dst::TContext>();
+    auto siblingnode = sourceState->getStateMachineInfo()->createState<Dst>(realparentState);
 
     WalkStatesExecutor<Dst>::walkStates(siblingnode, true);
     sourceState->declareTransition<Ev>(
@@ -244,7 +244,7 @@ void processTransitionAux(
   }
   else
   {
-    auto siblingnode = sourceState->stateMachine_->getState<Dst>();
+    auto siblingnode = sourceState->getStateMachineInfo()->getState<Dst>();
     sourceState->declareTransition<Ev>(
       siblingnode, transitionTag, transitionType, history, transitionTypeInfo);
   }
@@ -408,7 +408,7 @@ void WalkStatesExecutor<InitialStateType>::walkStates(
 
   if (!rootInitialNode)
   {
-    if (parentState->stateMachine_->containsState<InitialStateType>())
+    if (parentState->getStateMachineInfo()->containsState<InitialStateType>())
     {
       return;
     }
@@ -475,9 +475,9 @@ void SmaccStateMachineInfo::addState(std::shared_ptr<StateType> & state)
 template <typename StateType>
 std::shared_ptr<SmaccStateInfo> SmaccStateInfo::createChildState()
 {
-  auto realparentState = this->stateMachine_->getState<typename StateType::TContext>();
+  auto realparentState = this->getStateMachineInfo()->getState<typename StateType::TContext>();
 
-  auto childState = this->stateMachine_->createState<StateType>(realparentState);
+  auto childState = this->getStateMachineInfo()->createState<StateType>(realparentState);
 
   RCLCPP_WARN_STREAM(
     getLogger(), "Real parent state> " << demangleSymbol<typename StateType::TContext>());
