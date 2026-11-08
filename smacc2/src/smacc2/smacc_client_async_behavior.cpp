@@ -56,6 +56,15 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(
     // requested at once instead of after the usual grace lap.
     while (true)
     {
+      // A thread that has already returned needs no finish request. Without this check every
+      // shutdown logged a FATAL "requestForceFinish" for behaviors whose onEntry had long finished
+      // but whose state was still active (the future stays valid until it is consumed here).
+      if (threadfut->wait_for(std::chrono::seconds(0)) == std::future_status::ready)
+      {
+        threadfut->get();
+        break;
+      }
+
       if (requestFinish && !rclcpp::ok())
       {
         requestForceFinish();
