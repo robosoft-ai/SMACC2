@@ -207,7 +207,7 @@ public:
   std::vector<SmaccTransitionInfo> transitions_;
 
   std::vector<std::shared_ptr<SmaccStateInfo>> children_;
-  int depth_;
+  int depth_ = 0;  // root state (no parent) is depth 0; the constructor adds 1 per ancestor
   const std::type_info * tid_;
 
   SmaccStateInfo(
