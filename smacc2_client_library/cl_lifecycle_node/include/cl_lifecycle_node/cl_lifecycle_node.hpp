@@ -229,9 +229,6 @@ public:
   // @brief execute this method to trigger the shutdown transition
   bool shutdown(const CancelPredicate & cancelled = CancelPredicate());
 
-  // @brief execute this method to trigger the destroy transition
-  void destroy();
-
   /**
    * @brief Configure component for event posting during orthogonal allocation
    */
