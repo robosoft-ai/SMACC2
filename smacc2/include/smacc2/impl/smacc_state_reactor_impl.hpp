@@ -84,9 +84,11 @@ void StateReactorHandler::addInputEvent()
   StateReactorCallbackFunctor functor;
   functor.fn = [this](std::shared_ptr<smacc2::StateReactor> sr)
   {
+    auto srInfo = srInfo_.lock();
     RCLCPP_INFO(
-      nh_->get_logger(), "[%s] State Reactor adding input event: %s",
-      srInfo_->stateReactorType->getFullName().c_str(), demangledTypeName<TEv>().c_str());
+      logger_, "[%s] State Reactor adding input event: %s",
+      srInfo ? srInfo->stateReactorType->getFullName().c_str() : "?",
+      demangledTypeName<TEv>().c_str());
     sr->addInputEvent<TEv>();
   };
 
@@ -96,7 +98,12 @@ void StateReactorHandler::addInputEvent()
   auto evinfo = std::make_shared<SmaccEventInfo>(evtype);
   EventLabel<TEv>(evinfo->label);
 
-  srInfo_->sourceEventTypes.push_back(evinfo);
+  // The info owns this handler and is alive for as long as the static reactor map holds it.
+  auto srInfo = srInfo_.lock();
+  if (srInfo != nullptr)
+  {
+    srInfo->sourceEventTypes.push_back(evinfo);
+  }
 }
 
 template <typename TEv>
@@ -105,9 +112,11 @@ void StateReactorHandler::setOutputEvent()
   StateReactorCallbackFunctor functor;
   functor.fn = [this](std::shared_ptr<smacc2::StateReactor> sr)
   {
+    auto srInfo = srInfo_.lock();
     RCLCPP_INFO(
-      nh_->get_logger(), "[%s] State Reactor setting output event: %s",
-      srInfo_->stateReactorType->getFullName().c_str(), demangledTypeName<TEv>().c_str());
+      logger_, "[%s] State Reactor setting output event: %s",
+      srInfo ? srInfo->stateReactorType->getFullName().c_str() : "?",
+      demangledTypeName<TEv>().c_str());
     sr->setOutputEvent<TEv>();
   };
 

@@ -42,15 +42,16 @@ SmaccStateInfo::SmaccStateInfo(
   parentState_ = parentState;
   stateMachine_ = stateMachineInfo;
 
-  if (parentState_ != nullptr) depth_ = parentState->depth_ + 1;
+  if (parentState != nullptr) depth_ = parentState->depth_ + 1;
 }
 
 void SmaccStateInfo::getAncestors(std::list<const SmaccStateInfo *> & ancestorsList) const
 {
   ancestorsList.push_front(this);
-  if (parentState_ != nullptr)
+  auto parent = parentState_.lock();
+  if (parent != nullptr)
   {
-    this->parentState_->getAncestors(ancestorsList);
+    parent->getAncestors(ancestorsList);
   }
 }
 
@@ -58,7 +59,7 @@ SmaccStateType SmaccStateInfo::getStateLevel()
 {
   if (this->children_.size() == 0)
   {
-    if (this->parentState_ != nullptr)
+    if (!this->parentState_.expired())
     {
       return SmaccStateType::SUPERSTATE_ROUTINE;
     }
@@ -73,14 +74,25 @@ SmaccStateType SmaccStateInfo::getStateLevel()
   }
 }
 
-rclcpp::Node::SharedPtr SmaccStateInfo::getNode() { return this->stateMachine_->getNode(); }
+rclcpp::Node::SharedPtr SmaccStateInfo::getNode()
+{
+  auto stateMachineInfo = this->stateMachine_.lock();
+  if (stateMachineInfo == nullptr)
+  {
+    throw std::runtime_error(
+      "SmaccStateInfo::getNode: the SmaccStateMachineInfo that owns state '" +
+      this->demangledStateName + "' has been destroyed");
+  }
+  return stateMachineInfo->getNode();
+}
 
 std::string SmaccStateInfo::getFullPath()
 {
-  if (parentState_ == nullptr)
+  auto parent = parentState_.lock();
+  if (parent == nullptr)
     return this->toShortName();
   else
-    return this->parentState_->getFullPath() + "/" + this->toShortName();
+    return parent->getFullPath() + "/" + this->toShortName();
 }
 
 const std::string & SmaccStateInfo::toShortName() const { return this->demangledStateName; }
