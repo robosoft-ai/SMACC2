@@ -41,25 +41,28 @@ void ClLifecycleNode::onInitialize()
     this->nodeName_ + node_change_state_topic);
 }
 
-bool ClLifecycleNode::changeState(uint8_t transition, const CancelPredicate & cancelled)
+namespace
 {
-  auto logger = this->getNode()->get_logger();
-  const std::string serviceName = client_change_state_->get_service_name();
+// Waits for the service, sends the request and waits for the response, checking `cancelled` and
+// rclcpp::ok() every 100 ms; both waits are unbounded but abandonable. Returns nullptr if abandoned.
+template <typename ServiceT>
+typename ServiceT::Response::SharedPtr callService(
+  const rclcpp::Logger & logger, typename rclcpp::Client<ServiceT>::SharedPtr client,
+  typename ServiceT::Request::SharedPtr request, const ClLifecycleNode::CancelPredicate & cancelled,
+  const std::string & what)
+{
+  const std::string serviceName = client->get_service_name();
   auto abandoned = [&cancelled]() { return (cancelled && cancelled()) || !rclcpp::ok(); };
 
-  // The client is created in onInitialize() and the first request can follow within
-  // milliseconds, before the service has been discovered. A request sent before discovery has
-  // no reader and its future never completes, so wait for the server first. The wait is
-  // unbounded but abandonable: the predicate is checked every 100 ms.
   int laps = 0;
-  while (!client_change_state_->wait_for_service(std::chrono::milliseconds(100)))
+  while (!client->wait_for_service(std::chrono::milliseconds(100)))
   {
     if (abandoned())
     {
       RCLCPP_INFO(
-        logger, "[ClLifecycleNode] transition %d abandoned while waiting for service %s",
-        transition, serviceName.c_str());
-      return false;
+        logger, "[ClLifecycleNode] %s abandoned while waiting for service %s", what.c_str(),
+        serviceName.c_str());
+      return nullptr;
     }
     if (++laps % 50 == 0)
     {
@@ -69,19 +72,17 @@ bool ClLifecycleNode::changeState(uint8_t transition, const CancelPredicate & ca
     }
   }
 
-  auto request = std::make_shared<lifecycle_msgs::srv::ChangeState::Request>();
-  request->transition.id = transition;
-  auto future = client_change_state_->async_send_request(request);
+  auto future = client->async_send_request(request);
   laps = 0;
   while (future.wait_for(std::chrono::milliseconds(100)) != std::future_status::ready)
   {
     if (abandoned())
     {
-      client_change_state_->remove_pending_request(future);
+      client->remove_pending_request(future);
       RCLCPP_INFO(
-        logger, "[ClLifecycleNode] transition %d abandoned while waiting for the response of %s",
-        transition, serviceName.c_str());
-      return false;
+        logger, "[ClLifecycleNode] %s abandoned while waiting for the response of %s", what.c_str(),
+        serviceName.c_str());
+      return nullptr;
     }
     if (++laps % 50 == 0)
     {
@@ -89,9 +90,24 @@ bool ClLifecycleNode::changeState(uint8_t transition, const CancelPredicate & ca
         logger, "[ClLifecycleNode] no response from %s after %d s", serviceName.c_str(), laps / 10);
     }
   }
+  return future.get();
+}
+}  // namespace
 
-  const bool accepted = future.get()->success;
-  if (accepted)
+bool ClLifecycleNode::changeState(uint8_t transition, const CancelPredicate & cancelled)
+{
+  auto logger = this->getNode()->get_logger();
+  auto request = std::make_shared<lifecycle_msgs::srv::ChangeState::Request>();
+  request->transition.id = transition;
+  auto response = callService<lifecycle_msgs::srv::ChangeState>(
+    logger, client_change_state_, request, cancelled, "transition " + std::to_string(transition));
+  if (!response)
+  {
+    return false;
+  }
+
+  const std::string serviceName = client_change_state_->get_service_name();
+  if (response->success)
   {
     RCLCPP_INFO(
       logger, "[ClLifecycleNode] transition %d accepted by %s", transition, serviceName.c_str());
@@ -102,7 +118,20 @@ bool ClLifecycleNode::changeState(uint8_t transition, const CancelPredicate & ca
       logger, "[ClLifecycleNode] transition %d rejected by %s; no transition event will follow",
       transition, serviceName.c_str());
   }
-  return accepted;
+  return response->success;
+}
+
+bool ClLifecycleNode::getState(uint8_t & state, const CancelPredicate & cancelled)
+{
+  auto request = std::make_shared<lifecycle_msgs::srv::GetState::Request>();
+  auto response = callService<lifecycle_msgs::srv::GetState>(
+    this->getNode()->get_logger(), client_get_state_, request, cancelled, "get_state");
+  if (!response)
+  {
+    return false;
+  }
+  state = response->current_state.id;
+  return true;
 }
 
 bool ClLifecycleNode::activate(const CancelPredicate & cancelled)
@@ -127,7 +156,29 @@ bool ClLifecycleNode::cleanup(const CancelPredicate & cancelled)
 
 bool ClLifecycleNode::shutdown(const CancelPredicate & cancelled)
 {
-  return changeState(lifecycle_msgs::msg::Transition::TRANSITION_UNCONFIGURED_SHUTDOWN, cancelled);
+  // Each primary state has its own shutdown transition id, so ask the node which state it is in.
+  using lifecycle_msgs::msg::State;
+  using lifecycle_msgs::msg::Transition;
+  uint8_t state;
+  if (!getState(state, cancelled))
+  {
+    return false;
+  }
+  switch (state)
+  {
+    case State::PRIMARY_STATE_UNCONFIGURED:
+      return changeState(Transition::TRANSITION_UNCONFIGURED_SHUTDOWN, cancelled);
+    case State::PRIMARY_STATE_INACTIVE:
+      return changeState(Transition::TRANSITION_INACTIVE_SHUTDOWN, cancelled);
+    case State::PRIMARY_STATE_ACTIVE:
+      return changeState(Transition::TRANSITION_ACTIVE_SHUTDOWN, cancelled);
+    default:
+      RCLCPP_ERROR(
+        this->getNode()->get_logger(),
+        "[ClLifecycleNode] %s is in lifecycle state %d, which has no shutdown transition",
+        nodeName_.c_str(), state);
+      return false;
+  }
 }
 
 }  // namespace cl_lifecycle_node
