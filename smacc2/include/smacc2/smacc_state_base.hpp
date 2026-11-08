@@ -93,17 +93,11 @@ public:
 
   const smacc2::introspection::SmaccStateInfo * getStateInfo()
   {
-    auto smInfo = this->getStateMachine().getStateMachineInfo();
+    // By reference: a plain `auto` copied the whole SmaccStateMachineInfo on every state construction.
+    const auto & smInfo = this->getStateMachine().getStateMachineInfo();
 
-    auto key = typeid(MostDerived).name();
-    if (smInfo.states.count(key))
-    {
-      return smInfo.states[key].get();
-    }
-    else
-    {
-      return nullptr;
-    }
+    auto it = smInfo.states.find(typeid(MostDerived).name());
+    return it != smInfo.states.end() ? it->second.get() : nullptr;
   }
 
   std::string getName() override { return getShortName(); }

@@ -51,14 +51,11 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(
 
   try
   {
-    // The wait does not stop at rclcpp shutdown: the thread must be joined before this object
-    // can be released, or it finishes on a destroyed behavior. At shutdown the finish is
-    // requested at once instead of after the usual grace lap.
+    // Never stops at rclcpp shutdown: the thread must be joined before this object is released.
     while (true)
     {
-      // A thread that has already returned needs no finish request. Without this check every
-      // shutdown logged a FATAL "requestForceFinish" for behaviors whose onEntry had long finished
-      // but whose state was still active (the future stays valid until it is consumed here).
+      // A thread that has already returned needs no finish request (the future stays valid until
+      // consumed here); without this check shutdown logged a FATAL requestForceFinish for it.
       if (threadfut->wait_for(std::chrono::seconds(0)) == std::future_status::ready)
       {
         threadfut->get();
@@ -144,8 +141,7 @@ void SmaccAsyncClientBehavior::dispose()
       "finished.");
   }
 
-  // Backstop: executeOnExit has normally joined the onEntry thread by now. No behavior may
-  // be released with that thread live.
+  // Backstop: no behavior may be released with its onEntry thread live.
   this->waitOnEntryThread(true);
 
   RCLCPP_DEBUG_STREAM(
@@ -156,10 +152,8 @@ void SmaccAsyncClientBehavior::dispose()
 
 SmaccAsyncClientBehavior::~SmaccAsyncClientBehavior()
 {
-  // Last line of defense. Every release path joins the threads first (executeOnExit and
-  // dispose on state exit, ISmaccStateMachine::joinAsyncClientBehaviorThreads at shutdown).
-  // If one is missed, join here, before the members the thread uses are destroyed, rather
-  // than let ~future block after them.
+  // Last line of defense: every release path joins the threads first; if one is missed, join here
+  // before the members the thread uses are destroyed, rather than let ~future block after them.
   if (this->onEntryThread_ && this->onEntryThread_->valid())
   {
     RCLCPP_ERROR_STREAM(
