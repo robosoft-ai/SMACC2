@@ -1,0 +1,8 @@
+# LeakSanitizer suppressions for the core tests: allocations owned by the DDS and rclcpp layers,
+# which are not freed at shutdown. SMACC2 itself leaks nothing at exit (fix M).
+leak:libfastrtps
+leak:libfastcdr
+leak:librmw
+leak:librcl
+leak:librclcpp
+leak:libpython

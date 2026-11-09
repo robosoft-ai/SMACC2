@@ -12,7 +12,6 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(smacc2 REQUIRED)
 find_package(cl_ros2_timer REQUIRED)
-find_package( REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(Boost COMPONENTS thread REQUIRED)
 
