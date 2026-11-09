@@ -38,7 +38,7 @@ public:
   void onExit() override;
 
 protected:
-  cl_nav2z::CpWaypointNavigatorBase * waypointsNavigator_;
+  cl_nav2z::CpWaypointNavigatorBase * waypointsNavigator_ = nullptr;
 };
 
 }  // namespace cl_nav2z

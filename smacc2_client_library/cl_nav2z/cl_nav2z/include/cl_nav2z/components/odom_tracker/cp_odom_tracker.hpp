@@ -144,21 +144,21 @@ protected:
   // without any subscriber
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odomSub_;
 
-  cl_nav2z::CpPose * robotPose_;
+  cl_nav2z::CpPose * robotPose_ = nullptr;
   rclcpp::TimerBase::SharedPtr robotPoseTimer_;
 
   // -------------- PARAMETERS ----------------------
   /// How much distance there is between two points of the path
-  double recordPointDistanceThreshold_;
+  double recordPointDistanceThreshold_ = 0.005;
 
   /// Meters
-  double recordAngularDistanceThreshold_;
+  double recordAngularDistanceThreshold_ = 0.1;
 
   /// rads
-  double clearPointDistanceThreshold_;
+  double clearPointDistanceThreshold_ = 0.05;
 
   /// rads
-  double clearAngularDistanceThreshold_;
+  double clearAngularDistanceThreshold_ = 0.1;
 
   std::string odomFrame_;
 

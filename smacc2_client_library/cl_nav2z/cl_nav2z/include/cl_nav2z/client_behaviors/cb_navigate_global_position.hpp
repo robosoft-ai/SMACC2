@@ -37,7 +37,7 @@ struct CbNavigateGlobalPositionOptions
 class CbNavigateGlobalPosition : public CbNav2ZClientBehaviorBase
 {
 public:
-  float goalYaw;
+  float goalYaw = 0;
 
   CbNavigateGlobalPositionOptions options;
   geometry_msgs::msg::Point goalPosition;

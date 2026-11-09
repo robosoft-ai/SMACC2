@@ -32,6 +32,6 @@ public:
   void onEntry() override;
 
 protected:
-  CpSlamToolbox * slam_;
+  CpSlamToolbox * slam_ = nullptr;
 };
 }  // namespace cl_nav2z

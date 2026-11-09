@@ -41,6 +41,6 @@ public:
   std::optional<std::string> parameterName_;
   std::optional<std::string> packageNamespace_;
 
-  cl_nav2z::CpWaypointNavigatorBase * waypointsNavigator_;
+  cl_nav2z::CpWaypointNavigatorBase * waypointsNavigator_ = nullptr;
 };
 }  // namespace cl_nav2z

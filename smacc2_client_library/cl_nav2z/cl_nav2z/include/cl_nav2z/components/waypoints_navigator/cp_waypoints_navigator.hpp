@@ -48,7 +48,7 @@ struct NavigateNextWaypointOptions
 class CpWaypointNavigator : public CpWaypointNavigatorBase
 {
 public:
-  ClNav2Z * client_;
+  ClNav2Z * client_ = nullptr;
   components::CpNav2ActionInterface * nav2ActionInterface_ = nullptr;
 
   CpWaypointNavigator();

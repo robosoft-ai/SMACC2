@@ -37,7 +37,7 @@ public:
 
   void onExit() override;
 
-  CpWaypointNavigator * waypointsNavigator_;
+  CpWaypointNavigator * waypointsNavigator_ = nullptr;
 
   NavigateNextWaypointOptions options_;
 

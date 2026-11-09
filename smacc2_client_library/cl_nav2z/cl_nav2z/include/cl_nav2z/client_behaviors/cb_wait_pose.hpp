@@ -54,6 +54,6 @@ public:
   void onEntry() override;
 
 protected:
-  cl_nav2z::ClNav2Z * nav2zClient_;
+  cl_nav2z::ClNav2Z * nav2zClient_ = nullptr;
 };
 }  // namespace cl_nav2z

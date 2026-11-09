@@ -45,7 +45,7 @@ public:
   void onExit() override;
 
 private:
-  CpOdomTracker * odomTracker;
+  CpOdomTracker * odomTracker = nullptr;
 
   std::optional<CbUndoPathBackwardsOptions> options_;
 };
