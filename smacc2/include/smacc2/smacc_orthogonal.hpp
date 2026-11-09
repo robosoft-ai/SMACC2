@@ -27,6 +27,8 @@ namespace smacc2
 class ISmaccOrthogonal
 {
 public:
+  virtual ~ISmaccOrthogonal() = default;
+
   void setStateMachine(ISmaccStateMachine * value);
 
   inline ISmaccStateMachine * getStateMachine();
