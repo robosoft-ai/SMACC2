@@ -1,0 +1,68 @@
+name: clang-tidy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  clang-tidy:
+    name: clang-tidy (bugprone, concurrency, clang-analyzer)
+    runs-on: ubuntu-24.04
+    # ROS Jazzy comes preinstalled in the container, as in the other workflows.
+    container:
+      image: ros:jazzy-ros-base
+    # A container job runs its steps with sh unless told otherwise; the steps source setup.bash.
+    defaults:
+      run:
+        shell: bash
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependencies
+        # clang-tidy 18 from Ubuntu noble, the version the baseline was generated with, plus the
+        # rosdeps of the packages the gate analyzes.
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends clang-tidy
+          rosdep update
+          rosdep install --ignore-src -r -y --from-paths \
+            smacc2 \
+            smacc2_msgs \
+            smacc2_client_library/cl_ros2_timer \
+            smacc2_client_library/cl_lifecycle_node \
+            smacc2_client_library/cl_nav2z/cl_nav2z \
+            smacc2_sm_reference_library/sm_atomic \
+            smacc2_sm_reference_library/sm_atomic_lifecycle
+
+      - name: Build with a compile database
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          colcon build \
+            --packages-select \
+              smacc2_msgs \
+              smacc2 \
+              cl_ros2_timer \
+              cl_lifecycle_node \
+              cl_nav2z \
+              sm_atomic \
+              sm_atomic_lifecycle \
+            --cmake-args \
+              -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+              -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+              -DBUILD_TESTING=OFF
+
+      - name: Run clang-tidy against the baseline
+        # bugprone-*, concurrency-* and clang-analyzer-* over the core, the client libraries that
+        # instantiate its templates, and two state machines. Fails on any compiler error, any
+        # diagnostic not in .github/clang-tidy-baseline.txt, or more instances of a known one.
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          .github/scripts/clang_tidy_gate.sh build clang_tidy_out
+
+      - name: Upload clang-tidy output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clang-tidy-output
+          path: clang_tidy_out/
+          if-no-files-found: ignore
