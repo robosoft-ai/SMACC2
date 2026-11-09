@@ -244,7 +244,12 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
     cl_nav2z::CpGoalCheckerSwitcher * goalCheckerSwitcher;
     this->requiresComponent(goalCheckerSwitcher, ComponentRequirement::SOFT);
 
-    if (options && options->goalCheckerName_)
+    if (goalCheckerSwitcher == nullptr)
+    {
+      RCLCPP_WARN(
+        getLogger(), "[WaypointsNavigator] no CpGoalCheckerSwitcher; goal checker left as is");
+    }
+    else if (options && options->goalCheckerName_)
     {
       RCLCPP_WARN(
         getLogger(), "[WaypointsNavigator] override goal checker: %s",
