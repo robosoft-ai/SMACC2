@@ -117,7 +117,7 @@ protected:
 
         std::function<void(typename MessageType::SharedPtr)> fn = [this](auto msg)
         { this->messageCallback(*msg); };
-        sub_ = getNode()->create_subscription<MessageType>(*topicName, qos, fn);
+        sub_ = getNode()->template create_subscription<MessageType>(*topicName, qos, fn);
         this->initialized_ = true;
       }
     }

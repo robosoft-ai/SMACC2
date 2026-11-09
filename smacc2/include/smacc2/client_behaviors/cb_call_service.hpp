@@ -48,7 +48,7 @@ public:
     RCLCPP_INFO_STREAM(
       getLogger(), "[" << this->getName() << "] creating ros service client: " << serviceName_);
 
-    client_ = getNode()->create_client<ServiceType>(serviceName_);
+    client_ = getNode()->template create_client<ServiceType>(serviceName_);
 
     RCLCPP_INFO_STREAM(
       getLogger(), "[" << this->getName() << "] making service request to " << serviceName_);

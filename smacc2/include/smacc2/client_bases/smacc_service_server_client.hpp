@@ -76,7 +76,7 @@ public:
         RCLCPP_INFO_STREAM(
           getLogger(), "[" << this->getName() << "] Client Service: " << *serviceName_);
 
-        server_ = getNode()->create_service<TService>(
+        server_ = getNode()->template create_service<TService>(
           *serviceName_, std::bind(
                            &SmaccServiceServerClient<TService>::serviceCallback, this,
                            std::placeholders::_1, std::placeholders::_2));

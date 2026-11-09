@@ -50,7 +50,7 @@ public:
         RCLCPP_INFO_STREAM(
           getLogger(), "[" << this->getName() << "] Client Service: " << *serviceName_);
         this->initialized_ = true;
-        client_ = getNode()->create_client<ServiceType>(*serviceName_);
+        client_ = getNode()->template create_client<ServiceType>(*serviceName_);
       }
     }
   }
