@@ -7,6 +7,16 @@ jobs:
   analyze:
     name: CodeQL Analysis (C++)
     runs-on: ubuntu-24.04
+    # ROS Jazzy comes preinstalled in the container, as in ci-sanitizers.yml and
+    # jazzy-binary-build.yml. ros-tooling/setup-ros fetched its apt source from a
+    # GitHub release through an unauthenticated API lookup, which failed on a
+    # GitHub 504 on 2026-11-08 and is exposed to the anonymous API rate limit.
+    container:
+      image: ros:jazzy-ros-base
+    # A container job runs its steps with sh unless told otherwise; the steps source setup.bash.
+    defaults:
+      run:
+        shell: bash
     permissions:
       actions: read
       contents: read
@@ -14,16 +24,26 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: ros-tooling/setup-ros@v0.7
-        with:
-          required-ros-distributions: jazzy
-
       - name: Install dependencies
+        # Only the packages the build step selects. A whole-tree rosdep would
+        # pull MoveIt and Gazebo, which this job does not build.
         run: |
-          source /opt/ros/jazzy/setup.bash
-          sudo rosdep init || true
+          apt-get update
           rosdep update
-          rosdep install --from-paths . --ignore-src -r -y
+          rosdep install --ignore-src -r -y --from-paths \
+            smacc2 \
+            smacc2_msgs \
+            smacc2_client_library/cl_keyboard \
+            smacc2_client_library/cl_ros2_timer \
+            smacc2_client_library/cl_generic_sensor \
+            smacc2_client_library/cl_nav2z/cl_nav2z \
+            smacc2_client_library/cl_nav2z/custom_planners/backward_global_planner \
+            smacc2_client_library/cl_nav2z/custom_planners/backward_local_planner \
+            smacc2_client_library/cl_nav2z/custom_planners/forward_global_planner \
+            smacc2_client_library/cl_nav2z/custom_planners/forward_local_planner \
+            smacc2_client_library/cl_nav2z/custom_planners/nav2z_planners_common \
+            smacc2_client_library/cl_nav2z/custom_planners/pure_spinning_local_planner \
+            smacc2_client_library/cl_nav2z/custom_planners/undo_path_global_planner
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
