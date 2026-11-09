@@ -37,6 +37,11 @@ std::string ISmaccClientBehavior::getName() const { return demangleSymbol(typeid
 
 rclcpp::Node::SharedPtr ISmaccClientBehavior::getNode() const
 {
+  // Null until the orthogonal attaches the behavior; getLogger() falls back to the SMACC logger then.
+  if (this->stateMachine_ == nullptr)
+  {
+    return nullptr;
+  }
   return this->stateMachine_->getNode();
 }
 
