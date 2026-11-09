@@ -121,8 +121,14 @@ public:
         standardOnExit(*derivedThis);
         TRACETOOLS_TRACEPOINT(smacc2_state_onExit_end, STATE_NAME);
       }
+      // The exit path must complete, so the exception is logged and swallowed, not propagated.
+      catch (const std::exception & e)
+      {
+        RCLCPP_ERROR(getLogger(), "[%s] exception in onExit: %s", STATE_NAME, e.what());
+      }
       catch (...)
       {
+        RCLCPP_ERROR(getLogger(), "[%s] non-standard exception in onExit", STATE_NAME);
       }
       this->getStateMachine().notifyOnStateExited(derivedThis);
     }
