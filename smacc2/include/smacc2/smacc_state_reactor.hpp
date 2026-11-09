@@ -43,7 +43,7 @@ struct EmptyObjectTag
 class StateReactor
 {
 public:
-  ISmaccState * ownerState;
+  ISmaccState * ownerState = nullptr;
   std::function<void()> postEventFn;
   std::vector<const std::type_info *> eventTypes;
   std::map<const std::type_info *, std::function<void(void *)>> eventCallbacks_;

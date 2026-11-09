@@ -196,7 +196,7 @@ public:
   static std::map<const std::type_info *, std::vector<std::shared_ptr<SmaccEventGeneratorInfo>>>
     eventGeneratorsInfo;
 
-  int stateIndex_;
+  int stateIndex_ = 0;
   std::string fullStateName;
   std::string demangledStateName;
 

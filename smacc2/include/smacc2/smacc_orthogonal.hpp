@@ -81,7 +81,8 @@ protected:
   std::vector<std::shared_ptr<smacc2::ISmaccClient>> clients_;
 
 private:
-  ISmaccStateMachine * stateMachine_;
+  // Null until setStateMachine() is called from createOrthogonal().
+  ISmaccStateMachine * stateMachine_ = nullptr;
 
   std::vector<std::vector<std::shared_ptr<smacc2::ISmaccClientBehavior>>> clientBehaviors_;
   friend class ISmaccStateMachine;

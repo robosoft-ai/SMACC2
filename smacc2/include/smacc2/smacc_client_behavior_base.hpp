@@ -90,7 +90,7 @@ private:
 
   // a reference to the state where the client behavior is being executed
   ISmaccState * currentState;
-  smacc2::ISmaccOrthogonal * currentOrthogonal;
+  smacc2::ISmaccOrthogonal * currentOrthogonal = nullptr;
 
   friend class ISmaccState;
   friend class ISmaccOrthogonal;

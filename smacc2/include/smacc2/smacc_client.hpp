@@ -111,8 +111,8 @@ protected:
 
 private:
   // A reference to the state machine object that owns this resource
-  ISmaccStateMachine * stateMachine_;
-  ISmaccOrthogonal * orthogonal_;
+  ISmaccStateMachine * stateMachine_ = nullptr;
+  ISmaccOrthogonal * orthogonal_ = nullptr;
 
   // friend method called by orthogonal
   void initialize();

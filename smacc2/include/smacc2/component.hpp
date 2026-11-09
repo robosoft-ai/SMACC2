@@ -83,7 +83,7 @@ protected:
   ISmaccStateMachine * getStateMachine();
 
   // A reference to the state machine object that owns this resource
-  ISmaccStateMachine * stateMachine_;
+  ISmaccStateMachine * stateMachine_ = nullptr;
 
   ISmaccClient * owner_;
 
