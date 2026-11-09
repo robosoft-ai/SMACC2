@@ -52,7 +52,12 @@ void CbAbsoluteRotate::onEntry()
   CpPlannerSwitcher * plannerSwitcher;
   this->requiresComponent(plannerSwitcher, ComponentRequirement::SOFT);
 
-  if (spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning)
+  if (plannerSwitcher == nullptr)
+  {
+    RCLCPP_WARN(
+      getLogger(), "[%s] no CpPlannerSwitcher; planners left as they are", getName().c_str());
+  }
+  else if (spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning)
   {
     plannerSwitcher->setPureSpinningPlanner();
   }

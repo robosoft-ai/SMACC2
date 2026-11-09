@@ -78,11 +78,18 @@ void CbRotate::onEntry()
   stampedCurrentPoseMsg.header.stamp = getNode()->now();
   stampedCurrentPoseMsg.pose = currentPoseMsg;
 
-  auto pathname = this->getCurrentState()->getName() + " - " + getName();
-  odomTracker->pushPath(pathname);
-
-  odomTracker->setStartPoint(stampedCurrentPoseMsg);
-  odomTracker->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
+  if (odomTracker != nullptr)
+  {
+    auto pathname = this->getCurrentState()->getName() + " - " + getName();
+    odomTracker->pushPath(pathname);
+    odomTracker->setStartPoint(stampedCurrentPoseMsg);
+    odomTracker->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
+  }
+  else
+  {
+    RCLCPP_WARN(
+      getLogger(), "[%s] no CpOdomTracker; the rotation is not recorded", getName().c_str());
+  }
 
   RCLCPP_INFO_STREAM(getLogger(), "current pose: " << currentPoseMsg);
   RCLCPP_INFO_STREAM(getLogger(), "goal pose: " << goal.pose.pose);

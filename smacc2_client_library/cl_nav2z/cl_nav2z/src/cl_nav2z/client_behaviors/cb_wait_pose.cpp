@@ -36,6 +36,12 @@ void CbWaitPose::onEntry()
 {
   cl_nav2z::CpPose * pose = nullptr;
   this->requiresComponent(pose, ComponentRequirement::SOFT);
+  if (pose == nullptr)
+  {
+    RCLCPP_ERROR(getLogger(), "[CbWaitPose] no CpPose component in the state machine");
+    this->postFailureEvent();
+    return;
+  }
   try
   {
     pose->waitTransformUpdate(rclcpp::Rate(20));
