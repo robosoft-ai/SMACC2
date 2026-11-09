@@ -25,6 +25,8 @@ namespace smacc2
 class ISmaccState
 {
 public:
+  virtual ~ISmaccState() = default;
+
   virtual ISmaccStateMachine & getStateMachine() = 0;
 
   virtual std::string getName() = 0;

@@ -34,6 +34,7 @@ class ISmaccUpdatable
 public:
   ISmaccUpdatable();
   explicit ISmaccUpdatable(rclcpp::Duration duration);
+  virtual ~ISmaccUpdatable() = default;
 
   void executeUpdate(rclcpp::Node::SharedPtr node);
   void setUpdatePeriod(rclcpp::Duration duration);
