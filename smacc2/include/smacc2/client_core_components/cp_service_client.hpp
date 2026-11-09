@@ -271,7 +271,7 @@ public:
     RCLCPP_INFO_STREAM(
       getLogger(), "[" << this->getName() << "] Initializing service client for: " << *serviceName);
 
-    client_ = getNode()->create_client<ServiceType>(*serviceName);
+    client_ = getNode()->template create_client<ServiceType>(*serviceName);
 
     RCLCPP_INFO_STREAM(
       getLogger(),

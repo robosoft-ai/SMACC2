@@ -57,7 +57,7 @@ public:
     { this->onMessageReceived(msg); };
 
     auto nh = getNode();
-    sub_ = nh->create_subscription<TMessage>(topicname_, qos, fn);
+    sub_ = nh->template create_subscription<TMessage>(topicname_, qos, fn);
   }
 
   void onMessageReceived(const typename TMessage::SharedPtr msg)
