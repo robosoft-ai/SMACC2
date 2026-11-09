@@ -18,7 +18,6 @@
  *
  ******************************************************************************************************************/
 #include <errno.h>
-#include <fcntl.h>
 #include <poll.h>
 #include <signal.h>
 #include <stdio.h>
@@ -31,6 +30,7 @@
 #include <future>
 #include <iostream>
 #include <smacc2/client_bases/smacc_ros_launch_client_2.hpp>
+#include <system_error>
 #include <thread>
 
 namespace smacc2
@@ -80,7 +80,10 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
 
       if (!child.pipe)
       {
-        throw std::runtime_error("popen() failed!");
+        // Logged, not thrown: nothing reads this future in LAUNCH_CLIENT_BEHAVIOR_LIFETIME mode.
+        RCLCPP_ERROR_STREAM(
+          rclcpp::get_logger("smacc2"), "[ClRosLaunch2] could not start: " << cmd.str());
+        return result;
       }
       if (client != nullptr)
       {
@@ -88,31 +91,41 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
       }
 
       int fd = fileno(child.pipe);
-
-      int flags = fcntl(fd, F_GETFL, 0);
-      fcntl(fd, F_SETFL, flags | O_NONBLOCK);
-
       bool cancelled = false;
 
-      // while (!cancelCondition())
+      // poll() with a 100 ms timeout is also the cancel-check cadence. read() returning 0 is the
+      // launch tree's end of file, which the former non-blocking fread() loop took for "no data yet".
       while (!cancelled)
       {
         cancelled = cancelCondition();
-        size_t bytesRead = fread(buffer.data(), 1, buffer.size(), /*data*/ child.pipe);
+        pollfd pfd{fd, POLLIN, 0};
+        int ready = poll(&pfd, 1, 100);
+        if (ready < 0)
+        {
+          if (errno == EINTR) continue;
+          RCLCPP_ERROR_STREAM(
+            rclcpp::get_logger("smacc2"),
+            "[ClRosLaunch2] poll() failed: " << std::generic_category().message(errno));
+          break;
+        }
+        if (ready == 0) continue;
 
+        ssize_t bytesRead = read(fd, buffer.data(), buffer.size());
         if (bytesRead > 0)
         {
-          result.append(buffer.data(), bytesRead);
+          result.append(buffer.data(), static_cast<size_t>(bytesRead));
         }
         else if (bytesRead == 0)
         {
-          // No data available yet
-          std::this_thread::sleep_for(std::chrono::milliseconds(100));  // Wait before retrying
+          RCLCPP_INFO(
+            rclcpp::get_logger("smacc2"), "[ClRosLaunch2] launch process closed its output");
+          break;
         }
-        else
+        else if (errno != EINTR && errno != EAGAIN)
         {
-          // Read error
-          RCLCPP_ERROR(rclcpp::get_logger("smacc2"), "Error reading from pipe");
+          RCLCPP_ERROR_STREAM(
+            rclcpp::get_logger("smacc2"),
+            "[ClRosLaunch2] read() failed: " << std::generic_category().message(errno));
           break;
         }
       }
@@ -193,12 +206,24 @@ ProcessInfo runProcess(const char * command)
   else if (pid > 0)
   {
     // Parent process
-    close(pipefd[1]);  // Close write end in parent
-    info.pid = pid;
+    close(pipefd[1]);                    // Close write end in parent
     info.pipe = fdopen(pipefd[0], "r");  // Open read end as text-mode FILE
+    if (info.pipe == nullptr)
+    {
+      // No stream to read the child through: close the descriptor, stop and reap the child.
+      close(pipefd[0]);
+      kill(pid, SIGTERM);
+      waitpid(pid, nullptr, 0);
+    }
+    else
+    {
+      info.pid = pid;
+    }
   }
   else
   {
+    close(pipefd[0]);
+    close(pipefd[1]);
     std::cerr << "Error creating child process." << std::endl;
   }
 
