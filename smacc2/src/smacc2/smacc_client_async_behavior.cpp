@@ -168,8 +168,14 @@ SmaccAsyncClientBehavior::~SmaccAsyncClientBehavior()
     {
       this->onExitThread_->get();
     }
+    catch (const std::exception & e)
+    {
+      RCLCPP_ERROR_STREAM(getLogger(), "[" << getName() << "] onExit thread threw: " << e.what());
+    }
     catch (...)
     {
+      RCLCPP_ERROR_STREAM(
+        getLogger(), "[" << getName() << "] onExit thread threw a non-standard exception");
     }
   }
 }
