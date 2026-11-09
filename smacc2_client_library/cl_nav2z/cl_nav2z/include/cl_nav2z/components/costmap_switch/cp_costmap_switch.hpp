@@ -68,7 +68,7 @@ public:
 
 private:
   std::map<std::string, std::shared_ptr<CpCostmapProxy>> costmapProxies;
-  cl_nav2z::ClNav2Z * nav2zClient_;
+  cl_nav2z::ClNav2Z * nav2zClient_ = nullptr;
 };
 //-------------------------------------------------------------------------
 class CpCostmapProxy

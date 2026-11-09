@@ -31,7 +31,7 @@ class CbAbsoluteRotate : public CbNav2ZClientBehaviorBase
 public:
   std::shared_ptr<tf2_ros::Buffer> listener;
 
-  float absoluteGoalAngleDegree;
+  float absoluteGoalAngleDegree = 0;
   std::optional<float> yawGoalTolerance;
   std::optional<float> maxVelTheta;  // if not defined, default parameter server
   std::optional<SpinningPlanner> spinningPlanner;
@@ -44,8 +44,9 @@ public:
 
 private:
   void updateTemporalBehaviorParameters(bool undo);
-  float oldYawTolerance;
-  float oldMaxVelTheta;
-  float oldMinVelTheta;
+  // Saved by updateTemporalBehaviorParameters(false) and restored by (true).
+  float oldYawTolerance = 0;
+  float oldMaxVelTheta = 0;
+  float oldMinVelTheta = 0;
 };
 }  // namespace cl_nav2z

@@ -39,7 +39,7 @@ public:
 
   void onExit() override;
 
-  CpWaypointNavigator * waypointsNavigator_;
+  CpWaypointNavigator * waypointsNavigator_ = nullptr;
 
   std::string waypointname_;
 };

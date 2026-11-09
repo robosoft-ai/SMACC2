@@ -47,6 +47,6 @@ public:
   }
 
 private:
-  CpOdomTracker * odomTracker_;
+  CpOdomTracker * odomTracker_ = nullptr;
 };
 }  // namespace cl_nav2z

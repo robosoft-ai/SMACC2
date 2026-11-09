@@ -70,7 +70,7 @@ public:
 
 protected:
   // required component
-  odom_tracker::CpOdomTracker * odomTracker_;
+  odom_tracker::CpOdomTracker * odomTracker_ = nullptr;
 
   std::optional<geometry_msgs::msg::PoseStamped> goalPose_;
 

@@ -29,7 +29,7 @@ struct CbPureSpinning : public smacc2::SmaccAsyncClientBehavior
 {
 private:
   double targetYaw__rads;
-  bool goalReached_;
+  bool goalReached_ = false;
   double k_betta_;
   double max_angular_yaw_speed_;
 

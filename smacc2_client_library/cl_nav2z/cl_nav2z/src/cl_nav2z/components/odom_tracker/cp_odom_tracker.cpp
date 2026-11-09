@@ -61,12 +61,6 @@ void parameterDeclareAndtryGetOrSet(
 
 void CpOdomTracker::onInitialize()
 {
-  // default values
-  recordPointDistanceThreshold_ = 0.005;  // 5 mm
-  recordAngularDistanceThreshold_ = 0.1;  // radians
-  clearPointDistanceThreshold_ = 0.05;    // 5 cm
-  clearAngularDistanceThreshold_ = 0.1;   // radi
-
   auto nh = getNode();
   RCLCPP_WARN(getLogger(), "[CpOdomTracker] Initializing Odometry Tracker");
 
