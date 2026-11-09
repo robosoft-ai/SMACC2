@@ -40,12 +40,6 @@ CbRosLaunch2::CbRosLaunch2(std::string package, std::string launchfile, RosLaunc
 
 CbRosLaunch2::~CbRosLaunch2() {}
 
-template <typename TOrthogonal, typename TSourceObject>
-void onStateOrthogonalAllocation()
-{
-  smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
-}
-
 void CbRosLaunch2::onEntry()
 {
   RCLCPP_INFO_STREAM(getLogger(), "[CbRosLaunch2] OnEntry");
