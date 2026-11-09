@@ -4,23 +4,35 @@ on:
   workflow_dispatch:
 
 jobs:
-  tsan:
-    name: ThreadSanitizer + UBSan
+  core-tests:
+    name: ${{ matrix.name }}
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - sanitizer: tsan
+            name: ThreadSanitizer + UBSan
+            cxx_flags: -fsanitize=thread,undefined -fno-omit-frame-pointer
+            link_flags: -fsanitize=thread,undefined
+          - sanitizer: asan
+            name: AddressSanitizer + LeakSanitizer + UBSan
+            cxx_flags: -fsanitize=address,undefined -fsanitize-recover=address -fno-omit-frame-pointer
+            link_flags: -fsanitize=address,undefined
     # ROS Jazzy comes preinstalled in the container. ros-tooling/setup-ros was
     # pulling ros-jazzy-desktop and its toolchain (965 packages, 591 MB) through
     # the runner's Ubuntu mirror, which took hours on a slow mirror. The same
     # container pattern is used by jazzy-binary-build.yml.
+    # seccomp=unconfined lets the TSan run disable ASLR with setarch -R, which
+    # needs personality(); the default Docker profile refuses that call.
     container:
       image: ros:jazzy-ros-base
+      options: --security-opt seccomp=unconfined
     # A container job runs its steps with sh unless told otherwise; the steps source setup.bash.
     defaults:
       run:
         shell: bash
-    timeout-minutes: 90
-    env:
-      TSAN_OPTIONS: halt_on_error=1:second_deadlock_stack=1
-      UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v5
 
@@ -40,9 +52,13 @@ jobs:
             smacc2_event_generator_library/eg_conditional_generator \
             smacc2_event_generator_library/eg_random_generator \
             smacc2_sm_reference_library/sm_atomic \
-            smacc2_sm_reference_library/sm_cl_ros2_timer_unit_test_1
+            smacc2_sm_reference_library/sm_cl_ros2_timer_unit_test_1 \
+            smacc2_performance_tools/performance_tests/sm_coretest_forced_finish_1 \
+            smacc2_performance_tools/performance_tests/sm_coretest_signal_key_1 \
+            smacc2_performance_tools/performance_tests/sm_coretest_poll_shutdown_1 \
+            smacc2_performance_tools/performance_tests/sm_coretest_transition_speed_1
 
-      - name: Build with TSan + UBSan
+      - name: Build with ${{ matrix.name }}
         run: |
           source /opt/ros/jazzy/setup.bash
           colcon build \
@@ -57,19 +73,28 @@ jobs:
               eg_random_generator \
               sm_atomic \
               sm_cl_ros2_timer_unit_test_1 \
+              sm_coretest_forced_finish_1 \
+              sm_coretest_signal_key_1 \
+              sm_coretest_poll_shutdown_1 \
+              sm_coretest_transition_speed_1 \
             --cmake-args \
               -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-              -DCMAKE_CXX_FLAGS="-fsanitize=thread,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer" \
-              -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=thread,undefined" \
-              -DBUILD_TESTING=ON
+              -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}" \
+              -DCMAKE_EXE_LINKER_FLAGS="${{ matrix.link_flags }}" \
+              -DBUILD_TESTING=OFF
 
-      - name: Run tests
+      - name: Run the core tests under ${{ matrix.name }}
+        # Forced finish (20 cycles and 10 random interrupts), signal key, poll shutdown
+        # (10 interrupts in the 75 % window) and transition speed. Fails on any sanitizer
+        # report with a SMACC2 frame, a crash, a hang or a broken test invariant.
         run: |
           source /opt/ros/jazzy/setup.bash
-          source install/setup.bash
-          colcon test \
-            --packages-select sm_atomic sm_cl_ros2_timer_unit_test_1 \
-            --event-handlers console_direct+
+          .github/scripts/sanitizer_core_tests.sh ${{ matrix.sanitizer }} install sanitizer_out
 
-      - name: Check results
-        run: colcon test-result --verbose
+      - name: Upload logs and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sanitizer-${{ matrix.sanitizer }}-logs
+          path: sanitizer_out/
+          if-no-files-found: ignore

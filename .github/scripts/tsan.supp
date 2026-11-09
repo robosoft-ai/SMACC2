@@ -1,0 +1,8 @@
+# ThreadSanitizer suppressions for the core tests. Every called_from_lib pattern must match exactly
+# one library, with its .so suffix, or TSan refuses to start.
+called_from_lib:libfastrtps.so
+called_from_lib:libfastcdr.so
+called_from_lib:librmw_fastrtps_cpp.so
+called_from_lib:librmw_fastrtps_shared_cpp.so
+called_from_lib:librmw_dds_common.so
+race:__sanitizer::IsAccessibleMemoryRange
