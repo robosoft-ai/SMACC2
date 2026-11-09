@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #pragma once
+#include <smacc2/client_bases/smacc_service_server_client.hpp>
 #include <smacc2/smacc_client_behavior.hpp>
 
 namespace smacc2
