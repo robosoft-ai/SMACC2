@@ -44,7 +44,6 @@ void CbRosLaunch2::onEntry()
 {
   RCLCPP_INFO_STREAM(getLogger(), "[CbRosLaunch2] OnEntry");
 
-  std::string packageName, launchFileName;
   if (
     launchFileName_ && packageName_ &&
     launchMode_ == RosLaunchMode::LAUNCH_CLIENT_BEHAVIOR_LIFETIME)
@@ -57,8 +56,10 @@ void CbRosLaunch2::onEntry()
       getLogger(), "[CbRosLaunch2] launching: " << *packageName_ << " , " << *launchFileName_
                                                 << "LaunchMode: " << (int)launchMode_);
 
-    auto result_ = smacc2::client_bases::ClRosLaunch2::executeRosLaunch(
+    // LAUNCH_CLIENT_BEHAVIOR_LIFETIME: onEntry returns only when the launch has ended.
+    auto launchFuture = smacc2::client_bases::ClRosLaunch2::executeRosLaunch(
       *packageName_, *launchFileName_, breakfunction);
+    launchFuture.wait();
   }
   else if (launchMode_ == RosLaunchMode::LAUNCH_DETTACHED)
   {
