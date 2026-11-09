@@ -53,7 +53,6 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr & transit
         << currstateinfo->getDemangledFullName()
         << " but there is not any transitioninfo match available to publish transition: "
         << transitionType->getFullName());
-    std::stringstream ss;
 
     auto stateinfo = currstateinfo;
 
