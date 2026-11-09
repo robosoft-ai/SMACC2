@@ -50,7 +50,7 @@ public:
   void onEntry() override;
 
 private:
-  ISmaccActionClient * client_;
+  ISmaccActionClient * client_ = nullptr;
 
   std::chrono::milliseconds timeout_;
 };

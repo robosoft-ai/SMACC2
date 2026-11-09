@@ -55,7 +55,7 @@ public:
   virtual void onInitialized();
 
 private:
-  ISmaccState * ownerState_;
+  ISmaccState * ownerState_ = nullptr;
   friend ISmaccStateMachine;
 };
 

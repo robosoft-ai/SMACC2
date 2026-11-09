@@ -52,7 +52,7 @@ public:
 protected:
   std::future<std::string> result_;
 
-  smacc2::client_bases::ClRosLaunch2 * client_;
+  smacc2::client_bases::ClRosLaunch2 * client_ = nullptr;
 
   std::future<std::string> future_;
 };

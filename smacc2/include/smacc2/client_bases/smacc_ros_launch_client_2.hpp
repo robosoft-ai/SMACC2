@@ -64,7 +64,8 @@ public:
 
   std::string launchFileName_;
 
-  pid_t launchPid_;
+  // -1 until a launch runs. A pid of 0 or -1 must never reach kill(): process group or every process.
+  pid_t launchPid_ = -1;
 
 protected:
   std::future<std::string> result_;
