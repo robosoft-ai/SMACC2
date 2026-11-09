@@ -316,16 +316,16 @@ public:
     // RCLCPP_INFO("LOOP EVENT CONDITION: %d", conditionResult);
     if (conditionResult)
     {
-      this->postEvent<EvLoopContinue<MostDerived>>();
+      this->template postEvent<EvLoopContinue<MostDerived>>();
     }
     else
     {
-      this->postEvent<EvLoopEnd<MostDerived>>();
+      this->template postEvent<EvLoopEnd<MostDerived>>();
     }
     RCLCPP_INFO(getLogger(), "[%s] POST THROW CONDITION", STATE_NAME);
   }
 
-  void throwSequenceFinishedEvent() { this->postEvent<EvSequenceFinished<MostDerived>>(); }
+  void throwSequenceFinishedEvent() { this->template postEvent<EvSequenceFinished<MostDerived>>(); }
 
   //////////////////////////////////////////////////////////////////////////
   // The following declarations should be private.
