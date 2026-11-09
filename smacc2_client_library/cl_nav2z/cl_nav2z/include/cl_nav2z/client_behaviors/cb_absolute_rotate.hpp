@@ -32,21 +32,11 @@ public:
   std::shared_ptr<tf2_ros::Buffer> listener;
 
   float absoluteGoalAngleDegree = 0;
-  std::optional<float> yawGoalTolerance;
-  std::optional<float> maxVelTheta;  // if not defined, default parameter server
   std::optional<SpinningPlanner> spinningPlanner;
 
   CbAbsoluteRotate();
-  CbAbsoluteRotate(float absoluteGoalAngleDegree, float yawGoalTolerance = -1);
+  CbAbsoluteRotate(float absoluteGoalAngleDegree);
 
   void onEntry() override;
-  void onExit() override;
-
-private:
-  void updateTemporalBehaviorParameters(bool undo);
-  // Saved by updateTemporalBehaviorParameters(false) and restored by (true).
-  float oldYawTolerance = 0;
-  float oldMaxVelTheta = 0;
-  float oldMinVelTheta = 0;
 };
 }  // namespace cl_nav2z
