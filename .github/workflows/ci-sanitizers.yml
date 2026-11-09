@@ -13,6 +13,10 @@ jobs:
     # container pattern is used by jazzy-binary-build.yml.
     container:
       image: ros:jazzy-ros-base
+    # A container job runs its steps with sh unless told otherwise; the steps source setup.bash.
+    defaults:
+      run:
+        shell: bash
     timeout-minutes: 90
     env:
       TSAN_OPTIONS: halt_on_error=1:second_deadlock_stack=1
