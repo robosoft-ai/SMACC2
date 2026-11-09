@@ -18,6 +18,7 @@
  *
  ******************************************************************************************************************/
 #pragma once
+#include <smacc2/client_bases/smacc_subscriber_client.hpp>
 #include <smacc2/smacc_client_behavior.hpp>
 
 namespace smacc2
