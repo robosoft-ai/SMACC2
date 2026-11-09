@@ -53,6 +53,23 @@ def blocks(text):
     return out
 
 
+TSAN_CONTEXT = re.compile(r"^  (Location is|Thread T\d+ |Mutex M\d+ |As if synchronized)")
+
+
+def access_section(block):
+    """For a TSan report, keep only the access stacks: frames under 'Location is', 'Thread T created by'
+    and 'Mutex M' describe where the object or thread came from, not who raced on it. Other reports
+    are kept whole."""
+    if not block[0].startswith("WARNING: ThreadSanitizer"):
+        return block
+    out = []
+    for line in block:
+        if TSAN_CONTEXT.match(line):
+            break
+        out.append(line)
+    return out
+
+
 def main(paths):
     failing, external = [], []
     for path in paths:
@@ -64,7 +81,7 @@ def main(paths):
             head = block[0].strip()
             if head.startswith("SUMMARY"):
                 continue
-            frames = [l for l in block if re.match(r"\s*#\d+ ", l)]
+            frames = [l for l in access_section(block) if re.match(r"\s*#\d+ ", l)]
             smacc = [l.strip() for l in frames if SMACC_FRAME.search(l)]
             entry = (
                 path,
