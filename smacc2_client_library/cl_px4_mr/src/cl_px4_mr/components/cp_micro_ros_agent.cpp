@@ -81,9 +81,9 @@ void CpMicroRosAgent::launch()
     int flags = fcntl(pipeFd_, F_GETFL, 0);
     fcntl(pipeFd_, F_SETFL, flags | O_NONBLOCK);
 
-    // Spawn detached reader thread to drain pipe (prevents buffer fill)
+    // Reader thread draining the pipe (prevents buffer fill); joined in shutdown()
     shutdownRequested_ = false;
-    std::thread readerThread(
+    readerThread_ = std::thread(
       [this]()
       {
         char buf[256];
@@ -101,7 +101,6 @@ void CpMicroRosAgent::launch()
           }
         }
       });
-    readerThread.detach();
 
     launched_ = true;
     RCLCPP_INFO(getLogger(), "CpMicroRosAgent: launched with PID %d", agentPid_);
@@ -118,14 +117,20 @@ void CpMicroRosAgent::shutdown()
 {
   std::lock_guard<std::mutex> lock(mutex_);
 
+  // The reader checks the flag every 100 ms, so the join is bounded; it must happen before the
+  // pipe is closed and before this object is destroyed.
+  shutdownRequested_ = true;
+  if (readerThread_.joinable())
+  {
+    readerThread_.join();
+  }
+
   if (agentPid_ <= 0)
   {
     return;
   }
 
   RCLCPP_INFO(getLogger(), "CpMicroRosAgent: shutting down agent (PID %d)", agentPid_);
-
-  shutdownRequested_ = true;
 
   // Kill process tree recursively
   killProcessesRecursive(agentPid_);
