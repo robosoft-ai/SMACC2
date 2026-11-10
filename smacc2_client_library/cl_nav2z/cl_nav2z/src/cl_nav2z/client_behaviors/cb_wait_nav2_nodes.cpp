@@ -23,14 +23,27 @@
 
 namespace cl_nav2z
 {
-CbWaitNav2Nodes::CbWaitNav2Nodes(std::vector<Nav2Nodes> waitNodes)
-: CbWaitNav2Nodes("/bond", waitNodes)
-{
-}
+CbWaitNav2Nodes::CbWaitNav2Nodes(std::vector<Nav2Nodes> waitNodes) : waitNodes_(waitNodes) {}
 
-CbWaitNav2Nodes::CbWaitNav2Nodes(std::string topic, std::vector<Nav2Nodes> waitNodes)
-: topicname_(topic), waitNodes_(waitNodes)
+void CbWaitNav2Nodes::runtimeConfigure()
 {
+  std::stringstream ss;
+  for (auto v : waitNodes_)
+  {
+    receivedAliveMsg_[v] = false;
+    ss << "[CbWaitNav2Nodes] - " << toString(v) << ": waiting" << std::endl;
+  }
+  RCLCPP_INFO(getLogger(), ss.str().c_str());
+
+  this->requiresComponent(bondListener_);
+  if (bondListener_ == nullptr)
+  {
+    RCLCPP_ERROR(getLogger(), "[CbWaitNav2Nodes] no CpBondListener component on the nav2 client");
+    return;
+  }
+  // Connected on the state machine thread through the state-lifetime signal map: dispose finalizes
+  // the slot and waits for a callback in flight, so no heartbeat runs into a disposed behavior.
+  bondListener_->onBondMessage(&CbWaitNav2Nodes::onMessageReceived, this);
 }
 
 void CbWaitNav2Nodes::onMessageReceived(const bond::msg::Status & msg)
@@ -67,8 +80,6 @@ void CbWaitNav2Nodes::onMessageReceived(const bond::msg::Status & msg)
     if (success)
     {
       RCLCPP_INFO(getLogger(), "[CbWaitNav2Nodes] success event");
-      // The post can end the state and dispose this behavior at once: nothing of this after it.
-      sub_ = nullptr;
       this->postSuccessEvent();
     }
     else
@@ -80,19 +91,14 @@ void CbWaitNav2Nodes::onMessageReceived(const bond::msg::Status & msg)
 
 void CbWaitNav2Nodes::onEntry()
 {
-  std::stringstream ss;
-  for (auto v : waitNodes_)
+  if (bondListener_ == nullptr)
   {
-    receivedAliveMsg_[v] = false;
-    ss << "[CbWaitNav2Nodes] - " << toString(v) << ": waiting" << std::endl;
+    this->postFailureEvent();
+    return;
   }
-  RCLCPP_INFO(getLogger(), ss.str().c_str());
-
-  rclcpp::SubscriptionOptions sub_option;
-
-  sub_ = getNode()->create_subscription<bond::msg::Status>(
-    topicname_, 20, std::bind(&CbWaitNav2Nodes::onMessageReceived, this, std::placeholders::_1),
-    sub_option);
+  RCLCPP_INFO(
+    getLogger(), "[CbWaitNav2Nodes] waiting for heartbeats on %s",
+    bondListener_->getTopicName().c_str());
 }
 
 std::string toString(Nav2Nodes value)

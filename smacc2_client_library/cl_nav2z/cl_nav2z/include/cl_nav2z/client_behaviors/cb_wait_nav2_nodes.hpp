@@ -22,6 +22,7 @@
 #include <tf2_ros/buffer.h>
 
 #include <bond/msg/status.hpp>
+#include <cl_nav2z/components/bond_listener/cp_bond_listener.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
 namespace cl_nav2z
@@ -44,22 +45,17 @@ class CbWaitNav2Nodes : public smacc2::SmaccAsyncClientBehavior
 {
 public:
   CbWaitNav2Nodes(
-    std::string topicname,
     std::vector<Nav2Nodes> waitNodes = {
       Nav2Nodes::PlannerServer, Nav2Nodes::ControllerServer, Nav2Nodes::BtNavigator});
 
-  CbWaitNav2Nodes(
-    std::vector<Nav2Nodes> waitNodes = {
-      Nav2Nodes::PlannerServer, Nav2Nodes::ControllerServer, Nav2Nodes::BtNavigator});
+  void runtimeConfigure() override;
 
   void onEntry() override;
 
 private:
   void onMessageReceived(const bond::msg::Status & msg);
 
-  std::string topicname_;
-
-  rclcpp::Subscription<bond::msg::Status>::SharedPtr sub_;
+  CpBondListener * bondListener_ = nullptr;
   std::map<Nav2Nodes, bool> receivedAliveMsg_;
 
   std::vector<Nav2Nodes> waitNodes_;
