@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Run the four core test state machines under a sanitizer build and fail on any report with a
+# Run the six core test state machines under a sanitizer build and fail on any report with a
 # SMACC2 frame, a crash, a hang or a broken test invariant.
 #
 # Usage: sanitizer_core_tests.sh <tsan|asan> [install-prefix] [out-dir]
-# The install prefix must hold smacc2, cl_ros2_timer, sr_event_countdown and the four core tests
+# The install prefix must hold smacc2, cl_ros2_timer, sr_event_countdown and the six core tests
 # built with the matching -fsanitize flags. Logs and report files go to the out dir.
 MODE=${1:-}; INST=${2:-install}; OUT=${3:-sanitizer_out}
 HERE=$(cd "$(dirname "$0")" && pwd)
@@ -92,6 +92,26 @@ PY
 echo "ticks into destroyed objects (behavior state): $DEAD"
 [ "$DEAD" = "0 0" ] || fail "signal_key: callbacks reached destroyed objects ($DEAD)"
 [ "$(grep -a -c 'StA\] Entered' "$LOG")" -ge 5 ] || fail "signal_key: fewer than 5 StA lives"
+
+echo "### reactor order: 15 s of 500 ms pulses"
+LOG=$OUT/reactor_order.log
+$PRE "$(bin sm_coretest_reactor_order_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
+sleep 15; stop $P "$LOG" reactor_order
+PULSES=$(grep -a -c 'CpEventPulse\] pulse' "$LOG"); VIAC=$(grep -a -c 'StViaCountdown\] Entered' "$LOG"); VIAT=$(grep -a -c 'StViaTrigger\] Entered' "$LOG")
+echo "pulses $PULSES via countdown $VIAC via trigger $VIAT"
+[ "$PULSES" -ge 20 ] || fail "reactor_order: only $PULSES pulses"
+[ "$VIAT" -eq 0 ] || fail "reactor_order: the trigger was processed before the reactor's output $VIAT times"
+[ $((VIAC + 1)) -ge "$PULSES" ] || fail "reactor_order: $VIAC StViaCountdown entries for $PULSES pulses"
+
+# Log level WARN: the INFO lines on the posting path take the logging mutex, which orders the two
+# threads and hides the race from TSan; WARN keeps the state exit lines the invariant counts.
+echo "### post during exit: 30 s of 200 Hz posts across 50 ms state exits"
+LOG=$OUT/post_during_exit.log
+$PRE "$(bin sm_coretest_post_during_exit_1)" --ros-args --log-level WARN > "$LOG" 2>&1 & P=$!
+sleep 30; stop $P "$LOG" post_during_exit
+EXITS=$(grep -a -c 'Exiting state: .*StA$' "$LOG")
+echo "StA exits $EXITS"
+[ "$EXITS" -ge 100 ] || fail "post_during_exit: only $EXITS StA exits in 30 s"
 
 # sweep <pkg> <label> <runs> [extra ros args]: SIGINT at a random 0.2 to 4.2 s after the first state entry
 sweep() {

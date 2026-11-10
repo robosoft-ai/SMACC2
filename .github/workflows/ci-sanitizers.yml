@@ -56,7 +56,9 @@ jobs:
             smacc2_performance_tools/performance_tests/sm_coretest_forced_finish_1 \
             smacc2_performance_tools/performance_tests/sm_coretest_signal_key_1 \
             smacc2_performance_tools/performance_tests/sm_coretest_poll_shutdown_1 \
-            smacc2_performance_tools/performance_tests/sm_coretest_transition_speed_1
+            smacc2_performance_tools/performance_tests/sm_coretest_transition_speed_1 \
+            smacc2_performance_tools/performance_tests/sm_coretest_reactor_order_1 \
+            smacc2_performance_tools/performance_tests/sm_coretest_post_during_exit_1
 
       - name: Build with ${{ matrix.name }}
         run: |
@@ -77,6 +79,8 @@ jobs:
               sm_coretest_signal_key_1 \
               sm_coretest_poll_shutdown_1 \
               sm_coretest_transition_speed_1 \
+              sm_coretest_reactor_order_1 \
+              sm_coretest_post_during_exit_1 \
             --cmake-args \
               -DCMAKE_BUILD_TYPE=RelWithDebInfo \
               -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}" \
@@ -84,9 +88,10 @@ jobs:
               -DBUILD_TESTING=OFF
 
       - name: Run the core tests under ${{ matrix.name }}
-        # Forced finish (20 cycles and 10 random interrupts), signal key, poll shutdown
-        # (10 interrupts in the 75 % window) and transition speed. Fails on any sanitizer
-        # report with a SMACC2 frame, a crash, a hang or a broken test invariant.
+        # Forced finish (20 cycles and 10 random interrupts), signal key, reactor order,
+        # post during exit, poll shutdown (10 interrupts in the 75 % window) and transition
+        # speed. Fails on any sanitizer report with a SMACC2 frame, a crash, a hang or a
+        # broken test invariant.
         run: |
           source /opt/ros/jazzy/setup.bash
           .github/scripts/sanitizer_core_tests.sh ${{ matrix.sanitizer }} install sanitizer_out
