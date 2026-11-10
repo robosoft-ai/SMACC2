@@ -36,6 +36,7 @@ set(SOURCES
   src/cl_px4_mr/components/cp_offboard_keep_alive.cpp
   src/cl_px4_mr/components/cp_trajectory_setpoint.cpp
   src/cl_px4_mr/components/cp_vehicle_status.cpp
+  src/cl_px4_mr/components/cp_failsafe_flags.cpp
   src/cl_px4_mr/components/cp_vehicle_local_position.cpp
   src/cl_px4_mr/components/cp_vehicle_command_ack.cpp
   src/cl_px4_mr/components/cp_goal_checker.cpp
