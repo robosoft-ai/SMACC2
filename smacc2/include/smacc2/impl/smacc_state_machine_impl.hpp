@@ -225,12 +225,32 @@ void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
   // some more events
 
   RCLCPP_DEBUG_STREAM(getLogger(), "[PostEvent entry point] " << eventtypename);
-  if (!currentState_.empty())
+
+  if (reactorWalkDepth_ > 0)
   {
-    propagateEventToStateReactors(currentState_.back(), ev);
+    // Posted by a reactor while its trigger is walked on the state machine thread: walk and
+    // queue in place, so the reactor's output stays ahead of its trigger in the queue.
+    if (!currentState_.empty())
+    {
+      propagateEventToStateReactors(currentState_.back(), ev);
+    }
+    this->signalDetector_->postEvent(ev);
+    return;
   }
 
-  this->signalDetector_->postEvent(ev);
+  // The walk reads currentState_ and the reactors, which only the state machine thread writes,
+  // so it runs there as a scheduler work item that queues the trigger once the reactors ran.
+  this->signalDetector_->queueWorkItem(
+    [this, evHolder]()
+    {
+      reactorWalkDepth_++;
+      if (!currentState_.empty())
+      {
+        propagateEventToStateReactors(currentState_.back(), evHolder.get());
+      }
+      reactorWalkDepth_--;
+      this->signalDetector_->postEvent(evHolder.get());
+    });
 }
 
 template <typename EventType>
@@ -750,7 +770,23 @@ void ISmaccStateMachine::propagateEventToStateReactors(ISmaccState * st, EventTy
     st->getClassName().c_str());
   for (auto & sb : st->getStateReactors())
   {
-    sb->notifyEvent(ev);
+    // A throwing reactor must not end the state machine thread; log it and go on to the next.
+    try
+    {
+      sb->notifyEvent(ev);
+    }
+    catch (const std::exception & e)
+    {
+      RCLCPP_ERROR(
+        getLogger(), "[%s] state reactor threw on event %s: %s", demangleType(typeid(*sb)).c_str(),
+        demangleSymbol<EventType>().c_str(), e.what());
+    }
+    catch (...)
+    {
+      RCLCPP_ERROR(
+        getLogger(), "[%s] state reactor threw a non-standard exception on event %s",
+        demangleType(typeid(*sb)).c_str(), demangleSymbol<EventType>().c_str());
+    }
   }
 
   auto * pst = st->getParentState();

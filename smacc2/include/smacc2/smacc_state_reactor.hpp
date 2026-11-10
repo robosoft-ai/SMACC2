@@ -40,6 +40,9 @@ struct EmptyObjectTag
 };
 }  // namespace state_reactors
 
+// Reactor callbacks (onEventNotified, triggers, update, event callbacks) run on the state machine
+// thread between two events with no lock held: posting events is fine, blocking on the state
+// machine (a transition, a state exit) deadlocks it.
 class StateReactor
 {
 public:

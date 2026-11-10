@@ -256,6 +256,9 @@ private:
   template <typename EventType>
   void propagateEventToStateReactors(ISmaccState * st, EventType * ev);
 
+  // Depth of the reactor walk on the calling thread; nonzero only inside the walk work item.
+  static thread_local int reactorWalkDepth_;
+
   void updateStatusMessage();
 
   friend class ISmaccState;
