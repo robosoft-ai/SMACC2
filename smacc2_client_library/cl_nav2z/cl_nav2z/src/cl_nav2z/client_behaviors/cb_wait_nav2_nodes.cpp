@@ -67,8 +67,9 @@ void CbWaitNav2Nodes::onMessageReceived(const bond::msg::Status & msg)
     if (success)
     {
       RCLCPP_INFO(getLogger(), "[CbWaitNav2Nodes] success event");
-      this->postSuccessEvent();
+      // The post can end the state and dispose this behavior at once: nothing of this after it.
       sub_ = nullptr;
+      this->postSuccessEvent();
     }
     else
     {
