@@ -19,6 +19,7 @@
  ******************************************************************************************************************/
 
 #include <signal.h>
+#include <chrono>
 #include <limits>
 #include <memory>
 #include <thread>
@@ -361,8 +362,9 @@ void SignalDetector::pollOnce()
 // when the context was shut down between the caller's rclcpp::ok() check and the sleep. Shutdown
 // runs on rclcpp's signal thread, concurrently with the polling loop, so the window is everything
 // an iteration does: pollOnce (including waiting for m_mutex_ during a transition and every
-// update()), spin_some, and the Rate arithmetic. At shutdown the throw is the expected end of
-// the loop, not an error; anything else is rethrown. Returns false once the context is invalid.
+// update()), the callback drain, and the Rate arithmetic. At shutdown the throw is the expected
+// end of the loop, not an error; anything else is rethrown. Returns false once the context is
+// invalid.
 static bool sleepUnlessShutdown(rclcpp::Rate & rate)
 {
   try
@@ -427,6 +429,15 @@ void SignalDetector::pollingLoop()
       this->loop_rate_hz);
   }
 
+  // A rate of zero or less has no period, and spin_all(0) below spins forever: use the default.
+  if (!(this->loop_rate_hz > 0.0))
+  {
+    RCLCPP_ERROR(
+      getLogger(), "Signal Detector frequency %lf is not positive, using the default 20 Hz",
+      this->loop_rate_hz);
+    this->loop_rate_hz = 20.0;
+  }
+
   nh->set_parameter(rclcpp::Parameter("signal_detector_loop_freq", this->loop_rate_hz));
 
   RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] Loop rate hz:" << loop_rate_hz);
@@ -439,17 +450,31 @@ void SignalDetector::pollingLoop()
     // iteration, and an executor constructor creates a guard condition, which throws
     // RCLError if rclcpp::shutdown() lands between the loop condition and that call.
     // Shutdown now runs on rclcpp's signal thread, concurrently with this loop, so the loop
-    // must tolerate it: an existing executor's spin_some() simply returns once the context
+    // must tolerate it: an existing executor's spin_all() simply returns once the context
     // is invalid.
     rclcpp::executors::SingleThreadedExecutor executor;
     executor.add_node(nh);
     rclcpp::Rate r(loop_rate_hz);
+    // Drain every ready callback each iteration, as ROS 1's spinOnce did, bounded by one loop
+    // period. spin_some() took one callback per entity per iteration, sampling faster topics.
+    const auto spinBudget = std::chrono::duration_cast<std::chrono::nanoseconds>(
+      std::chrono::duration<double>(1.0 / loop_rate_hz));
+    const double spinBudgetMs = std::chrono::duration<double, std::milli>(spinBudget).count();
     while (rclcpp::ok() && !end_)
     {
       RCLCPP_INFO_STREAM_THROTTLE(
         getLogger(), *getNode()->get_clock(), 10000, "[SignalDetector] Heartbeat");
       pollOnce();
-      executor.spin_some();
+      const auto spinStart = std::chrono::steady_clock::now();
+      executor.spin_all(spinBudget);
+      if (std::chrono::steady_clock::now() - spinStart >= spinBudget)
+      {
+        RCLCPP_WARN_THROTTLE(
+          getLogger(), *getNode()->get_clock(), 5000,
+          "[SignalDetector] callbacks filled the whole loop period (%.1f ms): the loop is "
+          "saturated and runs below %.1f Hz",
+          spinBudgetMs, loop_rate_hz);
+      }
       if (!sleepUnlessShutdown(r))
       {
         break;

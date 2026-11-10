@@ -27,6 +27,8 @@ def generate_launch_description():
         [
             DeclareLaunchArgument("publish_rate_hz", default_value="200.0"),
             DeclareLaunchArgument("timer_rate_hz", default_value="100.0"),
+            DeclareLaunchArgument("subscription_depth", default_value="10"),
+            DeclareLaunchArgument("callback_work_us", default_value="0"),
             Node(
                 package="sm_coretest_callback_rate_1",
                 executable="sm_coretest_callback_rate_1_node",
@@ -43,6 +45,12 @@ def generate_launch_description():
                         ),
                         "timer_rate_hz": ParameterValue(
                             LaunchConfiguration("timer_rate_hz"), value_type=float
+                        ),
+                        "subscription_depth": ParameterValue(
+                            LaunchConfiguration("subscription_depth"), value_type=int
+                        ),
+                        "callback_work_us": ParameterValue(
+                            LaunchConfiguration("callback_work_us"), value_type=int
                         ),
                     }
                 ],

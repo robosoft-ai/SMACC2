@@ -23,8 +23,9 @@
 
 namespace sm_coretest_callback_rate_1
 {
-// Publishes on its own thread at publish_rate_hz, subscribes to the same topic and runs a node
-// timer at timer_rate_hz; update() (polling thread) reports the counts of the last second.
+// Publishes on its own thread at publish_rate_hz, subscribes to the same topic (history depth
+// subscription_depth, callback_work_us of busy work per message) and runs a node timer at
+// timer_rate_hz; update() (polling thread) reports the counts of the last second.
 class ClCallbackCounter : public smacc2::ISmaccClient, public smacc2::ISmaccUpdatable
 {
 public:
@@ -35,13 +36,28 @@ public:
     node->declare_parameter<double>("timer_rate_hz", 100.0);
     node->get_parameter("publish_rate_hz", publishRateHz_);
     node->get_parameter("timer_rate_hz", timerRateHz_);
+    node->declare_parameter<int>("subscription_depth", 10);
+    node->declare_parameter<int>("callback_work_us", 0);
+    node->get_parameter("subscription_depth", subscriptionDepth_);
+    node->get_parameter("callback_work_us", callbackWorkUs_);
     RCLCPP_INFO(
-      getLogger(), "[ClCallbackCounter] publishing at %.1f Hz, node timer at %.1f Hz",
-      publishRateHz_, timerRateHz_);
+      getLogger(),
+      "[ClCallbackCounter] publishing at %.1f Hz, node timer at %.1f Hz, subscription depth %d, "
+      "callback work %d us",
+      publishRateHz_, timerRateHz_, subscriptionDepth_, callbackWorkUs_);
 
     pub_ = node->create_publisher<std_msgs::msg::UInt32>("/callback_rate_test", 10);
     sub_ = node->create_subscription<std_msgs::msg::UInt32>(
-      "/callback_rate_test", 10, [this](std_msgs::msg::UInt32::SharedPtr) { received_++; });
+      "/callback_rate_test", static_cast<size_t>(subscriptionDepth_),
+      [this](std_msgs::msg::UInt32::SharedPtr)
+      {
+        received_++;
+        // Busy-wait so that a backlog of messages costs the loop real time (the saturation case).
+        auto until = std::chrono::steady_clock::now() + std::chrono::microseconds(callbackWorkUs_);
+        while (callbackWorkUs_ > 0 && std::chrono::steady_clock::now() < until)
+        {
+        }
+      });
     timer_ = node->create_wall_timer(
       std::chrono::duration<double>(1.0 / timerRateHz_), [this]() { ticks_++; });
 
@@ -101,6 +117,8 @@ private:
 
   double publishRateHz_ = 200.0;
   double timerRateHz_ = 100.0;
+  int subscriptionDepth_ = 10;
+  int callbackWorkUs_ = 0;
   rclcpp::Publisher<std_msgs::msg::UInt32>::SharedPtr pub_;
   rclcpp::Subscription<std_msgs::msg::UInt32>::SharedPtr sub_;
   rclcpp::TimerBase::SharedPtr timer_;
