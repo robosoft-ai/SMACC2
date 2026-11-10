@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sm_coretest_post_during_exit_1</name>
+  <version>0.0.1</version>
+  <description>Core test: a component posts an ABSOLUTE event at pulse_rate_hz from a node timer on the executor thread while a 50 ms CbSleepFor cycles two states, so that ISmaccStateMachine::postEvent reads the current state and walks its reactors while the state machine thread is exiting that state. Reproduces the Next Level Study NL-2 race without a simulator; run under ThreadSanitizer.</description>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>smacc2</depend>
+  <depend>sr_event_countdown</depend>
+  <depend>rclcpp</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
