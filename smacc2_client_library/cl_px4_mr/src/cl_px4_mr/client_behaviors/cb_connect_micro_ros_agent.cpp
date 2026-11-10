@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <cl_px4_mr/client_behaviors/cb_connect_micro_ros_agent.hpp>
+#include <cl_px4_mr/components/cp_failsafe_flags.hpp>
 #include <cl_px4_mr/components/cp_micro_ros_agent.hpp>
 #include <cl_px4_mr/components/cp_vehicle_local_position.hpp>
 
@@ -88,22 +89,14 @@ void CbConnectMicroRosAgent::onEntry()
     getLogger(), "CbConnectMicroRosAgent: node '%s' detected - starting failsafe health check",
     targetNodeName.c_str());
 
-  // Phase 2: Wait for PX4 failsafe health flags to clear
-  healthOk_.store(false);
-  attitudeInvalid_.store(true);
-  localAltitudeInvalid_.store(true);
-  localPositionInvalid_.store(true);
-
-  failsafeSub_ = getNode()->create_subscription<px4_msgs::msg::FailsafeFlags>(
-    "/fmu/out/failsafe_flags", rclcpp::SensorDataQoS(),
-    [this](const px4_msgs::msg::FailsafeFlags::SharedPtr msg)
-    {
-      attitudeInvalid_.store(msg->attitude_invalid);
-      localAltitudeInvalid_.store(msg->local_altitude_invalid);
-      localPositionInvalid_.store(msg->local_position_invalid);
-      healthOk_.store(
-        !msg->attitude_invalid && !msg->local_altitude_invalid && !msg->local_position_invalid);
-    });
+  // Phase 2: Wait for PX4 failsafe health flags to clear, read from the state-machine-lifetime
+  // CpFailsafeFlags component, so no subscription callback can run into this behavior at dispose.
+  if (failsafeFlags_ == nullptr)
+  {
+    RCLCPP_ERROR(getLogger(), "CbConnectMicroRosAgent: no CpFailsafeFlags component on the client");
+    this->postPx4Failure();
+    return;
+  }
 
   // the failsafe flags say an estimate exists; the local position and velocity
   // also have to be valid. NOT heading_good_for_control: with a magnetometer
@@ -117,7 +110,7 @@ void CbConnectMicroRosAgent::onEntry()
   auto flag = [this](bool (CpVehicleLocalPosition::*f)() const)
   { return localPosition_ ? static_cast<int>((localPosition_->*f)()) : -1; };
   rclcpp::Rate healthRate(2.0);
-  while (!this->isShutdownRequested() && !(healthOk_.load() && controlReady()))
+  while (!this->isShutdownRequested() && !(failsafeFlags_->isHealthOk() && controlReady()))
   {
     auto elapsed = std::chrono::steady_clock::now() - startTime;
     double elapsedSec = std::chrono::duration<double>(elapsed).count();
@@ -128,8 +121,9 @@ void CbConnectMicroRosAgent::onEntry()
         "CbConnectMicroRosAgent: timeout (%.1fs) waiting for health check. "
         "attitude_invalid=%d, local_altitude_invalid=%d, local_position_invalid=%d, "
         "heading_good_for_control=%d, velocity_valid=%d",
-        timeoutSec_, attitudeInvalid_.load(), localAltitudeInvalid_.load(),
-        localPositionInvalid_.load(), flag(&CpVehicleLocalPosition::isHeadingGoodForControl),
+        timeoutSec_, failsafeFlags_->isAttitudeInvalid(), failsafeFlags_->isLocalAltitudeInvalid(),
+        failsafeFlags_->isLocalPositionInvalid(),
+        flag(&CpVehicleLocalPosition::isHeadingGoodForControl),
         flag(&CpVehicleLocalPosition::isVelocityValid));
       this->postPx4Failure();
       return;
@@ -139,12 +133,13 @@ void CbConnectMicroRosAgent::onEntry()
       "CbConnectMicroRosAgent: health check: attitude_invalid=%d, "
       "local_altitude_invalid=%d, local_position_invalid=%d, heading_good_for_control=%d, "
       "velocity_valid=%d",
-      attitudeInvalid_.load(), localAltitudeInvalid_.load(), localPositionInvalid_.load(),
+      failsafeFlags_->isAttitudeInvalid(), failsafeFlags_->isLocalAltitudeInvalid(),
+      failsafeFlags_->isLocalPositionInvalid(),
       flag(&CpVehicleLocalPosition::isHeadingGoodForControl),
       flag(&CpVehicleLocalPosition::isVelocityValid));
     healthRate.sleep();
   }
-  if (healthOk_.load() && controlReady())
+  if (failsafeFlags_->isHealthOk() && controlReady())
   {
     RCLCPP_INFO(getLogger(), "CbConnectMicroRosAgent: health check passed - posting success");
     this->postPx4Success();
@@ -156,7 +151,5 @@ void CbConnectMicroRosAgent::onEntry()
     this->postPx4Failure();
   }
 }
-
-void CbConnectMicroRosAgent::onExit() { failsafeSub_.reset(); }
 
 }  // namespace cl_px4_mr
