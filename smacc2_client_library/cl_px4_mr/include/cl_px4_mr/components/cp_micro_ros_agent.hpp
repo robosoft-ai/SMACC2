@@ -19,6 +19,7 @@
 #include <mutex>
 #include <smacc2/smacc.hpp>
 #include <string>
+#include <thread>
 
 namespace cl_px4_mr
 {
@@ -48,6 +49,8 @@ private:
   std::string nodeName_;
   mutable std::mutex mutex_;
   int pipeFd_ = -1;
+  // Drains the agent's output pipe; joined in shutdown() so it never outlives this component.
+  std::thread readerThread_;
 };
 
 }  // namespace cl_px4_mr
