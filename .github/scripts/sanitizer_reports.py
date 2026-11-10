@@ -57,10 +57,10 @@ TSAN_CONTEXT = re.compile(r"^  (Location is|Thread T\d+ |Mutex M\d+ |As if synch
 
 
 def access_section(block):
-    """For a TSan report, keep only the access stacks: frames under 'Location is', 'Thread T created by'
-    and 'Mutex M' describe where the object or thread came from, not who raced on it. Other reports
-    are kept whole."""
-    if not block[0].startswith("WARNING: ThreadSanitizer"):
+    """For a TSan data race, keep only the access stacks: frames under 'Location is', 'Thread T created by'
+    and 'Mutex M' describe where the object or thread came from, not who raced on it. Other reports,
+    including lock-order inversions (whose stacks all start with 'Mutex M'), are kept whole."""
+    if not block[0].startswith("WARNING: ThreadSanitizer: data race"):
         return block
     out = []
     for line in block:
