@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <cl_nav2z/components/bond_listener/cp_bond_listener.hpp>
 #include <cl_nav2z/components/nav2_action_interface/cp_nav2_action_interface.hpp>
 #include <nav2_msgs/action/navigate_to_pose.hpp>
 #include <smacc2/client_core_components/cp_action_client.hpp>
@@ -51,6 +52,9 @@ public:
 
     // Create nav2-specific interface component (requires actionClient)
     this->createComponent<components::CpNav2ActionInterface, TOrthogonal, ClNav2Z>();
+
+    // The nav2 bond heartbeat subscription CbWaitNav2Nodes listens to, for the life of the state machine
+    this->createComponent<CpBondListener, TOrthogonal, ClNav2Z>();
 
     RCLCPP_INFO_STREAM(
       this->getLogger(), "[ClNav2Z] Components created for action server: " << actionServerName_);

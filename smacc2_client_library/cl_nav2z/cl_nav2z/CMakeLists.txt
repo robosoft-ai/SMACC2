@@ -81,6 +81,7 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/client_behaviors/cb_track_path_slam.cpp
 
   # COMPONENTS
+  src/${PROJECT_NAME}/components/bond_listener/cp_bond_listener.cpp
   src/${PROJECT_NAME}/components/costmap_switch/cp_costmap_switch.cpp
   #src/${PROJECT_NAME}/components/odom_tracker/cp_odom_tracker_node.cpp
 
