@@ -67,6 +67,12 @@ public:
     this->scheduler_->queue_event(processorHandle_, weakPtrEvent);
   }
 
+  // Runs item on the state machine thread, in FIFO order with the queued events.
+  void queueWorkItem(const SmaccFifoWorker::work_item & item)
+  {
+    this->scheduler_->queue_work_item(item);
+  }
+
   rclcpp::Node::SharedPtr getNode();
   inline rclcpp::Logger getLogger() { return getNode()->get_logger(); }
 

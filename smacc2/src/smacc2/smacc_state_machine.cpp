@@ -31,6 +31,8 @@
 
 namespace smacc2
 {
+thread_local int ISmaccStateMachine::reactorWalkDepth_ = 0;
+
 using namespace std::chrono_literals;
 using namespace smacc2::introspection;
 ISmaccStateMachine::ISmaccStateMachine(
