@@ -21,8 +21,10 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 #include <rclcpp/rclcpp.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
+#include <smacc2/smacc_signal.hpp>
 
 namespace smacc2
 {
@@ -45,6 +47,15 @@ public:
 
   virtual ~CbWaitTopicMessage() {}
 
+  // On the state machine thread, before onEntry: the slot goes through the state-lifetime signal
+  // map, so dispose finalizes it and waits for a callback in flight before this behavior dies.
+  void runtimeConfigure() override
+  {
+    signal_ = std::make_shared<MessageSignal>();
+    this->getStateMachine()->createSignalConnection(
+      *signal_, &CbWaitTopicMessage::onMessageReceived, this);
+  }
+
   void onEntry() override
   {
     rclcpp::SensorDataQoS qos;
@@ -53,16 +64,18 @@ public:
       getLogger(), "[CbWaitTopicMessage] waiting message from topic: "
                      << topicname_ << "[" << demangledTypeName<TMessage>() << "]");
 
-    std::function<void(typename TMessage::SharedPtr)> fn = [this](auto msg)
-    { this->onMessageReceived(msg); };
+    // The subscription callback co-owns the signal and touches nothing of this behavior; after
+    // dispose the signal has no slot and a late message does nothing.
+    auto signal = signal_;
+    std::function<void(typename TMessage::SharedPtr)> fn = [signal](auto msg) { (*signal)(*msg); };
 
     auto nh = getNode();
     sub_ = nh->template create_subscription<TMessage>(topicname_, qos, fn);
   }
 
-  void onMessageReceived(const typename TMessage::SharedPtr msg)
+  void onMessageReceived(const TMessage & msg)
   {
-    if (guardFn_ == nullptr || guardFn_(*msg))
+    if (!success && (guardFn_ == nullptr || guardFn_(msg)))
     {
       RCLCPP_INFO(getLogger(), "[CbWaitTopicMessage] message received.");
       success = true;
@@ -71,7 +84,10 @@ public:
   }
 
 protected:
+  using MessageSignal = smacc2::SmaccSignal<void(const TMessage &)>;
+
   bool success = false;
+  std::shared_ptr<MessageSignal> signal_;
   typename rclcpp::Subscription<TMessage>::SharedPtr sub_;
   std::function<bool(const TMessage &)> guardFn_;
   std::string topicname_;
