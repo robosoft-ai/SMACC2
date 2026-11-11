@@ -111,6 +111,7 @@ public:
   // threadsafe
   nav_msgs::msg::Path getPath();
 
+  // threadsafe: takes m_mutex_ like every other public method (study, F-4)
   void logStateString(bool debug = true);
 
   // parameters update callback
@@ -124,6 +125,9 @@ public:
 
 protected:
   void onInitialize() override;
+
+  // the body of logStateString; the caller must hold m_mutex_
+  void logStateStringLocked(bool debug = true);
 
   virtual void rtPublishPaths(rclcpp::Time timestamp);
 

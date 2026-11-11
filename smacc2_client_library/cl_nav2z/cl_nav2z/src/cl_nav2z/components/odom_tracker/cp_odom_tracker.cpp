@@ -213,7 +213,7 @@ void CpOdomTracker::pushPath(std::string pathname)
   RCLCPP_INFO(getLogger(), "odom_tracker m_mutex acquire, to push path");
   std::lock_guard<std::mutex> lock(m_mutex_);
 
-  this->logStateString(false);
+  this->logStateStringLocked(false);
   if (this->odomSub_ != nullptr && this->odomSub_->get_publisher_count() == 0)
   {
     RCLCPP_ERROR_STREAM(
@@ -238,7 +238,7 @@ void CpOdomTracker::pushPath(std::string pathname)
   // clean the current trajectory to start a new one
   baseTrajectory_.poses.clear();
 
-  this->logStateString(false);
+  this->logStateStringLocked(false);
   this->updateAggregatedStackPath();
 
   this->currentMotionGoal_.reset();
@@ -250,7 +250,7 @@ void CpOdomTracker::popPath(int popCount, bool keepPreviousPath)
   std::lock_guard<std::mutex> lock(m_mutex_);
 
   RCLCPP_INFO(getLogger(), "POP PATH ENTRY");
-  this->logStateString();
+  this->logStateStringLocked();
 
   if (this->odomSub_ != nullptr && this->odomSub_->get_publisher_count() == 0)
   {
@@ -278,11 +278,11 @@ void CpOdomTracker::popPath(int popCount, bool keepPreviousPath)
     popCount--;
 
     RCLCPP_INFO(getLogger(), "POP PATH Iteration ");
-    this->logStateString();
+    this->logStateStringLocked();
   }
 
   RCLCPP_INFO(getLogger(), "POP PATH EXITING");
-  this->logStateString();
+  this->logStateStringLocked();
   RCLCPP_INFO(getLogger(), "odom_tracker m_mutex release");
   this->updateAggregatedStackPath();
 
@@ -290,6 +290,12 @@ void CpOdomTracker::popPath(int popCount, bool keepPreviousPath)
 }
 
 void CpOdomTracker::logStateString(bool debug)
+{
+  std::lock_guard<std::mutex> lock(m_mutex_);
+  this->logStateStringLocked(debug);
+}
+
+void CpOdomTracker::logStateStringLocked(bool debug)
 {
   std::stringstream ss;
   ss << "--- odom tracker state ---" << std::endl;
@@ -338,7 +344,7 @@ void CpOdomTracker::clearPath()
   baseTrajectory_.poses.clear();
 
   rtPublishPaths(getNode()->now());
-  this->logStateString();
+  this->logStateStringLocked();
   this->updateAggregatedStackPath();
 
   this->currentMotionGoal_.reset();
