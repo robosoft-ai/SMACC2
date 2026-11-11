@@ -38,6 +38,23 @@ void SmaccAsyncClientBehavior::executeOnEntry()
     });
 }
 
+// A behavior thread that ended by exception: at shutdown the usual cause is the behavior's own rclcpp
+// sleep or graph call on the shut-down context and is expected; while ROS is up it is an error.
+static void logThreadException(
+  const rclcpp::Logger & logger, const std::string & name, const char * thread, const char * what)
+{
+  if (rclcpp::ok())
+  {
+    RCLCPP_ERROR_STREAM(
+      logger, "[" << name << "] " << thread << " thread ended by exception: " << what);
+  }
+  else
+  {
+    RCLCPP_INFO_STREAM(
+      logger, "[" << name << "] " << thread << " thread ended by exception at shutdown: " << what);
+  }
+}
+
 void SmaccAsyncClientBehavior::waitFutureIfNotFinished(
   std::optional<std::future<int>> & threadfut, bool requestFinish)
 {
@@ -92,9 +109,11 @@ void SmaccAsyncClientBehavior::waitFutureIfNotFinished(
   }
   catch (const std::exception & e)
   {
-    RCLCPP_DEBUG(
-      getLogger(),
-      "[SmaccAsyncClientBehavior] trying to join function, but it was already finished.");
+    logThreadException(getLogger(), getName(), "onEntry", e.what());
+  }
+  catch (...)
+  {
+    logThreadException(getLogger(), getName(), "onEntry", "non-standard exception");
   }
 }
 
@@ -133,12 +152,13 @@ void SmaccAsyncClientBehavior::dispose()
       this->onExitThread_->get();
     }
   }
+  catch (const std::exception & e)
+  {
+    logThreadException(getLogger(), getName(), "onExit", e.what());
+  }
   catch (...)
   {
-    RCLCPP_DEBUG(
-      getLogger(),
-      "[SmaccAsyncClientBehavior] trying to Join onExit function, but it was already "
-      "finished.");
+    logThreadException(getLogger(), getName(), "onExit", "non-standard exception");
   }
 
   // Backstop: no behavior may be released with its onEntry thread live.
