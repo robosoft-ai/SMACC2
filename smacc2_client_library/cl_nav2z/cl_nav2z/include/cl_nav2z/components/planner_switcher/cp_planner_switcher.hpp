@@ -59,8 +59,6 @@ private:
 
   std::string desired_controller_;
 
-  bool set_planners_mode_flag_ = false;
-
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr planner_selector_pub_;
 
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr controller_selector_pub_;
