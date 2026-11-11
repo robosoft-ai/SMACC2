@@ -43,8 +43,8 @@ private:
   void onConnectionLost();
   void onConnectionRestored();
 
-  ClGcalcli * client_;
-  CpGcalcliConnection * connection_;
+  ClGcalcli * client_ = nullptr;
+  CpGcalcliConnection * connection_ = nullptr;
 };
 
 }  // namespace cl_gcalcli
