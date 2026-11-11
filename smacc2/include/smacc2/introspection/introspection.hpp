@@ -74,7 +74,7 @@ inline std::string demangleSymbol(const std::string & name) { return demangleSym
 inline std::string demangleSymbol(const char * name)
 {
 #if (__GNUC__ && __cplusplus && __GNUC__ >= 3)
-  int status;
+  int status = 0;
   char * res = abi::__cxa_demangle(name, 0, 0, &status);
   if (res)
   {

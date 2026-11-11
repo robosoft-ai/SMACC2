@@ -50,7 +50,7 @@ TOrthogonal * ISmaccStateMachine::getOrthogonal()
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
   std::string orthogonalkey = demangledTypeName<TOrthogonal>();
-  TOrthogonal * ret;
+  TOrthogonal * ret = nullptr;
 
   auto it = orthogonals_.find(orthogonalkey);
 
@@ -68,7 +68,7 @@ TOrthogonal * ISmaccStateMachine::getOrthogonal()
   else
   {
     std::stringstream ss;
-    ss << "Orthogonal not found " << orthogonalkey.c_str() << std::endl;
+    ss << "Orthogonal not found " << orthogonalkey << std::endl;
     ss << "The existing orthogonals are the following: " << std::endl;
     for (auto & orthogonal : orthogonals_)
     {

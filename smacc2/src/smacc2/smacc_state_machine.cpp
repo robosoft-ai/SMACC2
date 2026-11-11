@@ -184,7 +184,7 @@ void ISmaccStateMachine::onInitialized()
 {
   auto ros_clock = rclcpp::Clock::make_shared();
   timer_ =
-    rclcpp::create_timer(nh_, ros_clock, 0.5s, [=]() { this->state_machine_visualization(); });
+    rclcpp::create_timer(nh_, ros_clock, 0.5s, [this]() { this->state_machine_visualization(); });
 }
 
 void ISmaccStateMachine::initializeROS(std::string shortname)

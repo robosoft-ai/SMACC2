@@ -54,7 +54,7 @@ public:
   void buildStateMachineInfo();
 
   template <typename StateType>
-  std::shared_ptr<SmaccStateInfo> createState(std::shared_ptr<SmaccStateInfo> parentState);
+  std::shared_ptr<SmaccStateInfo> createState(std::shared_ptr<SmaccStateInfo> parent);
 
   template <typename StateType>
   bool containsState()
@@ -124,7 +124,7 @@ struct AddTransition
 template <typename InitialStateType>
 struct WalkStatesExecutor
 {
-  static void walkStates(std::shared_ptr<SmaccStateInfo> & currentState, bool rootInitialNode);
+  static void walkStates(std::shared_ptr<SmaccStateInfo> & parentState, bool rootInitialNode);
 };
 
 //---------------------------------------------

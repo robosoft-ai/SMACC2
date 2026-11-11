@@ -35,7 +35,7 @@ public:
 
   void initState(ISmaccState * state);
 
-  void addClientBehavior(std::shared_ptr<smacc2::ISmaccClientBehavior> clientBehavior);
+  void addClientBehavior(std::shared_ptr<smacc2::ISmaccClientBehavior> clBehavior);
 
   void runtimeConfigure();
 

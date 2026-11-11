@@ -74,7 +74,6 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 
   if (it != typeInfoDatabase.end()) return typeInfoDatabase[inputtext];
 
-  bool ok = false;
   int typecount = 0;
   std::string originalinputtext = inputtext;
   std::map<std::string, std::string> typesdict;
@@ -83,7 +82,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
   // ITERATE on the current string to replace internal template types with ids (ie $Tx) replacements
   // until plain template type
 
-  while (!ok)
+  while (true)
   {
     const char * simpletypeRE = "[^\\<\\>,\\s]+\\<[^\\<\\>]+\\>";
 
@@ -209,7 +208,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     std::stringstream ss;
     ss << "---------------" << std::endl;
     ss << "TYPE STRING WALKER, type was not properly interpreted: " << std::endl
-       << " - " << inputtext.c_str() << std::endl
+       << " - " << inputtext << std::endl
        << " - " << originalinputtext << std::endl;
 
     auto strmsg = ss.str();
@@ -261,7 +260,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     std::stringstream ss;
     ss << "---------------" << std::endl;
     ss << "TYPE STRING WALKER, type was not properly interpreted: " << std::endl
-       << " - " << inputtext.c_str() << std::endl
+       << " - " << inputtext << std::endl
        << " - " << originalinputtext << std::endl;
 
     ss << "---- current type (ordered types)" << std::endl;

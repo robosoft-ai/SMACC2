@@ -146,7 +146,7 @@ public:
   // The typed overload normalizes the key with dynamic_cast<void *> (the complete object's
   // address), as createSignalConnection does, so a base-subobject pointer and the
   // most-derived pointer of the same object always map to the same entry.
-  void disconnectSmaccSignalObject(void * object);
+  void disconnectSmaccSignalObject(void * object_ptr);
 
   template <typename T>
   std::enable_if_t<std::is_polymorphic<T>::value> disconnectSmaccSignalObject(T * object)
@@ -190,7 +190,7 @@ public:
 protected:
   void checkStateMachineConsistence();
 
-  void initializeROS(std::string smshortname);
+  void initializeROS(std::string shortname);
 
   void onInitialized();
 
