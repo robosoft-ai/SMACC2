@@ -47,7 +47,7 @@ public:
 
   ClRosLaunch2(std::string packageName, std::string launchFilename);
 
-  virtual ~ClRosLaunch2();
+  ~ClRosLaunch2() override;
 
   void launch();
 

@@ -36,7 +36,7 @@ public:
   std::optional<rmw_qos_reliability_policy_t> reliability;
 
   SmaccPublisherClient();
-  virtual ~SmaccPublisherClient();
+  ~SmaccPublisherClient() override;
 
   template <typename MessageType>
   void configure(std::string topicName)

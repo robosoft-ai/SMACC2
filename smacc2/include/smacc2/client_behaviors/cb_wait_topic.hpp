@@ -35,7 +35,7 @@ class CbWaitTopic : public smacc2::SmaccAsyncClientBehavior
 public:
   CbWaitTopic(std::string topicName);
 
-  virtual ~CbWaitTopic();
+  ~CbWaitTopic() override;
 
   void onEntry() override;
 
