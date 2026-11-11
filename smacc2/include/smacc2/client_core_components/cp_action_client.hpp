@@ -112,10 +112,10 @@ public:
     };
 
     // Set up result callback
+    // No actionMutex_ here: it guards nothing this lambda touches, and rclcpp_action runs it under
+    // the goal handle's mutex, which would close a lock cycle with sendGoal (study, F-1).
     options.result_callback = [this, resultCallback](const WrappedResult & result)
     {
-      std::lock_guard<std::mutex> lock(actionMutex_);
-
       RCLCPP_INFO_STREAM(
         getLogger(), "[" << this->getName() << "] Action result callback, goal id: "
                          << rclcpp_action::to_string(result.goal_id));
