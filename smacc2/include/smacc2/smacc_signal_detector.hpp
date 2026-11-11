@@ -92,7 +92,6 @@ private:
   std::vector<ISmaccUpdatable *> updatableClients_;
 
   std::vector<std::vector<ISmaccUpdatable *>> updatableStateElements_;
-  std::atomic<int64_t> lastState_;
 
   void findUpdatableClientsAndComponents();
 
