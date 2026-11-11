@@ -202,6 +202,13 @@ void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
   RCLCPP_INFO(rclcpp::get_logger("SMACC"), "Waiting for scheduler thread to join...");
   schedulerThread.join();
 
+  // The loop ended inside rclcpp's on_shutdown callback, mid Context::shutdown() on the signal thread;
+  // this waits for that call to finish and joins the thread before anything here is destroyed (study, F-6).
+  if (!rclcpp::ok())
+  {
+    rclcpp::shutdown();
+  }
+
   // No transition is in progress now. Stop and join the onEntry threads of the active state's
   // async behaviors while the state machine and this signal detector are still alive; the
   // destructors below would otherwise do it with both half-destroyed.
