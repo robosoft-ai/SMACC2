@@ -38,7 +38,7 @@ public:
 
   // The destructor. This is called when the object is not
   // referenced anymore by its owner
-  virtual ~ISmaccActionClient();
+  ~ISmaccActionClient() override;
 
   // Gets the ros path of the action...
   inline std::string getNamespace() const { return name_; }
@@ -47,7 +47,7 @@ public:
 
   virtual std::shared_ptr<rclcpp_action::ClientBase> getClientBase() = 0;
 
-  virtual std::string getName() const { return name_; }
+  std::string getName() const override { return name_; }
 
 protected:
   // The ros path where the action server is located

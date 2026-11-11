@@ -36,7 +36,7 @@ class CbWaitActionServer : public smacc2::SmaccAsyncClientBehavior
 {
 public:
   CbWaitActionServer(std::chrono::milliseconds timeout);
-  virtual ~CbWaitActionServer();
+  ~CbWaitActionServer() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()

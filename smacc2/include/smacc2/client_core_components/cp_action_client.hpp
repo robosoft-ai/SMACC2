@@ -72,7 +72,7 @@ public:
 
   CpActionClient(const std::string & actionServerName) : actionServerName(actionServerName) {}
 
-  virtual ~CpActionClient() = default;
+  ~CpActionClient() override = default;
 
   // Public API
   std::shared_future<typename GoalHandle::SharedPtr> sendGoal(

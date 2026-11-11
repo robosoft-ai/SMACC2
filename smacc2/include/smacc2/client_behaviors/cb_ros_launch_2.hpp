@@ -42,7 +42,7 @@ public:
 
   CbRosLaunch2(std::string package, std::string launchfile, RosLaunchMode);
 
-  virtual ~CbRosLaunch2();
+  ~CbRosLaunch2() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()

@@ -59,7 +59,7 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation();
 
-  virtual ~SmaccAsyncClientBehavior();
+  ~SmaccAsyncClientBehavior() override;
 
   template <typename TCallback, typename T>
   smacc2::SmaccSignalConnection onSuccess(TCallback callback, T * object);
@@ -86,7 +86,7 @@ protected:
   void postSuccessEvent();
   void postFailureEvent();
 
-  virtual void dispose() override;
+  void dispose() override;
 
   /// \brief onEntry is executed in a new thread. However the current state cannot be left
   /// until the onEntry thread finishes. This flag can be checked from the onEntry thread to force finishing the thread.

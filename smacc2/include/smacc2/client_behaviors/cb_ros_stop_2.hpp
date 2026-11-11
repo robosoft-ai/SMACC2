@@ -36,7 +36,7 @@ public:
 
   CbRosStop2(pid_t launchPid);
 
-  virtual ~CbRosStop2();
+  ~CbRosStop2() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()

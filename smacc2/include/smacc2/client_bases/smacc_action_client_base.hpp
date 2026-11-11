@@ -64,9 +64,9 @@ public:
 
   SmaccActionClientBase() : ISmaccActionClient() { name_ = ""; }
 
-  virtual ~SmaccActionClientBase() {}
+  ~SmaccActionClientBase() override {}
 
-  virtual std::shared_ptr<rclcpp_action::ClientBase> getClientBase() override { return client_; }
+  std::shared_ptr<rclcpp_action::ClientBase> getClientBase() override { return client_; }
 
   void onInitialize() override
   {
@@ -181,7 +181,7 @@ public:
     return this->getStateMachine()->createSignalConnection(onCancelled_, callback);
   }
 
-  virtual bool cancelGoal() override
+  bool cancelGoal() override
   {
     lastCancelResponse_ = this->client_->async_cancel_all_goals();
 
