@@ -79,9 +79,17 @@ public:
     Goal & goal, typename smacc2::SmaccSignal<void(const WrappedResult &)>::WeakPtr resultCallback =
                    typename smacc2::SmaccSignal<void(const WrappedResult &)>::WeakPtr())
   {
-    std::lock_guard<std::mutex> lock(actionMutex_);
+    // actionMutex_ is never held across a rclcpp_action call: those take rclcpp_action's own
+    // mutexes, and holding ours across them was the first edge of the lock cycle (study, F-1).
+    std::shared_ptr<ActionClient> client;
+    FeedbackCallback feedbackCallback;
+    {
+      std::lock_guard<std::mutex> lock(actionMutex_);
+      client = client_;
+      feedbackCallback = feedbackCallback_;
+    }
 
-    if (client_ == nullptr)
+    if (client == nullptr)
     {
       RCLCPP_ERROR_STREAM(
         getLogger(), "[" << this->getName()
@@ -93,7 +101,7 @@ public:
     SendGoalOptions options;
 
     // Set up feedback callback
-    options.feedback_callback = feedbackCallback_;
+    options.feedback_callback = feedbackCallback;
 
     // Goal acceptance/rejection notification. Without this a rejected goal is
     // silent: the result callback never fires and no signal is emitted.
@@ -136,31 +144,44 @@ public:
 
     RCLCPP_INFO_STREAM(
       getLogger(),
-      "[" << this->getName() << "] Sending goal to action server: " << (long)client_.get());
+      "[" << this->getName() << "] Sending goal to action server: " << (long)client.get());
 
-    auto goalFuture = client_->async_send_goal(goal, options);
-    lastRequest_ = goalFuture;
+    auto goalFuture = client->async_send_goal(goal, options);
+    {
+      std::lock_guard<std::mutex> lock(actionMutex_);
+      lastRequest_ = goalFuture;
+    }
 
     return goalFuture;
   }
 
   bool cancelGoal()
   {
-    std::lock_guard<std::mutex> lock(actionMutex_);
-
-    if (client_ != nullptr && lastRequest_ && lastRequest_->valid())
+    // Same rule as sendGoal: the cancel call runs outside actionMutex_. A goal whose sendGoal is
+    // between its two lock scopes is not seen here; no caller cancels while another thread sends.
+    std::shared_ptr<ActionClient> client;
     {
-      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Cancelling current goal");
-
-      auto cancelFuture = client_->async_cancel_all_goals();
-      lastCancelResponse_ = cancelFuture;
-      return true;
+      std::lock_guard<std::mutex> lock(actionMutex_);
+      if (client_ != nullptr && lastRequest_ && lastRequest_->valid())
+      {
+        client = client_;
+      }
     }
-    else
+
+    if (client == nullptr)
     {
       RCLCPP_WARN_STREAM(getLogger(), "[" << this->getName() << "] No active goal to cancel");
       return false;
     }
+
+    RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Cancelling current goal");
+
+    auto cancelFuture = client->async_cancel_all_goals();
+    {
+      std::lock_guard<std::mutex> lock(actionMutex_);
+      lastCancelResponse_ = cancelFuture;
+    }
+    return true;
   }
 
   bool isServerReady() const { return client_ && client_->action_server_is_ready(); }
