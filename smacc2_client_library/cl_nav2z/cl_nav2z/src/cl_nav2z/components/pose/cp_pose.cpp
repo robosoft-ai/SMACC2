@@ -46,7 +46,6 @@ std::string referenceFrameToString(StandardReferenceFrames referenceFrame)
     case StandardReferenceFrames::Map:
       return "map";
     case StandardReferenceFrames::Odometry:
-      return "odom";
     default:
       return "odom";
   }

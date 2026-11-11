@@ -323,16 +323,13 @@ void CpWaypointNavigator::onNavigationResult(
   {
     this->onGoalReached(r);
   }
-  else if (r.code == rclcpp_action::ResultCode::ABORTED)
-  {
-    this->onGoalAborted(r);
-  }
   else if (r.code == rclcpp_action::ResultCode::CANCELED)
   {
     this->onGoalCancelled(r);
   }
   else
   {
+    // ABORTED, and UNKNOWN treated the same way.
     this->onGoalAborted(r);
   }
 }
