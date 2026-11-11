@@ -31,11 +31,19 @@ namespace cl_nav2z
 // state initialization. It also avoid an explosion of constructors for each variation of the parameters.
 struct CbSpiralMotionOptions
 {
-  std::optional<float> linearVelocity = 0.0f;
-  std::optional<float> maxLinearVelocity = 0.5f;
-  std::optional<float> initialAngularVelocity = 1.5f;
-  std::optional<rclcpp::Duration> spiralMotionDuration = rclcpp::Duration::from_seconds(40);
-  std::optional<float> finalRadius = 20.0f;  //meters
+  // A field left empty means "use the default"; onEntry falls back to these constants.
+  static constexpr float kDefaultLinearVelocity = 0.0f;
+  static constexpr float kDefaultMaxLinearVelocity = 0.5f;
+  static constexpr float kDefaultInitialAngularVelocity = 1.5f;
+  static constexpr double kDefaultSpiralMotionSeconds = 40.0;
+  static constexpr float kDefaultFinalRadius = 20.0f;  // meters
+
+  std::optional<float> linearVelocity = kDefaultLinearVelocity;
+  std::optional<float> maxLinearVelocity = kDefaultMaxLinearVelocity;
+  std::optional<float> initialAngularVelocity = kDefaultInitialAngularVelocity;
+  std::optional<rclcpp::Duration> spiralMotionDuration =
+    rclcpp::Duration::from_seconds(kDefaultSpiralMotionSeconds);
+  std::optional<float> finalRadius = kDefaultFinalRadius;
 };
 
 /* a basic client behavior has a simple onEntry and onExit functions. When we enter into a state we call onEntry.

@@ -42,11 +42,16 @@ CbSpiralMotion::CbSpiralMotion(std::optional<CbSpiralMotionOptions> options)
 
 void CbSpiralMotion::onEntry()
 {
-  auto linearVelocity = *(options_.linearVelocity);
-  auto maxLinearVelocity = *(options_.maxLinearVelocity);
-  auto initialAngularVelocity = *(options_.initialAngularVelocity);
-  auto spiralMotionDuration = *(options_.spiralMotionDuration);
-  auto finalRadius = *(options_.finalRadius);
+  // An option left empty by the caller takes the struct's default instead of reading a disengaged optional.
+  auto linearVelocity =
+    options_.linearVelocity.value_or(CbSpiralMotionOptions::kDefaultLinearVelocity);
+  auto maxLinearVelocity =
+    options_.maxLinearVelocity.value_or(CbSpiralMotionOptions::kDefaultMaxLinearVelocity);
+  auto initialAngularVelocity =
+    options_.initialAngularVelocity.value_or(CbSpiralMotionOptions::kDefaultInitialAngularVelocity);
+  auto spiralMotionDuration = options_.spiralMotionDuration.value_or(
+    rclcpp::Duration::from_seconds(CbSpiralMotionOptions::kDefaultSpiralMotionSeconds));
+  auto finalRadius = options_.finalRadius.value_or(CbSpiralMotionOptions::kDefaultFinalRadius);
 
   float rate = 20.0f;
   rclcpp::Rate r(rate);

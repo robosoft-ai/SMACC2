@@ -41,8 +41,8 @@ public:
   bool wasSuccessful() const { return success_; }
 
 private:
-  ClGcalcli * client_;
-  bool success_;
+  ClGcalcli * client_ = nullptr;
+  bool success_ = false;
 };
 
 }  // namespace cl_gcalcli

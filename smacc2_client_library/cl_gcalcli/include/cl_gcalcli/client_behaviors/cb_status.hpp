@@ -59,8 +59,9 @@ public:
   std::vector<CalendarEvent> getActiveEvents() const { return active_events_; }
 
 private:
-  ClGcalcli * client_;
-  ConnectionState connection_state_;
+  ClGcalcli * client_ = nullptr;
+  // Before onEntry runs the behavior has observed nothing; zero would read as CONNECTED.
+  ConnectionState connection_state_ = ConnectionState::DISCONNECTED;
   std::vector<CalendarEvent> events_;
   std::vector<CalendarEvent> active_events_;
 };

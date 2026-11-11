@@ -61,15 +61,17 @@ public:
 
     this->requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);
 
+    // Empty past the last waypoint or for an unnamed one; never dereference it unchecked.
     auto current_waypoint_name = waypointsNavigator_->getCurrentWaypointName();
+    const char * current = current_waypoint_name ? current_waypoint_name->c_str() : "(none)";
 
-    if (current_waypoint_name == this->goalWaypointName_)
+    if (current_waypoint_name && *current_waypoint_name == this->goalWaypointName_)
     {
       RCLCPP_INFO(
         getLogger(),
         "[CbNavigateNextWaypointUntilReached] GoalReached current iteration waypoint i: %ld with "
         "name '%s'",
-        waypointsNavigator_->getCurrentWaypointIndex(), current_waypoint_name->c_str());
+        waypointsNavigator_->getCurrentWaypointIndex(), current);
 
       this->postEvGoalWaypointReached_();
     }
@@ -78,7 +80,7 @@ public:
       RCLCPP_INFO(
         getLogger(),
         "[CbNavigateNextWaypointUntilReached] goal:'%s' current:'%s'. keep navigating.",
-        goalWaypointName_.c_str(), current_waypoint_name->c_str());
+        goalWaypointName_.c_str(), current);
     }
 
     this->postSuccessEvent();
