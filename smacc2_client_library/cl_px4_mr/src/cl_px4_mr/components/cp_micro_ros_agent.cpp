@@ -209,7 +209,7 @@ void CpMicroRosAgent::killProcessesRecursive(pid_t pid)
   int res = kill(pid, SIGTERM);
   if (res == 0)
   {
-    RCLCPP_FATAL(rclcpp::get_logger("CpMicroRosAgent"), "Killed process %d", pid);
+    RCLCPP_INFO(getLogger(), "CpMicroRosAgent: killed process %d", pid);
   }
 }
 
