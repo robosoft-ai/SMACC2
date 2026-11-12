@@ -35,14 +35,14 @@ bool CallbackCounterSemaphore::acquire()
 {
   std::unique_lock<std::mutex> lock(mutex_);
   RCLCPP_DEBUG(
-    rclcpp::get_logger(name_), "[CallbackCounterSemaphore] acquire callback %s %ld", name_.c_str(),
-    (long)this);
+    rclcpp::get_logger(name_), "[CallbackCounterSemaphore] acquire callback %s %p", name_.c_str(),
+    static_cast<const void *>(this));
 
   if (finalized)
   {
     RCLCPP_DEBUG(
-      rclcpp::get_logger(name_), "[CallbackCounterSemaphore] callback rejected %s %ld",
-      name_.c_str(), (long)this);
+      rclcpp::get_logger(name_), "[CallbackCounterSemaphore] callback rejected %s %p",
+      name_.c_str(), static_cast<const void *>(this));
     return false;
   }
 
@@ -50,8 +50,8 @@ bool CallbackCounterSemaphore::acquire()
   cv_.notify_one();
 
   RCLCPP_DEBUG(
-    rclcpp::get_logger(name_), "[CallbackCounterSemaphore] callback accepted %s %ld", name_.c_str(),
-    (long)this);
+    rclcpp::get_logger(name_), "[CallbackCounterSemaphore] callback accepted %s %p", name_.c_str(),
+    static_cast<const void *>(this));
   return true;
 }
 
@@ -62,8 +62,8 @@ void CallbackCounterSemaphore::release()
   cv_.notify_one();
 
   RCLCPP_DEBUG(
-    rclcpp::get_logger(name_), "[CallbackCounterSemaphore] callback finished %s %ld", name_.c_str(),
-    (long)this);
+    rclcpp::get_logger(name_), "[CallbackCounterSemaphore] callback finished %s %p", name_.c_str(),
+    static_cast<const void *>(this));
 }
 
 void CallbackCounterSemaphore::finalize()
@@ -83,8 +83,8 @@ void CallbackCounterSemaphore::finalize()
 
   connections_.clear();
   RCLCPP_DEBUG(
-    rclcpp::get_logger(name_), "[CallbackCounterSemaphore] callbacks finalized %s %ld",
-    name_.c_str(), (long)this);
+    rclcpp::get_logger(name_), "[CallbackCounterSemaphore] callbacks finalized %s %p",
+    name_.c_str(), static_cast<const void *>(this));
 }
 
 void CallbackCounterSemaphore::addConnection(smacc2::SmaccSignalConnection conn)
@@ -95,8 +95,8 @@ void CallbackCounterSemaphore::addConnection(smacc2::SmaccSignalConnection conn)
   {
     RCLCPP_DEBUG(
       rclcpp::get_logger(name_),
-      "[CallbackCounterSemaphore] ignoring adding callback, already finalized %s %ld",
-      name_.c_str(), (long)this);
+      "[CallbackCounterSemaphore] ignoring adding callback, already finalized %s %p", name_.c_str(),
+      static_cast<const void *>(this));
     return;
   }
 

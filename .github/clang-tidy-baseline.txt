@@ -1,7 +1,6 @@
 # clang-tidy baseline for .github/scripts/clang_tidy_gate.sh: count, then path: kind: message [check].
 # Regenerate with: .github/scripts/clang_tidy_gate.sh <build-base> <out-dir> --update-baseline
 50	smacc2/include/smacc2/introspection/smacc_state_machine_info.hpp: warning: narrowing conversion from 'size_type' (aka 'unsigned long') to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
-20	smacc2/include/smacc2/smacc_client.hpp: warning: do not cast 'const std::type_info *' to 'long' through 'void *' [bugprone-casting-through-void]
 2	smacc2/include/smacc2/smacc_tracing/trace_provider.hpp: warning: 3 adjacent parameters of 'lttng_ust_tracepoint_cb_ros2___smacc2_client_behavior_on_entry_end' of similar type ('const char *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 2	smacc2/include/smacc2/smacc_tracing/trace_provider.hpp: warning: 3 adjacent parameters of 'lttng_ust_tracepoint_cb_ros2___smacc2_client_behavior_on_entry_start' of similar type ('const char *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 2	smacc2/include/smacc2/smacc_tracing/trace_provider.hpp: warning: 3 adjacent parameters of 'lttng_ust_tracepoint_cb_ros2___smacc2_client_behavior_on_exit_end' of similar type ('const char *') are easily swapped by mistake [bugprone-easily-swappable-parameters]

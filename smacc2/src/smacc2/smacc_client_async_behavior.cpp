@@ -208,7 +208,7 @@ void SmaccAsyncClientBehavior::requestForceFinish()
 {
   RCLCPP_FATAL_STREAM_THROTTLE(
     getLogger(), *(getNode()->get_clock()), 1000,
-    "[" << getName() << "] " << ((uint64_t)this) << " requestForceFinish");
+    "[" << getName() << "] " << static_cast<const void *>(this) << " requestForceFinish");
   isShutdownRequested_ = true;
 }
 
