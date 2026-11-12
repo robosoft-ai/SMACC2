@@ -143,8 +143,8 @@ public:
     };
 
     RCLCPP_INFO_STREAM(
-      getLogger(),
-      "[" << this->getName() << "] Sending goal to action server: " << (long)client.get());
+      getLogger(), "[" << this->getName() << "] Sending goal to action server: "
+                       << static_cast<const void *>(client.get()));
 
     auto goalFuture = client->async_send_goal(goal, options);
     {

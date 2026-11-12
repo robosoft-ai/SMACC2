@@ -19,6 +19,7 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <cstdint>
 #include <smacc2/common.hpp>
 #include <smacc2/component.hpp>
 #include <typeinfo>
@@ -31,7 +32,7 @@ struct ComponentKey
   {
     this->name = name;
     this->typeinfo = typeinfo;
-    encodedKey = std::to_string((long)(void *)typeinfo) + "_" + name;
+    encodedKey = std::to_string(reinterpret_cast<std::uintptr_t>(typeinfo)) + "_" + name;
   }
   std::string encodedKey;
   const std::type_info * typeinfo;
