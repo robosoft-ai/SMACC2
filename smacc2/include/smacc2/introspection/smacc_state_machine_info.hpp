@@ -259,7 +259,7 @@ void SmaccStateInfo::declareTransition(
   auto evtype = demangledTypeName<EvType>();
 
   SmaccTransitionInfo transitionInfo;
-  transitionInfo.index = transitions_.size();
+  transitionInfo.index = static_cast<int>(transitions_.size());
   transitionInfo.sourceState = shared_from_this();
   transitionInfo.destinyState = dstState;
   transitionInfo.transitionTypeInfo = transitionTypeInfo;
@@ -454,7 +454,7 @@ std::shared_ptr<SmaccStateInfo> SmaccStateMachineInfo::createState(
   auto state = std::make_shared<SmaccStateInfo>(statetid, parent, thisptr);
   state->demangledStateName = demangledName;
   state->fullStateName = typeid(StateType).name();
-  state->stateIndex_ = states.size();
+  state->stateIndex_ = static_cast<int>(states.size());
 
   if (parent != nullptr)
   {

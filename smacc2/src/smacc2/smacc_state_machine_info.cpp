@@ -41,7 +41,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
     ss << "**** State: " << demangleSymbol(val.first.c_str()) << std::endl;
 
     stateMsg.name = state->getDemangledFullName();
-    stateMsg.level = (int)state->getStateLevel();
+    stateMsg.level = static_cast<int8_t>(state->getStateLevel());
 
     ss << "Index: " << stateMsg.index << std::endl;
     ss << "StateLevel: " << stateMsg.level << std::endl;
