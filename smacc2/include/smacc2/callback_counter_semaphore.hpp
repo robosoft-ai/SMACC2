@@ -31,7 +31,7 @@ namespace smacc2
 class CallbackCounterSemaphore
 {
 public:
-  CallbackCounterSemaphore(std::string name, int count = 0);
+  CallbackCounterSemaphore(const std::string & name, int count = 0);
   bool acquire();
 
   void release();

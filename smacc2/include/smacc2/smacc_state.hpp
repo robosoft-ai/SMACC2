@@ -54,18 +54,18 @@ public:
   // holding several components of the same type.
   template <typename SmaccComponentType>
   void requiresComponent(
-    std::string name, SmaccComponentType *& storage,
+    const std::string & name, SmaccComponentType *& storage,
     ComponentRequirement requirementType = ComponentRequirement::SOFT);
 
   template <typename SmaccClientType>
   void requiresClient(SmaccClientType *& storage);
 
   template <typename T>
-  bool getGlobalSMData(std::string name, T & ret);
+  bool getGlobalSMData(const std::string & name, T & ret);
 
   // Store globally in this state machine. (By value parameter )
   template <typename T>
-  void setGlobalSMData(std::string name, T value);
+  void setGlobalSMData(const std::string & name, T value);
 
   template <
     typename TStateReactor, typename TTriggerEvent, typename TEventList, typename... TEvArgs>

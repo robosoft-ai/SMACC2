@@ -70,7 +70,7 @@ TOrthogonal * ISmaccStateMachine::getOrthogonal()
     std::stringstream ss;
     ss << "Orthogonal not found " << orthogonalkey << std::endl;
     ss << "The existing orthogonals are the following: " << std::endl;
-    for (auto & orthogonal : orthogonals_)
+    for (const auto & orthogonal : orthogonals_)
     {
       ss << " - " << orthogonal.first << std::endl;
     }
@@ -105,7 +105,7 @@ void ISmaccStateMachine::createOrthogonal()
                      << orthogonalkey.c_str() << ". Skipping creation orthogonal request. ");
     std::stringstream ss;
     ss << "The existing orthogonals are the following: " << std::endl;
-    for (auto & orthogonal : orthogonals_)
+    for (const auto & orthogonal : orthogonals_)
     {
       ss << " - " << orthogonal.first << std::endl;
     }
@@ -146,7 +146,7 @@ void ISmaccStateMachine::requiresComponent(
 //-------------------------------------------------------------------------------------------------------
 template <typename SmaccComponentType>
 void ISmaccStateMachine::requiresComponent(
-  std::string name, SmaccComponentType *& storage, ComponentRequirement requirementType)
+  const std::string & name, SmaccComponentType *& storage, ComponentRequirement requirementType)
 {
   bool throwsException = requirementType == ComponentRequirement::HARD;
   RCLCPP_DEBUG(
@@ -263,7 +263,7 @@ void ISmaccStateMachine::postEvent(EventLifeTime evlifetime)
 }
 
 template <typename T>
-bool ISmaccStateMachine::getGlobalSMData(std::string name, T & ret)
+bool ISmaccStateMachine::getGlobalSMData(const std::string & name, T & ret)
 {
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
   // RCLCPP_WARN(getLogger(),"get SM Data lock acquire");
@@ -298,7 +298,7 @@ bool ISmaccStateMachine::getGlobalSMData(std::string name, T & ret)
 }
 
 template <typename T>
-void ISmaccStateMachine::setGlobalSMData(std::string name, T value)
+void ISmaccStateMachine::setGlobalSMData(const std::string & name, T value)
 {
   {
     std::lock_guard<std::recursive_mutex> lock(m_mutex_);

@@ -193,7 +193,7 @@ void ISmaccStateMachine::onInitialized()
     rclcpp::create_timer(nh_, ros_clock, 0.5s, [this]() { this->state_machine_visualization(); });
 }
 
-void ISmaccStateMachine::initializeROS(std::string shortname)
+void ISmaccStateMachine::initializeROS(const std::string & shortname)
 {
   RCLCPP_WARN_STREAM(nh_->get_logger(), "State machine base creation: " << shortname);
   // STATE MACHINE TOPICS
@@ -248,20 +248,20 @@ void ISmaccStateMachine::state_machine_visualization()
 
   std::sort(
     state_machine_msg.states.begin(), state_machine_msg.states.end(),
-    [](auto & a, auto & b) { return a.index < b.index; });
+    [](const auto & a, const auto & b) { return a.index < b.index; });
   stateMachinePub_->publish(state_machine_msg);
 
   status_msg_.header.stamp = this->nh_->now();
   stateMachineStatusPub_->publish(status_msg_);
 }
 
-void ISmaccStateMachine::lockStateMachine(std::string msg)
+void ISmaccStateMachine::lockStateMachine(const std::string & msg)
 {
   RCLCPP_DEBUG(nh_->get_logger(), "-- locking SM: %s", msg.c_str());
   m_mutex_.lock();
 }
 
-void ISmaccStateMachine::unlockStateMachine(std::string msg)
+void ISmaccStateMachine::unlockStateMachine(const std::string & msg)
 {
   RCLCPP_DEBUG(nh_->get_logger(), "-- unlocking SM: %s", msg.c_str());
   m_mutex_.unlock();

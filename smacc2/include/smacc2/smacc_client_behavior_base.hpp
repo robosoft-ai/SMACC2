@@ -51,7 +51,7 @@ public:
   // several components of the same type
   template <typename SmaccComponentType>
   void requiresComponent(
-    std::string name, SmaccComponentType *& storage,
+    const std::string & name, SmaccComponentType *& storage,
     ComponentRequirement requirementType = ComponentRequirement::SOFT);
 
   virtual void onEntry() {}

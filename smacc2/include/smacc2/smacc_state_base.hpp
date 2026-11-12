@@ -148,14 +148,14 @@ public:
   void onExit() {}
 
   template <typename T>
-  bool getGlobalSMData(std::string name, T & ret)
+  bool getGlobalSMData(const std::string & name, T & ret)
   {
     return base_type::outermost_context().getGlobalSMData(name, ret);
   }
 
   // Store globally in this state machine. (By value parameter )
   template <typename T>
-  void setGlobalSMData(std::string name, T value)
+  void setGlobalSMData(const std::string & name, T value)
   {
     base_type::outermost_context().setGlobalSMData(name, value);
   }

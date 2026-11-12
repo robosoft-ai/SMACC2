@@ -157,7 +157,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
     if (SmaccStateInfo::eventGeneratorsInfo.count(statetid) > 0)
     {
       int k = 0;
-      for (auto & eginfo : SmaccStateInfo::eventGeneratorsInfo[statetid])
+      for (const auto & eginfo : SmaccStateInfo::eventGeneratorsInfo[statetid])
       {
         smacc2_msgs::msg::SmaccEventGenerator eventGeneratorMsg;
         eventGeneratorMsg.index = k++;
@@ -178,7 +178,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
     if (SmaccStateInfo::stateReactorsInfo.count(statetid) > 0)
     {
       int k = 0;
-      for (auto & srinfo : SmaccStateInfo::stateReactorsInfo[statetid])
+      for (const auto & srinfo : SmaccStateInfo::stateReactorsInfo[statetid])
       {
         smacc2_msgs::msg::SmaccStateReactor stateReactorMsg;
         stateReactorMsg.index = k++;

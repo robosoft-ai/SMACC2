@@ -26,7 +26,7 @@
 
 namespace smacc2
 {
-CallbackCounterSemaphore::CallbackCounterSemaphore(std::string name, int count)
+CallbackCounterSemaphore::CallbackCounterSemaphore(const std::string & name, int count)
 : count_(count), name_(name)
 {
 }

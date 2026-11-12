@@ -253,8 +253,8 @@ void processTransitionAux(
 //---------------------------------------------
 template <typename EvType>
 void SmaccStateInfo::declareTransition(
-  std::shared_ptr<SmaccStateInfo> & dstState, std::string transitionTag, std::string transitionType,
-  bool history, TypeInfo::Ptr transitionTypeInfo)
+  std::shared_ptr<SmaccStateInfo> & dstState, const std::string & transitionTag,
+  const std::string & transitionType, bool history, TypeInfo::Ptr transitionTypeInfo)
 {
   auto evtype = demangledTypeName<EvType>();
 

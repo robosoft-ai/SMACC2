@@ -96,7 +96,7 @@ void ISmaccClientBehavior::requiresComponent(
 
 template <typename SmaccComponentType>
 void ISmaccClientBehavior::requiresComponent(
-  std::string name, SmaccComponentType *& storage, ComponentRequirement requirementType)
+  const std::string & name, SmaccComponentType *& storage, ComponentRequirement requirementType)
 {
   if (stateMachine_ == nullptr)
   {

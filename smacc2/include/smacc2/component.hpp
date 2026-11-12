@@ -63,7 +63,7 @@ protected:
 
   template <typename TComponent>
   void requiresComponent(
-    std::string name, TComponent *& requiredComponentStorage,
+    const std::string & name, TComponent *& requiredComponentStorage,
     ComponentRequirement requirementType = ComponentRequirement::SOFT);
 
   template <typename TClient>
@@ -73,7 +73,7 @@ protected:
   SmaccComponentType * createSiblingComponent(TArgs... targs);
 
   template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-  SmaccComponentType * createSiblingNamedComponent(std::string name, TArgs... targs);
+  SmaccComponentType * createSiblingNamedComponent(const std::string & name, TArgs... targs);
 
   rclcpp::Node::SharedPtr getNode();
 

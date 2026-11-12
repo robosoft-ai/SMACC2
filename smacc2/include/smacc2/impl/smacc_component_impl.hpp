@@ -68,7 +68,8 @@ void ISmaccComponent::requiresComponent(
 
 template <typename TComponent>
 void ISmaccComponent::requiresComponent(
-  std::string name, TComponent *& requiredComponentStorage, ComponentRequirement requirementType)
+  const std::string & name, TComponent *& requiredComponentStorage,
+  ComponentRequirement requirementType)
 {
   requiredComponentStorage = this->owner_->getComponent<TComponent>(name);
 
@@ -106,7 +107,8 @@ SmaccComponentType * ISmaccComponent::createSiblingComponent(TArgs... targs)
 }
 
 template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-SmaccComponentType * ISmaccComponent::createSiblingNamedComponent(std::string name, TArgs... targs)
+SmaccComponentType * ISmaccComponent::createSiblingNamedComponent(
+  const std::string & name, TArgs... targs)
 {
   return this->owner_->createNamedComponent<SmaccComponentType, TOrthogonal, TClient>(
     name, targs...);

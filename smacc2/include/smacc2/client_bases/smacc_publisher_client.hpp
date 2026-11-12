@@ -39,7 +39,7 @@ public:
   ~SmaccPublisherClient() override;
 
   template <typename MessageType>
-  void configure(std::string topicName)
+  void configure(const std::string & topicName)
   {
     this->topicName = topicName;
     if (!initialized_)

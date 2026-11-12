@@ -118,13 +118,13 @@ ISmaccOrthogonal::getClientBehaviors() const
 }
 
 template <typename T>
-void ISmaccOrthogonal::setGlobalSMData(std::string name, T value)
+void ISmaccOrthogonal::setGlobalSMData(const std::string & name, T value)
 {
   this->getStateMachine()->setGlobalSMData(name, value);
 }
 
 template <typename T>
-bool ISmaccOrthogonal::getGlobalSMData(std::string name, T & ret)
+bool ISmaccOrthogonal::getGlobalSMData(const std::string & name, T & ret)
 {
   return this->getStateMachine()->getGlobalSMData(name, ret);
 }
@@ -151,7 +151,7 @@ public:
   }
 
   template <typename SmaccComponentType, typename... TArgs>
-  SmaccComponentType * createNamedComponent(std::string name, TArgs... targs)
+  SmaccComponentType * createNamedComponent(const std::string & name, TArgs... targs)
   {
     return ISmaccClient::createNamedComponent<SmaccComponentType, TOrthogonal, TClient, TArgs...>(
       name, targs...);

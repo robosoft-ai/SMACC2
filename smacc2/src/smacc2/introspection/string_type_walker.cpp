@@ -45,14 +45,14 @@ bool replace(std::string & str, const std::string & from, const std::string & to
 }
 
 std::string replace_back(
-  std::string roottype, std::vector<std::pair<std::string, std::string>> & orderedtypesdict)
+  std::string roottype, const std::vector<std::pair<std::string, std::string>> & orderedtypesdict)
 {
   while (roottype.find("$") != std::string::npos)
   {
-    for (auto & t : orderedtypesdict)
+    for (const auto & t : orderedtypesdict)
     {
-      auto & tkey = t.first;
-      auto & tval = t.second;
+      const auto & tkey = t.first;
+      const auto & tval = t.second;
 
       replace(roottype, tkey, tval);
     }
@@ -106,7 +106,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     {
       // find and replace all coincidences typestr to tokenid
       int i = 0;
-      for (auto & m : matches)
+      for (const auto & m : matches)
       {
         std::string tstr = m;
         auto tkey = "$T" + std::to_string(typecount);
@@ -128,12 +128,12 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
   }
 
   std::sort(
-    orderedTypedict.begin(), orderedTypedict.end(),
-    [](auto & a, auto & b) { return std::stoi(a.first.substr(2)) > std::stoi(b.first.substr(2)); });
+    orderedTypedict.begin(), orderedTypedict.end(), [](const auto & a, const auto & b)
+    { return std::stoi(a.first.substr(2)) > std::stoi(b.first.substr(2)); });
   // -----------------------------------------------------------------
 
   std::set<std::string> allbasetypes;
-  for (auto & typeentry : orderedTypedict /*typesdict*/)
+  for (const auto & typeentry : orderedTypedict /*typesdict*/)
   {
     auto flat = typeentry.second;
 
@@ -168,7 +168,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     }
 
     // refresh
-    for (auto & b : allbasetypes)
+    for (const auto & b : allbasetypes)
     {
       typesdict[b] = b;
     }
@@ -194,7 +194,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 
   // --------- FINDING THE CURRENT TYPE -------------
   TypeInfo::Ptr roottype = nullptr;
-  for (auto & t : types)
+  for (const auto & t : types)
   {
     if (t->finaltype == originalinputtext)
     {
@@ -240,7 +240,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 
     std::sort(
       unorderedTemplateParameters.begin(), unorderedTemplateParameters.end(),
-      [](auto & a, auto & b) -> bool { return a.first <= b.first; });
+      [](const auto & a, const auto & b) -> bool { return a.first <= b.first; });
 
     for (auto & item : unorderedTemplateParameters)
     {
@@ -248,7 +248,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     }
   }
 
-  for (auto & en : typeInfoDatabase)
+  for (const auto & en : typeInfoDatabase)
   {
     if (globalNh_ != nullptr) RCLCPP_DEBUG_STREAM(globalNh_->get_logger(), "- " << en.first);
   }
@@ -265,7 +265,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 
     ss << "---- current type (ordered types)" << std::endl;
 
-    for (auto & en : orderedTypedict)
+    for (const auto & en : orderedTypedict)
     {
       ss << "- " << en.first << ": " << en.second << std::endl;
     }
@@ -273,14 +273,14 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 
     ss << "------current type types --------" << std::endl;
 
-    for (auto & t : types)
+    for (const auto & t : types)
     {
       ss << t->finaltype << std::endl;
     }
 
     ss << "----total typeinfo database" << std::endl;
 
-    for (auto & en : typeInfoDatabase)
+    for (const auto & en : typeInfoDatabase)
     {
       ss << "- " << en.first << ": " << en.second << std::endl;
     }

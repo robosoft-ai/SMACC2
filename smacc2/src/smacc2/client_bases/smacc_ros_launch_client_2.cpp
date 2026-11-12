@@ -62,8 +62,8 @@ void ClRosLaunch2::stop()
 }
 
 std::future<std::string> ClRosLaunch2::executeRosLaunch(
-  std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition,
-  ClRosLaunch2 * client)
+  const std::string & packageName, const std::string & launchFileName,
+  std::function<bool()> cancelCondition, ClRosLaunch2 * client)
 {
   return std::async(
     std::launch::async,
