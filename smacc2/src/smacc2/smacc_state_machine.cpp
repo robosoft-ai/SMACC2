@@ -172,7 +172,15 @@ void ISmaccStateMachine::publishTransition(const SmaccTransitionInfo & transitio
   smacc2_msgs::msg::SmaccTransitionLogEntry transitionLogEntry;
   transitionLogEntry.timestamp = this->nh_->now();
   transitionInfoToMsg(transitionInfo, transitionLogEntry.transition);
-  this->transitionLogHistory_.push_back(transitionLogEntry);
+  {
+    // Bounded: the vector this used to be grew 1 KB per transition for the life of the process (X).
+    std::lock_guard<std::mutex> guard(transitionLogMutex_);
+    this->transitionLogHistory_.push_back(transitionLogEntry);
+    while (this->transitionLogHistory_.size() > transitionLogHistorySize_)
+    {
+      this->transitionLogHistory_.pop_front();
+    }
+  }
 
   transitionLogPub_->publish(transitionLogEntry);
 }
@@ -196,6 +204,14 @@ void ISmaccStateMachine::initializeROS(std::string shortname)
     shortname + "/smacc/status", rclcpp::QoS(1));
   transitionLogPub_ = nh_->create_publisher<smacc2_msgs::msg::SmaccTransitionLogEntry>(
     shortname + "/smacc/transition_log", rclcpp::QoS(1));
+  // How many transitions the history service keeps; 0 keeps none. The topic carries every transition.
+  int64_t historySize = nh_->declare_parameter<int64_t>("transition_log_history_size", 1000);
+  if (historySize < 0)
+  {
+    RCLCPP_WARN(nh_->get_logger(), "transition_log_history_size %ld clamped to 0", historySize);
+    historySize = 0;
+  }
+  transitionLogHistorySize_ = static_cast<size_t>(historySize);
 
   eventsLogPub_ = nh_->create_publisher<smacc2_msgs::msg::SmaccEvent>(
     shortname + "/smacc/event_log", rclcpp::QoS(100));
@@ -217,10 +233,11 @@ void ISmaccStateMachine::getTransitionLogHistory(
   const std::shared_ptr<smacc2_msgs::srv::SmaccGetTransitionHistory::Request> /*req*/,
   std::shared_ptr<smacc2_msgs::srv::SmaccGetTransitionHistory::Response> res)
 {
+  std::lock_guard<std::mutex> guard(transitionLogMutex_);
   RCLCPP_WARN(
     nh_->get_logger(), "Requesting transition log history, current size: %ld",
     this->transitionLogHistory_.size());
-  res->history = this->transitionLogHistory_;
+  res->history.assign(this->transitionLogHistory_.begin(), this->transitionLogHistory_.end());
 }
 
 void ISmaccStateMachine::state_machine_visualization()

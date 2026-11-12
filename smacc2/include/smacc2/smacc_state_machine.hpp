@@ -21,6 +21,7 @@
 
 #include <atomic>
 #include <boost/any.hpp>
+#include <deque>
 #include <map>
 #include <mutex>
 #include <type_traits>
@@ -240,7 +241,11 @@ private:
   std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;
 
   // contains the whole history of transitions of the state machine
-  std::vector<smacc2_msgs::msg::SmaccTransitionLogEntry> transitionLogHistory_;
+  // The last transition_log_history_size transitions, for the history service. Pushed on the state
+  // machine thread, copied on the executor thread; its own leaf mutex, never m_mutex_ (X).
+  std::deque<smacc2_msgs::msg::SmaccTransitionLogEntry> transitionLogHistory_;
+  std::mutex transitionLogMutex_;
+  size_t transitionLogHistorySize_ = 1000;
 
   smacc2::SMRunMode runMode_;
 

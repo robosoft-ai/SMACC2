@@ -67,13 +67,20 @@ jobs:
             smacc2_performance_tools/performance_tests/sm_coretest_post_during_exit_1 \
             smacc2_performance_tools/performance_tests/sm_coretest_timer_handoff_1
 
+      - name: Build the message package without sanitizer flags
+        # The gate calls the transition history service through the ros2 CLI, which imports the
+        # message package's Python typesupport; a sanitized build of that extension cannot be
+        # loaded into the plain Python interpreter.
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          colcon build --packages-select smacc2_msgs --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTING=OFF
+
       - name: Build with ${{ matrix.name }}
         run: |
           source /opt/ros/jazzy/setup.bash
           colcon build \
             --packages-select \
               smacc2 \
-              smacc2_msgs \
               cl_ros2_timer \
               sr_all_events_go \
               sr_event_countdown \
