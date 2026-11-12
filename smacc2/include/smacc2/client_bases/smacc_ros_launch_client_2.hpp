@@ -54,8 +54,8 @@ public:
   void stop();
 
   static std::future<std::string> executeRosLaunch(
-    std::string packageName, std::string launchFileName, std::function<bool()> cancelCondition,
-    ClRosLaunch2 * client = nullptr);
+    const std::string & packageName, const std::string & launchFileName,
+    std::function<bool()> cancelCondition, ClRosLaunch2 * client = nullptr);
 
   // static std::string executeRosLaunch(
   //    std::string packageName, std::string launchFilename, std::function<bool()> cancelCondition);

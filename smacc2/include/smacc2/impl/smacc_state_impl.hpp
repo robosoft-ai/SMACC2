@@ -67,7 +67,7 @@ void ISmaccState::requiresComponent(
 
 template <typename SmaccComponentType>
 void ISmaccState::requiresComponent(
-  std::string name, SmaccComponentType *& storage, ComponentRequirement requirementType)
+  const std::string & name, SmaccComponentType *& storage, ComponentRequirement requirementType)
 {
   this->getStateMachine().requiresComponent(name, storage, requirementType);
 }
@@ -97,7 +97,7 @@ void ISmaccState::requiresClient(SmaccClientType *& storage)
 //-------------------------------------------------------------------------------------------------------
 
 template <typename T>
-bool ISmaccState::getGlobalSMData(std::string name, T & ret)
+bool ISmaccState::getGlobalSMData(const std::string & name, T & ret)
 {
   return this->getStateMachine().getGlobalSMData(name, ret);
 }
@@ -105,7 +105,7 @@ bool ISmaccState::getGlobalSMData(std::string name, T & ret)
 
 // Store globally in this state machine. (By value parameter )
 template <typename T>
-void ISmaccState::setGlobalSMData(std::string name, T value)
+void ISmaccState::setGlobalSMData(const std::string & name, T value)
 {
   this->getStateMachine().setGlobalSMData(name, value);
 }

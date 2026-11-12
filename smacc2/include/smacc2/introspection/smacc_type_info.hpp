@@ -47,7 +47,7 @@ public:
 
   std::vector<Ptr> templateParameters;
 
-  TypeInfo(std::string tkey, std::string codedtype, std::string finaltype)
+  TypeInfo(const std::string & tkey, const std::string & codedtype, const std::string & finaltype)
   {
     this->tkey = tkey;
     this->codedtype = codedtype;

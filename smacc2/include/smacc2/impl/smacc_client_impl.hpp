@@ -68,7 +68,7 @@ TComponent * ISmaccClient::getComponent(int index)
 }
 
 template <typename TComponent>
-TComponent * ISmaccClient::getComponent(std::string name)
+TComponent * ISmaccClient::getComponent(const std::string & name)
 {
   for (auto & component : components_)
   {
@@ -88,7 +88,7 @@ TComponent * ISmaccClient::getComponent(std::string name)
 ISmaccStateMachine * ISmaccClient::getStateMachine() { return this->stateMachine_; }
 
 template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-SmaccComponentType * ISmaccClient::createNamedComponent(std::string name, TArgs... targs)
+SmaccComponentType * ISmaccClient::createNamedComponent(const std::string & name, TArgs... targs)
 {
   ComponentKey componentkey(&typeid(SmaccComponentType), name);
 

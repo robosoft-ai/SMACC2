@@ -39,7 +39,7 @@ void CbWaitTopic::onEntry()
     std::stringstream ss;
     auto topicnames = getNode()->get_topic_names_and_types();
 
-    for (auto & t : topicnames)
+    for (const auto & t : topicnames)
     {
       ss << t.first << std::endl;
       if (t.first == topicName_)

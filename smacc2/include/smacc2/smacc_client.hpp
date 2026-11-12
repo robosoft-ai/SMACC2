@@ -28,7 +28,7 @@ namespace smacc2
 {
 struct ComponentKey
 {
-  ComponentKey(const std::type_info * typeinfo, std::string name)
+  ComponentKey(const std::type_info * typeinfo, const std::string & name)
   : encodedKey(std::to_string(reinterpret_cast<std::uintptr_t>(typeinfo)) + "_" + name),
     typeinfo(typeinfo),
     name(name)
@@ -57,7 +57,7 @@ public:
   TComponent * getComponent();
 
   template <typename TComponent>
-  TComponent * getComponent(std::string name);
+  TComponent * getComponent(const std::string & name);
 
   // Gets the i-th component of type TComponent
   template <typename TComponent>
@@ -104,7 +104,7 @@ protected:
   SmaccComponentType * createComponent(TArgs... targs);
 
   template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-  SmaccComponentType * createNamedComponent(std::string name, TArgs... targs);
+  SmaccComponentType * createNamedComponent(const std::string & name, TArgs... targs);
 
   rclcpp::Node::SharedPtr getNode();
 

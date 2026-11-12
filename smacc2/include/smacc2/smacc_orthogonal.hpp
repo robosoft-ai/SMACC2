@@ -59,10 +59,10 @@ public:
   getClientBehaviors() const;
 
   template <typename T>
-  void setGlobalSMData(std::string name, T value);
+  void setGlobalSMData(const std::string & name, T value);
 
   template <typename T>
-  bool getGlobalSMData(std::string name, T & ret);
+  bool getGlobalSMData(const std::string & name, T & ret);
 
   // returns a client behavior of a given type. If the client behavior is not found, it returns nullptr
   // the index parameter is used to specify the client behavior in case there are more than one

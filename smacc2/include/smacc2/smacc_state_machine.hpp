@@ -105,7 +105,7 @@ public:
 
   template <typename SmaccComponentType>
   void requiresComponent(
-    std::string name, SmaccComponentType *& storage, ComponentRequirement requirementType);
+    const std::string & name, SmaccComponentType *& storage, ComponentRequirement requirementType);
 
   // Takes ownership of `ev` (must be allocated with `new`); the caller must not use it after
   // this call. Released by the scheduler after dispatch, or here if discarded or on exception.
@@ -117,11 +117,11 @@ public:
 
   // gets data from the state machine blackboard
   template <typename T>
-  bool getGlobalSMData(std::string name, T & ret);
+  bool getGlobalSMData(const std::string & name, T & ret);
 
   // sets data in the state machine blackboard
   template <typename T>
-  void setGlobalSMData(std::string name, T value);
+  void setGlobalSMData(const std::string & name, T value);
 
   std::string getStateMachineName();
 
@@ -191,7 +191,7 @@ public:
 protected:
   void checkStateMachineConsistence();
 
-  void initializeROS(std::string shortname);
+  void initializeROS(const std::string & shortname);
 
   void onInitialized();
 
@@ -254,9 +254,9 @@ private:
 
   int64_t stateSeqCounter_ = 0;
 
-  void lockStateMachine(std::string msg);
+  void lockStateMachine(const std::string & msg);
 
-  void unlockStateMachine(std::string msg);
+  void unlockStateMachine(const std::string & msg);
 
   template <typename EventType>
   void propagateEventToStateReactors(ISmaccState * st, EventType * ev);
