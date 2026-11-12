@@ -113,7 +113,7 @@ public:
 
 private:
   typename rclcpp::Subscription<MessageType>::SharedPtr sub_;
-  bool firstMessage_;
+  bool firstMessage_ = true;
   bool initialized_;
   std::string topicName_;
 

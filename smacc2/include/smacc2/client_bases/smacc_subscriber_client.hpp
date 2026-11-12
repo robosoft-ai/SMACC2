@@ -125,7 +125,7 @@ protected:
 
 private:
   typename rclcpp::Subscription<MessageType>::SharedPtr sub_;
-  bool firstMessage_;
+  bool firstMessage_ = true;
   bool initialized_;
 
   void messageCallback(const MessageType & msg)
