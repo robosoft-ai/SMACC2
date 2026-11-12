@@ -463,6 +463,10 @@ void SignalDetector::pollingLoop()
       RCLCPP_INFO_STREAM_THROTTLE(
         getLogger(), *getNode()->get_clock(), 10000, "[SignalDetector] Heartbeat");
       pollOnce();
+      // A timer or subscription created on another thread reaches a kept executor only through the
+      // notify guard condition, and that hand-off was missed about once in fifty state entries, leaving
+      // the entity ready and never executed (W). Asking for a rebuild every iteration closes it.
+      nh->get_node_base_interface()->trigger_notify_guard_condition();
       const auto spinStart = std::chrono::steady_clock::now();
       executor.spin_all(spinBudget);
       if (std::chrono::steady_clock::now() - spinStart >= spinBudget)
@@ -485,6 +489,12 @@ void SignalDetector::pollingLoop()
     RCLCPP_INFO_STREAM(getLogger(), "[SignalDetector] Running in multi-threaded mode.");
 
     rclcpp::executors::MultiThreadedExecutor executor;
+    // Same hand-off hazard as the single-threaded loop (W); here a timer created before the node is
+    // added, so it is in the executor's first collection, asks for a rebuild once per loop period.
+    auto rebuildTimer = nh->create_wall_timer(
+      std::chrono::duration_cast<std::chrono::nanoseconds>(
+        std::chrono::duration<double>(1.0 / loop_rate_hz)),
+      [nh]() { nh->get_node_base_interface()->trigger_notify_guard_condition(); });
     executor.add_node(nh);
     executor.spin();
   }

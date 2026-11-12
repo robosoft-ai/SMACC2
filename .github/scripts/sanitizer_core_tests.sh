@@ -14,12 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Run the six core test state machines under a sanitizer build and fail on any report with a
-# SMACC2 frame, a crash, a hang or a broken test invariant.
+# Run the seven core test state machines under a sanitizer build, or a plain one, and fail on any
+# report with a SMACC2 frame, a crash, a hang or a broken test invariant.
 #
-# Usage: sanitizer_core_tests.sh <tsan|asan> [install-prefix] [out-dir]
-# The install prefix must hold smacc2, cl_ros2_timer, sr_event_countdown and the six core tests
-# built with the matching -fsanitize flags. Logs and report files go to the out dir.
+# Usage: sanitizer_core_tests.sh <tsan|asan|plain> [install-prefix] [out-dir]
+# The install prefix must hold smacc2, cl_ros2_timer, sr_event_countdown and the seven core tests
+# built with the matching -fsanitize flags (none for plain). Logs and report files go to the out dir.
+# The plain mode exists because the timer hand-off race (W) only ever showed in a plain build: the
+# sanitizer allocators delay the reuse of freed memory that the race needs.
 MODE=${1:-}; INST=${2:-install}; OUT=${3:-sanitizer_out}
 HERE=$(cd "$(dirname "$0")" && pwd)
 mkdir -p "$OUT"; OUT=$(cd "$OUT" && pwd)
@@ -39,7 +41,10 @@ case $MODE in
     export ASAN_OPTIONS="halt_on_error=0:detect_leaks=1"
     export LSAN_OPTIONS="suppressions=$HERE/lsan.supp:print_suppressions=0"
     REPORT_OK_EXIT=23 ;;   # LSan exits 23 when it printed a leak; the classifier decides
-  *) echo "usage: $0 <tsan|asan> [install-prefix] [out-dir]"; exit 2 ;;
+  plain)
+    PRE=""
+    REPORT_OK_EXIT=0 ;;    # no sanitizer: any other exit status is a failure
+  *) echo "usage: $0 <tsan|asan|plain> [install-prefix] [out-dir]"; exit 2 ;;
 esac
 FAILS=0
 fail() { echo "FAIL: $*"; FAILS=$((FAILS + 1)); }
@@ -102,6 +107,24 @@ echo "pulses $PULSES via countdown $VIAC via trigger $VIAT"
 [ "$PULSES" -ge 20 ] || fail "reactor_order: only $PULSES pulses"
 [ "$VIAT" -eq 0 ] || fail "reactor_order: the trigger was processed before the reactor's output $VIAT times"
 [ $((VIAC + 1)) -ge "$PULSES" ] || fail "reactor_order: $VIAC StViaCountdown entries for $PULSES pulses"
+
+echo "### timer hand-off: 60 s of the forced-finish cycle at 100 ms"
+LOG=$OUT/timer_handoff.log
+$PRE "$(bin sm_coretest_timer_handoff_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
+sleep 60; stop $P "$LOG" timer_handoff
+# A missed hand-off is a gap: the entries stop while the heartbeat goes on.
+GAP=$(python3 -I - "$LOG" <<'PY'
+import re, sys
+t = [float(m.group(1)) for m in re.finditer(r"^\[INFO\] \[(\d+\.\d+)\].*\] Entered", open(sys.argv[1], errors="replace").read(), re.M)]
+sig = [float(m.group(1)) for m in re.finditer(r"^\[INFO\] \[(\d+\.\d+)\] \[rclcpp\]: signal_handler", open(sys.argv[1], errors="replace").read(), re.M)]
+gaps = [b - a for a, b in zip(t, t[1:])]
+tail = (sig[0] - t[-1]) if (sig and t) else 0.0
+print(f"{len(t)} {max(gaps) if gaps else 0:.1f} {tail:.1f}")
+PY
+)
+set -- $GAP; echo "state entries $1, longest gap $2 s, last entry $3 s before the interrupt"
+[ "$1" -ge 30 ] || fail "timer_handoff: only $1 state entries in 60 s"
+awk -v g="$2" -v t="$3" 'BEGIN{exit !(g < 5.0 && t < 5.0)}' || fail "timer_handoff: a state entry gap of $2 s or a tail of $3 s (a timer the executor never picked up)"
 
 # Log level WARN: the INFO lines on the posting path take the logging mutex, which orders the two
 # threads and hides the race from TSan; WARN keeps the state exit lines the invariant counts.

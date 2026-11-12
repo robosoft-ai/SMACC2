@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sm_coretest_timer_handoff_1</name>
+  <version>0.0.1</version>
+  <description>Core test: the forced-finish cycle at 100 ms. StA cuts a 30 s sleep short with a 100 ms timer, so every exit holds the state machine thread for the forced-finish wait and then creates StB's 100 ms loop timer; the polling loop's executor has to pick that timer up or the machine never leaves StB. A missed hand-off shows as a gap in the state entries.</description>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>smacc2</depend>
+  <depend>cl_ros2_timer</depend>
+  <depend>sr_event_countdown</depend>
+  <depend>rclcpp</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
