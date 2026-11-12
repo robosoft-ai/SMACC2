@@ -87,7 +87,7 @@ public:
 private:
   void pollOnce();
 
-  ISmaccStateMachine * smaccStateMachine_;
+  ISmaccStateMachine * smaccStateMachine_ = nullptr;
 
   std::vector<ISmaccUpdatable *> updatableClients_;
 
@@ -98,14 +98,14 @@ private:
   void findUpdatableStateElements(ISmaccState * currentState);
 
   // Loop frequency of the signal detector (to check answers from actionservers)
-  double loop_rate_hz;
+  double loop_rate_hz = 20.0;
 
-  std::atomic<bool> end_;
+  std::atomic<bool> end_{false};
 
-  std::atomic<bool> initialized_;
+  std::atomic<bool> initialized_{false};
 
   // Flag set after initializeROS() completes - indicates ROS objects are ready
-  std::atomic<bool> rosInitialized_;
+  std::atomic<bool> rosInitialized_{false};
 
   rclcpp::Publisher<smacc2_msgs::msg::SmaccStatus>::SharedPtr statusPub_;
 

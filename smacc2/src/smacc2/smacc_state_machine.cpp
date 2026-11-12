@@ -37,9 +37,8 @@ using namespace std::chrono_literals;
 using namespace smacc2::introspection;
 ISmaccStateMachine::ISmaccStateMachine(
   std::string stateMachineName, SignalDetector * signalDetector, rclcpp::NodeOptions nodeOptions)
-: nh_(nullptr), stateSeqCounter_(0)
+: nh_(rclcpp::Node::make_shared(stateMachineName, nodeOptions))
 {
-  nh_ = rclcpp::Node::make_shared(stateMachineName, nodeOptions);  //
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "Creating state machine base: " << nh_->get_fully_qualified_name());
 

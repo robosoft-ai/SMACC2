@@ -24,7 +24,7 @@ namespace smacc2
 {
 namespace client_bases
 {
-SmaccPublisherClient::SmaccPublisherClient() { initialized_ = false; }
+SmaccPublisherClient::SmaccPublisherClient() {}
 
 SmaccPublisherClient::~SmaccPublisherClient() {}
 }  // namespace client_bases

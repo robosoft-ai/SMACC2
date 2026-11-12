@@ -22,11 +22,7 @@
 
 namespace smacc2
 {
-ISmaccClientBehavior::ISmaccClientBehavior()
-{
-  stateMachine_ = nullptr;
-  currentState = nullptr;
-}
+ISmaccClientBehavior::ISmaccClientBehavior() {}
 
 ISmaccClientBehavior::~ISmaccClientBehavior()
 {

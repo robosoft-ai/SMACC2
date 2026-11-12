@@ -86,10 +86,10 @@ private:
   void onStateOrthogonalAllocation();
 
   // a reference to the owner state machine
-  ISmaccStateMachine * stateMachine_;
+  ISmaccStateMachine * stateMachine_ = nullptr;
 
   // a reference to the state where the client behavior is being executed
-  ISmaccState * currentState;
+  ISmaccState * currentState = nullptr;
   smacc2::ISmaccOrthogonal * currentOrthogonal = nullptr;
 
   friend class ISmaccState;

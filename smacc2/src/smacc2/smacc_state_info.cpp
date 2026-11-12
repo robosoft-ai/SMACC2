@@ -37,11 +37,8 @@ std::map<const std::type_info *, std::vector<std::shared_ptr<SmaccEventGenerator
 SmaccStateInfo::SmaccStateInfo(
   const std::type_info * tid, std::shared_ptr<SmaccStateInfo> parentState,
   std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo)
+: stateMachine_(stateMachineInfo), parentState_(parentState), tid_(tid)
 {
-  tid_ = tid;
-  parentState_ = parentState;
-  stateMachine_ = stateMachineInfo;
-
   if (parentState != nullptr) depth_ = parentState->depth_ + 1;
 }
 
@@ -102,7 +99,7 @@ std::string SmaccStateInfo::getDemangledFullName() const
   return demangleSymbol(this->fullStateName.c_str());
 }
 //---------------------------------------------
-SmaccEventInfo::SmaccEventInfo(std::shared_ptr<TypeInfo> eventType) { this->eventType = eventType; }
+SmaccEventInfo::SmaccEventInfo(std::shared_ptr<TypeInfo> eventType) : eventType(eventType) {}
 
 std::string SmaccEventInfo::getEventSourceName()
 {

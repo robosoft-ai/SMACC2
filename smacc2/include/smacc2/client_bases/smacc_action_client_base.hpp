@@ -57,12 +57,12 @@ public:
   typedef smacc2::SmaccSignal<void(const WrappedResult &)> SmaccActionResultSignal;
 
   std::string action_endpoint_;
-  SmaccActionClientBase(std::string actionServerName) : ISmaccActionClient()
+  SmaccActionClientBase(std::string actionServerName)
+  : ISmaccActionClient(), action_endpoint_(actionServerName)
   {
-    action_endpoint_ = actionServerName;
   }
 
-  SmaccActionClientBase() : ISmaccActionClient() { name_ = ""; }
+  SmaccActionClientBase() : ISmaccActionClient() {}
 
   ~SmaccActionClientBase() override {}
 

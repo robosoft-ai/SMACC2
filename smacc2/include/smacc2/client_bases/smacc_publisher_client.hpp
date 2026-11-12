@@ -75,7 +75,7 @@ public:
   rclcpp::PublisherBase::SharedPtr pub_;
 
 private:
-  bool initialized_;
+  bool initialized_ = false;
 };
 }  // namespace client_bases
 }  // namespace smacc2
