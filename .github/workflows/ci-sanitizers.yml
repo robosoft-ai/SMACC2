@@ -19,6 +19,12 @@ jobs:
             name: AddressSanitizer + LeakSanitizer + UBSan
             cxx_flags: -fsanitize=address,undefined -fsanitize-recover=address -fno-omit-frame-pointer
             link_flags: -fsanitize=address,undefined
+          # No sanitizer: the timer hand-off race (W) needs glibc's immediate reuse of freed memory,
+          # which every sanitizer allocator delays, so only this build can see it.
+          - sanitizer: plain
+            name: Plain build
+            cxx_flags: ""
+            link_flags: ""
     # ROS Jazzy comes preinstalled in the container. ros-tooling/setup-ros was
     # pulling ros-jazzy-desktop and its toolchain (965 packages, 591 MB) through
     # the runner's Ubuntu mirror, which took hours on a slow mirror. The same
@@ -58,7 +64,8 @@ jobs:
             smacc2_performance_tools/performance_tests/sm_coretest_poll_shutdown_1 \
             smacc2_performance_tools/performance_tests/sm_coretest_transition_speed_1 \
             smacc2_performance_tools/performance_tests/sm_coretest_reactor_order_1 \
-            smacc2_performance_tools/performance_tests/sm_coretest_post_during_exit_1
+            smacc2_performance_tools/performance_tests/sm_coretest_post_during_exit_1 \
+            smacc2_performance_tools/performance_tests/sm_coretest_timer_handoff_1
 
       - name: Build with ${{ matrix.name }}
         run: |
@@ -81,6 +88,7 @@ jobs:
               sm_coretest_transition_speed_1 \
               sm_coretest_reactor_order_1 \
               sm_coretest_post_during_exit_1 \
+              sm_coretest_timer_handoff_1 \
             --cmake-args \
               -DCMAKE_BUILD_TYPE=RelWithDebInfo \
               -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}" \
@@ -89,8 +97,8 @@ jobs:
 
       - name: Run the core tests under ${{ matrix.name }}
         # Forced finish (20 cycles and 10 random interrupts), signal key, reactor order,
-        # post during exit, poll shutdown (10 interrupts in the 75 % window) and transition
-        # speed. Fails on any sanitizer report with a SMACC2 frame, a crash, a hang or a
+        # timer hand-off, post during exit, poll shutdown (10 interrupts in the 75 % window)
+        # and transition speed. Fails on any sanitizer report with a SMACC2 frame, a crash, a hang or a
         # broken test invariant.
         run: |
           source /opt/ros/jazzy/setup.bash
