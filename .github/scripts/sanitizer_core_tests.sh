@@ -131,10 +131,17 @@ awk -v g="$2" -v t="$3" 'BEGIN{exit !(g < 5.0 && t < 5.0)}' || fail "timer_hando
 echo "### post during exit: 30 s of 200 Hz posts across 50 ms state exits"
 LOG=$OUT/post_during_exit.log
 $PRE "$(bin sm_coretest_post_during_exit_1)" --ros-args --log-level WARN > "$LOG" 2>&1 & P=$!
-sleep 30; stop $P "$LOG" post_during_exit
+# The history service is called twice while the machine transitions, so the handler's copy runs
+# against the state machine thread's push (X: a race on the old vector, a bounded copy now).
+history_count() {
+  timeout 30 ros2 service call /SmCoretestPostDuringExit1/smacc/transition_log_history \
+    smacc2_msgs/srv/SmaccGetTransitionHistory "{}" 2>/dev/null | grep -a -o 'SmaccTransitionLogEntry(' | wc -l
+}
+sleep 10; H1=$(history_count); sleep 10; H2=$(history_count); sleep 10; stop $P "$LOG" post_during_exit
 EXITS=$(grep -a -c 'Exiting state: .*StA$' "$LOG")
-echo "StA exits $EXITS"
+echo "StA exits $EXITS, history service returned $H1 then $H2 entries"
 [ "$EXITS" -ge 100 ] || fail "post_during_exit: only $EXITS StA exits in 30 s"
+[ "$H1" -ge 1 ] && [ "$H2" -ge "$H1" ] && [ "$H2" -le 1000 ] || fail "post_during_exit: history service returned $H1 then $H2 entries (expected 1 to 1000, not decreasing)"
 
 # sweep <pkg> <label> <runs> [extra ros args]: SIGINT at a random 0.2 to 4.2 s after the first state entry
 sweep() {
