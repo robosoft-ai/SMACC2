@@ -61,14 +61,8 @@ SmExecution & SmExecution::getInstance()
 ******************************************************************************************************************
 */
 SignalDetector::SignalDetector(SmaccFifoScheduler * scheduler, ExecutionModel executionModel)
+: scheduler_(scheduler), executionModel_(executionModel)
 {
-  scheduler_ = scheduler;
-  smaccStateMachine_ = nullptr;
-  loop_rate_hz = 20.0;
-  end_ = false;
-  initialized_ = false;
-  rosInitialized_ = false;
-  executionModel_ = executionModel;
 }
 
 rclcpp::Node::SharedPtr SignalDetector::getNode() { return this->smaccStateMachine_->getNode(); }

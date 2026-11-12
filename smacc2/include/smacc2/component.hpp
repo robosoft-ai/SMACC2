@@ -85,7 +85,7 @@ protected:
   // A reference to the state machine object that owns this resource
   ISmaccStateMachine * stateMachine_ = nullptr;
 
-  ISmaccClient * owner_;
+  ISmaccClient * owner_ = nullptr;
 
 private:
   // friend method invoked by the client.

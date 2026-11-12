@@ -24,7 +24,7 @@ namespace smacc2
 {
 ISmaccComponent::~ISmaccComponent() {}
 
-ISmaccComponent::ISmaccComponent() : owner_(nullptr) {}
+ISmaccComponent::ISmaccComponent() {}
 
 void ISmaccComponent::initialize(ISmaccClient * owner)
 {

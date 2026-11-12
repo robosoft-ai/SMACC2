@@ -29,10 +29,10 @@ namespace smacc2
 struct ComponentKey
 {
   ComponentKey(const std::type_info * typeinfo, std::string name)
+  : encodedKey(std::to_string(reinterpret_cast<std::uintptr_t>(typeinfo)) + "_" + name),
+    typeinfo(typeinfo),
+    name(name)
   {
-    this->name = name;
-    this->typeinfo = typeinfo;
-    encodedKey = std::to_string(reinterpret_cast<std::uintptr_t>(typeinfo)) + "_" + name;
   }
   std::string encodedKey;
   const std::type_info * typeinfo;

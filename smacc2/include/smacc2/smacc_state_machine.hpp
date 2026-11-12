@@ -252,7 +252,7 @@ private:
   // Event to notify to the signaldetection thread that a request has been created...
   SignalDetector * signalDetector_;
 
-  int64_t stateSeqCounter_;
+  int64_t stateSeqCounter_ = 0;
 
   void lockStateMachine(std::string msg);
 
