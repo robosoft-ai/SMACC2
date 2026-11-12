@@ -137,7 +137,7 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
         rclcpp::sleep_for(2s);
       }
 
-      int status;
+      int status = 0;
       pid_t child_pid = child.pid;
       if (waitpid(child_pid, &status, 0) != -1)
       {
@@ -252,7 +252,7 @@ void killProcessesRecursive(pid_t pid)
   pclose(pipe);
 
   std::istringstream iss(result);
-  pid_t childPid;
+  pid_t childPid = 0;
   std::vector<pid_t> childPids;
 
   while (iss >> childPid)

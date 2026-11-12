@@ -59,11 +59,11 @@ rclcpp::Logger StateReactor::getLogger() { return ownerState->getLogger(); }
 
 namespace introspection
 {
-void StateReactorHandler::configureStateReactor(std::shared_ptr<smacc2::StateReactor> sb)
+void StateReactorHandler::configureStateReactor(std::shared_ptr<smacc2::StateReactor> sr)
 {
   for (auto callback : this->callbacks_)
   {
-    callback.fn(sb);
+    callback.fn(sr);
   }
 }
 
