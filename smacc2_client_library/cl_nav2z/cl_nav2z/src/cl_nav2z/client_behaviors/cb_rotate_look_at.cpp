@@ -49,7 +49,7 @@ void CbRotateLookAt::onEntry()
     auto targetPosition = lookAtPose_->pose.position;
     double yaw_degrees =
       atan2(targetPosition.y - position.y, targetPosition.x - position.x) * 180.0 / M_PI;
-    this->absoluteGoalAngleDegree = yaw_degrees;
+    this->absoluteGoalAngleDegree = static_cast<float>(yaw_degrees);
   }
 
   CbAbsoluteRotate::onEntry();

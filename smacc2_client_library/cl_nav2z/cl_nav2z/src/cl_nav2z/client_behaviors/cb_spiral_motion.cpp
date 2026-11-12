@@ -58,14 +58,15 @@ void CbSpiralMotion::onEntry()
   cmdVelPub_ = getNode()->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", rclcpp::QoS(1));
 
   rclcpp::Duration linearRamp = rclcpp::Duration::from_seconds(spiralMotionDuration.seconds());
-  float linearAceleration = (maxLinearVelocity - linearVelocity) / linearRamp.seconds();
+  float linearAceleration =
+    static_cast<float>((maxLinearVelocity - linearVelocity) / linearRamp.seconds());
   float dt = 1.0f / rate;
 
   // we know final radious and the constant linear velocity
   float finalAngularVelocity = maxLinearVelocity / finalRadius;
 
-  float angularAcceleration =
-    (initialAngularVelocity - finalAngularVelocity) / spiralMotionDuration.seconds();
+  float angularAcceleration = static_cast<float>(
+    (initialAngularVelocity - finalAngularVelocity) / spiralMotionDuration.seconds());
 
   geometry_msgs::msg::Twist cmd_vel;
 
@@ -93,7 +94,8 @@ void CbSpiralMotion::onEntry()
       cmd_vel.linear.x = maxLinearVelocity;
     }
 
-    float elapsedTimeFactor = current_time.seconds() / spiralMotionDuration.seconds();
+    float elapsedTimeFactor =
+      static_cast<float>(current_time.seconds() / spiralMotionDuration.seconds());
     cmd_vel.angular.z = initialAngularVelocity * (1.0f - elapsedTimeFactor) +
                         finalAngularVelocity * elapsedTimeFactor;
 
