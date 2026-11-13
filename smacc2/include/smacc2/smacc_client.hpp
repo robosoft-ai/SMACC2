@@ -48,6 +48,13 @@ public:
   ISmaccClient();
   virtual ~ISmaccClient();
 
+  // Not copyable or movable. This turns an accidental copy, such as a missing & in
+  // "auto & cl = *client;", into a compile error instead of calls on a detached copy.
+  ISmaccClient(const ISmaccClient &) = delete;
+  ISmaccClient & operator=(const ISmaccClient &) = delete;
+  ISmaccClient(ISmaccClient &&) = delete;
+  ISmaccClient & operator=(ISmaccClient &&) = delete;
+
   virtual void onInitialize();
 
   // Returns a custom identifier defined by the specific plugin implementation

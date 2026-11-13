@@ -59,7 +59,15 @@ public:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation();
 
+  SmaccAsyncClientBehavior() = default;
   ~SmaccAsyncClientBehavior() override;
+
+  // Not copyable or movable. This turns an accidental copy, such as a missing & in
+  // "auto & cb = *behavior;", into a compile error instead of calls on a detached copy.
+  SmaccAsyncClientBehavior(const SmaccAsyncClientBehavior &) = delete;
+  SmaccAsyncClientBehavior & operator=(const SmaccAsyncClientBehavior &) = delete;
+  SmaccAsyncClientBehavior(SmaccAsyncClientBehavior &&) = delete;
+  SmaccAsyncClientBehavior & operator=(SmaccAsyncClientBehavior &&) = delete;
 
   template <typename TCallback, typename T>
   smacc2::SmaccSignalConnection onSuccess(TCallback callback, T * object);

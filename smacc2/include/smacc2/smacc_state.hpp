@@ -25,7 +25,15 @@ namespace smacc2
 class ISmaccState
 {
 public:
+  ISmaccState() = default;
   virtual ~ISmaccState() = default;
+
+  // Not copyable or movable. This turns an accidental copy, such as a missing & in
+  // "auto & ss = context<SsMission>();", into a compile error instead of writes to a lost copy.
+  ISmaccState(const ISmaccState &) = delete;
+  ISmaccState & operator=(const ISmaccState &) = delete;
+  ISmaccState(ISmaccState &&) = delete;
+  ISmaccState & operator=(ISmaccState &&) = delete;
 
   virtual ISmaccStateMachine & getStateMachine() = 0;
 

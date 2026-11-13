@@ -54,6 +54,13 @@ public:
   StateReactor();
   virtual ~StateReactor();
 
+  // Not copyable or movable. This turns an accidental copy, such as a missing & in
+  // "auto & sr = *reactor;", into a compile error instead of calls on a detached copy.
+  StateReactor(const StateReactor &) = delete;
+  StateReactor & operator=(const StateReactor &) = delete;
+  StateReactor(StateReactor &&) = delete;
+  StateReactor & operator=(StateReactor &&) = delete;
+
   virtual void onInitialized();
 
   virtual void onEntry();
