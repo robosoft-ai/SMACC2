@@ -127,8 +127,8 @@ protected:
   std::vector<std::shared_ptr<StateReactor>> stateReactors_;
   std::vector<std::shared_ptr<smacc2::SmaccEventGenerator>> eventGenerators_;
 
-  ISmaccState * parentState_;
+  ISmaccState * parentState_ = nullptr;
 
-  const smacc2::introspection::SmaccStateInfo * stateInfo_;
+  const smacc2::introspection::SmaccStateInfo * stateInfo_ = nullptr;
 };
 }  // namespace smacc2

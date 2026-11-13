@@ -26,11 +26,10 @@ BUILD=$1; OUT=${2:-clang_tidy_out}; MODE=${3:-}
 HERE=$(cd "$(dirname "$0")" && pwd); REPO=$(cd "$HERE/../.." && pwd)
 BASELINE=$REPO/.github/clang-tidy-baseline.txt
 PACKAGES="smacc2 cl_ros2_timer cl_lifecycle_node cl_nav2z sm_atomic sm_atomic_lifecycle"
-# Policy (2026-11-11): these three groups only. cppcoreguidelines-* stays out: it is a style guide, and on
-# this tree 228 of its 250 lines are public members, missing copy/move declarations, address casts in log
-# lines and constructor assignments, none a defect; adding it would bury the gate and invite sweeps that
-# change public signatures to silence it. cppcheck in pre-commit is the style-level tool.
-CHECKS='-*,bugprone-*,concurrency-*,clang-analyzer-*'
+# Policy (2026-11-13): the three groups below plus two single checks that cover what cppcheck caught in the
+# core study: uninitialized members and C-style casts. The rest of cppcoreguidelines-* stays out: it is a
+# style guide, most of its lines here are public members, and silencing it would change public signatures.
+CHECKS='-*,bugprone-*,concurrency-*,clang-analyzer-*,cppcoreguidelines-pro-type-member-init,cppcoreguidelines-pro-type-cstyle-cast'
 # Only diagnostics located in this repository's own source directories count, wherever the repository
 # is checked out. Headers reached through build/ or install/ copies are not matched, so a header is
 # counted from its own package's translation units and not again from every dependent's.

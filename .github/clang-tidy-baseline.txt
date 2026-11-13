@@ -1,11 +1,14 @@
 # clang-tidy baseline for .github/scripts/clang_tidy_gate.sh: count, then path: kind: message [check].
 # Regenerate with: .github/scripts/clang_tidy_gate.sh <build-base> <out-dir> --update-baseline
+25	smacc2/include/smacc2/introspection/introspection.hpp: warning: constructor does not initialize these fields: transitionTypeName [cppcoreguidelines-pro-type-member-init]
 2	smacc2/include/smacc2/smacc_tracing/trace_provider.hpp: warning: 3 adjacent parameters of 'lttng_ust_tracepoint_cb_ros2___smacc2_client_behavior_on_entry_end' of similar type ('const char *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 2	smacc2/include/smacc2/smacc_tracing/trace_provider.hpp: warning: 3 adjacent parameters of 'lttng_ust_tracepoint_cb_ros2___smacc2_client_behavior_on_entry_start' of similar type ('const char *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 2	smacc2/include/smacc2/smacc_tracing/trace_provider.hpp: warning: 3 adjacent parameters of 'lttng_ust_tracepoint_cb_ros2___smacc2_client_behavior_on_exit_end' of similar type ('const char *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 2	smacc2/include/smacc2/smacc_tracing/trace_provider.hpp: warning: 3 adjacent parameters of 'lttng_ust_tracepoint_cb_ros2___smacc2_client_behavior_on_exit_start' of similar type ('const char *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 2	smacc2/include/smacc2/smacc_tracing/trace_provider.hpp: warning: declaration uses identifier '_TRACEPOINT_PROVIDER_PROVIDER_H', which is a reserved identifier [bugprone-reserved-identifier]
 1	smacc2/src/smacc2/client_bases/smacc_ros_launch_client_2.cpp: warning: 2 adjacent parameters of 'ClRosLaunch2' of similar type ('std::string') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+1	smacc2/src/smacc2/client_bases/smacc_ros_launch_client_2.cpp: warning: uninitialized record type: 'buffer' [cppcoreguidelines-pro-type-member-init]
+1	smacc2/src/smacc2/client_bases/smacc_ros_launch_client_2.cpp: warning: uninitialized record type: 'info' [cppcoreguidelines-pro-type-member-init]
 1	smacc2/src/smacc2/client_behaviors/cb_ros_launch_2.cpp: warning: 2 adjacent parameters of 'CbRosLaunch2' of similar type ('std::string') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 1	smacc2/src/smacc2/signal_detector.cpp: warning: Called C++ object pointer is null [clang-analyzer-core.CallAndMessage]
 9	smacc2_client_library/cl_nav2z/cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator_base.hpp: warning: 3 adjacent parameters of 'Pose2D' of similar type ('double') are easily swapped by mistake [bugprone-easily-swappable-parameters]

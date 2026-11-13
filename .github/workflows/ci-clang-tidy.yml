@@ -52,10 +52,11 @@ jobs:
               -DBUILD_TESTING=OFF
 
       - name: Run clang-tidy against the baseline
-        # bugprone-*, concurrency-* and clang-analyzer-* over the core, the client libraries that
-        # instantiate its templates, and two state machines. Fails on any compiler error, any
+        # bugprone-*, concurrency-*, clang-analyzer-* and the member-init and C-style-cast checks over
+        # the core, the client libraries that instantiate its templates, and two state machines. Fails
+        # on any compiler error, any
         # diagnostic not in .github/clang-tidy-baseline.txt, or more instances of a known one.
-        # cppcoreguidelines-* is left out by policy; the reason is at CHECKS in the gate script.
+        # The rest of cppcoreguidelines-* is left out by policy; the reason is at CHECKS in the gate script.
         run: |
           source /opt/ros/jazzy/setup.bash
           .github/scripts/clang_tidy_gate.sh build clang_tidy_out
