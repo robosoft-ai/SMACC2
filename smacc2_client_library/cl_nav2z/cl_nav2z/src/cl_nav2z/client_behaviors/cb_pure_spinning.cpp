@@ -27,7 +27,7 @@ namespace cl_nav2z
 {
 using namespace smacc2;
 CbPureSpinning::CbPureSpinning(double targetYaw_rads, double max_angular_yaw_speed)
-: targetYaw__rads(targetYaw_rads),
+: targetYaw_rads_(targetYaw_rads),
   k_betta_(1.0),
   max_angular_yaw_speed_(max_angular_yaw_speed),
   yaw_goal_tolerance_rads_(0.1)
@@ -62,7 +62,7 @@ void CbPureSpinning::onEntry()
     countAngle += deltaAngle;
 
     prevyaw = currentYaw;
-    double angular_error = targetYaw__rads - countAngle;
+    double angular_error = targetYaw_rads_ - countAngle;
 
     auto omega = angular_error * k_betta_;
     cmd_vel.linear.x = 0;

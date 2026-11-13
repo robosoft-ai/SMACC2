@@ -28,7 +28,7 @@ namespace cl_nav2z
 struct CbPureSpinning : public smacc2::SmaccAsyncClientBehavior
 {
 private:
-  double targetYaw__rads;
+  double targetYaw_rads_;
   bool goalReached_ = false;
   double k_betta_;
   double max_angular_yaw_speed_;
