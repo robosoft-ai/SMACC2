@@ -97,8 +97,13 @@ private:
 
   void findUpdatableStateElements(ISmaccState * currentState);
 
-  // Loop frequency of the signal detector (to check answers from actionservers)
-  double loop_rate_hz = 20.0;
+  // Loop rate used when the signal_detector_loop_freq parameter is absent or not positive.
+  static constexpr double kDefaultLoopRateHz = 20.0;
+  // Rate of the start-up wait before the parameter is read: the machine always comes up at this cadence.
+  static constexpr double kInitializationPollRateHz = 20.0;
+
+  // Loop frequency of the signal detector, from the signal_detector_loop_freq parameter.
+  double loop_rate_hz = kDefaultLoopRateHz;
 
   std::atomic<bool> end_{false};
 
