@@ -405,13 +405,16 @@ void SignalDetector::pollingLoop()
 
   auto nh = getNode();
 
-  if (!nh->get_parameter("signal_detector_loop_freq", this->loop_rate_hz))
+  // The parameter is declared with the default, so reading it always succeeds; whether the machine's
+  // configuration set it is in the node's parameter overrides (params file, command line).
+  nh->get_parameter("signal_detector_loop_freq", this->loop_rate_hz);
+  const auto & overrides = nh->get_node_parameters_interface()->get_parameter_overrides();
+  if (overrides.count("signal_detector_loop_freq") == 0)
   {
     RCLCPP_WARN(
       getLogger(),
       "Signal Detector frequency (ros param signal_detector_loop_freq) was not set, using default "
-      "frequency: "
-      "%lf",
+      "frequency: %lf",
       this->loop_rate_hz);
   }
   else
