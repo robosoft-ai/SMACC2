@@ -36,6 +36,13 @@ public:
   explicit ISmaccUpdatable(rclcpp::Duration duration);
   virtual ~ISmaccUpdatable() = default;
 
+  // Not copyable or movable. This turns an accidental copy, such as a missing & in
+  // "auto & updatable = *ptr;", into a compile error instead of calls on a detached copy.
+  ISmaccUpdatable(const ISmaccUpdatable &) = delete;
+  ISmaccUpdatable & operator=(const ISmaccUpdatable &) = delete;
+  ISmaccUpdatable(ISmaccUpdatable &&) = delete;
+  ISmaccUpdatable & operator=(ISmaccUpdatable &&) = delete;
+
   void executeUpdate(rclcpp::Node::SharedPtr node);
   void setUpdatePeriod(rclcpp::Duration duration);
 

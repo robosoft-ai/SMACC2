@@ -73,6 +73,13 @@ public:
 
   virtual ~ISmaccStateMachine();
 
+  // Not copyable or movable. This turns an accidental copy, such as a missing & in
+  // "auto & sm = *stateMachine;", into a compile error instead of calls on a detached copy.
+  ISmaccStateMachine(const ISmaccStateMachine &) = delete;
+  ISmaccStateMachine & operator=(const ISmaccStateMachine &) = delete;
+  ISmaccStateMachine(ISmaccStateMachine &&) = delete;
+  ISmaccStateMachine & operator=(ISmaccStateMachine &&) = delete;
+
   virtual void reset();
 
   virtual void stop();

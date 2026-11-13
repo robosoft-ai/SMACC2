@@ -27,7 +27,15 @@ namespace smacc2
 class ISmaccOrthogonal
 {
 public:
+  ISmaccOrthogonal() = default;
   virtual ~ISmaccOrthogonal() = default;
+
+  // Not copyable or movable. This turns an accidental copy, such as a missing & in
+  // "auto & orthogonal = *ptr;", into a compile error instead of calls on a detached copy.
+  ISmaccOrthogonal(const ISmaccOrthogonal &) = delete;
+  ISmaccOrthogonal & operator=(const ISmaccOrthogonal &) = delete;
+  ISmaccOrthogonal(ISmaccOrthogonal &&) = delete;
+  ISmaccOrthogonal & operator=(ISmaccOrthogonal &&) = delete;
 
   void setStateMachine(ISmaccStateMachine * value);
 

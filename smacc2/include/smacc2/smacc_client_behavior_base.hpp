@@ -34,6 +34,13 @@ public:
 
   virtual ~ISmaccClientBehavior();
 
+  // Not copyable or movable. This turns an accidental copy, such as a missing & in
+  // "auto & cb = *behavior;", into a compile error instead of calls on a detached copy.
+  ISmaccClientBehavior(const ISmaccClientBehavior &) = delete;
+  ISmaccClientBehavior & operator=(const ISmaccClientBehavior &) = delete;
+  ISmaccClientBehavior(ISmaccClientBehavior &&) = delete;
+  ISmaccClientBehavior & operator=(ISmaccClientBehavior &&) = delete;
+
   inline ISmaccStateMachine * getStateMachine();
 
   std::string getName() const;

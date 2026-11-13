@@ -33,6 +33,13 @@ public:
 
   virtual ~ISmaccComponent();
 
+  // Not copyable or movable. This turns an accidental copy, such as a missing & in
+  // "auto & cp = *component;", into a compile error instead of calls on a detached copy.
+  ISmaccComponent(const ISmaccComponent &) = delete;
+  ISmaccComponent & operator=(const ISmaccComponent &) = delete;
+  ISmaccComponent(ISmaccComponent &&) = delete;
+  ISmaccComponent & operator=(ISmaccComponent &&) = delete;
+
   // Returns a custom identifier defined by the specific plugin implementation
   virtual std::string getName() const;
 

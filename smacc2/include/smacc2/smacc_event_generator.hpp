@@ -39,6 +39,13 @@ public:
   SmaccEventGenerator();
   virtual ~SmaccEventGenerator();
 
+  // Not copyable or movable. This turns an accidental copy, such as a missing & in
+  // "auto & eg = *generator;", into a compile error instead of calls on a detached copy.
+  SmaccEventGenerator(const SmaccEventGenerator &) = delete;
+  SmaccEventGenerator & operator=(const SmaccEventGenerator &) = delete;
+  SmaccEventGenerator(SmaccEventGenerator &&) = delete;
+  SmaccEventGenerator & operator=(SmaccEventGenerator &&) = delete;
+
   template <typename TState, typename TSource>
   void onStateOrthogonalAllocation();
 
