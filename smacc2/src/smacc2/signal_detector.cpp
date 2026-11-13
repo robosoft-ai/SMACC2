@@ -76,7 +76,7 @@ void SignalDetector::initialize(ISmaccStateMachine * stateMachine)
 {
   smaccStateMachine_ = stateMachine;
   findUpdatableClientsAndComponents();
-  this->getNode()->declare_parameter("signal_detector_loop_freq", this->loop_rate_hz);
+  this->getNode()->declare_parameter("signal_detector_loop_freq", kDefaultLoopRateHz);
 
   auto context = getNode()->get_node_base_interface()->get_context();
   context->on_shutdown(
@@ -383,7 +383,7 @@ void SignalDetector::pollingLoop()
 {
   // rclcpp::Node::SharedPtr nh("~"); // use node name as root of the parameter server
   rclcpp::Node::SharedPtr _;
-  rclcpp::Rate r0(20);
+  rclcpp::Rate r0(kInitializationPollRateHz);
 
   // Wait for both SignalDetector::initialize() (called from ISmaccStateMachine constructor)
   // and ROS initialization to complete (initializeROS called from initiate_impl).
@@ -425,9 +425,9 @@ void SignalDetector::pollingLoop()
   if (!(this->loop_rate_hz > 0.0))
   {
     RCLCPP_ERROR(
-      getLogger(), "Signal Detector frequency %lf is not positive, using the default 20 Hz",
-      this->loop_rate_hz);
-    this->loop_rate_hz = 20.0;
+      getLogger(), "Signal Detector frequency %lf is not positive, using the default %lf Hz",
+      this->loop_rate_hz, kDefaultLoopRateHz);
+    this->loop_rate_hz = kDefaultLoopRateHz;
   }
 
   nh->set_parameter(rclcpp::Parameter("signal_detector_loop_freq", this->loop_rate_hz));
