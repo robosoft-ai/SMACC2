@@ -1,0 +1,3 @@
+sm_pack_ml:
+  ros__parameters:
+    signal_detector_loop_freq: 20.0

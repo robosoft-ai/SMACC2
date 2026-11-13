@@ -12,11 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
 
 
 def generate_launch_description():
+    config_file = os.path.join(
+        get_package_share_directory("sm_atomic"), "config", "sm_atomic_config.yaml"
+    )
     return LaunchDescription(
-        [Node(package="sm_atomic", executable="sm_atomic_node", output="screen")]
+        [
+            Node(
+                package="sm_atomic",
+                executable="sm_atomic_node",
+                name="sm_atomic",
+                output="screen",
+                parameters=[config_file],
+            )
+        ]
     )

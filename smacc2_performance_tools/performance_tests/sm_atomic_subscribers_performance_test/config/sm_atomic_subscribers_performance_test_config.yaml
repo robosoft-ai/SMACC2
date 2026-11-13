@@ -1,0 +1,3 @@
+sm_atomic_subscribers_performance_test:
+  ros__parameters:
+    signal_detector_loop_freq: 200.0

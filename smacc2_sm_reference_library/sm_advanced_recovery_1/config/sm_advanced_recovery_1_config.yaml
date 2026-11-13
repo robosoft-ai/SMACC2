@@ -1,2 +1,3 @@
-SmAdvancedRecovery1:
-   signal_detector_loop_freq: 20
+sm_advanced_recovery_1:
+  ros__parameters:
+    signal_detector_loop_freq: 20.0
