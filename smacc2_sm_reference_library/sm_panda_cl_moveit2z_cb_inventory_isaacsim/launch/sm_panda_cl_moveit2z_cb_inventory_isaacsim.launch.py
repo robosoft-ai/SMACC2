@@ -162,12 +162,18 @@ def launch_setup(context, *args, **kwargs):
     else:
         state_machine_prefix = "konsole --hold -p tabtitle='State Machine' -e"
 
+    state_machine_config = os.path.join(
+        get_package_share_directory("sm_panda_cl_moveit2z_cb_inventory_isaacsim"),
+        "config",
+        "sm_panda_cl_moveit2z_cb_inventory_isaacsim_config.yaml",
+    )
     smacc_state_machine_spawner = Node(
         package="sm_panda_cl_moveit2z_cb_inventory_isaacsim",
         executable="sm_panda_cl_moveit2z_cb_inventory_isaacsim_node",
+        name="sm_panda_cl_moveit2z_cb_inventory_isaacsim",
         prefix=state_machine_prefix,
         output="screen",
-        parameters=[use_sim_time],
+        parameters=[state_machine_config, use_sim_time],
         arguments=["--ros-args", "--log-level", "INFO"],
     )
 

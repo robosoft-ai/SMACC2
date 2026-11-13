@@ -1,7 +1,7 @@
 sm_modbus_tcp_relay_test_1:
   ros__parameters:
     # Signal detector frequency
-    signal_detector_loop_freq: 20
+    signal_detector_loop_freq: 20.0
 
     # Modbus relay configuration
     modbus_relay:

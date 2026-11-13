@@ -14,6 +14,7 @@
 
 import os
 from datetime import datetime
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import OpaqueFunction
 from launch_ros.actions import Node
@@ -57,6 +58,9 @@ def generate_launch_description():
 
 
 def launch_setup(context, *args, **kwargs):
+    config_file = os.path.join(
+        get_package_share_directory("sm_multi_stage_1"), "config", "sm_multi_stage_1_config.yaml"
+    )
 
     # Setup logging directory
     log_dir, timestamp = setup_log_directory()
@@ -73,6 +77,7 @@ def launch_setup(context, *args, **kwargs):
         executable="sm_multi_stage_1_node",
         name="sm_multi_stage_1",
         output="screen",
+        parameters=[config_file],
         prefix=state_machine_prefix,
         arguments=["--ros-args", "--log-level", "DEBUG"],
     )

@@ -164,7 +164,7 @@ sweep sm_coretest_forced_finish_1 forced_finish_sweep 10
 echo "### transition speed: 20 s at 2000 Hz"
 LOG=$OUT/transition_speed.log
 SPEED=$INST/sm_coretest_transition_speed_1
-$PRE "$(bin sm_coretest_transition_speed_1)" --ros-args --log-level FATAL \
+$PRE "$(bin sm_coretest_transition_speed_1)" --ros-args --log-level FATAL -r __node:=sm_coretest_transition_speed_1 \
   --params-file "$SPEED/share/sm_coretest_transition_speed_1/config/sm_coretest_transition_speed_1_config.yaml" > "$LOG" 2>&1 & P=$!
 sleep 20; stop $P "$LOG" transition_speed
 echo "batches $(grep -a -c 'Longtime frequency' "$LOG")"

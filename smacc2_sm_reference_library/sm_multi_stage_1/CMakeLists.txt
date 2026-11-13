@@ -62,6 +62,11 @@ install(TARGETS ${PROJECT_NAME}_node
 )
 
 install(
+  DIRECTORY config/
+  DESTINATION share/${PROJECT_NAME}/config
+)
+
+install(
   DIRECTORY launch/
   DESTINATION share/${PROJECT_NAME}/launch
   FILES_MATCHING
