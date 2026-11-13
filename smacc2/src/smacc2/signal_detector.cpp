@@ -26,6 +26,7 @@
 
 #include <lttng/tracepoint.h>
 #include <unistd.h>
+#include <rcl_interfaces/msg/parameter_descriptor.hpp>
 
 #include <smacc2/client_bases/smacc_action_client_base.hpp>
 #include <smacc2/smacc_signal_detector.hpp>
@@ -76,7 +77,13 @@ void SignalDetector::initialize(ISmaccStateMachine * stateMachine)
 {
   smaccStateMachine_ = stateMachine;
   findUpdatableClientsAndComponents();
-  this->getNode()->declare_parameter("signal_detector_loop_freq", kDefaultLoopRateHz);
+  // A whole number in a config file (20) has to work like 20.0: dynamic typing lets an integer
+  // override through, and the polling loop reads whichever numeric type arrived.
+  rcl_interfaces::msg::ParameterDescriptor loopRateDescriptor;
+  loopRateDescriptor.description = "Polling loop rate of the signal detector, in Hz";
+  loopRateDescriptor.dynamic_typing = true;
+  this->getNode()->declare_parameter(
+    "signal_detector_loop_freq", rclcpp::ParameterValue(kDefaultLoopRateHz), loopRateDescriptor);
 
   auto context = getNode()->get_node_base_interface()->get_context();
   context->on_shutdown(
@@ -407,7 +414,25 @@ void SignalDetector::pollingLoop()
 
   // The parameter is declared with the default, so reading it always succeeds; whether the machine's
   // configuration set it is in the node's parameter overrides (params file, command line).
-  nh->get_parameter("signal_detector_loop_freq", this->loop_rate_hz);
+  const rclcpp::Parameter loopRateParam = nh->get_parameter("signal_detector_loop_freq");
+  if (loopRateParam.get_type() == rclcpp::ParameterType::PARAMETER_INTEGER)
+  {
+    this->loop_rate_hz = static_cast<double>(loopRateParam.as_int());
+  }
+  else if (loopRateParam.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+  {
+    this->loop_rate_hz = loopRateParam.as_double();
+  }
+  else
+  {
+    // Any other type is a configuration error: say so and run at the default instead of aborting.
+    RCLCPP_ERROR(
+      getLogger(),
+      "Signal Detector frequency (ros param signal_detector_loop_freq) is of type %s, "
+      "not a number; using the default %lf Hz",
+      loopRateParam.get_type_name().c_str(), kDefaultLoopRateHz);
+    this->loop_rate_hz = kDefaultLoopRateHz;
+  }
   const auto & overrides = nh->get_node_parameters_interface()->get_parameter_overrides();
   if (overrides.count("signal_detector_loop_freq") == 0)
   {
