@@ -21,6 +21,7 @@
 
 #include <atomic>
 #include <boost/thread.hpp>
+#include <rclcpp/contexts/default_context.hpp>
 #include <smacc2/common.hpp>
 #include <smacc2_msgs/msg/smacc_status.hpp>
 
@@ -206,11 +207,11 @@ void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
   RCLCPP_INFO(rclcpp::get_logger("SMACC"), "Waiting for scheduler thread to join...");
   schedulerThread.join();
 
-  // The loop ended inside rclcpp's on_shutdown callback, mid Context::shutdown() on the signal thread;
-  // this waits for that call to finish and joins the thread before anything here is destroyed (study, F-6).
+  // Wait for the signal thread's Context::shutdown() before destroying anything (study, F-6); not via
+  // rclcpp::shutdown(), which uninstalls the signal handlers so a second SIGINT kills the teardown (Y).
   if (!rclcpp::ok())
   {
-    rclcpp::shutdown();
+    rclcpp::contexts::get_global_default_context()->shutdown("SMACC2 run finished");
   }
 
   // No transition is in progress now. Stop and join the onEntry threads of the active state's
