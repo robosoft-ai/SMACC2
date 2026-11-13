@@ -70,7 +70,7 @@ void CpWaypointsVisualizer::createMarkerLabel(
   marker.header.stamp = getNode()->now();
   marker.ns = "waypoints_labels";
 
-  marker.id = markers_.markers.size();
+  marker.id = static_cast<int>(markers_.markers.size());
   marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
   marker.action = visualization_msgs::msg::Marker::ADD;
   marker.scale.x = 0.3;
@@ -90,7 +90,7 @@ void CpWaypointsVisualizer::createMarker(
   marker.header.stamp = getNode()->now();
   marker.ns = "waypoints";
 
-  marker.id = markers_.markers.size();
+  marker.id = static_cast<int>(markers_.markers.size());
   marker.type = visualization_msgs::msg::Marker::SPHERE;
   marker.action = visualization_msgs::msg::Marker::ADD;
   marker.scale.x = 0.1;

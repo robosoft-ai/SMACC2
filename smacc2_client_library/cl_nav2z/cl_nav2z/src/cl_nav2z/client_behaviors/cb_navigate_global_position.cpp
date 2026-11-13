@@ -47,7 +47,7 @@ CbNavigateGlobalPosition::CbNavigateGlobalPosition(
 void CbNavigateGlobalPosition::setGoal(const geometry_msgs::msg::Pose & pose)
 {
   goalPosition = pose.position;
-  goalYaw = tf2::getYaw(pose.orientation);
+  goalYaw = static_cast<float>(tf2::getYaw(pose.orientation));
 }
 
 void CbNavigateGlobalPosition::onEntry()

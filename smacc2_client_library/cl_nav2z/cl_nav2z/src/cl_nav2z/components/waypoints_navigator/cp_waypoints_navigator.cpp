@@ -69,7 +69,7 @@ void CpWaypointNavigator::onGoalAborted(
 void CpWaypointNavigator::onGoalReached(
   const components::CpNav2ActionInterface::WrappedResult & /*res*/)
 {
-  waypointsEventDispatcher.postWaypointEvent(currentWaypoint_);
+  waypointsEventDispatcher.postWaypointEvent(static_cast<int>(currentWaypoint_));
   currentWaypoint_++;
   RCLCPP_WARN(
     getLogger(), "[CpWaypointNavigator] Goal result received, incrementing waypoint index: %ld",
