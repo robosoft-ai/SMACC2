@@ -8,7 +8,6 @@
 1	smacc2/src/smacc2/client_bases/smacc_ros_launch_client_2.cpp: warning: 2 adjacent parameters of 'ClRosLaunch2' of similar type ('std::string') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 1	smacc2/src/smacc2/client_behaviors/cb_ros_launch_2.cpp: warning: 2 adjacent parameters of 'CbRosLaunch2' of similar type ('std::string') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 1	smacc2/src/smacc2/signal_detector.cpp: warning: Called C++ object pointer is null [clang-analyzer-core.CallAndMessage]
-1	smacc2_client_library/cl_nav2z/cl_nav2z/include/cl_nav2z/client_behaviors/cb_pure_spinning.hpp: warning: declaration uses identifier 'targetYaw__rads', which is a reserved identifier [bugprone-reserved-identifier]
 9	smacc2_client_library/cl_nav2z/cl_nav2z/include/cl_nav2z/components/waypoints_navigator/cp_waypoints_navigator_base.hpp: warning: 3 adjacent parameters of 'Pose2D' of similar type ('double') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 1	smacc2_client_library/cl_nav2z/cl_nav2z/src/cl_nav2z/client_behaviors/cb_back_up.cpp: warning: 2 adjacent parameters of 'CbBackUp' of similar type ('float') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 1	smacc2_client_library/cl_nav2z/cl_nav2z/src/cl_nav2z/client_behaviors/cb_drive_on_heading.cpp: warning: 2 adjacent parameters of 'CbDriveOnHeading' of similar type ('float') are easily swapped by mistake [bugprone-easily-swappable-parameters]
