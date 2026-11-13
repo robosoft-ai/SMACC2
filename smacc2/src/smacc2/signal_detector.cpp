@@ -307,7 +307,7 @@ void SignalDetector::pollOnce()
 
           TRACETOOLS_TRACEPOINT(smacc2_state_update_start, updatableElementName);
           updatableClient->executeUpdate(smaccStateMachine_->getNode());
-          TRACETOOLS_TRACEPOINT(smacc2_state_update_start, updatableElementName);
+          TRACETOOLS_TRACEPOINT(smacc2_state_update_end, updatableElementName);
         }
         catch (const std::exception & e)
         {
@@ -346,7 +346,7 @@ void SignalDetector::pollOnce()
           TRACETOOLS_TRACEPOINT(smacc2_state_update_start, updatableElementNameCstr);
 
           udpatableStateElement->executeUpdate(smaccStateMachine_->getNode());
-          TRACETOOLS_TRACEPOINT(smacc2_state_update_start, updatableElementNameCstr);
+          TRACETOOLS_TRACEPOINT(smacc2_state_update_end, updatableElementNameCstr);
         }
       }
     }
