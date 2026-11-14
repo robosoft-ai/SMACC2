@@ -24,20 +24,6 @@ using namespace std::chrono_literals;
 
 namespace smacc2
 {
-void SmaccAsyncClientBehavior::executeOnEntry()
-{
-  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] asynchronous onEntry thread started");
-  this->onEntryThread_ = std::async(
-    std::launch::async,
-    [this]
-    {
-      this->onEntry();
-      this->postFinishEventFn_();
-      RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] asynchronous onEntry thread finished");
-      return 0;
-    });
-}
-
 // A behavior thread that ended by exception: at shutdown the usual cause is the behavior's own rclcpp
 // sleep or graph call on the shut-down context and is expected; while ROS is up it is an error.
 static void logThreadException(
@@ -53,6 +39,36 @@ static void logThreadException(
     RCLCPP_INFO_STREAM(
       logger, "[" << name << "] " << thread << " thread ended by exception at shutdown: " << what);
   }
+}
+
+void SmaccAsyncClientBehavior::executeOnEntry()
+{
+  RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] asynchronous onEntry thread started");
+  this->onEntryThread_ = std::async(
+    std::launch::async,
+    [this]
+    {
+      // An exception is reported when it happens, not when the state exits and joins this thread.
+      try
+      {
+        this->onEntry();
+      }
+      catch (const std::exception & e)
+      {
+        logThreadException(getLogger(), getName(), "onEntry", e.what());
+        if (rclcpp::ok()) this->postInitializationFailureEvent(e.what());
+        return 0;
+      }
+      catch (...)
+      {
+        logThreadException(getLogger(), getName(), "onEntry", "non-standard exception");
+        if (rclcpp::ok()) this->postInitializationFailureEvent("non-standard exception");
+        return 0;
+      }
+      this->postFinishEventFn_();
+      RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] asynchronous onEntry thread finished");
+      return 0;
+    });
 }
 
 void SmaccAsyncClientBehavior::waitFutureIfNotFinished(

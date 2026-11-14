@@ -22,6 +22,11 @@
 
 namespace smacc2
 {
+void ISmaccClientBehavior::postInitializationFailureEvent(const std::string & what)
+{
+  if (postInitializationFailureEventFn_) postInitializationFailureEventFn_(what);
+}
+
 ISmaccClientBehavior::ISmaccClientBehavior() {}
 
 ISmaccClientBehavior::~ISmaccClientBehavior()

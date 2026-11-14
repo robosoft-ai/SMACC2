@@ -46,6 +46,15 @@ std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
                                                            // behavior constructor parameters right?
     orthogonal->addClientBehavior(clientBehavior);
     clientBehavior->template onStateOrthogonalAllocation<TOrthogonal, TBehavior>();
+    // Set here and not in onStateOrthogonalAllocation, which a derived behavior may hide.
+    ISmaccClientBehavior * behavior = clientBehavior.get();
+    behavior->postInitializationFailureEventFn_ = [behavior](const std::string & what)
+    {
+      auto * ev = new default_events::EvCbInitializationFailure<TBehavior, TOrthogonal>();
+      ev->behaviorName = behavior->getName();
+      ev->what = what;
+      behavior->postEvent(ev);
+    };
     return clientBehavior;
   }
   else

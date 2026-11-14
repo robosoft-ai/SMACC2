@@ -22,8 +22,8 @@
 
 namespace sm_coretest_exceptions_1
 {
-// The site that throws in this run, from the environment: none (default), state_entry, state_exit,
-// sync_entry, sync_exit, async_entry, async_exit, client_update, behavior_update, state_entry,
+// The site that throws in this run, from the environment: none (default), state_exit,
+// sync_configure, sync_entry, sync_exit, async_entry, async_exit, client_update, behavior_update, state_entry,
 // rest_entry, inner_entry, inner_configure, container_entry or retry_entry.
 inline const std::string & throwSite()
 {

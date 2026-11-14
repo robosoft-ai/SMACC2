@@ -20,7 +20,8 @@
 
 namespace sm_coretest_exceptions_1
 {
-// A synchronous behavior that throws from onEntry (site sync_entry) or onExit (site sync_exit).
+// A synchronous behavior that throws from runtimeConfigure (site sync_configure), onEntry (site
+// sync_entry) or onExit (site sync_exit).
 class CbSyncThrow : public smacc2::SmaccClientBehavior
 {
 public:
@@ -30,5 +31,8 @@ public:
     throwIfSite(getLogger(), "sync_entry");
   }
   void onExit() override { throwIfSite(getLogger(), "sync_exit"); }
+
+protected:
+  void runtimeConfigure() override { throwIfSite(getLogger(), "sync_configure"); }
 };
 }  // namespace sm_coretest_exceptions_1

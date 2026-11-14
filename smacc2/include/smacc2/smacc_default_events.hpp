@@ -223,5 +223,15 @@ struct EvStInitializationFailure : sc::event<EvStInitializationFailure<TState>>,
 {
 };
 
+//-------------- CLIENT BEHAVIOR INITIALIZATION FAILURE ---------------------------------------------
+// Posted when a client behavior's runtimeConfigure or onEntry throws, on the state machine thread for
+// a synchronous behavior and on the behavior's own thread for an asynchronous one.
+template <typename TBehavior, typename TOrthogonal>
+struct EvCbInitializationFailure : sc::event<EvCbInitializationFailure<TBehavior, TOrthogonal>>
+{
+  std::string behaviorName;
+  std::string what;  // the exception's message
+};
+
 }  // namespace default_events
 }  // namespace smacc2

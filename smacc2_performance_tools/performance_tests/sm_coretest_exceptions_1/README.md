@@ -8,8 +8,9 @@ or an `update()` throws.
 
 ```
 StA ──▶ SsPlain[ StRest ] ──▶ SsEscalate[ StInner ] ──▶ StRetry ──▶ StA      (500 ms timers)
-                                  │
-                                  └── EvStInitializationFailure<SsEscalate> ──▶ StSafe ──▶ StA
+  │                               │
+  │                               └── EvStInitializationFailure<SsEscalate> ──▶ StSafe ──▶ StA
+  └── EvCbInitializationFailure<CbSyncThrow | CbAsyncThrow, OrThrow> ──▶ StSafe
 ```
 
 The environment variable `SM_CORETEST_THROW_SITE` names the one site that throws in a run; each
@@ -22,12 +23,23 @@ All in `StA` and its behaviors. The machine keeps cycling.
 | Site | Where it throws | What the core logs |
 |--|--|--|
 | `state_exit` | `StA::onExit` | `exception in onExit` |
-| `sync_entry` | `CbSyncThrow::onEntry` | `Exception on Entry - continuing with next client behavior` |
 | `sync_exit` | `CbSyncThrow::onExit` | `Exception onExit - continuing with next client behavior` |
-| `async_entry` | `CbAsyncThrow::onEntry`, on the behavior's thread | `onEntry thread ended by exception`, when the state exits and the thread is joined; the behavior posts no success or failure event |
 | `async_exit` | `CbAsyncThrow::onExit`, on the behavior's exit thread | `onExit thread ended by exception` |
 | `client_update` | every tenth `ClThrowingUpdate::update` | `Error in updatable elemnent` |
 | `behavior_update` | every tenth `CbUpdateThrow::update` | `Exception during Signal Detector update loop` |
+
+### Failed client behavior initializations
+
+A client behavior whose `runtimeConfigure` or `onEntry` throws is logged and
+`EvCbInitializationFailure<TBehavior, TOrthogonal>` is posted, carrying the behavior's name and the
+exception text. For an asynchronous behavior both happen on its own thread at the moment of the
+throw. The other behaviors of the state go on. `StA` reacts to the event by going to `StSafe`.
+
+| Site | Where it throws | What the core logs |
+|--|--|--|
+| `sync_configure` | `CbSyncThrow::runtimeConfigure` | `Exception in runtimeConfigure - continuing with next client behavior` |
+| `sync_entry` | `CbSyncThrow::onEntry` | `Exception on Entry - continuing with next client behavior` |
+| `async_entry` | `CbAsyncThrow::onEntry`, on the behavior's thread | `onEntry thread ended by exception` |
 
 ### Failed state initializations
 
@@ -59,7 +71,7 @@ The launch file tees the node output to `/tmp/sm_coretest_exceptions_1_latest.lo
 
 ## In the gate
 
-`.github/scripts/sanitizer_core_tests.sh` runs all thirteen sites for 8 s each under TSan, ASan and
-a plain build. It fails if a continuing site stops cycling, if a container reaction does not reach
-`StSafe` once per throw, if an unhandled failure does not call the hook exactly once, if any run
+`.github/scripts/sanitizer_core_tests.sh` runs all fourteen sites for 8 s each under TSan, ASan and
+a plain build. It fails if a continuing site stops cycling, if a reaction does not reach `StSafe`
+once per throw, if an unhandled failure does not call the hook exactly once, if any run
 ends with an uncaught exception, or on a sanitizer report with a SMACC2 frame.

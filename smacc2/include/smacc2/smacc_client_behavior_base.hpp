@@ -20,6 +20,9 @@
 
 #pragma once
 
+#include <functional>
+#include <string>
+
 #include <string>
 
 #include <smacc2/common.hpp>
@@ -82,6 +85,9 @@ protected:
 
   inline ISmaccState * getCurrentState();
 
+  // Posts EvCbInitializationFailure for this behavior; the core calls it when user code throws.
+  void postInitializationFailureEvent(const std::string & what);
+
   virtual void dispose();
 
   virtual rclcpp::Node::SharedPtr getNode() const;
@@ -91,6 +97,9 @@ protected:
 private:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation();
+
+  // Set by ISmaccState::configure, which knows the behavior's and the orthogonal's types.
+  std::function<void(const std::string &)> postInitializationFailureEventFn_;
 
   // a reference to the owner state machine
   ISmaccStateMachine * stateMachine_ = nullptr;
