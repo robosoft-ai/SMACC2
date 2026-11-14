@@ -1,5 +1,32 @@
 # SMACC2 Tracing
 
+## Timing summary in the terminal
+
+`smacc2_trace.sh` runs one state machine node under an LTTng userspace session, converts the trace
+to text with `babeltrace` and prints a timing summary: polling loop rate and jitter, state and client
+behavior entry and exit durations, `update()` durations, transition latency and the time spent in
+each state. It needs `lttng-tools` and `babeltrace`; it needs no root, no `tracing` group and no
+graphical viewer.
+
+```
+smacc2_trace.sh <out-dir> <seconds> <node-binary> [node args...]
+```
+
+For example, from a sourced workspace:
+
+```
+smacc2_performance_tools/tracing_tools/smacc2_trace.sh /tmp/trace_sm_atomic 20 \
+  install/sm_atomic/lib/sm_atomic/sm_atomic_node --ros-args \
+  --params-file install/sm_atomic/share/sm_atomic/config/sm_atomic_config.yaml -r __node:=sm_atomic
+```
+
+The output directory receives the binary trace (`trace/`), the text trace (`trace.txt`, one event per
+line with a nanosecond timestamp), the node's log and `summary.txt`. `trace_summary.py <trace.txt>`
+summarizes an existing text trace again. Run the node binary directly and give it the node name its
+launch file uses, or its config file does not apply.
+
+## Setting up and recording by hand
+
 This small example shows the steps to follow to trace a SMACC2 library.
 First, make sure that smacc and tracetools installed (or built in your workspace) in your system.
 

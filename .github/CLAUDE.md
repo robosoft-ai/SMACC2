@@ -166,7 +166,9 @@ configure, entry, exit and update, and for client behavior entry and exit. They 
 **Studied 2026-11-13: the traces can be captured and read as text, with no graphical viewer.** On
 that evidence the tracepoints are worth keeping.
 
-Capture, with `lttng-tools` and `babeltrace` installed; no root and no tracing group are needed:
+`smacc2_performance_tools/tracing_tools/smacc2_trace.sh <out-dir> <seconds> <node-binary> [args]`
+captures a trace and prints the timing summary in one step. By hand, with `lttng-tools` and
+`babeltrace` installed; no root and no tracing group are needed:
 
 ```bash
 lttng create smacc2 --output=/path/to/trace
@@ -216,7 +218,8 @@ is the floor on reaction time for any event that originates outside the state ma
 
 1. Bring the two build workflows under 20 minutes without caching.
 2. Remove the `ament_cppcheck` hook and the ROS Lint workflow.
-3. Package the LTTng capture and summary so a trace can be asked for and presented in one step.
+3. Add tracepoints for the work an asynchronous behavior does; today its entry pair covers only the
+   launch of its thread.
 4. Give the manual workflows a result summary on the run page.
 5. Add an on-demand clang build, never on a pull request, once its warning backlog is cleared. A trial
    build with clang 18 found a real defect GCC accepts silently: `demangleSymbol(const std::string &)`
