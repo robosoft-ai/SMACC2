@@ -1,0 +1,32 @@
+######## sm_atomic
+ros2 node list entries: 0
+exit 124
+state entries: 3  State1: 2  State2: 1  'No signals found' at INFO: 0  exceptions: 0
+######## sm_atomic_lifecycle
+ros2 node list entries: 0
+StActive reached: 1
+sm exit 0
+states entered: StUnconfigured StConfiguring StInactive StActivating StActive StShuttingDown StFinalized 
+StFinalized reached: 1  exceptions: 0  client rejections: 0
+######## sm_simple_action_client
+ros2 node list entries: 0
+sm exit 0
+states entered: StState1 StState2 StState3 
+StState3 reached: 1  StState2 entries: 1  EvCbSuccess<CbFibonacci: 1
+######## sm_retry_logic_1 (exhaust)
+ros2 node list entries: 0
+sm exit 0
+StExhausted reached: 1  attempts: 3
+State reactor disposing: smacc2::state_reactors::SrEventCountdown
+######## sm_retry_logic_1 (success)
+ros2 node list entries: 0
+send_keys: 6 keypresses sent
+sm exit 0
+StSuccess reached: 1
+######## sm_mode_state_behavior_1
+ros2 node list entries: 0
+send_keys: 23 keypresses sent
+sm exit 0
+EvKeyPressN transitions: 20  EvKeyPressF transitions: 3  MsRunning entered: 1  'No signals found': 0  SsPhase1 entries: 2  SsPhase2 entries: 2
+states entered: MsRunning SsPhase1 StPhaseA StPhaseB StPhaseC StPhaseA StPhaseB StPhaseC StPhaseA SsPhase2 StPhaseX StPhaseY StPhaseX StPhaseY StPhaseX StPhaseY SsPhase1 StPhaseA StPhaseB StPhaseC StPhaseA StPhaseB StPhaseC SsPhase2 StPhaseX StPhaseY StPhaseX StPhaseY StPhaseX StPhaseY 
+ros2 node list entries: 0
