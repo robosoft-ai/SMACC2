@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Run the seven core test state machines under a sanitizer build, or a plain one, and fail on any
+# Run the eight core test state machines under a sanitizer build, or a plain one, and fail on any
 # report with a SMACC2 frame, a crash, a hang or a broken test invariant.
 #
 # Usage: sanitizer_core_tests.sh <tsan|asan|plain> [install-prefix] [out-dir]
-# The install prefix must hold smacc2, cl_ros2_timer, sr_event_countdown and the seven core tests
+# The install prefix must hold smacc2, cl_ros2_timer, sr_event_countdown and the eight core tests
 # built with the matching -fsanitize flags (none for plain). Logs and report files go to the out dir.
 # The plain mode exists because the timer hand-off race (W) only ever showed in a plain build: the
 # sanitizer allocators delay the reuse of freed memory that the race needs.
@@ -169,6 +169,18 @@ $PRE "$(bin sm_coretest_transition_speed_1)" --ros-args --log-level FATAL -r __n
 sleep 20; stop $P "$LOG" transition_speed
 echo "batches $(grep -a -c 'Longtime frequency' "$LOG")"
 [ "$(grep -a -c 'Longtime frequency' "$LOG")" -gt 0 ] || fail "transition_speed: no batch completed"
+
+# A state's onEntry is the one site left out: an exception there ends the process today.
+echo "### exceptions: 7 throw sites, 6 s each"
+for SITE in state_exit sync_entry sync_exit async_entry async_exit client_update behavior_update; do
+  LOG=$OUT/exceptions_$SITE.log
+  SM_CORETEST_THROW_SITE=$SITE $PRE "$(bin sm_coretest_exceptions_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
+  sleep 6; stop $P "$LOG" "exceptions_$SITE"
+  THROWS=$(grep -a -c 'THROWING at' "$LOG"); REST=$(grep -a -c 'StRest\] Entered' "$LOG")
+  echo "$SITE: throws $THROWS, StRest entries $REST"
+  [ "$THROWS" -ge 3 ] || fail "exceptions_$SITE: only $THROWS throws"
+  [ "$REST" -ge 3 ] || fail "exceptions_$SITE: only $REST StRest entries, the machine stopped alternating"
+done
 
 echo "### sanitizer reports"
 python3 -I "$HERE/sanitizer_reports.py" "$OUT"/*.log "$OUT"/tsan_report.* 2>/dev/null || FAILS=$((FAILS + 1))
