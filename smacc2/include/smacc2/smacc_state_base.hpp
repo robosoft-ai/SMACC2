@@ -20,6 +20,7 @@
 
 #pragma once
 #include <smacc2/introspection/state_traits.hpp>
+#include <smacc2/smacc_default_events.hpp>
 #include <smacc2/smacc_event_generator.hpp>
 #include <smacc2/smacc_state.hpp>
 #include <smacc2/smacc_state_machine.hpp>
@@ -30,6 +31,24 @@
 
 namespace smacc2
 {
+// Posts EvStInitializationFailure<TAddressee> for a failure in stateName. The event carries the
+// call that addresses it to the addressee's own container, until the container is the state machine.
+template <typename TAddressee>
+void postStInitializationFailure(
+  ISmaccStateMachine * stateMachine, const std::string & stateName, const std::string & what)
+{
+  auto * ev = new default_events::EvStInitializationFailure<TAddressee>();
+  ev->stateName = stateName;
+  ev->what = what;
+  using TContainer = typename TAddressee::context_type;
+  if constexpr (!std::is_base_of<ISmaccStateMachine, TContainer>::value)
+  {
+    ev->escalate = [stateMachine, stateName, what]()
+    { postStInitializationFailure<TContainer>(stateMachine, stateName, what); };
+  }
+  stateMachine->postEvent(ev, EventLifeTime::CURRENT_STATE);
+}
+
 using namespace smacc2::introspection;
 using namespace smacc2::default_events;
 
@@ -118,7 +137,8 @@ public:
       try
       {
         TRACETOOLS_TRACEPOINT(smacc2_state_onExit_start, STATE_NAME);
-        standardOnExit(*derivedThis);
+        // A state whose initialization failed was never entered, so its onExit does not run.
+        if (!this->initializationFailed_) standardOnExit(*derivedThis);
         TRACETOOLS_TRACEPOINT(smacc2_state_onExit_end, STATE_NAME);
       }
       // The exit path must complete, so the exception is logged and swallowed, not propagated.
@@ -476,19 +496,69 @@ private:
     // second the orthogonals are internally configured
     this->getStateMachine().notifyOnRuntimeConfigured(derivedthis);
 
-    TRACETOOLS_TRACEPOINT(smacc2_state_onRuntimeConfigure_start, STATE_NAME);
-    // first we runtime configure the state, where we create client behaviors
-    static_cast<MostDerived *>(this)->runtimeConfigure();
-    TRACETOOLS_TRACEPOINT(smacc2_state_onRuntimeConfigure_end, STATE_NAME);
+    // A state inside a container whose initialization failed is not initialized either; the
+    // container's failure event is already posted.
+    if (this->parentState_ != nullptr && this->parentState_->initializationFailed())
+    {
+      RCLCPP_WARN(
+        getLogger(), "[%s] not initialized: its container state failed to initialize", STATE_NAME);
+      this->initializationFailed_ = true;
+    }
 
+    // User code: an exception from runtimeConfigure or onEntry is logged and posted as
+    // EvStInitializationFailure, and the state's client behaviors are then not entered.
+    if (!this->initializationFailed_)
+    {
+      try
+      {
+        TRACETOOLS_TRACEPOINT(smacc2_state_onRuntimeConfigure_start, STATE_NAME);
+        // first we runtime configure the state, where we create client behaviors
+        static_cast<MostDerived *>(this)->runtimeConfigure();
+        TRACETOOLS_TRACEPOINT(smacc2_state_onRuntimeConfigure_end, STATE_NAME);
+      }
+      catch (const std::exception & e)
+      {
+        this->onInitializationFailure(e.what());
+      }
+      catch (...)
+      {
+        this->onInitializationFailure("non-standard exception");
+      }
+    }
+
+    // Always runs: it keeps the per-state bookkeeping that the exit path undoes.
     this->getStateMachine().notifyOnRuntimeConfigurationFinished(derivedthis);
 
-    RCLCPP_DEBUG(getLogger(), "[%s] State OnEntry", STATE_NAME);
-
-    static_cast<MostDerived *>(this)->onEntry();
+    if (!this->initializationFailed_)
+    {
+      RCLCPP_DEBUG(getLogger(), "[%s] State OnEntry", STATE_NAME);
+      try
+      {
+        static_cast<MostDerived *>(this)->onEntry();
+      }
+      catch (const std::exception & e)
+      {
+        this->onInitializationFailure(e.what());
+      }
+      catch (...)
+      {
+        this->onInitializationFailure("non-standard exception");
+      }
+    }
 
     // here orthogonals and client behaviors are entered OnEntry
     this->getStateMachine().notifyOnStateEntryEnd(derivedthis);
+  }
+
+  void onInitializationFailure(const std::string & what)
+  {
+    const std::string stateName = demangleSymbol(typeid(MostDerived).name());
+    RCLCPP_ERROR(
+      getLogger(),
+      "[%s] exception in state initialization: %s. Its client behaviors are not started.",
+      stateName.c_str(), what.c_str());
+    this->initializationFailed_ = true;
+    postStInitializationFailure<MostDerived>(&this->getStateMachine(), stateName, what);
   }
 };
 }  // namespace smacc2

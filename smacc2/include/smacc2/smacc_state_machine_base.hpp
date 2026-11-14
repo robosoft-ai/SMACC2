@@ -64,6 +64,22 @@ public:
     this->terminate();
   }
 
+  // Called by Boost.Statechart for an event no active state reacted to. An unhandled state
+  // initialization failure is posted again, addressed to the next container state.
+  void unconsumed_event(const sc::event_base & ev)
+  {
+    const auto * failure = dynamic_cast<const default_events::EvStInitializationFailureInfo *>(&ev);
+    if (failure == nullptr) return;
+    if (failure->escalate)
+    {
+      failure->escalate();
+    }
+    else
+    {
+      this->onUnhandledStInitializationFailure(failure->stateName, failure->what);
+    }
+  }
+
   void initiate_impl() override
   {
     globalNh_ = this->getNode();

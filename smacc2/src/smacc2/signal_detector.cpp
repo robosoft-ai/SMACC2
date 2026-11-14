@@ -213,6 +213,11 @@ void SignalDetector::notifyStateExited(ISmaccState * /*currentState*/)
   this->updatableStateElements_.pop_back();
 }
 
+void SignalDetector::notifyStateInitializationFailed()
+{
+  if (!this->updatableStateElements_.empty()) this->updatableStateElements_.back().clear();
+}
+
 void SignalDetector::notifyRosInitialized()
 {
   RCLCPP_INFO(getLogger(), "[SignalDetector] ROS initialization complete, enabling polling loop");

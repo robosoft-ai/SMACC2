@@ -101,7 +101,7 @@ process exits cleanly.
 | `sm_coretest_post_during_exit_1` | 200 Hz event posts from the executor thread across 50 ms state exits |
 | `sm_coretest_poll_shutdown_1` | SIGINT landing inside the polling loop's update window |
 | `sm_coretest_transition_speed_1` | 20 s of back-to-back transitions with the loop at 2000 Hz |
-| `sm_coretest_exceptions_1` | user code that throws, one site per run: a state's `onExit`, a synchronous and an asynchronous behavior's `onEntry` and `onExit`, a client's and a behavior's `update()`; the machine must keep running |
+| `sm_coretest_exceptions_1` | user code that throws, one site per run: a state's `onExit`, a behavior's `onEntry`, `onExit` or `update()`, and a state's `runtimeConfigure` or `onEntry`, which posts `EvStInitializationFailure` to the state, then to each container, then to the state machine's hook |
 
 The script fails on any report with a SMACC2 frame, a crash, a hang or a broken test invariant.
 Reports with no SMACC2 frame are counted as external and do not fail the run; the known one is a

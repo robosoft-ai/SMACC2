@@ -20,6 +20,9 @@
 
 #pragma once
 
+#include <functional>
+#include <string>
+
 #include <smacc2/smacc_types.hpp>
 
 #include <boost/statechart/event.hpp>
@@ -203,5 +206,22 @@ struct EvTopicMessage : sc::event<EvTopicMessage<TSource, TOrthogonal, TMessageT
 
   TMessageType msgData;
 };
+//-------------- STATE INITIALIZATION FAILURE --------------------------------------------------------
+// What every EvStInitializationFailure carries, whatever state it is addressed to.
+struct EvStInitializationFailureInfo
+{
+  std::string stateName;           // the state whose runtimeConfigure or onEntry threw
+  std::string what;                // the exception's message
+  std::function<void()> escalate;  // posts the failure to the next container; empty at the top
+};
+
+// Posted when a state's runtimeConfigure or onEntry throws. First addressed to the failing state;
+// if no state reacts, the state machine posts it again addressed to each container state in turn.
+template <typename TState>
+struct EvStInitializationFailure : sc::event<EvStInitializationFailure<TState>>,
+                                   EvStInitializationFailureInfo
+{
+};
+
 }  // namespace default_events
 }  // namespace smacc2

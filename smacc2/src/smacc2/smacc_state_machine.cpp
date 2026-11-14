@@ -186,6 +186,17 @@ void ISmaccStateMachine::publishTransition(const SmaccTransitionInfo & transitio
 
 void ISmaccStateMachine::onInitialize() {}
 
+void ISmaccStateMachine::onUnhandledStInitializationFailure(
+  const std::string & stateName, const std::string & what)
+{
+  RCLCPP_ERROR(
+    getLogger(),
+    "[SmaccStateMachine] no state reacts to the initialization failure of %s (%s); the state "
+    "machine "
+    "stays in that state with nothing running",
+    stateName.c_str(), what.c_str());
+}
+
 void ISmaccStateMachine::onInitialized()
 {
   auto ros_clock = rclcpp::Clock::make_shared();

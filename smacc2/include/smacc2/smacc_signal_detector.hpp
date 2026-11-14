@@ -81,6 +81,9 @@ public:
 
   void notifyStateExited(ISmaccState * currentState);
 
+  // The current state's elements are not updated: its initialization failed.
+  void notifyStateInitializationFailed();
+
   // Called after state machine ROS initialization is complete (initializeROS)
   // This signals that orthogonals, clients, and ROS objects are ready
   void notifyRosInitialized();
