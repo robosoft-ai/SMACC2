@@ -65,7 +65,8 @@ jobs:
             smacc2_performance_tools/performance_tests/sm_coretest_transition_speed_1 \
             smacc2_performance_tools/performance_tests/sm_coretest_reactor_order_1 \
             smacc2_performance_tools/performance_tests/sm_coretest_post_during_exit_1 \
-            smacc2_performance_tools/performance_tests/sm_coretest_timer_handoff_1
+            smacc2_performance_tools/performance_tests/sm_coretest_timer_handoff_1 \
+            smacc2_performance_tools/performance_tests/sm_coretest_exceptions_1
 
       - name: Build the message package without sanitizer flags
         # The gate calls the transition history service through the ros2 CLI, which imports the
@@ -96,6 +97,7 @@ jobs:
               sm_coretest_reactor_order_1 \
               sm_coretest_post_during_exit_1 \
               sm_coretest_timer_handoff_1 \
+              sm_coretest_exceptions_1 \
             --cmake-args \
               -DCMAKE_BUILD_TYPE=RelWithDebInfo \
               -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}" \
@@ -104,12 +106,17 @@ jobs:
 
       - name: Run the core tests under ${{ matrix.name }}
         # Forced finish (20 cycles and 10 random interrupts), signal key, reactor order,
-        # timer hand-off, post during exit, poll shutdown (10 interrupts in the 75 % window)
-        # and transition speed. Fails on any sanitizer report with a SMACC2 frame, a crash, a hang or a
+        # timer hand-off, post during exit, poll shutdown (10 interrupts in the 75 % window),
+        # transition speed and the seven handled exception sites. Fails on any sanitizer report with a SMACC2 frame, a crash, a hang or a
         # broken test invariant.
         run: |
           source /opt/ros/jazzy/setup.bash
-          .github/scripts/sanitizer_core_tests.sh ${{ matrix.sanitizer }} install sanitizer_out
+          mkdir -p sanitizer_out
+          .github/scripts/sanitizer_core_tests.sh ${{ matrix.sanitizer }} install sanitizer_out 2>&1 | tee sanitizer_out/console.log
+
+      - name: Summarize on the run page
+        if: always()
+        run: python3 .github/scripts/gate_summary.py sanitizers "${{ matrix.name }}" sanitizer_out/console.log >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload logs and reports
         if: always()

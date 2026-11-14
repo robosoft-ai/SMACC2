@@ -59,7 +59,12 @@ jobs:
         # The rest of cppcoreguidelines-* is left out by policy; the reason is at CHECKS in the gate script.
         run: |
           source /opt/ros/jazzy/setup.bash
-          .github/scripts/clang_tidy_gate.sh build clang_tidy_out
+          mkdir -p clang_tidy_out
+          .github/scripts/clang_tidy_gate.sh build clang_tidy_out 2>&1 | tee clang_tidy_out/console.log
+
+      - name: Summarize on the run page
+        if: always()
+        run: python3 .github/scripts/gate_summary.py clang-tidy clang_tidy_out/console.log clang_tidy_out/current.txt >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload clang-tidy output
         if: always()
