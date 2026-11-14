@@ -34,6 +34,7 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 | Regression suite (`smacc2_performance_tools/core_test_tools/regression.sh`) | developer machine | on demand, before a core change is committed | no | 3 min | five reference machines still go through the same state sequence, compared with `regression_expected.out` |
 | Transition speed (`core_test_tools/transition_speed.sh`) | developer machine | on demand, when the transition path changes | no | 1 min per run, three runs | transitions per second with logging off, against the band in the tools' README |
 | Coverage (`core_test_tools/coverage.sh`) | developer machine | on demand | no | about 12 min | which lines, functions and branches of the core the core tests and the regression suite reach |
+| Simulator runs (`smacc2_performance_tools/nav2_test_tools/nav2_run.sh`, `px4_test_tools/px4_run.sh`, `moveit_test_tools/panda_run.sh`) | developer machine | on demand, after a change to a client library or to shutdown | no | 1 to 7 min each | a reference machine completes its mission against Nav2, PX4 SITL or MoveIt and shuts down cleanly; each also runs under TSan or ASan |
 | ROS Lint (`ci-ros-lint.yaml`) | GitHub | **disabled** | no | | `ament_copyright`, `ament_cppcheck`, `ament_lint_cmake` per package; duplicates pre-commit |
 | Doxygen Deployment, bloom release | GitHub | push to `jazzy` | no | about 10 min | publishing |
 
