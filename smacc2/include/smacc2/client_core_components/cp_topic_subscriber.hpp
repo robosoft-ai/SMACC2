@@ -46,6 +46,14 @@ public:
     initialized_ = false;
   }
 
+  // For a topic that must not lose messages, such as discrete commands. Without a QoS the
+  // subscription is best effort with a depth of queueSize (1 unless set), which suits sensor streams.
+  CpTopicSubscriber(std::string topicname, const rclcpp::QoS & qos) : qos_(qos)
+  {
+    topicName_ = topicname;
+    initialized_ = false;
+  }
+
   virtual ~CpTopicSubscriber() {}
 
   std::function<void(const MessageType &)> postMessageEvent;
@@ -95,13 +103,20 @@ public:
     {
       firstMessage_ = true;
 
-      if (!queueSize) queueSize = 1;
-
       RCLCPP_INFO_STREAM(
         getLogger(), "[" << this->getName() << "] Subscribing to topic: " << topicName_);
 
-      rclcpp::SensorDataQoS qos;
-      if (queueSize) qos.keep_last(*queueSize);
+      rclcpp::QoS qos = rclcpp::SensorDataQoS();
+      if (qos_)
+      {
+        qos = *qos_;
+        if (queueSize) qos.keep_last(*queueSize);
+      }
+      else
+      {
+        if (!queueSize) queueSize = 1;
+        qos.keep_last(*queueSize);
+      }
 
       std::function<void(typename MessageType::SharedPtr)> fn = [this](auto msg)
       { this->messageCallback(*msg); };
@@ -112,6 +127,7 @@ public:
   }
 
 private:
+  std::optional<rclcpp::QoS> qos_;
   typename rclcpp::Subscription<MessageType>::SharedPtr sub_;
   bool firstMessage_ = true;
   bool initialized_;

@@ -46,9 +46,10 @@ public:
     // We start by creating a topic subscriber component from SMACC2s client core components.
     // We use this to gain the topic functionality integrated with SMACC and the ability to post smacc events for transitions.
     // We are using it to handle the reception of ros topic messages and to notify the other components in the client.
+    // Keypresses are commands, not a sensor stream: reliable, and deep enough for a burst of keys.
     this->createComponent<
       smacc2::client_core_components::CpTopicSubscriber<std_msgs::msg::UInt16>, TOrthogonal,
-      ClKeyboard>("/keyboard_unicode");
+      ClKeyboard>(std::string("/keyboard_unicode"), rclcpp::QoS(10).reliable());
 
     // This keyboard listener component requires CpTopicSubscriber.
     // It is notified by the CpTopicSubscriber and processes the messages to decide which keyboard event must be posted and then posts it.
