@@ -31,6 +31,9 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 | clang-tidy (`ci-clang-tidy.yml`) | GitHub | manual | no | up to 60 min | bug-prone patterns against a checked-in baseline |
 | CodeQL (`codeql.yml`) | GitHub | manual | no | | security queries |
 | LTTng trace (capture steps under "LTTng tracing" below) | developer machine | on demand | no | seconds to capture and read | timing: loop rate and jitter, how long each state, behavior, update and transition takes |
+| Regression suite (`smacc2_performance_tools/core_test_tools/regression.sh`) | developer machine | on demand, before a core change is committed | no | 3 min | five reference machines still go through the same state sequence, compared with `regression_expected.out` |
+| Transition speed (`core_test_tools/transition_speed.sh`) | developer machine | on demand, when the transition path changes | no | 1 min per run, three runs | transitions per second with logging off, against the band in the tools' README |
+| Coverage (`core_test_tools/coverage.sh`) | developer machine | on demand | no | about 12 min | which lines, functions and branches of the core the core tests and the regression suite reach |
 | ROS Lint (`ci-ros-lint.yaml`) | GitHub | **disabled** | no | | `ament_copyright`, `ament_cppcheck`, `ament_lint_cmake` per package; duplicates pre-commit |
 | Doxygen Deployment, bloom release | GitHub | push to `jazzy` | no | about 10 min | publishing |
 
@@ -60,8 +63,8 @@ was before the fixes and scored on the defects already known.
 | Undefined behavior: bad cast, overflow, misaligned access | | **UBSan**, built into both sanitizer builds | `cstyleCast` as style | narrowing conversions | |
 | Uninitialized member | H, I, the thirteen SA-1 pointers | seen only if the value is read on a path a test takes | **`uninitMemberVar` finds it** | **`pro-type-member-init` finds it**, in the gate since 2026-11-13 | |
 | Bug-prone source pattern | unchecked optional access, branch clones, swallowed exceptions | no | partly | **`bugprone-*` finds it** | |
-| Behavior regression | a state sequence that changes | no | no | no | regression suite, sequence diff against the last capture |
-| Performance regression on the transition path | X (the transition log growing without bound) | no | no | no | transition-speed test against its band; an LTTng trace shows which step of the transition got slower |
+| Behavior regression | a state sequence that changes | no | no | no | `core_test_tools/regression.sh`, the sequence compared with the expected output |
+| Performance regression on the transition path | X (the transition log growing without bound) | no | no | no | `core_test_tools/transition_speed.sh` against its band; an LTTng trace shows which step of the transition got slower |
 | Timing: a slow state or behavior, loop jitter, late reaction to an event | a 90 to 220 us wait before a timer event reaches the state machine thread (the kernel waking the thread, not a defect) | no | no | no | **LTTng trace**: nanosecond timestamps on every entry, exit, update and event |
 
 How to read it: the sanitizers are the only tools that find the lifetime and concurrency defects, and
@@ -231,5 +234,5 @@ is the floor on reaction time for any event that originates outside the state ma
 4. Add an on-demand clang build, never on a pull request, once its warning backlog is cleared. A trial
    build with clang 18 found a real defect GCC accepts silently, since fixed:
    `demangleSymbol(const std::string &)` called itself forever.
-5. Add on-demand code coverage, a memory-growth soak, an ABI comparison before releases and a `perf`
-   flame-graph recipe.
+5. Add a memory-growth soak, an ABI comparison before releases and a `perf` flame-graph recipe.
+   Coverage is in place: `smacc2_performance_tools/core_test_tools/coverage.sh`.
