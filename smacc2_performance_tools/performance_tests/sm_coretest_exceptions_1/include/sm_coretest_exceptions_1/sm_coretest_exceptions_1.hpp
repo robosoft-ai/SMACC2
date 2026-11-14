@@ -14,11 +14,21 @@
 
 // Core test: user code that throws.
 //
-// StA and StRest alternate on 500 ms timers. StA holds every site: its own onEntry and onExit, a
-// synchronous behavior, an asynchronous behavior and an updatable behavior, and the orthogonal's
-// client is updatable too. SM_CORETEST_THROW_SITE names the one site that throws in a run; with
-// none, nothing throws. Each throw is announced with a "THROWING at <site>" line, so a run shows
-// how many throws the machine took and whether it kept alternating.
+// StA, SsPlain (holding StRest), SsEscalate (holding StInner) and StRetry follow each other on
+// 500 ms timers.
+// SM_CORETEST_THROW_SITE names the one site that throws in a run; with none, nothing throws. Each
+// throw is announced with a "THROWING at <site>" line, so a run shows how many throws the machine
+// took and whether it kept cycling.
+//
+// StA holds the sites the core logs and continues from: its onExit, a synchronous behavior, an
+// asynchronous behavior and an updatable behavior, and the orthogonal's client is updatable too.
+// The other sites are failed state initializations, which post EvStInitializationFailure:
+//   state_entry      StA, top level, no reaction: the state machine's hook runs, the machine stays in StA
+//   rest_entry       StRest inside SsPlain, neither reacts: escalates through SsPlain to the hook
+//   inner_entry      StInner, no reaction of its own: escalates to SsEscalate, which goes to StSafe
+//   inner_configure  the same from StInner's runtimeConfigure
+//   container_entry  SsEscalate itself: StInner is not initialized, SsEscalate's reaction goes to StSafe
+//   retry_entry      StRetry reacts to its own failure by entering itself again
 
 #pragma once
 
@@ -45,6 +55,11 @@ namespace sm_coretest_exceptions_1
 {
 struct StA;
 struct StRest;
+struct SsEscalate;
+struct SsPlain;
+struct StInner;
+struct StRetry;
+struct StSafe;
 
 struct SmCoretestExceptions1 : public smacc2::SmaccStateMachineBase<SmCoretestExceptions1, StA>
 {
@@ -55,8 +70,21 @@ struct SmCoretestExceptions1 : public smacc2::SmaccStateMachineBase<SmCoretestEx
     this->createOrthogonal<OrTimer>();
     this->createOrthogonal<OrThrow>();
   }
+
+  void onUnhandledStInitializationFailure(
+    const std::string & stateName, const std::string & what) override
+  {
+    RCLCPP_WARN(getLogger(), "HOOK onUnhandledStInitializationFailure: %s", stateName.c_str());
+    ISmaccStateMachine::onUnhandledStInitializationFailure(stateName, what);
+  }
 };
 }  // namespace sm_coretest_exceptions_1
 
+#include <sm_coretest_exceptions_1/superstates/ss_escalate.hpp>
+#include <sm_coretest_exceptions_1/superstates/ss_plain.hpp>
+
 #include <sm_coretest_exceptions_1/states/st_a.hpp>
+#include <sm_coretest_exceptions_1/states/st_inner.hpp>
 #include <sm_coretest_exceptions_1/states/st_rest.hpp>
+#include <sm_coretest_exceptions_1/states/st_retry.hpp>
+#include <sm_coretest_exceptions_1/states/st_safe.hpp>

@@ -16,18 +16,23 @@
 
 namespace sm_coretest_exceptions_1
 {
-// Nothing throws here. Reaching StRest again and again shows the machine survived the throw in StA.
+// Inside SsPlain. Reaching StRest again and again shows the machine survived the throws. With the
+// site rest_entry its own onEntry throws, and neither it nor SsPlain reacts.
 // A LOOP timer, a different behavior type than StA's ONCE timer, so StA's queued EvTimer cannot fire
 // this state's reaction.
-struct StRest : smacc2::SmaccState<StRest, SmCoretestExceptions1>
+struct StRest : smacc2::SmaccState<StRest, SsPlain>
 {
   using SmaccState::SmaccState;
 
-  typedef mpl::list<Transition<EvTimer<CbTimerCountdownLoop, OrTimer>, StA>> reactions;
+  typedef mpl::list<Transition<EvTimer<CbTimerCountdownLoop, OrTimer>, SsEscalate>> reactions;
 
   static void staticConfigure() { configure_orthogonal<OrTimer, CbTimerCountdownLoop>(500ms); }
 
-  void onEntry() { RCLCPP_INFO(getLogger(), "[StRest] Entered."); }
+  void onEntry()
+  {
+    throwIfSite(getLogger(), "rest_entry");
+    RCLCPP_INFO(getLogger(), "[StRest] Entered.");
+  }
 
   void onExit() { RCLCPP_INFO(getLogger(), "[StRest] Exiting."); }
 };

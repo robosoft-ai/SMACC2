@@ -170,16 +170,33 @@ sleep 20; stop $P "$LOG" transition_speed
 echo "batches $(grep -a -c 'Longtime frequency' "$LOG")"
 [ "$(grep -a -c 'Longtime frequency' "$LOG")" -gt 0 ] || fail "transition_speed: no batch completed"
 
-# A state's onEntry is the one site left out: an exception there ends the process today.
-echo "### exceptions: 7 throw sites, 6 s each"
-for SITE in state_exit sync_entry sync_exit async_entry async_exit client_update behavior_update; do
-  LOG=$OUT/exceptions_$SITE.log
-  SM_CORETEST_THROW_SITE=$SITE $PRE "$(bin sm_coretest_exceptions_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
-  sleep 6; stop $P "$LOG" "exceptions_$SITE"
-  THROWS=$(grep -a -c 'THROWING at' "$LOG"); REST=$(grep -a -c 'StRest\] Entered' "$LOG")
-  echo "$SITE: throws $THROWS, StRest entries $REST"
-  [ "$THROWS" -ge 3 ] || fail "exceptions_$SITE: only $THROWS throws"
-  [ "$REST" -ge 3 ] || fail "exceptions_$SITE: only $REST StRest entries, the machine stopped alternating"
+# exceptions_run <site>: one 8 s run with that site throwing; sets THROWS, CYCLES, SAFE, HOOK
+exceptions_run() {
+  LOG=$OUT/exceptions_$1.log
+  SM_CORETEST_THROW_SITE=$1 $PRE "$(bin sm_coretest_exceptions_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
+  sleep 8; stop $P "$LOG" "exceptions_$1"
+  THROWS=$(grep -a -c 'THROWING at' "$LOG"); CYCLES=$(grep -a -c 'StA\] Entered' "$LOG")
+  SAFE=$(grep -a -c 'StSafe\] Entered' "$LOG"); HOOK=$(grep -a -c 'HOOK onUnhandledStInitializationFailure' "$LOG")
+}
+echo "### exceptions: 8 sites the core logs and continues from, 8 s each"
+for SITE in state_exit sync_entry sync_exit async_entry async_exit client_update behavior_update retry_entry; do
+  exceptions_run $SITE
+  echo "$SITE: throws $THROWS, StA entries $CYCLES"
+  [ "$THROWS" -ge 2 ] || fail "exceptions_$SITE: only $THROWS throws"
+  [ "$CYCLES" -ge 3 ] || fail "exceptions_$SITE: only $CYCLES StA entries, the machine stopped cycling"
+done
+echo "### exceptions: 3 failed initializations that reach a container's reaction"
+for SITE in inner_entry inner_configure container_entry; do
+  exceptions_run $SITE
+  echo "$SITE: throws $THROWS, StSafe entries $SAFE, StA entries $CYCLES"
+  [ "$SAFE" -ge 2 ] && [ "$SAFE" -eq "$THROWS" ] || fail "exceptions_$SITE: $SAFE StSafe entries for $THROWS throws"
+  [ "$CYCLES" -ge 3 ] || fail "exceptions_$SITE: only $CYCLES StA entries, the machine stopped cycling"
+done
+echo "### exceptions: 2 failed initializations nothing reacts to"
+for SITE in state_entry rest_entry; do
+  exceptions_run $SITE
+  echo "$SITE: throws $THROWS, hook calls $HOOK, StSafe entries $SAFE"
+  [ "$THROWS" -eq 1 ] && [ "$HOOK" -eq 1 ] && [ "$SAFE" -eq 0 ] || fail "exceptions_$SITE: $THROWS throws, $HOOK hook calls, $SAFE StSafe entries (expected 1, 1, 0: parked)"
 done
 
 echo "### sanitizer reports"

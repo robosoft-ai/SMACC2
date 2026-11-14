@@ -107,7 +107,7 @@ jobs:
       - name: Run the core tests under ${{ matrix.name }}
         # Forced finish (20 cycles and 10 random interrupts), signal key, reactor order,
         # timer hand-off, post during exit, poll shutdown (10 interrupts in the 75 % window),
-        # transition speed and the seven handled exception sites. Fails on any sanitizer report with a SMACC2 frame, a crash, a hang or a
+        # transition speed and the thirteen exception sites. Fails on any sanitizer report with a SMACC2 frame, a crash, a hang or a
         # broken test invariant.
         run: |
           source /opt/ros/jazzy/setup.bash

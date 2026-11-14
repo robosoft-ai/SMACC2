@@ -45,6 +45,8 @@ public:
 
   inline rclcpp::Logger getLogger() { return *logger_; }
 
+  inline bool initializationFailed() const { return initializationFailed_; }
+
   virtual std::string getClassName();
 
   template <typename TOrthogonal, typename TBehavior, typename... Args>
@@ -128,6 +130,9 @@ protected:
   std::vector<std::shared_ptr<smacc2::SmaccEventGenerator>> eventGenerators_;
 
   ISmaccState * parentState_ = nullptr;
+
+  // Set when runtimeConfigure or onEntry threw: the state's behaviors are neither entered nor exited.
+  bool initializationFailed_ = false;
 
   const smacc2::introspection::SmaccStateInfo * stateInfo_ = nullptr;
 };

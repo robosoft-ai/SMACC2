@@ -24,7 +24,11 @@ namespace sm_coretest_exceptions_1
 class CbSyncThrow : public smacc2::SmaccClientBehavior
 {
 public:
-  void onEntry() override { throwIfSite(getLogger(), "sync_entry"); }
+  void onEntry() override
+  {
+    RCLCPP_INFO(getLogger(), "[CbSyncThrow] onEntry");
+    throwIfSite(getLogger(), "sync_entry");
+  }
   void onExit() override { throwIfSite(getLogger(), "sync_exit"); }
 };
 }  // namespace sm_coretest_exceptions_1

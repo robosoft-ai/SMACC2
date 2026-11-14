@@ -528,8 +528,12 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
     demangleSymbol(typeid(StateType).name()).c_str());
 
   auto currentState = this->currentState_.back();
+  // A state whose initialization failed starts nothing: no behavior, reactor or generator is entered.
+  const bool enter = !currentState->initializationFailed();
+  if (!enter) this->signalDetector_->notifyStateInitializationFailed();
   for (auto pair : this->orthogonals_)
   {
+    if (!enter) break;
     RCLCPP_DEBUG(getLogger(), "Orthogonal onEntry: %s.", pair.second->getName().c_str());
     auto & orthogonal = pair.second;
     try
@@ -547,6 +551,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
 
   for (auto & sr : currentState->getStateReactors())
   {
+    if (!enter) break;
     auto srname = smacc2::demangleSymbol(typeid(*sr).name());
     RCLCPP_INFO_STREAM(getLogger(), "State reactor onEntry: " << srname);
     try
@@ -565,6 +570,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
 
   for (auto & eg : currentState->getEventGenerators())
   {
+    if (!enter) break;
     auto egname = smacc2::demangleSymbol(typeid(*eg).name());
     RCLCPP_INFO_STREAM(getLogger(), "Event generator onEntry: " << egname);
     try
@@ -589,10 +595,12 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
 }
 
 template <typename StateType>
-void ISmaccStateMachine::notifyOnRuntimeConfigurationFinished(StateType *)
+void ISmaccStateMachine::notifyOnRuntimeConfigurationFinished(StateType * state)
 {
   for (auto pair : this->orthogonals_)
   {
+    // The behaviors of a state whose runtimeConfigure threw are not configured.
+    if (state->initializationFailed()) break;
     // RCLCPP_INFO(getLogger(),"ortho onruntime configure: %s", pair.second->getName().c_str());
     auto & orthogonal = pair.second;
     orthogonal->runtimeConfigure();
@@ -621,6 +629,8 @@ void ISmaccStateMachine::notifyOnStateExiting(StateType * state)
   RCLCPP_WARN_STREAM(getLogger(), "Exiting state: " << fullname);
 
   RCLCPP_INFO_STREAM(getLogger(), "Notification state exit: leaving state " << state);
+  // Nothing was entered in a state whose initialization failed, so nothing is exited.
+  if (state->initializationFailed()) return;
   for (auto pair : this->orthogonals_)
   {
     auto & orthogonal = pair.second;

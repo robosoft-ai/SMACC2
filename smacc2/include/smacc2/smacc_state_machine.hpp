@@ -141,6 +141,11 @@ public:
   /// this function should be implemented by the user to create the orthogonals
   virtual void onInitialize();
 
+  // Called when a state's runtimeConfigure or onEntry threw and no state, up to the outermost
+  // container, reacted to EvStInitializationFailure. The default logs; the machine stays in that state.
+  virtual void onUnhandledStInitializationFailure(
+    const std::string & stateName, const std::string & what);
+
   void getTransitionLogHistory(
     const std::shared_ptr<rmw_request_id_t> request_header,
     const std::shared_ptr<smacc2_msgs::srv::SmaccGetTransitionHistory::Request> req,
