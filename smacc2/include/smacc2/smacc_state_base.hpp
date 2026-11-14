@@ -295,7 +295,6 @@ public:
       eg->initialize(state);
 
       eg->template onStateOrthogonalAllocation<MostDerived, TEventGenerator>();
-      eg->template onStateOrthogonalAllocation<MostDerived, TEventGenerator>();
       return eg;
     };
 

@@ -67,7 +67,8 @@ jobs:
             smacc2_performance_tools/performance_tests/sm_coretest_post_during_exit_1 \
             smacc2_performance_tools/performance_tests/sm_coretest_timer_handoff_1 \
             smacc2_performance_tools/performance_tests/sm_coretest_exceptions_1 \
-            smacc2_performance_tools/performance_tests/sm_coretest_action_client_1
+            smacc2_performance_tools/performance_tests/sm_coretest_action_client_1 \
+            smacc2_performance_tools/performance_tests/sm_coretest_features_1
 
       - name: Build the message package without sanitizer flags
         # The gate calls the transition history service through the ros2 CLI, which imports the
@@ -100,6 +101,7 @@ jobs:
               sm_coretest_timer_handoff_1 \
               sm_coretest_exceptions_1 \
               sm_coretest_action_client_1 \
+              sm_coretest_features_1 \
             --cmake-args \
               -DCMAKE_BUILD_TYPE=RelWithDebInfo \
               -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}" \
@@ -109,7 +111,8 @@ jobs:
       - name: Run the core tests under ${{ matrix.name }}
         # Forced finish (20 cycles and 10 random interrupts), signal key, reactor order,
         # timer hand-off, post during exit, poll shutdown (10 interrupts in the 75 % window),
-        # transition speed, the fourteen exception sites and the five action goal outcomes. Fails on any sanitizer report with a SMACC2 frame, a crash, a hang or a
+        # transition speed, the fourteen exception sites, the five action goal outcomes and the
+        # event generator, sequence and periodic-update test. Fails on any sanitizer report with a SMACC2 frame, a crash, a hang or a
         # broken test invariant.
         run: |
           source /opt/ros/jazzy/setup.bash

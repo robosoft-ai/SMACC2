@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Run the nine core test state machines under a sanitizer build, or a plain one, and fail on any
+# Run the ten core test state machines under a sanitizer build, or a plain one, and fail on any
 # report with a SMACC2 frame, a crash, a hang or a broken test invariant.
 #
 # Usage: sanitizer_core_tests.sh <tsan|asan|plain> [install-prefix] [out-dir]
-# The install prefix must hold smacc2, cl_ros2_timer, sr_event_countdown and the nine core tests
+# The install prefix must hold smacc2, cl_ros2_timer, sr_event_countdown, eg_conditional_generator and the ten core tests
 # built with the matching -fsanitize flags (none for plain). Logs and report files go to the out dir.
 # The plain mode exists because the timer hand-off race (W) only ever showed in a plain build: the
 # sanitizer allocators delay the reuse of freed memory that the race needs.
@@ -189,7 +189,8 @@ echo "### exceptions: 6 failed initializations, of a behavior or a state, that r
 for SITE in sync_configure sync_entry async_entry inner_entry inner_configure container_entry; do
   exceptions_run $SITE
   echo "$SITE: throws $THROWS, StSafe entries $SAFE, StA entries $CYCLES"
-  [ "$SAFE" -ge 2 ] && [ "$SAFE" -eq "$THROWS" ] || fail "exceptions_$SITE: $SAFE StSafe entries for $THROWS throws"
+  # The interrupt can land between the last throw and its reaction, so one reaction may be missing.
+  [ "$SAFE" -ge 2 ] && [ "$SAFE" -le "$THROWS" ] && [ "$SAFE" -ge $((THROWS - 1)) ] || fail "exceptions_$SITE: $SAFE StSafe entries for $THROWS throws"
   [ "$CYCLES" -ge 3 ] || fail "exceptions_$SITE: only $CYCLES StA entries, the machine stopped cycling"
 done
 echo "### exceptions: 2 failed state initializations nothing reacts to"
@@ -215,6 +216,22 @@ for N in "$OK" "$REJ" "$ABT" "$NOS" "$CAN"; do
 done
 echo "### action client: 5 random interrupts"
 sweep sm_coretest_action_client_1 action_client_sweep 5
+
+# An event generator, CbSequence (to its end, aborted, and cut short by a state exit) and an update period.
+echo "### features: 30 s of the event generator, the sequences and the periodic update"
+LOG=$OUT/features.log
+$PRE "$(bin sm_coretest_features_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
+sleep 30; stop $P "$LOG" features
+fc() { grep -a -c "$1" "$LOG"; }
+CYC=$(fc 'StSequenceCutOnStep\] Entered'); TRAP=$(fc 'TRAP ENTERED'); DONE=$(fc 'All subnodes finished')
+FAILED=$(fc 'CbFail\] posting failure'); PER=$(fc 'StPeriodic\] Entered'); TICKS=$(fc 'CbPeriodicTick\] tick')
+echo "cycles $CYC: sequences completed $DONE, aborted $FAILED, periodic ticks $TICKS in $PER states, traps $TRAP"
+[ "$CYC" -ge 3 ] || fail "features: only $CYC cycles in 30 s (a sequence cut by a state exit used to hang the machine)"
+[ "$TRAP" -eq 0 ] || fail "features: a state saw an outcome it must not see ($TRAP trap entries)"
+[ "$DONE" -ge "$CYC" ] && [ "$FAILED" -ge "$CYC" ] || fail "features: $DONE sequences completed and $FAILED aborted in $CYC cycles"
+[ "$TICKS" -ge $((3 * PER)) ] && [ "$TICKS" -le $((7 * PER)) ] || fail "features: $TICKS ticks in $PER periodic states (a 200 ms period over 1.1 s gives about 5 each)"
+echo "### features: 5 random interrupts"
+sweep sm_coretest_features_1 features_sweep 5
 
 echo "### sanitizer reports"
 python3 -I "$HERE/sanitizer_reports.py" "$OUT"/*.log "$OUT"/tsan_report.* 2>/dev/null || FAILS=$((FAILS + 1))

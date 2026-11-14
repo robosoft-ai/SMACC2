@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sm_coretest_features_1</name>
+  <version>3.1.0</version>
+  <description>Core test: the features no other core test reaches. An event generator, CbSequence run to its end, aborted by a failing step and cut short by a state exit, a behavior that posts its failure event, and an updatable with an update period.</description>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>smacc2</depend>
+  <depend>cl_ros2_timer</depend>
+  <depend>eg_conditional_generator</depend>
+  <depend>rclcpp</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
