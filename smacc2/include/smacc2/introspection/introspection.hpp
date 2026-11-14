@@ -69,8 +69,6 @@ auto optionalNodeHandle(T * obj) -> T *
   return obj;
 }
 
-inline std::string demangleSymbol(const std::string & name) { return demangleSymbol(name.c_str()); }
-
 inline std::string demangleSymbol(const char * name)
 {
 #if (__GNUC__ && __cplusplus && __GNUC__ >= 3)
@@ -88,6 +86,9 @@ inline std::string demangleSymbol(const char * name)
   return std::string(name);
 #endif
 }
+
+// Declared after the const char * overload on purpose: placed before it, this call resolved to itself.
+inline std::string demangleSymbol(const std::string & name) { return demangleSymbol(name.c_str()); }
 
 template <typename T>
 inline std::string demangleSymbol()
