@@ -27,7 +27,7 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 | Pull request Doc Check (`doxygen-check-build.yml`) | GitHub | pull request | yes | about 5 min | the Doxygen build |
 | jazzy Binary Build (`jazzy-binary-build.yml`) | GitHub | pull request, push, nightly | yes | **median 24 to 26 min** | the tree builds from scratch against released ROS packages |
 | jazzy Semi-Binary Build (`jazzy-semi-binary-build.yml`) | GitHub | pull request, push, nightly | yes | **median 23 min** | as above, with a different skip list |
-| Sanitizers (`ci-sanitizers.yml`) | GitHub | manual | no | up to 60 min | the eight core tests under TSan, ASan and a plain build |
+| Sanitizers (`ci-sanitizers.yml`) | GitHub | manual | no | up to 60 min | the nine core tests under TSan, ASan and a plain build |
 | clang-tidy (`ci-clang-tidy.yml`) | GitHub | manual | no | up to 60 min | bug-prone patterns against a checked-in baseline |
 | CodeQL (`codeql.yml`) | GitHub | manual | no | | security queries |
 | LTTng trace (capture steps under "LTTng tracing" below) | developer machine | on demand | no | seconds to capture and read | timing: loop rate and jitter, how long each state, behavior, update and transition takes |
@@ -90,7 +90,7 @@ misses a race when an unrelated mutex happens to order the two accesses (the log
 `isShutdownRequested_` race for 18 cycles; it showed in a 95-cycle run). LSan reports only when the
 process exits cleanly.
 
-**The eight core tests** (`smacc2_performance_tools/performance_tests/`) and what each provokes:
+**The nine core tests** (`smacc2_performance_tools/performance_tests/`) and what each provokes:
 
 | Test | What it exercises |
 |--|--|
@@ -101,7 +101,8 @@ process exits cleanly.
 | `sm_coretest_post_during_exit_1` | 200 Hz event posts from the executor thread across 50 ms state exits |
 | `sm_coretest_poll_shutdown_1` | SIGINT landing inside the polling loop's update window |
 | `sm_coretest_transition_speed_1` | 20 s of back-to-back transitions with the loop at 2000 Hz |
-| `sm_coretest_exceptions_1` | user code that throws, one site per run: a state's `onExit`, a behavior's `onEntry`, `onExit` or `update()`, and a state's `runtimeConfigure` or `onEntry`, which posts `EvStInitializationFailure` to the state, then to each container, then to the state machine's hook |
+| `sm_coretest_exceptions_1` | user code that throws, one site per run: a state's `onExit`, a behavior's `onExit` or `update()`, a behavior's `runtimeConfigure` or `onEntry` (posts `EvCbInitializationFailure`), and a state's `runtimeConfigure` or `onEntry` (posts `EvStInitializationFailure` to the state, then to each container, then to the state machine's hook) |
+| `sm_coretest_action_client_1` | `CpActionClient` and `CbActionClientBehaviorBase` against an action server in the same process: a goal that succeeds, is rejected, is aborted, has no server, and is cancelled by a state exit while in flight, with the next state sending its own goal at once |
 
 The script fails on any report with a SMACC2 frame, a crash, a hang or a broken test invariant.
 Reports with no SMACC2 frame are counted as external and do not fail the run; the known one is a

@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Run the eight core test state machines under a sanitizer build, or a plain one, and fail on any
+# Run the nine core test state machines under a sanitizer build, or a plain one, and fail on any
 # report with a SMACC2 frame, a crash, a hang or a broken test invariant.
 #
 # Usage: sanitizer_core_tests.sh <tsan|asan|plain> [install-prefix] [out-dir]
-# The install prefix must hold smacc2, cl_ros2_timer, sr_event_countdown and the eight core tests
+# The install prefix must hold smacc2, cl_ros2_timer, sr_event_countdown and the nine core tests
 # built with the matching -fsanitize flags (none for plain). Logs and report files go to the out dir.
 # The plain mode exists because the timer hand-off race (W) only ever showed in a plain build: the
 # sanitizer allocators delay the reuse of freed memory that the race needs.
@@ -178,26 +178,43 @@ exceptions_run() {
   THROWS=$(grep -a -c 'THROWING at' "$LOG"); CYCLES=$(grep -a -c 'StA\] Entered' "$LOG")
   SAFE=$(grep -a -c 'StSafe\] Entered' "$LOG"); HOOK=$(grep -a -c 'HOOK onUnhandledStInitializationFailure' "$LOG")
 }
-echo "### exceptions: 8 sites the core logs and continues from, 8 s each"
-for SITE in state_exit sync_entry sync_exit async_entry async_exit client_update behavior_update retry_entry; do
+echo "### exceptions: 6 sites the core logs and continues from, 8 s each"
+for SITE in state_exit sync_exit async_exit client_update behavior_update retry_entry; do
   exceptions_run $SITE
   echo "$SITE: throws $THROWS, StA entries $CYCLES"
   [ "$THROWS" -ge 2 ] || fail "exceptions_$SITE: only $THROWS throws"
   [ "$CYCLES" -ge 3 ] || fail "exceptions_$SITE: only $CYCLES StA entries, the machine stopped cycling"
 done
-echo "### exceptions: 3 failed initializations that reach a container's reaction"
-for SITE in inner_entry inner_configure container_entry; do
+echo "### exceptions: 6 failed initializations, of a behavior or a state, that reach a reaction"
+for SITE in sync_configure sync_entry async_entry inner_entry inner_configure container_entry; do
   exceptions_run $SITE
   echo "$SITE: throws $THROWS, StSafe entries $SAFE, StA entries $CYCLES"
   [ "$SAFE" -ge 2 ] && [ "$SAFE" -eq "$THROWS" ] || fail "exceptions_$SITE: $SAFE StSafe entries for $THROWS throws"
   [ "$CYCLES" -ge 3 ] || fail "exceptions_$SITE: only $CYCLES StA entries, the machine stopped cycling"
 done
-echo "### exceptions: 2 failed initializations nothing reacts to"
+echo "### exceptions: 2 failed state initializations nothing reacts to"
 for SITE in state_entry rest_entry; do
   exceptions_run $SITE
   echo "$SITE: throws $THROWS, hook calls $HOOK, StSafe entries $SAFE"
   [ "$THROWS" -eq 1 ] && [ "$HOOK" -eq 1 ] && [ "$SAFE" -eq 0 ] || fail "exceptions_$SITE: $THROWS throws, $HOOK hook calls, $SAFE StSafe entries (expected 1, 1, 0: parked)"
 done
+
+# The action client component and the action behavior base against a server in the same process.
+echo "### action client: 20 s of the five goal outcomes"
+LOG=$OUT/action_client.log
+$PRE "$(bin sm_coretest_action_client_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
+sleep 20; stop $P "$LOG" action_client
+ac() { grep -a -c "$1" "$LOG"; }
+CYC=$(ac 'StCancelled\] Entered'); TRAP=$(ac 'TRAP ENTERED')
+OK=$(ac 'goal succeeded'); REJ=$(ac 'goal rejected'); ABT=$(ac 'goal aborted'); CAN=$(ac 'goal cancelled'); NOS=$(ac 'Action server not available')
+echo "cycles $CYC: succeeded $OK, rejected $REJ, aborted $ABT, no server $NOS, cancelled $CAN, traps $TRAP"
+[ "$CYC" -ge 5 ] || fail "action_client: only $CYC cycles in 20 s"
+[ "$TRAP" -eq 0 ] || fail "action_client: a state saw an outcome it must not see ($TRAP trap entries)"
+for N in "$OK" "$REJ" "$ABT" "$NOS" "$CAN"; do
+  [ "$N" -ge $((CYC - 1)) ] && [ "$N" -le $((CYC + 1)) ] || fail "action_client: an outcome was seen $N times in $CYC cycles"
+done
+echo "### action client: 5 random interrupts"
+sweep sm_coretest_action_client_1 action_client_sweep 5
 
 echo "### sanitizer reports"
 python3 -I "$HERE/sanitizer_reports.py" "$OUT"/*.log "$OUT"/tsan_report.* 2>/dev/null || FAILS=$((FAILS + 1))

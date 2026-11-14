@@ -21,7 +21,12 @@ struct StA : smacc2::SmaccState<StA, SmCoretestExceptions1>
 {
   using SmaccState::SmaccState;
 
-  typedef mpl::list<Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StRest>> reactions;
+  // A behavior of this state that fails to initialize sends the machine to StSafe.
+  typedef mpl::list<
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StRest>,
+    Transition<EvCbInitializationFailure<CbSyncThrow, OrThrow>, StSafe>,
+    Transition<EvCbInitializationFailure<CbAsyncThrow, OrThrow>, StSafe>>
+    reactions;
 
   static void staticConfigure()
   {

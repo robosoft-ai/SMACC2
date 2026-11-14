@@ -101,7 +101,20 @@ void ISmaccOrthogonal::runtimeConfigure()
       getLogger(), "[Orthogonal: %s] runtimeConfigure(), current behavior: %s.",
       this->getName().c_str(), clBehavior->getName().c_str());
 
-    clBehavior->runtimeConfigure();
+    try
+    {
+      clBehavior->runtimeConfigure();
+    }
+    catch (const std::exception & e)
+    {
+      RCLCPP_ERROR(
+        getLogger(),
+        "[ClientBehavior: %s] Exception in runtimeConfigure - continuing with next client "
+        "behavior. "
+        "Exception info: %s",
+        clBehavior->getName().c_str(), e.what());
+      clBehavior->postInitializationFailureEvent(e.what());
+    }
   }
 }
 
@@ -130,6 +143,7 @@ void ISmaccOrthogonal::onEntry()
           "Exception info: "
           "%s",
           cbName, e.what());
+        clBehavior->postInitializationFailureEvent(e.what());
       }
       TRACETOOLS_TRACEPOINT(smacc2_client_behavior_on_entry_end, statename, orthogonalName, cbName);
     }

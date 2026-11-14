@@ -160,11 +160,13 @@ public:
     // Same rule as sendGoal: the cancel call runs outside actionMutex_. A goal whose sendGoal is
     // between its two lock scopes is not seen here; no caller cancels while another thread sends.
     std::shared_ptr<ActionClient> client;
+    std::shared_future<typename GoalHandle::SharedPtr> request;
     {
       std::lock_guard<std::mutex> lock(actionMutex_);
       if (client_ != nullptr && lastRequest_ && lastRequest_->valid())
       {
         client = client_;
+        request = *lastRequest_;
       }
     }
 
@@ -176,7 +178,25 @@ public:
 
     RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] Cancelling current goal");
 
-    auto cancelFuture = client->async_cancel_all_goals();
+    // Only the last goal is cancelled, never every goal of the server: the next state may already
+    // have sent its own through this component when the server processes the request.
+    std::shared_future<typename ActionClient::CancelResponse::SharedPtr> cancelFuture;
+    typename GoalHandle::SharedPtr goalHandle;
+    if (request.wait_for(std::chrono::seconds(0)) == std::future_status::ready)
+    {
+      goalHandle = request.get();
+    }
+    try
+    {
+      // A goal whose response has not arrived yet has no handle; it is cancelled by its send time.
+      cancelFuture = goalHandle != nullptr ? client->async_cancel_goal(goalHandle)
+                                           : client->async_cancel_goals_before(getNode()->now());
+    }
+    catch (const rclcpp_action::exceptions::UnknownGoalHandleError &)
+    {
+      RCLCPP_INFO_STREAM(getLogger(), "[" << this->getName() << "] The goal has already finished");
+      return false;
+    }
     {
       std::lock_guard<std::mutex> lock(actionMutex_);
       lastCancelResponse_ = cancelFuture;

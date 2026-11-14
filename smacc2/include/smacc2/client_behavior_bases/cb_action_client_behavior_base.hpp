@@ -22,6 +22,8 @@
 
 #include <atomic>
 #include <chrono>
+#include <future>
+#include <mutex>
 
 #include <smacc2/client_core_components/cp_action_client.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
@@ -121,6 +123,10 @@ protected:
 
     goalActivitySeen_ = false;
     auto goalHandleFuture = actionClient_->sendGoal(goal);
+    {
+      std::lock_guard<std::mutex> lock(ownGoalMutex_);
+      ownGoalHandleFuture_ = goalHandleFuture;
+    }
 
     // wait for goal acceptance in short slices so a state exit is honored
     auto deadline = std::chrono::steady_clock::now() + goalResponseTimeout_;
@@ -218,6 +224,7 @@ private:
   // overridable virtuals
   void dispatchActionSuccess(const WrappedResult & result)
   {
+    if (!isOwnGoal(result)) return;
     goalActivitySeen_ = true;
     goalInFlight_ = false;
     this->onActionSuccess(result);
@@ -225,6 +232,7 @@ private:
 
   void dispatchActionAbort(const WrappedResult & result)
   {
+    if (!isOwnGoal(result)) return;
     goalActivitySeen_ = true;
     goalInFlight_ = false;
     this->onActionAbort(result);
@@ -236,7 +244,31 @@ private:
     this->onActionFeedback(feedback);
   }
 
+  // The component's result signals fire for every goal sent through it, so a result of the previous
+  // state's goal (typically its cancellation) can arrive while this behavior's own goal runs.
+  bool isOwnGoal(const WrappedResult & result)
+  {
+    std::shared_future<typename GoalHandle::SharedPtr> future;
+    {
+      std::lock_guard<std::mutex> lock(ownGoalMutex_);
+      future = ownGoalHandleFuture_;
+    }
+    // rclcpp_action resolves the goal response before it can deliver that goal's result.
+    const bool own = future.valid() &&
+                     future.wait_for(std::chrono::seconds(0)) == std::future_status::ready &&
+                     future.get() != nullptr && future.get()->get_goal_id() == result.goal_id;
+    if (!own)
+    {
+      RCLCPP_INFO(
+        getLogger(), "[%s] Ignoring the result of a goal this behavior did not send",
+        getName().c_str());
+    }
+    return own;
+  }
+
   bool resultConnectionsInitialized_ = false;
+  std::mutex ownGoalMutex_;
+  std::shared_future<typename GoalHandle::SharedPtr> ownGoalHandleFuture_;
   std::atomic<bool> goalInFlight_{false};
   std::atomic<bool> goalActivitySeen_{false};
 };
