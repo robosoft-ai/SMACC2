@@ -29,8 +29,19 @@ namespace client_behaviors
 {
 CbSequence::CbSequence() {}
 
-void CbSequence::recursiveConsumeNext()
+bool CbSequence::recursiveConsumeNext()
 {
+  // Starting a step creates a behavior and signal connections, which take the state machine's mutex.
+  // An exiting state holds that mutex while it joins this thread, so it is never waited on here.
+  std::unique_lock<std::recursive_mutex> lock(getStateMachine()->getMutex(), std::defer_lock);
+  while (!lock.try_lock())
+  {
+    if (this->isShutdownRequested()) return false;
+    rclcpp::sleep_for(std::chrono::milliseconds(1));
+  }
+  // Nor is a step started once ROS is shutting down and the behavior threads are being joined.
+  if (this->isShutdownRequested() || !rclcpp::ok()) return false;
+
   RCLCPP_INFO(
     getLogger(), "[SequenceNode %p] next onEntry: %ld", static_cast<const void *>(this),
     sequenceNodes_.size());
@@ -53,6 +64,7 @@ void CbSequence::recursiveConsumeNext()
     getLogger(), "[SequenceNode %p] subnode %s on entry", static_cast<const void *>(this),
     currentNodeName.c_str());
   bh_->executeOnEntry();
+  lock.unlock();
   RCLCPP_INFO(
     getLogger(), "[SequenceNode %p] subnode %s on entry finished", static_cast<const void *>(this),
     currentNodeName.c_str());
@@ -60,12 +72,13 @@ void CbSequence::recursiveConsumeNext()
   RCLCPP_INFO(
     getLogger(), "[SequenceNode %p] subnode %s thread finished", static_cast<const void *>(this),
     currentNodeName.c_str());
+  return true;
 }
 
 void CbSequence::onEntry()
 {
-  this->recursiveConsumeNext();
-  while (!sequenceNodes_.empty())
+  bool started = this->recursiveConsumeNext();
+  while (started && !sequenceNodes_.empty())
   {
     bool is_shutdown_requested = this->isShutdownRequested();
     if (is_shutdown_requested)
@@ -89,7 +102,7 @@ void CbSequence::onEntry()
 
       if (sequenceNodes_.size() > 0)
       {
-        this->recursiveConsumeNext();
+        started = this->recursiveConsumeNext();
       }
     }
   }

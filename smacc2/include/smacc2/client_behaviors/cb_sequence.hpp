@@ -62,7 +62,8 @@ public:
 private:
   void onSubNodeSuccess();
   void onSubNodeAbort();
-  void recursiveConsumeNext();
+  // Starts the next step; false when the state is exiting and no step was started.
+  bool recursiveConsumeNext();
 
   std::list<std::function<std::shared_ptr<smacc2::SmaccAsyncClientBehavior>()>> sequenceNodes_;
   smacc2::SmaccSignalConnection conn_;
