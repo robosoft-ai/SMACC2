@@ -63,7 +63,7 @@ void CbConnectMicroRosAgent::onEntry()
 
     for (const auto & n : nodeNames)
     {
-      ss << " - " << n << std::endl;
+      ss << " - " << n << "\n";
 
       if (n == targetNodeName)
       {
@@ -72,7 +72,7 @@ void CbConnectMicroRosAgent::onEntry()
     }
 
     RCLCPP_INFO_STREAM(
-      getLogger(), "[" << getName() << "] listing nodes (" << nodeNames.size() << ")" << std::endl
+      getLogger(), "[" << getName() << "] listing nodes (" << nodeNames.size() << ")\n"
                        << ss.str());
 
     rate_.sleep();

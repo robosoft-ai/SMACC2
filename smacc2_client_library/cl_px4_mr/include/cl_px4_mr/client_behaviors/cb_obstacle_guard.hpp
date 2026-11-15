@@ -38,7 +38,7 @@ class CbObstacleGuard : public smacc2::SmaccClientBehavior
 {
 public:
   CbObstacleGuard();
-  virtual ~CbObstacleGuard();
+  ~CbObstacleGuard() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()

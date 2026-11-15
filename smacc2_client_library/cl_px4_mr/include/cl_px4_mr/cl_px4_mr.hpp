@@ -34,7 +34,7 @@ class ClPx4Mr : public smacc2::ISmaccClient
 {
 public:
   ClPx4Mr();
-  virtual ~ClPx4Mr();
+  ~ClPx4Mr() override;
 
   template <typename TOrthogonal, typename TClient>
   void onComponentInitialization()

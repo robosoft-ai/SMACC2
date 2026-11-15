@@ -27,7 +27,7 @@ class CpOffboardKeepAlive : public smacc2::ISmaccComponent, public smacc2::ISmac
 {
 public:
   CpOffboardKeepAlive();
-  virtual ~CpOffboardKeepAlive();
+  ~CpOffboardKeepAlive() override;
 
   void onInitialize() override;
   void update() override;

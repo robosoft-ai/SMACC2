@@ -77,7 +77,7 @@ public:
     smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 
-  virtual ~CbPx4ClientBehaviorBase() {}
+  ~CbPx4ClientBehaviorBase() override {}
 
   // arm the completion watchdog (checked from update() on the SignalDetector
   // thread); disabled when never called. Atomic so it may be armed from the

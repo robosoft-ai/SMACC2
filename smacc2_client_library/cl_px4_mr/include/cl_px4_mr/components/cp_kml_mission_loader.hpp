@@ -48,7 +48,7 @@ class CpKmlMissionLoader : public smacc2::ISmaccComponent
 {
 public:
   CpKmlMissionLoader();
-  virtual ~CpKmlMissionLoader();
+  ~CpKmlMissionLoader() override;
 
   void onInitialize() override;
 

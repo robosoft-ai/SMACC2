@@ -26,7 +26,7 @@ class CpGoalChecker : public smacc2::ISmaccComponent, public smacc2::ISmaccUpdat
 {
 public:
   CpGoalChecker();
-  virtual ~CpGoalChecker();
+  ~CpGoalChecker() override;
 
   void onInitialize() override;
   void update() override;

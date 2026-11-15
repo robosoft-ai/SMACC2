@@ -82,7 +82,7 @@ class CbPx4PathFollowerBase : public CbPx4ClientBehaviorBase
 {
 public:
   explicit CbPx4PathFollowerBase(PathFollowerParams params = {});
-  virtual ~CbPx4PathFollowerBase() {}
+  ~CbPx4PathFollowerBase() override {}
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()

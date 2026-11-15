@@ -73,7 +73,7 @@ class CpTfBroadcaster : public smacc2::ISmaccComponent
 {
 public:
   explicit CpTfBroadcaster(TfBroadcasterParams params = {});
-  virtual ~CpTfBroadcaster();
+  ~CpTfBroadcaster() override;
 
   void onInitialize() override;
 

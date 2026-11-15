@@ -31,7 +31,7 @@ public:
     std::string command =
       "ros2 run micro_ros_agent micro_ros_agent udp4 -p 8888 2>&1 | tee /tmp/xrce_agent.log",
     std::string nodeName = "/px4_micro_xrce_dds");
-  virtual ~CpMicroRosAgent();
+  ~CpMicroRosAgent() override;
 
   void launch();
   void shutdown();

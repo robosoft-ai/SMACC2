@@ -25,7 +25,7 @@ class CpVehicleCommandAck : public smacc2::ISmaccComponent
 {
 public:
   CpVehicleCommandAck();
-  virtual ~CpVehicleCommandAck();
+  ~CpVehicleCommandAck() override;
 
   void onInitialize() override;
 

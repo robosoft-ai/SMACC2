@@ -90,7 +90,7 @@ class CpForwardObstacleGuard : public smacc2::ISmaccComponent
 {
 public:
   explicit CpForwardObstacleGuard(ForwardObstacleGuardParams params = {});
-  virtual ~CpForwardObstacleGuard();
+  ~CpForwardObstacleGuard() override;
 
   void onInitialize() override;
 
