@@ -22,6 +22,7 @@ bash src/SMACC2/smacc2_performance_tools/px4_test_tools/px4_run.sh install /tmp/
 | `PKG` | `sm_cl_px4_mr_test_1` | the machine to run |
 | `END_STATE` | `StLanded` | the state at which the machine is stopped |
 | `MAX_WAIT` | 420 | seconds to wait for that state |
+| `OWN_AGENT` | 0 | 1 starts no agent, for a machine that launches its own (tests 2, 4, 5); the report then counts agent processes the machine left behind |
 
 **Start QGroundControl first.** PX4 refuses to arm without a ground station connected, and the
 machine then waits forever in its first state. The script warns when it does not see one. The run

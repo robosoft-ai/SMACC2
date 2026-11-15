@@ -40,8 +40,6 @@ public:
   std::string getNodeName() const;
 
 private:
-  void killProcessesRecursive(pid_t pid);
-
   pid_t agentPid_ = -1;
   std::atomic<bool> launched_{false};
   std::atomic<bool> shutdownRequested_{false};

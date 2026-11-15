@@ -22,6 +22,8 @@
 # Usage: px4_run.sh <install-prefix> <out-dir> <px4-build-dir> [tsan|asan <overlay-prefix>]
 # <px4-build-dir> is PX4-Autopilot/build/px4_sitl_default, already built (make px4_sitl).
 # Environment: PKG (default sm_cl_px4_mr_test_1), END_STATE (default StLanded), MAX_WAIT seconds (default 420).
+# OWN_AGENT=1 starts no agent here, for a machine that launches its own through CpMicroRosAgent; the
+# report then says how many agent processes the machine left behind.
 # PX4 arms only with a ground station connected: start QGroundControl first.
 # With tsan or asan the machine binary and its SMACC2 libraries are taken from the overlay prefix.
 # Exit status 0 when the end state was reached and the machine stopped without hanging.
@@ -61,8 +63,11 @@ FIFO=$OUT/px4_stdin; rm -f $FIFO; mkfifo $FIFO   # px4 reads its shell from stdi
 ( cd $PX4/rootfs && exec env HEADLESS=1 PX4_SIM_MODEL=gz_x500 GZ_IP=127.0.0.1 $PX4/bin/px4 < $FIFO > $PL 2>&1 ) & PP=$!
 exec 3> $FIFO
 for i in $(seq 1 90); do sleep 1; grep -a -q "Ready for takeoff\|pxh>" $PL && { echo "px4 booted after $i s"; break; }; done
-( exec ros2 run micro_ros_agent micro_ros_agent udp4 -p 8888 > $AL 2>&1 ) & AP=$!
-for i in $(seq 1 60); do sleep 1; grep -a -q "create_topic\|create_participant" $AL && { echo "agent has a client after $i s"; break; }; done
+AP=""
+if [ "${OWN_AGENT:-0}" != 1 ]; then
+  ( exec ros2 run micro_ros_agent micro_ros_agent udp4 -p 8888 > $AL 2>&1 ) & AP=$!
+  for i in $(seq 1 60); do sleep 1; grep -a -q "create_topic\|create_participant" $AL && { echo "agent has a client after $i s"; break; }; done
+fi
 sleep 3
 T0=$(date +%s)
 ( [ -n "$OVERLAY" ] && source "$OVERLAY"; exec $PRE $BIN --ros-args --log-level INFO > $LOG 2>&1 ) & SP=$!
@@ -78,10 +83,11 @@ if kill -0 $SP 2>/dev/null; then T1=$(date +%s.%N); kill -INT $SP
   if kill -0 $SP 2>/dev/null; then HANG=yes; echo "SM HANG: alive 120 s after SIGINT, SIGKILL"; kill -KILL $SP; fi
   wait $SP; echo "SM exit $? after $(python3 -c "print(round($(date +%s.%N)-$T1,1))") s"
 else wait $SP; echo "SM exit $? (ended on its own)"; fi
-kill -INT $AP; printf 'shutdown\n' >&3; exec 3>&-
+[ -z "$AP" ] && echo "agent processes left by the machine: $(pgrep -u $USER -c -f '[m]icro_ros_agent')"
+[ -n "$AP" ] && kill -INT $AP; printf 'shutdown\n' >&3; exec 3>&-
 for i in $(seq 1 30); do kill -0 $PP 2>/dev/null || break; sleep 1; done; kill -0 $PP 2>/dev/null && kill -KILL $PP
 for p in $(pgrep -u $USER -f '[g]z sim.*default.sdf|[m]icro_ros_agent'); do kill -KILL $p 2>/dev/null; done
-wait $AP 2>/dev/null; wait $PP 2>/dev/null; rm -f $FIFO
+[ -n "$AP" ] && wait $AP 2>/dev/null; wait $PP 2>/dev/null; rm -f $FIFO
 sleep 1; echo "leftover after: $(pgrep -u $USER -c -f "$SIMPROCS")"
 echo "== px4: arming, takeoff and landing lines $(grep -a -c -i 'armed by\|Takeoff detected\|Landing detected' $PL)"
 echo "== states: $(grep -a -o "${PKG}::[A-Za-z0-9_]*\] State OnEntry code finished" $LOG | sed 's/.*::\(.*\)\].*/\1/' | tr '\n' ' ')"

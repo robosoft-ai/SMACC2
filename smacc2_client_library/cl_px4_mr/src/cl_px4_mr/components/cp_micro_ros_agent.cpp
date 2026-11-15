@@ -17,17 +17,35 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <signal.h>
-#include <stdio.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <sstream>
+#include <chrono>
 #include <system_error>
 #include <thread>
-#include <vector>
 
 namespace cl_px4_mr
 {
+namespace
+{
+// Reaps the group leader and returns true once no process of the group is left.
+bool waitForGroupExit(pid_t group, bool & leaderReaped, std::chrono::milliseconds limit)
+{
+  const auto deadline = std::chrono::steady_clock::now() + limit;
+  while (true)
+  {
+    if (!leaderReaped)
+    {
+      int status = 0;
+      const pid_t result = waitpid(group, &status, WNOHANG);
+      leaderReaped = result == group || (result == -1 && errno == ECHILD);
+    }
+    if (leaderReaped && kill(-group, 0) == -1 && errno == ESRCH) return true;
+    if (std::chrono::steady_clock::now() >= deadline) return false;
+    std::this_thread::sleep_for(std::chrono::milliseconds(20));
+  }
+}
+}  // namespace
 
 CpMicroRosAgent::CpMicroRosAgent(std::string command, std::string nodeName)
 : command_(std::move(command)), nodeName_(std::move(nodeName))
@@ -61,11 +79,12 @@ void CpMicroRosAgent::launch()
 
   if (pid == 0)
   {
-    // Child process
-    close(pipefd[0]);
+    // Child process: its own process group, so shutdown() can signal the shell and all it starts
+    setpgid(0, 0);
     dup2(pipefd[1], STDOUT_FILENO);
     dup2(pipefd[1], STDERR_FILENO);
-    close(pipefd[1]);
+    // The agent keeps none of this process's descriptors (sockets, DDS shared memory, the pipe)
+    close_range(3, ~0U, 0);
 
     execl("/bin/sh", "/bin/sh", "-c", command_.c_str(), nullptr);
 
@@ -76,6 +95,7 @@ void CpMicroRosAgent::launch()
   {
     // Parent process
     close(pipefd[1]);
+    setpgid(pid, pid);  // also here, so the group exists whichever process runs first
     agentPid_ = pid;
     pipeFd_ = pipefd[0];
 
@@ -136,19 +156,18 @@ void CpMicroRosAgent::shutdown()
 
   RCLCPP_INFO(getLogger(), "CpMicroRosAgent: shutting down agent (PID %d)", agentPid_);
 
-  // Kill process tree recursively
-  killProcessesRecursive(agentPid_);
-
-  // Reap zombie with brief retry loop
-  for (int i = 0; i < 10; i++)
+  // SIGTERM to the whole group, SIGKILL to whatever is left after two seconds
+  bool leaderReaped = false;
+  kill(-agentPid_, SIGTERM);
+  if (!waitForGroupExit(agentPid_, leaderReaped, std::chrono::seconds(2)))
   {
-    int status = 0;
-    pid_t result = waitpid(agentPid_, &status, WNOHANG);
-    if (result == agentPid_ || result == -1)
+    RCLCPP_WARN(getLogger(), "CpMicroRosAgent: agent still running after SIGTERM, sending SIGKILL");
+    kill(-agentPid_, SIGKILL);
+    if (!waitForGroupExit(agentPid_, leaderReaped, std::chrono::seconds(2)))
     {
-      break;
+      RCLCPP_ERROR(
+        getLogger(), "CpMicroRosAgent: process group %d still exists after SIGKILL", agentPid_);
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
 
   // Close pipe
@@ -173,48 +192,5 @@ pid_t CpMicroRosAgent::getPid() const
 }
 
 std::string CpMicroRosAgent::getNodeName() const { return nodeName_; }
-
-void CpMicroRosAgent::killProcessesRecursive(pid_t pid)
-{
-  std::string command = "pgrep -P " + std::to_string(pid);
-  FILE * pipe = popen(command.c_str(), "r");
-
-  if (!pipe)
-  {
-    return;
-  }
-
-  char buffer[128];
-  std::string result;
-
-  while (fgets(buffer, sizeof(buffer), pipe) != nullptr)
-  {
-    result += buffer;
-  }
-
-  pclose(pipe);
-
-  std::istringstream iss(result);
-  pid_t childPid = 0;
-  std::vector<pid_t> childPids;
-
-  while (iss >> childPid)
-  {
-    childPids.push_back(childPid);
-  }
-
-  // Kill child processes before killing the parent process
-  for (const pid_t & child : childPids)
-  {
-    killProcessesRecursive(child);
-  }
-
-  // After killing all children, kill the parent process
-  int res = kill(pid, SIGTERM);
-  if (res == 0)
-  {
-    RCLCPP_INFO(getLogger(), "CpMicroRosAgent: killed process %d", pid);
-  }
-}
 
 }  // namespace cl_px4_mr
