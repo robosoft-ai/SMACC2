@@ -20,17 +20,13 @@
 #
 # Usage: transition_soak.sh <install-prefix> [seconds] [out-dir]
 # Defaults: 300 seconds, ./transition_soak_out. Limits and sampling: see memory_sampler.sh.
-if [ $# -lt 1 ]; then sed -n '17,22p' "$0"; exit 2; fi
+if [ $# -lt 1 ]; then grep -m1 '^# Usage' "$0"; exit 2; fi
 INST=$(cd "$1" && pwd) || exit 2
 SECS=${2:-300}; OUT=${3:-transition_soak_out}
 HERE=$(cd "$(dirname "$0")" && pwd)
-source "$INST/setup.bash"
-export ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-43} RCUTILS_COLORIZED_OUTPUT=0 RCUTILS_LOGGING_BUFFERED_STREAM=0
-PKG=$INST/sm_coretest_transition_speed_1
-bash "$HERE/memory_sampler.sh" "$OUT" "$SECS" \
-  "$PKG/lib/sm_coretest_transition_speed_1/sm_coretest_transition_speed_1_node" --ros-args --log-level FATAL \
-  --params-file "$PKG/share/sm_coretest_transition_speed_1/config/sm_coretest_transition_speed_1_config.yaml" \
-  -r __node:=sm_coretest_transition_speed_1
+source "$HERE/test_commands.sh"
+memory_test_setup transition "$INST" || exit 2
+bash "$HERE/memory_sampler.sh" "$OUT" "$SECS" "${MT_CMD[@]}"
 RC=$?
-echo "round trips: about $(($(grep -c 'Longtime frequency:' "$OUT/node.log") * 100))"
+echo "$MT_UNIT: $(memory_test_count transition "$OUT/node.log")"
 exit $RC

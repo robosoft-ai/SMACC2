@@ -61,7 +61,8 @@ bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/action_goa
 Each runs one core test machine with logging off, samples the process's resident memory, threads and
 file descriptors, and fails if any of them keeps growing after a warm-up. They find growth that is
 still reachable at exit, which the leak sanitizer cannot report. The tests, the limits and the
-reference results are in `memory_tests/README.md`.
+reference results are in `memory_tests/README.md`. When one fails, `memory_tests/heap_attribution.sh`
+runs the same machine under `heaptrack` and names the call sites that grew.
 
 ## coverage.sh
 
