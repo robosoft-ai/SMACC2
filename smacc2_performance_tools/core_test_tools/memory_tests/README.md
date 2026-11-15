@@ -9,12 +9,14 @@ None of them runs on a pull request.
 |--|--|--|--|
 | `transition_soak.sh` | a bare transition, about 100,000 a second | `sm_coretest_transition_speed_1` | 5 min |
 | `object_churn_soak.sh` | every state-scoped object: a synchronous updatable behavior, an asynchronous behavior and its thread, an event generator, a state reactor and two signal connections, created and destroyed about 2000 times a second | `sm_coretest_object_churn_1` | 5 min |
+| `idle_load_soak.sh` | the polling loop of a machine that stays in one state: a 500 Hz timer, a 1 kB message published and received on each tick, an event per message that no state consumes, and two updatables called 2000 times a second | `sm_coretest_idle_load_1` | 5 min |
 | `memory_sampler.sh` | the shared sampler the tests call; runs any command | | |
 
 ```bash
 cd <workspace>
 bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/transition_soak.sh install 300 /tmp/soak_t
 bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/object_churn_soak.sh install 300 /tmp/soak_c
+bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/idle_load_soak.sh install 300 /tmp/soak_i
 ```
 
 Run one at a time, with no other ROS node in the same domain.
@@ -44,14 +46,18 @@ Measured 2026-11-14, RelWithDebInfo, 300 second runs.
 |--|--|--|--|--|
 | `transition_soak.sh` | about 15.7 million | 31,928 kB, growth 0 kB | 16, growth 0 | 60, growth 0 |
 | `object_churn_soak.sh` | 301,000 | 32,432 kB, growth 4 kB | 16, growth 0 | 60, growth 0 |
+| `idle_load_soak.sh` | none; 149,000 messages, 596,000 loop iterations | 32,020 kB, growth 0 kB | 16, growth 0 | 60, growth 0 |
 
-Both fail on a build of the tree as it was before the transition log was bounded: the transition
-soak grew by 2.3 GB in 48 seconds and the object churn soak by 50 MB in 48 seconds.
+The first two fail on a build of the tree as it was before the transition log was bounded: the
+transition soak grew by 2.3 GB in 48 seconds and the object churn soak by 50 MB in 48 seconds. The
+idle load soak makes no transitions, so its check is a switch in the machine: with
+`SM_CORETEST_IDLE_LEAK=1` it keeps every message, and the soak fails with 23 MB of growth in 48
+seconds.
 
 ## What they cannot see
 
-Growth in code these two machines do not run (client libraries, action clients, topic subscribers
-under load), and growth slower than about 1 MB per minute. A failing run says that memory grew, not
+Growth in code these three machines do not run (client libraries, action clients), and growth
+slower than about 1 MB per minute. A failing run says that memory grew, not
 where; a heap profiler is the next step.
 
 ## Adding a test

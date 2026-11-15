@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sm_coretest_idle_load_1</name>
+  <version>3.1.0</version>
+  <description>Core test for memory: one state held for the whole run while a 500 Hz timer, a publisher, a subscriber receiving its 1 kB messages, an updatable component and an updatable behavior keep the polling loop busy.</description>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>smacc2</depend>
+  <depend>std_msgs</depend>
+  <depend>rclcpp</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

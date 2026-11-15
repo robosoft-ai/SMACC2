@@ -54,6 +54,7 @@ when a result is low, run the old and the new build alternately before concludin
 ```bash
 bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/transition_soak.sh install 300 /tmp/soak_t
 bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/object_churn_soak.sh install 300 /tmp/soak_c
+bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/idle_load_soak.sh install 300 /tmp/soak_i
 ```
 
 Each runs one core test machine with logging off, samples the process's resident memory, threads and
