@@ -91,7 +91,7 @@ class CpTunnelCentering : public smacc2::ISmaccComponent
 {
 public:
   explicit CpTunnelCentering(TunnelCenteringParams params = {});
-  virtual ~CpTunnelCentering();
+  ~CpTunnelCentering() override;
 
   void onInitialize() override;
 

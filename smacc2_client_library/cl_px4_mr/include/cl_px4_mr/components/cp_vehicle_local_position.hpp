@@ -37,7 +37,7 @@ class CpVehicleLocalPosition : public smacc2::ISmaccComponent
 {
 public:
   CpVehicleLocalPosition();
-  virtual ~CpVehicleLocalPosition();
+  ~CpVehicleLocalPosition() override;
 
   void onInitialize() override;
 

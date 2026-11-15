@@ -156,8 +156,8 @@ void CpForwardObstacleGuard::onCloud(const sensor_msgs::msg::PointCloud2 & msg)
   int hits = 0;
   float minRange = std::numeric_limits<float>::infinity();
 
-  std::array<float, 9> r{};
-  const bool level = params_.levelFrame && levelRotation(r);
+  std::array<float, 9> rotation{};
+  const bool level = params_.levelFrame && levelRotation(rotation);
 
   sensor_msgs::PointCloud2ConstIterator<float> ix(msg, "x");
   sensor_msgs::PointCloud2ConstIterator<float> iy(msg, "y");
@@ -181,9 +181,9 @@ void CpForwardObstacleGuard::onCloud(const sensor_msgs::msg::PointCloud2 & msg)
     }
     if (level)
     {
-      const float lx = r[0] * x + r[1] * y + r[2] * z;
-      const float ly = r[3] * x + r[4] * y + r[5] * z;
-      const float lz = r[6] * x + r[7] * y + r[8] * z;
+      const float lx = rotation[0] * x + rotation[1] * y + rotation[2] * z;
+      const float ly = rotation[3] * x + rotation[4] * y + rotation[5] * z;
+      const float lz = rotation[6] * x + rotation[7] * y + rotation[8] * z;
       x = lx;
       y = ly;
       z = lz;

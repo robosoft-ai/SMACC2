@@ -21,8 +21,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <cstring>
 #include <sstream>
+#include <system_error>
 #include <thread>
 #include <vector>
 
@@ -51,7 +51,9 @@ void CpMicroRosAgent::launch()
   int pipefd[2];
   if (pipe(pipefd) == -1)
   {
-    RCLCPP_ERROR(getLogger(), "CpMicroRosAgent: pipe() failed: %s", strerror(errno));
+    RCLCPP_ERROR(
+      getLogger(), "CpMicroRosAgent: pipe() failed: %s",
+      std::system_category().message(errno).c_str());
     return;
   }
 
@@ -107,7 +109,9 @@ void CpMicroRosAgent::launch()
   }
   else
   {
-    RCLCPP_ERROR(getLogger(), "CpMicroRosAgent: fork() failed: %s", strerror(errno));
+    RCLCPP_ERROR(
+      getLogger(), "CpMicroRosAgent: fork() failed: %s",
+      std::system_category().message(errno).c_str());
     close(pipefd[0]);
     close(pipefd[1]);
   }
@@ -138,7 +142,7 @@ void CpMicroRosAgent::shutdown()
   // Reap zombie with brief retry loop
   for (int i = 0; i < 10; i++)
   {
-    int status;
+    int status = 0;
     pid_t result = waitpid(agentPid_, &status, WNOHANG);
     if (result == agentPid_ || result == -1)
     {
@@ -183,7 +187,7 @@ void CpMicroRosAgent::killProcessesRecursive(pid_t pid)
   char buffer[128];
   std::string result;
 
-  while (fgets(buffer, sizeof(buffer), pipe) != NULL)
+  while (fgets(buffer, sizeof(buffer), pipe) != nullptr)
   {
     result += buffer;
   }
@@ -191,7 +195,7 @@ void CpMicroRosAgent::killProcessesRecursive(pid_t pid)
   pclose(pipe);
 
   std::istringstream iss(result);
-  pid_t childPid;
+  pid_t childPid = 0;
   std::vector<pid_t> childPids;
 
   while (iss >> childPid)

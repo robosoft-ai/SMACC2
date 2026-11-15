@@ -26,7 +26,7 @@ class CpFailsafeFlags : public smacc2::ISmaccComponent
 {
 public:
   CpFailsafeFlags();
-  virtual ~CpFailsafeFlags();
+  ~CpFailsafeFlags() override;
 
   void onInitialize() override;
 

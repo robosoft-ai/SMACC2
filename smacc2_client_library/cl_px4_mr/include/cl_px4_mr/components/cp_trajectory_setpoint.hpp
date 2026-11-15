@@ -29,7 +29,7 @@ class CpTrajectorySetpoint : public smacc2::ISmaccComponent
 {
 public:
   CpTrajectorySetpoint();
-  virtual ~CpTrajectorySetpoint();
+  ~CpTrajectorySetpoint() override;
 
   void onInitialize() override;
 

@@ -26,7 +26,7 @@ class CpVehicleStatus : public smacc2::ISmaccComponent
 {
 public:
   CpVehicleStatus();
-  virtual ~CpVehicleStatus();
+  ~CpVehicleStatus() override;
 
   void onInitialize() override;
 
