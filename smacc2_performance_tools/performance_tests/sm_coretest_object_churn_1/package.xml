@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sm_coretest_object_churn_1</name>
+  <version>3.1.0</version>
+  <description>Core test for memory: two states that follow each other without pause, each creating and destroying a synchronous updatable behavior, an asynchronous behavior, an event generator, a state reactor and two signal connections.</description>
+  <maintainer email="brett@robosoft.ai">Brett Aldrich</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>smacc2</depend>
+  <depend>eg_conditional_generator</depend>
+  <depend>sr_all_events_go</depend>
+  <depend>rclcpp</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
