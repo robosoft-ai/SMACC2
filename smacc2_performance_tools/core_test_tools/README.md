@@ -9,6 +9,7 @@ work from any workspace. The sanitizer gate, which runs the ten `sm_coretest_*` 
 |--|--|--|
 | `regression.sh` | do five reference machines still go through the same states? | 3 min |
 | `transition_speed.sh` | did the transition path get slower? | 1 min per run |
+| `memory_soak.sh` | does memory keep growing as the machine transitions? | 5 min |
 | `coverage.sh` | which lines of the core do the tests reach? | about 12 min |
 | `send_keys.py` | helper: scripted keypresses for a machine that uses `cl_keyboard` | |
 
@@ -47,6 +48,23 @@ Reference: RelWithDebInfo, the machine these were measured on, November 2026: me
 52,602 Hz. Take the figure on your own machine before a change and again after it; runs on one
 machine and one build differ by up to about 4 %, and now and then by 10 % for minutes at a time, so
 when a result is low, run the old and the new build alternately before concluding anything.
+
+## memory_soak.sh
+
+```bash
+bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_soak.sh install 300 /tmp/soak
+```
+
+Runs `sm_coretest_transition_speed_1` at full speed with logging off, samples the process's resident
+memory every 2 seconds, and fails (exit 1) if it grew by more than 4096 kB between the end of a 60
+second warm-up and the end of the run. `SAMPLE_S`, `WARMUP_S` and `MAX_GROWTH_KB` override the three
+figures. The samples are in `rss.csv` in the output directory.
+
+It exists for memory that is still reachable at exit, which the leak sanitizer cannot report: a
+container that gains an entry per transition. Measured 2026-11-14: the current tree settles at
+31,912 kB within 2 seconds and stays there for 15.8 million round trips; the tree before the
+transition log was bounded grew by 2.3 GB in 48 seconds. It covers only what a bare transition
+touches, not client libraries.
 
 ## coverage.sh
 
