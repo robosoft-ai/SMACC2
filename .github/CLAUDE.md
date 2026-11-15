@@ -35,6 +35,7 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 | Transition speed (`core_test_tools/transition_speed.sh`) | developer machine | on demand, when the transition path changes | no | 1 min per run, three runs | transitions per second with logging off, against the band in the tools' README |
 | Coverage (`core_test_tools/coverage.sh`) | developer machine | on demand | no | about 12 min | which lines, functions and branches of the core the core tests and the regression suite reach |
 | Simulator runs (`smacc2_performance_tools/nav2_test_tools/nav2_run.sh`, `px4_test_tools/px4_run.sh`, `moveit_test_tools/panda_run.sh`) | developer machine | on demand, after a change to a client library or to shutdown | no | 1 to 7 min each | a reference machine completes its mission against Nav2, PX4 SITL or MoveIt and shuts down cleanly; each also runs under TSan or ASan |
+| ABI comparison (`.github/scripts/abi_compare.sh <old-ref> <new-ref> <work-dir>`) | developer machine | on demand, before a release | no | about 5 min | which exported functions were removed, added or changed since the last tag, which classes changed size and which virtual tables moved, for the release notes and the version number; needs `abigail-tools` |
 | ROS Lint (`ci-ros-lint.yaml`) | GitHub | **disabled** | no | | `ament_copyright`, `ament_cppcheck`, `ament_lint_cmake` per package; duplicates pre-commit |
 | Doxygen Deployment, bloom release | GitHub | push to `jazzy` | no | about 10 min | publishing |
 
@@ -235,5 +236,5 @@ is the floor on reaction time for any event that originates outside the state ma
 4. Add an on-demand clang build, never on a pull request, once its warning backlog is cleared. A trial
    build with clang 18 found a real defect GCC accepts silently, since fixed:
    `demangleSymbol(const std::string &)` called itself forever.
-5. Add a memory-growth soak, an ABI comparison before releases and a `perf` flame-graph recipe.
-   Coverage is in place: `smacc2_performance_tools/core_test_tools/coverage.sh`.
+5. Add a memory-growth soak and a `perf` flame-graph recipe. Coverage and the ABI comparison are in
+   place: `smacc2_performance_tools/core_test_tools/coverage.sh`, `.github/scripts/abi_compare.sh`.
