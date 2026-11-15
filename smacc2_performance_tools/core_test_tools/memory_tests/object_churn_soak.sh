@@ -21,15 +21,13 @@
 #
 # Usage: object_churn_soak.sh <install-prefix> [seconds] [out-dir]
 # Defaults: 300 seconds, ./object_churn_soak_out. Limits and sampling: see memory_sampler.sh.
-if [ $# -lt 1 ]; then sed -n '17,24p' "$0"; exit 2; fi
+if [ $# -lt 1 ]; then grep -m1 '^# Usage' "$0"; exit 2; fi
 INST=$(cd "$1" && pwd) || exit 2
 SECS=${2:-300}; OUT=${3:-object_churn_soak_out}
 HERE=$(cd "$(dirname "$0")" && pwd)
-source "$INST/setup.bash"
-export ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-43} RCUTILS_COLORIZED_OUTPUT=0 RCUTILS_LOGGING_BUFFERED_STREAM=0
-bash "$HERE/memory_sampler.sh" "$OUT" "$SECS" \
-  "$INST/sm_coretest_object_churn_1/lib/sm_coretest_object_churn_1/sm_coretest_object_churn_1_node" \
-  --ros-args --log-level FATAL -p signal_detector_loop_freq:=2000.0
+source "$HERE/test_commands.sh"
+memory_test_setup object_churn "$INST" || exit 2
+bash "$HERE/memory_sampler.sh" "$OUT" "$SECS" "${MT_CMD[@]}"
 RC=$?
-echo "round trips: $(grep -o 'round trips: [0-9]*' "$OUT/node.log" | tail -1 | grep -o '[0-9]*$')"
+echo "$MT_UNIT: $(memory_test_count object_churn "$OUT/node.log")"
 exit $RC
