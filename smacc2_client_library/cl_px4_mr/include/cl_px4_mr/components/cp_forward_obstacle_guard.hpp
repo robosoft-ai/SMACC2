@@ -139,8 +139,9 @@ private:
   std::atomic<float> yawRate_{0.0f};
   int gatedClouds_ = 0;
   float cosHalfAngle_ = 1.0f;
-  int triggerStreak_ = 0;
-  int clearStreak_ = 0;
+  // atomic: reset() runs on the state machine thread, onCloud() on the executor thread
+  std::atomic<int> triggerStreak_{0};
+  std::atomic<int> clearStreak_{0};
   std::atomic<bool> tooClose_{false};
   std::atomic<float> lastMinRange_{std::numeric_limits<float>::infinity()};
   std::atomic<int> lastHits_{0};
