@@ -1,0 +1,60 @@
+# Memory tests
+
+Each test runs one core test machine for some minutes with logging off and fails if the process
+keeps growing. They find memory that is still reachable at exit, which the leak sanitizer cannot
+report: a container that gains an entry per transition, a thread or a socket that is never released.
+None of them runs on a pull request.
+
+| Script | What it stresses | Machine | Time |
+|--|--|--|--|
+| `transition_soak.sh` | a bare transition, about 100,000 a second | `sm_coretest_transition_speed_1` | 5 min |
+| `object_churn_soak.sh` | every state-scoped object: a synchronous updatable behavior, an asynchronous behavior and its thread, an event generator, a state reactor and two signal connections, created and destroyed about 2000 times a second | `sm_coretest_object_churn_1` | 5 min |
+| `memory_sampler.sh` | the shared sampler the tests call; runs any command | | |
+
+```bash
+cd <workspace>
+bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/transition_soak.sh install 300 /tmp/soak_t
+bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/object_churn_soak.sh install 300 /tmp/soak_c
+```
+
+Run one at a time, with no other ROS node in the same domain.
+
+## What the sampler measures
+
+`memory_sampler.sh <out-dir> <seconds> <command> [args...]` starts the command, and every 2 seconds
+reads its resident memory and thread count from `/proc/<pid>/status` and counts its open file
+descriptors. After the run it compares the median of the first tenth of the samples taken after a
+60 second warm-up with the median of the last tenth, for each of the three figures.
+
+| Figure | Allowed growth | Override |
+|--|--|--|
+| resident memory | 4096 kB | `MAX_GROWTH_KB` |
+| threads | 2 | `MAX_THREAD_GROWTH` |
+| file descriptors | 2 | `MAX_FD_GROWTH` |
+
+`SAMPLE_S` and `WARMUP_S` set the sample interval and the warm-up. The exit status is 1 when a figure
+grew past its limit, when the command died, or when it did not exit within 20 seconds of SIGINT. The
+samples are in `samples.csv` and the command's output in `node.log`, both in the output directory.
+
+## Reference results
+
+Measured 2026-11-14, RelWithDebInfo, 300 second runs.
+
+| Test | Round trips | Resident memory | Threads | File descriptors |
+|--|--|--|--|--|
+| `transition_soak.sh` | about 15.7 million | 31,928 kB, growth 0 kB | 16, growth 0 | 60, growth 0 |
+| `object_churn_soak.sh` | 301,000 | 32,432 kB, growth 4 kB | 16, growth 0 | 60, growth 0 |
+
+Both fail on a build of the tree as it was before the transition log was bounded: the transition
+soak grew by 2.3 GB in 48 seconds and the object churn soak by 50 MB in 48 seconds.
+
+## What they cannot see
+
+Growth in code these two machines do not run (client libraries, action clients, topic subscribers
+under load), and growth slower than about 1 MB per minute. A failing run says that memory grew, not
+where; a heap profiler is the next step.
+
+## Adding a test
+
+Write a machine that loops without pause and logs a count at FATAL, then a script like
+`object_churn_soak.sh` that hands its command line to `memory_sampler.sh`.

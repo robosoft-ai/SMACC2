@@ -33,7 +33,7 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 | LTTng trace (capture steps under "LTTng tracing" below) | developer machine | on demand | no | seconds to capture and read | timing: loop rate and jitter, how long each state, behavior, update and transition takes |
 | Regression suite (`smacc2_performance_tools/core_test_tools/regression.sh`) | developer machine | on demand, before a core change is committed | no | 3 min | five reference machines still go through the same state sequence, compared with `regression_expected.out` |
 | Transition speed (`core_test_tools/transition_speed.sh`) | developer machine | on demand, when the transition path changes | no | 1 min per run, three runs | transitions per second with logging off, against the band in the tools' README |
-| Memory soak (`core_test_tools/memory_soak.sh`) | developer machine | on demand, before a release and when the transition path changes | no | 5 min | resident memory stays flat while the machine transitions at full speed; finds growth that is still reachable at exit, which LSan cannot report |
+| Memory tests (`core_test_tools/memory_tests/transition_soak.sh`, `object_churn_soak.sh`) | developer machine | on demand, before a release and when the transition path or object lifetimes change | no | 5 min each | resident memory, threads and file descriptors stay flat while the machine transitions at full speed, and while every state creates and destroys behaviors, a reactor, a generator and signal connections; finds growth that is still reachable at exit, which LSan cannot report |
 | Coverage (`core_test_tools/coverage.sh`) | developer machine | on demand | no | about 12 min | which lines, functions and branches of the core the core tests and the regression suite reach |
 | Simulator runs (`smacc2_performance_tools/nav2_test_tools/nav2_run.sh`, `px4_test_tools/px4_run.sh`, `moveit_test_tools/panda_run.sh`) | developer machine | on demand, after a change to a client library or to shutdown | no | 1 to 7 min each | a reference machine completes its mission against Nav2, PX4 SITL or MoveIt and shuts down cleanly; each also runs under TSan or ASan |
 | ABI comparison (`.github/scripts/abi_compare.sh <old-ref> <new-ref> <work-dir>`) | developer machine | on demand, before a release | no | about 5 min | which exported functions were removed, added or changed since the last tag, which classes changed size and which virtual tables moved, for the release notes and the version number; needs `abigail-tools` |
@@ -63,7 +63,7 @@ was before the fixes and scored on the defects already known.
 | Concurrency: data race | the `isShutdownRequested_` race, posting an event during state exit | **TSan finds it** | missed | missed | core tests that provoke the race |
 | Concurrency: shutdown ordering, hang, deadlock | F-6, the timer hand-off race (W), the async-thread locking rule | TSan for lock order; the hang itself shows as a timeout | missed | `concurrency-mt-unsafe` found one (`exit()` in a signal handler) | interrupt sweeps; **W shows only in a plain build** |
 | Leak at exit | M | **LSan finds it**, on a clean exit only | missed | `owning-memory`, not gated | |
-| Memory that grows but is still reachable at exit | X (the transition log gaining 1 KB per transition) | no | no | no | `core_test_tools/memory_soak.sh`: resident memory sampled over minutes of transitions |
+| Memory that grows but is still reachable at exit | X (the transition log gaining 1 KB per transition) | no | no | no | `core_test_tools/memory_tests/`: resident memory, threads and file descriptors sampled over minutes of transitions |
 | Undefined behavior: bad cast, overflow, misaligned access | | **UBSan**, built into both sanitizer builds | `cstyleCast` as style | narrowing conversions | |
 | Uninitialized member | H, I, the thirteen SA-1 pointers | seen only if the value is read on a path a test takes | **`uninitMemberVar` finds it** | **`pro-type-member-init` finds it**, in the gate since 2026-11-13 | |
 | Bug-prone source pattern | unchecked optional access, branch clones, swallowed exceptions | no | partly | **`bugprone-*` finds it** | |
@@ -239,4 +239,4 @@ is the floor on reaction time for any event that originates outside the state ma
    build with clang 18 found a real defect GCC accepts silently, since fixed:
    `demangleSymbol(const std::string &)` called itself forever.
 5. Add a `perf` flame-graph recipe. Coverage, the memory soak and the ABI comparison are in place:
-   `core_test_tools/coverage.sh`, `core_test_tools/memory_soak.sh`, `.github/scripts/abi_compare.sh`.
+   `core_test_tools/coverage.sh`, `core_test_tools/memory_tests/`, `.github/scripts/abi_compare.sh`.
