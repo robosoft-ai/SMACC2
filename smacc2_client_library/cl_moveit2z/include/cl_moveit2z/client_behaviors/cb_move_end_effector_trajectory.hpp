@@ -652,7 +652,5 @@ private:
   std::function<void(moveit_msgs::msg::RobotTrajectory &)> postIncorrectInitialStateEvent;
 
   std::function<void()> postMotionExecutionFailureEvents;
-
-  bool autocleanmarkers = false;
 };
 }  // namespace cl_moveit2z

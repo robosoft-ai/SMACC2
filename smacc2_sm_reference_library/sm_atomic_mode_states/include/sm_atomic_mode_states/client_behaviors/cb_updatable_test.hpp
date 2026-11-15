@@ -30,12 +30,12 @@ public:
         this->counter_ = 0;
     }
 
-    virtual void onEntry()
+    void onEntry() override
     {
         RCLCPP_INFO(getLogger(),"CbUpdatableTest::onEntry");
     }
 
-    virtual void onExit()
+    void onExit() override
     {
         RCLCPP_INFO(getLogger(),"CbUpdatableTest::onExit");
     }

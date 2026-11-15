@@ -86,8 +86,6 @@ public:
   }
 
 private:
-  const int HTTP_VERSION = 11;
-
   bool initialized_;
 
   std::string server_url_;  // Server URL for component configuration

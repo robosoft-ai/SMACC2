@@ -183,7 +183,7 @@ public:
   // requiresComponent and requiresClient come from ISmaccState; a copy here would shadow the
   // base overload set.
 
-  virtual ISmaccStateMachine & getStateMachine() { return base_type::outermost_context(); }
+  ISmaccStateMachine & getStateMachine() override { return base_type::outermost_context(); }
 
   template <typename TOrthogonal, typename TBehavior>
   static void configure_orthogonal_runtime(

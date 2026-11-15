@@ -60,7 +60,6 @@ public:
     // at least 1 sample per centimeter (average)
     const double METERS_PER_SAMPLE = 0.001;
 
-    float dist_meters = 0;
     tf2::Vector3 voffset;
     tf2::fromMsg(offset_, voffset);
 
@@ -87,7 +86,6 @@ public:
     tf2::Transform finalEndEffectorTransform = currentEndEffectorTransform;
     finalEndEffectorTransform.setOrigin(finalEndEffectorTransform.getOrigin() + voffset);
 
-    float linc = totallineardist / steps;  // METERS_PER_SAMPLE with sign
     float interpolation_factor = 0;
 
     rclcpp::Time startTime = getNode()->now();
@@ -96,7 +94,6 @@ public:
     for (float i = 0; i < steps; i++)
     {
       interpolation_factor += interpolation_factor_step;
-      dist_meters += linc;
 
       tf2::Vector3 vi = currentEndEffectorTransform.getOrigin().lerp(
         finalEndEffectorTransform.getOrigin(), interpolation_factor);

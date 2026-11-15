@@ -58,7 +58,6 @@ private:
 
   ClFibonacci * cl_fibonacci_;
   ClFibonacci::FibonacciResultSignal::SharedPtr fibonacciCallback_;
-  rclcpp_action::ResultCode fibonacciResult_;
   std::shared_future<std::shared_ptr<
     rclcpp_action::ClientGoalHandle<action_tutorials_interfaces::action::Fibonacci> > >
     goalHandleFuture_;

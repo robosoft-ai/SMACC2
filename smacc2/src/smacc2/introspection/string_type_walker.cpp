@@ -105,7 +105,6 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     else
     {
       // find and replace all coincidences typestr to tokenid
-      int i = 0;
       for (const auto & m : matches)
       {
         std::string tstr = m;
@@ -114,8 +113,6 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 
         typecount++;
         typesdict[tkey] = tstr;
-
-        i++;
       }
     }
   }

@@ -33,7 +33,7 @@ void CbWaitNav2Nodes::runtimeConfigure()
     receivedAliveMsg_[v] = false;
     ss << "[CbWaitNav2Nodes] - " << toString(v) << ": waiting" << std::endl;
   }
-  RCLCPP_INFO(getLogger(), ss.str().c_str());
+  RCLCPP_INFO(getLogger(), "%s", ss.str().c_str());
 
   this->requiresComponent(bondListener_);
   if (bondListener_ == nullptr)

@@ -29,10 +29,7 @@ namespace cl_nav2z
 struct CbPositionControlFreeSpace : public smacc2::SmaccAsyncClientBehavior
 {
 private:
-  double targetYaw_;
   bool goalReached_ = false;
-  double k_betta_;
-  double max_angular_yaw_speed_;
 
   double prev_error_linear_ = 0.0;
   double prev_error_angular_ = 0.0;
