@@ -53,8 +53,6 @@ public:
   }
 
 private:
-  cl_http::ClHttp * cl_http_;
-
   std::function<void()> triggerTranstition;
 };
 }  // namespace sm_atomic_http

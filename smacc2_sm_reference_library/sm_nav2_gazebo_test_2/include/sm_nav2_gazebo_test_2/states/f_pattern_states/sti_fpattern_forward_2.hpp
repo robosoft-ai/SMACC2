@@ -26,8 +26,8 @@ template <typename SS>
 struct StiFPatternForward2 : smacc2::SmaccState<StiFPatternForward2<SS>, SS>
 {
   typedef smacc2::SmaccState<StiFPatternForward2<SS>, SS> TSti;
-  using TSti::context_type;
-  using TSti::SmaccState;
+  using typename TSti::context_type;
+  using TSti::TSti;
 
   // TRANSITION TABLE
   typedef mpl::list<

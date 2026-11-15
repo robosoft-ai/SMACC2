@@ -68,7 +68,7 @@ public:
     }
   }
 
-  virtual void generateTrajectory() {}
+  void generateTrajectory() override {}
 
 private:
   int backIndex_ = -1;
