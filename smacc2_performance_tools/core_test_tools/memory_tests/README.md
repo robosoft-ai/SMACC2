@@ -10,6 +10,7 @@ None of them runs on a pull request.
 | `transition_soak.sh` | a bare transition, about 100,000 a second | `sm_coretest_transition_speed_1` | 5 min |
 | `object_churn_soak.sh` | every state-scoped object: a synchronous updatable behavior, an asynchronous behavior and its thread, an event generator, a state reactor and two signal connections, created and destroyed about 2000 times a second | `sm_coretest_object_churn_1` | 5 min |
 | `idle_load_soak.sh` | the polling loop of a machine that stays in one state: a 500 Hz timer, a 1 kB message published and received on each tick, an event per message that no state consumes, and two updatables called 2000 times a second | `sm_coretest_idle_load_1` | 5 min |
+| `action_goal_soak.sh` | action goals through `CpActionClient` against a server in the same process: succeeded, rejected, aborted, no server, and cancelled by a state exit, about 135 goals a second | `sm_coretest_action_client_1`, run fast | 5 min |
 | `memory_sampler.sh` | the shared sampler the tests call; runs any command | | |
 
 ```bash
@@ -17,6 +18,7 @@ cd <workspace>
 bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/transition_soak.sh install 300 /tmp/soak_t
 bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/object_churn_soak.sh install 300 /tmp/soak_c
 bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/idle_load_soak.sh install 300 /tmp/soak_i
+bash src/SMACC2/smacc2_performance_tools/core_test_tools/memory_tests/action_goal_soak.sh install 300 /tmp/soak_a
 ```
 
 Run one at a time, with no other ROS node in the same domain.
@@ -47,16 +49,23 @@ Measured 2026-11-14, RelWithDebInfo, 300 second runs.
 | `transition_soak.sh` | about 15.7 million | 31,928 kB, growth 0 kB | 16, growth 0 | 60, growth 0 |
 | `object_churn_soak.sh` | 301,000 | 32,432 kB, growth 4 kB | 16, growth 0 | 60, growth 0 |
 | `idle_load_soak.sh` | none; 149,000 messages, 596,000 loop iterations | 32,020 kB, growth 0 kB | 16, growth 0 | 60, growth 0 |
+| `action_goal_soak.sh` | 8100 cycles, 40,500 goals | 36,676 kB, growth 88 kB, none in the last 90 s | 17, growth 0 | 60, growth 0 |
 
 The first two fail on a build of the tree as it was before the transition log was bounded: the
 transition soak grew by 2.3 GB in 48 seconds and the object churn soak by 50 MB in 48 seconds. The
 idle load soak makes no transitions, so its check is a switch in the machine: with
 `SM_CORETEST_IDLE_LEAK=1` it keeps every message, and the soak fails with 23 MB of growth in 48
-seconds.
+seconds. The action goal soak found its own control: the test's action server kept one finished,
+unjoined thread per goal, and the soak failed on it with 9 MB of growth in 129 seconds at a
+thirtieth of today's goal rate. The server now joins its finished threads.
+
+A machine with a bounded history takes a while to settle: the transition log history keeps the last
+1000 transitions, so memory rises by about half a megabyte until it is full. The 60 second warm-up
+covers that for these machines at these rates.
 
 ## What they cannot see
 
-Growth in code these three machines do not run (client libraries, action clients), and growth
+Growth in code these four machines do not run (the client libraries, service clients), and growth
 slower than about 1 MB per minute. A failing run says that memory grew, not
 where; a heap profiler is the next step.
 

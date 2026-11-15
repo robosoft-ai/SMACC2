@@ -17,6 +17,7 @@
 #include <atomic>
 #include <chrono>
 #include <condition_variable>
+#include <cstdlib>
 #include <memory>
 #include <mutex>
 #include <thread>
@@ -32,8 +33,8 @@ namespace sm_coretest_action_client_1
 // against a real server with no second process. The goal's order selects the outcome:
 //   kRejectOrder  the goal is rejected
 //   kAbortOrder   the goal is accepted and aborted after two steps
-//   any other     accepted; one feedback every 50 ms, success after `order` steps, or a cancelled
-//                 result as soon as the client cancels
+//   any other     accepted; one feedback every 50 ms (SM_CORETEST_ACTION_STEP_MS), success after
+//                 `order` steps, or a cancelled result as soon as the client cancels
 class CpFibonacciServer : public smacc2::ISmaccComponent
 {
 public:
@@ -77,7 +78,28 @@ public:
         // Executed off the executor thread, as an action server must.
         std::lock_guard<std::mutex> lock(workersMutex_);
         --acceptsPending_;
-        workers_.emplace_back([this, goalHandle] { this->execute(goalHandle); });
+        // Join the workers that have finished, so one thread's stack is not kept per goal.
+        for (auto it = workers_.begin(); it != workers_.end();)
+        {
+          if (it->done->load())
+          {
+            it->thread.join();
+            it = workers_.erase(it);
+          }
+          else
+          {
+            ++it;
+          }
+        }
+        auto done = std::make_shared<std::atomic<bool>>(false);
+        workers_.push_back(
+          {std::thread(
+             [this, goalHandle, done]
+             {
+               this->execute(goalHandle);
+               done->store(true);
+             }),
+           done});
         acceptsDone_.notify_all();
       });
   }
@@ -86,7 +108,7 @@ private:
   // Ends every goal in flight (each worker aborts its own) and waits for the workers.
   void stop()
   {
-    std::vector<std::thread> workers;
+    std::vector<Worker> workers;
     {
       std::unique_lock<std::mutex> lock(workersMutex_);
       stopping_ = true;
@@ -96,7 +118,7 @@ private:
     }
     for (auto & worker : workers)
     {
-      if (worker.joinable()) worker.join();
+      if (worker.thread.joinable()) worker.thread.join();
     }
   }
 
@@ -129,7 +151,7 @@ private:
         }
         feedback->sequence.push_back(step);
         goalHandle->publish_feedback(feedback);
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(stepPeriod_);
       }
       result->sequence = feedback->sequence;
       goalHandle->succeed(result);
@@ -140,6 +162,14 @@ private:
     }
   }
 
+  // SM_CORETEST_ACTION_STEP_MS shortens the step for a memory soak
+  const std::chrono::milliseconds stepPeriod_{
+    []
+    {
+      const char * text = std::getenv("SM_CORETEST_ACTION_STEP_MS");
+      const int value = text != nullptr ? std::atoi(text) : 0;
+      return value > 0 ? value : 50;
+    }()};
   rclcpp_action::Server<Fibonacci>::SharedPtr server_;
   rclcpp::Context::SharedPtr context_;
   rclcpp::PreShutdownCallbackHandle preShutdownHandle_;
@@ -147,6 +177,11 @@ private:
   std::mutex workersMutex_;
   std::condition_variable acceptsDone_;
   int acceptsPending_ = 0;
-  std::vector<std::thread> workers_;
+  struct Worker
+  {
+    std::thread thread;
+    std::shared_ptr<std::atomic<bool>> done;
+  };
+  std::vector<Worker> workers_;
 };
 }  // namespace sm_coretest_action_client_1

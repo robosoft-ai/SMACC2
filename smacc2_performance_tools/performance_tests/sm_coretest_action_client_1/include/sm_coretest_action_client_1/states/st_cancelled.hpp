@@ -31,7 +31,9 @@ struct StCancelled : smacc2::SmaccState<StCancelled, SmCoretestActionClient1>
   static void staticConfigure()
   {
     configure_orthogonal<OrAction, CbFibonacci>(1000);
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(500ms);
+    // SM_CORETEST_ACTION_CANCEL_MS shortens the wait for a memory soak
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(
+      std::chrono::milliseconds(envMilliseconds("SM_CORETEST_ACTION_CANCEL_MS", 500)));
   }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "[StCancelled] Entered."); }

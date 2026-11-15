@@ -29,6 +29,8 @@
 
 #pragma once
 
+#include <cstdlib>
+
 #include <smacc2/smacc.hpp>
 
 #include <cl_ros2_timer/cl_ros2_timer.hpp>
@@ -46,6 +48,15 @@ using namespace std::chrono_literals;
 
 namespace sm_coretest_action_client_1
 {
+// A duration in milliseconds from the environment, so a memory soak can run the cycle faster than
+// the gate does; the default is used when the variable is unset or not a positive number.
+inline int envMilliseconds(const char * name, int defaultMs)
+{
+  const char * text = std::getenv(name);
+  const int value = text != nullptr ? std::atoi(text) : 0;
+  return value > 0 ? value : defaultMs;
+}
+
 struct StSuccess;
 struct StRejected;
 struct StAborted;
@@ -63,6 +74,8 @@ struct SmCoretestActionClient1
     this->createOrthogonal<OrTimer>();
     this->createOrthogonal<OrAction>();
   }
+
+  unsigned long cycles_ = 0;
 };
 }  // namespace sm_coretest_action_client_1
 
