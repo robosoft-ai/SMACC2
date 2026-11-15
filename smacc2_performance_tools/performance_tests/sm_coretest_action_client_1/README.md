@@ -42,3 +42,15 @@ The launch file tees the node output to `/tmp/sm_coretest_action_client_1_latest
 build, then interrupts it at five random moments. It fails if the machine completes fewer than five
 cycles, if `StTrap` is entered, if any outcome's count is not within one of the cycle count, if a run
 ends with an uncaught exception or a hang, or on a sanitizer report with a SMACC2 frame.
+
+## In the memory tests
+
+`smacc2_performance_tools/core_test_tools/memory_tests/action_goal_soak.sh` runs the same machine
+with logging off and two environment variables that shorten the cycle from about 1.1 s to about
+37 ms: `SM_CORETEST_ACTION_STEP_MS` (the server's step, 50 ms by default; the soak uses 2) and
+`SM_CORETEST_ACTION_CANCEL_MS` (the timer in `StCancelled`, 500 ms by default; the soak uses 20).
+`StSuccess` logs the cycle count at FATAL every 100 cycles so the soak can report it.
+
+The server joins the worker threads that have finished each time it accepts a goal. It used to keep
+every worker until shutdown, one exited thread and its stack per goal, which the soak reported as
+growth of about 70 kB a second.

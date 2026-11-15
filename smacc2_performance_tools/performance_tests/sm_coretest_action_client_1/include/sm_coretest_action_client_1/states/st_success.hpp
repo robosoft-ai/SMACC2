@@ -28,6 +28,15 @@ struct StSuccess : smacc2::SmaccState<StSuccess, SmCoretestActionClient1>
 
   static void staticConfigure() { configure_orthogonal<OrAction, CbFibonacci>(5); }
 
-  void onEntry() { RCLCPP_INFO(getLogger(), "[StSuccess] Entered."); }
+  void onEntry()
+  {
+    RCLCPP_INFO(getLogger(), "[StSuccess] Entered.");
+    auto & sm = this->context<SmCoretestActionClient1>();
+    if (++sm.cycles_ % 100 == 0)
+    {
+      // FATAL so that the count is printed with logging otherwise off
+      RCLCPP_FATAL(getLogger(), "[action] cycles: %lu", sm.cycles_);
+    }
+  }
 };
 }  // namespace sm_coretest_action_client_1
