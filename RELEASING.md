@@ -114,6 +114,7 @@ Claude will:
 2. Review commits since last release
 3. Determine version number (see Version Numbering below)
 4. Categorize changes (fixes, features, breaking changes)
+5. Run `.github/scripts/abi_compare.sh <last-tag> HEAD <work-dir>` (needs `abigail-tools`, about 5 min) and put its summary in the release notes. Any removed function, changed virtual table or changed class size means binaries built against the last release must be rebuilt.
 
 ### Phase 2: Version & Documentation Updates (Claude)
 
@@ -325,6 +326,7 @@ rosdep update
 ## Release Checklist
 
 - [ ] Claude verifies fix/feature in code
+- [ ] Claude runs the ABI comparison against the last tag
 - [ ] Claude determines version number
 - [ ] Claude updates all `package.xml` files
 - [ ] Claude generates CHANGELOG entry
