@@ -25,7 +25,7 @@ set -u
 BUILD=$1; OUT=${2:-clang_tidy_out}; MODE=${3:-}
 HERE=$(cd "$(dirname "$0")" && pwd); REPO=$(cd "$HERE/../.." && pwd)
 BASELINE=$REPO/.github/clang-tidy-baseline.txt
-PACKAGES="smacc2 cl_ros2_timer cl_lifecycle_node cl_nav2z sm_atomic sm_atomic_lifecycle"
+PACKAGES="smacc2 cl_ros2_timer cl_lifecycle_node cl_nav2z cl_px4_mr sm_atomic sm_atomic_lifecycle"
 # Policy (2026-11-13): the three groups below plus two single checks that cover what cppcheck caught in the
 # core study: uninitialized members and C-style casts. The rest of cppcoreguidelines-* stays out: it is a
 # style guide, most of its lines here are public members, and silencing it would change public signatures.

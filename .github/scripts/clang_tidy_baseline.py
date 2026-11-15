@@ -22,7 +22,8 @@ Usage:
 
 A normalized line is "<count>\t<path relative to the repo>: <warning|error>: <message> [<check>]",
 without line or column numbers, so an edit above a known finding does not move it out of the
-baseline, while a new finding or a second instance of a known one does fail. compare exits 1 on
+baseline, while a new finding or a second instance of a known one does fail. A diagnostic in a
+header is counted once, however many translation units include the header. compare exits 1 on
 any error line, any key missing from the baseline, or any count above the baseline's, and lists
 baseline entries that no longer occur so the baseline can be pruned by regenerating it.
 """
@@ -32,13 +33,14 @@ import re
 import sys
 
 LINE = re.compile(
-    r"^(?P<path>/[^:]+):\d+:\d+: (?P<kind>warning|error): (?P<msg>.*?)(?: \[(?P<check>[^\]]+)\])?$"
+    r"^(?P<path>/[^:]+):(?P<where>\d+:\d+): (?P<kind>warning|error): (?P<msg>.*?)(?: \[(?P<check>[^\]]+)\])?$"
 )
 
 
 def normalize(repo_root, raw_paths):
     root = os.path.realpath(repo_root) + os.sep
     counts = collections.Counter()
+    seen = set()
     for raw in raw_paths:
         for line in open(raw, errors="replace"):
             m = LINE.match(line.rstrip("\n"))
@@ -50,7 +52,10 @@ def normalize(repo_root, raw_paths):
             if path[len(root) :].startswith(("build/", "install/", "log/")):
                 continue  # a copy under the build or install tree; the same header counts from its source path
             check = f" [{m.group('check')}]" if m.group("check") else ""
-            counts[f"{path[len(root):]}: {m.group('kind')}: {m.group('msg')}{check}"] += 1
+            key = f"{path[len(root):]}: {m.group('kind')}: {m.group('msg')}{check}"
+            if (key, m.group("where")) not in seen:
+                seen.add((key, m.group("where")))
+                counts[key] += 1
     for key in sorted(counts):
         print(f"{counts[key]}\t{key}")
 
