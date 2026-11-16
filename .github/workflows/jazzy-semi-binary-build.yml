@@ -31,4 +31,7 @@ jobs:
                 source /opt/ros/jazzy/setup.bash
 
                 # Skip packages that require special dependencies or configurations:
-                colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-skip sm_panda_moveit2z_cb_inventory sm_panda_cl_moveit2z_cb_inventory sm_pack_ml sm_atomic sm_atomic_lifecycle sm_atomic_mode_states sm_advanced_recovery_1 sm_branching sm_multi_stage_1 sm_three_some
+                # Machines whose one compile needs over 2 GB, built last and two at a time to bound peak memory:
+                HEAVY="sm_nav2_gazebo_test_2 sm_nav2_gazebo_test_3 sm_nav2_gazebo_test_4 sm_panda_cl_moveit2z_cb_inventory_isaacsim sm_cl_px4_mr_test_4 sm_cl_px4_mr_test_5"
+                colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-skip sm_panda_moveit2z_cb_inventory sm_panda_cl_moveit2z_cb_inventory sm_pack_ml sm_atomic sm_atomic_lifecycle sm_atomic_mode_states sm_advanced_recovery_1 sm_branching sm_multi_stage_1 sm_three_some $HEAVY
+                colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --parallel-workers 2 --packages-select $HEAVY
