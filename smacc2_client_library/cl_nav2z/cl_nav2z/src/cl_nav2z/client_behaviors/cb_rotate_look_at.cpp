@@ -41,7 +41,10 @@ void CbRotateLookAt::onEntry()
   cl_nav2z::CpPose * pose;
   this->requiresComponent(pose, ComponentRequirement::HARD);
 
-  pose->waitTransformUpdate(rclcpp::Rate(20));
+  if (!pose->waitTransformUpdate(rclcpp::Rate(20), [this] { return this->isShutdownRequested(); }))
+  {
+    return;
+  }
   auto position = pose->toPoseMsg().position;
 
   if (lookAtPose_)

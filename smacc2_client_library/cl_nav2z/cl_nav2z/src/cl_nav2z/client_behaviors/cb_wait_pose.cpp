@@ -44,7 +44,12 @@ void CbWaitPose::onEntry()
   }
   try
   {
-    pose->waitTransformUpdate(rclcpp::Rate(20));
+    // leaves without an event when the state is exited first; the wait used to block that exit
+    if (!pose->waitTransformUpdate(
+          rclcpp::Rate(20), [this] { return this->isShutdownRequested(); }))
+    {
+      return;
+    }
     auto posemsg = pose->toPoseMsg();
     RCLCPP_INFO_STREAM(getLogger(), "[CbWaitPose] pose arrived: " << std::endl << posemsg);
   }
