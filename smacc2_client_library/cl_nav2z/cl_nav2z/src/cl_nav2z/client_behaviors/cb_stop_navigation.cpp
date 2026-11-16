@@ -19,7 +19,7 @@
  ******************************************************************************************************************/
 
 #include <cl_nav2z/cl_nav2z.hpp>
-#include <cl_nav2z/client_behaviors/cb_abort_navigation.hpp>
+#include <cl_nav2z/client_behaviors/cb_stop_navigation.hpp>
 #include <cl_nav2z/common.hpp>
 #include <cl_nav2z/components/goal_checker_switcher/cp_goal_checker_switcher.hpp>
 #include <cl_nav2z/components/odom_tracker/cp_odom_tracker.hpp>
