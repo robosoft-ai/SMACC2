@@ -36,7 +36,13 @@ void CbNavigateNextWaypoint::onEntry()
 {
   this->requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);
 
-  auto goalHandle = waypointsNavigator_->sendNextGoal(options_);
+  auto goalHandleFuture = waypointsNavigator_->sendNextGoal(options_);
+  if (!goalHandleFuture)
+  {
+    RCLCPP_ERROR(getLogger(), "[CbNavigateNextWaypoint] no waypoint left to navigate to");
+    this->postFailureEvent();
+    return;
+  }
 
   auto waypointname = waypointsNavigator_->getCurrentWaypointName();
 
@@ -52,6 +58,9 @@ void CbNavigateNextWaypoint::onEntry()
       getLogger(), "[CbNavigateNextWaypoint] current iteration waypoints i: %ld",
       waypointsNavigator_->getCurrentWaypointIndex());
   }
+
+  // the component sent the goal: without this the base ignores its result and a rejection is never seen
+  this->trackGoal(*goalHandleFuture);
 }
 
 void CbNavigateNextWaypoint::onExit() { waypointsNavigator_->stopWaitingResult(); }
