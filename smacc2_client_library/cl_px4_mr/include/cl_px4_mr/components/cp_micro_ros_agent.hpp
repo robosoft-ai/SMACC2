@@ -47,6 +47,9 @@ private:
   std::string nodeName_;
   mutable std::mutex mutex_;
   int pipeFd_ = -1;
+  // Watchdog process and the pipe end whose closing tells it this process is gone
+  pid_t watchdogPid_ = -1;
+  int lifeFd_ = -1;
   // Drains the agent's output pipe; joined in shutdown() so it never outlives this component.
   std::thread readerThread_;
 };
