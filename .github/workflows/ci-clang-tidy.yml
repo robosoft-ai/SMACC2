@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         # clang-tidy 18 from Ubuntu noble, the version the baseline was generated with, plus the
         # rosdeps of the packages the gate analyzes. px4_msgs, which cl_px4_mr needs, has no binary
-        # package and comes from the repos file.
+        # package and comes from the repos file. cl_keyboard is built for the panda machine, not analyzed.
         run: |
           apt-get update
           apt-get install -y --no-install-recommends clang-tidy
@@ -34,9 +34,12 @@ jobs:
             smacc2_client_library/cl_lifecycle_node \
             smacc2_client_library/cl_nav2z/cl_nav2z \
             smacc2_client_library/cl_px4_mr \
+            smacc2_client_library/cl_moveit2z \
+            smacc2_client_library/cl_keyboard \
             px4_msgs \
             smacc2_sm_reference_library/sm_atomic \
-            smacc2_sm_reference_library/sm_atomic_lifecycle
+            smacc2_sm_reference_library/sm_atomic_lifecycle \
+            smacc2_sm_reference_library/sm_panda_cl_moveit2z_cb_inventory
 
       - name: Build with a compile database
         run: |
@@ -50,8 +53,11 @@ jobs:
               cl_lifecycle_node \
               cl_nav2z \
               cl_px4_mr \
+              cl_moveit2z \
+              cl_keyboard \
               sm_atomic \
               sm_atomic_lifecycle \
+              sm_panda_cl_moveit2z_cb_inventory \
             --cmake-args \
               -DCMAKE_BUILD_TYPE=RelWithDebInfo \
               -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \

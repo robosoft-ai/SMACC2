@@ -75,7 +75,7 @@ struct StMoveJoints1 : smacc2::SmaccState<StMoveJoints1, SmPandaClMoveit2zCbInve
 
   void runtimeConfigure()
   {
-    ClMoveit2z * moveGroupClient;
+    ClMoveit2z * moveGroupClient = nullptr;
     this->requiresClient(moveGroupClient);
     this->getClientBehavior<OrArm,CbMoveJoints>()->scalingFactor_ = 1;
   }

@@ -33,7 +33,7 @@ public:
 
   ClMoveit2z(const moveit::planning_interface::MoveGroupInterface::Options & options);
 
-  virtual ~ClMoveit2z();
+  ~ClMoveit2z() override;
 
   template <typename TOrthogonal, typename TClient>
   void onComponentInitialization()

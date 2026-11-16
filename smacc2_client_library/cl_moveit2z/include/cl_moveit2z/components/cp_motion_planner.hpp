@@ -80,7 +80,7 @@ class CpMotionPlanner : public smacc2::ISmaccComponent
 {
 public:
   CpMotionPlanner() = default;
-  virtual ~CpMotionPlanner() = default;
+  ~CpMotionPlanner() override = default;
 
   /**
    * @brief Initialize the component and get reference to ClMoveit2z client
