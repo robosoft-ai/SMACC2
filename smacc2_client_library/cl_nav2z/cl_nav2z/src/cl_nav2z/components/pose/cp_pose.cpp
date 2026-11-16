@@ -78,12 +78,14 @@ void CpPose::onInitialize()
   }
 }
 
-void CpPose::waitTransformUpdate(rclcpp::Rate r)
+bool CpPose::waitTransformUpdate(rclcpp::Rate r, const std::function<bool()> & cancelled)
 {
   bool found = false;
   RCLCPP_INFO(getLogger(), "[Pose Component] waitTransformUpdate");
   while (rclcpp::ok() && !found)
   {
+    if (cancelled && cancelled()) return false;
+
     tf2::Stamped<tf2::Transform> transform;
     try
     {
@@ -117,7 +119,8 @@ void CpPose::waitTransformUpdate(rclcpp::Rate r)
 
     r.sleep();
   }
-  RCLCPP_INFO(getLogger(), "[Pose Component] waitTransformUpdate -> pose found!");
+  if (found) RCLCPP_INFO(getLogger(), "[Pose Component] waitTransformUpdate -> pose found!");
+  return found;
 }
 
 float CpPose::getYaw() { return static_cast<float>(tf2::getYaw(pose_.pose.orientation)); }

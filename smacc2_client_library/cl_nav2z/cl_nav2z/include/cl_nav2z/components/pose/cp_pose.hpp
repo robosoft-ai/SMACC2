@@ -19,6 +19,7 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <functional>
 #include <mutex>
 
 #include <geometry_msgs/msg/pose_stamped.h>
@@ -52,7 +53,9 @@ public:
   void update() override;
 
   // synchronously waits a transform in the current thread
-  void waitTransformUpdate(rclcpp::Rate r = rclcpp::Rate(20));
+  // Blocks until the pose is available; returns false if cancelled() became true first.
+  bool waitTransformUpdate(
+    rclcpp::Rate r = rclcpp::Rate(20), const std::function<bool()> & cancelled = {});
 
   inline geometry_msgs::msg::Pose toPoseMsg()
   {
