@@ -42,7 +42,7 @@ void CbAbsoluteRotate::onEntry()
 
   RCLCPP_INFO_STREAM(getLogger(), "[CbAbsoluteRotate] Absolute yaw Angle:" << goal_angle);
 
-  CpPlannerSwitcher * plannerSwitcher;
+  CpPlannerSwitcher * plannerSwitcher = nullptr;
   this->requiresComponent(plannerSwitcher, ComponentRequirement::SOFT);
 
   if (plannerSwitcher == nullptr)
@@ -59,7 +59,7 @@ void CbAbsoluteRotate::onEntry()
     plannerSwitcher->setDefaultPlanners();
   }
 
-  cl_nav2z::CpPose * p;
+  cl_nav2z::CpPose * p = nullptr;
   this->requiresComponent(p, ComponentRequirement::HARD);
 
   auto referenceFrame = p->getReferenceFrame();
@@ -74,7 +74,7 @@ void CbAbsoluteRotate::onEntry()
   q.setRPY(0, 0, targetAngle);
   goal.pose.pose.orientation = tf2::toMsg(q);
 
-  cl_nav2z::odom_tracker::CpOdomTracker * odomTracker_;
+  cl_nav2z::odom_tracker::CpOdomTracker * odomTracker_ = nullptr;
   this->requiresComponent(odomTracker_, ComponentRequirement::SOFT);
 
   if (odomTracker_ != nullptr)
@@ -86,7 +86,7 @@ void CbAbsoluteRotate::onEntry()
     odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
   }
 
-  CpGoalCheckerSwitcher * goalCheckerSwitcher;
+  CpGoalCheckerSwitcher * goalCheckerSwitcher = nullptr;
   this->requiresComponent(goalCheckerSwitcher, ComponentRequirement::HARD);
 
   goalCheckerSwitcher->setGoalCheckerId("absolute_rotate_goal_checker");

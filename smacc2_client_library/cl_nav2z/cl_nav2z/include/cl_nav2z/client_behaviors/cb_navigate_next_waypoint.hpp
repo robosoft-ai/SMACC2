@@ -31,7 +31,7 @@ class CbNavigateNextWaypoint : public CbNav2ZClientBehaviorBase
 public:
   CbNavigateNextWaypoint(const std::optional<NavigateNextWaypointOptions> & options = std::nullopt);
 
-  virtual ~CbNavigateNextWaypoint();
+  ~CbNavigateNextWaypoint() override;
 
   void onEntry() override;
 

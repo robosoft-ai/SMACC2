@@ -46,7 +46,7 @@ struct StiFPatternReturn1 : smacc2::SmaccState<StiFPatternReturn1<SS>, SS>
   void onExit()
   {
     // Each row starts recording from scratch
-    ClNav2Z * navClient;
+    ClNav2Z * navClient = nullptr;
     this->requiresClient(navClient);
 
     auto odomTracker = navClient->template getComponent<cl_nav2z::odom_tracker::CpOdomTracker>();

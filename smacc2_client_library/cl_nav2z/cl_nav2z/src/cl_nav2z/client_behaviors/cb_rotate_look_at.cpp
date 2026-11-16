@@ -38,7 +38,7 @@ CbRotateLookAt::CbRotateLookAt(const geometry_msgs::msg::PoseStamped & lookAtPos
 
 void CbRotateLookAt::onEntry()
 {
-  cl_nav2z::CpPose * pose;
+  cl_nav2z::CpPose * pose = nullptr;
   this->requiresComponent(pose, ComponentRequirement::HARD);
 
   if (!pose->waitTransformUpdate(rclcpp::Rate(20), [this] { return this->isShutdownRequested(); }))

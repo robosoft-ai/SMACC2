@@ -28,7 +28,7 @@ class CpAmcl : public smacc2::ISmaccComponent
 {
 public:
   CpAmcl();
-  virtual ~CpAmcl();
+  ~CpAmcl() override;
 
   std::string getName() const override;
 

@@ -36,7 +36,7 @@ public:
     std::string goalWaypointName,
     const std::optional<NavigateNextWaypointOptions> & options = std::nullopt);
 
-  virtual ~CbNavigateNextWaypointUntilReached();
+  ~CbNavigateNextWaypointUntilReached() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()

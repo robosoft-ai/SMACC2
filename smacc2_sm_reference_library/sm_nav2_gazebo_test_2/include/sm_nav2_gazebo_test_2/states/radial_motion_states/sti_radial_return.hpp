@@ -50,7 +50,7 @@ struct StiRadialReturn : smacc2::SmaccState<StiRadialReturn, SS>
   {
     // Whatever remains of the recorded path is dropped: each iteration starts
     // recording from scratch
-    ClNav2Z * navClient;
+    ClNav2Z * navClient = nullptr;
     this->requiresClient(navClient);
 
     auto odomTracker = navClient->getComponent<cl_nav2z::odom_tracker::CpOdomTracker>();

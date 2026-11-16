@@ -298,13 +298,13 @@ void CpOdomTracker::logStateString(bool debug)
 void CpOdomTracker::logStateStringLocked(bool debug)
 {
   std::stringstream ss;
-  ss << "--- odom tracker state ---" << std::endl;
+  ss << "--- odom tracker state ---" << '\n';
   ss
     << " - path stack -" << currentPathName_ << " -  size:"
     << pathStack_.size()
     //<< " goal: " << (getCurrentMotionGoal()? getCurrentMotionGoal()->pose: geometry_msgs::msg::Pose())
-    << std::endl;
-  ss << " - [STACK-HEAD active path size: " << baseTrajectory_.poses.size() << "]" << std::endl;
+    << '\n';
+  ss << " - [STACK-HEAD active path size: " << baseTrajectory_.poses.size() << "]" << '\n';
   int i = 0;
   for (auto & p : pathStack_ | boost::adaptors::reversed)
   {
@@ -318,17 +318,17 @@ void CpOdomTracker::logStateStringLocked(bool debug)
     }
 
     ss << " - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size() << " - "
-       << pathinfo.name << " - goal: " << goalstr << std::endl;
+       << pathinfo.name << " - goal: " << goalstr << '\n';
     i++;
   }
   ss << "---";
 
   if (this->odomSub_ != nullptr && this->odomSub_->get_publisher_count() == 0)
   {
-    ss << std::endl
+    ss << '\n'
        << "[CpOdomTracker] Odom tracker cannot record the path because there is no publisher to "
           "the odometry topic"
-       << std::endl;
+       << '\n';
   }
 
   if (debug)

@@ -65,7 +65,7 @@ struct StUndoCurve : smacc2::SmaccState<StUndoCurve, SmNav2GazeboTest2>
   {
     // Drop whatever remains of the curve recording: the radial pattern phase
     // starts with a clean odom tracker
-    ClNav2Z * navClient;
+    ClNav2Z * navClient = nullptr;
     this->requiresClient(navClient);
 
     auto odomTracker = navClient->getComponent<cl_nav2z::odom_tracker::CpOdomTracker>();

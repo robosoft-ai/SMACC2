@@ -66,7 +66,7 @@ void CbNavigateForward::onEntry()
   }
 
   // get current pose
-  CpPose * p;
+  CpPose * p = nullptr;
   this->requiresComponent(p, ComponentRequirement::HARD);
 
   auto referenceFrame = p->getReferenceFrame();
@@ -137,11 +137,11 @@ void CbNavigateForward::onEntry()
     odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
   }
 
-  CpPlannerSwitcher * plannerSwitcher;
+  CpPlannerSwitcher * plannerSwitcher = nullptr;
   this->requiresComponent(plannerSwitcher, ComponentRequirement::HARD);
   plannerSwitcher->setForwardPlanner();
 
-  CpGoalCheckerSwitcher * goalCheckerSwitcher;
+  CpGoalCheckerSwitcher * goalCheckerSwitcher = nullptr;
   this->requiresComponent(goalCheckerSwitcher, ComponentRequirement::HARD);
   goalCheckerSwitcher->setGoalCheckerId("forward_goal_checker");
 

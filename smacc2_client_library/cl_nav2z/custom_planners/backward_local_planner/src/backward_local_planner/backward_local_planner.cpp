@@ -276,10 +276,10 @@ void BackwardLocalPlanner::computeCurrentEuclideanAndAngularErrorsToCarrotGoal(
 
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "[BackwardLocalPlanner] Compute carrot errors from current pose. (linear "
-                         << dist << ")(angular " << angular_error << ")" << std::endl
-                         << "Current carrot pose: " << std::endl
-                         << carrot_pose << std::endl
-                         << "Current actual pose:" << std::endl
+                         << dist << ")(angular " << angular_error << ")" << '\n'
+                         << "Current carrot pose: " << '\n'
+                         << carrot_pose << '\n'
+                         << "Current actual pose:" << '\n'
                          << currentPoseDebugMsg);
 }
 
@@ -573,7 +573,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   }
 
   // ------ Evaluate the current context ----
-  double rho_error, betta_error, alpha_error;
+  double rho_error = 0.0, betta_error = 0.0, alpha_error = 0.0;
 
   // getting carrot goal information
   tf2::Quaternion q;
@@ -613,7 +613,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   betta_error = angles::shortest_angular_distance(betta, theta);
   //------------- END CONTEXT EVAL ----------
 
-  bool linearGoalReached;
+  bool linearGoalReached = false;
   bool currentPoseInGoal =
     checkCurrentPoseInGoalRange(tfpose, velocity, betta_error, linearGoalReached, goal_checker);
 
@@ -702,23 +702,23 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
 
   RCLCPP_INFO_STREAM(
     nh_->get_logger(), "[BackwardLocalPlanner] local planner,"
-                         << std::endl
-                         << " current pose in goal: " << currentPoseInGoal << std::endl
-                         << " carrot in final goal index: " << carrotInFinalGoalIndex << std::endl
-                         << " carrot in linear goal range: " << carrotInLinearGoalRange << std::endl
+                         << '\n'
+                         << " current pose in goal: " << currentPoseInGoal << '\n'
+                         << " carrot in final goal index: " << carrotInFinalGoalIndex << '\n'
+                         << " carrot in linear goal range: " << carrotInLinearGoalRange << '\n'
                          << " straightAnPureSpiningMode: " << straightBackwardsAndPureSpinningMode_
-                         << std::endl
-                         << " inGoalPureSpinningState: " << inGoalPureSpinningState_ << std::endl
-                         << " theta: " << theta << std::endl
-                         << " betta: " << theta << std::endl
-                         << " err_x: " << dx << std::endl
-                         << " err_y:" << dy << std::endl
-                         << " rho_error:" << rho_error << std::endl
-                         << " alpha_error:" << alpha_error << std::endl
-                         << " betta_error:" << betta_error << std::endl
-                         << " vetta:" << vetta << std::endl
-                         << " gamma:" << gamma << std::endl
-                         << " cmd_vel.lin.x:" << cmd_vel.twist.linear.x << std::endl
+                         << '\n'
+                         << " inGoalPureSpinningState: " << inGoalPureSpinningState_ << '\n'
+                         << " theta: " << theta << '\n'
+                         << " betta: " << theta << '\n'
+                         << " err_x: " << dx << '\n'
+                         << " err_y:" << dy << '\n'
+                         << " rho_error:" << rho_error << '\n'
+                         << " alpha_error:" << alpha_error << '\n'
+                         << " betta_error:" << betta_error << '\n'
+                         << " vetta:" << vetta << '\n'
+                         << " gamma:" << gamma << '\n'
+                         << " cmd_vel.lin.x:" << cmd_vel.twist.linear.x << '\n'
                          << " cmd_vel.ang.z:" << cmd_vel.twist.angular.z);
 
   if (inGoalPureSpinningState_)
@@ -755,7 +755,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   // check plan rejection
   bool acceptedLocalTrajectoryFreeOfObstacles = true;
 
-  unsigned int mx, my;
+  unsigned int mx = 0, my = 0;
 
   if (this->enable_obstacle_checking_)
   {
@@ -790,7 +790,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
           RCLCPP_WARN_STREAM(
             nh_->get_logger(),
             "[BackwardLocalPlanner] ABORTED LOCAL PLAN BECAUSE OBSTACLE DETEDTED at point "
-              << i << "/" << trajectory.size() << std::endl
+              << i << "/" << trajectory.size() << '\n'
               << p[0] << ", " << p[1]);
           break;
         }
@@ -861,7 +861,7 @@ bool BackwardLocalPlanner::isGoalReached()
 
 bool BackwardLocalPlanner::findInitialCarrotGoal(geometry_msgs::msg::PoseStamped & tfpose)
 {
-  double lineardisterr, angleerr;
+  double lineardisterr = 0.0, angleerr = 0.0;
   bool inCarrotRange = false;
 
   // initial state check
@@ -1120,7 +1120,7 @@ void BackwardLocalPlanner::generateTrajectory(
 
     auto dx = newpos[0] - currentpos[0];
     auto dy = newpos[1] - currentpos[1];
-    float dist, angledist;
+    float dist = 0.0, angledist = 0.0;
 
     // RCLCPP_INFO(nh_->get_logger(), "traj point %d", i);
     dist = sqrt(dx * dx + dy * dy);

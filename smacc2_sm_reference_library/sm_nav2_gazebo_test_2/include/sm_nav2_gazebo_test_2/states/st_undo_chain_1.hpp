@@ -60,7 +60,7 @@ struct StUndoChain1 : smacc2::SmaccState<StUndoChain1, SmNav2GazeboTest2>
   void onExit()
   {
     // End of the chain: drop whatever remains of the recorded paths
-    ClNav2Z * navClient;
+    ClNav2Z * navClient = nullptr;
     this->requiresClient(navClient);
 
     auto odomTracker = navClient->getComponent<cl_nav2z::odom_tracker::CpOdomTracker>();

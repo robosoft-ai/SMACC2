@@ -42,7 +42,7 @@ void CbUndoPathBackwards::onEntry()
 
   odomTracker->logStateString(false);
 
-  CpPlannerSwitcher * plannerSwitcher;
+  CpPlannerSwitcher * plannerSwitcher = nullptr;
   requiresComponent(plannerSwitcher, ComponentRequirement::HARD);
 
   nav_msgs::msg::Path forwardpath = odomTracker->getPath();
@@ -52,7 +52,7 @@ void CbUndoPathBackwards::onEntry()
 
   nav2_msgs::action::NavigateToPose::Goal goal;
 
-  CpGoalCheckerSwitcher * goalCheckerSwitcher;
+  CpGoalCheckerSwitcher * goalCheckerSwitcher = nullptr;
   requiresComponent(goalCheckerSwitcher, ComponentRequirement::HARD);
 
   if (forwardpath.poses.size() > 0)

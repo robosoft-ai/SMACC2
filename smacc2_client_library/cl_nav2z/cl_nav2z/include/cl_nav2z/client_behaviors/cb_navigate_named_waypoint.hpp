@@ -33,7 +33,7 @@ public:
     std::string waypointname,
     const std::optional<NavigateNextWaypointOptions> & options = std::nullopt);
 
-  virtual ~CbNavigateNamedWaypoint();
+  ~CbNavigateNamedWaypoint() override;
 
   void onEntry() override;
 

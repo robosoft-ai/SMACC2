@@ -42,7 +42,7 @@ public:
   // waits a new pose update of the Pose Component in some reference frame (if there is no connection it will wait)
   CbWaitPose(WaitPoseStandardReferenceFrame frame);
 
-  virtual ~CbWaitPose();
+  ~CbWaitPose() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()

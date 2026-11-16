@@ -39,7 +39,7 @@ void CbRotate::onEntry()
 {
   double angle_increment_degree = rotateDegree;
 
-  CpPlannerSwitcher * plannerSwitcher;
+  CpPlannerSwitcher * plannerSwitcher = nullptr;
   this->requiresComponent(plannerSwitcher, ComponentRequirement::HARD);
 
   if (spinningPlanner && *spinningPlanner == SpinningPlanner::PureSpinning)
@@ -51,7 +51,7 @@ void CbRotate::onEntry()
     plannerSwitcher->setDefaultPlanners();
   }
 
-  CpPose * p;
+  CpPose * p = nullptr;
   this->requiresComponent(p, ComponentRequirement::HARD);
 
   auto referenceFrame = p->getReferenceFrame();
@@ -60,7 +60,7 @@ void CbRotate::onEntry()
   tf2::Transform currentPose;
   tf2::fromMsg(currentPoseMsg, currentPose);
 
-  odom_tracker::CpOdomTracker * odomTracker;
+  odom_tracker::CpOdomTracker * odomTracker = nullptr;
   this->requiresComponent(odomTracker, ComponentRequirement::SOFT);
 
   nav2_msgs::action::NavigateToPose::Goal goal;

@@ -43,7 +43,7 @@ class CbNav2ZClientBehaviorBase : public smacc2::client_behavior_bases::CbAction
     smacc2::client_behavior_bases::CbActionClientBehaviorBase<nav2_msgs::action::NavigateToPose>;
 
 public:
-  virtual ~CbNav2ZClientBehaviorBase();
+  ~CbNav2ZClientBehaviorBase() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()

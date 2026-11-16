@@ -47,7 +47,7 @@ struct StiFPatternForward1 : public smacc2::SmaccState<StiFPatternForward1<SS>, 
     // Force the ray orientation from the previous motion goal so the rows stay
     // parallel even if the robot's heading carries error after the undo return
     // (sm_nav2_test_7 idiom)
-    ClNav2Z * navClient;
+    ClNav2Z * navClient = nullptr;
     this->requiresClient(navClient);
     auto odomTracker = navClient->template getComponent<cl_nav2z::odom_tracker::CpOdomTracker>();
     auto * cbForwardMotion = this->template getOrthogonal<OrNavigation>()

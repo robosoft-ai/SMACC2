@@ -36,7 +36,7 @@ class CbWaitTransform : public smacc2::SmaccAsyncClientBehavior
 public:
   CbWaitTransform(std::string targetFrame, std::string referenceFrame, rclcpp::Duration timeout);
 
-  virtual ~CbWaitTransform();
+  ~CbWaitTransform() override;
 
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation()

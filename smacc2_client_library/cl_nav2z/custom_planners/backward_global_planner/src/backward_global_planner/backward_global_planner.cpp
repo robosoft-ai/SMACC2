@@ -268,7 +268,7 @@ nav_msgs::msg::Path BackwardGlobalPlanner::createPlan(
   auto costmap2d = this->costmap_ros_->getCostmap();
   for (auto & p : plan)
   {
-    unsigned int mx, my;
+    unsigned int mx = 0, my = 0;
     costmap2d->worldToMap(p.pose.position.x, p.pose.position.y, mx, my);
     auto cost = costmap2d->getCost(mx, my);
 

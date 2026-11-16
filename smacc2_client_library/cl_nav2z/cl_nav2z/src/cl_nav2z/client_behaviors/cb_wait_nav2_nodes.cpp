@@ -31,7 +31,7 @@ void CbWaitNav2Nodes::runtimeConfigure()
   for (auto v : waitNodes_)
   {
     receivedAliveMsg_[v] = false;
-    ss << "[CbWaitNav2Nodes] - " << toString(v) << ": waiting" << std::endl;
+    ss << "[CbWaitNav2Nodes] - " << toString(v) << ": waiting" << '\n';
   }
   RCLCPP_INFO(getLogger(), "%s", ss.str().c_str());
 
@@ -69,12 +69,11 @@ void CbWaitNav2Nodes::onMessageReceived(const bond::msg::Status & msg)
       {
         success = false;
       }
-      ss << "- " << toString(pair.first) << ": " << (pair.second ? "ALIVE" : "WAITING")
-         << std::endl;
+      ss << "- " << toString(pair.first) << ": " << (pair.second ? "ALIVE" : "WAITING") << '\n';
     }
 
     RCLCPP_INFO_STREAM(
-      getLogger(), "[CbWaitNav2Nodes] waiting nodes status:" << std::endl
+      getLogger(), "[CbWaitNav2Nodes] waiting nodes status:" << '\n'
                                                              << ss.str().c_str());
 
     if (success)

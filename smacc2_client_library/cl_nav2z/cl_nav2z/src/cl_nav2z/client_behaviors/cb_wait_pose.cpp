@@ -51,7 +51,7 @@ void CbWaitPose::onEntry()
       return;
     }
     auto posemsg = pose->toPoseMsg();
-    RCLCPP_INFO_STREAM(getLogger(), "[CbWaitPose] pose arrived: " << std::endl << posemsg);
+    RCLCPP_INFO_STREAM(getLogger(), "[CbWaitPose] pose arrived: " << '\n' << posemsg);
   }
   catch (std::exception & ex)
   {

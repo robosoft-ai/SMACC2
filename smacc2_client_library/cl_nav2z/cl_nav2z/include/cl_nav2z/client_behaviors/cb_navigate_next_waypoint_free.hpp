@@ -29,7 +29,7 @@ class CbNavigateNextWaypointFree : public cl_nav2z::CbPositionControlFreeSpace
 public:
   CbNavigateNextWaypointFree();
 
-  virtual ~CbNavigateNextWaypointFree();
+  ~CbNavigateNextWaypointFree() override;
 
   void onEntry() override;
 

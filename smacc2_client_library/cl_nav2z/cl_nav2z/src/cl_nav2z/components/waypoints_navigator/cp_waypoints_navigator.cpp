@@ -217,14 +217,14 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
     }
 
     nav2_msgs::action::NavigateToPose::Goal goal;
-    CpPose * p;
+    CpPose * p = nullptr;
     this->requiresComponent(p, ComponentRequirement::HARD);
 
     // configuring goal
     goal.pose.header.frame_id = p->getReferenceFrame();
     goal.pose.pose = next;
 
-    cl_nav2z::CpPlannerSwitcher * plannerSwitcher;
+    cl_nav2z::CpPlannerSwitcher * plannerSwitcher = nullptr;
     this->requiresComponent(plannerSwitcher, ComponentRequirement::HARD);
 
     plannerSwitcher->setDefaultPlanners(false);
@@ -241,7 +241,7 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
       RCLCPP_WARN(getLogger(), "[WaypointsNavigator] Configuring default planners");
     }
 
-    cl_nav2z::CpGoalCheckerSwitcher * goalCheckerSwitcher;
+    cl_nav2z::CpGoalCheckerSwitcher * goalCheckerSwitcher = nullptr;
     this->requiresComponent(goalCheckerSwitcher, ComponentRequirement::SOFT);
 
     if (goalCheckerSwitcher == nullptr)
@@ -267,7 +267,7 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
 
     RCLCPP_INFO(getLogger(), "[WaypointsNavigator] Getting odom tracker");
 
-    cl_nav2z::odom_tracker::CpOdomTracker * odomTracker;
+    cl_nav2z::odom_tracker::CpOdomTracker * odomTracker = nullptr;
     requiresComponent(odomTracker, ComponentRequirement::SOFT);
 
     if (odomTracker != nullptr)
@@ -458,12 +458,12 @@ void CpWaypointNavigatorBase::loadWayPointsFromFile(std::string filepath)
 
 #ifdef HAVE_NEW_YAMLCPP
     const YAML::Node & wp_node_tmp = node["waypoints"];
-    const YAML::Node * wp_node = wp_node_tmp ? &wp_node_tmp : NULL;
+    const YAML::Node * wp_node = wp_node_tmp ? &wp_node_tmp : nullptr;
 #else
     const YAML::Node * wp_node = node.FindValue("waypoints");
 #endif
 
-    if (wp_node != NULL)
+    if (wp_node != nullptr)
     {
       for (std::size_t i = 0; i < wp_node->size(); ++i)
       {
@@ -528,12 +528,12 @@ void CpWaypointNavigatorBase::loadWayPointsFromFile2(std::string filepath)
 
 #ifdef HAVE_NEW_YAMLCPP
     const YAML::Node & wp_node_tmp = node["waypoints"];
-    const YAML::Node * wp_node = wp_node_tmp ? &wp_node_tmp : NULL;
+    const YAML::Node * wp_node = wp_node_tmp ? &wp_node_tmp : nullptr;
 #else
     const YAML::Node * wp_node = node.FindValue("waypoints");
 #endif
 
-    if (wp_node != NULL)
+    if (wp_node != nullptr)
     {
       for (std::size_t i = 0; i < wp_node->size(); ++i)
       {
