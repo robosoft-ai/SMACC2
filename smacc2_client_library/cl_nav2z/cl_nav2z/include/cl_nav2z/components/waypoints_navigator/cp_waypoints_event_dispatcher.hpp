@@ -1592,7 +1592,7 @@ public:
 
 template <typename TEv>
 void configurePostEvWaypoint(
-  std::function<void()> * fntarget, WaypointEventDispatcher * thisobj, int index)
+  std::function<void()> * /*fntarget*/, WaypointEventDispatcher * thisobj, int index)
 {
   thisobj->postWaypointFn[index] = [thisobj]() { thisobj->client_->template postEvent<TEv>(); };
 }

@@ -57,7 +57,8 @@ void CbPositionControlFreeSpace::onEntry()
   double ki_angular = 0.0;
   double kd_angular = 0.1;
 
-  while (rclcpp::ok() && !goalReached_)
+  // also ends when the state is exited: the loop used to block that exit until the goal was reached
+  while (rclcpp::ok() && !goalReached_ && !this->isShutdownRequested())
   {
     RCLCPP_INFO_STREAM_THROTTLE(
       getLogger(), *getNode()->get_clock(), 200,
@@ -92,12 +93,7 @@ void CbPositionControlFreeSpace::onEntry()
     if (distance_to_target < threshold_distance_)
     {
       RCLCPP_INFO(getLogger(), "Goal reached!");
-      // Stop the robot by setting the velocity commands to zero
-      geometry_msgs::msg::Twist cmd_vel_msg;
-      cmd_vel_msg.linear.x = 0.0;
-      cmd_vel_msg.angular.z = 0.0;
-      cmd_vel_pub_->publish(cmd_vel_msg);
-      break;
+      goalReached_ = true;
     }
     else
     {
@@ -106,7 +102,8 @@ void CbPositionControlFreeSpace::onEntry()
 
       // Calculate the difference between the desired orientation and the
       // current orientation
-      double yaw_error = desired_yaw - (tf2::getYaw(currentPose.orientation) + M_PI);
+      // the robot's front is steered to the target; with pi added here it turned its back and drove away
+      double yaw_error = desired_yaw - tf2::getYaw(currentPose.orientation);
 
       // Ensure the yaw error is within the range [-pi, pi]
       while (yaw_error > M_PI) yaw_error -= 2 * M_PI;
@@ -146,9 +143,12 @@ void CbPositionControlFreeSpace::onEntry()
     }
   }
 
+  // stop the robot, whether the goal was reached or the state was exited
+  if (rclcpp::ok()) cmd_vel_pub_->publish(geometry_msgs::msg::Twist());
+
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] Finished behavior execution");
 
-  this->postSuccessEvent();
+  if (goalReached_) this->postSuccessEvent();
 }
 
 void CbPositionControlFreeSpace::onExit() {}

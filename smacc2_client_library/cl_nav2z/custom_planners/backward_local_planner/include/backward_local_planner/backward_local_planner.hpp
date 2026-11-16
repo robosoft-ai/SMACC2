@@ -127,44 +127,44 @@ private:
   std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<nav_msgs::msg::Path>> planPub_;
 
   // --- control parameters ---
-  double k_rho_;
-  double k_alpha_;
-  double k_betta_;
-  double pure_spinning_allowed_betta_error_;
-  double linear_mode_rho_error_threshold_;
+  double k_rho_ = 0.0;
+  double k_alpha_ = 0.0;
+  double k_betta_ = 0.0;
+  double pure_spinning_allowed_betta_error_ = 0.0;
+  double linear_mode_rho_error_threshold_ = 0.0;
 
   // backward-heading misalignment above which linear motion is disabled and the
   // robot spins in place to align with the carrot direction first
-  double initial_rotation_alpha_error_threshold_;
+  double initial_rotation_alpha_error_threshold_ = 0.0;
 
   const double alpha_offset_ = M_PI;
   const double betta_offset_ = 0;
 
-  double max_linear_x_speed_;   // meters/sec
-  double max_angular_z_speed_;  // rads/sec
+  double max_linear_x_speed_ = 0.0;   // meters/sec
+  double max_angular_z_speed_ = 0.0;  // rads/sec
 
-  double yaw_goal_tolerance_;  // radians
-  double xy_goal_tolerance_;   // meters
+  double yaw_goal_tolerance_ = 0.0;  // radians
+  double xy_goal_tolerance_ = 0.0;   // meters
 
-  meter carrot_distance_;
-  rad carrot_angular_distance_;
-  meter divergenceDetectionLastCarrotLinearDistance_;
+  meter carrot_distance_ = 0.0;
+  rad carrot_angular_distance_ = 0.0;
+  meter divergenceDetectionLastCarrotLinearDistance_ = 0.0;
 
-  double transform_tolerance_;
+  double transform_tolerance_ = 0.0;
 
   rclcpp::Duration waitingTimeout_;
   rclcpp::Time waitingStamp_;
 
   // --- controller state ---
-  bool goalReached_;
-  bool initialPureSpinningStage_;
+  bool goalReached_ = false;
+  bool initialPureSpinningStage_ = false;
   bool straightBackwardsAndPureSpinningMode_ = false;
   bool enable_obstacle_checking_ = true;
   bool inGoalPureSpinningState_ = false;
-  bool waiting_;
+  bool waiting_ = false;
 
   // references the current point inside the backwardsPlanPath were the robot is located
-  int currentCarrotPoseIndex_;
+  int currentCarrotPoseIndex_ = 0;
 
   void generateTrajectory(
     const Eigen::Vector3f & pos, const Eigen::Vector3f & vel, float maxdist, float maxangle,

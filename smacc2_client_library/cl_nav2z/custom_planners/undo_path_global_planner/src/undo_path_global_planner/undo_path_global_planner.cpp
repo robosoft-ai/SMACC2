@@ -52,6 +52,9 @@ UndoPathGlobalPlanner::UndoPathGlobalPlanner()
 
 UndoPathGlobalPlanner::~UndoPathGlobalPlanner()
 {
+  // a planner that was never configured has neither a node nor a publisher
+  if (nh_ == nullptr || planPub_ == nullptr) return;
+
   // clear "rviz"- publish empty path
   nav_msgs::msg::Path planMsg;
   planMsg.header.stamp = this->nh_->now();

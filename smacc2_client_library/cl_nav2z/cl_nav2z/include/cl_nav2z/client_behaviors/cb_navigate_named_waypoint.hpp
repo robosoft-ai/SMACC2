@@ -39,8 +39,6 @@ public:
 
   void onExit() override;
 
-  CpWaypointNavigator * waypointsNavigator_ = nullptr;
-
   std::string waypointname_;
 };
 }  // namespace cl_nav2z

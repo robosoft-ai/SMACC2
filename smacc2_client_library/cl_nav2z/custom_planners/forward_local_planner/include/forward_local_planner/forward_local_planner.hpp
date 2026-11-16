@@ -97,30 +97,30 @@ private:
   rclcpp_lifecycle::LifecyclePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr
     goalMarkerPublisher_;
 
-  double k_rho_;
-  double k_alpha_;
-  double k_betta_;
-  bool goalReached_;
+  double k_rho_ = 0.0;
+  double k_alpha_ = 0.0;
+  double k_betta_ = 0.0;
+  bool goalReached_ = false;
 
   const double alpha_offset_ = 0;
   const double betta_offset_ = 0;
 
-  meter carrot_distance_;
-  rad carrot_angular_distance_;
+  meter carrot_distance_ = 0.0;
+  rad carrot_angular_distance_ = 0.0;
 
-  double yaw_goal_tolerance_;  // radians
-  double xy_goal_tolerance_;   // meters
+  double yaw_goal_tolerance_ = 0.0;  // radians
+  double xy_goal_tolerance_ = 0.0;   // meters
 
-  double max_angular_z_speed_;
-  double max_linear_x_speed_;
+  double max_angular_z_speed_ = 0.0;
+  double max_linear_x_speed_ = 0.0;
   double transform_tolerance_;
 
   // references the current point inside the backwardsPlanPath were the robot is located
-  int currentPoseIndex_;
+  int currentPoseIndex_ = 0;
 
   std::vector<geometry_msgs::msg::PoseStamped> plan_;
 
-  bool waiting_;
+  bool waiting_ = false;
   rclcpp::Duration waitingTimeout_;
   rclcpp::Time waitingStamp_;
   std::shared_ptr<tf2_ros::Buffer> tf_;
