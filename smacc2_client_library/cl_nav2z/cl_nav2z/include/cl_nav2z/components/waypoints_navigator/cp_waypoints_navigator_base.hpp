@@ -51,7 +51,7 @@ public:
 
   CpWaypointNavigatorBase();
 
-  virtual ~CpWaypointNavigatorBase();
+  ~CpWaypointNavigatorBase() override;
 
   void onInitialize() override;
 

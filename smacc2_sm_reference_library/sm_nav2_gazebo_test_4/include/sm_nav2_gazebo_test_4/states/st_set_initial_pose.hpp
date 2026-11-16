@@ -45,7 +45,7 @@ struct StSetInitialPose : smacc2::SmaccState<StSetInitialPose, SmNav2GazeboTest4
 
   void runtimeConfigure()
   {
-    cl_nav2z::ClNav2Z * navClient;
+    cl_nav2z::ClNav2Z * navClient = nullptr;
     requiresClient(navClient);
     auto * amcl = navClient->getComponent<cl_nav2z::CpAmcl>();
 

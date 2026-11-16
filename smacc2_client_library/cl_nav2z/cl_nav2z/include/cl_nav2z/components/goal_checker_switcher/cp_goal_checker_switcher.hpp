@@ -35,7 +35,7 @@ public:
     std::string goal_checker_selector_topic = "goal_checker_selector",
     std::string default_goal_checker_name = "goal_checker");
   void onInitialize() override;
-  virtual ~CpGoalCheckerSwitcher();
+  ~CpGoalCheckerSwitcher() override;
   void setDefaultGoalChecker();
   void setGoalCheckerId(std::string goal_checker_id);
 

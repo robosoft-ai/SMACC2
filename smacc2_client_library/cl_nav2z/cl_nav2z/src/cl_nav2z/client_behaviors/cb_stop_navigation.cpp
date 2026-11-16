@@ -33,7 +33,7 @@ CbStopNavigation::CbStopNavigation() {}
 
 void CbStopNavigation::onEntry()
 {
-  cl_nav2z::CpPose * poseComponent;
+  cl_nav2z::CpPose * poseComponent = nullptr;
   this->requiresComponent(poseComponent, ComponentRequirement::HARD);
 
   this->setGoal(poseComponent->toPoseMsg());

@@ -159,7 +159,7 @@ void ForwardLocalPlanner::generateTrajectory(
 
     auto dx = newpos[0] - currentpos[0];
     auto dy = newpos[1] - currentpos[1];
-    float dist, angledist;
+    float dist = 0.0, angledist = 0.0;
 
     // RCLCPP_DEBUG(nh_->get_logger(), "traj point %d", i);
     dist = sqrt(dx * dx + dy * dy);
@@ -490,18 +490,18 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
 
   RCLCPP_DEBUG_STREAM(
     nh_->get_logger(), "Forward local planner,"
-                         << std::endl
-                         << " theta: " << theta << std::endl
-                         << " betta: " << betta << std::endl
-                         << " err_x: " << dx << std::endl
-                         << " err_y:" << dy << std::endl
-                         << " rho_error:" << rho_error << std::endl
-                         << " alpha_error:" << alpha_error << std::endl
-                         << " betta_error:" << betta_error << std::endl
-                         << " vetta:" << vetta << std::endl
-                         << " gamma:" << gamma << std::endl
-                         << " xy_goal_tolerance:" << xy_goal_tolerance_ << std::endl
-                         << " yaw_goal_tolerance:" << yaw_goal_tolerance_ << std::endl);
+                         << '\n'
+                         << " theta: " << theta << '\n'
+                         << " betta: " << betta << '\n'
+                         << " err_x: " << dx << '\n'
+                         << " err_y:" << dy << '\n'
+                         << " rho_error:" << rho_error << '\n'
+                         << " alpha_error:" << alpha_error << '\n'
+                         << " betta_error:" << betta_error << '\n'
+                         << " vetta:" << vetta << '\n'
+                         << " gamma:" << gamma << '\n'
+                         << " xy_goal_tolerance:" << xy_goal_tolerance_ << '\n'
+                         << " yaw_goal_tolerance:" << yaw_goal_tolerance_ << '\n');
 
   // integrate trajectory and check collision
 
@@ -525,7 +525,7 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
   // check plan rejection
   bool aceptedplan = true;
 
-  unsigned int mx, my;
+  unsigned int mx = 0, my = 0;
 
   int i = 0;
   // RCLCPP_INFO_STREAM(nh_->get_logger(), "lplanner goal: " << finalgoalpose.pose.position);

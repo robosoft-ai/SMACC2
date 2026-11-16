@@ -42,7 +42,7 @@ class PureSpinningLocalPlanner : public nav2_core::Controller
 public:
   PureSpinningLocalPlanner();
 
-  virtual ~PureSpinningLocalPlanner();
+  ~PureSpinningLocalPlanner() override;
 
   void configure(
     const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent, std::string name,
@@ -71,14 +71,14 @@ public:
    * @param velocity Current robot velocity
    * @return The best command for the robot to drive
    */
-  virtual geometry_msgs::msg::TwistStamped computeVelocityCommands(
+  geometry_msgs::msg::TwistStamped computeVelocityCommands(
     const geometry_msgs::msg::PoseStamped & pose, const geometry_msgs::msg::Twist & velocity,
     nav2_core::GoalChecker * goal_checker) override;
 
   /*deprecated in navigation2*/
   bool isGoalReached();
 
-  virtual void setSpeedLimit(const double & speed_limit, const bool & percentage) override;
+  void setSpeedLimit(const double & speed_limit, const bool & percentage) override;
 
 private:
   void updateParameters();

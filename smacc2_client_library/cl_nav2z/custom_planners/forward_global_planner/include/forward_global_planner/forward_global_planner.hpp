@@ -41,7 +41,7 @@ public:
   /**
    * @brief Virtual destructor
    */
-  virtual ~ForwardGlobalPlanner();
+  ~ForwardGlobalPlanner() override;
 
   /**
    * @param  parent pointer to user's node
@@ -57,17 +57,17 @@ public:
   /**
    * @brief Method to cleanup resources used on shutdown.
    */
-  virtual void cleanup();
+  void cleanup() override;
 
   /**
    * @brief Method to active planner and any threads involved in execution.
    */
-  virtual void activate();
+  void activate() override;
 
   /**
    * @brief Method to deactivate planner and any threads involved in execution.
    */
-  virtual void deactivate();
+  void deactivate() override;
 
   /**
    * @brief Method create the plan from a starting and ending goal.
@@ -76,7 +76,7 @@ public:
    * @param cancel_checker Function to check if planning should be cancelled
    * @return      The sequence of poses to get from start to goal, if any
    */
-  virtual nav_msgs::msg::Path createPlan(
+  nav_msgs::msg::Path createPlan(
     const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal,
     std::function<bool()> cancel_checker) override;
 

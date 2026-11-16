@@ -54,7 +54,7 @@ public:
   std::function<void(const Feedback &)> postNavigationFeedbackEvent;
 
   CpNav2ActionInterface() = default;
-  virtual ~CpNav2ActionInterface() = default;
+  ~CpNav2ActionInterface() override = default;
 
   // Public API for behaviors and other components
   std::shared_future<typename GoalHandle::SharedPtr> sendNavigationGoal(

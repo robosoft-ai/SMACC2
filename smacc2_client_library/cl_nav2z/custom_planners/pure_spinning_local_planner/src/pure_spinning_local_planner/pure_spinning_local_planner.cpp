@@ -120,7 +120,7 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
   tf2::fromMsg(currentPose.pose.orientation, q);
   auto currentYaw = tf2::getYaw(currentPose.pose.orientation);
   double angular_error = 0;
-  double targetYaw;
+  double targetYaw = 0.0;
 
   do
   {

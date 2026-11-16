@@ -45,7 +45,7 @@ struct StiFPatternForward2 : smacc2::SmaccState<StiFPatternForward2<SS>, SS>
   void runtimeConfigure()
   {
     // Keep the pitch direction consistent with the just-completed rotation goal
-    ClNav2Z * navClient;
+    ClNav2Z * navClient = nullptr;
     this->requiresClient(navClient);
     auto odomTracker = navClient->template getComponent<cl_nav2z::odom_tracker::CpOdomTracker>();
     auto * cbForwardMotion = this->template getOrthogonal<OrNavigation>()

@@ -55,13 +55,13 @@ void CbNavigateGlobalPosition::onEntry()
   RCLCPP_INFO(getLogger(), "Entering Navigate Global position");
   RCLCPP_INFO(getLogger(), "Component requirements completed");
 
-  cl_nav2z::CpPose * cpPose;
+  cl_nav2z::CpPose * cpPose = nullptr;
   this->requiresComponent(cpPose, ComponentRequirement::HARD);
 
-  CpOdomTracker * odomTracker;
+  CpOdomTracker * odomTracker = nullptr;
   this->requiresComponent(odomTracker, ComponentRequirement::HARD);
 
-  CpPlannerSwitcher * plannerSwitcher;
+  CpPlannerSwitcher * plannerSwitcher = nullptr;
   this->requiresComponent(plannerSwitcher, ComponentRequirement::HARD);
 
   plannerSwitcher->setDefaultPlanners(false);
@@ -73,7 +73,7 @@ void CbNavigateGlobalPosition::onEntry()
 
   plannerSwitcher->commitPublish();
 
-  CpGoalCheckerSwitcher * goalCheckerSwitcher;
+  CpGoalCheckerSwitcher * goalCheckerSwitcher = nullptr;
   this->requiresComponent(goalCheckerSwitcher, ComponentRequirement::HARD);
   goalCheckerSwitcher->setGoalCheckerId("goal_checker");
 
@@ -92,7 +92,7 @@ void CbNavigateGlobalPosition::onEntry()
 // auxiliary function that defines the motion that is requested to the nav2 action server
 void CbNavigateGlobalPosition::execute()
 {
-  cl_nav2z::CpPose * p;
+  cl_nav2z::CpPose * p = nullptr;
   this->requiresComponent(p, ComponentRequirement::HARD);
 
   auto referenceFrame = p->getReferenceFrame();

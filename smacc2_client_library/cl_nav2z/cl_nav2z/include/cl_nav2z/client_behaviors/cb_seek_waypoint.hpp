@@ -31,7 +31,7 @@ class CbSeekWaypoint : public smacc2::SmaccClientBehavior
 public:
   CbSeekWaypoint(std::string skip_until_name);
 
-  virtual ~CbSeekWaypoint();
+  ~CbSeekWaypoint() override;
 
   void onEntry() override;
 

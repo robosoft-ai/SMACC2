@@ -41,7 +41,7 @@ public:
   void onInitialize() override;
 
 protected:
-  virtual void update() override;
+  void update() override;
 
 private:
   std::mutex m_mutex_;

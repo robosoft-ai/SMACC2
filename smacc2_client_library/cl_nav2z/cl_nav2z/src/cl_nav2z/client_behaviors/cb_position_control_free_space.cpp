@@ -37,7 +37,7 @@ void CbPositionControlFreeSpace::onEntry()
   auto nh = this->getNode();
   cmd_vel_pub_ = nh->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", rclcpp::QoS(1));
 
-  cl_nav2z::CpPose * pose;
+  cl_nav2z::CpPose * pose = nullptr;
 
   this->requiresComponent(pose, ComponentRequirement::HARD);
 

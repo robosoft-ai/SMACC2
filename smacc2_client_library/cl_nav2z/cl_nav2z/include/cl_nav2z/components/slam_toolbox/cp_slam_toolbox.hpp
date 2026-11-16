@@ -32,7 +32,7 @@ class CpSlamToolbox : public smacc2::ISmaccComponent
 {
 public:
   CpSlamToolbox();
-  virtual ~CpSlamToolbox();
+  ~CpSlamToolbox() override;
 
   enum class SlamToolboxState
   {

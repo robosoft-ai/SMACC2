@@ -60,7 +60,7 @@ public:
   // from the current position and orientation.
   CbNavigateForward(geometry_msgs::msg::PoseStamped goalPosition);
 
-  virtual ~CbNavigateForward();
+  ~CbNavigateForward() override;
 
   void onEntry() override;
 

@@ -38,7 +38,7 @@ public:
   /**
    * @brief Virtual destructor
    */
-  virtual ~BackwardGlobalPlanner();
+  ~BackwardGlobalPlanner() override;
 
   /**
    * @param  parent pointer to user's node
@@ -46,25 +46,25 @@ public:
    * @param  tf A pointer to a TF buffer
    * @param  costmap_ros A pointer to the costmap
    */
-  virtual void configure(
+  void configure(
     const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent, std::string name,
     std::shared_ptr<tf2_ros::Buffer> tf,
-    std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros);
+    std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros) override;
 
   /**
    * @brief Method to cleanup resources used on shutdown.
    */
-  virtual void cleanup();
+  void cleanup() override;
 
   /**
    * @brief Method to active planner and any threads involved in execution.
    */
-  virtual void activate();
+  void activate() override;
 
   /**
    * @brief Method to deactivate planner and any threads involved in execution.
    */
-  virtual void deactivate();
+  void deactivate() override;
 
   /**
    * @brief Method create the plan from a starting and ending goal.
@@ -73,7 +73,7 @@ public:
    * @param cancel_checker Function to check if planning should be cancelled
    * @return      The sequence of poses to get from start to goal, if any
    */
-  virtual nav_msgs::msg::Path createPlan(
+  nav_msgs::msg::Path createPlan(
     const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal,
     std::function<bool()> cancel_checker) override;
 

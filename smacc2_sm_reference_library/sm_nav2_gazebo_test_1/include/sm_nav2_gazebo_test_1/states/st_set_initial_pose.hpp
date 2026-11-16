@@ -106,7 +106,7 @@ struct StSetInitialPose : smacc2::SmaccState<StSetInitialPose, SmNav2GazeboTest1
 
     // Set initial pose for AMCL localization
     // Robot spawns at x=-2.0, y=-0.5 in tb3_simulation_launch.py
-    cl_nav2z::ClNav2Z* navClient;
+    cl_nav2z::ClNav2Z* navClient = nullptr;
     requiresClient(navClient);
 
     cl_nav2z::CpAmcl* amclComponent = navClient->getComponent<cl_nav2z::CpAmcl>();

@@ -39,7 +39,7 @@ public:
   {
   }
 
-  virtual ~ClNav2Z() = default;
+  ~ClNav2Z() override = default;
 
   // Component composition during orthogonal initialization
   template <typename TOrthogonal, typename TClient>

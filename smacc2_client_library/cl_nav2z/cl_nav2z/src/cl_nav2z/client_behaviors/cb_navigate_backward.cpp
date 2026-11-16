@@ -50,7 +50,7 @@ void CbNavigateBackwards::onEntry()
   RCLCPP_INFO_STREAM(
     getLogger(), "[CbNavigateBackwards] Straight backwards motion distance: " << dist);
 
-  cl_nav2z::CpPose * p;
+  cl_nav2z::CpPose * p = nullptr;
   this->requiresComponent(p, ComponentRequirement::HARD);
 
   auto referenceFrame = p->getReferenceFrame();
@@ -84,11 +84,11 @@ void CbNavigateBackwards::onEntry()
     this->odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
   }
 
-  CpPlannerSwitcher * plannerSwitcher;
+  CpPlannerSwitcher * plannerSwitcher = nullptr;
   requiresComponent(plannerSwitcher, ComponentRequirement::HARD);
   plannerSwitcher->setBackwardPlanner();
 
-  CpGoalCheckerSwitcher * goalCheckerSwitcher;
+  CpGoalCheckerSwitcher * goalCheckerSwitcher = nullptr;
   requiresComponent(goalCheckerSwitcher, ComponentRequirement::HARD);
   goalCheckerSwitcher->setGoalCheckerId("backward_goal_checker");
 

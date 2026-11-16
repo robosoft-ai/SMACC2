@@ -30,12 +30,12 @@ CbTrackPathOdometry::CbTrackPathOdometry() {}
 void CbTrackPathOdometry::onEntry()
 {
   RCLCPP_INFO(this->getLogger(), "Pose tracker freeze reference frame");
-  cl_nav2z::CpPose * poseComponent;
+  cl_nav2z::CpPose * poseComponent = nullptr;
   requiresComponent(poseComponent, ComponentRequirement::HARD);
   poseComponent->freezeReferenceFrame();
 
   RCLCPP_INFO(this->getLogger(), "Odom tracker clear path");
-  cl_nav2z::odom_tracker::CpOdomTracker * odomTracker;
+  cl_nav2z::odom_tracker::CpOdomTracker * odomTracker = nullptr;
   this->requiresComponent(odomTracker, ComponentRequirement::HARD);
   odomTracker->clearPath();
 }
