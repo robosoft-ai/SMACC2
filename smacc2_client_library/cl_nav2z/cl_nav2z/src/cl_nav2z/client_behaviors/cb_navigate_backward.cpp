@@ -74,7 +74,7 @@ void CbNavigateBackwards::onEntry()
   currentStampedPoseMsg.header.stamp = getNode()->now();
   tf2::toMsg(currentPose, currentStampedPoseMsg.pose);
 
-  CpOdomTracker * odomTracker_;
+  // fills the member: a local of the same name here left the member null and the calls below crashed
   requiresComponent(odomTracker_, ComponentRequirement::SOFT);
 
   if (odomTracker_ != nullptr)
