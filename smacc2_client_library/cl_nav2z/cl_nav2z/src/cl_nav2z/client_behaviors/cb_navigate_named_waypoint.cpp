@@ -38,7 +38,13 @@ void CbNavigateNamedWaypoint::onEntry()
   // the base class's member: this class had a second one of the same name, and a local as well
   this->requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);
 
-  waypointsNavigator_->seekName(waypointname_);
+  if (!waypointsNavigator_->seekName(waypointname_))
+  {
+    RCLCPP_ERROR(
+      getLogger(), "[CbNavigateNamedWaypoint] no waypoint named '%s'", waypointname_.c_str());
+    this->postFailureEvent();
+    return;
+  }
   CbNavigateNextWaypoint::onEntry();
 }
 

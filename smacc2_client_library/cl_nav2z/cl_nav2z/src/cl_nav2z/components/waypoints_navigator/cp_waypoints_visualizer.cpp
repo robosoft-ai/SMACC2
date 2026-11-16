@@ -40,12 +40,9 @@ void CpWaypointsVisualizer::onInitialize()
   int i = 0;
   for (auto & waypoint : waypoints)
   {
-    std::string name;
-    if ((long)waypointsNames.size() > i)
-    {
-      name = waypointsNames[i];
-    }
-    else
+    // an unnamed waypoint has an empty name
+    std::string name = waypointsNames[i];
+    if (name.empty())
     {
       name = "waypoint_" + std::to_string(i);
     }

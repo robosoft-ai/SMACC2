@@ -40,14 +40,16 @@ void CbLoadWaypointsFile::onEntry()
                                                        // nav2z_client library
 
   // The two constructors set either the file path or the parameter pair; say so instead of assuming it.
+  bool loaded = false;
   if (filepath_)
   {
-    this->waypointsNavigator_->loadWayPointsFromFile(*filepath_);
+    loaded = this->waypointsNavigator_->loadWayPointsFromFile(*filepath_);
   }
   else if (parameterName_ && packageNamespace_)
   {
     RCLCPP_INFO(getLogger(), "Loading waypoints from parameter %s", parameterName_->c_str());
-    this->waypointsNavigator_->loadWaypointsFromYamlParameter(*parameterName_, *packageNamespace_);
+    loaded = this->waypointsNavigator_->loadWaypointsFromYamlParameter(
+      *parameterName_, *packageNamespace_);
   }
   else
   {
@@ -59,6 +61,11 @@ void CbLoadWaypointsFile::onEntry()
 
   // change this to skip some points of the yaml file, default = 0
   waypointsNavigator_->currentWaypoint_ = 0;
+  if (!loaded)
+  {
+    this->postFailureEvent();
+    return;
+  }
   this->postSuccessEvent();
 }
 

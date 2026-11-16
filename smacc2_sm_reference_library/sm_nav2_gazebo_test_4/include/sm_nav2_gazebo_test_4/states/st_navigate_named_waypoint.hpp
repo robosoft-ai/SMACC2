@@ -18,7 +18,8 @@
 
 namespace sm_nav2_gazebo_test_4
 {
-// CbNavigateNamedWaypoint: seeks the waypoint named echo, skipping delta, and navigates to it.
+// CbNavigateNamedWaypoint: seeks the waypoint named echo from the start of the list just loaded,
+// skipping the five before it, and navigates to it.
 struct StNavigateNamedWaypoint : smacc2::SmaccState<StNavigateNamedWaypoint, SmNav2GazeboTest4>
 {
   using SmaccState::SmaccState;
@@ -27,9 +28,9 @@ struct StNavigateNamedWaypoint : smacc2::SmaccState<StNavigateNamedWaypoint, SmN
 
   // clang-format off
   typedef mpl::list<
-    Transition<EvCbSuccess<CbNavigateNamedWaypoint, OrNavigation>, StSeekWaypoint, SUCCESS>,
+    Transition<EvCbSuccess<CbNavigateNamedWaypoint, OrNavigation>, StCheckAtEcho, SUCCESS>,
     Transition<EvCbFailure<CbNavigateNamedWaypoint, OrNavigation>, StMissionFailed, ABORT>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StSeekWaypoint, NEXT>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StCheckAtEcho, NEXT>
   > reactions;
   // clang-format on
 

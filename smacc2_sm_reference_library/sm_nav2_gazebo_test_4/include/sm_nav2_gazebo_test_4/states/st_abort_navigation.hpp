@@ -18,9 +18,8 @@
 
 namespace sm_nav2_gazebo_test_4
 {
-// CbAbortNavigation: cancels whatever navigation goal is in flight. It posts its success as soon as
-// the cancel request is sent, and Nav2 aborts a goal that arrives while it is still cancelling the
-// previous one, so the state is left by the timer and not by that event.
+// CbAbortNavigation: cancels whatever navigation goal is in flight and posts its success when Nav2
+// has finished cancelling, so the next state can send a goal at once. The timer is the safety limit.
 struct StAbortNavigation : smacc2::SmaccState<StAbortNavigation, SmNav2GazeboTest4>
 {
   using SmaccState::SmaccState;
@@ -29,8 +28,9 @@ struct StAbortNavigation : smacc2::SmaccState<StAbortNavigation, SmNav2GazeboTes
 
   // clang-format off
   typedef mpl::list<
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StRetryForward, SUCCESS>,
+    Transition<EvCbSuccess<CbAbortNavigation, OrNavigation>, StRetryForward, SUCCESS>,
     Transition<EvCbFailure<CbAbortNavigation, OrNavigation>, StMissionFailed, ABORT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StMissionFailed, ABORT>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StRetryForward, NEXT>
   > reactions;
   // clang-format on
@@ -38,7 +38,7 @@ struct StAbortNavigation : smacc2::SmaccState<StAbortNavigation, SmNav2GazeboTes
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbAbortNavigation>();
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(2s);
+    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10s);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 };

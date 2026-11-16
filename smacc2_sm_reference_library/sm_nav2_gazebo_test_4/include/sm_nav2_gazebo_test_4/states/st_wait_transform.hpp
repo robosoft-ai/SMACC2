@@ -27,9 +27,9 @@ struct StWaitTransform : smacc2::SmaccState<StWaitTransform, SmNav2GazeboTest4>
 
   // clang-format off
   typedef mpl::list<
-    Transition<EvCbSuccess<CbWaitTransform, OrNavigation>, StLoadWaypoints, SUCCESS>,
+    Transition<EvCbSuccess<CbWaitTransform, OrNavigation>, StLoadMissingFile, SUCCESS>,
     Transition<EvCbFailure<CbWaitTransform, OrNavigation>, StMissionFailed, ABORT>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StLoadWaypoints, NEXT>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StLoadMissingFile, NEXT>
   > reactions;
   // clang-format on
 

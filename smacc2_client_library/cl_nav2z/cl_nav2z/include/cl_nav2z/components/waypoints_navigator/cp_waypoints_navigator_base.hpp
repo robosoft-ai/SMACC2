@@ -62,9 +62,10 @@ public:
     waypointsEventDispatcher.initialize<TSourceObject, TOrthogonal>(client);
   }
 
-  void loadWayPointsFromFile(std::string filepath);
+  // Both return false, with the list empty, when the file cannot be opened or is not valid YAML.
+  bool loadWayPointsFromFile(std::string filepath);
 
-  void loadWayPointsFromFile2(std::string filepath);
+  bool loadWayPointsFromFile2(std::string filepath);
 
   void setWaypoints(const std::vector<geometry_msgs::msg::Pose> & waypoints);
 
@@ -81,12 +82,14 @@ public:
 
   long currentWaypoint_;
 
+  // Move the index `count` waypoints back or forward, stopping at the first and the last.
   void rewind(int count);
 
   void forward(int count);
-  void seekName(std::string name);
+  // Moves the index to the waypoint of that name; false, with the index unchanged, if there is none.
+  bool seekName(std::string name);
 
-  void loadWaypointsFromYamlParameter(
+  bool loadWaypointsFromYamlParameter(
     std::string parameter_name, std::string yaml_file_package_name);
 
   void notifyGoalReached();
@@ -96,8 +99,14 @@ protected:
 
   void removeWaypoint(int index);
 
+  // The two lists always have the same length; a waypoint with no name has an empty one.
   std::vector<geometry_msgs::msg::Pose> waypoints_;
 
   std::vector<std::string> waypointsNames_;
+
+private:
+  void addWaypoint(const geometry_msgs::msg::Pose & pose, const std::string & name);
+
+  void clearWaypoints();
 };
 }  // namespace cl_nav2z

@@ -18,8 +18,8 @@
 
 namespace sm_nav2_gazebo_test_4
 {
-// CbSeekWaypoint: moves the waypoint index back to bravo without moving the robot. The behavior
-// is synchronous and posts no event, so the timer ends the state.
+// CbSeekWaypoint by name: moves the waypoint index from past echo back to alpha, the first in the
+// file, without moving the robot. The seek is synchronous, so the check that follows it sees its result.
 struct StSeekWaypoint : smacc2::SmaccState<StSeekWaypoint, SmNav2GazeboTest4>
 {
   using SmaccState::SmaccState;
@@ -28,15 +28,16 @@ struct StSeekWaypoint : smacc2::SmaccState<StSeekWaypoint, SmNav2GazeboTest4>
 
   // clang-format off
   typedef mpl::list<
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StNavigateUntilReached, SUCCESS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StNavigateUntilReached, NEXT>
+    Transition<EvCbSuccess<CbExpectWaypointIndex, OrNavigation>, StSeekByCount, SUCCESS>,
+    Transition<EvCbFailure<CbExpectWaypointIndex, OrNavigation>, StMissionFailed, ABORT>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StSeekByCount, NEXT>
   > reactions;
   // clang-format on
 
   static void staticConfigure()
   {
-    configure_orthogonal<OrNavigation, CbSeekWaypoint>("bravo");
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(1s);
+    configure_orthogonal<OrNavigation, CbSeekWaypoint>("alpha");
+    configure_orthogonal<OrNavigation, CbExpectWaypointIndex>(0);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 };

@@ -27,8 +27,8 @@ struct StActiveStop : smacc2::SmaccState<StActiveStop, SmNav2GazeboTest4>
 
   // clang-format off
   typedef mpl::list<
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StFinalState, SUCCESS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StFinalState, NEXT>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StNavigateLastWaypoint, SUCCESS>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StNavigateLastWaypoint, NEXT>
   > reactions;
   // clang-format on
 

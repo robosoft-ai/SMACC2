@@ -27,6 +27,8 @@ CbSeekWaypoint::CbSeekWaypoint(std::string seekWaypointName)
 {
 }
 
+CbSeekWaypoint::CbSeekWaypoint(int count) : count_(count), seekWaypointName_(std::nullopt) {}
+
 CbSeekWaypoint::~CbSeekWaypoint() {}
 
 void CbSeekWaypoint::onEntry()
@@ -35,7 +37,14 @@ void CbSeekWaypoint::onEntry()
 
   if (count_)
   {
-    waypointsNavigator_->forward(*count_);
+    if (*count_ >= 0)
+    {
+      waypointsNavigator_->forward(*count_);
+    }
+    else
+    {
+      waypointsNavigator_->rewind(-*count_);
+    }
     count_ = std::nullopt;
   }
   else if (seekWaypointName_)
