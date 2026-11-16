@@ -31,6 +31,9 @@ class CbSeekWaypoint : public smacc2::SmaccClientBehavior
 public:
   CbSeekWaypoint(std::string skip_until_name);
 
+  // moves the waypoint index `count` waypoints forward, or back when it is negative
+  explicit CbSeekWaypoint(int count);
+
   ~CbSeekWaypoint() override;
 
   void onEntry() override;

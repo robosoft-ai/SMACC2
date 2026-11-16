@@ -19,7 +19,7 @@
 namespace sm_nav2_gazebo_test_4
 {
 // CbNavigateNextWaypointUntilReached: one waypoint per entry, re-entering on success, until the
-// waypoint named delta is reached (bravo, charlie, delta).
+// waypoint named delta is reached (bravo, charlie, the unnamed one, delta).
 struct StNavigateUntilReached : smacc2::SmaccState<StNavigateUntilReached, SmNav2GazeboTest4>
 {
   using SmaccState::SmaccState;

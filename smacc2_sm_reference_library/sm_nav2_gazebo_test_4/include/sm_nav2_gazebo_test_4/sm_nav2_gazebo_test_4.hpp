@@ -44,6 +44,8 @@
 #include <cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp>
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 
+#include "client_behaviors/cb_expect_position.hpp"
+#include "client_behaviors/cb_expect_waypoint_index.hpp"
 #include "orthogonals/or_keyboard.hpp"
 #include "orthogonals/or_navigation.hpp"
 #include "orthogonals/or_timer.hpp"
@@ -65,11 +67,16 @@ struct RETRY : SUCCESS
 struct StAcquireSensors;
 struct StSetInitialPose;
 struct StWaitTransform;
+struct StLoadMissingFile;
 struct StLoadWaypoints;
 struct StNavigateWaypoints;
 struct StRotateAtWaypoint;
+struct StReloadWaypoints;
 struct StNavigateNamedWaypoint;
+struct StCheckAtEcho;
+struct StUnknownWaypoint;
 struct StSeekWaypoint;
+struct StSeekByCount;
 struct StNavigateUntilReached;
 struct StForwardCutShort;
 struct StAbortNavigation;
@@ -80,6 +87,7 @@ struct StPositionControl;
 struct StNextWaypointFree;
 struct StStopNavigation;
 struct StActiveStop;
+struct StNavigateLastWaypoint;
 struct StFinalState;
 struct StMissionFailed;
 
@@ -101,11 +109,16 @@ struct SmNav2GazeboTest4 : public smacc2::SmaccStateMachineBase<SmNav2GazeboTest
 #include "states/st_acquire_sensors.hpp"
 #include "states/st_set_initial_pose.hpp"
 #include "states/st_wait_transform.hpp"
+#include "states/st_load_missing_file.hpp"
 #include "states/st_load_waypoints.hpp"
 #include "states/st_navigate_waypoints.hpp"
 #include "states/st_rotate_at_waypoint.hpp"
+#include "states/st_reload_waypoints.hpp"
 #include "states/st_navigate_named_waypoint.hpp"
+#include "states/st_check_at_echo.hpp"
+#include "states/st_unknown_waypoint.hpp"
 #include "states/st_seek_waypoint.hpp"
+#include "states/st_seek_by_count.hpp"
 #include "states/st_navigate_until_reached.hpp"
 #include "states/st_forward_cut_short.hpp"
 #include "states/st_abort_navigation.hpp"
@@ -116,5 +129,6 @@ struct SmNav2GazeboTest4 : public smacc2::SmaccStateMachineBase<SmNav2GazeboTest
 #include "states/st_next_waypoint_free.hpp"
 #include "states/st_stop_navigation.hpp"
 #include "states/st_active_stop.hpp"
+#include "states/st_navigate_last_waypoint.hpp"
 #include "states/st_final_state.hpp"
 #include "states/st_mission_failed.hpp"

@@ -19,7 +19,7 @@
 namespace sm_nav2_gazebo_test_4
 {
 // CbLoadWaypointsFile: reads the path in the waypoints_file parameter, where $(pkg_share) stands
-// for this package's share directory, and loads the six named waypoints of config/waypoints.yaml.
+// for this package's share directory, and loads the seven waypoints of config/waypoints.yaml, six of them named.
 struct StLoadWaypoints : smacc2::SmaccState<StLoadWaypoints, SmNav2GazeboTest4>
 {
   using SmaccState::SmaccState;

@@ -21,6 +21,7 @@
 #include <tf2/transform_datatypes.h>
 #include <yaml-cpp/yaml.h>
 
+#include <algorithm>
 #include <ament_index_cpp/get_package_share_directory.hpp>
 #include <cl_nav2z/cl_nav2z.hpp>
 #include <cl_nav2z/common.hpp>
@@ -70,99 +71,77 @@ void CpWaypointNavigator::onGoalReached(
   const components::CpNav2ActionInterface::WrappedResult & /*res*/)
 {
   waypointsEventDispatcher.postWaypointEvent(static_cast<int>(currentWaypoint_));
+  // asks whether the waypoint just reached is the last one, so before the index moves on
+  this->notifyGoalReached();
   currentWaypoint_++;
   RCLCPP_WARN(
     getLogger(), "[CpWaypointNavigator] Goal result received, incrementing waypoint index: %ld",
     currentWaypoint_);
   stopWaitingResult();
 
-  this->notifyGoalReached();
-
   onNavigationRequestSucceeded_();
 }
 
-void CpWaypointNavigatorBase::rewind(int /*count*/)
+void CpWaypointNavigatorBase::rewind(int count)
 {
-  currentWaypoint_--;
-  if (currentWaypoint_ < 0) currentWaypoint_ = 0;
+  if (count <= 0) return;
+  currentWaypoint_ = std::max(currentWaypoint_ - count, 0L);
 }
 
-void CpWaypointNavigatorBase::forward(int /*count*/)
+void CpWaypointNavigatorBase::forward(int count)
 {
-  currentWaypoint_++;
-  if (currentWaypoint_ >= (long)waypoints_.size() - 1)
-    currentWaypoint_ = (long)waypoints_.size() - 1;
+  if (count <= 0) return;
+  // stops at the last waypoint; 0 when the list is empty
+  const long last = std::max(static_cast<long>(waypoints_.size()) - 1, 0L);
+  currentWaypoint_ = std::min(currentWaypoint_ + count, last);
 }
 
-void CpWaypointNavigatorBase::seekName(std::string name)
+bool CpWaypointNavigatorBase::seekName(std::string name)
 {
-  bool found = false;
+  const long count = static_cast<long>(waypoints_.size());
+  const long previousWaypoint = currentWaypoint_;
+  long found = -1;
 
-  auto previousWaypoint = currentWaypoint_;
-
-  while (!found && currentWaypoint_ < (long)waypoints_.size())
+  // an empty name is that of an unnamed waypoint and matches nothing
+  if (!name.empty())
   {
-    auto & nextName = waypointsNames_[currentWaypoint_];
-    RCLCPP_INFO(
-      getLogger(), "[CpWaypointNavigator] seeking ,%ld/%ld candidate waypoint: %s",
-      currentWaypoint_, waypoints_.size(), nextName.c_str());
-    if (name == nextName)
+    // forwards from the current waypoint first, then backwards from the one before it
+    for (long i = std::max(previousWaypoint, 0L); i < count && found < 0; i++)
     {
-      found = true;
-      RCLCPP_INFO(
-        getLogger(), "[CpWaypointNavigator] found target waypoint: %s == %s-> found",
-        nextName.c_str(), name.c_str());
+      if (waypointsNames_[i] == name) found = i;
     }
-    else
+    for (long i = std::min(previousWaypoint, count) - 1; i >= 0 && found < 0; i--)
     {
-      RCLCPP_INFO(
-        getLogger(), "[CpWaypointNavigator] current waypoint: %s != %s -> forward",
-        nextName.c_str(), name.c_str());
-      currentWaypoint_++;
+      if (waypointsNames_[i] == name) found = i;
     }
   }
 
-  if (found)
+  if (found < 0)
   {
-    if (currentWaypoint_ >= (long)waypoints_.size() - 1)
-      currentWaypoint_ = (long)waypoints_.size() - 1;
-  }
-  else  // search backwards
-  {
-    currentWaypoint_ = previousWaypoint;
-    while (!found && currentWaypoint_ > 0)
-    {
-      auto & nextName = waypointsNames_[currentWaypoint_];
-      RCLCPP_INFO(
-        getLogger(), "[CpWaypointNavigator] seeking , candidate waypoint: %s", nextName.c_str());
-      if (name == nextName)
-      {
-        found = true;
-        RCLCPP_INFO(
-          getLogger(), "[CpWaypointNavigator] found target waypoint: %s == %s-> found",
-          nextName.c_str(), name.c_str());
-      }
-      else
-      {
-        RCLCPP_INFO(
-          getLogger(), "[CpWaypointNavigator] current waypoint: %s != %s -> rewind",
-          nextName.c_str(), name.c_str());
-        currentWaypoint_--;
-      }
-    }
+    RCLCPP_WARN(
+      getLogger(),
+      "[CpWaypointNavigator] seekName(%s): no waypoint has that name, index left at %ld",
+      name.c_str(), currentWaypoint_);
+    return false;
   }
 
+  currentWaypoint_ = found;
   RCLCPP_INFO(
-    getLogger(), "[CpWaypointNavigator] seekName( %s), previous index: %ld, after index: %ld",
+    getLogger(), "[CpWaypointNavigator] seekName(%s), previous index: %ld, after index: %ld",
     name.c_str(), previousWaypoint, currentWaypoint_);
+  return true;
 }
 
-void CpWaypointNavigatorBase::loadWaypointsFromYamlParameter(
+bool CpWaypointNavigatorBase::loadWaypointsFromYamlParameter(
   std::string parameter_name, std::string yaml_file_package_name)
 {
   // if it is the first time and the waypoints navigator is not configured
   std::string planfilepath;
-  planfilepath = getNode()->declare_parameter(parameter_name, planfilepath);
+  // a second load of the same parameter must not declare it again
+  if (!getNode()->has_parameter(parameter_name))
+  {
+    getNode()->declare_parameter(parameter_name, planfilepath);
+  }
   RCLCPP_INFO(getLogger(), "waypoints plan parameter: %s", planfilepath.c_str());
   if (getNode()->get_parameter(parameter_name, planfilepath))
   {
@@ -176,13 +155,12 @@ void CpWaypointNavigatorBase::loadWaypointsFromYamlParameter(
     RCLCPP_INFO(getLogger(), "package share path: %s", package_share_directory.c_str());
     RCLCPP_INFO(getLogger(), "waypoints plan file: %s", planfilepath.c_str());
 
-    this->loadWayPointsFromFile(planfilepath);
     RCLCPP_INFO(getLogger(), "waypoints plan: %s", planfilepath.c_str());
+    return this->loadWayPointsFromFile(planfilepath);
   }
-  else
-  {
-    RCLCPP_ERROR(getLogger(), "waypoints plan file not found: NONE");
-  }
+
+  RCLCPP_ERROR(getLogger(), "waypoints plan file not found: NONE");
+  return false;
 }
 
 void CpWaypointNavigator::stopWaitingResult()
@@ -203,10 +181,9 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
   {
     auto & next = waypoints_[currentWaypoint_];
 
-    std::string nextName;
-    if ((long)waypointsNames_.size() > currentWaypoint_)
+    const std::string & nextName = waypointsNames_[currentWaypoint_];
+    if (!nextName.empty())
     {
-      nextName = waypointsNames_[currentWaypoint_];
       RCLCPP_INFO(
         getLogger(), "[CpWaypointNavigator] sending goal, waypoint: %s", nextName.c_str());
     }
@@ -308,7 +285,7 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
 
 void CpWaypointNavigatorBase::notifyGoalReached()
 {
-  // when it is the last waypoint post an finalization EOF event
+  // the current waypoint is the one reached: when it is the last, post the finalization EOF event
   if (currentWaypoint_ == (long)waypoints_.size() - 1)
   {
     RCLCPP_WARN(getLogger(), "[CpWaypointNavigator] Last waypoint reached, posting EOF event. ");
@@ -338,19 +315,36 @@ void CpWaypointNavigatorBase::insertWaypoint(int index, geometry_msgs::msg::Pose
 {
   if (index >= 0 && index <= (int)waypoints_.size())
   {
-    waypoints_.insert(waypoints_.begin(), index, newpose);
+    waypoints_.insert(waypoints_.begin() + index, newpose);
+    waypointsNames_.insert(waypointsNames_.begin() + index, std::string());
   }
+}
+
+void CpWaypointNavigatorBase::addWaypoint(
+  const geometry_msgs::msg::Pose & pose, const std::string & name)
+{
+  waypoints_.push_back(pose);
+  waypointsNames_.push_back(name);
+}
+
+void CpWaypointNavigatorBase::clearWaypoints()
+{
+  waypoints_.clear();
+  waypointsNames_.clear();
 }
 
 void CpWaypointNavigatorBase::setWaypoints(const std::vector<geometry_msgs::msg::Pose> & waypoints)
 {
-  this->waypoints_ = waypoints;
+  clearWaypoints();
+  for (const auto & pose : waypoints)
+  {
+    addWaypoint(pose, std::string());
+  }
 }
 
 void CpWaypointNavigatorBase::setWaypoints(const std::vector<Pose2D> & waypoints)
 {
-  waypoints_.clear();
-  waypointsNames_.clear();
+  clearWaypoints();
   int i = 0;
   for (auto & p : waypoints)
   {
@@ -362,8 +356,7 @@ void CpWaypointNavigatorBase::setWaypoints(const std::vector<Pose2D> & waypoints
     q.setRPY(0, 0, p.yaw_);
     pose.orientation = tf2::toMsg(q);
 
-    waypoints_.push_back(pose);
-    waypointsNames_.push_back(std::to_string(i++));
+    addWaypoint(pose, std::to_string(i++));
   }
 }
 
@@ -372,6 +365,7 @@ void CpWaypointNavigatorBase::removeWaypoint(int index)
   if (index >= 0 && index < (int)waypoints_.size())
   {
     waypoints_.erase(waypoints_.begin() + index);
+    waypointsNames_.erase(waypointsNames_.begin() + index);
   }
 }
 
@@ -406,9 +400,10 @@ geometry_msgs::msg::Pose CpWaypointNavigatorBase::getCurrentPose() const
 std::optional<geometry_msgs::msg::Pose> CpWaypointNavigatorBase::getNamedPose(
   std::string name) const
 {
-  if (this->waypointsNames_.size() > 0)
+  // an empty name is that of an unnamed waypoint and matches nothing
+  if (!name.empty())
   {
-    for (int i = 0; i < (int)this->waypointsNames_.size(); i++)
+    for (std::size_t i = 0; i < this->waypointsNames_.size(); i++)
     {
       if (this->waypointsNames_[i] == name)
       {
@@ -427,7 +422,9 @@ const std::vector<std::string> & CpWaypointNavigatorBase::getWaypointNames() con
 
 std::optional<std::string> CpWaypointNavigatorBase::getCurrentWaypointName() const
 {
-  if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypointsNames_.size())
+  if (
+    currentWaypoint_ >= 0 && currentWaypoint_ < (long)waypointsNames_.size() &&
+    !waypointsNames_[currentWaypoint_].empty())
   {
     return waypointsNames_[currentWaypoint_];
   }
@@ -437,14 +434,15 @@ std::optional<std::string> CpWaypointNavigatorBase::getCurrentWaypointName() con
 long CpWaypointNavigatorBase::getCurrentWaypointIndex() const { return currentWaypoint_; }
 
 #define HAVE_NEW_YAMLCPP
-void CpWaypointNavigatorBase::loadWayPointsFromFile(std::string filepath)
+bool CpWaypointNavigatorBase::loadWayPointsFromFile(std::string filepath)
 {
   RCLCPP_INFO_STREAM(getLogger(), "[CpWaypointNavigatorBase] Loading file:" << filepath);
-  this->waypoints_.clear();
+  clearWaypoints();
   std::ifstream ifs(filepath.c_str(), std::ifstream::in);
   if (ifs.good() == false)
   {
-    throw std::string("Waypoints file not found");
+    RCLCPP_ERROR_STREAM(getLogger(), "Waypoints file not found: " << filepath);
+    return false;
   }
 
   try
@@ -481,12 +479,7 @@ void CpWaypointNavigatorBase::loadWayPointsFromFile(std::string filepath)
           wp.orientation.z = wpnodei["orientation"]["z"].as<double>();
           wp.orientation.w = wpnodei["orientation"]["w"].as<double>();
 
-          if (wpnodei["name"].IsDefined())
-          {
-            this->waypointsNames_.push_back(wpnodei["name"].as<std::string>());
-          }
-
-          this->waypoints_.push_back(wp);
+          addWaypoint(wp, wpnodei["name"].IsDefined() ? wpnodei["name"].as<std::string>() : "");
         }
         catch (...)
         {
@@ -504,17 +497,20 @@ void CpWaypointNavigatorBase::loadWayPointsFromFile(std::string filepath)
   {
     RCLCPP_ERROR_STREAM(
       getLogger(), "Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
+    return false;
   }
+  return true;
 }
 
-void CpWaypointNavigatorBase::loadWayPointsFromFile2(std::string filepath)
+bool CpWaypointNavigatorBase::loadWayPointsFromFile2(std::string filepath)
 {
   RCLCPP_INFO_STREAM(getLogger(), "[CpWaypointNavigator] Loading file:" << filepath);
-  this->waypoints_.clear();
+  clearWaypoints();
   std::ifstream ifs(filepath.c_str(), std::ifstream::in);
   if (ifs.good() == false)
   {
-    throw std::string("Waypoints file not found");
+    RCLCPP_ERROR_STREAM(getLogger(), "Waypoints file not found: " << filepath);
+    return false;
   }
 
   try
@@ -546,8 +542,7 @@ void CpWaypointNavigatorBase::loadWayPointsFromFile2(std::string filepath)
           wp.position.y = (*wp_node)[i]["y"].as<double>();
           auto name = (*wp_node)[i]["name"].as<std::string>();
 
-          this->waypoints_.push_back(wp);
-          this->waypointsNames_.push_back(name);
+          addWaypoint(wp, name);
         }
         catch (...)
         {
@@ -565,6 +560,8 @@ void CpWaypointNavigatorBase::loadWayPointsFromFile2(std::string filepath)
   {
     RCLCPP_ERROR_STREAM(
       getLogger(), "Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
+    return false;
   }
+  return true;
 }
 }  // namespace cl_nav2z

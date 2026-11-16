@@ -20,7 +20,7 @@ namespace sm_nav2_gazebo_test_4
 {
 // The waypoint loop: every entry sends the next waypoint. The waypoint navigator posts
 // EvWaypointN when waypoint N is reached; alpha and bravo go to the rotation state, which comes
-// back here, and charlie leaves the loop.
+// back here, and charlie leaves the loop for the second load.
 struct StNavigateWaypoints : smacc2::SmaccState<StNavigateWaypoints, SmNav2GazeboTest4>
 {
   using SmaccState::SmaccState;
@@ -31,9 +31,9 @@ struct StNavigateWaypoints : smacc2::SmaccState<StNavigateWaypoints, SmNav2Gazeb
   typedef mpl::list<
     Transition<EvWaypoint0<ClNav2Z, OrNavigation>, StRotateAtWaypoint, SUCCESS>,
     Transition<EvWaypoint1<ClNav2Z, OrNavigation>, StRotateAtWaypoint, SUCCESS>,
-    Transition<EvWaypoint2<ClNav2Z, OrNavigation>, StNavigateNamedWaypoint, SUCCESS>,
+    Transition<EvWaypoint2<ClNav2Z, OrNavigation>, StReloadWaypoints, SUCCESS>,
     Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StMissionFailed, ABORT>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StNavigateNamedWaypoint, NEXT>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StReloadWaypoints, NEXT>
   > reactions;
   // clang-format on
 

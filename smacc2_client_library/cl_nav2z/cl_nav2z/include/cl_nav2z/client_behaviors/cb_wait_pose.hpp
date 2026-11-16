@@ -24,23 +24,13 @@
 
 namespace cl_nav2z
 {
-// waits a robot pose message. Usually used for the startup synchronization.
-enum class WaitPoseStandardReferenceFrame
-{
-  Map,
-  Odometry
-};
-
-// Waits a new pose using the Pose Component
+// Waits a new pose using the Pose Component. Usually used for the startup synchronization.
 // the specific pose to wait is configured in that component
 class CbWaitPose : public smacc2::SmaccAsyncClientBehavior
 {
 public:
   // waits a new pose update of the Pose Component
   CbWaitPose();
-
-  // waits a new pose update of the Pose Component in some reference frame (if there is no connection it will wait)
-  CbWaitPose(WaitPoseStandardReferenceFrame frame);
 
   ~CbWaitPose() override;
 

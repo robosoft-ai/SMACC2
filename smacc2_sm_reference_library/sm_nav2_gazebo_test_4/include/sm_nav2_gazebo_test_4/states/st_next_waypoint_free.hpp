@@ -18,7 +18,7 @@
 
 namespace sm_nav2_gazebo_test_4
 {
-// CbNavigateNextWaypointFree: the same direct control, to the current waypoint (echo).
+// CbNavigateNextWaypointFree: the same direct control, to the current waypoint (echo); the index moves on to foxtrot.
 struct StNextWaypointFree : smacc2::SmaccState<StNextWaypointFree, SmNav2GazeboTest4>
 {
   using SmaccState::SmaccState;

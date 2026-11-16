@@ -19,6 +19,8 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <atomic>
+
 #include <tf2_ros/buffer.h>
 
 #include <cl_nav2z/components/nav2_action_interface/cp_nav2_action_interface.hpp>
@@ -28,6 +30,9 @@
 
 namespace cl_nav2z
 {
+// Cancels the navigation goal in flight. Success is posted when Nav2 reports that goal finished, so a
+// goal sent on that event is not met by a server still cancelling; at once when there is no goal;
+// failure when no result arrives within five seconds.
 class CbAbortNavigation : public smacc2::SmaccAsyncClientBehavior
 {
 public:
@@ -44,6 +49,9 @@ public:
   void onExit() override;
 
 private:
+  void onNavigationResult(const components::CpNav2ActionInterface::WrappedResult & result);
+
   components::CpNav2ActionInterface * nav2ActionInterface_ = nullptr;
+  std::atomic<bool> goalFinished_{false};
 };
 }  // namespace cl_nav2z

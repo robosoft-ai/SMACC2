@@ -1,4 +1,5 @@
-# Named waypoints in the open arena (map frame); the robot spawns at (-2.0, -0.5).
+# Waypoints in the open arena (map frame); the robot spawns at (-2.0, -0.5). The fourth has no name on
+# purpose: the names after it must still belong to their own waypoints.
 waypoints:
   - name: alpha
     position: {x: -1.0, y: -0.5, z: 0.0}
@@ -8,6 +9,8 @@ waypoints:
     orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}
   - name: charlie
     position: {x: 1.0, y: -1.0, z: 0.0}
+    orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}
+  - position: {x: 1.3, y: -1.0, z: 0.0}
     orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}
   - name: delta
     position: {x: 1.5, y: -0.8, z: 0.0}
