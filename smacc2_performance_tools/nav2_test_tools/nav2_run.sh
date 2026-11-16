@@ -24,6 +24,7 @@
 # TurtleBot3 simulation come from the ROS installation. With tsan or asan the machine binary and its
 # SMACC2 libraries are taken from the overlay prefix, built with the matching -fsanitize flags.
 # Machine 4 runs in the world of machine 2, which must be in the install prefix as well.
+# GUI=1 in the environment opens the Gazebo window and RViz instead of running headless.
 # Exit status 0 when the final state was reached and the machine stopped without hanging.
 # Up to 20 minutes. Nothing else may be running in the domain (ROS_DOMAIN_ID, default 0).
 if [ $# -lt 3 ]; then echo "usage: $0 <install-prefix> <out-dir> <1|2|3|4> [tsan|asan <overlay-prefix>]"; exit 2; fi
@@ -54,7 +55,7 @@ SHARE=$INST/$PKG/share/$PKG; BL=$OUT/bringup.log
 SIMPROCS='[g]z sim|[c]omponent_container_isolated|[_]node --ros-args'
 echo "leftover: $(pgrep -u $USER -c -f "$SIMPROCS")"
 set -m
-BARGS="headless:=True use_rviz:=False"
+BARGS="headless:=True use_rviz:=False"; [ "${GUI:-0}" = 1 ] && BARGS="headless:=False use_rviz:=True"
 if [ $N != 1 ]; then   # tests 2 and 3 bring their own world, map and parameters; test 4 uses those of test 2
   W=$SHARE; [ $N = 4 ] && W=$INST/sm_nav2_gazebo_test_2/share/sm_nav2_gazebo_test_2
   P=$OUT/nav2_params.yaml; sed "s|RUNTIMEFILL|$W/config/default_nav_to_pose_bt.xml|" $W/config/nav2_params.yaml > $P
