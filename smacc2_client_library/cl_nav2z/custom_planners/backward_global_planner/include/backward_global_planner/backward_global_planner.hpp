@@ -100,7 +100,7 @@ private:
 
   std::shared_ptr<tf2_ros::Buffer> tf_;
 
-  double transform_tolerance_;
+  double transform_tolerance_ = 0.0;
 
   void createDefaultBackwardPath(
     const geometry_msgs::msg::PoseStamped & start, const geometry_msgs::msg::PoseStamped & goal,

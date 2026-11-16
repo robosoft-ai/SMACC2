@@ -1,0 +1,20 @@
+# Named waypoints in the open arena (map frame); the robot spawns at (-2.0, -0.5).
+waypoints:
+  - name: alpha
+    position: {x: -1.0, y: -0.5, z: 0.0}
+    orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}
+  - name: bravo
+    position: {x: 0.0, y: -1.0, z: 0.0}
+    orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}
+  - name: charlie
+    position: {x: 1.0, y: -1.0, z: 0.0}
+    orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}
+  - name: delta
+    position: {x: 1.5, y: -0.8, z: 0.0}
+    orientation: {x: 0.0, y: 0.0, z: 1.0, w: 0.0}
+  - name: echo
+    position: {x: 1.5, y: 0.5, z: 0.0}
+    orientation: {x: 0.0, y: 0.0, z: 1.0, w: 0.0}
+  - name: foxtrot
+    position: {x: 0.5, y: 0.5, z: 0.0}
+    orientation: {x: 0.0, y: 0.0, z: 1.0, w: 0.0}

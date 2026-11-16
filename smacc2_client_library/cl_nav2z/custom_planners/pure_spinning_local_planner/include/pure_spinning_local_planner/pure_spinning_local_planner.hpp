@@ -95,14 +95,14 @@ private:
 
   std::shared_ptr<tf2_ros::Buffer> tf_;
 
-  double k_betta_;
-  bool goalReached_;
-  int currentPoseIndex_;
-  rad yaw_goal_tolerance_;
-  rad intermediate_goal_yaw_tolerance_;
-  rad_s max_angular_z_speed_;
-  double transform_tolerance_;
-  bool use_shortest_angular_distance_;
+  double k_betta_ = 0.0;
+  bool goalReached_ = false;
+  int currentPoseIndex_ = 0;
+  rad yaw_goal_tolerance_ = 0.0;
+  rad intermediate_goal_yaw_tolerance_ = 0.0;
+  rad_s max_angular_z_speed_ = 0.0;
+  double transform_tolerance_ = 0.0;
+  bool use_shortest_angular_distance_ = false;
 };
 }  // namespace pure_spinning_local_planner
 }  // namespace cl_nav2z

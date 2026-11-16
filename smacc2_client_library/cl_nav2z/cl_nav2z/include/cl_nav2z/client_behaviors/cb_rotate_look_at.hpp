@@ -30,8 +30,6 @@ namespace cl_nav2z
 class CbRotateLookAt : public CbAbsoluteRotate
 {
 public:
-  std::shared_ptr<tf2_ros::Buffer> listener;
-
   std::optional<geometry_msgs::msg::PoseStamped> lookAtPose_;
 
   CbRotateLookAt();

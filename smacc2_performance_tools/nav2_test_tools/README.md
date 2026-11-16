@@ -12,9 +12,9 @@ bash src/SMACC2/smacc2_performance_tools/nav2_test_tools/nav2_run.sh install /tm
 
 | Argument | |
 |--|--|
-| install prefix | holds `sm_nav2_gazebo_test_1`, `_2`, `_3` and `cl_nav2z` |
+| install prefix | holds `sm_nav2_gazebo_test_1` to `_4` and `cl_nav2z` |
 | output directory | receives `sm.log`, `bringup.log`, `cpu.txt` |
-| `1`, `2` or `3` | which machine; 2 and 3 use their own world, map and Nav2 parameters, and 3 is sent the `n` key while it waits in its teleop state |
+| `1`, `2`, `3` or `4` | which machine; 2 and 3 use their own world, map and Nav2 parameters, 4 uses those of 2, and 3 is sent the `n` key while it waits in its teleop state |
 | `tsan` or `asan`, overlay prefix | optional, see below |
 
 Needs `nav2_bringup` with the TurtleBot3 simulation and Gazebo. Machine 1 takes about a minute; the
@@ -25,7 +25,7 @@ script gives up after 20 minutes, or after 120 s without a new state. Exit statu
 
 | Line | Meaning |
 |--|--|
-| `verdict` | whether the end state was reached, and after how long; `died` means the machine exited by itself, `timeout` or `stall` that it stopped progressing |
+| `verdict` | whether the end state was reached, and after how long; `died` means the machine exited by itself, `timeout` or `stall` that it stopped progressing, `failed` that machine 4 ended in `StMissionFailed` |
 | `SM exit` | the machine's exit status after SIGINT and how long shutdown took; `SM HANG` means it was still alive 120 s later |
 | `leftover after` | simulator or node processes still running when the script ended; should be 0 |
 | `== states` | every state entered, in order |
@@ -44,7 +44,7 @@ their own build and install bases, as an overlay on the normal install:
 
 ```bash
 cd <workspace> && source install/setup.bash
-colcon build --build-base build_tsan --install-base install_tsan --packages-select smacc2 cl_nav2z sm_nav2_gazebo_test_1 sm_nav2_gazebo_test_2 sm_nav2_gazebo_test_3 \
+colcon build --build-base build_tsan --install-base install_tsan --packages-select smacc2 cl_nav2z sm_nav2_gazebo_test_1 sm_nav2_gazebo_test_2 sm_nav2_gazebo_test_3 sm_nav2_gazebo_test_4 \
   --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo \
   -DCMAKE_CXX_FLAGS="-fsanitize=thread,undefined -fno-omit-frame-pointer" \
   -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=thread,undefined" -DCMAKE_SHARED_LINKER_FLAGS="-fsanitize=thread,undefined"

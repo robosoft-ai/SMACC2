@@ -35,7 +35,7 @@ CbNavigateNamedWaypoint::~CbNavigateNamedWaypoint() {}
 
 void CbNavigateNamedWaypoint::onEntry()
 {
-  CpWaypointNavigator * waypointsNavigator_;
+  // the base class's member: this class had a second one of the same name, and a local as well
   this->requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);
 
   waypointsNavigator_->seekName(waypointname_);

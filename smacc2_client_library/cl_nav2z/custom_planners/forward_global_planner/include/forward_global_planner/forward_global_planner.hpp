@@ -94,7 +94,7 @@ private:
 
   std::string name_;
 
-  double transform_tolerance_;
+  double transform_tolerance_ = 0.0;
 
   std::shared_ptr<tf2_ros::Buffer> tf_;
 };

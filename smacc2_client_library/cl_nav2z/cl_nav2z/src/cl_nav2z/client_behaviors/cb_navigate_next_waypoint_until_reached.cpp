@@ -30,7 +30,12 @@ CbNavigateNextWaypointUntilReached::CbNavigateNextWaypointUntilReached(
 
 CbNavigateNextWaypointUntilReached::~CbNavigateNextWaypointUntilReached() {}
 
-void CbNavigateNextWaypointUntilReached::onEntry() { CbNavigateNextWaypoint::onEntry(); }
+void CbNavigateNextWaypointUntilReached::onEntry()
+{
+  this->requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);
+  sentWaypointName_ = waypointsNavigator_->getCurrentWaypointName();
+  CbNavigateNextWaypoint::onEntry();
+}
 
 void CbNavigateNextWaypointUntilReached::onExit() { CbNavigateNextWaypoint::onExit(); }
 

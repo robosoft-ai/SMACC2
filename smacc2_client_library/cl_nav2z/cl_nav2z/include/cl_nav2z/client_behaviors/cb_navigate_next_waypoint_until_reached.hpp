@@ -59,19 +59,15 @@ public:
     RCLCPP_INFO(
       getLogger(), "[%s] Propagating success event from action server", getName().c_str());
 
-    this->requiresComponent(waypointsNavigator_, ComponentRequirement::HARD);
-
-    // Empty past the last waypoint or for an unnamed one; never dereference it unchecked.
-    auto current_waypoint_name = waypointsNavigator_->getCurrentWaypointName();
+    // The waypoint this entry navigated to: the navigator has already moved its index to the next one.
+    const auto & current_waypoint_name = sentWaypointName_;
     const char * current = current_waypoint_name ? current_waypoint_name->c_str() : "(none)";
 
     if (current_waypoint_name && *current_waypoint_name == this->goalWaypointName_)
     {
       RCLCPP_INFO(
-        getLogger(),
-        "[CbNavigateNextWaypointUntilReached] GoalReached current iteration waypoint i: %ld with "
-        "name '%s'",
-        waypointsNavigator_->getCurrentWaypointIndex(), current);
+        getLogger(), "[CbNavigateNextWaypointUntilReached] GoalReached, waypoint with name '%s'",
+        current);
 
       this->postEvGoalWaypointReached_();
     }
@@ -88,6 +84,9 @@ public:
 
 private:
   std::string goalWaypointName_;
+
+  // set in onEntry, before the goal is sent
+  std::optional<std::string> sentWaypointName_;
 
   std::function<void()> postEvGoalWaypointReached_;
 };
