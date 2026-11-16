@@ -17,8 +17,10 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <sys/prctl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <time.h>
 #include <unistd.h>
 #include <chrono>
 #include <system_error>
@@ -44,6 +46,34 @@ bool waitForGroupExit(pid_t group, bool & leaderReaped, std::chrono::millisecond
     if (std::chrono::steady_clock::now() >= deadline) return false;
     std::this_thread::sleep_for(std::chrono::milliseconds(20));
   }
+}
+
+// Body of the watchdog process: stops the agent's group when the state machine dies without
+// running shutdown(). Runs after fork() in a threaded process, so async-signal-safe calls only.
+[[noreturn]] void runWatchdog(const int * lifePipe, pid_t group)
+{
+  const int lifeFd = lifePipe[0];
+  for (const int sig : {SIGINT, SIGTERM, SIGHUP, SIGQUIT}) signal(sig, SIG_IGN);
+  prctl(PR_SET_NAME, "cp_agent_watch");
+  if (lifeFd > 0) close_range(0, lifeFd - 1, 0);
+  close_range(lifeFd + 1, ~0U, 0);
+
+  // The state machine holds the only write end; end of file means that process is gone
+  char byte = 0;
+  ssize_t count = 0;
+  do
+  {
+    count = read(lifeFd, &byte, 1);
+  } while (count != 0 && !(count == -1 && errno != EINTR));
+
+  kill(-group, SIGTERM);
+  const timespec step{0, 20000000L};
+  for (int i = 0; i < 100 && !(kill(-group, 0) == -1 && errno == ESRCH); ++i)
+  {
+    nanosleep(&step, nullptr);
+  }
+  kill(-group, SIGKILL);
+  _exit(0);
 }
 }  // namespace
 
@@ -75,6 +105,18 @@ void CpMicroRosAgent::launch()
     return;
   }
 
+  // Held open by this process only; the watchdog reads its other end
+  int lifefd[2];
+  if (pipe2(lifefd, O_CLOEXEC) == -1)
+  {
+    RCLCPP_ERROR(
+      getLogger(), "CpMicroRosAgent: pipe2() failed: %s",
+      std::system_category().message(errno).c_str());
+    close(pipefd[0]);
+    close(pipefd[1]);
+    return;
+  }
+
   pid_t pid = fork();
 
   if (pid == 0)
@@ -98,6 +140,22 @@ void CpMicroRosAgent::launch()
     setpgid(pid, pid);  // also here, so the group exists whichever process runs first
     agentPid_ = pid;
     pipeFd_ = pipefd[0];
+
+    // A second child that outlives a crash or SIGKILL of this process and then stops the agent
+    watchdogPid_ = fork();
+    if (watchdogPid_ == 0) runWatchdog(lifefd, pid);
+    close(lifefd[0]);
+    if (watchdogPid_ > 0)
+    {
+      lifeFd_ = lifefd[1];
+    }
+    else
+    {
+      RCLCPP_WARN(
+        getLogger(), "CpMicroRosAgent: no watchdog, fork() failed: %s",
+        std::system_category().message(errno).c_str());
+      close(lifefd[1]);
+    }
 
     // Set pipe to non-blocking
     int flags = fcntl(pipeFd_, F_GETFL, 0);
@@ -134,6 +192,8 @@ void CpMicroRosAgent::launch()
       std::system_category().message(errno).c_str());
     close(pipefd[0]);
     close(pipefd[1]);
+    close(lifefd[0]);
+    close(lifefd[1]);
   }
 }
 
@@ -168,6 +228,19 @@ void CpMicroRosAgent::shutdown()
       RCLCPP_ERROR(
         getLogger(), "CpMicroRosAgent: process group %d still exists after SIGKILL", agentPid_);
     }
+  }
+
+  // The agent is stopped, so the watchdog has nothing left to do
+  if (watchdogPid_ > 0)
+  {
+    kill(watchdogPid_, SIGKILL);
+    waitpid(watchdogPid_, nullptr, 0);
+    watchdogPid_ = -1;
+  }
+  if (lifeFd_ >= 0)
+  {
+    close(lifeFd_);
+    lifeFd_ = -1;
   }
 
   // Close pipe
