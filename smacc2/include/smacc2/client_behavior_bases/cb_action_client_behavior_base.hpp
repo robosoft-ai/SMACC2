@@ -122,7 +122,13 @@ protected:
     }
 
     goalActivitySeen_ = false;
-    auto goalHandleFuture = actionClient_->sendGoal(goal);
+    return this->trackGoal(actionClient_->sendGoal(goal));
+  }
+
+  // The second half of sendGoal(), for a goal that something else (a component) sent through the
+  // same action client: waits for the response and takes the goal's result as this behavior's own.
+  bool trackGoal(std::shared_future<typename GoalHandle::SharedPtr> goalHandleFuture)
+  {
     {
       std::lock_guard<std::mutex> lock(ownGoalMutex_);
       ownGoalHandleFuture_ = goalHandleFuture;
