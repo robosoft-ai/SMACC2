@@ -41,8 +41,9 @@ void CbWaitTransform::onEntry()
   tf2::Stamped<tf2::Transform> transform;
   try
   {
+    // the latest transform: this buffer is new, so it never holds data for the time of this call
     auto transformstamped =
-      tfBuffer_->lookupTransform(targetFrame_, referenceFrame_, getNode()->now(), timeout_);
+      tfBuffer_->lookupTransform(targetFrame_, referenceFrame_, rclcpp::Time(0), timeout_);
     tf2::fromMsg(transformstamped, transform);
 
     result_ = transform;
@@ -56,7 +57,7 @@ void CbWaitTransform::onEntry()
   {
     RCLCPP_ERROR_STREAM(
       getLogger(), "[CbWaitTransform] Failure waiting transform ( ref "
-                     << targetFrame_ << "/ target " << referenceFrame_ << " - " << ex.what());
+                     << referenceFrame_ << "/ target " << targetFrame_ << " - " << ex.what());
     this->postFailureEvent();
   }
 }
