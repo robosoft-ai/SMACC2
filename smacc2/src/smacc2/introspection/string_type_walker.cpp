@@ -27,6 +27,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <regex>
 #include <set>
 
@@ -63,6 +64,12 @@ std::string replace_back(
 
 std::map<std::string, TypeInfo::Ptr> TypeInfo::typeInfoDatabase;
 
+namespace
+{
+// guards typeInfoDatabase: events are posted, and their types looked up, from more than one thread
+std::recursive_mutex typeInfoDatabaseMutex;
+}  // namespace
+
 TypeInfo::Ptr TypeInfo::getFromStdTypeInfo(const std::type_info & tid)
 {
   return TypeInfo::getTypeInfoFromString(demangleSymbol(tid.name()));
@@ -70,6 +77,8 @@ TypeInfo::Ptr TypeInfo::getFromStdTypeInfo(const std::type_info & tid)
 
 TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 {
+  std::lock_guard<std::recursive_mutex> lock(typeInfoDatabaseMutex);
+
   auto it = typeInfoDatabase.find(inputtext);
 
   if (it != typeInfoDatabase.end()) return typeInfoDatabase[inputtext];
