@@ -35,6 +35,17 @@ SUMMARY_ARGS="--thread busiest" smacc2_performance_tools/profiling_tools/perf_fl
 Run the node binary directly and give it the node name its launch file uses, as for the trace tool.
 The node is stopped with SIGINT after `<seconds>`; "node exit 124" is the normal result.
 
+To profile a node that something else started (a launch file, a simulator runner script), attach to
+it by process id. The node is left running when the recording ends:
+
+```bash
+PID=$(pgrep -x sm_nav2_gazebo_) smacc2_performance_tools/profiling_tools/perf_flame.sh /tmp/perf_nav2 60
+```
+
+`pgrep -x` matches the first 15 characters of the binary's name. Processes the node starts after the
+recording begins (a child such as the micro-ROS agent) are recorded too and appear as their own
+threads.
+
 | File in the output directory | Content |
 |--|--|
 | `summary.txt` | the tables printed to the terminal |

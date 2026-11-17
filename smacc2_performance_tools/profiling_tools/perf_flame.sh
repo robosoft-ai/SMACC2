@@ -18,12 +18,13 @@
 # folded stacks and a flame graph. Use it to look inside a step that the LTTng trace shows to be slow.
 #
 # Usage: perf_flame.sh <out-dir> <seconds> <node-binary> [node args...]
+#        PID=<pid> perf_flame.sh <out-dir> <seconds>     attaches to a node that is already running
 # Environment: FREQ samples per second (default 999), STACK bytes of stack copied per sample (default
 # 32768), SUMMARY_ARGS options passed to perf_summary.py (for example "--thread busiest").
 # Needs perf (linux-tools) and kernel.perf_event_paranoid at 2 or lower. The node should be built with
 # debug information (RelWithDebInfo); no frame pointers are needed.
 set -u
-if [ $# -lt 3 ]; then sed -n '17,24p' "$0"; exit 2; fi
+if [ $# -lt 3 ] && [ -z "${PID:-}" -o $# -lt 2 ]; then sed -n '17,25p' "$0"; exit 2; fi
 OUT=$1; SECS=$2; shift 2
 HERE=$(cd "$(dirname "$0")" && pwd); mkdir -p "$OUT"; OUT=$(cd "$OUT" && pwd)
 command -v perf > /dev/null || { echo "perf not found: install linux-tools-$(uname -r)"; exit 2; }
@@ -34,9 +35,15 @@ if [ "$LEVEL" -gt 2 ]; then
   exit 2
 fi
 # cpu-clock makes each sample's period processor time in nanoseconds, on any machine
-perf record -o "$OUT/perf.data" -e cpu-clock -F "${FREQ:-999}" --call-graph "dwarf,${STACK:-32768}" -- \
-  bash -c 'log=$1; shift; exec timeout -s INT "$@" > "$log" 2>&1' _ "$OUT/node.log" "$SECS" "$@" 2> "$OUT/perf.err"
-echo "node exit $?"
+RECORD=(perf record -o "$OUT/perf.data" -e cpu-clock -F "${FREQ:-999}" --call-graph "dwarf,${STACK:-32768}")
+if [ -n "${PID:-}" ]; then
+  "${RECORD[@]}" -p "$PID" -- sleep "$SECS" 2> "$OUT/perf.err"
+  echo "attached to $PID for $SECS s"
+else
+  "${RECORD[@]}" -- bash -c 'log=$1; shift; exec timeout -s INT "$@" > "$log" 2>&1' _ "$OUT/node.log" "$SECS" "$@" \
+    2> "$OUT/perf.err"
+  echo "node exit $?"
+fi
 tail -1 "$OUT/perf.err"
 # One perf script pass per thread: some perf builds lose the stacks of every thread but the first in one pass.
 : > "$OUT/script.txt"
