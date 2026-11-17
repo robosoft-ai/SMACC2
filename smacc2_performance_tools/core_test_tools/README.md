@@ -2,7 +2,8 @@
 
 Scripts that check the SMACC2 core (the `smacc2` package) on a developer machine. None of them runs
 on a pull request. They take the colcon install prefix and an output directory as arguments, so they
-work from any workspace. The sanitizer gate, which runs the ten `sm_coretest_*` machines, is
+work from any workspace. To see where the time of a slow step goes, use `../profiling_tools/`. The
+sanitizer gate, which runs the ten `sm_coretest_*` machines, is
 `.github/scripts/sanitizer_core_tests.sh`; the overall strategy is in `.github/CLAUDE.md`.
 
 | Script | Answers | Time |

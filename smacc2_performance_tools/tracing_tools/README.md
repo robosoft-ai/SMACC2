@@ -25,6 +25,8 @@ line with a nanosecond timestamp), the node's log and `summary.txt`. `trace_summ
 summarizes an existing text trace again. Run the node binary directly and give it the node name its
 launch file uses, or its config file does not apply.
 
+To see what the time inside a slow step is spent on, profile the node with `../profiling_tools/`.
+
 ## Setting up and recording by hand
 
 This small example shows the steps to follow to trace a SMACC2 library.
