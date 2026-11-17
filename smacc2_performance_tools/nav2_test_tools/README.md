@@ -17,6 +17,12 @@ bash src/SMACC2/smacc2_performance_tools/nav2_test_tools/nav2_run.sh install /tm
 | `1`, `2`, `3` or `4` | which machine; 2 and 3 use their own world, map and Nav2 parameters, 4 uses those of 2, and 3 is sent the `n` key while it waits in its teleop state |
 | `tsan` or `asan`, overlay prefix | optional, see below |
 
+`GUI=1` in the environment opens the Gazebo window and RViz, to watch a run:
+
+```bash
+GUI=1 bash src/SMACC2/smacc2_performance_tools/nav2_test_tools/nav2_run.sh install /tmp/nav2_4 4
+```
+
 Needs `nav2_bringup` with the TurtleBot3 simulation and Gazebo. Machine 1 takes about a minute; the
 script gives up after 20 minutes, or after 120 s without a new state. Exit status 0 when
 `StFinalState` was reached and the machine stopped without hanging.
