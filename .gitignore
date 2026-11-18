@@ -5,3 +5,5 @@ log
 bin
 .ccache
 .work
+__pycache__/
+*.pyc
