@@ -119,7 +119,7 @@ std::string toString(Nav2Nodes value)
   }
 }
 
-Nav2Nodes fromString(std::string id)
+Nav2Nodes fromString(const std::string & id)
 {
   if (id == "planner_server")
     return Nav2Nodes::PlannerServer;

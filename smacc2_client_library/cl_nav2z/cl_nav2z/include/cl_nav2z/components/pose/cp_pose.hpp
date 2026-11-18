@@ -77,7 +77,10 @@ public:
   float getY();
   float getZ();
 
-  inline void setReferenceFrame(std::string referenceFrame) { referenceFrame_ = referenceFrame; }
+  inline void setReferenceFrame(std::string referenceFrame)
+  {
+    referenceFrame_ = std::move(referenceFrame);
+  }
 
   inline const std::string & getReferenceFrame() const { return referenceFrame_; }
 

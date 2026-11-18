@@ -42,7 +42,7 @@ public:
   ClGenericSensor() {}
 
   // Constructor with topic name
-  ClGenericSensor(std::string topicName) : topicName_(topicName) {}
+  ClGenericSensor(std::string topicName) : topicName_(std::move(topicName)) {}
 
   // Constructor with topic name and timeout
   ClGenericSensor(std::string topicName, rclcpp::Duration timeout)

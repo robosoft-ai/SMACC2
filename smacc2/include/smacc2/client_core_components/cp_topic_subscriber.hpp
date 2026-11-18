@@ -40,18 +40,15 @@ public:
 
   CpTopicSubscriber() { initialized_ = false; }
 
-  CpTopicSubscriber(std::string topicname)
+  CpTopicSubscriber(std::string topicname) : initialized_(false), topicName_(std::move(topicname))
   {
-    topicName_ = topicname;
-    initialized_ = false;
   }
 
   // For a topic that must not lose messages, such as discrete commands. Without a QoS the
   // subscription is best effort with a depth of queueSize (1 unless set), which suits sensor streams.
-  CpTopicSubscriber(std::string topicname, const rclcpp::QoS & qos) : qos_(qos)
+  CpTopicSubscriber(std::string topicname, const rclcpp::QoS & qos)
+  : qos_(qos), initialized_(false), topicName_(std::move(topicname))
   {
-    topicName_ = topicname;
-    initialized_ = false;
   }
 
   virtual ~CpTopicSubscriber() {}

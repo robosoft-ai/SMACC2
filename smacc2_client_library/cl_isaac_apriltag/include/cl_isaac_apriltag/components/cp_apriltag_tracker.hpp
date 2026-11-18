@@ -49,7 +49,7 @@ using AprilTagDetectionArray = isaac_ros_apriltag_interfaces::msg::AprilTagDetec
 class CpAprilTagTracker : public smacc2::ISmaccComponent
 {
 public:
-  CpAprilTagTracker(std::string target_frame = "map") : targetFrame_(target_frame) {}
+  CpAprilTagTracker(std::string target_frame = "map") : targetFrame_(std::move(target_frame)) {}
 
   virtual ~CpAprilTagTracker() {}
 

@@ -39,7 +39,7 @@ enum class Nav2Nodes
 
 std::string toString(Nav2Nodes value);
 
-Nav2Nodes fromString(std::string str);
+Nav2Nodes fromString(const std::string & str);
 
 class CbWaitNav2Nodes : public smacc2::SmaccAsyncClientBehavior
 {

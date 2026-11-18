@@ -41,9 +41,8 @@ public:
   CbMoveEndEffector() {}
 
   CbMoveEndEffector(geometry_msgs::msg::PoseStamped target_pose, std::string tip_link = "")
-  : targetPose(target_pose)
+  : targetPose(target_pose), tip_link_(std::move(tip_link))
   {
-    tip_link_ = tip_link;
   }
 
   virtual void onEntry() override

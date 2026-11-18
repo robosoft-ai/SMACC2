@@ -33,7 +33,8 @@ namespace cl_moveit2z
 class CbMoveKnownState : public CbMoveJoints
 {
 public:
-  CbMoveKnownState(std::string pkg, std::string config_path) : pkg_(pkg), config_path_(config_path)
+  CbMoveKnownState(std::string pkg, std::string config_path)
+  : pkg_(std::move(pkg)), config_path_(std::move(config_path))
   {
   }
 

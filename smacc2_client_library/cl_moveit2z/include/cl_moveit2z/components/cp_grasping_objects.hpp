@@ -38,7 +38,8 @@ public:
 
   std::optional<std::string> currentAttachedObjectName;
 
-  inline bool getGraspingObject(std::string name, moveit_msgs::msg::CollisionObject & object)
+  inline bool getGraspingObject(
+    const std::string & name, moveit_msgs::msg::CollisionObject & object)
   {
     if (this->graspingObjects.count(name))
     {
@@ -52,7 +53,7 @@ public:
   }
 
   inline void createGraspableBox(
-    std::string frameid, float x, float y, float z, float xl, float yl, float zl)
+    const std::string & frameid, float x, float y, float z, float xl, float yl, float zl)
   {
     RCLCPP_INFO_STREAM(
       getLogger(), "[" << getName() << "] creating grasping object in planning scene: " << frameid);

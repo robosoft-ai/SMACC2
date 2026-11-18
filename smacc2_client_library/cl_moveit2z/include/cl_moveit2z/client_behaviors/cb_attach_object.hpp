@@ -43,7 +43,10 @@ public:
    * @brief Constructor with object name
    * @param targetObjectName Name of the object to attach (must exist in CpGraspingComponent)
    */
-  inline CbAttachObject(std::string targetObjectName) : targetObjectName_(targetObjectName) {}
+  inline CbAttachObject(std::string targetObjectName)
+  : targetObjectName_(std::move(targetObjectName))
+  {
+  }
 
   /**
    * @brief Default constructor

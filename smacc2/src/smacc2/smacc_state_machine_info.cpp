@@ -95,12 +95,6 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
     {
       for (auto & bhinfo : SmaccStateInfo::staticBehaviorInfo[statetid])
       {
-        if (smaccBehaviorInfoMappingByOrthogonalType.count(bhinfo.orthogonalType) == 0)
-        {
-          smaccBehaviorInfoMappingByOrthogonalType[bhinfo.orthogonalType] =
-            std::vector<smacc2::ClientBehaviorInfoEntry *>();
-        }
-
         smaccBehaviorInfoMappingByOrthogonalType[bhinfo.orthogonalType].push_back(&bhinfo);
       }
     }
