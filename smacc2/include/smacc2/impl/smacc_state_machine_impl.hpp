@@ -552,7 +552,8 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
   for (auto & sr : currentState->getStateReactors())
   {
     if (!enter) break;
-    auto srname = smacc2::demangleSymbol(typeid(*sr).name());
+    const auto & reactor = *sr;
+    auto srname = smacc2::demangleSymbol(typeid(reactor).name());
     RCLCPP_INFO_STREAM(getLogger(), "State reactor onEntry: " << srname);
     try
     {
@@ -571,7 +572,8 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *)
   for (auto & eg : currentState->getEventGenerators())
   {
     if (!enter) break;
-    auto egname = smacc2::demangleSymbol(typeid(*eg).name());
+    const auto & generator = *eg;
+    auto egname = smacc2::demangleSymbol(typeid(generator).name());
     RCLCPP_INFO_STREAM(getLogger(), "Event generator onEntry: " << egname);
     try
     {
@@ -781,6 +783,7 @@ void ISmaccStateMachine::propagateEventToStateReactors(ISmaccState * st, EventTy
   for (auto & sb : st->getStateReactors())
   {
     // A throwing reactor must not end the state machine thread; log it and go on to the next.
+    const auto & reactor = *sb;
     try
     {
       sb->notifyEvent(ev);
@@ -788,14 +791,14 @@ void ISmaccStateMachine::propagateEventToStateReactors(ISmaccState * st, EventTy
     catch (const std::exception & e)
     {
       RCLCPP_ERROR(
-        getLogger(), "[%s] state reactor threw on event %s: %s", demangleType(typeid(*sb)).c_str(),
-        demangleSymbol<EventType>().c_str(), e.what());
+        getLogger(), "[%s] state reactor threw on event %s: %s",
+        demangleType(typeid(reactor)).c_str(), demangleSymbol<EventType>().c_str(), e.what());
     }
     catch (...)
     {
       RCLCPP_ERROR(
         getLogger(), "[%s] state reactor threw a non-standard exception on event %s",
-        demangleType(typeid(*sb)).c_str(), demangleSymbol<EventType>().c_str());
+        demangleType(typeid(reactor)).c_str(), demangleSymbol<EventType>().c_str());
     }
   }
 

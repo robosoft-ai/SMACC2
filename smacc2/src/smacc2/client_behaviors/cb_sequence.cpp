@@ -87,10 +87,11 @@ void CbSequence::onEntry()
     }
 
     rclcpp::sleep_for(std::chrono::milliseconds(200));
+    const auto & head = *bh_;
     RCLCPP_INFO_THROTTLE(
       getLogger(), *(getNode()->get_clock()), 1000,
       "[CbSequence %p] Waiting for subnodes to finish %ld. Current head Behavior: %s ",
-      static_cast<const void *>(this), sequenceNodes_.size(), demangleType(&typeid(*bh_)).c_str());
+      static_cast<const void *>(this), sequenceNodes_.size(), demangleType(&typeid(head)).c_str());
 
     if (consume_)
     {
