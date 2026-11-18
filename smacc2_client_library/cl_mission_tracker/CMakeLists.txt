@@ -14,6 +14,10 @@ find_package(smacc2 REQUIRED)
 
 include_directories(include)
 
+# Compiles every header of the library; not installed and not exported.
+add_library(${PROJECT_NAME}_headers_check OBJECT src/cl_mission_tracker/headers_check.cpp)
+ament_target_dependencies(${PROJECT_NAME}_headers_check smacc2)
+
 ament_export_include_directories(include)
 ament_export_dependencies(smacc2)
 

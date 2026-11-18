@@ -27,7 +27,7 @@ class CpObjectTracker1 : public smacc2::ISmaccComponent
 {
 public:
   // Declare the Component's default constructor.
-  void onInitialize()
+  void onInitialize() override
   {
     // Gain access to the foundationpose subscriber component.
     requiresComponent(fondationPoseTopic_);

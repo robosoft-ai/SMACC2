@@ -26,7 +26,7 @@ BUILD=$1; OUT=${2:-clang_tidy_out}; MODE=${3:-}
 HERE=$(cd "$(dirname "$0")" && pwd); REPO=$(cd "$HERE/../.." && pwd)
 BASELINE=$REPO/.github/clang-tidy-baseline.txt
 # cl_moveit2z is nearly all headers; the panda machine is what compiles them.
-PACKAGES="smacc2 cl_ros2_timer cl_lifecycle_node cl_nav2z cl_px4_mr cl_moveit2z sm_atomic sm_atomic_lifecycle sm_panda_cl_moveit2z_cb_inventory"
+PACKAGES="smacc2 cl_ros2_timer cl_lifecycle_node cl_nav2z cl_px4_mr cl_moveit2z cl_http cl_gcalcli cl_modbus_tcp_relay cl_keyboard cl_generic_sensor cl_foundation_pose cl_mission_tracker sm_atomic sm_atomic_lifecycle sm_panda_cl_moveit2z_cb_inventory"
 # Policy (2026-11-13): the three groups below plus two single checks that cover what cppcheck caught in the
 # core study: uninitialized members and C-style casts. The rest of cppcoreguidelines-* stays out: it is a
 # style guide, most of its lines here are public members, and silencing it would change public signatures.

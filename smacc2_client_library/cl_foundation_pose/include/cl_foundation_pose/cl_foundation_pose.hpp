@@ -33,11 +33,12 @@ class ClFoundationPose : public smacc2::ISmaccClient
 public:
   ClFoundationPose() {}
 
-  void onInitialize() override
+  template <typename TOrthogonal, typename TClient>
+  void onComponentInitialization()
   {
-    auto subcomponent =
-      this->createComponent<CpTopicSubscriber<vision_msgs::msg::Detection3DArray>>(
-        "/detection3d_array");
+    this->createComponent<
+      CpTopicSubscriber<vision_msgs::msg::Detection3DArray>, TOrthogonal, ClFoundationPose>(
+      std::string("/detection3d_array"));
   }
 };
 

@@ -15,6 +15,7 @@
 #include <cl_gcalcli/components/cp_calendar_poller.hpp>
 
 #include <boost/regex.hpp>
+#include <ctime>
 #include <iomanip>
 #include <sstream>
 
@@ -64,8 +65,9 @@ bool CpCalendarPoller::refreshAgenda()
   auto now_t = std::chrono::system_clock::to_time_t(now);
   auto end_t = std::chrono::system_clock::to_time_t(end);
 
-  std::tm now_tm = *std::localtime(&now_t);
-  std::tm end_tm = *std::localtime(&end_t);
+  std::tm now_tm{}, end_tm{};
+  localtime_r(&now_t, &now_tm);
+  localtime_r(&end_t, &end_tm);
 
   args << " \"" << std::put_time(&now_tm, "%m/%d/%Y") << "\"";
   args << " \"" << std::put_time(&end_tm, "%m/%d/%Y") << "\"";

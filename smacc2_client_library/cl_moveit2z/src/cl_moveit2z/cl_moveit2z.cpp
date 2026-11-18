@@ -20,6 +20,29 @@
 
 #include <cl_moveit2z/cl_moveit2z.hpp>
 
+// Every other header of the library, so that this file compiles all of them and clang-tidy reads them.
+#include <cl_moveit2z/client_behaviors.hpp>
+#include <cl_moveit2z/client_behaviors/cb_attach_object.hpp>
+#include <cl_moveit2z/client_behaviors/cb_circular_pivot_motion.hpp>
+#include <cl_moveit2z/client_behaviors/cb_detach_object.hpp>
+#include <cl_moveit2z/client_behaviors/cb_end_effector_rotate.hpp>
+#include <cl_moveit2z/client_behaviors/cb_move_cartesian_relative2.hpp>
+#include <cl_moveit2z/client_behaviors/cb_move_end_effector.hpp>
+#include <cl_moveit2z/client_behaviors/cb_move_end_effector_trajectory.hpp>
+#include <cl_moveit2z/client_behaviors/cb_move_joints.hpp>
+#include <cl_moveit2z/client_behaviors/cb_move_known_state.hpp>
+#include <cl_moveit2z/client_behaviors/cb_moveit2z_client_behavior_base.hpp>
+#include <cl_moveit2z/client_behaviors/cb_undo_last_trajectory.hpp>
+#include <cl_moveit2z/common.hpp>
+#include <cl_moveit2z/components/cp_grasping_objects.hpp>
+#include <cl_moveit2z/components/cp_joint_space_trajectory_planner.hpp>
+#include <cl_moveit2z/components/cp_motion_planner.hpp>
+#include <cl_moveit2z/components/cp_move_group_interface.hpp>
+#include <cl_moveit2z/components/cp_tf_listener.hpp>
+#include <cl_moveit2z/components/cp_trajectory_executor.hpp>
+#include <cl_moveit2z/components/cp_trajectory_history.hpp>
+#include <cl_moveit2z/components/cp_trajectory_visualizer.hpp>
+
 namespace cl_moveit2z
 {
 // Declare the Client's constructors.

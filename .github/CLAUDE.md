@@ -22,7 +22,7 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 
 | Check | Where | Trigger | On every PR | Time | What it is for |
 |--|--|--|--|--|--|
-| pre-commit (clang-format, `cppcheck`, `ament_lint_cmake`, `ament_copyright`, file hygiene) | developer machine | every commit | local | seconds | formatting and licence headers; cppcheck at warning and performance severity (uninitialized members, needless copies) |
+| pre-commit (clang-format, `cppcheck`, `ament_lint_cmake`, `ament_copyright`, file hygiene) | developer machine | every commit | local | seconds | formatting and licence headers; cppcheck at warning, style and performance severity (uninitialized members, needless copies, shadowed variables, dead conditions) |
 | Format (`ci-format.yml`) | GitHub | pull request | yes | about 2 min | the same pre-commit hooks over the whole tree |
 | Pull request Doc Check (`doxygen-check-build.yml`) | GitHub | pull request | yes | about 5 min | the Doxygen build |
 | jazzy Binary Build (`jazzy-binary-build.yml`) | GitHub | pull request, push, nightly | yes | **median 24 to 26 min** | the tree builds from scratch against released ROS packages |
@@ -142,7 +142,7 @@ with their simulators; only the state machine node is instrumented.
 
 ## cppcheck
 
-- The pre-commit hook calls `cppcheck` directly with `--enable=warning,performance,portability` and
+- The pre-commit hook calls `cppcheck` directly with `--enable=warning,style,performance,portability` and
   `--error-exitcode=1` (2026-11-18). `ament_cppcheck` cannot raise the severity, and at error severity
   the hook reported nothing and could not fail. The reference library is excluded.
 - What it catches is a member with no initializer (`uninitMemberVar`), in every library, on every
@@ -151,8 +151,13 @@ with their simulators; only the state machine node is instrumented.
 - `performance` was added the same day, after its 36 lines were fixed. A constructor that stores a
   string takes it by value and moves it into the member, which cppcheck accepts and which leaves
   the signature alone; a function that only reads a string takes a const reference.
-- Not enabled: `style` (612 lines on 2026-11-18, of which 487 `unusedStructMember`; the four sampled
-  were false positives, because the source file that uses the member is not read).
+- `style` was added the same day with four of its checks suppressed: `unusedStructMember` (487
+  lines, false positives because a header is read without the source file that uses the member),
+  `noExplicitConstructor` (86, not enforced, see below), `variableScope` (10) and `useStlAlgorithm`
+  (2), both matters of taste. The other 27 lines were fixed, among them a dead emergency stop in
+  the backward local planner.
+- `style` is cppcheck's broadest class. CI has cppcheck 2.13 from Ubuntu 24.04; a newer cppcheck can
+  add checks, so expect new lines when the image changes.
 - At `--enable=warning,style,performance,portability` the core had 33 lines on 2026-11-13: 12
   `noExplicitConstructor`, 5 `duplInheritedMember`, 4 `useStlAlgorithm`, 3 `cstyleCast`, 2
   `unknownMacro`, 3 `uninitMemberVar`, and one each of four others.
@@ -172,7 +177,9 @@ with their simulators; only the state machine node is instrumented.
 - `.github/scripts/clang_tidy_gate.sh <build-base> <out-dir> [--update-baseline]` runs `bugprone-*`,
   `concurrency-*`, `clang-analyzer-*` and two single checks, `cppcoreguidelines-pro-type-member-init`
   and `cppcoreguidelines-pro-type-cstyle-cast`, over `smacc2`, `cl_ros2_timer`, `cl_lifecycle_node`,
-  `cl_nav2z`, `cl_px4_mr`, `cl_moveit2z`, `sm_atomic`, `sm_atomic_lifecycle` and
+  `cl_nav2z`, `cl_px4_mr`, `cl_moveit2z`, `cl_http`, `cl_gcalcli`, `cl_modbus_tcp_relay`,
+  `cl_keyboard`, `cl_generic_sensor`, `cl_foundation_pose`, `cl_mission_tracker`, `sm_atomic`,
+  `sm_atomic_lifecycle` and
   `sm_panda_cl_moveit2z_cb_inventory`, and compares the result with
   `.github/clang-tidy-baseline.txt`. A diagnostic that is not in the baseline, or more instances of a
   known one, fails the gate.
@@ -180,15 +187,34 @@ with their simulators; only the state machine node is instrumented.
   uninitialized members and C-style casts. Removing one initializer from `ISmaccState` fails the gate.
 - A diagnostic in a header is counted once, however many source files include the header, so adding
   a source file does not raise a count (changed 2026-11-15; before that `CheckType` counted 25).
-- The baseline holds 88 diagnostics in 63 keys: 23 in the core, `cl_nav2z` and the launch client,
-  64 in `cl_px4_mr` and 1 in the panda machine, none a defect.
+- The baseline holds 122 diagnostics in 89 keys: 23 in the core, `cl_nav2z` and the launch client,
+  64 in `cl_px4_mr`, 1 in the panda machine, 5 in `cl_http` and `cl_gcalcli`, and 29 in the
+  `cl_moveit2z` headers.
+  - The 5 (added 2026-11-18 with the five libraries that have source files): 4
+    `easily-swappable-parameters` and one `unused-return-value` in `http_session.cpp` that is a false
+    positive. `cl_modbus_tcp_relay`, `cl_keyboard`, `cl_generic_sensor`, `cl_foundation_pose` and
+    `cl_mission_tracker` have none. Two
+    `concurrency-mt-unsafe` on `std::localtime` in `cl_gcalcli` were fixed with `localtime_r`.
+  - **A header is counted only when a source file of its own package includes it.** A header reached
+    only from a state machine comes through the install base and is not matched. So every client
+    library has a source file that includes all of its headers (2026-11-18): `cl_moveit2z.cpp` in
+    `cl_moveit2z`, and `headers_check.cpp`, built as an object library that is not installed, in
+    the header-only `cl_foundation_pose` and `cl_mission_tracker`. A new header goes into that list.
+    The same file makes the package's own build compile every header: before it, the two
+    header-only libraries were compiled by nothing and did not compile, and
+    `cb_end_effector_rotate.hpp` had no include guard.
+  - The 29 in `cl_moveit2z` (counted since 2026-11-18): 15 narrowing conversions, 8 unchecked
+    optional accesses, 2 optional value conversions, 2 swappable parameters, 1 float loop counter,
+    1 branch clone. Six of the optional accesses are a defect in `CbCircularPivotMotion`.
+  - `cl_isaac_apriltag` has a `COLCON_IGNORE` file (it needs `isaac_ros_apriltag_interfaces`) and is
+    compiled by nothing, here or in CI.
   - The 23: 16 `easily-swappable-parameters` (10 in `cl_nav2z` constructors, 4 generated by the lttng
     macros, 2 on the launch client), 3 member-init lines (`CheckType::transitionTypeName` is assigned
     in the constructor body; two launch-client buffers are written before they are read), the lttng
     header guard, "main may throw" (2) and one analyzer false positive in `signal_detector.cpp`.
-  - The 1 in the panda machine (added 2026-11-15 with `cl_moveit2z`): "main may throw". `cl_moveit2z`
-    itself has none. The library is nearly all headers and its one source file compiles 3 of the 22,
-    so the machine is in the gate to compile the rest.
+  - The 1 in the panda machine (added 2026-11-15 with `cl_moveit2z`): "main may throw". Until
+    2026-11-18 the library's one source file compiled 3 of its 22 headers, and the machine was added
+    to compile the rest, which did not work for the gate: see the note on headers above.
   - The 64 in `cl_px4_mr` (added 2026-11-15): 30 `easily-swappable-parameters` on setters and
     constructors that take x, y or latitude, longitude; 23 narrowing conversions and 7 widening casts
     on loop counters in the pattern generators; 2 integer divisions that are the intended leg number

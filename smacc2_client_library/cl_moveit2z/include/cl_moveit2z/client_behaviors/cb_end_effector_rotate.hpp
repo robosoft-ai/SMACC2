@@ -18,6 +18,8 @@
  *
  *****************************************************************************************************************/
 
+#pragma once
+
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 #include <ament_index_cpp/get_package_share_directory.hpp>
