@@ -1,0 +1,60 @@
+name: clang build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  clang-build:
+    name: clang 18 build of every package
+    runs-on: ubuntu-24.04
+    # The whole tree is built, so the desktop image and a whole-tree rosdep, as in jazzy-binary-build.yml.
+    container:
+      image: osrf/ros:jazzy-desktop
+    # A container job runs its steps with sh unless told otherwise; the steps source setup.bash.
+    defaults:
+      run:
+        shell: bash
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependencies
+        # clang 18 from Ubuntu noble. px4_msgs, which cl_px4_mr needs, has no binary package and
+        # comes from the repos file.
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends clang-18
+          rm /etc/ros/rosdep/sources.list.d/20-default.list
+          rosdep init
+          rosdep update
+          vcs import < .github/SMACC2.jazzy.repos
+          rosdep install --from-paths . --ignore-src -r -y
+
+      - name: Build with clang
+        # Every SMACC2 package with clang 18; the message packages with the default compiler.
+        # Fails on a build error or on any compiler warning.
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          .github/scripts/clang_build.sh clang_out
+
+      - name: Run the core tests on the clang build
+        if: ${{ !cancelled() }}
+        run: |
+          .github/scripts/sanitizer_core_tests.sh plain clang_out/install clang_out/core_tests 2>&1 | tee clang_out/core_tests.log
+
+      - name: List the warnings on the run page
+        if: always()
+        run: python3 .github/scripts/clang_warnings.py clang_out/console.log --markdown >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the build log and the warning list
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clang-build-output
+          path: |
+            clang_out/console.log
+            clang_out/messages.log
+            clang_out/warnings.txt
+            clang_out/core_tests.log
+            clang_out/core_tests/
+          if-no-files-found: ignore

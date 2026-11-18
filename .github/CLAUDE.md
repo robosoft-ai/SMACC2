@@ -10,7 +10,7 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
    request only if it is fast, deterministic and has no known false failures.
 2. **The two build workflows finish in 20 minutes or less, without caching.** A cached build does not
    prove that the tree builds from scratch, which is the point of the workflow.
-3. **Heavy checks are run on demand.** Sanitizers, clang-tidy and CodeQL are `workflow_dispatch` only.
+3. **Heavy checks are run on demand.** Sanitizers, clang-tidy, the clang build and CodeQL are `workflow_dispatch` only.
    They are run before a release and after any change to the core's threading, lifetime or shutdown
    code, not on every pull request.
 4. **A new check starts with a baseline, not a cleanup.** It records the findings that exist and fails
@@ -29,6 +29,7 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 | jazzy Semi-Binary Build (`jazzy-semi-binary-build.yml`) | GitHub | pull request, push, nightly | yes | **median 23 min** | as above, with a different skip list |
 | Sanitizers (`ci-sanitizers.yml`) | GitHub | manual | no | up to 60 min | the ten core tests under TSan, ASan and a plain build |
 | clang-tidy (`ci-clang-tidy.yml`) | GitHub | manual | no | up to 60 min | bug-prone patterns against a checked-in baseline |
+| clang build (`ci-clang-build.yml`) | GitHub, or `.github/scripts/clang_build.sh <out-dir>` on a developer machine | manual | no | not yet measured on GitHub; 14 min on a 32-core host | every package compiles with clang 18 with no warning, and the ten core tests pass on that build; clang reports classes of mistake GCC accepts silently |
 | CodeQL (`codeql.yml`) | GitHub | manual | no | | security queries |
 | LTTng trace (capture steps under "LTTng tracing" below) | developer machine | on demand | no | seconds to capture and read | timing: loop rate and jitter, how long each state, behavior, update and transition takes |
 | Regression suite (`smacc2_performance_tools/core_test_tools/regression.sh`) | developer machine | on demand, before a core change is committed | no | 3 min | five reference machines still go through the same state sequence, compared with `regression_expected.out` |
@@ -45,6 +46,8 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 Summary page: pass or fail, one row per core test with what it measured, any failure lines, and for
 clang-tidy the diagnostics by check and anything not in the baseline. The full logs are in the run's
 artifact. `.github/scripts/gate_summary.py` builds the summary from the gate script's console output.
+The clang build's Summary page is the list of compiler warnings and nothing else, each distinct warning
+once with the number of times it was given.
 
 **The build workflows are over budget today.** Of the last 14 pull-request runs, 11 took longer than
 20 minutes on each workflow (range 17 to 31 min). In a 17.4 min run, 2.8 min was dependency setup and
@@ -182,6 +185,24 @@ with their simulators; only the state machine node is instrumented.
   local variables declared without a value) and `cppcoreguidelines-explicit-virtual-functions` (107,
   missing `override`, 94 in `cl_nav2z`). Each would need a sweep of `cl_nav2z` first.
 
+## The clang build
+
+- `.github/scripts/clang_build.sh <out-dir>`, run from the workspace root with only
+  `/opt/ros/jazzy/setup.bash` sourced, builds every SMACC2 package with clang 18 into its own build
+  and install bases under the out dir, so the GCC build is not touched. Those bases are deleted first:
+  a file that is not recompiled gives no warning. `smacc2_msgs` and `px4_msgs`
+  are built first with the default compiler, because their code is generated.
+- It prints every warning the compiler gave and writes the same list to `warnings.txt`
+  (`.github/scripts/clang_warnings.py`). A warning in a header is given once for every source file
+  that includes the header; the list shows it once, with the count, under its path in the repository.
+- The standard is zero: the script exits 1 on a build error or on any warning. GCC is not held to
+  this; the two compilers warn about different things.
+- The workflow then runs the ten core tests on the clang build
+  (`sanitizer_core_tests.sh plain <out-dir>/install`).
+- What clang has found here that GCC accepts silently: `demangleSymbol(const std::string &)` calling
+  itself forever (a defect, fixed), 639 type announcements with `class` for a type defined with
+  `struct`, `typeid` applied to a dereferenced smart pointer, counters and private fields nothing read.
+
 ## LTTng tracing
 
 The core defines 14 tracepoints under the `ros2` provider (`smacc2/include/smacc2/smacc_tracing/`):
@@ -246,8 +267,5 @@ is the floor on reaction time for any event that originates outside the state ma
 2. Remove the `ament_cppcheck` hook and the ROS Lint workflow.
 3. Add tracepoints for the work an asynchronous behavior does; today its entry pair covers only the
    launch of its thread.
-4. Add an on-demand clang build, never on a pull request, once its warning backlog is cleared. A trial
-   build with clang 18 found a real defect GCC accepts silently, since fixed:
-   `demangleSymbol(const std::string &)` called itself forever.
-5. Add a `perf` flame-graph recipe. Coverage, the memory soak and the ABI comparison are in place:
+4. Add a `perf` flame-graph recipe. Coverage, the memory soak and the ABI comparison are in place:
    `core_test_tools/coverage.sh`, `core_test_tools/memory_tests/`, `.github/scripts/abi_compare.sh`.
