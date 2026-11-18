@@ -40,9 +40,8 @@ class CbWaitTopicMessage : public smacc2::SmaccAsyncClientBehavior
 public:
   CbWaitTopicMessage(
     const char * topicname, std::function<bool(const TMessage &)> guardFunction = nullptr)
+  : guardFn_(std::move(guardFunction)), topicname_(topicname)
   {
-    topicname_ = topicname;
-    guardFn_ = guardFunction;
   }
 
   virtual ~CbWaitTopicMessage() {}

@@ -40,11 +40,7 @@ public:
 
   typedef MessageType TMessageType;
 
-  CpTopicPublisher(std::string topicname)
-  {
-    this->topicName_ = topicname;
-    initialized_ = false;
-  }
+  CpTopicPublisher(std::string topicname) : initialized_(false), topicName_(std::move(topicname)) {}
 
   virtual ~CpTopicPublisher() {}
 

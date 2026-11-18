@@ -37,9 +37,8 @@ class SmaccServiceServerClient : public smacc2::ISmaccClient
 public:
   std::optional<std::string> serviceName_;
   SmaccServiceServerClient() { initialized_ = false; }
-  SmaccServiceServerClient(std::string service_name)
+  SmaccServiceServerClient(std::string service_name) : serviceName_(std::move(service_name))
   {
-    serviceName_ = service_name;
     initialized_ = false;
   }
 

@@ -22,7 +22,7 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 
 | Check | Where | Trigger | On every PR | Time | What it is for |
 |--|--|--|--|--|--|
-| pre-commit (clang-format, `cppcheck`, `ament_lint_cmake`, `ament_copyright`, file hygiene) | developer machine | every commit | local | seconds | formatting and licence headers; cppcheck at warning severity (uninitialized members) |
+| pre-commit (clang-format, `cppcheck`, `ament_lint_cmake`, `ament_copyright`, file hygiene) | developer machine | every commit | local | seconds | formatting and licence headers; cppcheck at warning and performance severity (uninitialized members, needless copies) |
 | Format (`ci-format.yml`) | GitHub | pull request | yes | about 2 min | the same pre-commit hooks over the whole tree |
 | Pull request Doc Check (`doxygen-check-build.yml`) | GitHub | pull request | yes | about 5 min | the Doxygen build |
 | jazzy Binary Build (`jazzy-binary-build.yml`) | GitHub | pull request, push, nightly | yes | **median 24 to 26 min** | the tree builds from scratch against released ROS packages |
@@ -142,15 +142,17 @@ with their simulators; only the state machine node is instrumented.
 
 ## cppcheck
 
-- The pre-commit hook calls `cppcheck` directly with `--enable=warning,portability` and
+- The pre-commit hook calls `cppcheck` directly with `--enable=warning,performance,portability` and
   `--error-exitcode=1` (2026-11-18). `ament_cppcheck` cannot raise the severity, and at error severity
   the hook reported nothing and could not fail. The reference library is excluded.
 - What it catches is a member with no initializer (`uninitMemberVar`), in every library, on every
   commit. The clang-tidy gate checks the same family only in the packages it covers and only by hand.
   Each header is read alone, in under a second for the whole tree.
-- Not enabled: `style` (613 lines on 2026-11-18, of which 487 `unusedStructMember`; the four sampled were false
-  positives, because the source file that uses the member is not read) and `performance` (36 lines, of which
-  23 `passedByValue` in public headers, a signature change each).
+- `performance` was added the same day, after its 36 lines were fixed. A constructor that stores a
+  string takes it by value and moves it into the member, which cppcheck accepts and which leaves
+  the signature alone; a function that only reads a string takes a const reference.
+- Not enabled: `style` (612 lines on 2026-11-18, of which 487 `unusedStructMember`; the four sampled
+  were false positives, because the source file that uses the member is not read).
 - At `--enable=warning,style,performance,portability` the core had 33 lines on 2026-11-13: 12
   `noExplicitConstructor`, 5 `duplInheritedMember`, 4 `useStlAlgorithm`, 3 `cstyleCast`, 2
   `unknownMacro`, 3 `uninitMemberVar`, and one each of four others.

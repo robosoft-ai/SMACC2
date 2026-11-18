@@ -34,7 +34,7 @@ private:
 
 public:
   CbTrackObjectPose(std::string objectToTrackId, std::string globalFrame = "map")
-  : globalFrame_(globalFrame), objectToTrackId_(objectToTrackId)
+  : globalFrame_(std::move(globalFrame)), objectToTrackId_(std::move(objectToTrackId))
   {
   }
 

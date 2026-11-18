@@ -39,17 +39,16 @@ public:
   std::optional<double> linearSpeed_m_s_;
 
   CbMoveCartesianRelative2(std::string referenceFrame, std::string tipLink)
-  : CbMoveEndEffectorTrajectory(tipLink)
+  : CbMoveEndEffectorTrajectory(std::move(tipLink)), globalFrame_(std::move(referenceFrame))
   {
-    globalFrame_ = referenceFrame;
   }
 
   CbMoveCartesianRelative2(
     std::string referenceFrame, std::string tipLink, geometry_msgs::msg::Vector3 offset)
-  : CbMoveEndEffectorTrajectory(tipLink)
+  : CbMoveEndEffectorTrajectory(std::move(tipLink)),
+    offset_(offset),
+    globalFrame_(std::move(referenceFrame))
   {
-    globalFrame_ = referenceFrame;
-    offset_ = offset;
   }
 
   virtual ~CbMoveCartesianRelative2() {}

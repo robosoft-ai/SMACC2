@@ -35,7 +35,8 @@ public:
   using Feedback = typename ActionType::Feedback;
 
   // Constructor
-  ClNav2Z(std::string actionServerName = "/navigate_to_pose") : actionServerName_(actionServerName)
+  ClNav2Z(std::string actionServerName = "/navigate_to_pose")
+  : actionServerName_(std::move(actionServerName))
   {
   }
 

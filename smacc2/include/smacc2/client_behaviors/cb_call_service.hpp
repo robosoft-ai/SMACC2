@@ -30,10 +30,11 @@ template <typename ServiceType>
 class CbServiceCall : public smacc2::SmaccAsyncClientBehavior
 {
 public:
-  CbServiceCall(const char * serviceName) : serviceName_(serviceName)
+  CbServiceCall(const char * serviceName)
+  : serviceName_(serviceName),
+    request_(std::make_shared<typename ServiceType::Request>()),
+    pollRate_(100ms)
   {
-    request_ = std::make_shared<typename ServiceType::Request>();
-    pollRate_ = 100ms;
   }
 
   CbServiceCall(

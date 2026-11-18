@@ -57,7 +57,7 @@ class ClIsaacApriltag : public smacc2::ISmaccClient
 {
 public:
   ClIsaacApriltag(std::string topic_name = "/tag_detections", std::string target_frame = "map")
-  : topicName_(topic_name), targetFrame_(target_frame)
+  : topicName_(std::move(topic_name)), targetFrame_(std::move(target_frame))
   {
   }
 

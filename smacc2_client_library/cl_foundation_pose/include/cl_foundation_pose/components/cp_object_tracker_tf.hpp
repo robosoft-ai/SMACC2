@@ -42,7 +42,10 @@ private:
   std::mutex m_mutex_;
 
 public:
-  CpObjectTrackerTf(std::string global_frame_id = "map") : global_frame_id_(global_frame_id) {}
+  CpObjectTrackerTf(std::string global_frame_id = "map")
+  : global_frame_id_(std::move(global_frame_id))
+  {
+  }
 
   void setEnabled(bool enabled)
   {
