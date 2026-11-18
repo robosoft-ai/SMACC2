@@ -102,8 +102,6 @@ private:
 
   double skip_straight_motion_distance_;  //meters
 
-  double puresSpinningRadStep_ = 0.0;  // rads
-
   double transform_tolerance_;
 
   std::string name_;
