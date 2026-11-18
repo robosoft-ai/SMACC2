@@ -18,6 +18,10 @@ find_package(geometry_msgs REQUIRED)
 
 include_directories(include)
 
+# Compiles every header of the library; not installed and not exported.
+add_library(${PROJECT_NAME}_headers_check OBJECT src/cl_foundation_pose/headers_check.cpp)
+ament_target_dependencies(${PROJECT_NAME}_headers_check smacc2 vision_msgs tf2_ros tf2_geometry_msgs geometry_msgs)
+
 ament_export_include_directories(include)
 ament_export_dependencies(
   smacc2

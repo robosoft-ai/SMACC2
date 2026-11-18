@@ -8,3 +8,4 @@ bugprone-exception-escape: Accepted for main(): an exception that reaches it end
 bugprone-integer-division: Accepted where listed: the division is the intended leg number of the square spiral. A new one is to be read.
 bugprone-reserved-identifier: Accepted for the lttng header guard, whose name the lttng macros require. A new one is to be fixed.
 clang-analyzer-core.CallAndMessage: False positive in signal_detector.cpp, kept in the baseline. A new one is to be read as a possible defect.
+bugprone-unused-return-value: False positive in http_session.cpp: shutdown() also writes its result to the error code passed in, which the next line checks. A new one is to be read.

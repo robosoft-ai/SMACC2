@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #pragma once
+#include <tf2/utils.h>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <tf2_ros/transform_listener.h>
@@ -102,7 +103,7 @@ public:
     }
   }
 
-  void onInitialize()
+  void onInitialize() override
   {
     tfBuffer_ = std::make_shared<tf2_ros::Buffer>(this->getNode()->get_clock());
     tfListener_ = std::make_shared<tf2_ros::TransformListener>(*tfBuffer_);

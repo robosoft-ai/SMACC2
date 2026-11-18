@@ -13,7 +13,10 @@
 // limitations under the License.
 
 #pragma once
+#include <geometry_msgs/msg/pose_stamped.hpp>
+#include <optional>
 #include <smacc2/component.hpp>
+#include <vector>
 #include <vision_msgs/msg/detection3_d_array.hpp>
 
 namespace cl_foundation_pose

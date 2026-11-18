@@ -53,13 +53,14 @@ public:
   virtual void onExit() override {}
 
   template <typename TOrthogonal, typename TSourceObject>
-  void onOrthogonalAllocation()
+  void onStateOrthogonalAllocation()
   {
+    smacc2::SmaccAsyncClientBehavior::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
+    // Resolved here, on the state machine thread, never from the asynchronous onEntry thread.
+    this->requiresComponent(decisionManager_, smacc2::ComponentRequirement::HARD);
+
     postEventFn_ = [this]()
     {
-      // Get component via requiresComponent pattern (NOT requiresClient!)
-      this->requiresComponent(decisionManager_, true);
-
       // Get current decision and advance counter
       int decisionCount = decisionManager_->nextDecision();
 

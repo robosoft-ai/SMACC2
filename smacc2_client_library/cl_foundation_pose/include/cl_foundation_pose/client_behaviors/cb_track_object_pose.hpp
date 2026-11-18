@@ -19,6 +19,7 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <cl_foundation_pose/components/cp_object_tracker_tf.hpp>
 #include <smacc2/smacc.hpp>
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 
@@ -42,7 +43,7 @@ public:
 
   virtual void onEntry() override
   {
-    requiresComponent(objectTracker_, true);
+    requiresComponent(objectTracker_, smacc2::ComponentRequirement::HARD);
     RCLCPP_INFO(getLogger(), "CbTrackObjectPose onEntry");
     RCLCPP_INFO(getLogger(), "CbTrackObjectPose onEntry - enabled");
     objectTracker_->setEnabled(true);
