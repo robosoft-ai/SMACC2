@@ -49,6 +49,7 @@ for p in $PACKAGES; do
 done
 grep -h "Found compiler error" "${RAW[@]}" | head -3
 python3 "$HERE/clang_tidy_baseline.py" normalize "$REPO" "${RAW[@]}" > "$OUT/current.txt"
+python3 "$HERE/clang_tidy_baseline.py" list "$REPO" "${RAW[@]}" > "$OUT/diagnostics.txt"
 if [ "$MODE" = "--update-baseline" ]; then
   { echo "# clang-tidy baseline for .github/scripts/clang_tidy_gate.sh: count, then path: kind: message [check]."
     echo "# Regenerate with: .github/scripts/clang_tidy_gate.sh <build-base> <out-dir> --update-baseline"

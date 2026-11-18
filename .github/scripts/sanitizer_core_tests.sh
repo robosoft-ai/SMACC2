@@ -48,6 +48,8 @@ case $MODE in
 esac
 FAILS=0
 fail() { echo "FAIL: $*"; FAILS=$((FAILS + 1)); }
+# section <title> <package>: starts a test; gate_summary.py reads both lines
+section() { echo "### $1"; echo "machine: $2"; }
 bin() { echo "$INST/$1/lib/$1/$1_node"; }
 # wait_pattern <log> <pattern> <tenths> : poll the log until the pattern appears
 wait_pattern() { for _ in $(seq 1 "$3"); do grep -a -q "$2" "$1" && return 0; sleep 0.1; done; return 1; }
@@ -64,7 +66,7 @@ stop() {
   echo "$label: exit $status hang $hang"
 }
 
-echo "### forced finish: 20 cycles, SIGINT in StRest"
+section "forced finish: 20 cycles, SIGINT in StRest" sm_coretest_forced_finish_1
 LOG=$OUT/forced_finish_cycles.log
 $PRE "$(bin sm_coretest_forced_finish_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
 for _ in $(seq 1 600); do
@@ -79,7 +81,7 @@ echo "cycles $CYC discards $DIS traps $TRAP"
 [ "$DIS" -eq $((2 * CYC)) ] || fail "forced_finish_cycles: $DIS discards for $CYC cycles, expected $((2 * CYC))"
 [ "$TRAP" -eq 0 ] || fail "forced_finish_cycles: trap state entered $TRAP times"
 
-echo "### signal key: 14 s"
+section "signal key: 14 s" sm_coretest_signal_key_1
 LOG=$OUT/signal_key.log
 $PRE "$(bin sm_coretest_signal_key_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
 sleep 14; stop $P "$LOG" signal_key
@@ -98,7 +100,7 @@ echo "ticks into destroyed objects (behavior state): $DEAD"
 [ "$DEAD" = "0 0" ] || fail "signal_key: callbacks reached destroyed objects ($DEAD)"
 [ "$(grep -a -c 'StA\] Entered' "$LOG")" -ge 5 ] || fail "signal_key: fewer than 5 StA lives"
 
-echo "### reactor order: 15 s of 500 ms pulses"
+section "reactor order: 15 s of 500 ms pulses" sm_coretest_reactor_order_1
 LOG=$OUT/reactor_order.log
 $PRE "$(bin sm_coretest_reactor_order_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
 sleep 15; stop $P "$LOG" reactor_order
@@ -108,7 +110,7 @@ echo "pulses $PULSES via countdown $VIAC via trigger $VIAT"
 [ "$VIAT" -eq 0 ] || fail "reactor_order: the trigger was processed before the reactor's output $VIAT times"
 [ $((VIAC + 1)) -ge "$PULSES" ] || fail "reactor_order: $VIAC StViaCountdown entries for $PULSES pulses"
 
-echo "### timer hand-off: 60 s of the forced-finish cycle at 100 ms"
+section "timer hand-off: 60 s of the forced-finish cycle at 100 ms" sm_coretest_timer_handoff_1
 LOG=$OUT/timer_handoff.log
 $PRE "$(bin sm_coretest_timer_handoff_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
 sleep 60; stop $P "$LOG" timer_handoff
@@ -128,7 +130,7 @@ awk -v g="$2" -v t="$3" 'BEGIN{exit !(g < 5.0 && t < 5.0)}' || fail "timer_hando
 
 # Log level WARN: the INFO lines on the posting path take the logging mutex, which orders the two
 # threads and hides the race from TSan; WARN keeps the state exit lines the invariant counts.
-echo "### post during exit: 30 s of 200 Hz posts across 50 ms state exits"
+section "post during exit: 30 s of 200 Hz posts across 50 ms state exits" sm_coretest_post_during_exit_1
 LOG=$OUT/post_during_exit.log
 $PRE "$(bin sm_coretest_post_during_exit_1)" --ros-args --log-level WARN > "$LOG" 2>&1 & P=$!
 # The history service is called twice while the machine transitions, so the handler's copy runs
@@ -156,12 +158,12 @@ sweep() {
     stop $p "$log" "${label}_$n"
   done
 }
-echo "### poll shutdown: 10 interrupts at the 75 % window (5 Hz loop, 150 ms update)"
+section "poll shutdown: 10 interrupts at the 75 % window (5 Hz loop, 150 ms update)" sm_coretest_poll_shutdown_1
 sweep sm_coretest_poll_shutdown_1 poll_shutdown 10 -p signal_detector_loop_freq:=5.0
-echo "### forced finish: 10 random interrupts"
+section "forced finish: 10 random interrupts" sm_coretest_forced_finish_1
 sweep sm_coretest_forced_finish_1 forced_finish_sweep 10
 
-echo "### transition speed: 20 s at 2000 Hz"
+section "transition speed: 20 s at 2000 Hz" sm_coretest_transition_speed_1
 LOG=$OUT/transition_speed.log
 SPEED=$INST/sm_coretest_transition_speed_1
 $PRE "$(bin sm_coretest_transition_speed_1)" --ros-args --log-level FATAL -r __node:=sm_coretest_transition_speed_1 \
@@ -178,14 +180,14 @@ exceptions_run() {
   THROWS=$(grep -a -c 'THROWING at' "$LOG"); CYCLES=$(grep -a -c 'StA\] Entered' "$LOG")
   SAFE=$(grep -a -c 'StSafe\] Entered' "$LOG"); HOOK=$(grep -a -c 'HOOK onUnhandledStInitializationFailure' "$LOG")
 }
-echo "### exceptions: 6 sites the core logs and continues from, 8 s each"
+section "exceptions: 6 sites the core logs and continues from, 8 s each" sm_coretest_exceptions_1
 for SITE in state_exit sync_exit async_exit client_update behavior_update retry_entry; do
   exceptions_run $SITE
   echo "$SITE: throws $THROWS, StA entries $CYCLES"
   [ "$THROWS" -ge 2 ] || fail "exceptions_$SITE: only $THROWS throws"
   [ "$CYCLES" -ge 3 ] || fail "exceptions_$SITE: only $CYCLES StA entries, the machine stopped cycling"
 done
-echo "### exceptions: 6 failed initializations, of a behavior or a state, that reach a reaction"
+section "exceptions: 6 failed initializations, of a behavior or a state, that reach a reaction" sm_coretest_exceptions_1
 for SITE in sync_configure sync_entry async_entry inner_entry inner_configure container_entry; do
   exceptions_run $SITE
   echo "$SITE: throws $THROWS, StSafe entries $SAFE, StA entries $CYCLES"
@@ -193,7 +195,7 @@ for SITE in sync_configure sync_entry async_entry inner_entry inner_configure co
   [ "$SAFE" -ge 2 ] && [ "$SAFE" -le "$THROWS" ] && [ "$SAFE" -ge $((THROWS - 1)) ] || fail "exceptions_$SITE: $SAFE StSafe entries for $THROWS throws"
   [ "$CYCLES" -ge 3 ] || fail "exceptions_$SITE: only $CYCLES StA entries, the machine stopped cycling"
 done
-echo "### exceptions: 2 failed state initializations nothing reacts to"
+section "exceptions: 2 failed state initializations nothing reacts to" sm_coretest_exceptions_1
 for SITE in state_entry rest_entry; do
   exceptions_run $SITE
   echo "$SITE: throws $THROWS, hook calls $HOOK, StSafe entries $SAFE"
@@ -201,7 +203,7 @@ for SITE in state_entry rest_entry; do
 done
 
 # The action client component and the action behavior base against a server in the same process.
-echo "### action client: 20 s of the five goal outcomes"
+section "action client: 20 s of the five goal outcomes" sm_coretest_action_client_1
 LOG=$OUT/action_client.log
 $PRE "$(bin sm_coretest_action_client_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
 sleep 20; stop $P "$LOG" action_client
@@ -214,11 +216,11 @@ echo "cycles $CYC: succeeded $OK, rejected $REJ, aborted $ABT, no server $NOS, c
 for N in "$OK" "$REJ" "$ABT" "$NOS" "$CAN"; do
   [ "$N" -ge $((CYC - 1)) ] && [ "$N" -le $((CYC + 1)) ] || fail "action_client: an outcome was seen $N times in $CYC cycles"
 done
-echo "### action client: 5 random interrupts"
+section "action client: 5 random interrupts" sm_coretest_action_client_1
 sweep sm_coretest_action_client_1 action_client_sweep 5
 
 # An event generator, CbSequence (to its end, aborted, and cut short by a state exit) and an update period.
-echo "### features: 30 s of the event generator, the sequences and the periodic update"
+section "features: 30 s of the event generator, the sequences and the periodic update" sm_coretest_features_1
 LOG=$OUT/features.log
 $PRE "$(bin sm_coretest_features_1)" --ros-args --log-level INFO > "$LOG" 2>&1 & P=$!
 sleep 30; stop $P "$LOG" features
@@ -230,7 +232,7 @@ echo "cycles $CYC: sequences completed $DONE, aborted $FAILED, periodic ticks $T
 [ "$TRAP" -eq 0 ] || fail "features: a state saw an outcome it must not see ($TRAP trap entries)"
 [ "$DONE" -ge "$CYC" ] && [ "$FAILED" -ge "$CYC" ] || fail "features: $DONE sequences completed and $FAILED aborted in $CYC cycles"
 [ "$TICKS" -ge $((3 * PER)) ] && [ "$TICKS" -le $((7 * PER)) ] || fail "features: $TICKS ticks in $PER periodic states (a 200 ms period over 1.1 s gives about 5 each)"
-echo "### features: 5 random interrupts"
+section "features: 5 random interrupts" sm_coretest_features_1
 sweep sm_coretest_features_1 features_sweep 5
 
 echo "### sanitizer reports"

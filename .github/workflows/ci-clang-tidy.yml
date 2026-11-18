@@ -76,7 +76,7 @@ jobs:
 
       - name: Summarize on the run page
         if: always()
-        run: python3 .github/scripts/gate_summary.py clang-tidy clang_tidy_out/console.log clang_tidy_out/current.txt >> "$GITHUB_STEP_SUMMARY"
+        run: python3 .github/scripts/gate_summary.py clang-tidy clang_tidy_out/console.log clang_tidy_out/diagnostics.txt >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload clang-tidy output
         if: always()

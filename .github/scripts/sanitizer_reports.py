@@ -70,6 +70,20 @@ def access_section(block):
     return out
 
 
+KINDS = (
+    ("data races", "ThreadSanitizer: data race"),
+    ("lock-order inversions", "ThreadSanitizer: lock-order-inversion"),
+    ("other thread errors", "ThreadSanitizer: "),
+    ("address errors", "AddressSanitizer: "),
+    ("memory leaks", " leak of "),
+    ("undefined-behavior errors", ": runtime error: "),
+)
+
+
+def kind(head):
+    return next((name for name, text in KINDS if text in head), "other reports")
+
+
 def main(paths):
     failing, external = [], []
     for path in paths:
@@ -93,6 +107,10 @@ def main(paths):
         print(f"external report (not failing): {head}\n    first frame: {frame}\n    in {path}")
     for path, head, frame in failing:
         print(f"FAIL: {head}\n    SMACC2 frame: {frame}\n    in {path}")
+    counts = {name: 0 for name, _ in KINDS}
+    for _, head, _ in failing:
+        counts[kind(head)] = counts.get(kind(head), 0) + 1
+    print("report kinds: " + ", ".join(f"{n} {name}" for name, n in counts.items()))
     print(f"sanitizer reports: {len(failing)} with a SMACC2 frame, {len(external)} external")
     return 1 if failing else 0
 
