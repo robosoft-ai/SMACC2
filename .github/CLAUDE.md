@@ -22,7 +22,7 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 
 | Check | Where | Trigger | On every PR | Time | What it is for |
 |--|--|--|--|--|--|
-| pre-commit (clang-format, `ament_cppcheck`, `ament_lint_cmake`, `ament_copyright`, file hygiene) | developer machine | every commit | local | seconds | formatting and licence headers; cppcheck at error severity only |
+| pre-commit (clang-format, `cppcheck`, `ament_lint_cmake`, `ament_copyright`, file hygiene) | developer machine | every commit | local | seconds | formatting and licence headers; cppcheck at warning severity (uninitialized members) |
 | Format (`ci-format.yml`) | GitHub | pull request | yes | about 2 min | the same pre-commit hooks over the whole tree |
 | Pull request Doc Check (`doxygen-check-build.yml`) | GitHub | pull request | yes | about 5 min | the Doxygen build |
 | jazzy Binary Build (`jazzy-binary-build.yml`) | GitHub | pull request, push, nightly | yes | **median 24 to 26 min** | the tree builds from scratch against released ROS packages |
@@ -142,11 +142,16 @@ with their simulators; only the state machine node is instrumented.
 
 ## cppcheck
 
-- The pre-commit hook runs bare `ament_cppcheck`, so only error-severity messages fail a commit, and
-  the core reports none. The hook was enabled in June 2026 (#744). It sets
-  `AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS=1` because `ament_cppcheck` otherwise skips the cppcheck 2.x
-  that Ubuntu 24.04 ships. The reference library is excluded.
-- At `--enable=warning,style,performance,portability` the core has 33 lines (2026-11-13): 12
+- The pre-commit hook calls `cppcheck` directly with `--enable=warning,portability` and
+  `--error-exitcode=1` (2026-11-18). `ament_cppcheck` cannot raise the severity, and at error severity
+  the hook reported nothing and could not fail. The reference library is excluded.
+- What it catches is a member with no initializer (`uninitMemberVar`), in every library, on every
+  commit. The clang-tidy gate checks the same family only in the packages it covers and only by hand.
+  Each header is read alone, in under a second for the whole tree.
+- Not enabled: `style` (613 lines on 2026-11-18, of which 487 `unusedStructMember`; the four sampled were false
+  positives, because the source file that uses the member is not read) and `performance` (36 lines, of which
+  23 `passedByValue` in public headers, a signature change each).
+- At `--enable=warning,style,performance,portability` the core had 33 lines on 2026-11-13: 12
   `noExplicitConstructor`, 5 `duplInheritedMember`, 4 `useStlAlgorithm`, 3 `cstyleCast`, 2
   `unknownMacro`, 3 `uninitMemberVar`, and one each of four others.
 - **Decided:** no `--inconclusive`; `noExplicitConstructor` is not enforced.
@@ -155,10 +160,10 @@ with their simulators; only the state machine node is instrumented.
 - **By design, not defects:** `duplInheritedMember` on `onStateOrthogonalAllocation` and
   `onComponentInitialization`. A template cannot be virtual, so the derived definitions hide the base
   ones on purpose.
-- **Decided 2026-11-13: cppcheck is to be removed from the commit path.** As configured it cannot fail on
-  anything the study found, and a check that always passes reads as assurance it does not give. The
-  hook and the disabled ROS Lint workflow go; cppcheck stays available as an on-demand tool for the
-  one family it is good at (uninitialized members), run by hand before a release.
+- Suppressed in the hook: `duplInheritedMember` (above), and `unknownMacro` and `internalAstError`
+  as `ament_cppcheck` does.
+- The decision of 2026-11-13 to remove the hook was reversed on 2026-11-18: the hook stays, tuned as
+  above.
 
 ## clang-tidy
 
@@ -272,7 +277,7 @@ is the floor on reaction time for any event that originates outside the state ma
 ## Open items
 
 1. Bring the two build workflows under 20 minutes without caching.
-2. Remove the `ament_cppcheck` hook and the ROS Lint workflow.
+2. Remove the disabled ROS Lint workflow.
 3. Add tracepoints for the work an asynchronous behavior does; today its entry pair covers only the
    launch of its thread.
 4. Add a `perf` flame-graph recipe. Coverage, the memory soak and the ABI comparison are in place:

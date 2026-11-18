@@ -89,8 +89,8 @@ public:
 
 private:
   std::optional<int> channel_;
-  ClModbusTcpRelay * client_;
-  CpModbusRelay * relayComponent_;
+  ClModbusTcpRelay * client_ = nullptr;
+  CpModbusRelay * relayComponent_ = nullptr;
   uint8_t channelStates_ = 0;
 
   void readSingleChannel(int channel)

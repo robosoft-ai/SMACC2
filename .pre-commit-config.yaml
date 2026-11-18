@@ -71,12 +71,15 @@ repos:
 
   - repo: local
     hooks:
-      - id: ament_cppcheck
-        name: ament_cppcheck
+      # Warning severity: fails on an uninitialized member. Style and performance are not enabled.
+      - id: cppcheck
+        name: cppcheck
         description: Static code analysis of C/C++ files.
         stages: [commit]
-        entry: env AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS=1 ament_cppcheck
+        entry: cppcheck
         language: system
+        args: ['-f', '-q', '--inline-suppr', '--enable=warning,portability', '--error-exitcode=1',
+               '--suppress=internalAstError', '--suppress=unknownMacro', '--suppress=duplInheritedMember']
         files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
         exclude: smacc2_sm_reference_library/
 

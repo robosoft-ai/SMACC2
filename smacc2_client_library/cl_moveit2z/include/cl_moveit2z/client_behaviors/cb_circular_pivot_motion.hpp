@@ -221,7 +221,7 @@ protected:
   // the rotation axis (z-axis) and the center of rotation in the space
   geometry_msgs::msg::PoseStamped planePivotPose_;
 
-  double deltaRadians_;
+  double deltaRadians_ = 0.0;
 
 private:
   void computeCurrentEndEffectorPoseRelativeToPivot()

@@ -69,7 +69,7 @@ public:
   }
 
 private:
-  ClLifecycleNode * lifecycleNodeClient_;
-  CpLifecycleEventMonitor * eventMonitor_;
+  ClLifecycleNode * lifecycleNodeClient_ = nullptr;
+  CpLifecycleEventMonitor * eventMonitor_ = nullptr;
 };
 }  // namespace cl_lifecycle_node
