@@ -112,7 +112,8 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine * sm)
     {
       smacc2_msgs::msg::SmaccOrthogonal orthogonalMsg;
 
-      const auto * orthogonaltid = &typeid(*(orthogonal.second));
+      const auto & orthogonalRef = *(orthogonal.second);
+      const auto * orthogonaltid = &typeid(orthogonalRef);
       orthogonalMsg.name = demangleSymbol(orthogonaltid->name());
 
       ss << " - orthogonal: " << orthogonalMsg.name << std::endl;
