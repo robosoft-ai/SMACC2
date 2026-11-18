@@ -72,7 +72,7 @@ public:
   void onAprilTagDetected(
     const isaac_ros_apriltag_interfaces::msg::AprilTagDetectionArray::SharedPtr & msg)
   {
-    for (auto & detection : msg->detections)
+    for (const auto & detection : msg->detections)
     {
       std::string apriltag_frame_id = detection.family + ":" + std::to_string(detection.id);
 

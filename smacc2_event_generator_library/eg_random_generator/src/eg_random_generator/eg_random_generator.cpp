@@ -33,7 +33,7 @@ EgRandomGenerator::EgRandomGenerator(
 
   this->minValue = std::numeric_limits<double>::max();
   this->maxValue = std::numeric_limits<double>::min();
-  for (auto & v : values)
+  for (const auto & v : values)
   {
     if (v < minValue)
     {

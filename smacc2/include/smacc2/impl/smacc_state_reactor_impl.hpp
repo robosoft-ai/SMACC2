@@ -60,7 +60,7 @@ void StateReactor::createEventCallback(void (TClass::*callback)(T *), TClass * o
   const auto * eventtype = &typeid(T);
   this->eventCallbacks_[eventtype] = [=](void * msg)
   {
-    T * evptr = (T *)msg;
+    T * evptr = static_cast<T *>(msg);
     (object->*callback)(evptr);
   };
 }
@@ -71,7 +71,7 @@ void StateReactor::createEventCallback(std::function<void(T *)> callback)
   const auto * eventtype = &typeid(T);
   this->eventCallbacks_[eventtype] = [=](void * msg)
   {
-    T * evptr = (T *)msg;
+    T * evptr = static_cast<T *>(msg);
     callback(evptr);
   };
 }

@@ -308,13 +308,13 @@ void CpOdomTracker::logStateStringLocked(bool debug)
   int i = 0;
   for (auto & p : pathStack_ | boost::adaptors::reversed)
   {
-    auto & pathinfo = pathInfos_[pathInfos_.size() - i - 1];
+    const auto & pathinfo = pathInfos_[pathInfos_.size() - i - 1];
     std::string goalstr = "[]";
     if (pathinfo.goalPose)
     {
-      std::stringstream ss;
-      ss << *(pathinfo.goalPose);
-      goalstr = ss.str();
+      std::stringstream goalss;
+      goalss << *(pathinfo.goalPose);
+      goalstr = goalss.str();
     }
 
     ss << " - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size() << " - "

@@ -120,12 +120,11 @@ geometry_msgs::msg::TwistStamped PureSpinningLocalPlanner::computeVelocityComman
   tf2::fromMsg(currentPose.pose.orientation, q);
   auto currentYaw = tf2::getYaw(currentPose.pose.orientation);
   double angular_error = 0;
-  double targetYaw = 0.0;
 
   do
   {
     auto & goal = plan_[currentPoseIndex_];
-    targetYaw = tf2::getYaw(goal.pose.orientation);
+    double targetYaw = tf2::getYaw(goal.pose.orientation);
 
     if (use_shortest_angular_distance_)
       angular_error = angles::shortest_angular_distance(currentYaw, targetYaw);

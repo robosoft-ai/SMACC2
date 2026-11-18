@@ -549,28 +549,10 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
     RCLCPP_ERROR(
       nh_->get_logger(),
       "[BackwardLocalPlanner] missing robot pose, canceling compute Velocity Command");
-  }  // it is not working in the pure spinning reel example, maybe the hyperplane check is enough
-  bool divergenceDetected = false;
-
-  bool emergency_stop = false;
-  if (divergenceDetected)
-  {
-    RCLCPP_ERROR(
-      nh_->get_logger(), "[BackwardLocalPlanner] Divergence detected. Sending emergency stop.");
-    emergency_stop = true;
   }
 
   bool carrotInLinearGoalRange = updateCarrotGoal(tfpose);
   RCLCPP_INFO_STREAM(nh_->get_logger(), "[BackwardLocalPlanner] carrot goal created");
-
-  if (emergency_stop)
-  {
-    cmd_vel.twist.linear.x = 0;
-    cmd_vel.twist.angular.z = 0;
-    RCLCPP_INFO_STREAM(
-      nh_->get_logger(), "[BackwardLocalPlanner] emergency stop, exit compute commands");
-    return cmd_vel;
-  }
 
   // ------ Evaluate the current context ----
   double rho_error = 0.0, betta_error = 0.0, alpha_error = 0.0;
@@ -761,7 +743,7 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
   {
     if (backwardsPlanPath_.size() > 0)
     {
-      auto & finalgoalpose = backwardsPlanPath_.back();
+      const auto & finalgoalpose = backwardsPlanPath_.back();
 
       int i = 0;
       // RCLCPP_INFO_STREAM(nh_->get_logger(), "lplanner goal: " << finalgoalpose.pose.position);
@@ -769,10 +751,10 @@ geometry_msgs::msg::TwistStamped BackwardLocalPlanner::computeVelocityCommands(
 
       for (auto & p : trajectory)
       {
-        float dx = p[0] - finalgoalpose.pose.position.x;
-        float dy = p[1] - finalgoalpose.pose.position.y;
+        float goaldx = p[0] - finalgoalpose.pose.position.x;
+        float goaldy = p[1] - finalgoalpose.pose.position.y;
 
-        float dst = sqrt(dx * dx + dy * dy);
+        float dst = sqrt(goaldx * goaldx + goaldy * goaldy);
         if (dst < xy_goal_tolerance_)
         {
           RCLCPP_INFO(
@@ -1119,7 +1101,7 @@ void BackwardLocalPlanner::generateTrajectory(
 
     auto dx = newpos[0] - currentpos[0];
     auto dy = newpos[1] - currentpos[1];
-    float dist = 0.0, angledist = 0.0;
+    float dist = 0.0;
 
     // RCLCPP_INFO(nh_->get_logger(), "traj point %d", i);
     dist = sqrt(dx * dx + dy * dy);
@@ -1131,7 +1113,7 @@ void BackwardLocalPlanner::generateTrajectory(
     else
     {
       // ouble from, double to
-      angledist = angles::shortest_angular_distance(currentpos[2], newpos[2]);
+      float angledist = angles::shortest_angular_distance(currentpos[2], newpos[2]);
       if (angledist > maxanglediff)
       {
         end = true;

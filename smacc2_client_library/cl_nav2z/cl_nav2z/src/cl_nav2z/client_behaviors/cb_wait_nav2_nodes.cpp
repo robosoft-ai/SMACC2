@@ -63,7 +63,7 @@ void CbWaitNav2Nodes::onMessageReceived(const bond::msg::Status & msg)
   {
     bool success = true;
     std::stringstream ss;
-    for (auto & pair : receivedAliveMsg_)
+    for (const auto & pair : receivedAliveMsg_)
     {
       if (!pair.second)
       {

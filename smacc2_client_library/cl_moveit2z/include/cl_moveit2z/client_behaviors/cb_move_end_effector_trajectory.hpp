@@ -371,35 +371,36 @@ protected:
 
             if (discontinuity && discontinuityJointIndex != -1)
             {
-              std::stringstream ss;
-              ss << "Traj[" << k << "/" << endEffectorTrajectory_.size() << "] "
-                 << currentjointnames[discontinuityJointIndex]
-                 << " IK discontinuity : " << discontinuityDeltaJointIndex << std::endl
-                 << "prev joint value: " << prevtrajpoint[discontinuityJointIndex] << std::endl
-                 << "current joint value: " << jointPositions[discontinuityJointIndex] << std::endl;
+              std::stringstream report;
+              report << "Traj[" << k << "/" << endEffectorTrajectory_.size() << "] "
+                     << currentjointnames[discontinuityJointIndex]
+                     << " IK discontinuity : " << discontinuityDeltaJointIndex << std::endl
+                     << "prev joint value: " << prevtrajpoint[discontinuityJointIndex] << std::endl
+                     << "current joint value: " << jointPositions[discontinuityJointIndex]
+                     << std::endl;
 
-              ss << std::endl;
+              report << std::endl;
               for (size_t ji = 0; ji < jointPositions.size(); ji++)
               {
-                ss << currentjointnames[ji] << ": " << jointPositions[ji] << std::endl;
+                report << currentjointnames[ji] << ": " << jointPositions[ji] << std::endl;
               }
 
               for (size_t kindex = 0; kindex < trajectory.size(); kindex++)
               {
-                ss << "[" << kindex << "]: " << trajectory[kindex][discontinuityJointIndex]
-                   << std::endl;
+                report << "[" << kindex << "]: " << trajectory[kindex][discontinuityJointIndex]
+                       << std::endl;
               }
 
               if (k == 0)
               {
-                ss
+                report
                   << "This is the first posture of the trajectory. Maybe the robot initial posture "
                      "is "
                      "not coincident to the initial posture of the generated joint trajectory."
                   << std::endl;
               }
 
-              RCLCPP_ERROR_STREAM(getLogger(), ss.str());
+              RCLCPP_ERROR_STREAM(getLogger(), report.str());
 
               trajectory.push_back(jointPositions);
               rclcpp::Duration durationFromStart = rclcpp::Time(pose.header.stamp) - referenceTime;
@@ -425,7 +426,7 @@ protected:
 
       computedJointTrajectory.joint_trajectory.joint_names = currentjointnames;
       int i = 0;
-      for (auto & p : trajectory)
+      for (const auto & p : trajectory)
       {
         if (i == 0)  // Skip current state
         {
