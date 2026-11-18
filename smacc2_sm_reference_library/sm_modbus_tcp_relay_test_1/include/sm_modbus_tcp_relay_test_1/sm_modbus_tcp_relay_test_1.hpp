@@ -36,14 +36,14 @@ namespace sm_modbus_tcp_relay_test_1
 {
 
 // Forward declarations for states
-class StConnect;
-class StConnected;
-class StRelayOn;
-class StRelayOff;
-class StAllOn;
-class StAllOff;
-class StReadStatus;
-class StComplete;
+struct StConnect;
+struct StConnected;
+struct StRelayOn;
+struct StRelayOff;
+struct StAllOn;
+struct StAllOff;
+struct StReadStatus;
+struct StComplete;
 
 //--------------------------------------------------------------------
 // STATE MACHINE

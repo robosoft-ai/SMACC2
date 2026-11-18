@@ -50,20 +50,20 @@ namespace sm_three_some
 // SUPERSTATES
 namespace SS1
 {
-class Ss1;
+struct Ss1;
 }  // namespace SS1
 
 // SUPERSTATES
 namespace SS2
 {
-class Ss2;
+struct Ss2;
 }  // namespace SS2
 
 // STATES
-class StState1;  // first state specially needs a forward declaration
-class StState2;
-class StState3;
-class StState4;
+struct StState1;  // first state specially needs a forward declaration
+struct StState2;
+struct StState3;
+struct StState4;
 
 class MsRun;
 class MsRecover;

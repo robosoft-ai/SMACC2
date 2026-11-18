@@ -38,10 +38,10 @@ namespace sm_atomic_mode_states
 {
 
 //STATE
-class State1;
-class State2;
-class MsState1;
-class MsState2;
+struct State1;
+struct State2;
+struct MsState1;
+struct MsState2;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE

@@ -37,8 +37,8 @@ using namespace cl_keyboard;
 namespace sm_cl_keyboard_unit_test_1
 {
 //STATE
-class State1;
-class State2;
+struct State1;
+struct State2;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE

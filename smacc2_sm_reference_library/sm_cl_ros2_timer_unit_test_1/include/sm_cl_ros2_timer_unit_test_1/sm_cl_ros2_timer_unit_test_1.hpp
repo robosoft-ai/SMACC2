@@ -29,8 +29,8 @@ using namespace smacc2;
 namespace sm_cl_ros2_timer_unit_test_1
 {
 //STATE
-class State1;
-class State2;
+struct State1;
+struct State2;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE

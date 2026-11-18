@@ -30,8 +30,8 @@ using namespace smacc2;
 namespace sm_atomic
 {
 //STATE
-class State1;
-class State2;
+struct State1;
+struct State2;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE

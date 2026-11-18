@@ -44,232 +44,232 @@ using namespace smacc2::default_events;
 namespace sm_multi_stage_1
 {
 //SUPERSTATES
-class SsMode1SequenceA;
+struct SsMode1SequenceA;
 namespace mode_1_sequence_a
 {
-class StiMode1SequenceALoop;
-class StiMode1SequenceAStep1;
-class StiMode1SequenceAStep2;
-class StiMode1SequenceAStep3;
-class StiMode1SequenceAStep4;
-class StiMode1SequenceAStep5;
-class StiMode1SequenceAStep6;
-class StiMode1SequenceAStep7;
-class StiMode1SequenceAStep8;
-class StiMode1SequenceAStep9;
+struct StiMode1SequenceALoop;
+struct StiMode1SequenceAStep1;
+struct StiMode1SequenceAStep2;
+struct StiMode1SequenceAStep3;
+struct StiMode1SequenceAStep4;
+struct StiMode1SequenceAStep5;
+struct StiMode1SequenceAStep6;
+struct StiMode1SequenceAStep7;
+struct StiMode1SequenceAStep8;
+struct StiMode1SequenceAStep9;
 }  // namespace mode_1_sequence_a
 
-class SsMode2SequenceA;
+struct SsMode2SequenceA;
 namespace mode_2_sequence_a
 {
-class StiMode2SequenceALoop;
-class StiMode2SequenceAStep1;
-class StiMode2SequenceAStep2;
-class StiMode2SequenceAStep3;
-class StiMode2SequenceAStep4;
-class StiMode2SequenceAStep5;
-class StiMode2SequenceAStep6;
-class StiMode2SequenceAStep7;
-class StiMode2SequenceAStep8;
-class StiMode2SequenceAStep9;
+struct StiMode2SequenceALoop;
+struct StiMode2SequenceAStep1;
+struct StiMode2SequenceAStep2;
+struct StiMode2SequenceAStep3;
+struct StiMode2SequenceAStep4;
+struct StiMode2SequenceAStep5;
+struct StiMode2SequenceAStep6;
+struct StiMode2SequenceAStep7;
+struct StiMode2SequenceAStep8;
+struct StiMode2SequenceAStep9;
 }  // namespace mode_2_sequence_a
 
-class SsMode3SequenceA;
+struct SsMode3SequenceA;
 namespace mode_3_sequence_a
 {
-class StiMode3SequenceALoop;
-class StiMode3SequenceAStep1;
-class StiMode3SequenceAStep2;
-class StiMode3SequenceAStep3;
-class StiMode3SequenceAStep4;
-class StiMode3SequenceAStep5;
-class StiMode3SequenceAStep6;
-class StiMode3SequenceAStep7;
-class StiMode3SequenceAStep8;
-class StiMode3SequenceAStep9;
+struct StiMode3SequenceALoop;
+struct StiMode3SequenceAStep1;
+struct StiMode3SequenceAStep2;
+struct StiMode3SequenceAStep3;
+struct StiMode3SequenceAStep4;
+struct StiMode3SequenceAStep5;
+struct StiMode3SequenceAStep6;
+struct StiMode3SequenceAStep7;
+struct StiMode3SequenceAStep8;
+struct StiMode3SequenceAStep9;
 }  // namespace mode_3_sequence_a
 
-class SsMode4SequenceA;
+struct SsMode4SequenceA;
 namespace mode_4_sequence_a
 {
-class StiMode4SequenceALoop;
-class StiMode4SequenceAStep1;
-class StiMode4SequenceAStep2;
-class StiMode4SequenceAStep3;
-class StiMode4SequenceAStep4;
-class StiMode4SequenceAStep5;
-class StiMode4SequenceAStep6;
-class StiMode4SequenceAStep7;
-class StiMode4SequenceAStep8;
-class StiMode4SequenceAStep9;
+struct StiMode4SequenceALoop;
+struct StiMode4SequenceAStep1;
+struct StiMode4SequenceAStep2;
+struct StiMode4SequenceAStep3;
+struct StiMode4SequenceAStep4;
+struct StiMode4SequenceAStep5;
+struct StiMode4SequenceAStep6;
+struct StiMode4SequenceAStep7;
+struct StiMode4SequenceAStep8;
+struct StiMode4SequenceAStep9;
 }  // namespace mode_4_sequence_a
 
-class SsMode4SequenceC;
+struct SsMode4SequenceC;
 namespace mode_4_sequence_c
 {
-class StiMode4SequenceCLoop;
-class StiMode4SequenceCStep1;
-class StiMode4SequenceCStep2;
-class StiMode4SequenceCStep3;
-class StiMode4SequenceCStep4;
-class StiMode4SequenceCStep5;
-class StiMode4SequenceCStep6;
-class StiMode4SequenceCStep7;
-class StiMode4SequenceCStep8;
-class StiMode4SequenceCStep9;
+struct StiMode4SequenceCLoop;
+struct StiMode4SequenceCStep1;
+struct StiMode4SequenceCStep2;
+struct StiMode4SequenceCStep3;
+struct StiMode4SequenceCStep4;
+struct StiMode4SequenceCStep5;
+struct StiMode4SequenceCStep6;
+struct StiMode4SequenceCStep7;
+struct StiMode4SequenceCStep8;
+struct StiMode4SequenceCStep9;
 }  // namespace mode_4_sequence_c
 
-class SsMode4SequenceD;
+struct SsMode4SequenceD;
 namespace mode_4_sequence_d
 {
-class StiMode4SequenceDLoop;
-class StiMode4SequenceDStep1;
-class StiMode4SequenceDStep2;
-class StiMode4SequenceDStep3;
-class StiMode4SequenceDStep4;
-class StiMode4SequenceDStep5;
-class StiMode4SequenceDStep6;
-class StiMode4SequenceDStep7;
-class StiMode4SequenceDStep8;
-class StiMode4SequenceDStep9;
+struct StiMode4SequenceDLoop;
+struct StiMode4SequenceDStep1;
+struct StiMode4SequenceDStep2;
+struct StiMode4SequenceDStep3;
+struct StiMode4SequenceDStep4;
+struct StiMode4SequenceDStep5;
+struct StiMode4SequenceDStep6;
+struct StiMode4SequenceDStep7;
+struct StiMode4SequenceDStep8;
+struct StiMode4SequenceDStep9;
 }  // namespace mode_4_sequence_d
 
-class SsMode5SequenceA;
+struct SsMode5SequenceA;
 namespace mode_5_sequence_a
 {
-class StiMode5SequenceALoop;
-class StiMode5SequenceAStep1;
-class StiMode5SequenceAStep2;
-class StiMode5SequenceAStep3;
-class StiMode5SequenceAStep4;
-class StiMode5SequenceAStep5;
-class StiMode5SequenceAStep6;
-class StiMode5SequenceAStep7;
-class StiMode5SequenceAStep8;
-class StiMode5SequenceAStep9;
+struct StiMode5SequenceALoop;
+struct StiMode5SequenceAStep1;
+struct StiMode5SequenceAStep2;
+struct StiMode5SequenceAStep3;
+struct StiMode5SequenceAStep4;
+struct StiMode5SequenceAStep5;
+struct StiMode5SequenceAStep6;
+struct StiMode5SequenceAStep7;
+struct StiMode5SequenceAStep8;
+struct StiMode5SequenceAStep9;
 }  // namespace mode_5_sequence_a
 
 
-class SsMode1SequenceB;
+struct SsMode1SequenceB;
 namespace mode_1_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiMode1SequenceBLoop;
-class StiMode1SequenceBStep1;
-class StiMode1SequenceBStep2;
-class StiMode1SequenceBStep3;
-class StiMode1SequenceBStep4;
-class StiMode1SequenceBStep5;
-class StiMode1SequenceBStep6;
-class StiMode1SequenceBStep7;
-class StiMode1SequenceBStep8;
-class StiMode1SequenceBStep9;
+struct StiMode1SequenceBLoop;
+struct StiMode1SequenceBStep1;
+struct StiMode1SequenceBStep2;
+struct StiMode1SequenceBStep3;
+struct StiMode1SequenceBStep4;
+struct StiMode1SequenceBStep5;
+struct StiMode1SequenceBStep6;
+struct StiMode1SequenceBStep7;
+struct StiMode1SequenceBStep8;
+struct StiMode1SequenceBStep9;
 }  // namespace mode_1_sequence_b
 
-class SsMode2SequenceB;
+struct SsMode2SequenceB;
 
 namespace mode_2_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiMode2SequenceBLoop;
-class StiMode2SequenceBStep1;
-class StiMode2SequenceBStep2;
-class StiMode2SequenceBStep3;
-class StiMode2SequenceBStep4;
-class StiMode2SequenceBStep5;
-class StiMode2SequenceBStep6;
-class StiMode2SequenceBStep7;
-class StiMode2SequenceBStep8;
-class StiMode2SequenceBStep9;
+struct StiMode2SequenceBLoop;
+struct StiMode2SequenceBStep1;
+struct StiMode2SequenceBStep2;
+struct StiMode2SequenceBStep3;
+struct StiMode2SequenceBStep4;
+struct StiMode2SequenceBStep5;
+struct StiMode2SequenceBStep6;
+struct StiMode2SequenceBStep7;
+struct StiMode2SequenceBStep8;
+struct StiMode2SequenceBStep9;
 }  // namespace mode_2_sequence_b
 
-class SsMode3SequenceB;
+struct SsMode3SequenceB;
 
 namespace mode_3_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiMode3SequenceBLoop;
-class StiMode3SequenceBStep1;
-class StiMode3SequenceBStep2;
-class StiMode3SequenceBStep3;
-class StiMode3SequenceBStep4;
-class StiMode3SequenceBStep5;
-class StiMode3SequenceBStep6;
-class StiMode3SequenceBStep7;
-class StiMode3SequenceBStep8;
-class StiMode3SequenceBStep9;
+struct StiMode3SequenceBLoop;
+struct StiMode3SequenceBStep1;
+struct StiMode3SequenceBStep2;
+struct StiMode3SequenceBStep3;
+struct StiMode3SequenceBStep4;
+struct StiMode3SequenceBStep5;
+struct StiMode3SequenceBStep6;
+struct StiMode3SequenceBStep7;
+struct StiMode3SequenceBStep8;
+struct StiMode3SequenceBStep9;
 }  // namespace mode_3_sequence_b
 
-class SsMode4SequenceB;
+struct SsMode4SequenceB;
 
 namespace mode_4_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiMode4SequenceB;
-class StiMode4SequenceBStep1;
-class StiMode4SequenceBStep2;
-class StiMode4SequenceBStep3;
-class StiMode4SequenceBStep4;
-class StiMode4SequenceBStep5;
-class StiMode4SequenceBStep6;
-class StiMode4SequenceBStep7;
-class StiMode4SequenceBStep8;
-class StiMode4SequenceBStep9;
+struct StiMode4SequenceB;
+struct StiMode4SequenceBStep1;
+struct StiMode4SequenceBStep2;
+struct StiMode4SequenceBStep3;
+struct StiMode4SequenceBStep4;
+struct StiMode4SequenceBStep5;
+struct StiMode4SequenceBStep6;
+struct StiMode4SequenceBStep7;
+struct StiMode4SequenceBStep8;
+struct StiMode4SequenceBStep9;
 }  // namespace mode_4_sequence_b
 
-class SsMode5SequenceB;
+struct SsMode5SequenceB;
 
 namespace mode_5_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiMode5SequenceBLoop;
-class StiMode5SequenceBStep1;
-class StiMode5SequenceBStep2;
-class StiMode5SequenceBStep3;
-class StiMode5SequenceBStep4;
-class StiMode5SequenceBStep5;
-class StiMode5SequenceBStep6;
-class StiMode5SequenceBStep7;
-class StiMode5SequenceBStep8;
-class StiMode5SequenceBStep9;
+struct StiMode5SequenceBLoop;
+struct StiMode5SequenceBStep1;
+struct StiMode5SequenceBStep2;
+struct StiMode5SequenceBStep3;
+struct StiMode5SequenceBStep4;
+struct StiMode5SequenceBStep5;
+struct StiMode5SequenceBStep6;
+struct StiMode5SequenceBStep7;
+struct StiMode5SequenceBStep8;
+struct StiMode5SequenceBStep9;
 }  // namespace mode_5_sequence_b
 
 //STATES
-class Mode1StObserve;
-class StRecoveryAnalyze1;
-class StRecoveryBifurcate1;
-class StRecoveryCalculate1;
-class StRecoveryDeliberate1;
-class StRecoveryEvaluate1;
-class StRecoveryGenerate1;
-class StRecoveryInnervate1;
+struct Mode1StObserve;
+struct StRecoveryAnalyze1;
+struct StRecoveryBifurcate1;
+struct StRecoveryCalculate1;
+struct StRecoveryDeliberate1;
+struct StRecoveryEvaluate1;
+struct StRecoveryGenerate1;
+struct StRecoveryInnervate1;
 
-class Mode2StObserve;
-class StRecoveryAnalyze2;
-class StRecoveryBifurcate2;
-class StRecoveryCalculate2;
-class StRecoveryDeliberate2;
-class StRecoveryEvaluate2;
-class StRecoveryGenerate2;
-class StRecoveryInnervate2;
+struct Mode2StObserve;
+struct StRecoveryAnalyze2;
+struct StRecoveryBifurcate2;
+struct StRecoveryCalculate2;
+struct StRecoveryDeliberate2;
+struct StRecoveryEvaluate2;
+struct StRecoveryGenerate2;
+struct StRecoveryInnervate2;
 
-class Mode3StObserve;
-class Mode4StObserve;
-class Mode5StObserve;
+struct Mode3StObserve;
+struct Mode4StObserve;
+struct Mode5StObserve;
 
 
-class Mode1SequenceALoop;
-class Mode1SequenceBLoop;
-class Mode2SequenceALoop;
-class Mode2SequenceBLoop;
-class Mode3SequenceALoop;
-class Mode3SequenceBLoop;
-class Mode4SequenceALoop;
-class Mode4SequenceCLoop;
-class Mode4SequenceDLoop;
+struct Mode1SequenceALoop;
+struct Mode1SequenceBLoop;
+struct Mode2SequenceALoop;
+struct Mode2SequenceBLoop;
+struct Mode3SequenceALoop;
+struct Mode3SequenceBLoop;
+struct Mode4SequenceALoop;
+struct Mode4SequenceCLoop;
+struct Mode4SequenceDLoop;
 class Mode4SequenceBLoop;
-class Mode5SequenceALoop;
-class Mode5SequenceBLoop;
+struct Mode5SequenceALoop;
+struct Mode5SequenceBLoop;
 
 
 //MODE STATES

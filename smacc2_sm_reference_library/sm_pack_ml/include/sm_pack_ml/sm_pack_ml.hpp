@@ -48,268 +48,268 @@ using namespace smacc2::default_events;
 
 namespace sm_pack_ml
 {
-class JsAborting;
-class JsActive;
-class JsAborted;
+struct JsAborting;
+struct JsActive;
+struct JsAborted;
 
-class DsClearing;
-class DsRun;
-class DsStopped;
-class DsStopping;
+struct DsClearing;
+struct DsRun;
+struct DsStopped;
+struct DsStopping;
 
-class MsComplete;
-class MsCompleting;
-class MsExecute;
-class MsHeld;
-class MsHolding;
-class MsIdle;
-class MsResetting;
-class MsStarting;
-class MsSuspended;
-class MsSuspending;
-class MsUnholding;
-class MsUnsuspending;
+struct MsComplete;
+struct MsCompleting;
+struct MsExecute;
+struct MsHeld;
+struct MsHolding;
+struct MsIdle;
+struct MsResetting;
+struct MsStarting;
+struct MsSuspended;
+struct MsSuspending;
+struct MsUnholding;
+struct MsUnsuspending;
 
 //SUPERSTATES
-class SsExecuteSequenceA;
+struct SsExecuteSequenceA;
 namespace execute_sequence_a
 {
-class StiExecuteSequenceALoop;
-class StiExecuteSequenceAStep1;
-class StiExecuteSequenceAStep2;
-class StiExecuteSequenceAStep3;
-class StiExecuteSequenceAStep4;
-class StiExecuteSequenceAStep5;
-class StiExecuteSequenceAStep6;
-class StiExecuteSequenceAStep7;
-class StiExecuteSequenceAStep8;
-class StiExecuteSequenceAStep9;
+struct StiExecuteSequenceALoop;
+struct StiExecuteSequenceAStep1;
+struct StiExecuteSequenceAStep2;
+struct StiExecuteSequenceAStep3;
+struct StiExecuteSequenceAStep4;
+struct StiExecuteSequenceAStep5;
+struct StiExecuteSequenceAStep6;
+struct StiExecuteSequenceAStep7;
+struct StiExecuteSequenceAStep8;
+struct StiExecuteSequenceAStep9;
 }  // namespace execute_sequence_a
 
-class SsStartSequenceA;
+struct SsStartSequenceA;
 namespace start_sequence_a
 {
-class StiStartSequenceALoop;
-class StiStartSequenceAStep1;
-class StiStartSequenceAStep2;
-class StiStartSequenceAStep3;
-class StiStartSequenceAStep4;
-class StiStartSequenceAStep5;
-class StiStartSequenceAStep6;
-class StiStartSequenceAStep7;
-class StiStartSequenceAStep8;
-class StiStartSequenceAStep9;
+struct StiStartSequenceALoop;
+struct StiStartSequenceAStep1;
+struct StiStartSequenceAStep2;
+struct StiStartSequenceAStep3;
+struct StiStartSequenceAStep4;
+struct StiStartSequenceAStep5;
+struct StiStartSequenceAStep6;
+struct StiStartSequenceAStep7;
+struct StiStartSequenceAStep8;
+struct StiStartSequenceAStep9;
 }  // namespace start_sequence_a
 
-class SsCompletingSequenceA;
+struct SsCompletingSequenceA;
 namespace completing_sequence_a
 {
-class StiCompletingSequenceALoop;
-class StiCompletingSequenceAStep1;
-class StiCompletingSequenceAStep2;
-class StiCompletingSequenceAStep3;
-class StiCompletingSequenceAStep4;
-class StiCompletingSequenceAStep5;
-class StiCompletingSequenceAStep6;
-class StiCompletingSequenceAStep7;
-class StiCompletingSequenceAStep8;
-class StiCompletingSequenceAStep9;
+struct StiCompletingSequenceALoop;
+struct StiCompletingSequenceAStep1;
+struct StiCompletingSequenceAStep2;
+struct StiCompletingSequenceAStep3;
+struct StiCompletingSequenceAStep4;
+struct StiCompletingSequenceAStep5;
+struct StiCompletingSequenceAStep6;
+struct StiCompletingSequenceAStep7;
+struct StiCompletingSequenceAStep8;
+struct StiCompletingSequenceAStep9;
 }  // namespace completing_sequence_a
 
-class SsSuspendingSequenceA;
+struct SsSuspendingSequenceA;
 namespace suspending_sequence_a
 {
-class StiSuspendingSequenceALoop;
-class StiSuspendingSequenceAStep1;
-class StiSuspendingSequenceAStep2;
-class StiSuspendingSequenceAStep3;
-class StiSuspendingSequenceAStep4;
-class StiSuspendingSequenceAStep5;
-class StiSuspendingSequenceAStep6;
-class StiSuspendingSequenceAStep7;
-class StiSuspendingSequenceAStep8;
-class StiSuspendingSequenceAStep9;
+struct StiSuspendingSequenceALoop;
+struct StiSuspendingSequenceAStep1;
+struct StiSuspendingSequenceAStep2;
+struct StiSuspendingSequenceAStep3;
+struct StiSuspendingSequenceAStep4;
+struct StiSuspendingSequenceAStep5;
+struct StiSuspendingSequenceAStep6;
+struct StiSuspendingSequenceAStep7;
+struct StiSuspendingSequenceAStep8;
+struct StiSuspendingSequenceAStep9;
 }  // namespace suspending_sequence_a
 
-class SsSuspendingSequenceC;
+struct SsSuspendingSequenceC;
 namespace suspending_sequence_c
 {
-class StiSuspendingSequenceCLoop;
-class StiSuspendingSequenceCStep1;
-class StiSuspendingSequenceCStep2;
-class StiSuspendingSequenceCStep3;
-class StiSuspendingSequenceCStep4;
-class StiSuspendingSequenceCStep5;
-class StiSuspendingSequenceCStep6;
-class StiSuspendingSequenceCStep7;
-class StiSuspendingSequenceCStep8;
-class StiSuspendingSequenceCStep9;
+struct StiSuspendingSequenceCLoop;
+struct StiSuspendingSequenceCStep1;
+struct StiSuspendingSequenceCStep2;
+struct StiSuspendingSequenceCStep3;
+struct StiSuspendingSequenceCStep4;
+struct StiSuspendingSequenceCStep5;
+struct StiSuspendingSequenceCStep6;
+struct StiSuspendingSequenceCStep7;
+struct StiSuspendingSequenceCStep8;
+struct StiSuspendingSequenceCStep9;
 }  // namespace suspending_sequence_c
 
-class SsSuspendingSequenceD;
+struct SsSuspendingSequenceD;
 namespace suspending_sequence_d
 {
-class StiSuspendingSequenceDLoop;
-class StiSuspendingSequenceDStep1;
-class StiSuspendingSequenceDStep2;
-class StiSuspendingSequenceDStep3;
-class StiSuspendingSequenceDStep4;
-class StiSuspendingSequenceDStep5;
-class StiSuspendingSequenceDStep6;
-class StiSuspendingSequenceDStep7;
-class StiSuspendingSequenceDStep8;
-class StiSuspendingSequenceDStep9;
+struct StiSuspendingSequenceDLoop;
+struct StiSuspendingSequenceDStep1;
+struct StiSuspendingSequenceDStep2;
+struct StiSuspendingSequenceDStep3;
+struct StiSuspendingSequenceDStep4;
+struct StiSuspendingSequenceDStep5;
+struct StiSuspendingSequenceDStep6;
+struct StiSuspendingSequenceDStep7;
+struct StiSuspendingSequenceDStep8;
+struct StiSuspendingSequenceDStep9;
 }  // namespace suspending_sequence_d
 
-class SsHoldingSequenceA;
+struct SsHoldingSequenceA;
 namespace holding_sequence_a
 {
-class StiHoldingSequenceALoop;
-class StiHoldingSequenceAStep1;
-class StiHoldingSequenceAStep2;
-class StiHoldingSequenceAStep3;
-class StiHoldingSequenceAStep4;
-class StiHoldingSequenceAStep5;
-class StiHoldingSequenceAStep6;
-class StiHoldingSequenceAStep7;
-class StiHoldingSequenceAStep8;
-class StiHoldingSequenceAStep9;
+struct StiHoldingSequenceALoop;
+struct StiHoldingSequenceAStep1;
+struct StiHoldingSequenceAStep2;
+struct StiHoldingSequenceAStep3;
+struct StiHoldingSequenceAStep4;
+struct StiHoldingSequenceAStep5;
+struct StiHoldingSequenceAStep6;
+struct StiHoldingSequenceAStep7;
+struct StiHoldingSequenceAStep8;
+struct StiHoldingSequenceAStep9;
 }  // namespace holding_sequence_a
 
 
-class SsExecuteSequenceB;
+struct SsExecuteSequenceB;
 namespace execute_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiExecuteSequenceBLoop;
-class StiExecuteSequenceBStep1;
-class StiExecuteSequenceBStep2;
-class StiExecuteSequenceBStep3;
-class StiExecuteSequenceBStep4;
-class StiExecuteSequenceBStep5;
-class StiExecuteSequenceBStep6;
-class StiExecuteSequenceBStep7;
-class StiExecuteSequenceBStep8;
-class StiExecuteSequenceBStep9;
+struct StiExecuteSequenceBLoop;
+struct StiExecuteSequenceBStep1;
+struct StiExecuteSequenceBStep2;
+struct StiExecuteSequenceBStep3;
+struct StiExecuteSequenceBStep4;
+struct StiExecuteSequenceBStep5;
+struct StiExecuteSequenceBStep6;
+struct StiExecuteSequenceBStep7;
+struct StiExecuteSequenceBStep8;
+struct StiExecuteSequenceBStep9;
 }  // namespace execute_sequence_b
 
-class SsStartSequenceB;
+struct SsStartSequenceB;
 
 namespace start_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiStartSequenceBLoop;
-class StiStartSequenceBStep1;
-class StiStartSequenceBStep2;
-class StiStartSequenceBStep3;
-class StiStartSequenceBStep4;
-class StiStartSequenceBStep5;
-class StiStartSequenceBStep6;
-class StiStartSequenceBStep7;
-class StiStartSequenceBStep8;
-class StiStartSequenceBStep9;
+struct StiStartSequenceBLoop;
+struct StiStartSequenceBStep1;
+struct StiStartSequenceBStep2;
+struct StiStartSequenceBStep3;
+struct StiStartSequenceBStep4;
+struct StiStartSequenceBStep5;
+struct StiStartSequenceBStep6;
+struct StiStartSequenceBStep7;
+struct StiStartSequenceBStep8;
+struct StiStartSequenceBStep9;
 }  // namespace start_sequence_b
 
-class SsCompletingSequenceB;
+struct SsCompletingSequenceB;
 
 namespace completing_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiCompletingSequenceBLoop;
-class StiCompletingSequenceBStep1;
-class StiCompletingSequenceBStep2;
-class StiCompletingSequenceBStep3;
-class StiCompletingSequenceBStep4;
-class StiCompletingSequenceBStep5;
-class StiCompletingSequenceBStep6;
-class StiCompletingSequenceBStep7;
-class StiCompletingSequenceBStep8;
-class StiCompletingSequenceBStep9;
+struct StiCompletingSequenceBLoop;
+struct StiCompletingSequenceBStep1;
+struct StiCompletingSequenceBStep2;
+struct StiCompletingSequenceBStep3;
+struct StiCompletingSequenceBStep4;
+struct StiCompletingSequenceBStep5;
+struct StiCompletingSequenceBStep6;
+struct StiCompletingSequenceBStep7;
+struct StiCompletingSequenceBStep8;
+struct StiCompletingSequenceBStep9;
 }  // namespace completing_sequence_b
 
-class SsSuspendingSequenceB;
+struct SsSuspendingSequenceB;
 
 namespace suspending_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiSuspendingSequenceB;
-class StiSuspendingSequenceBStep1;
-class StiSuspendingSequenceBStep2;
-class StiSuspendingSequenceBStep3;
-class StiSuspendingSequenceBStep4;
-class StiSuspendingSequenceBStep5;
-class StiSuspendingSequenceBStep6;
-class StiSuspendingSequenceBStep7;
-class StiSuspendingSequenceBStep8;
-class StiSuspendingSequenceBStep9;
+struct StiSuspendingSequenceB;
+struct StiSuspendingSequenceBStep1;
+struct StiSuspendingSequenceBStep2;
+struct StiSuspendingSequenceBStep3;
+struct StiSuspendingSequenceBStep4;
+struct StiSuspendingSequenceBStep5;
+struct StiSuspendingSequenceBStep6;
+struct StiSuspendingSequenceBStep7;
+struct StiSuspendingSequenceBStep8;
+struct StiSuspendingSequenceBStep9;
 }  // namespace suspending_sequence_b
 
-class SsHoldingSequenceB;
+struct SsHoldingSequenceB;
 
 namespace holding_sequence_b
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiHoldingSequenceBLoop;
-class StiHoldingSequenceBStep1;
-class StiHoldingSequenceBStep2;
-class StiHoldingSequenceBStep3;
-class StiHoldingSequenceBStep4;
-class StiHoldingSequenceBStep5;
-class StiHoldingSequenceBStep6;
-class StiHoldingSequenceBStep7;
-class StiHoldingSequenceBStep8;
-class StiHoldingSequenceBStep9;
+struct StiHoldingSequenceBLoop;
+struct StiHoldingSequenceBStep1;
+struct StiHoldingSequenceBStep2;
+struct StiHoldingSequenceBStep3;
+struct StiHoldingSequenceBStep4;
+struct StiHoldingSequenceBStep5;
+struct StiHoldingSequenceBStep6;
+struct StiHoldingSequenceBStep7;
+struct StiHoldingSequenceBStep8;
+struct StiHoldingSequenceBStep9;
 }  // namespace holding_sequence_b
 
 //STATES
-class ExecuteStObserve;
-class StRecoveryAnalyze1;
-class StRecoveryBifurcate1;
-class StRecoveryCalculate1;
-class StRecoveryDeliberate1;
-class StRecoveryEvaluate1;
-class StRecoveryGenerate1;
-class StRecoveryInnervate1;
+struct ExecuteStObserve;
+struct StRecoveryAnalyze1;
+struct StRecoveryBifurcate1;
+struct StRecoveryCalculate1;
+struct StRecoveryDeliberate1;
+struct StRecoveryEvaluate1;
+struct StRecoveryGenerate1;
+struct StRecoveryInnervate1;
 
-class StartStObserve;
-class StRecoveryAnalyze2;
-class StRecoveryBifurcate2;
-class StRecoveryCalculate2;
-class StRecoveryDeliberate2;
-class StRecoveryEvaluate2;
-class StRecoveryGenerate2;
-class StRecoveryInnervate2;
+struct StartStObserve;
+struct StRecoveryAnalyze2;
+struct StRecoveryBifurcate2;
+struct StRecoveryCalculate2;
+struct StRecoveryDeliberate2;
+struct StRecoveryEvaluate2;
+struct StRecoveryGenerate2;
+struct StRecoveryInnervate2;
 
-class CompletingStObserve;
-class SuspendingStObserve;
-class HoldingStObserve;
+struct CompletingStObserve;
+struct SuspendingStObserve;
+struct HoldingStObserve;
 
 
-class ExecuteSequenceALoop;
-class ExecuteSequenceBLoop;
-class StartSequenceALoop;
-class StartSequenceBLoop;
-class CompletingSequenceALoop;
-class CompletingSequenceBLoop;
-class SuspendingSequenceALoop;
-class SuspendingSequenceCLoop;
-class SuspendingSequenceDLoop;
+struct ExecuteSequenceALoop;
+struct ExecuteSequenceBLoop;
+struct StartSequenceALoop;
+struct StartSequenceBLoop;
+struct CompletingSequenceALoop;
+struct CompletingSequenceBLoop;
+struct SuspendingSequenceALoop;
+struct SuspendingSequenceCLoop;
+struct SuspendingSequenceDLoop;
 class SuspendingSequenceBLoop;
-class HoldingSequenceALoop;
-class HoldingSequenceBLoop;
+struct HoldingSequenceALoop;
+struct HoldingSequenceBLoop;
 
 
 //MODE STATES
-class MsExecute;
+struct MsExecute;
 class MsRecovery1;
 
 //MODE STATES
-class MsStarting;
+struct MsStarting;
 class MsRecovery2;
 
-class MsCompleting;
-class MsSuspending;
-class MsHolding;
+struct MsCompleting;
+struct MsSuspending;
+struct MsHolding;
 
 struct EvToDeep : sc::event<EvToDeep>
 {

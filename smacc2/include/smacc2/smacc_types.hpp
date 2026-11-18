@@ -48,8 +48,8 @@ namespace introspection
 class SmaccStateMachineInfo;
 class SmaccStateInfo;
 class StateReactorHandler;
-class SmaccStateReactorInfo;
-class SmaccEventGeneratorInfo;
+struct SmaccStateReactorInfo;
+struct SmaccEventGeneratorInfo;
 class TypeInfo;
 }  // namespace introspection
 

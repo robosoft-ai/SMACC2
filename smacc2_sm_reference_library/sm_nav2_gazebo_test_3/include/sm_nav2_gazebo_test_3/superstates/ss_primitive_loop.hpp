@@ -26,10 +26,10 @@ namespace primitive_loop_states
 {
 
 // FORWARD DECLARATION OF INNER STATES
-class StiPrimitiveLoopStart;
-class StiDriveOnHeading;
-class StiSpin;
-class StiBackUp;
+struct StiPrimitiveLoopStart;
+struct StiDriveOnHeading;
+struct StiSpin;
+struct StiBackUp;
 
 }  // namespace primitive_loop_states
 }  // namespace sm_nav2_gazebo_test_3

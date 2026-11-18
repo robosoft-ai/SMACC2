@@ -51,68 +51,68 @@ namespace sm_cl_px4_mr_test_4
 {
 
 // MODE STATES (forward declarations)
-class MsDisarmedOnGround;
-class MsArmedOnGround;
-class MsTakeoff;
-class MsInFlight;
-class MsLanding;
-class MsLanded;
+struct MsDisarmedOnGround;
+struct MsArmedOnGround;
+struct MsTakeoff;
+struct MsInFlight;
+struct MsLanding;
+struct MsLanded;
 
 // SUPERSTATES (forward declarations)
-class SsSquareSpiral1;
-class SsSquareSpiral2;
-class SsLawnmower1;
-class SsLawnmower2;
-class SsGridPattern1;
-class SsVSSearch1;
-class SsVSSearch2;
-class SsVSSearch3;
-class SsVSChain1;
-class SsVSChain2;
-class SsVSChain3;
+struct SsSquareSpiral1;
+struct SsSquareSpiral2;
+struct SsLawnmower1;
+struct SsLawnmower2;
+struct SsGridPattern1;
+struct SsVSSearch1;
+struct SsVSSearch2;
+struct SsVSSearch3;
+struct SsVSChain1;
+struct SsVSChain2;
+struct SsVSChain3;
 
 // INNER STATES (forward declarations)
-class StiSquareSpiral1Run;
-class StiSquareSpiral2Run;
-class StiLawnmower1Run;
-class StiLawnmower2Run;
-class StiGridPattern1Run;
-class StiVSSearch1Run;
-class StiVSSearch2Run;
-class StiVSSearch3Run;
-class StiVSChain1Run;
-class StiVSChain2Run;
-class StiVSChain3Run;
+struct StiSquareSpiral1Run;
+struct StiSquareSpiral2Run;
+struct StiLawnmower1Run;
+struct StiLawnmower2Run;
+struct StiGridPattern1Run;
+struct StiVSSearch1Run;
+struct StiVSSearch2Run;
+struct StiVSSearch3Run;
+struct StiVSChain1Run;
+struct StiVSChain2Run;
+struct StiVSChain3Run;
 
 // STATES (forward declarations), in mission order
-class StPause;
-class StConnectMicroROSAgent;
-class StWaitForReady;
-class StArmPX4;
-class StPrepareForTakeoff;
-class StTakeoff;
-class StAscend;
-class StSpiralOffIsland;
-class StTransitToSquareSpiral1;
-class StTransitToSquareSpiral2;
-class StTransitToLawnmower1;
-class StTransitToLawnmower2;
-class StTransitToGridPattern1;
-class StTransitToVSSearch;
-class StTransitToVSChain1;
-class StTransitToVSChain2;
-class StTransitToVSChain3;
-class StGoToSquareCentre;
-class StGoToSouthWaypoint;
-class StGoToFigureEight;
-class StFigureEight1;
-class StFigureEight2;
-class StLoiterCentroid;
-class StGoToLandingZone;
-class StPreLandDescent;
-class StReturnHome;
-class StLand;
-class StLanded;
+struct StPause;
+struct StConnectMicroROSAgent;
+struct StWaitForReady;
+struct StArmPX4;
+struct StPrepareForTakeoff;
+struct StTakeoff;
+struct StAscend;
+struct StSpiralOffIsland;
+struct StTransitToSquareSpiral1;
+struct StTransitToSquareSpiral2;
+struct StTransitToLawnmower1;
+struct StTransitToLawnmower2;
+struct StTransitToGridPattern1;
+struct StTransitToVSSearch;
+struct StTransitToVSChain1;
+struct StTransitToVSChain2;
+struct StTransitToVSChain3;
+struct StGoToSquareCentre;
+struct StGoToSouthWaypoint;
+struct StGoToFigureEight;
+struct StFigureEight1;
+struct StFigureEight2;
+struct StLoiterCentroid;
+struct StGoToLandingZone;
+struct StPreLandDescent;
+struct StReturnHome;
+struct StLand;
+struct StLanded;
 
 // STATE MACHINE
 struct SmClPx4MrTest4 : public smacc2::SmaccStateMachineBase<SmClPx4MrTest4, MsDisarmedOnGround>
