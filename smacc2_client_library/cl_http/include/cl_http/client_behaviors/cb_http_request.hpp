@@ -59,6 +59,6 @@ public:
 private:
   const CpHttpRequestExecutor::HttpMethod kRequestType;
 
-  CpHttpRequestExecutor * requestExecutor_;
+  CpHttpRequestExecutor * requestExecutor_ = nullptr;
 };
 }  // namespace cl_http

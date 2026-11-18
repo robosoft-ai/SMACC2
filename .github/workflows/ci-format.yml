@@ -20,7 +20,7 @@ jobs:
     - name: Install clang-format
       run: |
        apt update
-       apt install -y python3-pip clang-format ros-jazzy-ament-cppcheck pre-commit
+       apt install -y python3-pip clang-format cppcheck pre-commit
        git config --global --add safe.directory `pwd`
     - name: pre-commit
       shell: bash

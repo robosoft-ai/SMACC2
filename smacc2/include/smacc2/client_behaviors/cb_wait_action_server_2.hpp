@@ -81,7 +81,7 @@ public:
   }
 
 private:
-  CpActionClient<ActionT> * cp_action_client_;
+  CpActionClient<ActionT> * cp_action_client_ = nullptr;
 
   std::chrono::milliseconds timeout_;
 };

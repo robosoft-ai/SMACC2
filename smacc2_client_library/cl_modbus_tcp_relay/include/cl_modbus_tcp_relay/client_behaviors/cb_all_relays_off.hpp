@@ -73,8 +73,8 @@ public:
   }
 
 private:
-  ClModbusTcpRelay * client_;
-  CpModbusRelay * relayComponent_;
+  ClModbusTcpRelay * client_ = nullptr;
+  CpModbusRelay * relayComponent_ = nullptr;
 };
 
 }  // namespace cl_modbus_tcp_relay

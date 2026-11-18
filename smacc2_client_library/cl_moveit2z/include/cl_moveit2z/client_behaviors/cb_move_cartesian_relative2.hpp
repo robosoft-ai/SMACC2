@@ -66,7 +66,7 @@ public:
     float totallineardist = voffset.length();
 
     int totalSamplesCount = totallineardist / METERS_PER_SAMPLE;
-    int steps = totallineardist / METERS_PER_SAMPLE;
+    int steps = totalSamplesCount;
 
     float interpolation_factor_step = 1.0 / totalSamplesCount;
 
