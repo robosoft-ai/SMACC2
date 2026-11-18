@@ -8,8 +8,9 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 1. **Nothing gets in the way of pushing commits.** The `jazzy` branch has no branch protection and no
    required checks, so every check is a signal and none is a lock. A check may run on every pull
    request only if it is fast, deterministic and has no known false failures.
-2. **The two build workflows finish in 20 minutes or less, without caching.** A cached build does not
-   prove that the tree builds from scratch, which is the point of the workflow.
+2. **The two build workflows finish in 20 minutes or less, and build SMACC2 from scratch.** A cached
+   build of our own code does not prove that the tree builds, which is the point of the workflow.
+   What may be cached is set by the strategic caching policy below.
 3. **Heavy checks are run on demand.** Sanitizers, clang-tidy, the clang build and CodeQL are `workflow_dispatch` only.
    They are run before a release and after any change to the core's threading, lifetime or shutdown
    code, not on every pull request.
@@ -56,6 +57,27 @@ summary table, then the findings one by one. `.github/scripts/gate_summary.py` a
 - clang build: a row per warning flag with its count; then every compiler warning grouped by flag and
   sorted by place, each distinct warning once with the number of times it was given; then the core
   test table.
+
+## Strategic caching policy
+
+Caching is the exception. A package may be cached between runs only when all four hold:
+
+1. **It is third-party.** No SMACC2 package is ever cached; every one is compiled in every run.
+2. **It is pinned** in `SMACC2.jazzy.repos`, and the cache key is the commit that pin resolves to, so
+   an upstream change rebuilds it.
+3. **It has no binary package.** A dependency with an apt package is installed, not built and cached.
+4. **The payoff is high:** it takes minutes of every run and changes rarely. A package that saves a
+   minute or two does not qualify; the cache is one more thing that can go wrong.
+
+Today exactly one package qualifies: `px4_msgs` (about 10 minutes, cached since 2026-11-18 in both
+build workflows). Its key is the commit of `release/1.16` plus a hash of the installed
+`rosidl`, `rmw` and Fast DDS package versions, so a ROS sync in the container image also rebuilds it.
+It is installed to `/opt/px4_msgs` and saved right after it is built, so a later failure in the run
+does not lose it. `micro_ros_agent` (2.4 minutes) does not qualify and is built in every run, from tag `5.0.3`, the
+Jazzy line (6.1.x is Kilted, 7.0.0 Rolling). The
+manual workflows (clang build, clang-tidy, sanitizers) do not use the cache.
+
+Adding a package to this list is a decision for the maintainer, recorded here with its measured time.
 
 **The build workflows are over budget today.** Of the last 14 pull-request runs, 11 took longer than
 20 minutes on each workflow (range 17 to 31 min). In a 17.4 min run, 2.8 min was dependency setup and
@@ -304,7 +326,8 @@ is the floor on reaction time for any event that originates outside the state ma
 
 ## Open items
 
-1. Bring the two build workflows under 20 minutes without caching.
+1. Bring the two build workflows under 20 minutes. `px4_msgs` is cached since 2026-11-18; measure a
+   miss and a hit on GitHub.
 2. Remove the disabled ROS Lint workflow.
 3. Add tracepoints for the work an asynchronous behavior does; today its entry pair covers only the
    launch of its thread.

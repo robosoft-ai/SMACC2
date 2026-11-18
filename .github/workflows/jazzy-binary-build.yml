@@ -19,7 +19,25 @@ jobs:
     steps:
         - uses: actions/checkout@v1
 
-        - name: dependencies and build
+        # px4_msgs is the one third-party package cached between runs: it has no binary package, takes
+        # about 10 minutes to build, and changes only when its pinned branch moves. See .github/CLAUDE.md, rule 2.
+        - name: px4_msgs cache key
+          id: px4
+          shell: bash
+          run: |
+                COMMIT=$(git ls-remote https://github.com/PX4/px4_msgs.git refs/heads/release/1.16 | cut -f1)
+                ROS=$(dpkg-query -W 'ros-jazzy-rosidl-*' 'ros-jazzy-rmw-*' 'ros-jazzy-fast*' | sha256sum | cut -c1-16)
+                [ -n "$COMMIT" ] || { echo "could not read the px4_msgs commit"; exit 1; }
+                echo "key=px4_msgs-$COMMIT-$ROS" >> "$GITHUB_OUTPUT"
+
+        - name: restore px4_msgs
+          id: px4cache
+          uses: actions/cache/restore@v4
+          with:
+                path: /opt/px4_msgs
+                key: ${{ steps.px4.outputs.key }}
+
+        - name: dependencies
           shell: bash
           run: |
                 apt-get update
@@ -28,7 +46,29 @@ jobs:
                 rosdep update
                 vcs import < .github/SMACC2.jazzy.repos
                 rosdep install --from-paths . --ignore-src -r -y
+
+        - name: build px4_msgs
+          if: steps.px4cache.outputs.cache-hit != 'true'
+          shell: bash
+          run: |
                 source /opt/ros/jazzy/setup.bash
+                colcon build --packages-select px4_msgs --build-base /tmp/px4_msgs_build --install-base /opt/px4_msgs --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+        - name: save px4_msgs
+          if: steps.px4cache.outputs.cache-hit != 'true'
+          uses: actions/cache/save@v4
+          with:
+                path: /opt/px4_msgs
+                key: ${{ steps.px4.outputs.key }}
+
+        - name: build
+          shell: bash
+          run: |
+                # px4_msgs comes from /opt/px4_msgs, restored or just built; every other package is built here from scratch.
+                touch px4_msgs/COLCON_IGNORE
+                source /opt/ros/jazzy/setup.bash
+                source /opt/px4_msgs/setup.bash
+
                 # Skip packages that require special dependencies or configurations:
                 # Machines whose one compile needs over 2 GB, built last and two at a time to bound peak memory:
                 HEAVY="sm_nav2_gazebo_test_2 sm_nav2_gazebo_test_3 sm_nav2_gazebo_test_4 sm_panda_cl_moveit2z_cb_inventory_isaacsim sm_cl_px4_mr_test_4 sm_cl_px4_mr_test_5"
