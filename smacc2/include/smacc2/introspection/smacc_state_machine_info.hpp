@@ -306,14 +306,12 @@ public:
 
 //---------------------------------------------
 template <typename Ev, typename Dst>
-void processTransition(
-  statechart::transition<Ev, Dst> *, std::shared_ptr<SmaccStateInfo> & sourceState)
+void processTransition(statechart::transition<Ev, Dst> *, std::shared_ptr<SmaccStateInfo> &)
 {
 }
 
 template <typename Ev>
-void processTransition(
-  statechart::custom_reaction<Ev> *, std::shared_ptr<SmaccStateInfo> & sourceState)
+void processTransition(statechart::custom_reaction<Ev> *, std::shared_ptr<SmaccStateInfo> &)
 {
 }
 
