@@ -106,7 +106,6 @@ private:
   const double betta_offset_ = 0;
 
   meter carrot_distance_ = 0.0;
-  rad carrot_angular_distance_ = 0.0;
 
   double yaw_goal_tolerance_ = 0.0;  // radians
   double xy_goal_tolerance_ = 0.0;   // meters

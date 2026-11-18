@@ -147,7 +147,6 @@ void ForwardLocalPlanner::generateTrajectory(
   bool end = false;
   float time = 0;
   Eigen::Vector3f currentpos = pos;
-  int i = 0;
   while (!end)
   {
     // add the point to the trajectory so we can draw it later if we want
@@ -193,7 +192,6 @@ void ForwardLocalPlanner::generateTrajectory(
     }
 
     currentpos = newpos;
-    i++;
   }  // end for simulation steps
 }
 
@@ -527,7 +525,6 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
 
   unsigned int mx = 0, my = 0;
 
-  int i = 0;
   // RCLCPP_INFO_STREAM(nh_->get_logger(), "lplanner goal: " << finalgoalpose.pose.position);
   for (auto & p : trajectory)
   {
@@ -557,7 +554,6 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
       // RCLCPP_WARN(nh_->get_logger(), "ABORTED LOCAL PLAN BECAUSE OBSTACLE DETEDTED");
       break;
     }
-    i++;
   }
 
   bool success = false;

@@ -1111,7 +1111,6 @@ void BackwardLocalPlanner::generateTrajectory(
   bool end = false;
   float time = 0;
   Eigen::Vector3f currentpos = pos;
-  int i = 0;
   while (!end)
   {
     auto loop_vel = vel;
@@ -1154,7 +1153,6 @@ void BackwardLocalPlanner::generateTrajectory(
     }
 
     currentpos = newpos;
-    i++;
   }  // end for simulation steps
 }
 
