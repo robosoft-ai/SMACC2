@@ -19,13 +19,15 @@
 Usage:
   clang_tidy_baseline.py normalize <repo-root> <raw-output>...   > current.txt
   clang_tidy_baseline.py compare <baseline.txt> <current.txt>
+  clang_tidy_baseline.py list <repo-root> <raw-output>...        > diagnostics.txt
 
 A normalized line is "<count>\t<path relative to the repo>: <warning|error>: <message> [<check>]",
 without line or column numbers, so an edit above a known finding does not move it out of the
 baseline, while a new finding or a second instance of a known one does fail. A diagnostic in a
 header is counted once, however many translation units include the header. compare exits 1 on
 any error line, any key missing from the baseline, or any count above the baseline's, and lists
-baseline entries that no longer occur so the baseline can be pruned by regenerating it.
+baseline entries that no longer occur so the baseline can be pruned by regenerating it. list prints
+every diagnostic as the tool gave it, with its line and column, for the run page.
 """
 import collections
 import os
@@ -37,9 +39,9 @@ LINE = re.compile(
 )
 
 
-def normalize(repo_root, raw_paths):
+def diagnostics(repo_root, raw_paths):
+    """Yield (key, line:column) once for each distinct diagnostic located in the repository's sources."""
     root = os.path.realpath(repo_root) + os.sep
-    counts = collections.Counter()
     seen = set()
     for raw in raw_paths:
         for line in open(raw, errors="replace"):
@@ -55,9 +57,23 @@ def normalize(repo_root, raw_paths):
             key = f"{path[len(root):]}: {m.group('kind')}: {m.group('msg')}{check}"
             if (key, m.group("where")) not in seen:
                 seen.add((key, m.group("where")))
-                counts[key] += 1
+                yield key, m.group("where")
+
+
+def normalize(repo_root, raw_paths):
+    counts = collections.Counter(key for key, _ in diagnostics(repo_root, raw_paths))
     for key in sorted(counts):
         print(f"{counts[key]}\t{key}")
+
+
+def listing(repo_root, raw_paths):
+    def place(item):
+        path, rest = item[0].split(": ", 1)
+        line, column = item[1].split(":")
+        return path, int(line), int(column), rest
+
+    for path, line, column, rest in sorted(map(place, diagnostics(repo_root, raw_paths))):
+        print(f"{path}:{line}:{column}: {rest}")
 
 
 def load(path):
@@ -97,6 +113,8 @@ def compare(baseline_path, current_path):
 if __name__ == "__main__":
     if len(sys.argv) >= 4 and sys.argv[1] == "normalize":
         normalize(sys.argv[2], sys.argv[3:])
+    elif len(sys.argv) >= 4 and sys.argv[1] == "list":
+        listing(sys.argv[2], sys.argv[3:])
     elif len(sys.argv) == 4 and sys.argv[1] == "compare":
         sys.exit(compare(sys.argv[2], sys.argv[3]))
     else:

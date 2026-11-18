@@ -42,12 +42,20 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 | ROS Lint (`ci-ros-lint.yaml`) | GitHub | **disabled** | no | | `ament_copyright`, `ament_cppcheck`, `ament_lint_cmake` per package; duplicates pre-commit |
 | Doxygen Deployment, bloom release | GitHub | push to `jazzy` | no | about 10 min | publishing |
 
-**Reading a manual run.** The Sanitizers and clang-tidy workflows write their result to the run's
-Summary page: pass or fail, one row per core test with what it measured, any failure lines, and for
-clang-tidy the diagnostics by check and anything not in the baseline. The full logs are in the run's
-artifact. `.github/scripts/gate_summary.py` builds the summary from the gate script's console output.
-The clang build's Summary page is the list of compiler warnings and nothing else, each distinct warning
-once with the number of times it was given.
+**Reading a manual run.** Each manual workflow writes its result to the run's Summary page; the full
+logs are in the run's artifact. Every page has the same shape: pass or fail and a few sentences, a
+summary table, then the findings one by one. `.github/scripts/gate_summary.py` and
+`clang_warnings.py` build the pages from the gate scripts' output.
+- Sanitizers: the number of test failures and of reports of each kind the build can give (data
+  races, lock-order inversions, address errors, memory leaks, undefined-behavior errors); one row per
+  core test with what it measured and the state machine it ran; then the failure lines and reports.
+- clang-tidy: a row per check with its count; then every diagnostic as the tool printed it, grouped
+  by check, and under each group the policy for that check from `.github/clang-tidy-policy.txt`. A
+  diagnostic that is not in the baseline is marked `NEW`. A check that starts to report needs a line
+  in the policy file.
+- clang build: a row per warning flag with its count; then every compiler warning grouped by flag and
+  sorted by place, each distinct warning once with the number of times it was given; then the core
+  test table.
 
 **The build workflows are over budget today.** Of the last 14 pull-request runs, 11 took longer than
 20 minutes on each workflow (range 17 to 31 min). In a 17.4 min run, 2.8 min was dependency setup and
@@ -192,7 +200,7 @@ with their simulators; only the state machine node is instrumented.
   and install bases under the out dir, so the GCC build is not touched. Those bases are deleted first:
   a file that is not recompiled gives no warning. `smacc2_msgs` and `px4_msgs`
   are built first with the default compiler, because their code is generated.
-- It prints every warning the compiler gave and writes the same list to `warnings.txt`
+- It prints every warning the compiler gave, grouped by warning flag, and writes the same list to `warnings.txt`
   (`.github/scripts/clang_warnings.py`). A warning in a header is given once for every source file
   that includes the header; the list shows it once, with the count, under its path in the repository.
 - The standard is zero: the script exits 1 on a build error or on any warning. GCC is not held to
