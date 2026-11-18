@@ -70,39 +70,39 @@ namespace sm_cl_px4_mr_test_5
 {
 
 // MODE STATES (forward declarations)
-class MsDisarmedOnGround;
-class MsArmedOnGround;
-class MsTakeoff;
-class MsInFlight;
-class MsLanding;
-class MsLanded;
+struct MsDisarmedOnGround;
+struct MsArmedOnGround;
+struct MsTakeoff;
+struct MsInFlight;
+struct MsLanding;
+struct MsLanded;
 
 // SUPERSTATES (forward declarations)
-class SsCaveMission;
+struct SsCaveMission;
 
 // STATES (forward declarations), in mission order
-class StPause;
-class StConnectMicroROSAgent;
-class StWaitForReady;
-class StArmPX4;
-class StPrepareForTakeoff;
-class StTakeoff;
-class StAscend;
-class StFlyOutbound;
-class StFlyDeeper;
-class StHoldAtTurnaround;
-class StTurnAround;
-class StFlyInbound;
-class StFlyToBaseStation;
-class StOrbitBaseStation;
-class StSpiralUpBaseStation;
-class StOrbitAtTop;
-class StReturnToPad;
-class StPreLandDescent;
-class StObstacleHold;
-class StReturnHome;
-class StLand;
-class StLanded;
+struct StPause;
+struct StConnectMicroROSAgent;
+struct StWaitForReady;
+struct StArmPX4;
+struct StPrepareForTakeoff;
+struct StTakeoff;
+struct StAscend;
+struct StFlyOutbound;
+struct StFlyDeeper;
+struct StHoldAtTurnaround;
+struct StTurnAround;
+struct StFlyInbound;
+struct StFlyToBaseStation;
+struct StOrbitBaseStation;
+struct StSpiralUpBaseStation;
+struct StOrbitAtTop;
+struct StReturnToPad;
+struct StPreLandDescent;
+struct StObstacleHold;
+struct StReturnHome;
+struct StLand;
+struct StLanded;
 
 // STATE MACHINE
 struct SmClPx4MrTest5 : public smacc2::SmaccStateMachineBase<SmClPx4MrTest5, MsDisarmedOnGround>

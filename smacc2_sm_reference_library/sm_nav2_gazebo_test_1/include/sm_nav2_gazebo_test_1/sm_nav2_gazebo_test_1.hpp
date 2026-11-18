@@ -45,12 +45,12 @@ namespace sm_nav2_gazebo_test_1
 {
 
 // FORWARD DECLARATIONS
-class StAllSensorsGo;
-class StSetInitialPose;
-class StNavigateToWaypoint1;
-class StRotate;
-class StNavigateToWaypoint2;
-class StFinalState;
+struct StAllSensorsGo;
+struct StSetInitialPose;
+struct StNavigateToWaypoint1;
+struct StRotate;
+struct StNavigateToWaypoint2;
+struct StFinalState;
 
 //--------------------------------------------------------------------
 // STATE MACHINE

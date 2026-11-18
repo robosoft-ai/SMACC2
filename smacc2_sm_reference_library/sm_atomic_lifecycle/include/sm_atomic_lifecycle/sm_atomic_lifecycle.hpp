@@ -39,16 +39,16 @@ using namespace smacc2;
 namespace sm_atomic_lifecycle
 {
 //STATE
-class StActivating;
-class StActive;
-class StCleaningUp;
-class StConfiguring;
-class StDeactivating;
-class StErrorProcessing;
-class StFinalized;
-class StInactive;
-class StShuttingDown;
-class StUnconfigured;
+struct StActivating;
+struct StActive;
+struct StCleaningUp;
+struct StConfiguring;
+struct StDeactivating;
+struct StErrorProcessing;
+struct StFinalized;
+struct StInactive;
+struct StShuttingDown;
+struct StUnconfigured;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE

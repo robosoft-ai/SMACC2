@@ -46,18 +46,18 @@ namespace sm_nav2_gazebo_test_3
 {
 
 // STATE FORWARD DECLARATIONS
-class StAllSensorsGo;
-class StSetInitialPose;
-class StSpinToWall;
-class StDriveAtWall;
-class StBackUpSafe;
-class StAssistedTeleopGuard;
-class StFinalState;
+struct StAllSensorsGo;
+struct StSetInitialPose;
+struct StSpinToWall;
+struct StDriveAtWall;
+struct StBackUpSafe;
+struct StAssistedTeleopGuard;
+struct StFinalState;
 
 // SUPERSTATE FORWARD DECLARATIONS
 namespace SS1
 {
-class SsPrimitiveLoop;
+struct SsPrimitiveLoop;
 }
 
 //--------------------------------------------------------------------

@@ -30,17 +30,17 @@ enum class TDirection
 // same pattern states can serve multiple F pattern superstates - the
 // sm_nav2_test_7 idiom)
 template <typename SS>
-class StiFPatternStartLoop;
+struct StiFPatternStartLoop;
 template <typename SS>
-class StiFPatternRotate1;
+struct StiFPatternRotate1;
 template <typename SS>
-class StiFPatternForward1;
+struct StiFPatternForward1;
 template <typename SS>
-class StiFPatternReturn1;
+struct StiFPatternReturn1;
 template <typename SS>
-class StiFPatternRotate2;
+struct StiFPatternRotate2;
 template <typename SS>
-class StiFPatternForward2;
+struct StiFPatternForward2;
 
 }  // namespace f_pattern_states
 

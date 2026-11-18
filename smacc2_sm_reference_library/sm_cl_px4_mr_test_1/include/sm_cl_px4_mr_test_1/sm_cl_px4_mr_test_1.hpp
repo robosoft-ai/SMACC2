@@ -40,22 +40,22 @@ namespace sm_cl_px4_mr_test_1
 {
 
 // MODE STATES (forward declarations)
-class MsDisarmedOnGround;
-class MsArmedOnGround;
-class MsTakeoff;
-class MsInFlight;
-class MsLanding;
-class MsLanded;
+struct MsDisarmedOnGround;
+struct MsArmedOnGround;
+struct MsTakeoff;
+struct MsInFlight;
+struct MsLanding;
+struct MsLanded;
 
 // STATES (forward declarations)
-class StWaitForReady;
-class StArmPx4;
-class StTakeoff;
-class StGoToWaypoint1;
-class StOrbitLocation;
-class StReturnToBase;
-class StLand;
-class StLanded;
+struct StWaitForReady;
+struct StArmPx4;
+struct StTakeoff;
+struct StGoToWaypoint1;
+struct StOrbitLocation;
+struct StReturnToBase;
+struct StLand;
+struct StLanded;
 
 // STATE MACHINE
 struct SmClPx4MrTest1

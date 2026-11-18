@@ -47,28 +47,28 @@ namespace sm_nav2_gazebo_test_2
 {
 
 // STATE FORWARD DECLARATIONS
-class StAllSensorsGo;
-class StSetInitialPose;
-class StNavigateWithCurve;
-class StUndoCurve;
-class StNavigateChain1;
-class StNavigateChain2;
-class StUndoChain2;
-class StUndoChain1;
-class StNavigateToWaypoint1;
-class StNavigateToFPattern;
-class StFinalSpin;
-class StFinalState;
+struct StAllSensorsGo;
+struct StSetInitialPose;
+struct StNavigateWithCurve;
+struct StUndoCurve;
+struct StNavigateChain1;
+struct StNavigateChain2;
+struct StUndoChain2;
+struct StUndoChain1;
+struct StNavigateToWaypoint1;
+struct StNavigateToFPattern;
+struct StFinalSpin;
+struct StFinalState;
 
 // SUPERSTATE FORWARD DECLARATIONS
 namespace SS1
 {
-class SsRadialPattern1;
+struct SsRadialPattern1;
 }
 
 namespace SS2
 {
-class SsFPattern1;
+struct SsFPattern1;
 }
 
 //--------------------------------------------------------------------

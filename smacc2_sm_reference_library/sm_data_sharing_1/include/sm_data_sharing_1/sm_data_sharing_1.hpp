@@ -43,9 +43,9 @@ using namespace cl_keyboard;
 namespace sm_data_sharing_1
 {
 // FORWARD DECLARATIONS
-class StAcquireData1;
-class StAcquireData2;
-class StProcessData;
+struct StAcquireData1;
+struct StAcquireData2;
+struct StProcessData;
 
 //--------------------------------------------------------------------
 // STATE MACHINE

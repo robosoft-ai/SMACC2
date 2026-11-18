@@ -56,8 +56,8 @@ namespace sm_multithread_test_1
 {
 
 // STATE FORWARD DECLARATIONS
-class StConcurrentOperation;
-class StComplete;
+struct StConcurrentOperation;
+struct StComplete;
 
 //═══════════════════════════════════════════════════════════════════════════
 // STATE MACHINE

@@ -21,9 +21,9 @@ namespace sm_three_some
 namespace inner_states
 {
 // FORWARD DECLARATIONS OF ALL INNER STATES
-class StiState1;
-class StiState2;
-class StiState3;
+struct StiState1;
+struct StiState2;
+struct StiState3;
 }  // namespace inner_states
 }  // namespace sm_three_some
 

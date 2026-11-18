@@ -26,10 +26,10 @@ namespace radial_motion_states
 {
 
 // FORWARD DECLARATION OF INNER STATES
-class StiRadialLoopStart;
-class StiRadialRotate;
-class StiRadialEndPoint;
-class StiRadialReturn;
+struct StiRadialLoopStart;
+struct StiRadialRotate;
+struct StiRadialEndPoint;
+struct StiRadialReturn;
 
 }  // namespace radial_motion_states
 }  // namespace sm_nav2_gazebo_test_2

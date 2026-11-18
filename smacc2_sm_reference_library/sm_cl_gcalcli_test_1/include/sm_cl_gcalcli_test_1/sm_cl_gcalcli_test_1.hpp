@@ -43,12 +43,12 @@ namespace sm_cl_gcalcli_test_1
 {
 
 // Forward declare states
-class StInit;
-class StWaitConnection;
-class StTestRefresh;
-class StTestEventDetect;
-class StTestQuickAdd;
-class StDone;
+struct StInit;
+struct StWaitConnection;
+struct StTestRefresh;
+struct StTestEventDetect;
+struct StTestQuickAdd;
+struct StDone;
 
 //--------------------------------------------------------------------
 // STATE_MACHINE

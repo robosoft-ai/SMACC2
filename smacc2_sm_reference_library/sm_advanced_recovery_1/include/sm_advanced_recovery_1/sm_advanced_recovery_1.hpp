@@ -49,63 +49,63 @@ using namespace smacc2::default_events;
 namespace sm_advanced_recovery_1
 {
 //SUPERSTATES
-class SsACycle;
+struct SsACycle;
 namespace a_cycle_inner_states
 {
-class StiACycleLoop;
-class StiACycleStep1;
-class StiACycleStep2;
-class StiACycleStep3;
-class StiACycleStep4;
-class StiACycleStep5;
-class StiACycleStep6;
-class StiACycleStep7;
-class StiACycleStep8;
-class StiACycleStep9;
+struct StiACycleLoop;
+struct StiACycleStep1;
+struct StiACycleStep2;
+struct StiACycleStep3;
+struct StiACycleStep4;
+struct StiACycleStep5;
+struct StiACycleStep6;
+struct StiACycleStep7;
+struct StiACycleStep8;
+struct StiACycleStep9;
 }  // namespace a_cycle_inner_states
 
-class SsBCycle;
+struct SsBCycle;
 
 namespace b_cyclenner_states
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiBCycleLoop;
-class StiBCycleStep1;
-class StiBCycleStep2;
-class StiBCycleStep3;
-class StiBCycleStep4;
-class StiBCycleStep5;
-class StiBCycleStep6;
-class StiBCycleStep7;
-class StiBCycleStep8;
-class StiBCycleStep9;
+struct StiBCycleLoop;
+struct StiBCycleStep1;
+struct StiBCycleStep2;
+struct StiBCycleStep3;
+struct StiBCycleStep4;
+struct StiBCycleStep5;
+struct StiBCycleStep6;
+struct StiBCycleStep7;
+struct StiBCycleStep8;
+struct StiBCycleStep9;
 }  // namespace b_cyclenner_states
 
-class SsCCycle;
+struct SsCCycle;
 namespace c_cycle_inner_states
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiCCycleLoop;
-class StiCCycleStep1;
-class StiCCycleStep2;
-class StiCCycleStep3;
-class StiCCycleStep4;
-class StiCCycleStep5;
-class StiCCycleStep6;
-class StiCCycleStep7;
-class StiCCycleStep8;
-class StiCCycleStep9;
+struct StiCCycleLoop;
+struct StiCCycleStep1;
+struct StiCCycleStep2;
+struct StiCCycleStep3;
+struct StiCCycleStep4;
+struct StiCCycleStep5;
+struct StiCCycleStep6;
+struct StiCCycleStep7;
+struct StiCCycleStep8;
+struct StiCCycleStep9;
 }  // namespace c_cycle_inner_states
 
 //STATES
-class StObserve;
-class StRecoverStep1;
-class StRecoverStep2;
-class StRecoverStep3;
-class StRecoverStep4;
-class StRecoverStep5;
-class StRecoverStep6;
-class StRecoverStep7;
+struct StObserve;
+struct StRecoverStep1;
+struct StRecoverStep2;
+struct StRecoverStep3;
+struct StRecoverStep4;
+struct StRecoverStep5;
+struct StRecoverStep6;
+struct StRecoverStep7;
 
 //MODE STATES
 class MsRun;

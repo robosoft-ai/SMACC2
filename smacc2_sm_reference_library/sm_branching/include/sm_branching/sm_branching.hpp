@@ -32,18 +32,18 @@ using namespace smacc2;
 namespace sm_branching
 {
 //STATE
-class State1;
-class State2;
-class State2b;
-class State2c;
-class State3;
-class State3b;
-class State3c;
-class State4;
-class State4c;
-class State5;
-class State5b;
-class State6;
+struct State1;
+struct State2;
+struct State2b;
+struct State2c;
+struct State3;
+struct State3b;
+struct State3c;
+struct State4;
+struct State4c;
+struct State5;
+struct State5b;
+struct State6;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE

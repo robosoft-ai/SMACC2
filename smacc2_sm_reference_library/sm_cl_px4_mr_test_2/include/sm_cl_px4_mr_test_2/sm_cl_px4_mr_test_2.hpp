@@ -48,32 +48,32 @@ namespace sm_cl_px4_mr_test_2
 {
 
 // MODE STATES (forward declarations)
-class MsDisarmedOnGround;
-class MsArmedOnGround;
-class MsTakeoff;
-class MsInFlight;
-class MsLanding;
-class MsLanded;
+struct MsDisarmedOnGround;
+struct MsArmedOnGround;
+struct MsTakeoff;
+struct MsInFlight;
+struct MsLanding;
+struct MsLanded;
 
 // STATES (forward declarations)
-class StConnectMicroROSAgent;
-class StWaitForReady;
-class StArmPx4;
-class StTakeoff;
-class StHoldPosition;
-class StYawRotate;
-class StHoldPosition2;
-class StChangeAltitude;
-class StHoldPosition3;
-class StSpiralPattern;
-class StHoldPosition4;
-class StFollowWaypoints;
-class StHoldPosition5;
-class StFigureEight;
-class StHoldPosition6;
-class StReturnToHome;
-class StLand;
-class StLanded;
+struct StConnectMicroROSAgent;
+struct StWaitForReady;
+struct StArmPx4;
+struct StTakeoff;
+struct StHoldPosition;
+struct StYawRotate;
+struct StHoldPosition2;
+struct StChangeAltitude;
+struct StHoldPosition3;
+struct StSpiralPattern;
+struct StHoldPosition4;
+struct StFollowWaypoints;
+struct StHoldPosition5;
+struct StFigureEight;
+struct StHoldPosition6;
+struct StReturnToHome;
+struct StLand;
+struct StLanded;
 
 // STATE MACHINE
 struct SmClPx4MrTest2
