@@ -76,7 +76,7 @@ public:
 
 private:
   // Declare the subscriber component.
-  CpTopicSubscriber<vision_msgs::msg::Detection3DArray> * fondationPoseTopic_;
+  CpTopicSubscriber<vision_msgs::msg::Detection3DArray> * fondationPoseTopic_ = nullptr;
 
   // Declare a data structure to store the detected objects.
   std::map<std::string, DetectedObject> detectedObjects;

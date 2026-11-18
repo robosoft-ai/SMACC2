@@ -82,7 +82,7 @@ public:
     double avgX = 0;
     double avgY = 0;
     double avgZ = 0;
-    for (auto & apriltag : tags)
+    for (const auto & apriltag : tags)
     {
       avgX += apriltag.second.pose.position.x;
       avgY += apriltag.second.pose.position.y;

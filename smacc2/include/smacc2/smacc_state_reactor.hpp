@@ -115,7 +115,7 @@ private:
 
       if (eventCallbacks_.count(tid))
       {
-        eventCallbacks_[tid]((void *)ev);
+        eventCallbacks_[tid](static_cast<void *>(ev));
       }
     }
   }

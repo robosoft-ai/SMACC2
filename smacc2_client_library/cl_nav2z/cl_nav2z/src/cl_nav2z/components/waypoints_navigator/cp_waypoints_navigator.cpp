@@ -179,7 +179,7 @@ CpWaypointNavigator::sendNextGoal(std::optional<NavigateNextWaypointOptions> opt
 {
   if (currentWaypoint_ >= 0 && currentWaypoint_ < (int)waypoints_.size())
   {
-    auto & next = waypoints_[currentWaypoint_];
+    const auto & next = waypoints_[currentWaypoint_];
 
     const std::string & nextName = waypointsNames_[currentWaypoint_];
     if (!nextName.empty())

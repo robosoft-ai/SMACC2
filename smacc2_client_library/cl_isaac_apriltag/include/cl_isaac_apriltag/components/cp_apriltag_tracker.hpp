@@ -157,7 +157,7 @@ private:
     std::lock_guard<std::mutex> lock(mutex_);
 
     std::stringstream ss;
-    for (auto & detection : msg.detections)
+    for (const auto & detection : msg.detections)
     {
       std::string apriltag_frameid = detection.family + ":" + std::to_string(detection.id);
       ss << "[CpAprilTagTracker] AprilTag detected: " << apriltag_frameid << std::endl;

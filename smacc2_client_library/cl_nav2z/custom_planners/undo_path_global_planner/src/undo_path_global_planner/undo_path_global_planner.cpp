@@ -225,7 +225,7 @@ void UndoPathGlobalPlanner::createDefaultUndoPathPlan(
   // first, find closest linear point to the current robot position
   // we start from the final goal, that is, the beginning of the trajectory
   // (since this was the forward motion from the odom tracker)
-  for (auto & p : transformedPlan.poses /*| boost::adaptors::reversed*/)
+  for (const auto & p : transformedPlan.poses /*| boost::adaptors::reversed*/)
   {
     geometry_msgs::msg::PoseStamped pose = p;
     pose.header.frame_id = costmap_ros_->getGlobalFrameID();

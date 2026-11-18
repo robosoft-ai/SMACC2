@@ -43,7 +43,7 @@ void SrAllEventsGo::onEventNotified(const std::type_info * eventType)
 bool SrAllEventsGo::triggers()
 {
   RCLCPP_INFO_STREAM(getLogger(), "SB All TRIGGERS?");
-  for (auto & entry : triggeredEvents)
+  for (const auto & entry : triggeredEvents)
   {
     if (!entry.second) return false;
   }

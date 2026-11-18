@@ -158,7 +158,7 @@ void ForwardLocalPlanner::generateTrajectory(
 
     auto dx = newpos[0] - currentpos[0];
     auto dy = newpos[1] - currentpos[1];
-    float dist = 0.0, angledist = 0.0;
+    float dist = 0.0;
 
     // RCLCPP_DEBUG(nh_->get_logger(), "traj point %d", i);
     dist = sqrt(dx * dx + dy * dy);
@@ -170,7 +170,7 @@ void ForwardLocalPlanner::generateTrajectory(
     else
     {
       // ouble from, double to
-      angledist = fabs(angles::shortest_angular_distance(currentpos[2], newpos[2]));
+      float angledist = fabs(angles::shortest_angular_distance(currentpos[2], newpos[2]));
       if (angledist > maxanglediff)
       {
         end = true;
@@ -528,10 +528,10 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
   // RCLCPP_INFO_STREAM(nh_->get_logger(), "lplanner goal: " << finalgoalpose.pose.position);
   for (auto & p : trajectory)
   {
-    float dx = p[0] - finalgoalpose.pose.position.x;
-    float dy = p[1] - finalgoalpose.pose.position.y;
+    float goaldx = p[0] - finalgoalpose.pose.position.x;
+    float goaldy = p[1] - finalgoalpose.pose.position.y;
 
-    float dst = sqrt(dx * dx + dy * dy);
+    float dst = sqrt(goaldx * goaldx + goaldy * goaldy);
     if (dst < xy_goal_tolerance_)
     {
       //  RCLCPP_INFO(nh_->get_logger(), "trajectory checking skipped, goal reached");
