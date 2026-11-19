@@ -120,6 +120,8 @@ jobs:
               sm_panda_cl_moveit2z_cb_inventory \
               sm_three_some \
             --cmake-args -DBUILD_TESTING=OFF
+          # The self-test file: marked violations of rule 21.6.2 that the summary step looks for.
+          g++ -std=c++17 -c .github/codeql/misra_probe.cpp -o /tmp/misra_probe.o
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
@@ -200,12 +202,6 @@ jobs:
                   json.dump(sarif, f)
           EOF
 
-      - name: Summarize the MISRA results on the run page
-        # One table of the dynamic memory rules with their result counts, then the results one per line.
-        if: always()
-        run: |
-          python3 .github/scripts/codeql_misra_summary.py sarif-results >> "$GITHUB_STEP_SUMMARY"
-
       - name: Keep the filtered results as an artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -213,6 +209,13 @@ jobs:
           name: codeql-sarif
           path: sarif-results
           if-no-files-found: ignore
+
+      - name: Summarize the MISRA results on the run page
+        # One table of the dynamic memory rules with their result counts, then the results one per line.
+        # Then the self-test; its results are taken out of the SARIF here, before the upload.
+        if: always()
+        run: |
+          python3 .github/scripts/codeql_misra_summary.py sarif-results >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload filtered results
         uses: github/codeql-action/upload-sarif@v3

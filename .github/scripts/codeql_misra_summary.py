@@ -18,13 +18,18 @@
 
 Usage: codeql_misra_summary.py <directory of .sarif files>
 A table of the rules 21.6.2 to 21.6.5 with the result count of each query, then every result as
-file:line and message. Reports only: always exits 0.
+file:line and message. Then the self-test: which lines marked EXPECT in .github/codeql/misra_probe.cpp
+the queries found. The results in that file are removed from the SARIF files afterwards, so they are
+not uploaded as alerts. Reports only: always exits 0.
 """
 import collections
 import glob
 import json
 import os
+import re
 import sys
+
+PROBE = ".github/codeql/misra_probe.cpp"
 
 QUERIES = [
     ("21.6.2", "cpp/misra/dynamic-memory-managed-manually"),
@@ -39,22 +44,31 @@ def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     found = collections.defaultdict(set)
+    probe = collections.defaultdict(list)
     loaded, others, files = set(), 0, glob.glob(os.path.join(sys.argv[1], "*.sarif"))
     for path in files:
-        for run in json.load(open(path)).get("runs", []):
+        sarif = json.load(open(path))
+        for run in sarif.get("runs", []):
             tool = run.get("tool", {})
             for part in [tool.get("driver", {})] + tool.get("extensions", []):
                 loaded.update(rule.get("id", "") for rule in part.get("rules", []))
+            kept = []
             for result in run.get("results", []):
                 rule = result.get("ruleId") or result.get("rule", {}).get("id", "")
-                if not rule.startswith("cpp/misra/"):
-                    others += 1
-                    continue
-                where = result.get("locations", [{}])[0].get("physicalLocation", {})
+                where = (result.get("locations") or [{}])[0].get("physicalLocation", {})
                 place = where.get("artifactLocation", {}).get("uri", "?")
                 line = where.get("region", {}).get("startLine", 0)
                 text = " ".join(result.get("message", {}).get("text", "").split())
-                found[rule].add((place, line, text))
+                if place == PROBE:
+                    probe[line].append(text)
+                    continue
+                kept.append(result)
+                if rule.startswith("cpp/misra/"):
+                    found[rule].add((place, line, text))
+                else:
+                    others += 1
+            run["results"] = kept
+        json.dump(sarif, open(path, "w"))
     print("## MISRA C++:2023 dynamic memory rules (CodeQL)\n")
     if not files:
         print("No SARIF file was written; the analysis did not run.")
@@ -73,6 +87,22 @@ def main():
         if found[query]:
             lines = [f"{place}:{line}: {text}" for place, line, text in sorted(found[query])]
             print(f"\n### {rule}: {query} ({len(lines)})\n\n```\n" + "\n".join(lines) + "\n```")
+    here = os.path.dirname(os.path.abspath(__file__))
+    try:
+        source = open(os.path.join(here, "..", "codeql", "misra_probe.cpp")).read().split("\n")
+    except OSError:
+        return
+    marked = [
+        (n, m.group(1))
+        for n, s in enumerate(source, 1)
+        if (m := re.search(r";\s*// EXPECT (.*)", s))
+    ]
+    hit = sum(1 for n, _ in marked if n in probe)
+    print(f"\n### Self-test: {hit} of {len(marked)} marked lines of {PROBE} found\n")
+    print("| Line | Shape | Found |")
+    print("|--|--|--|")
+    for n, what in marked:
+        print(f"| {n} | {what} | {'; '.join(probe[n]) if n in probe else '**no**'} |")
 
 
 if __name__ == "__main__":
