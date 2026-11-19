@@ -50,7 +50,7 @@ struct StiRadialRotate : smacc2::SmaccState<StiRadialRotate, SS>
     const auto & superstate = this->context<SS>();
     cbAbsRotate->absoluteGoalAngleDegree =
       SS::ray_start_angle_degree() +
-      (superstate.iteration_count - 1) * SS::ray_angle_increment_degree();
+      static_cast<float>(superstate.iteration_count - 1) * SS::ray_angle_increment_degree();
 
     RCLCPP_INFO(
       getLogger(), "[StiRadialRotate] rotating to absolute angle: %lf deg",

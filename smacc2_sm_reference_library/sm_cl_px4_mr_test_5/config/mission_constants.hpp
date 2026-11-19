@@ -252,7 +252,7 @@ inline float finaleSpiralLengthM()
 }
 inline float finaleOrbitLengthM(int orbits)
 {
-  return orbits * 2.0f * static_cast<float>(M_PI) * kFinaleRadiusM;
+  return static_cast<float>(orbits) * 2.0f * static_cast<float>(M_PI) * kFinaleRadiusM;
 }
 inline cl_px4_mr::HeadingStableParams headingGateParams()
 {

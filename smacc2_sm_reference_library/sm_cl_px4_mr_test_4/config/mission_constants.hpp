@@ -167,7 +167,8 @@ inline float distanceM(NedXY a, NedXY b) { return std::hypot(b.x - a.x, b.y - a.
 inline NedXY ringPinAt(int station, float tangentOffsetM)
 {
   const float sign = kDemoRingClockwise ? 1.0f : -1.0f;
-  const float angle = kDemoRingStartBearing + sign * 2.0f * kPi * station / kDemoRingStations;
+  const float angle = kDemoRingStartBearing + sign * 2.0f * kPi * static_cast<float>(station) /
+                                                static_cast<float>(kDemoRingStations);
   const float tx = -sign * std::sin(angle);
   const float ty = sign * std::cos(angle);
   NedXY p;

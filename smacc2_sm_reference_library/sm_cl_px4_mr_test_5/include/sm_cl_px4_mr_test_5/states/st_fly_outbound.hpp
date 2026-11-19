@@ -64,7 +64,7 @@ struct StFlyOutbound : smacc2::SmaccState<StFlyOutbound, SsCaveMission>
     auto * cb = this->getClientBehavior<OrPx4, CbFollowNedPath>();
     const auto & route = cb->path();
     const size_t n = std::min(cb->reachedCount(), route.size());
-    ms.traversed.assign(route.begin(), route.begin() + n);
+    ms.traversed.assign(route.begin(), route.begin() + static_cast<std::ptrdiff_t>(n));
     RCLCPP_INFO(getLogger(), "StFlyOutbound: reached %zu/%zu route vertices", n, route.size());
   }
 };
