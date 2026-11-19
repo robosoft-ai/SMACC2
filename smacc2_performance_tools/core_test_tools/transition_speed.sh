@@ -25,6 +25,10 @@ INST=$(cd "$1" && pwd) || exit 2
 SECS=${2:-60}; LOG=${3:-transition_speed.log}
 source "$INST/setup.bash"
 export ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-43} RCUTILS_COLORIZED_OUTPUT=0 RCUTILS_LOGGING_BUFFERED_STREAM=0
+# A leftover ros2 daemon or node is a participant every node here would discover: stop the daemon, require an empty domain.
+ros2 daemon stop > /dev/null 2>&1; trap 'ros2 daemon stop > /dev/null 2>&1' EXIT
+LEFT=$(( $(ros2 node list --no-daemon -a 2>/dev/null | wc -l) - 1 ))   # the list holds this command's own node
+[ "$LEFT" -le 0 ] || { echo "FAIL: $LEFT node(s) already running in ROS domain $ROS_DOMAIN_ID"; exit 2; }
 PKG=$INST/sm_coretest_transition_speed_1
 BIN=$PKG/lib/sm_coretest_transition_speed_1/sm_coretest_transition_speed_1_node
 PARAMS=$PKG/share/sm_coretest_transition_speed_1/config/sm_coretest_transition_speed_1_config.yaml

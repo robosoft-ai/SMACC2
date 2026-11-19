@@ -30,10 +30,14 @@ HERE=$(cd "$(dirname "$(readlink -f "$0")")" && pwd)
 mkdir -p "$2"; OUT=$(cd "$2" && pwd); EXPECTED=${3:-}
 source "$INST/setup.bash"
 export ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-45} RCUTILS_COLORIZED_OUTPUT=0 RCUTILS_LOGGING_BUFFERED_STREAM=0
+# A leftover ros2 daemon or node is a participant every node here would discover: stop the daemon, require an empty domain.
+ros2 daemon stop > /dev/null 2>&1; trap 'ros2 daemon stop > /dev/null 2>&1' EXIT
+LEFT=$(( $(ros2 node list --no-daemon -a 2>/dev/null | wc -l) - 1 ))   # the list holds this command's own node
+[ "$LEFT" -le 0 ] || { echo "FAIL: $LEFT node(s) already running in ROS domain $ROS_DOMAIN_ID"; exit 2; }
 keystream() { timeout $2 ros2 topic pub -r 1 /keyboard_unicode std_msgs/msg/UInt16 "data: $1" > /dev/null 2>&1; }
 # Scripted keypresses come from one publisher (send_keys.py), matched and settled before the first key.
 SEND_KEYS=$HERE/send_keys.py
-nodes_clean() { n=$(ros2 node list 2>/dev/null | wc -l); echo "ros2 node list entries: $n"; }
+nodes_clean() { n=$(ros2 node list --no-daemon 2>/dev/null | wc -l); echo "ros2 node list entries: $n"; }
 node_bin() { echo "$INST/$1/lib/$1/$1_node"; }
 run_sm() { # name binary timeout_s  (sets P)
   LOG=$OUT/reg_$1.log; timeout -s INT -k 20 $3 $2 --ros-args --log-level INFO > $LOG 2>&1 & P=$!; }
@@ -53,7 +57,7 @@ run_sm sm_atomic_lifecycle $(node_bin sm_atomic_lifecycle) 70
 # design; a shutdown request from outside takes it through StShuttingDown to StFinalized.
 for i in $(seq 1 60); do sleep 0.5; grep -a -q '::StActive\] State OnEntry code finished' $OUT/reg_sm_atomic_lifecycle.log && break; kill -0 $P 2>/dev/null || break; done
 echo "StActive reached: $(grep -a -c '::StActive\] State OnEntry code finished' $OUT/reg_sm_atomic_lifecycle.log)"
-sleep 1; timeout 20 ros2 lifecycle set /lifecycle_example_node shutdown > /dev/null 2>&1
+sleep 1; timeout 20 ros2 lifecycle set --no-daemon /lifecycle_example_node shutdown > /dev/null 2>&1
 for i in $(seq 1 40); do sleep 0.5; grep -a -q '::StFinalized\] State OnEntry code finished' $OUT/reg_sm_atomic_lifecycle.log && break; kill -0 $P 2>/dev/null || break; done
 sleep 2; kill -INT $P 2>/dev/null; wait $P; echo "sm exit $?"; kill -INT $LP 2>/dev/null; wait $LP 2>/dev/null
 echo "states entered: $(grep -a 'State OnEntry code finished' $OUT/reg_sm_atomic_lifecycle.log | sed 's/.*::\([A-Za-z0-9_]*\)\].*/\1/' | tr '\n' ' ')"

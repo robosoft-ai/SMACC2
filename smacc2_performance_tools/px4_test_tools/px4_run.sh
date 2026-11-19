@@ -37,6 +37,10 @@ PX4=$(cd "$3" && pwd) || exit 2
 MODE=${4:-plain}; OVERLAY_DIR=${5:-}; PKG=${PKG:-sm_cl_px4_mr_test_1}; END_STATE=${END_STATE:-StLanded}; MAX_WAIT=${MAX_WAIT:-420}
 source "$INST/setup.bash"
 export RCUTILS_COLORIZED_OUTPUT=0 RCUTILS_LOGGING_BUFFERED_STREAM=0 ROS_DOMAIN_ID=0
+# A leftover ros2 daemon or node is a participant every node here would discover; with OWN_AGENT=1 the agent is one, so no check.
+ros2 daemon stop > /dev/null 2>&1; trap 'ros2 daemon stop > /dev/null 2>&1' EXIT
+LEFT=$(( $(ros2 node list --no-daemon -a 2>/dev/null | wc -l) - 1 ))   # the list holds this command's own node
+[ "$LEFT" -le 0 ] || [ "${OWN_AGENT:-0}" = 1 ] || { echo "FAIL: $LEFT node(s) already running in ROS domain $ROS_DOMAIN_ID"; exit 2; }
 # Sanitizer mode: the machine and its SMACC2 libraries come from the overlay, everything else stays uninstrumented.
 SUPP=$REPO/.github/scripts; PRE=""; OVERLAY=""; INST_SM=$INST
 case $MODE in

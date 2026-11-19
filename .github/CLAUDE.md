@@ -150,6 +150,9 @@ process exits cleanly.
 The script fails on any report with a SMACC2 frame, a crash, a hang or a broken test invariant.
 Reports with no SMACC2 frame are counted as external and do not fail the run; the known one is a
 string race inside Fast DDS.
+That report needs a second participant in the domain, so the script stops the `ros2` daemon of its
+domain at the start and the end and exits with status 2 when a node is already running there; the
+scripts in `smacc2_performance_tools` do the same.
 
 **Rules for running a sanitized node by hand:**
 - Run the node binary directly. `ros2 run` or a launch `stdbuf` prefix loads a library ahead of the

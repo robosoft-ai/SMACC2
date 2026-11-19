@@ -33,6 +33,10 @@ mkdir -p "$2"; OUT=$(cd "$2" && pwd)
 END_STATE=$3; MODE=${4:-plain}; OVERLAY_DIR=${5:-}; PKG=${PKG:-sm_panda_cl_moveit2z_cb_inventory}; MAX_WAIT=${MAX_WAIT:-600}
 source "$INST/setup.bash"
 export RCUTILS_COLORIZED_OUTPUT=0 RCUTILS_LOGGING_BUFFERED_STREAM=0 ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-47}
+# A leftover ros2 daemon or node is a participant every node here would discover: stop the daemon, require an empty domain.
+ros2 daemon stop > /dev/null 2>&1; trap 'ros2 daemon stop > /dev/null 2>&1' EXIT
+LEFT=$(( $(ros2 node list --no-daemon -a 2>/dev/null | wc -l) - 1 ))   # the list holds this command's own node
+[ "$LEFT" -le 0 ] || { echo "FAIL: $LEFT node(s) already running in ROS domain $ROS_DOMAIN_ID"; exit 2; }
 # Sanitizer mode: the machine and its SMACC2 libraries come from the overlay, everything else stays uninstrumented.
 SUPP=$REPO/.github/scripts; PRE=""; OVERLAY=""; INST_SM=$INST
 case $MODE in

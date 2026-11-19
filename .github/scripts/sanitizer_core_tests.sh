@@ -28,6 +28,10 @@ mkdir -p "$OUT"; OUT=$(cd "$OUT" && pwd)
 source "$INST/setup.bash"   # before set -u: colcon's setup scripts read unset variables
 set -u
 export RCUTILS_COLORIZED_OUTPUT=0 RCUTILS_LOGGING_BUFFERED_STREAM=0 ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-77}
+# A leftover ros2 daemon or node is a participant every node here would discover: stop the daemon, require an empty domain.
+ros2 daemon stop > /dev/null 2>&1; trap 'ros2 daemon stop > /dev/null 2>&1' EXIT
+LEFT=$(( $(ros2 node list --no-daemon -a 2>/dev/null | wc -l) - 1 ))   # the list holds this command's own node
+[ "$LEFT" -le 0 ] || { echo "FAIL: $LEFT node(s) already running in ROS domain $ROS_DOMAIN_ID"; exit 2; }
 export UBSAN_OPTIONS="print_stacktrace=1"
 case $MODE in
   tsan)
