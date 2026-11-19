@@ -106,6 +106,35 @@ TRACEPOINT_EVENT(
   TP_FIELDS(ctf_string(state_name, state_name) ctf_string(orthogonal_name, orthogonal_name)
               ctf_string(client_behavior_name, client_behavior_name)))
 
+// The four below are emitted on the behavior's own thread, around the work of an asynchronous behavior.
+TRACEPOINT_EVENT(
+  ros2, smacc2_client_behavior_async_on_entry_start,
+  TP_ARGS(
+    const char *, state_name, const char *, orthogonal_name, const char *, client_behavior_name),
+  TP_FIELDS(ctf_string(state_name, state_name) ctf_string(orthogonal_name, orthogonal_name)
+              ctf_string(client_behavior_name, client_behavior_name)))
+
+TRACEPOINT_EVENT(
+  ros2, smacc2_client_behavior_async_on_entry_end,
+  TP_ARGS(
+    const char *, state_name, const char *, orthogonal_name, const char *, client_behavior_name),
+  TP_FIELDS(ctf_string(state_name, state_name) ctf_string(orthogonal_name, orthogonal_name)
+              ctf_string(client_behavior_name, client_behavior_name)))
+
+TRACEPOINT_EVENT(
+  ros2, smacc2_client_behavior_async_on_exit_start,
+  TP_ARGS(
+    const char *, state_name, const char *, orthogonal_name, const char *, client_behavior_name),
+  TP_FIELDS(ctf_string(state_name, state_name) ctf_string(orthogonal_name, orthogonal_name)
+              ctf_string(client_behavior_name, client_behavior_name)))
+
+TRACEPOINT_EVENT(
+  ros2, smacc2_client_behavior_async_on_exit_end,
+  TP_ARGS(
+    const char *, state_name, const char *, orthogonal_name, const char *, client_behavior_name),
+  TP_FIELDS(ctf_string(state_name, state_name) ctf_string(orthogonal_name, orthogonal_name)
+              ctf_string(client_behavior_name, client_behavior_name)))
+
 #endif /* _TRACEPOINT_PROVIDER_PROVIDER_H */
 
 #include <lttng/tracepoint-event.h>

@@ -94,6 +94,10 @@ protected:
 
   virtual rclcpp::Logger getLogger() const;
 
+  // The state and orthogonal names the tracepoints carry. Call on the state machine thread only.
+  std::string getTraceStateName() const;
+  std::string getTraceOrthogonalName() const;
+
 private:
   template <typename TOrthogonal, typename TSourceObject>
   void onStateOrthogonalAllocation();

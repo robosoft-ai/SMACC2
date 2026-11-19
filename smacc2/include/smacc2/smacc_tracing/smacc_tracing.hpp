@@ -60,6 +60,22 @@ extern "C"
     smacc2_client_behavior_on_exit_end, const char * state_name, const char * orthogonal_name,
     const char * client_behavior_name)
 
+  _DECLARE_TRACEPOINT(
+    smacc2_client_behavior_async_on_entry_start, const char * state_name,
+    const char * orthogonal_name, const char * client_behavior_name)
+
+  _DECLARE_TRACEPOINT(
+    smacc2_client_behavior_async_on_entry_end, const char * state_name,
+    const char * orthogonal_name, const char * client_behavior_name)
+
+  _DECLARE_TRACEPOINT(
+    smacc2_client_behavior_async_on_exit_start, const char * state_name,
+    const char * orthogonal_name, const char * client_behavior_name)
+
+  _DECLARE_TRACEPOINT(
+    smacc2_client_behavior_async_on_exit_end, const char * state_name, const char * orthogonal_name,
+    const char * client_behavior_name)
+
 #ifdef __cplusplus
 }
 #endif

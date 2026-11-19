@@ -36,6 +36,17 @@ ISmaccClientBehavior::~ISmaccClientBehavior()
 
 std::string ISmaccClientBehavior::getName() const { return demangleSymbol(typeid(*this).name()); }
 
+std::string ISmaccClientBehavior::getTraceStateName() const
+{
+  auto * state = stateMachine_ != nullptr ? stateMachine_->getCurrentState() : nullptr;
+  return state != nullptr ? state->getClassName() : std::string();
+}
+
+std::string ISmaccClientBehavior::getTraceOrthogonalName() const
+{
+  return currentOrthogonal != nullptr ? currentOrthogonal->getName() : std::string();
+}
+
 rclcpp::Node::SharedPtr ISmaccClientBehavior::getNode() const
 {
   // Null until the orthogonal attaches the behavior; getLogger() falls back to the SMACC logger then.

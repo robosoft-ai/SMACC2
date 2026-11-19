@@ -101,6 +101,10 @@ ros2 run tracetools_trace trace \
      ros2:smacc2_client_behavior_on_entry_end \
      ros2:smacc2_client_behavior_on_exit_start \
      ros2:smacc2_client_behavior_on_exit_end \
+     ros2:smacc2_client_behavior_async_on_entry_start \
+     ros2:smacc2_client_behavior_async_on_entry_end \
+     ros2:smacc2_client_behavior_async_on_exit_start \
+     ros2:smacc2_client_behavior_async_on_exit_end \
      ros2:smacc2_event
 ```
 
@@ -201,8 +205,14 @@ All tracepoints use the `ros2` LTTng provider.
 | `ros2:smacc2_client_behavior_on_entry_end` | `state_name`, `orthogonal_name`, `client_behavior_name` | Client behavior `onEntry()` complete |
 | `ros2:smacc2_client_behavior_on_exit_start` | `state_name`, `orthogonal_name`, `client_behavior_name` | Client behavior `onExit()` begins |
 | `ros2:smacc2_client_behavior_on_exit_end` | `state_name`, `orthogonal_name`, `client_behavior_name` | Client behavior `onExit()` complete |
+| `ros2:smacc2_client_behavior_async_on_entry_start` | `state_name`, `orthogonal_name`, `client_behavior_name` | An asynchronous behavior's `onEntry()` begins, on the behavior's own thread |
+| `ros2:smacc2_client_behavior_async_on_entry_end` | `state_name`, `orthogonal_name`, `client_behavior_name` | That `onEntry()` returned or threw |
+| `ros2:smacc2_client_behavior_async_on_exit_start` | `state_name`, `orthogonal_name`, `client_behavior_name` | An asynchronous behavior's `onExit()` begins, on its own thread |
+| `ros2:smacc2_client_behavior_async_on_exit_end` | `state_name`, `orthogonal_name`, `client_behavior_name` | That `onExit()` returned or threw |
 | `ros2:smacc2_event` | `event_type` | Fired each time the state machine receives an event |
 | `ros2:spinOnce` | — | Fired each SignalDetector polling cycle |
+
+For an asynchronous behavior the `on_entry` and `on_exit` pairs are emitted on the state machine thread and cover only the launch of the behavior's thread, a few microseconds. The `async_on_entry` and `async_on_exit` pairs are emitted on that thread and cover the work itself.
 
 ---
 

@@ -53,11 +53,18 @@ print("\n== threads (events per thread, what each emits)")
 per = C.defaultdict(C.Counter)
 for t, n, tid, kv in ev:
     per[tid][n.replace("smacc2_", "")] += 1
+# An asynchronous behavior runs its entry and its exit on a thread of their own: counted, not listed.
+workers = {tid for tid, c in per.items() if any("client_behavior_async_" in k for k in c)}
 for tid, c in sorted(per.items(), key=lambda x: -sum(x[1].values())):
+    if tid in workers:
+        continue
     print(
         f"  tid {tid}: {sum(c.values())} events: "
         + ", ".join(f"{k} {v}" for k, v in c.most_common(4))
     )
+if workers:
+    n = sum(sum(per[tid].values()) for tid in workers)
+    print(f"  {len(workers)} asynchronous behavior threads: {n} events")
 spins = [t for t, n, tid, kv in ev if n == "spinOnce"]
 if len(spins) > 2:
     d = [(b - a) / 1e3 for a, b in zip(spins, spins[1:])]
@@ -74,6 +81,9 @@ PAIRS = [
     ("state_onRuntimeConfigure", ("state_name",)),
     ("client_behavior_on_entry", ("state_name", "client_behavior_name")),
     ("client_behavior_on_exit", ("state_name", "client_behavior_name")),
+    # The work of an asynchronous behavior, on its own thread; the two rows above are its launch.
+    ("client_behavior_async_on_entry", ("state_name", "client_behavior_name")),
+    ("client_behavior_async_on_exit", ("state_name", "client_behavior_name")),
 ]
 for base, keys in PAIRS:
     open_, dur = {}, C.defaultdict(list)
@@ -89,6 +99,18 @@ for base, keys in PAIRS:
         print(
             f"  {base}: {len(open_)} start(s) with no end (still running at trace end or interrupted)"
         )
+# How long an asynchronous behavior's thread takes to start: launch on the state machine thread to
+# the first tracepoint on the behavior's own thread.
+launched, delay = {}, []
+for t, n, tid, kv in ev:
+    k = (kv.get("state_name"), kv.get("client_behavior_name"))
+    if n == "smacc2_client_behavior_on_entry_start":
+        launched[k] = t
+    elif n == "smacc2_client_behavior_async_on_entry_start" and k in launched:
+        delay.append((t - launched.pop(k)) / 1e3)
+if delay:
+    print("\n== asynchronous behaviors: launch to the behavior's thread running (microseconds)")
+    print(f"  {'thread start delay':36s} {stats(delay)}")
 print(
     "\n== transitions: event posted -> old state's onExit start -> new state's onEntry end (microseconds)"
 )
