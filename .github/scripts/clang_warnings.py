@@ -21,7 +21,8 @@ The warnings are grouped by warning flag and sorted by place. Each distinct warn
 with the number of times the compiler gave it: a warning in a header is repeated for every source
 file that includes the header. A header reached through the
 install base is named by its path in the repository. With --markdown the output is the run page:
-a short summary, a table of the flags, then the list. Always exits 0.
+a short summary, a table of the flags, then the list; the core tests get one sentence, and their
+failure lines when there are any. Always exits 0.
 """
 import collections
 import os
@@ -88,20 +89,21 @@ def main():
             print(f"\n{title}\n" + "\n".join(lines))
         return
     failed = sum(errors.values()) or sum(warnings.values())
-    print(f"## clang build: {'FAIL' if failed else 'PASS'}\n")
-    tests = ""
+    tests, failures = "", []
     if len(sys.argv) > 3:
         try:
-            result = re.findall(
-                r"^### result: (\d+) failure", open(sys.argv[3], errors="replace").read(), re.M
-            )
+            log = open(sys.argv[3], errors="replace").read()
         except OSError:
-            result = []
+            log = ""
+        result = re.findall(r"^### result: (\d+) failure", log, re.M)
+        failures = re.findall(r"^FAIL.*$", log, re.M)
         tests = (
-            f" The core tests on this build: {result[-1]} failures."
+            f" The core tests on this build: {result[-1]} failure(s)."
             if result
             else " The core tests did not finish."
         )
+        failed = failed or not result or result[-1] != "0"
+    print(f"## clang build: {'FAIL' if failed else 'PASS'}\n")
     print(
         f"{sum(errors.values())} errors and {sum(warnings.values())} warnings in {len(warnings)} distinct places. "
         f"The standard is zero warnings.{tests}\n"
@@ -115,6 +117,8 @@ def main():
         print()
     for title, lines in listed:
         print(f"### {title}\n\n```\n" + "\n".join(lines) + "\n```\n")
+    if failures:
+        print("### Core test failures\n\n```\n" + "\n".join(failures) + "\n```\n")
 
 
 if __name__ == "__main__":

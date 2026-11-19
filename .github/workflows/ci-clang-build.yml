@@ -43,11 +43,11 @@ jobs:
           .github/scripts/sanitizer_core_tests.sh plain clang_out/install clang_out/core_tests 2>&1 | tee clang_out/core_tests.log
 
       - name: Summarize on the run page
-        # A short summary and a table of the warning flags, the warnings one by one, then the core test table.
+        # A short summary, a table of the warning flags, then the warnings one by one. The core tests
+        # get one sentence, and their failure lines only when there are any.
         if: always()
         run: |
           python3 .github/scripts/clang_warnings.py clang_out/console.log --markdown clang_out/core_tests.log >> "$GITHUB_STEP_SUMMARY"
-          python3 .github/scripts/gate_summary.py sanitizers "Core tests on the clang build" clang_out/core_tests.log >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload the build log and the warning list
         if: always()
