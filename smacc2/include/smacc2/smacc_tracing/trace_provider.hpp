@@ -32,7 +32,15 @@
 
 #include <lttng/tracepoint.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+// Filters out the warning for this tracepoint's empty TP_ARGS() and TP_FIELDS().
+#pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#endif
 TRACEPOINT_EVENT(ros2, spinOnce, TP_ARGS(), TP_FIELDS())
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 TRACEPOINT_EVENT(
   ros2, smacc2_event, TP_ARGS(const char *, event_type),

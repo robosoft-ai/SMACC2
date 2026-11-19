@@ -261,6 +261,11 @@ with their simulators; only the state machine node is instrumented.
   that includes the header; the list shows it once, with the count, under its path in the repository.
 - The standard is zero: the script exits 1 on a build error or on any warning. GCC is not held to
   this; the two compilers warn about different things.
+- The tree is at zero since 2026-11-18. The last two warnings came from code that is not ours and are
+  silenced where they arise, for clang only, with `#pragma clang diagnostic`: the `std::auto_ptr`
+  inside Boost.Statechart, around the two Boost includes in `common.hpp` and
+  `smacc_fifo_scheduler.hpp`, and the empty `spinOnce` tracepoint in `trace_provider.hpp`. No
+  package's CMake file turns a warning off, so both warnings still fire anywhere else.
 - The workflow then runs the ten core tests on the clang build
   (`sanitizer_core_tests.sh plain <out-dir>/install`).
 - What clang has found here that GCC accepts silently: `demangleSymbol(const std::string &)` calling

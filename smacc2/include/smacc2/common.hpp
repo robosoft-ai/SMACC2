@@ -21,7 +21,15 @@
 
 // boost statechart
 #define BOOST_BIND_NO_PLACEHOLDERS
+#if defined(__clang__)
+#pragma clang diagnostic push
+// Filters out the deprecated std::auto_ptr warning from Boost.Statechart's processor_container.
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
 #include <boost/statechart/asynchronous_state_machine.hpp>
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 #include <boost/statechart/custom_reaction.hpp>
 #include <boost/statechart/deep_history.hpp>
 #include <boost/statechart/event.hpp>

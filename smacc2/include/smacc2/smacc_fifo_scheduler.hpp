@@ -12,7 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+// Filters out the deprecated std::auto_ptr warning from Boost.Statechart's processor_container.
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
 #include <boost/statechart/fifo_scheduler.hpp>
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 #include <smacc2/smacc_fifo_worker.hpp>
 
 typedef boost::statechart::fifo_scheduler<SmaccFifoWorker, SmaccAllocator> SmaccFifoScheduler;
