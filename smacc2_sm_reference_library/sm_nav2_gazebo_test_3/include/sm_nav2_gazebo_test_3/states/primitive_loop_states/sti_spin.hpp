@@ -49,7 +49,7 @@ struct StiSpin : smacc2::SmaccState<StiSpin, SS>
     const auto & superstate = this->context<SS>();
     auto cbSpin = this->getClientBehavior<OrNavigation, CbSpin>();
     float direction = (superstate.iteration_count % 2 == 1) ? 1.0f : -1.0f;
-    cbSpin->setTargetYaw(direction * 2 * M_PI);
+    cbSpin->setTargetYaw(static_cast<float>(direction * 2 * M_PI));
   }
 };
 

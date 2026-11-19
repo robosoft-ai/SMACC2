@@ -63,7 +63,7 @@ struct StFlyDeeper : smacc2::SmaccState<StFlyDeeper, SsCaveMission>
     auto * cb = this->getClientBehavior<OrPx4, CbFollowNedPath>();
     const auto & route = cb->path();
     const size_t n = std::min(cb->reachedCount(), route.size());
-    ms.traversed.insert(ms.traversed.end(), route.begin(), route.begin() + n);
+    ms.traversed.insert(ms.traversed.end(), route.begin(), route.begin() + static_cast<std::ptrdiff_t>(n));
     RCLCPP_INFO(
       getLogger(), "StFlyDeeper: reached %zu/%zu leg B vertices (%zu traversed in total)", n,
       route.size(), ms.traversed.size());
