@@ -72,6 +72,12 @@ jobs:
           source /opt/ros/jazzy/setup.bash
           colcon build --packages-select smacc2_msgs px4_msgs --cmake-args -DBUILD_TESTING=OFF
 
+      - name: Build the message packages
+        # Before CodeQL starts watching the compiler: their code is generated and is not analyzed.
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          colcon build --packages-select smacc2_msgs px4_msgs --cmake-args -DBUILD_TESTING=OFF
+
       - name: Initialize CodeQL
         # security-and-quality, plus the MISRA C++:2023 queries for the dynamic memory rules 21.6.2 to
         # 21.6.5 from GitHub's coding standards pack. Rule 21.6.1 is left out: SMACC2 allocates by design.
