@@ -26,14 +26,18 @@
 # Machine 4 runs in the world of machine 2, which must be in the install prefix as well.
 # GUI=1 in the environment opens the Gazebo window and RViz instead of running headless.
 # Exit status 0 when the final state was reached and the machine stopped without hanging.
-# Up to 20 minutes. Nothing else may be running in the domain (ROS_DOMAIN_ID, default 0).
+# Up to 20 minutes. Nothing else may be running in the domain (ROS_DOMAIN_ID, default 48).
 if [ $# -lt 3 ]; then echo "usage: $0 <install-prefix> <out-dir> <1|2|3|4> [tsan|asan <overlay-prefix>]"; exit 2; fi
 HERE=$(cd "$(dirname "$(readlink -f "$0")")" && pwd); REPO=$(cd "$HERE/../.." && pwd)
 INST=$(cd "$1" && pwd) || exit 2
 mkdir -p "$2"; OUT=$(cd "$2" && pwd)
 N=$3; MODE=${4:-plain}; OVERLAY_DIR=${5:-}; PKG=sm_nav2_gazebo_test_$N
 source "$INST/setup.bash"
-export RCUTILS_COLORIZED_OUTPUT=0 RCUTILS_LOGGING_BUFFERED_STREAM=0 ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+export RCUTILS_COLORIZED_OUTPUT=0 RCUTILS_LOGGING_BUFFERED_STREAM=0 ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-48}
+# A leftover ros2 daemon or node is a participant every node here would discover: stop the daemon, require an empty domain.
+ros2 daemon stop > /dev/null 2>&1; trap 'ros2 daemon stop > /dev/null 2>&1' EXIT
+LEFT=$(( $(ros2 node list --no-daemon -a 2>/dev/null | wc -l) - 1 ))   # the list holds this command's own node
+[ "$LEFT" -le 0 ] || { echo "FAIL: $LEFT node(s) already running in ROS domain $ROS_DOMAIN_ID"; exit 2; }
 # Sanitizer mode: the machine and its SMACC2 libraries come from the overlay, everything else stays uninstrumented.
 SUPP=$REPO/.github/scripts; PRE=""; OVERLAY=""; INST_SM=$INST
 case $MODE in

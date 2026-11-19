@@ -15,7 +15,8 @@ sanitizer gate, which runs the ten `sm_coretest_*` machines, is
 | `send_keys.py` | helper: scripted keypresses for a machine that uses `cl_keyboard` | |
 
 Run one at a time, with no other ROS node in the same domain. Each script sets its own
-`ROS_DOMAIN_ID` unless one is already exported.
+`ROS_DOMAIN_ID` unless one is already exported. Each stops the `ros2` daemon of that domain at its start and its
+end, and exits with status 2 when a node is already running there.
 
 ## regression.sh
 
