@@ -30,7 +30,7 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 | jazzy Semi-Binary Build (`jazzy-semi-binary-build.yml`) | GitHub | pull request, push, nightly | yes | **median 23 min** | as above, with a different skip list |
 | Sanitizers (`ci-sanitizers.yml`) | GitHub | manual | no | up to 60 min | the ten core tests under TSan, ASan and a plain build |
 | clang-tidy (`ci-clang-tidy.yml`) | GitHub | manual | no | up to 60 min | bug-prone patterns against a checked-in baseline |
-| clang build (`ci-clang-build.yml`) | GitHub, or `.github/scripts/clang_build.sh <out-dir>` on a developer machine | manual | no | not yet measured on GitHub; 14 min on a 32-core host | every package compiles with clang 18 with no warning, and the ten core tests pass on that build; clang reports classes of mistake GCC accepts silently |
+| clang build (`ci-clang-build.yml`) | GitHub, or `.github/scripts/clang_build.sh <out-dir>` on a developer machine | manual | no | 41 min on GitHub (first run, 2026-11-19, passed); 14 min on a 32-core host | every package compiles with clang 18 with no warning, and the ten core tests pass on that build; clang reports classes of mistake GCC accepts silently |
 | CodeQL (`codeql.yml`) | GitHub | manual | no | | security queries |
 | LTTng trace (capture steps under "LTTng tracing" below) | developer machine | on demand | no | seconds to capture and read | timing: loop rate and jitter, how long each state, behavior, update and transition takes |
 | Regression suite (`smacc2_performance_tools/core_test_tools/regression.sh`) | developer machine | on demand, before a core change is committed | no | 3 min | five reference machines still go through the same state sequence, compared with `regression_expected.out` |
@@ -55,8 +55,9 @@ summary table, then the findings one by one. `.github/scripts/gate_summary.py` a
   diagnostic that is not in the baseline is marked `NEW`. A check that starts to report needs a line
   in the policy file.
 - clang build: a row per warning flag with its count; then every compiler warning grouped by flag and
-  sorted by place, each distinct warning once with the number of times it was given; then the core
-  test table.
+  sorted by place, each distinct warning once with the number of times it was given. The core tests
+  on the clang build get one sentence, and their failure lines when there are any; their table is
+  not on this page (removed 2026-11-19: it read as a sanitizer result).
 
 ## Strategic caching policy
 
