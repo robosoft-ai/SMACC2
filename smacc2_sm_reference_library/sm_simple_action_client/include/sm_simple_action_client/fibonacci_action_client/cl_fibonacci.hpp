@@ -34,7 +34,7 @@ public:
 
   ClFibonacci(std::string action_name = "/fibonacci")
   : smacc2::client_bases::SmaccActionClientBase<action_tutorials_interfaces::action::Fibonacci>(
-      action_name)
+      std::move(action_name))
   {
   }
 

@@ -56,7 +56,7 @@ private:
   void onFibonacciActionSuccess() { this->postSuccessEvent(); }
   void onFibonacciActionAbort() { this->postFailureEvent(); }
 
-  ClFibonacci * cl_fibonacci_;
+  ClFibonacci * cl_fibonacci_ = nullptr;
   ClFibonacci::FibonacciResultSignal::SharedPtr fibonacciCallback_;
   std::shared_future<std::shared_ptr<
     rclcpp_action::ClientGoalHandle<action_tutorials_interfaces::action::Fibonacci> > >

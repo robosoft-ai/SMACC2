@@ -166,7 +166,8 @@ with their simulators; only the state machine node is instrumented.
 
 - The pre-commit hook calls `cppcheck` directly with `--enable=warning,style,performance,portability` and
   `--error-exitcode=1` (2026-11-18). `ament_cppcheck` cannot raise the severity, and at error severity
-  the hook reported nothing and could not fail. The reference library is excluded.
+  the hook reported nothing and could not fail. It reads every C++ file in the repository; the
+  reference library was excluded until 2026-11-19 (898 files, 5 findings, fixed).
 - What it catches is a member with no initializer (`uninitMemberVar`), in every library, on every
   commit. The clang-tidy gate checks the same family only in the packages it covers and only by hand.
   Each header is read alone, in under a second for the whole tree.

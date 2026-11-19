@@ -59,7 +59,7 @@ public:
   }
 
 private:
-  ClModeSelect * mode_select_client_;
+  ClModeSelect * mode_select_client_ = nullptr;
 };
 }  // namespace robot_state_machine
 #endif  // ROBOT_STATE_MACHINE__CLIENTS__CB_MODE_SELECT_HPP_
