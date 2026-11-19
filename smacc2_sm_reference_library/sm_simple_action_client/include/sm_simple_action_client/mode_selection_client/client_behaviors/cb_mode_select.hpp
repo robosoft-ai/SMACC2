@@ -19,8 +19,7 @@
 Author: Sukhraj Klair
 ******************************************************************************************************************/
 
-#ifndef ROBOT_STATE_MACHINE__CLIENTS__CB_MODE_SELECT_HPP_
-#define ROBOT_STATE_MACHINE__CLIENTS__CB_MODE_SELECT_HPP_
+#pragma once
 
 #include "sm_simple_action_client/mode_selection_client/cl_mode_select.hpp"
 #include "smacc2/client_behaviors/cb_subscription_callback_base.hpp"
@@ -62,4 +61,3 @@ private:
   ClModeSelect * mode_select_client_ = nullptr;
 };
 }  // namespace robot_state_machine
-#endif  // ROBOT_STATE_MACHINE__CLIENTS__CB_MODE_SELECT_HPP_

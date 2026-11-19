@@ -18,8 +18,7 @@
 Author: Sukhraj Klair
 ******************************************************************************************************************/
 
-#ifndef ROBOT__STATE_MACHINE__ORTHOGONALS__OR_FIBONACCI_HPP_
-#define ROBOT__STATE_MACHINE__ORTHOGONALS__OR_FIBONACCI_HPP_
+#pragma once
 
 #include "sm_simple_action_client/fibonacci_action_client/cl_fibonacci.hpp"
 #include "smacc2/smacc_orthogonal.hpp"
@@ -33,5 +32,3 @@ public:
   void onInitialize() override { auto fibonacci_action_client = this->createClient<ClFibonacci>(); }
 };
 }  // namespace robot_state_machine
-
-#endif  // ROBOT__STATE_MACHINE__ORTHOGONALS__OR_FIBONACCI_HPP_

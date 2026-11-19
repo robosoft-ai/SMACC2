@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROBOT_STATE_MACHINE__STATES__ST_STATE_2_HPP_
-#define ROBOT_STATE_MACHINE__STATES__ST_STATE_2_HPP_
+#pragma once
 
 #include "smacc2/smacc.hpp"
 
@@ -63,5 +62,3 @@ struct StState2 : smacc2::SmaccState<StState2, SmSimpleActionClient>
 };
 
 } // namespace robot_state_machine
-
-#endif  // ROBOT_STATE_MACHINE__STATES__ST_STATE_2_HPP_
