@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROBOT_STATE_MACHINE__CLIENTS__CL_FIBONACCI_HPP_
-#define ROBOT_STATE_MACHINE__CLIENTS__CL_FIBONACCI_HPP_
+#pragma once
 
 #include "action_tutorials_interfaces/action/fibonacci.hpp"
 #include "smacc2/client_bases/smacc_action_client_base.hpp"
@@ -34,12 +33,10 @@ public:
 
   ClFibonacci(std::string action_name = "/fibonacci")
   : smacc2::client_bases::SmaccActionClientBase<action_tutorials_interfaces::action::Fibonacci>(
-      action_name)
+      std::move(action_name))
   {
   }
 
   virtual ~ClFibonacci() {}
 };
 }  // namespace robot_state_machine
-
-#endif  // ROBOT_STATE_MACHINE__CLIENTS__CL_FIBONACCI_HPP_

@@ -83,7 +83,6 @@ repos:
                '--suppress=unusedStructMember', '--suppress=noExplicitConstructor', '--suppress=variableScope',
                '--suppress=useStlAlgorithm']
         files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
-        exclude: smacc2_sm_reference_library/
 
   # Maybe use https://github.com/cpplint/cpplint instead
   #- repo: local

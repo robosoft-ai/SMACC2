@@ -157,8 +157,9 @@ private:
       goalHandle->succeed(result);
       RCLCPP_INFO(getLogger(), "[CpFibonacciServer] goal succeeded");
     }
-    catch (const std::exception &)
+    catch (const std::exception & e)
     {
+      RCLCPP_DEBUG(getLogger(), "[CpFibonacciServer] goal thread ended: %s", e.what());
     }
   }
 

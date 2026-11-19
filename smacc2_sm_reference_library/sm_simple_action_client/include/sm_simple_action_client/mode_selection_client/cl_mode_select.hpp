@@ -18,8 +18,7 @@
 Author: Sukhraj Klair
 ******************************************************************************************************************/
 
-#ifndef ROBOT_STATE_MACHINE__CLIENTS__CL_MODE_SELECT_HPP_
-#define ROBOT_STATE_MACHINE__CLIENTS__CL_MODE_SELECT_HPP_
+#pragma once
 
 #include "example_interfaces/msg/int32.hpp"
 #include "smacc2/client_bases/smacc_subscriber_client.hpp"
@@ -70,5 +69,3 @@ public:
 };
 
 }  // namespace robot_state_machine
-
-#endif

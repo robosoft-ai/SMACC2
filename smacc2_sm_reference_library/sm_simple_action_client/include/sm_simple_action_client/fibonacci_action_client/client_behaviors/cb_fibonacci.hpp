@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROBOT_STATE_MACHINE__CLIENTS__CB_FIBONACCI_HPP_
-#define ROBOT_STATE_MACHINE__CLIENTS__CB_FIBONACCI_HPP_
+#pragma once
 
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
 #include "sm_simple_action_client/fibonacci_action_client/cl_fibonacci.hpp"
@@ -56,12 +55,10 @@ private:
   void onFibonacciActionSuccess() { this->postSuccessEvent(); }
   void onFibonacciActionAbort() { this->postFailureEvent(); }
 
-  ClFibonacci * cl_fibonacci_;
+  ClFibonacci * cl_fibonacci_ = nullptr;
   ClFibonacci::FibonacciResultSignal::SharedPtr fibonacciCallback_;
   std::shared_future<std::shared_ptr<
     rclcpp_action::ClientGoalHandle<action_tutorials_interfaces::action::Fibonacci> > >
     goalHandleFuture_;
 };
 }  // namespace robot_state_machine
-
-#endif  // ROBOT_STATE_MACHINE__CLIENTS__CB_FIBONACCI_HPP_
