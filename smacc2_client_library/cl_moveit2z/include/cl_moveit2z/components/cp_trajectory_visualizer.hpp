@@ -153,7 +153,7 @@ public:
       lineMarker.color.r = markerColor_[0];
       lineMarker.color.g = markerColor_[1];
       lineMarker.color.b = markerColor_[2];
-      lineMarker.color.a = markerColor_[3] * 0.7;  // Slightly transparent
+      lineMarker.color.a = static_cast<float>(markerColor_[3] * 0.7);  // Slightly transparent
 
       for (const auto & pose : poses)
       {

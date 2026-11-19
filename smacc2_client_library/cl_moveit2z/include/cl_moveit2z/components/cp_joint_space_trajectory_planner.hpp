@@ -222,7 +222,7 @@ public:
           auto it = std::find(jointNames.begin(), jointNames.end(), jointName);
           if (it != jointNames.end())
           {
-            int index = std::distance(jointNames.begin(), it);
+            int index = static_cast<int>(std::distance(jointNames.begin(), it));
             jointPositions[index] = res->solution.joint_state.position[j];
           }
         }
@@ -240,7 +240,7 @@ public:
             if (fabs(deltaJoint) > options.maxJointDiscontinuity)
             {
               discontinuityDelta = deltaJoint;
-              discontinuityJointIndex = jointIndex;
+              discontinuityJointIndex = static_cast<int>(jointIndex);
               break;
             }
           }
@@ -264,7 +264,7 @@ public:
           // Record discontinuity or accept trajectory point
           if (ikAttemptsRemaining == 0 && discontinuityJointIndex != -1)
           {
-            result.discontinuityIndexes.push_back(k);
+            result.discontinuityIndexes.push_back(static_cast<int>(k));
 
             RCLCPP_ERROR(
               getLogger(),

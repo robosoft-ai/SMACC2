@@ -62,12 +62,12 @@ public:
     tf2::Vector3 voffset;
     tf2::fromMsg(offset_, voffset);
 
-    float totallineardist = voffset.length();
+    float totallineardist = static_cast<float>(voffset.length());
 
-    int totalSamplesCount = totallineardist / METERS_PER_SAMPLE;
+    int totalSamplesCount = static_cast<int>(totallineardist / METERS_PER_SAMPLE);
     int steps = totalSamplesCount;
 
-    float interpolation_factor_step = 1.0 / totalSamplesCount;
+    float interpolation_factor_step = static_cast<float>(1.0 / totalSamplesCount);
 
     double secondsPerSample;
 
@@ -90,7 +90,7 @@ public:
     rclcpp::Time startTime = getNode()->now();
     RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] trajectory steps: " << steps);
 
-    for (float i = 0; i < steps; i++)
+    for (int i = 0; i < steps; i++)
     {
       interpolation_factor += interpolation_factor_step;
 

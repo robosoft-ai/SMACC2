@@ -52,7 +52,7 @@ public:
     planePivotPose_(planePivotPose),
     deltaRadians_(deltaRadians)
   {
-    if (tipLink_) planePivotPose_.header.frame_id = *tipLink;
+    if (tipLink_) planePivotPose_.header.frame_id = *tipLink_;
   }
 
   CbCircularPivotMotion(
@@ -73,12 +73,24 @@ public:
       this->computeCurrentEndEffectorPoseRelativeToPivot();
     }
 
+    // The transform lookup can fail and leave the pose unset: no trajectory, and the behavior fails.
+    if (!relativeInitialPose_)
+    {
+      RCLCPP_ERROR_STREAM(
+        getLogger(),
+        "[" << getName()
+            << "] no end effector pose relative to the pivot, no trajectory generated");
+      this->postMotionFailure();
+      return;
+    }
+    const geometry_msgs::msg::Pose & initialPose = *relativeInitialPose_;
+
     // project offset into the xy-plane
     // get the radius
     double radius = sqrt(
-      relativeInitialPose_->position.z * relativeInitialPose_->position.z +
-      relativeInitialPose_->position.y * relativeInitialPose_->position.y);
-    double initialAngle = atan2(relativeInitialPose_->position.z, relativeInitialPose_->position.y);
+      initialPose.position.z * initialPose.position.z +
+      initialPose.position.y * initialPose.position.y);
+    double initialAngle = atan2(initialPose.position.z, initialPose.position.y);
 
     double totallineardist = fabs(radius * deltaRadians_);
     double totalangulardist = fabs(deltaRadians_);
@@ -89,8 +101,8 @@ public:
     const double RADS_PER_SAMPLE = 0.02;
     const double METERS_PER_SAMPLE = 0.01;
 
-    int totalSamplesCount =
-      std::max(totallineardist / METERS_PER_SAMPLE, totalangulardist / RADS_PER_SAMPLE);
+    int totalSamplesCount = static_cast<int>(
+      std::max(totallineardist / METERS_PER_SAMPLE, totalangulardist / RADS_PER_SAMPLE));
 
     double linearSecondsPerSample;
     double angularSecondsPerSamples;
@@ -141,7 +153,7 @@ public:
 
       geometry_msgs::msg::Pose relativeCurrentPose;
 
-      relativeCurrentPose.position.x = relativeInitialPose_->position.x;
+      relativeCurrentPose.position.x = initialPose.position.x;
       relativeCurrentPose.position.y = y;
       relativeCurrentPose.position.z = z;
 
@@ -186,7 +198,7 @@ public:
     marker.header.frame_id = frameid;
     marker.header.stamp = getNode()->now();
     marker.ns = "trajectory";
-    marker.id = beahiorMarkers_.markers.size();
+    marker.id = static_cast<int>(beahiorMarkers_.markers.size());
     marker.type = visualization_msgs::msg::Marker::ARROW;
     marker.action = visualization_msgs::msg::Marker::ADD;
     marker.scale.x = 0.01;
