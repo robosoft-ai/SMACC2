@@ -19,11 +19,57 @@
  ******************************************************************************************************************/
 
 #include <smacc2/smacc_asynchronous_client_behavior.hpp>
+#include <smacc2/smacc_tracing/smacc_tracing.hpp>
 
 using namespace std::chrono_literals;
 
 namespace smacc2
 {
+namespace
+{
+struct AsyncTraceNames
+{
+  std::string state, orthogonal, behavior;
+};
+
+// Emits the start tracepoint when built and the end tracepoint when destroyed, also on an exception.
+struct AsyncTraceScope
+{
+  AsyncTraceScope(bool entry, const AsyncTraceNames & names) : entry_(entry), names_(names)
+  {
+    if (entry_)
+    {
+      TRACETOOLS_TRACEPOINT(
+        smacc2_client_behavior_async_on_entry_start, names_.state.c_str(),
+        names_.orthogonal.c_str(), names_.behavior.c_str());
+    }
+    else
+    {
+      TRACETOOLS_TRACEPOINT(
+        smacc2_client_behavior_async_on_exit_start, names_.state.c_str(), names_.orthogonal.c_str(),
+        names_.behavior.c_str());
+    }
+  }
+  ~AsyncTraceScope()
+  {
+    if (entry_)
+    {
+      TRACETOOLS_TRACEPOINT(
+        smacc2_client_behavior_async_on_entry_end, names_.state.c_str(), names_.orthogonal.c_str(),
+        names_.behavior.c_str());
+    }
+    else
+    {
+      TRACETOOLS_TRACEPOINT(
+        smacc2_client_behavior_async_on_exit_end, names_.state.c_str(), names_.orthogonal.c_str(),
+        names_.behavior.c_str());
+    }
+  }
+  bool entry_;
+  const AsyncTraceNames & names_;
+};
+}  // namespace
+
 // A behavior thread that ended by exception: at shutdown the usual cause is the behavior's own rclcpp
 // sleep or graph call on the shut-down context and is expected; while ROS is up it is an error.
 static void logThreadException(
@@ -44,13 +90,16 @@ static void logThreadException(
 void SmaccAsyncClientBehavior::executeOnEntry()
 {
   RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] asynchronous onEntry thread started");
+  // Copied here, on the state machine thread: the behavior's thread must not ask an exiting state.
+  const AsyncTraceNames names{getTraceStateName(), getTraceOrthogonalName(), getName()};
   this->onEntryThread_ = std::async(
     std::launch::async,
-    [this]
+    [this, names]
     {
       // An exception is reported when it happens, not when the state exits and joins this thread.
       try
       {
+        AsyncTraceScope trace(true, names);
         this->onEntry();
       }
       catch (const std::exception & e)
@@ -145,11 +194,15 @@ void SmaccAsyncClientBehavior::executeOnExit()
 
   RCLCPP_INFO_STREAM(
     getLogger(), "[" << getName() << "] onExit - Creating asynchronous onExit thread");
+  const AsyncTraceNames names{getTraceStateName(), getTraceOrthogonalName(), getName()};
   this->onExitThread_ = std::async(
     std::launch::async,
-    [this]
+    [this, names]
     {
-      this->onExit();
+      {
+        AsyncTraceScope trace(false, names);
+        this->onExit();
+      }
       RCLCPP_INFO_STREAM(getLogger(), "[" << getName() << "] asynchronous onExit done.");
       return 0;
     });
