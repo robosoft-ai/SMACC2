@@ -70,7 +70,7 @@ jobs:
         # Before CodeQL starts watching the compiler: their code is generated and is not analyzed.
         run: |
           source /opt/ros/jazzy/setup.bash
-          colcon build --packages-select smacc2_msgs px4_msgs --cmake-args -DBUILD_TESTING=OFF
+          colcon build --symlink-install --packages-select smacc2_msgs px4_msgs --cmake-args -DBUILD_TESTING=OFF
 
       - name: Initialize CodeQL
         # security-and-quality, plus the MISRA C++:2023 queries for the dynamic memory rules 21.6.2 to
@@ -83,10 +83,11 @@ jobs:
 
       - name: Build
         # The nine machines are here to instantiate the templates of the core and the client libraries:
-        # CodeQL reports nothing in a template that no built package uses.
+        # CodeQL reports nothing in a template that no built package uses. With --symlink-install a
+        # header a machine includes is its source file, not a copy under install/ that the filter drops.
         run: |
           source /opt/ros/jazzy/setup.bash
-          colcon build \
+          colcon build --symlink-install \
             --packages-select \
               smacc2 \
               cl_keyboard \
@@ -175,6 +176,13 @@ jobs:
                   sarif = json.load(f)
               for run in sarif.get('runs', []):
                   results = run.get('results', [])
+                  dropped = sum(
+                      1 for r in results
+                      if any(loc.get('physicalLocation', {}).get('artifactLocation', {})
+                                .get('uri', '').startswith(('build/', 'install/'))
+                             for loc in r.get('locations', []))
+                  )
+                  print(f'{path}: {len(results)} results, {dropped} under build/ or install/')
                   run['results'] = [
                       r for r in results
                       if r.get('ruleId', '') not in SUPPRESSED_RULES
@@ -197,6 +205,14 @@ jobs:
         if: always()
         run: |
           python3 .github/scripts/codeql_misra_summary.py sarif-results >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep the filtered results as an artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-sarif
+          path: sarif-results
+          if-no-files-found: ignore
 
       - name: Upload filtered results
         uses: github/codeql-action/upload-sarif@v3
