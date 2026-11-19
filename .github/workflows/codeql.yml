@@ -25,10 +25,12 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Install dependencies
-        # Only the packages the build step selects. A whole-tree rosdep would
-        # pull MoveIt and Gazebo, which this job does not build.
+        # The rosdeps of the packages the build step selects: the core and every client library the
+        # clang-tidy gate reads. px4_msgs, which cl_px4_mr needs, has no binary package and comes
+        # from the repos file.
         run: |
           apt-get update
+          vcs import < .github/SMACC2.jazzy.repos
           rosdep update
           rosdep install --ignore-src -r -y --from-paths \
             smacc2 \
@@ -36,6 +38,15 @@ jobs:
             smacc2_client_library/cl_keyboard \
             smacc2_client_library/cl_ros2_timer \
             smacc2_client_library/cl_generic_sensor \
+            smacc2_client_library/cl_lifecycle_node \
+            smacc2_client_library/cl_px4_mr \
+            smacc2_client_library/cl_moveit2z \
+            smacc2_client_library/cl_http \
+            smacc2_client_library/cl_gcalcli \
+            smacc2_client_library/cl_modbus_tcp_relay \
+            smacc2_client_library/cl_foundation_pose \
+            smacc2_client_library/cl_mission_tracker \
+            px4_msgs \
             smacc2_client_library/cl_nav2z/cl_nav2z \
             smacc2_client_library/cl_nav2z/custom_planners/backward_global_planner \
             smacc2_client_library/cl_nav2z/custom_planners/backward_local_planner \
@@ -45,11 +56,20 @@ jobs:
             smacc2_client_library/cl_nav2z/custom_planners/pure_spinning_local_planner \
             smacc2_client_library/cl_nav2z/custom_planners/undo_path_global_planner
 
+      - name: Build the message packages
+        # Before CodeQL starts watching the compiler: their code is generated and is not analyzed.
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          colcon build --packages-select smacc2_msgs px4_msgs --cmake-args -DBUILD_TESTING=OFF
+
       - name: Initialize CodeQL
+        # security-and-quality, plus the MISRA C++:2023 queries for the dynamic memory rules 21.6.2 to
+        # 21.6.5 from GitHub's coding standards pack. Rule 21.6.1 is left out: SMACC2 allocates by design.
         uses: github/codeql-action/init@v3
         with:
           languages: c-cpp
           queries: security-and-quality
+          packs: codeql/misra-cpp-coding-standards:rules/RULE-21-6-2,codeql/misra-cpp-coding-standards:rules/RULE-21-6-3,codeql/misra-cpp-coding-standards:rules/RULE-21-6-4,codeql/misra-cpp-coding-standards:rules/RULE-21-6-5
 
       - name: Build
         run: |
@@ -57,10 +77,17 @@ jobs:
           colcon build \
             --packages-select \
               smacc2 \
-              smacc2_msgs \
               cl_keyboard \
               cl_ros2_timer \
               cl_generic_sensor \
+              cl_lifecycle_node \
+              cl_px4_mr \
+              cl_moveit2z \
+              cl_http \
+              cl_gcalcli \
+              cl_modbus_tcp_relay \
+              cl_foundation_pose \
+              cl_mission_tracker \
               cl_nav2z \
               backward_global_planner \
               backward_local_planner \
@@ -142,6 +169,12 @@ jobs:
               with open(path, 'w') as f:
                   json.dump(sarif, f)
           EOF
+
+      - name: Summarize the MISRA results on the run page
+        # One table of the dynamic memory rules with their result counts, then the results one per line.
+        if: always()
+        run: |
+          python3 .github/scripts/codeql_misra_summary.py sarif-results >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload filtered results
         uses: github/codeql-action/upload-sarif@v3
