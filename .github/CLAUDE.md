@@ -199,6 +199,18 @@ with their simulators; only the state machine node is instrumented.
 - The decision of 2026-11-13 to remove the hook was reversed on 2026-11-18: the hook stays, tuned as
   above.
 
+## MISRA C++:2023, dynamic memory
+
+- Checked: rules 21.6.2 to 21.6.5 (no hand-written `new`, `delete`, `malloc` or `free`; no placement
+  `new`, overloaded `operator new` or direct destructor call; sized and unsized global `operator delete`
+  together; no `delete` of an incomplete type).
+- Not checked, by decision (2026-11-19): rule 21.6.1, no dynamic memory at all. SMACC2 allocates by
+  design, as do Boost.Statechart and `rclcpp` under it.
+- Two tools. The CodeQL workflow runs the queries for the four rules from GitHub's pack
+  `codeql/misra-cpp-coding-standards` and lists the results on its run page; it reports and does not
+  fail. The clang-tidy gate runs five checks that cover 21.6.2 and part of 21.6.4 against its baseline.
+- This is a check with open-source tools mapped to the rules by us. It is not a MISRA compliance claim.
+
 ## clang-tidy
 
 - `.github/scripts/clang_tidy_gate.sh <build-base> <out-dir> [--update-baseline]` runs `bugprone-*`,
@@ -212,9 +224,13 @@ with their simulators; only the state machine node is instrumented.
   known one, fails the gate.
 - The two single checks were added on 2026-11-13 to cover what cppcheck caught in the study:
   uninitialized members and C-style casts. Removing one initializer from `ISmaccState` fails the gate.
+- Five more were added on 2026-11-19 for the dynamic memory rules of MISRA C++:2023 (see "MISRA
+  C++:2023, dynamic memory" below): `cppcoreguidelines-owning-memory`, `cppcoreguidelines-no-malloc`,
+  `modernize-make-unique`, `modernize-make-shared` and `misc-new-delete-overloads`.
 - A diagnostic in a header is counted once, however many source files include the header, so adding
   a source file does not raise a count (changed 2026-11-15; before that `CheckType` counted 25).
-- The baseline holds 99 diagnostics in 74 keys: 27 in the core, `cl_nav2z` and the launch client,
+- The baseline holds 127 diagnostics in 95 keys. 28 of them are the memory checks added on
+  2026-11-19 (16 in the core, 12 in the client libraries), to be fixed. Of the other 99: 27 in the core, `cl_nav2z` and the launch client,
   64 in `cl_px4_mr`, 1 in the panda machine, 5 in `cl_http` and `cl_gcalcli`, and 2 in the
   `cl_moveit2z` headers, none a defect.
   - The 5 (added 2026-11-18 with the five libraries that have source files): 4

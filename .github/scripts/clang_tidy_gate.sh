@@ -30,7 +30,7 @@ PACKAGES="smacc2 cl_ros2_timer cl_lifecycle_node cl_nav2z cl_px4_mr cl_moveit2z 
 # Policy (2026-11-13): the three groups below plus two single checks that cover what cppcheck caught in the
 # core study: uninitialized members and C-style casts. The rest of cppcoreguidelines-* stays out: it is a
 # style guide, most of its lines here are public members, and silencing it would change public signatures.
-CHECKS='-*,bugprone-*,concurrency-*,clang-analyzer-*,cppcoreguidelines-pro-type-member-init,cppcoreguidelines-pro-type-cstyle-cast'
+CHECKS='-*,bugprone-*,concurrency-*,clang-analyzer-*,cppcoreguidelines-pro-type-member-init,cppcoreguidelines-pro-type-cstyle-cast,cppcoreguidelines-owning-memory,cppcoreguidelines-no-malloc,modernize-make-unique,modernize-make-shared,misc-new-delete-overloads'
 # Only diagnostics located in this repository's own source directories count, wherever the repository
 # is checked out. Headers reached through build/ or install/ copies are not matched, so a header is
 # counted from its own package's translation units and not again from every dependent's.
