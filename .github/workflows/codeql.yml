@@ -25,8 +25,8 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Install dependencies
-        # The rosdeps of the packages the build step selects: the core and every client library the
-        # clang-tidy gate reads. px4_msgs, which cl_px4_mr needs, has no binary package and comes
+        # The rosdeps of the packages the build step selects: the core, every client library the
+        # clang-tidy gate reads, and nine machines. px4_msgs, which cl_px4_mr needs, has no binary package and comes
         # from the repos file.
         run: |
           apt-get update
@@ -54,7 +54,17 @@ jobs:
             smacc2_client_library/cl_nav2z/custom_planners/forward_local_planner \
             smacc2_client_library/cl_nav2z/custom_planners/nav2z_planners_common \
             smacc2_client_library/cl_nav2z/custom_planners/pure_spinning_local_planner \
-            smacc2_client_library/cl_nav2z/custom_planners/undo_path_global_planner
+            smacc2_client_library/cl_nav2z/custom_planners/undo_path_global_planner \
+            smacc2_state_reactor_library/sr_all_events_go \
+            smacc2_sm_reference_library/sm_atomic \
+            smacc2_sm_reference_library/sm_atomic_http \
+            smacc2_sm_reference_library/sm_atomic_lifecycle \
+            smacc2_sm_reference_library/sm_cl_gcalcli_test_1 \
+            smacc2_sm_reference_library/sm_cl_px4_mr_test_1 \
+            smacc2_sm_reference_library/sm_modbus_tcp_relay_test_1 \
+            smacc2_sm_reference_library/sm_nav2_gazebo_test_1 \
+            smacc2_sm_reference_library/sm_panda_cl_moveit2z_cb_inventory \
+            smacc2_sm_reference_library/sm_three_some
 
       - name: Build the message packages
         # Before CodeQL starts watching the compiler: their code is generated and is not analyzed.
@@ -72,6 +82,8 @@ jobs:
           packs: codeql/misra-cpp-coding-standards:rules/RULE-21-6-2,codeql/misra-cpp-coding-standards:rules/RULE-21-6-3,codeql/misra-cpp-coding-standards:rules/RULE-21-6-4,codeql/misra-cpp-coding-standards:rules/RULE-21-6-5
 
       - name: Build
+        # The nine machines are here to instantiate the templates of the core and the client libraries:
+        # CodeQL reports nothing in a template that no built package uses.
         run: |
           source /opt/ros/jazzy/setup.bash
           colcon build \
@@ -96,6 +108,16 @@ jobs:
               nav2z_planners_common \
               pure_spinning_local_planner \
               undo_path_global_planner \
+              sr_all_events_go \
+              sm_atomic \
+              sm_atomic_http \
+              sm_atomic_lifecycle \
+              sm_cl_gcalcli_test_1 \
+              sm_cl_px4_mr_test_1 \
+              sm_modbus_tcp_relay_test_1 \
+              sm_nav2_gazebo_test_1 \
+              sm_panda_cl_moveit2z_cb_inventory \
+              sm_three_some \
             --cmake-args -DBUILD_TESTING=OFF
 
       - name: Perform CodeQL Analysis
