@@ -249,9 +249,7 @@ protected:
         {
           case JointTrajectoryErrorCode::INCORRECT_INITIAL_STATE:
             return ComputeJointTrajectoryErrorCode::INCORRECT_INITIAL_STATE;
-          case JointTrajectoryErrorCode::JOINT_TRAJECTORY_DISCONTINUITY:
-            return ComputeJointTrajectoryErrorCode::JOINT_TRAJECTORY_DISCONTINUITY;
-          default:
+          default:  // JOINT_TRAJECTORY_DISCONTINUITY and anything else
             return ComputeJointTrajectoryErrorCode::JOINT_TRAJECTORY_DISCONTINUITY;
         }
       }
@@ -324,7 +322,7 @@ protected:
             auto it = std::find(currentjointnames.begin(), currentjointnames.end(), jointname);
             if (it != currentjointnames.end())
             {
-              int index = std::distance(currentjointnames.begin(), it);
+              int index = static_cast<int>(std::distance(currentjointnames.begin(), it));
               jointPositions[index] = res->solution.joint_state.position[j];
               ss << jointname << "(" << index << "): " << jointPositions[index] << std::endl;
             }
@@ -347,7 +345,7 @@ protected:
               if (fabs(deltajoint) > 0.3)
               {
                 discontinuityDeltaJointIndex = deltajoint;
-                discontinuityJointIndex = jointindex;
+                discontinuityJointIndex = static_cast<int>(jointindex);
               }
             }
           }
@@ -363,7 +361,7 @@ protected:
             bool discontinuity = false;
             if (ikAttempts == 0)
             {
-              discontinuityIndexes.push_back(k);
+              discontinuityIndexes.push_back(static_cast<int>(k));
               discontinuity = true;
             }
 
@@ -538,7 +536,7 @@ protected:
       marker.header.frame_id = frameid;
       marker.header.stamp = getNode()->now();
       marker.ns = "trajectory";
-      marker.id = this->beahiorMarkers_.markers.size();
+      marker.id = static_cast<int>(this->beahiorMarkers_.markers.size());
       marker.type = visualization_msgs::msg::Marker::ARROW;
       marker.action = visualization_msgs::msg::Marker::ADD;
       marker.scale.x = 0.005;

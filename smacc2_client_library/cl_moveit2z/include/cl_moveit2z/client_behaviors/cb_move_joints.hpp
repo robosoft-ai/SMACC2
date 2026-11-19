@@ -78,7 +78,7 @@ protected:
     for (auto & tgj : targetJoints)
     {
       auto it = std::find(vnames.begin(), vnames.end(), tgj.first);
-      auto index = std::distance(vnames.begin(), it);
+      auto index = static_cast<int>(std::distance(vnames.begin(), it));
 
       ss << tgj.first << ":" << state->getVariablePosition(index) << std::endl;
     }
@@ -109,7 +109,7 @@ protected:
       PlanningOptions options;
       if (scalingFactor_)
       {
-        options.maxVelocityScaling = *scalingFactor_;
+        options.maxVelocityScaling = scalingFactor_;
       }
 
       auto result = motionPlanner->planToJointTarget(jointValueTarget_, options);
@@ -166,7 +166,7 @@ protected:
         execOptions.trajectoryName = this->getName();
         if (scalingFactor_)
         {
-          execOptions.maxVelocityScaling = *scalingFactor_;
+          execOptions.maxVelocityScaling = scalingFactor_;
         }
 
         auto execResult = trajectoryExecutor->executePlan(computedMotionPlan, execOptions);
