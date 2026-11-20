@@ -1,30 +1,36 @@
 /**
- * @name Every new-expression CodeQL extracted from the SMACC2 sources
- * @description One row per new-expression: where it is, which allocation function it uses, and
- *              whether it is in plain code, a template instantiation or an uninstantiated template.
+ * @name The new-expressions CodeQL extracted, per file
+ * @description One row per file under the checkout, allocation function and kind of code: how many
+ *              new-expressions CodeQL holds there. Shows where the 21.6.2 query can report at all.
  * @kind table
  * @id smacc2/debug/new-sites
  */
 
 import cpp
 
-from NewOrNewArrayExpr n, string allocator, string where_
+string allocatorOf(NewOrNewArrayExpr e) {
+  if exists(e.getAllocator())
+  then result = e.getAllocator().getQualifiedName()
+  else result = "no allocator"
+}
+
+string kindOf(NewOrNewArrayExpr e) {
+  if e.isFromTemplateInstantiation(_)
+  then result = "instantiation"
+  else
+    if e.isFromUninstantiatedTemplate(_)
+    then result = "uninstantiated template"
+    else result = "plain"
+}
+
+from File f, string allocator, string kind, int n
 where
-  n.getFile()
-      .getRelativePath()
-      .regexpMatch("(smacc2|smacc2_client_library|\\.github/codeql)/.*") and
-  (
-    if exists(n.getAllocator())
-    then allocator = n.getAllocator().getQualifiedName()
-    else allocator = "no allocator"
+  exists(f.getRelativePath()) and
+  exists(NewOrNewArrayExpr e0 |
+    e0.getFile() = f and allocator = allocatorOf(e0) and kind = kindOf(e0)
   ) and
-  (
-    if n.isFromTemplateInstantiation(_)
-    then where_ = "instantiation"
-    else
-      if n.isFromUninstantiatedTemplate(_)
-      then where_ = "uninstantiated template"
-      else where_ = "plain"
-  )
-select n.getFile().getRelativePath() as file, n.getLocation().getStartLine() as line, allocator,
-  where_, count(NewOrNewArrayExpr m | m.getLocation() = n.getLocation()) as copies
+  n =
+    count(NewOrNewArrayExpr e |
+      e.getFile() = f and allocatorOf(e) = allocator and kindOf(e) = kind
+    )
+select f.getRelativePath() as file, allocator, kind, n order by file, allocator, kind
