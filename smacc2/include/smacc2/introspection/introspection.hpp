@@ -27,7 +27,10 @@
 #include <boost/mpl/for_each.hpp>
 #include <boost/mpl/list.hpp>
 #include <boost/mpl/transform.hpp>
+#include <cstdlib>
+#include <memory>
 #include <rclcpp/rclcpp.hpp>
+#include <string>
 #include <typeinfo>
 
 #include <smacc2/introspection/smacc_state_info.hpp>
@@ -73,12 +76,12 @@ inline std::string demangleSymbol(const char * name)
 {
 #if (__GNUC__ && __cplusplus && __GNUC__ >= 3)
   int status = 0;
-  char * res = abi::__cxa_demangle(name, 0, 0, &status);
+  // __cxa_demangle returns malloc memory that only free releases (MISRA C++:2023 21.6.2 deviation).
+  const std::unique_ptr<char, void (*)(void *)> res(
+    abi::__cxa_demangle(name, nullptr, nullptr, &status), std::free);
   if (res)
   {
-    const std::string demangled_name(res);
-    std::free(res);
-    return demangled_name;
+    return std::string(res.get());
   }
   // Demangling failed, fallback to mangled name
   return std::string(name);

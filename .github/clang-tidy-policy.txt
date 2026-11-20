@@ -9,5 +9,5 @@ bugprone-integer-division: Accepted where listed: the division is the intended l
 bugprone-reserved-identifier: Accepted for the lttng header guard, whose name the lttng macros require. A new one is to be fixed.
 clang-analyzer-core.CallAndMessage: False positive in signal_detector.cpp, kept in the baseline. A new one is to be read as a possible defect.
 bugprone-unused-return-value: False positive in http_session.cpp: shutdown() also writes its result to the error code passed in, which the next line checks. A new one is to be read.
-cppcoreguidelines-owning-memory: MISRA C++:2023 rule 21.6.2, added 2026-11-19 with what exists in the baseline; those are to be replaced by make_shared, make_unique or an owning member. A new one is to be fixed.
-cppcoreguidelines-no-malloc: MISRA C++:2023 rule 21.6.2. The one in the baseline is the free() of the string abi::__cxa_demangle returns in introspection.hpp. A new one is to be fixed.
+cppcoreguidelines-owning-memory: MISRA C++:2023 rule 21.6.2, added 2026-11-19; the 27 it gave then were fixed by 2026-11-20 and the baseline holds none. A new one is to be fixed: an event is created with smacc2::makeEvent, anything else with make_shared, make_unique or an owning member.
+cppcoreguidelines-no-malloc: MISRA C++:2023 rule 21.6.2. The one it gave, the free() of the string abi::__cxa_demangle returns in introspection.hpp, is now the deleter of a unique_ptr and the baseline holds none. A new one is to be fixed.
