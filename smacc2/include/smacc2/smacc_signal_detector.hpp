@@ -229,41 +229,4 @@ void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
   smExecution.schedulerThread = nullptr;
 }
 
-template <typename StateMachineType>
-SmExecution & run_async()
-{
-  // SIGINT and SIGTERM are left to the handlers rclcpp::init installed. Those only signal a
-  // semaphore; a dedicated rclcpp thread then calls rclcpp::shutdown(), and the on_shutdown
-  // callback registered in SignalDetector::initialize stops the polling loop and
-  // terminates the scheduler. Replacing them here with a handler that called
-  // rclcpp::shutdown() directly ran DDS teardown inside the signal context.
-  ::signal(SIGQUIT, onSigQuit);
-
-  // Get singleton instance
-  SmExecution & smExecution = SmExecution::getInstance();
-
-  // create the asynchronous state machine scheduler
-  smExecution.scheduler1 = new SmaccFifoScheduler(true);
-
-  // create the signalDetector component
-  smExecution.signalDetector = new SignalDetector(smExecution.scheduler1);
-
-  // create the asynchronous state machine processor
-  smExecution.sm =
-    smExecution.scheduler1->create_processor<StateMachineType>(smExecution.signalDetector);
-
-  // initialize the asynchronous state machine processor
-  smExecution.signalDetector->setProcessorHandle(smExecution.sm);
-
-  smExecution.scheduler1->initiate_processor(smExecution.sm);
-
-  //create a thread for the asynchronous state machine processor execution
-  smExecution.schedulerThread =
-    new boost::thread(boost::bind(&sc::fifo_scheduler<>::operator(), smExecution.scheduler1, NULL));
-  smExecution.signalDetectorLoop =
-    new boost::thread(boost::bind(&SignalDetector::pollingLoop, smExecution.signalDetector));
-
-  return smExecution;
-}
-
 }  // namespace smacc2
