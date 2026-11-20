@@ -208,6 +208,7 @@ typename std::enable_if<!HasAutomaticTransitionType<T>::value, void>::type autom
 }
 
 // there are many ways to implement this, for instance adding static methods to the types
+// PREEMPT is kept commented out on purpose; see default_transition_tags in smacc_types.hpp.
 typedef boost::mpl::list<SUCCESS, ABORT, CANCEL, /*PREEMPT,*/ CONTINUELOOP, ENDLOOP>
   DEFAULT_TRANSITION_TYPES;
 
