@@ -216,8 +216,9 @@ with their simulators; only the state machine node is instrumented.
   both tools miss a `new` of an event (CodeQL because events have their own `operator new`), so this
   rule is kept by review.
 - Deviations from 21.6.2, each marked by a comment at its line: the `new` inside `makeEvent`
-  (`smacc_types.hpp`), the `new` of the state object in `shallow_construct` (`smacc_state_base.hpp`),
-  and `free` as the deleter of the string `abi::__cxa_demangle` returns (`introspection.hpp`).
+  (`smacc_types.hpp`) and the `new` of the state object in `shallow_construct` (`smacc_state_base.hpp`).
+- `demangleSymbol` calls `boost::core::demangle` (since 2026-11-20). The demangled name is still
+  `malloc` memory released with `free`, now inside Boost's header, where neither tool counts it.
 - This is a check with open-source tools mapped to the rules by us. It is not a MISRA compliance claim.
 
 ## clang-tidy
