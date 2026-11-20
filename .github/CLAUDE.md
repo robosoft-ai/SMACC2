@@ -70,12 +70,15 @@ Caching is the exception. A package may be cached between runs only when all fou
 4. **The payoff is high:** it takes minutes of every run and changes rarely. A package that saves a
    minute or two does not qualify; the cache is one more thing that can go wrong.
 
-Today exactly one package qualifies: `px4_msgs` (about 10 minutes, cached since 2026-11-18 in both
-build workflows). Its key is the commit of `release/1.16` plus a hash of the installed
+Two packages are cached. `px4_msgs` qualifies on all four (about 10 minutes, cached since 2026-11-18
+in both build workflows). Its key is the commit of `release/1.16` plus a hash of the installed
 `rosidl`, `rmw` and Fast DDS package versions, so a ROS sync in the container image also rebuilds it.
 It is installed to `/opt/px4_msgs` and saved right after it is built, so a later failure in the run
-does not lose it. `micro_ros_agent` (2.4 minutes) does not qualify and is built in every run, from tag `5.0.3`, the
-Jazzy line (6.1.x is Kilted, 7.0.0 Rolling). The
+does not lose it. `micro_ros_agent` (2.4 minutes) is cached since 2026-11-20 by the maintainer's
+decision, although it is under the payoff bar of condition 4: the two build workflows ran 19 to 22
+minutes against the 20 minute limit. It is cached the same way, in `/opt/micro_ros_agent`, keyed on
+the commit of the tag the repos file names (`5.0.3`, the Jazzy line; 6.1.x is Kilted, 7.0.0 Rolling)
+and the same hash of ROS package versions. The build step fails when its executable is missing. The
 manual workflows (clang build, clang-tidy, sanitizers) do not use the cache.
 
 Adding a package to this list is a decision for the maintainer, recorded here with its measured time.
@@ -213,8 +216,9 @@ with their simulators; only the state machine node is instrumented.
   both tools miss a `new` of an event (CodeQL because events have their own `operator new`), so this
   rule is kept by review.
 - Deviations from 21.6.2, each marked by a comment at its line: the `new` inside `makeEvent`
-  (`smacc_types.hpp`), the `new` of the state object in `shallow_construct` (`smacc_state_base.hpp`),
-  and `free` as the deleter of the string `abi::__cxa_demangle` returns (`introspection.hpp`).
+  (`smacc_types.hpp`) and the `new` of the state object in `shallow_construct` (`smacc_state_base.hpp`).
+- `demangleSymbol` calls `boost::core::demangle` (since 2026-11-20). The demangled name is still
+  `malloc` memory released with `free`, now inside Boost's header, where neither tool counts it.
 - This is a check with open-source tools mapped to the rules by us. It is not a MISRA compliance claim.
 
 ## clang-tidy

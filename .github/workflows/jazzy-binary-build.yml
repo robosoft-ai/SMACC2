@@ -37,6 +37,24 @@ jobs:
                 path: /opt/px4_msgs
                 key: ${{ steps.px4.outputs.key }}
 
+        # micro_ros_agent is cached the same way: third-party, pinned to a tag in the repos file, no binary package.
+        - name: micro_ros_agent cache key
+          id: agent
+          shell: bash
+          run: |
+                REF=$(python3 -c "import yaml; print(yaml.safe_load(open('.github/SMACC2.jazzy.repos'))['repositories']['micro-ROS-Agent']['version'])")
+                COMMIT=$(git ls-remote https://github.com/micro-ROS/micro-ROS-Agent.git "$REF" | head -1 | cut -f1)
+                ROS=$(dpkg-query -W 'ros-jazzy-rosidl-*' 'ros-jazzy-rmw-*' 'ros-jazzy-fast*' | sha256sum | cut -c1-16)
+                [ -n "$COMMIT" ] || { echo "could not read the micro-ROS-Agent commit for $REF"; exit 1; }
+                echo "key=micro_ros_agent-$COMMIT-$ROS" >> "$GITHUB_OUTPUT"
+
+        - name: restore micro_ros_agent
+          id: agentcache
+          uses: actions/cache/restore@v4
+          with:
+                path: /opt/micro_ros_agent
+                key: ${{ steps.agent.outputs.key }}
+
         - name: dependencies
           shell: bash
           run: |
@@ -61,13 +79,29 @@ jobs:
                 path: /opt/px4_msgs
                 key: ${{ steps.px4.outputs.key }}
 
+        - name: build micro_ros_agent
+          if: steps.agentcache.outputs.cache-hit != 'true'
+          shell: bash
+          run: |
+                source /opt/ros/jazzy/setup.bash
+                colcon build --packages-select micro_ros_agent --build-base /tmp/micro_ros_agent_build --install-base /opt/micro_ros_agent --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+        - name: save micro_ros_agent
+          if: steps.agentcache.outputs.cache-hit != 'true'
+          uses: actions/cache/save@v4
+          with:
+                path: /opt/micro_ros_agent
+                key: ${{ steps.agent.outputs.key }}
+
         - name: build
           shell: bash
           run: |
-                # px4_msgs comes from /opt/px4_msgs, restored or just built; every other package is built here from scratch.
-                touch px4_msgs/COLCON_IGNORE
+                # px4_msgs and micro_ros_agent come from /opt, restored or just built; every other package is built here from scratch.
+                touch px4_msgs/COLCON_IGNORE micro-ROS-Agent/COLCON_IGNORE
                 source /opt/ros/jazzy/setup.bash
                 source /opt/px4_msgs/setup.bash
+                source /opt/micro_ros_agent/setup.bash
+                test -x "$(ros2 pkg prefix micro_ros_agent)/lib/micro_ros_agent/micro_ros_agent" || { echo "micro_ros_agent is missing from /opt/micro_ros_agent"; exit 1; }
 
                 # Skip packages that require special dependencies or configurations:
                 # Machines whose one compile needs over 2 GB, built last and two at a time to bound peak memory:
