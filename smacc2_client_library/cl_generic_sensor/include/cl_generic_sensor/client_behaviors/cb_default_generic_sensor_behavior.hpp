@@ -124,7 +124,7 @@ public:
       getLogger(), "[CbDefaultGenericSensorBehavior] Propagating message event: %s",
       smacc2::demangleSymbol<EvType>().c_str());
 
-    auto event = new EvType();
+    auto event = smacc2::makeEvent<EvType>();
     event->msgData = msg;
     this->postEvent(event);
   }

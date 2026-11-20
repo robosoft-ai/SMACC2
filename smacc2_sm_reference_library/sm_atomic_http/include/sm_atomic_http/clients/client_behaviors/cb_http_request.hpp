@@ -40,7 +40,7 @@ public:
   {
     triggerTranstition = [this]()
     {
-      auto event = new EvHttp<TSourceObject, TOrthogonal>();
+      auto event = smacc2::makeEvent<EvHttp<TSourceObject, TOrthogonal>>();
       this->postEvent(event);
     };
   }

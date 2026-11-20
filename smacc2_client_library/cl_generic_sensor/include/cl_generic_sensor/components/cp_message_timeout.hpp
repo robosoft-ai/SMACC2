@@ -71,7 +71,7 @@ public:
       this->onMessageTimeout_();
 
       // Post SMACC event
-      auto event = new EvTopicMessageTimeout<TSourceObject, TOrthogonal>();
+      auto event = smacc2::makeEvent<EvTopicMessageTimeout<TSourceObject, TOrthogonal>>();
       this->postEvent(event);
     };
 

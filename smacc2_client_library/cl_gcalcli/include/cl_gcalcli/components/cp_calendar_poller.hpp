@@ -104,7 +104,7 @@ public:
   {
     postAgendaUpdatedEvent_ = [this](const std::vector<CalendarEvent> & events)
     {
-      auto ev = new EvAgendaUpdated<CpCalendarPoller, TOrthogonal>();
+      auto ev = smacc2::makeEvent<EvAgendaUpdated<CpCalendarPoller, TOrthogonal>>();
       ev->events = events;
       this->postEvent(ev);
     };
