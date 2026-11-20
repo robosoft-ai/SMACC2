@@ -97,6 +97,7 @@ public:
 
   SmaccActionResultSignal onSucceeded_;
   SmaccActionResultSignal onAborted_;
+  // Kept on purpose: placeholders for the preempted and rejected outcomes (ROS 1 actions had them; ROS 2 result codes do not).
   // SmaccActionResultSignal onPreempted_;
   // SmaccActionResultSignal onRejected_;
   SmaccActionResultSignal onCancelled_;
@@ -105,6 +106,7 @@ public:
   std::function<void(WrappedResult)> postSuccessEvent;
   std::function<void(WrappedResult)> postAbortedEvent;
   std::function<void(WrappedResult)> postCancelledEvent;
+  // Kept on purpose, as the two signals above.
   // std::function<void(WrappedResult)> postPreemptedEvent;
   // std::function<void(WrappedResult)> postRejectedEvent;
 

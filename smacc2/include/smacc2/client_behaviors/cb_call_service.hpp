@@ -88,7 +88,6 @@ public:
   std::shared_future<std::shared_ptr<typename ServiceType::Response>> resultFuture_;
 
 protected:
-  //rclcpp::NodeHandle nh_;
   std::shared_ptr<rclcpp::Client<ServiceType>> client_;
   std::string serviceName_;
   std::shared_ptr<typename ServiceType::Request> request_;

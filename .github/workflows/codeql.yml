@@ -79,6 +79,9 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: c-cpp
+          # Pinned: the action's default moved from 2.27.4 to 2.27.5 between two runs and the results
+          # changed with no change in the code. Raise it on purpose, and compare the run pages.
+          tools: https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.27.5/codeql-bundle-linux64.tar.gz
           queries: security-and-quality
           packs: codeql/misra-cpp-coding-standards:rules/RULE-21-6-2,codeql/misra-cpp-coding-standards:rules/RULE-21-6-3,codeql/misra-cpp-coding-standards:rules/RULE-21-6-4,codeql/misra-cpp-coding-standards:rules/RULE-21-6-5
 
@@ -163,6 +166,33 @@ jobs:
             "$CODEQL" bqrs decode --format=csv --entities=url --output="sarif-results/raw_${pair##*:}.csv" "$RULES/${pair%%:*}.bqrs"
             echo "${pair%%:*}: $(($(wc -l < "sarif-results/raw_${pair##*:}.csv") - 1)) rows"
           done
+
+      - name: Decode every query's results
+        # The same for all the other queries, one CSV per query id in raw_all/; the id and the kind are
+        # read from the query's own file. A failure here is ignored: the SARIF file is still there.
+        if: always()
+        continue-on-error: true
+        run: |
+          CODEQL="${{ steps.init.outputs.codeql-path }}"
+          RES="$RUNNER_TEMP/codeql_databases/cpp/results"
+          mkdir -p sarif-results/raw_all
+          done_n=0; skipped=0
+          while read -r b; do
+            rel=${b#"$RES"/}; rel=${rel%.bqrs}
+            pack=$(echo "$rel" | cut -d/ -f1-2); sub=${rel#"$pack"/}
+            ql=$(find "$(dirname "$CODEQL")" "$HOME/.codeql" /root/.codeql /github/home/.codeql -path "*/$pack/*/$sub.ql" 2>/dev/null | head -1)
+            id=$(sed -n 's/^ *\* *@id  *\([^ ]*\).*$/\1/p' "$ql" 2>/dev/null | head -1 | tr -d '\r')
+            kind=$(sed -n 's/^ *\* *@kind  *\([^ ]*\).*$/\1/p' "$ql" 2>/dev/null | head -1 | tr -d '\r')
+            if [ -z "$id" ]; then echo "no query file or id for $rel"; skipped=$((skipped + 1)); continue; fi
+            case "$kind" in problem|path-problem) ;; *) skipped=$((skipped + 1)); continue ;; esac
+            out="sarif-results/raw_all/$(echo "$id" | sed 's|/|__|g').csv"
+            "$CODEQL" bqrs decode --format=csv --entities=url --result-set='#select' --output="$out" "$b" 2>/dev/null \
+              || "$CODEQL" bqrs decode --format=csv --entities=url --output="$out" "$b" \
+              || { echo "decode failed: $rel"; continue; }
+            done_n=$((done_n + 1))
+          done < <(find "$RES" -name '*.bqrs' | sort)
+          echo "decoded $done_n queries, skipped $skipped (not an alert query, or no query file found)"
+          wc -l sarif-results/raw_all/*.csv | sort -rn | sed -n 1,25p
 
       - name: Filter generated paths from SARIF
         run: |
@@ -250,6 +280,7 @@ jobs:
         if: always()
         run: |
           python3 .github/scripts/codeql_misra_summary.py sarif-results >> "$GITHUB_STEP_SUMMARY"
+          python3 .github/scripts/codeql_all_results.py sarif-results >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload filtered results
         uses: github/codeql-action/upload-sarif@v3

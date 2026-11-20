@@ -87,6 +87,7 @@ struct CANCEL
 {
 };
 
+// Kept on purpose: placeholders for the preempted and rejected outcomes (ROS 1 actions had them; ROS 2 result codes do not).
 /*
 struct PREEMPT
 {
