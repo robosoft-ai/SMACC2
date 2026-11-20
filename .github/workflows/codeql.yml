@@ -139,12 +139,18 @@ jobs:
           CODEQL="${{ steps.init.outputs.codeql-path }}"
           DB="$RUNNER_TEMP/codeql_databases/cpp"
           mkdir -p sarif-results
-          for q in new_sites compiler_errors; do
+          for q in new_sites operator_new_calls compiler_errors; do
             "$CODEQL" query run --database="$DB" --output="/tmp/$q.bqrs" ".github/codeql/debug/$q.ql"
             "$CODEQL" bqrs decode --format=csv --output="sarif-results/debug_$q.csv" "/tmp/$q.bqrs"
             echo "### $q: $(($(wc -l < "sarif-results/debug_$q.csv") - 1)) rows"
             head -400 "sarif-results/debug_$q.csv"
           done
+          # What the 21.6.2 query itself returned, before CodeQL turns it into the results file.
+          RAW="$DB/results/codeql/misra-cpp-coding-standards/rules/RULE-21-6-2/DynamicMemoryManagedManually.bqrs"
+          "$CODEQL" bqrs decode --format=csv --entities=url --output=sarif-results/debug_rule_21_6_2_raw.csv "$RAW"
+          echo "### rule 21.6.2 raw: $(($(wc -l < sarif-results/debug_rule_21_6_2_raw.csv) - 1)) rows"
+          cut -c1-200 sarif-results/debug_rule_21_6_2_raw.csv | head -60
+          cp sarif-results/cpp.sarif sarif-results/debug_unfiltered_sarif.json
 
       - name: Filter generated paths from SARIF
         run: |
