@@ -29,7 +29,7 @@ import os
 import re
 import sys
 
-PROBE = ".github/codeql/misra_probe.cpp"
+PROBE = ".github/codeql/misra_probe"  # the .cpp and the .hpp
 
 QUERIES = [
     ("21.6.2", "cpp/misra/dynamic-memory-managed-manually"),
@@ -59,8 +59,8 @@ def main():
                 place = where.get("artifactLocation", {}).get("uri", "?")
                 line = where.get("region", {}).get("startLine", 0)
                 text = " ".join(result.get("message", {}).get("text", "").split())
-                if place == PROBE:
-                    probe[line].append(text)
+                if place.startswith(PROBE):
+                    probe[(os.path.basename(place), line)].append(text)
                     continue
                 kept.append(result)
                 if rule.startswith("cpp/misra/"):
@@ -88,21 +88,24 @@ def main():
             lines = [f"{place}:{line}: {text}" for place, line, text in sorted(found[query])]
             print(f"\n### {rule}: {query} ({len(lines)})\n\n```\n" + "\n".join(lines) + "\n```")
     here = os.path.dirname(os.path.abspath(__file__))
-    try:
-        source = open(os.path.join(here, "..", "codeql", "misra_probe.cpp")).read().split("\n")
-    except OSError:
+    marked = []
+    for name in ("misra_probe.cpp", "misra_probe.hpp"):
+        try:
+            source = open(os.path.join(here, "..", "codeql", name)).read().split("\n")
+        except OSError:
+            continue
+        for n, s in enumerate(source, 1):
+            if m := re.search(r";\s*// EXPECT (.*)", s):
+                marked.append(((name, n), m.group(1)))
+    if not marked:
         return
-    marked = [
-        (n, m.group(1))
-        for n, s in enumerate(source, 1)
-        if (m := re.search(r";\s*// EXPECT (.*)", s))
-    ]
-    hit = sum(1 for n, _ in marked if n in probe)
-    print(f"\n### Self-test: {hit} of {len(marked)} marked lines of {PROBE} found\n")
-    print("| Line | Shape | Found |")
-    print("|--|--|--|")
-    for n, what in marked:
-        print(f"| {n} | {what} | {'; '.join(probe[n]) if n in probe else '**no**'} |")
+    hit = sum(1 for key, _ in marked if key in probe)
+    print(f"\n### Self-test: {hit} of {len(marked)} marked lines of {PROBE}.cpp and .hpp found\n")
+    print("| File | Line | Shape | Found |")
+    print("|--|--|--|--|")
+    for key, what in marked:
+        found_text = "; ".join(sorted(set(probe[key]))) if key in probe else "**no**"
+        print(f"| {key[0]} | {key[1]} | {what} | {found_text} |")
 
 
 if __name__ == "__main__":

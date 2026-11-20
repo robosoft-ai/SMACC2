@@ -18,6 +18,8 @@
 #include <cstdlib>
 #include <functional>
 
+#include "misra_probe.hpp"
+
 struct Probe
 {
   int value = 0;
@@ -80,6 +82,15 @@ int useAll()
   Probe * p = templateNew<Probe>();
   int v = p->value;
   delete p;  // EXPECT delete of a pointer a template returned
+  int * a = headerPlain();
+  int * b = headerNonDependent<Probe>();
+  v += *a + *b;
+  delete a;  // EXPECT delete of a pointer a header function returned
+  delete b;  // EXPECT delete of a pointer a header template returned
+  HeaderHolder<Probe> holder;
+  Probe * held = holder.fill();
+  v += held->value + holder.shared->value + headerPost<PooledEvent>();
+  delete held;  // EXPECT delete of a pointer a class template returned
   Poster poster;
   poster.configure<Probe>();
   return v + poster.post() + plainNew() + classNew() + cAllocation();

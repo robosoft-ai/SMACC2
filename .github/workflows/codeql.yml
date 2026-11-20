@@ -75,6 +75,7 @@ jobs:
       - name: Initialize CodeQL
         # security-and-quality, plus the MISRA C++:2023 queries for the dynamic memory rules 21.6.2 to
         # 21.6.5 from GitHub's coding standards pack. Rule 21.6.1 is left out: SMACC2 allocates by design.
+        id: init
         uses: github/codeql-action/init@v3
         with:
           languages: c-cpp
@@ -129,6 +130,21 @@ jobs:
           category: /language:c-cpp
           output: sarif-results
           upload: false
+
+      - name: Show what CodeQL extracted
+        # Diagnosis, not alerts: every new-expression CodeQL holds for the SMACC2 sources, and the
+        # compiler errors it met. Printed to the log and kept in the artifact; a failure here is ignored.
+        continue-on-error: true
+        run: |
+          CODEQL="${{ steps.init.outputs.codeql-path }}"
+          DB="$RUNNER_TEMP/codeql_databases/cpp"
+          mkdir -p sarif-results
+          for q in new_sites compiler_errors; do
+            "$CODEQL" query run --database="$DB" --output="/tmp/$q.bqrs" ".github/codeql/debug/$q.ql"
+            "$CODEQL" bqrs decode --format=csv --output="sarif-results/debug_$q.csv" "/tmp/$q.bqrs"
+            echo "### $q: $(($(wc -l < "sarif-results/debug_$q.csv") - 1)) rows"
+            head -200 "sarif-results/debug_$q.csv"
+          done
 
       - name: Filter generated paths from SARIF
         run: |

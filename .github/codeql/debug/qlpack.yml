@@ -1,0 +1,5 @@
+# Queries the CodeQL workflow runs on its own database to show what CodeQL extracted. Not alerts.
+name: smacc2/codeql-debug
+version: 0.0.1
+dependencies:
+  codeql/cpp-all: "*"
