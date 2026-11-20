@@ -143,14 +143,26 @@ jobs:
             "$CODEQL" query run --database="$DB" --output="/tmp/$q.bqrs" ".github/codeql/debug/$q.ql"
             "$CODEQL" bqrs decode --format=csv --output="sarif-results/debug_$q.csv" "/tmp/$q.bqrs"
             echo "### $q: $(($(wc -l < "sarif-results/debug_$q.csv") - 1)) rows"
-            head -400 "sarif-results/debug_$q.csv"
+            sed -n 1,400p "sarif-results/debug_$q.csv"
           done
-          # What the 21.6.2 query itself returned, before CodeQL turns it into the results file.
-          RAW="$DB/results/codeql/misra-cpp-coding-standards/rules/RULE-21-6-2/DynamicMemoryManagedManually.bqrs"
-          "$CODEQL" bqrs decode --format=csv --entities=url --output=sarif-results/debug_rule_21_6_2_raw.csv "$RAW"
-          echo "### rule 21.6.2 raw: $(($(wc -l < sarif-results/debug_rule_21_6_2_raw.csv) - 1)) rows"
-          cut -c1-200 sarif-results/debug_rule_21_6_2_raw.csv | head -60
-          cp sarif-results/cpp.sarif sarif-results/debug_unfiltered_sarif.json
+
+      - name: Decode the MISRA query results
+        # CodeQL leaves a result in a header reached through install/ out of the SARIF file, and that is
+        # where a machine sees the core and client library headers. The summary reads these instead.
+        if: always()
+        run: |
+          CODEQL="${{ steps.init.outputs.codeql-path }}"
+          RULES="$RUNNER_TEMP/codeql_databases/cpp/results/codeql/misra-cpp-coding-standards/rules"
+          mkdir -p sarif-results
+          for pair in \
+            RULE-21-6-2/DynamicMemoryManagedManually:dynamic-memory-managed-manually \
+            RULE-21-6-3/AdvancedMemoryManagementUsed:advanced-memory-management-used \
+            RULE-21-6-4/GlobalSizedOperatorDeleteShallBeDefined:global-sized-operator-delete-shall-be-defined \
+            RULE-21-6-4/GlobalUnsizedOperatorDeleteShallBeDefined:global-unsized-operator-delete-shall-be-defined \
+            RULE-21-6-5/PointerToAnIncompleteClassTypeDeleted:pointer-to-an-incomplete-class-type-deleted; do
+            "$CODEQL" bqrs decode --format=csv --entities=url --output="sarif-results/raw_${pair##*:}.csv" "$RULES/${pair%%:*}.bqrs"
+            echo "${pair%%:*}: $(($(wc -l < "sarif-results/raw_${pair##*:}.csv") - 1)) rows"
+          done
 
       - name: Filter generated paths from SARIF
         run: |
