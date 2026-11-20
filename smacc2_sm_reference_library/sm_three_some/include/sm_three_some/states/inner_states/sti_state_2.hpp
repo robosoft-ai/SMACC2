@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Included once per superstate, with SS set to that superstate: no include guard on purpose.
+// See ss_superstate_1.hpp and ss_superstate_2.hpp.
 namespace sm_three_some
 {
 namespace inner_states
