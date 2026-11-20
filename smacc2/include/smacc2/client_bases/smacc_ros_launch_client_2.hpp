@@ -23,6 +23,8 @@
 #include <smacc2/smacc_client.hpp>
 #include <smacc2/smacc_state_machine.hpp>
 
+#include <cstdio>
+#include <memory>
 #include <rclcpp_action/client.hpp>
 #include <thread>
 
@@ -32,8 +34,9 @@ namespace client_bases
 {
 struct ProcessInfo
 {
-  pid_t pid;    // PID of the child process
-  FILE * pipe;  // Pipe for the child process output
+  pid_t pid;  // PID of the child process
+  // Stream on the child process output; closed with fclose when this object goes.
+  std::unique_ptr<FILE, int (*)(FILE *)> pipe;
 };
 
 ProcessInfo runProcess(const char * command);

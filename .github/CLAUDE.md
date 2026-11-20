@@ -209,6 +209,12 @@ with their simulators; only the state machine node is instrumented.
 - Two tools. The CodeQL workflow runs the queries for the four rules from GitHub's pack
   `codeql/misra-cpp-coding-standards` and lists the results on its run page; it reports and does not
   fail. The clang-tidy gate runs five checks that cover 21.6.2 and part of 21.6.4 against its baseline.
+- An event is created with `smacc2::makeEvent<Ev>()` and passed to `postEvent()`, never with `new`:
+  both tools miss a `new` of an event (CodeQL because events have their own `operator new`), so this
+  rule is kept by review.
+- Deviations from 21.6.2, each marked by a comment at its line: the `new` inside `makeEvent`
+  (`smacc_types.hpp`), the `new` of the state object in `shallow_construct` (`smacc_state_base.hpp`),
+  and `free` as the deleter of the string `abi::__cxa_demangle` returns (`introspection.hpp`).
 - This is a check with open-source tools mapped to the rules by us. It is not a MISRA compliance claim.
 
 ## clang-tidy
@@ -229,8 +235,8 @@ with their simulators; only the state machine node is instrumented.
   `modernize-make-unique`, `modernize-make-shared` and `misc-new-delete-overloads`.
 - A diagnostic in a header is counted once, however many source files include the header, so adding
   a source file does not raise a count (changed 2026-11-15; before that `CheckType` counted 25).
-- The baseline holds 127 diagnostics in 95 keys. 28 of them are the memory checks added on
-  2026-11-19 (16 in the core, 12 in the client libraries), to be fixed. Of the other 99: 27 in the core, `cl_nav2z` and the launch client,
+- The baseline holds 98 diagnostics in 73 keys. None is from the memory checks: the 28 they gave on
+  2026-11-19 were fixed by 2026-11-20. Of the 98: 26 in the core, `cl_nav2z` and the launch client,
   64 in `cl_px4_mr`, 1 in the panda machine, 5 in `cl_http` and `cl_gcalcli`, and 2 in the
   `cl_moveit2z` headers, none a defect.
   - The 5 (added 2026-11-18 with the five libraries that have source files): 4

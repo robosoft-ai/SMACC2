@@ -90,7 +90,7 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
         client->launchPid_ = child.pid;
       }
 
-      int fd = fileno(child.pipe);
+      int fd = fileno(child.pipe.get());
       bool cancelled = false;
 
       // poll() with a 100 ms timeout is also the cancel-check cadence. read() returning 0 is the
@@ -159,11 +159,9 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
         RCLCPP_ERROR(rclcpp::get_logger("smacc2"), "Error waiting for child process.");
       }
 
-      // The stream came from fdopen() on our own pipe, not from popen(), and the child was
-      // already reaped by waitpid() above. fclose() closes the descriptor and frees the
-      // FILE; the former pclose() + close(pipe->_fileno) read the freed FILE and closed
-      // the descriptor twice.
-      fclose(child.pipe);
+      // The stream came from fdopen() on our own pipe and the child is reaped: fclose, through
+      // the pointer's deleter, closes the descriptor and frees the FILE. Not pclose().
+      child.pipe.reset();
 
       RCLCPP_WARN_STREAM(rclcpp::get_logger("smacc2"), "[ClRosLaunch2] RESULT:\n" << result);
 
@@ -176,9 +174,7 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
 
 ProcessInfo runProcess(const char * command)
 {
-  ProcessInfo info;
-  info.pid = -1;  // Initialize PID to -1 (error sentinel)
-  info.pipe = nullptr;
+  ProcessInfo info{-1, {nullptr, &fclose}};  // PID -1 is the error sentinel
 
   int pipefd[2];  // File descriptors for the pipe
 
@@ -206,8 +202,8 @@ ProcessInfo runProcess(const char * command)
   else if (pid > 0)
   {
     // Parent process
-    close(pipefd[1]);                    // Close write end in parent
-    info.pipe = fdopen(pipefd[0], "r");  // Open read end as text-mode FILE
+    close(pipefd[1]);                         // Close write end in parent
+    info.pipe.reset(fdopen(pipefd[0], "r"));  // Open read end as text-mode FILE
     if (info.pipe == nullptr)
     {
       // No stream to read the child through: close the descriptor, stop and reap the child.
