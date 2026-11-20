@@ -123,28 +123,31 @@ public:
     // Set up nav2-specific event posting functions
     postNavigationSuccessEvent = [this](const WrappedResult & result)
     {
-      auto * ev = new smacc2::default_events::EvActionSucceeded<TClient, TOrthogonal>();
+      auto ev =
+        smacc2::makeEvent<smacc2::default_events::EvActionSucceeded<TClient, TOrthogonal>>();
       ev->resultMessage = result;
       this->postEvent(ev);
     };
 
     postNavigationAbortedEvent = [this](const WrappedResult & result)
     {
-      auto * ev = new smacc2::default_events::EvActionAborted<TClient, TOrthogonal>();
+      auto ev = smacc2::makeEvent<smacc2::default_events::EvActionAborted<TClient, TOrthogonal>>();
       ev->resultMessage = result;
       this->postEvent(ev);
     };
 
     postNavigationCancelledEvent = [this](const WrappedResult & result)
     {
-      auto * ev = new smacc2::default_events::EvActionCancelled<TClient, TOrthogonal>();
+      auto ev =
+        smacc2::makeEvent<smacc2::default_events::EvActionCancelled<TClient, TOrthogonal>>();
       ev->resultMessage = result;
       this->postEvent(ev);
     };
 
     postNavigationFeedbackEvent = [this](const Feedback & feedback)
     {
-      auto * ev = new smacc2::default_events::EvActionFeedback<Feedback, TOrthogonal>();
+      auto ev =
+        smacc2::makeEvent<smacc2::default_events::EvActionFeedback<Feedback, TOrthogonal>>();
       ev->feedbackMessage = feedback;
       this->postEvent(ev);
     };

@@ -109,7 +109,7 @@ public:
   {
     postEventDetectedEvent_ = [this](const CalendarEvent & event, const std::string & pattern)
     {
-      auto ev = new EvCalendarEventDetected<CpCalendarEventListener, TOrthogonal>();
+      auto ev = smacc2::makeEvent<EvCalendarEventDetected<CpCalendarEventListener, TOrthogonal>>();
       ev->event = event;
       ev->matched_pattern = pattern;
       this->postEvent(ev);
@@ -117,14 +117,14 @@ public:
 
     postEventStartedEvent_ = [this](const CalendarEvent & event)
     {
-      auto ev = new EvCalendarEventStarted<CpCalendarEventListener, TOrthogonal>();
+      auto ev = smacc2::makeEvent<EvCalendarEventStarted<CpCalendarEventListener, TOrthogonal>>();
       ev->event = event;
       this->postEvent(ev);
     };
 
     postEventEndedEvent_ = [this](const CalendarEvent & event)
     {
-      auto ev = new EvCalendarEventEnded<CpCalendarEventListener, TOrthogonal>();
+      auto ev = smacc2::makeEvent<EvCalendarEventEnded<CpCalendarEventListener, TOrthogonal>>();
       ev->event = event;
       this->postEvent(ev);
     };

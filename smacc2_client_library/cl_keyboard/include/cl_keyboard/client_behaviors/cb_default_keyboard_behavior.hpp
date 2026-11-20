@@ -124,7 +124,7 @@ public:
     RCLCPP_WARN(
       getLogger(), "CbDefaultKeyboardBehavior %ld ev: %s", reinterpret_cast<long>(this),
       smacc2::demangleSymbol(typeid(TEv).name()).c_str());
-    auto event = new TEv();
+    auto event = smacc2::makeEvent<TEv>();
     this->postEvent(event);
   }
 };

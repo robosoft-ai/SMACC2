@@ -91,14 +91,14 @@ public:
 
     postJointDiscontinuityEvent = [this](auto traj)
     {
-      auto ev = new EvJointDiscontinuity<TSourceObject, TOrthogonal>();
+      auto ev = smacc2::makeEvent<EvJointDiscontinuity<TSourceObject, TOrthogonal>>();
       ev->trajectory = traj;
       this->postEvent(ev);
     };
 
     postIncorrectInitialStateEvent = [this](auto traj)
     {
-      auto ev = new EvIncorrectInitialPosition<TSourceObject, TOrthogonal>();
+      auto ev = smacc2::makeEvent<EvIncorrectInitialPosition<TSourceObject, TOrthogonal>>();
       ev->trajectory = traj;
       this->postEvent(ev);
     };
