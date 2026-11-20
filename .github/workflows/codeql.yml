@@ -70,17 +70,12 @@ jobs:
         # Before CodeQL starts watching the compiler: their code is generated and is not analyzed.
         run: |
           source /opt/ros/jazzy/setup.bash
-          colcon build --packages-select smacc2_msgs px4_msgs --cmake-args -DBUILD_TESTING=OFF
-
-      - name: Build the message packages
-        # Before CodeQL starts watching the compiler: their code is generated and is not analyzed.
-        run: |
-          source /opt/ros/jazzy/setup.bash
-          colcon build --packages-select smacc2_msgs px4_msgs --cmake-args -DBUILD_TESTING=OFF
+          colcon build --symlink-install --packages-select smacc2_msgs px4_msgs --cmake-args -DBUILD_TESTING=OFF
 
       - name: Initialize CodeQL
         # security-and-quality, plus the MISRA C++:2023 queries for the dynamic memory rules 21.6.2 to
         # 21.6.5 from GitHub's coding standards pack. Rule 21.6.1 is left out: SMACC2 allocates by design.
+        id: init
         uses: github/codeql-action/init@v3
         with:
           languages: c-cpp
@@ -89,10 +84,11 @@ jobs:
 
       - name: Build
         # The nine machines are here to instantiate the templates of the core and the client libraries:
-        # CodeQL reports nothing in a template that no built package uses.
+        # CodeQL reports nothing in a template that no built package uses. With --symlink-install a
+        # header a machine includes is its source file, not a copy under install/ that the filter drops.
         run: |
           source /opt/ros/jazzy/setup.bash
-          colcon build \
+          colcon build --symlink-install \
             --packages-select \
               smacc2 \
               cl_keyboard \
@@ -125,6 +121,8 @@ jobs:
               sm_panda_cl_moveit2z_cb_inventory \
               sm_three_some \
             --cmake-args -DBUILD_TESTING=OFF
+          # The self-test file: marked violations of rule 21.6.2 that the summary step looks for.
+          g++ -std=c++17 -c .github/codeql/misra_probe.cpp -o /tmp/misra_probe.o
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
@@ -132,6 +130,39 @@ jobs:
           category: /language:c-cpp
           output: sarif-results
           upload: false
+
+      - name: Show what CodeQL extracted
+        # Diagnosis, not alerts: every new-expression CodeQL holds for the SMACC2 sources, and the
+        # compiler errors it met. Printed to the log and kept in the artifact; a failure here is ignored.
+        continue-on-error: true
+        run: |
+          CODEQL="${{ steps.init.outputs.codeql-path }}"
+          DB="$RUNNER_TEMP/codeql_databases/cpp"
+          mkdir -p sarif-results
+          for q in new_sites operator_new_calls compiler_errors; do
+            "$CODEQL" query run --database="$DB" --output="/tmp/$q.bqrs" ".github/codeql/debug/$q.ql"
+            "$CODEQL" bqrs decode --format=csv --output="sarif-results/debug_$q.csv" "/tmp/$q.bqrs"
+            echo "### $q: $(($(wc -l < "sarif-results/debug_$q.csv") - 1)) rows"
+            sed -n 1,400p "sarif-results/debug_$q.csv"
+          done
+
+      - name: Decode the MISRA query results
+        # CodeQL leaves a result in a header reached through install/ out of the SARIF file, and that is
+        # where a machine sees the core and client library headers. The summary reads these instead.
+        if: always()
+        run: |
+          CODEQL="${{ steps.init.outputs.codeql-path }}"
+          RULES="$RUNNER_TEMP/codeql_databases/cpp/results/codeql/misra-cpp-coding-standards/rules"
+          mkdir -p sarif-results
+          for pair in \
+            RULE-21-6-2/DynamicMemoryManagedManually:dynamic-memory-managed-manually \
+            RULE-21-6-3/AdvancedMemoryManagementUsed:advanced-memory-management-used \
+            RULE-21-6-4/GlobalSizedOperatorDeleteShallBeDefined:global-sized-operator-delete-shall-be-defined \
+            RULE-21-6-4/GlobalUnsizedOperatorDeleteShallBeDefined:global-unsized-operator-delete-shall-be-defined \
+            RULE-21-6-5/PointerToAnIncompleteClassTypeDeleted:pointer-to-an-incomplete-class-type-deleted; do
+            "$CODEQL" bqrs decode --format=csv --entities=url --output="sarif-results/raw_${pair##*:}.csv" "$RULES/${pair%%:*}.bqrs"
+            echo "${pair%%:*}: $(($(wc -l < "sarif-results/raw_${pair##*:}.csv") - 1)) rows"
+          done
 
       - name: Filter generated paths from SARIF
         run: |
@@ -181,6 +212,13 @@ jobs:
                   sarif = json.load(f)
               for run in sarif.get('runs', []):
                   results = run.get('results', [])
+                  dropped = sum(
+                      1 for r in results
+                      if any(loc.get('physicalLocation', {}).get('artifactLocation', {})
+                                .get('uri', '').startswith(('build/', 'install/'))
+                             for loc in r.get('locations', []))
+                  )
+                  print(f'{path}: {len(results)} results, {dropped} under build/ or install/')
                   run['results'] = [
                       r for r in results
                       if r.get('ruleId', '') not in SUPPRESSED_RULES
@@ -198,8 +236,17 @@ jobs:
                   json.dump(sarif, f)
           EOF
 
+      - name: Keep the filtered results as an artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-sarif
+          path: sarif-results
+          if-no-files-found: ignore
+
       - name: Summarize the MISRA results on the run page
         # One table of the dynamic memory rules with their result counts, then the results one per line.
+        # Then the self-test; its results are taken out of the SARIF here, before the upload.
         if: always()
         run: |
           python3 .github/scripts/codeql_misra_summary.py sarif-results >> "$GITHUB_STEP_SUMMARY"
