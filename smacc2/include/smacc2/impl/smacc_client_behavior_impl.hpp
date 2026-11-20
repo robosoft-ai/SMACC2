@@ -36,11 +36,10 @@ void ISmaccClientBehavior::postEvent(const EventType & ev)
       getLogger(),
       "The client behavior cannot post events before being assigned to an orthogonal. Ignoring "
       "post event call.");
-    // ev is a raw heap pointer we own (EventType deduces to the pointer type); without a
-    // state machine nobody else frees it. The guard keeps non-pointer instantiations compiling.
+    // A raw event pointer is ours to free (EventType deduces to the pointer type): adopt it and let it go.
     if constexpr (std::is_pointer_v<EventType>)
     {
-      delete ev;
+      boost::intrusive_ptr<std::remove_pointer_t<EventType>> discarded(ev);
     }
   }
   else

@@ -115,9 +115,10 @@ public:
   template <typename EvType>
   void postResultEvent(WrappedResult & /*result*/)
   {
-    auto * ev = new EvType();
+    auto ev = smacc2::makeEvent<EvType>();
     RCLCPP_INFO(
-      getLogger(), "Action client Posting EVENT %s", demangleSymbol(typeid(ev).name()).c_str());
+      getLogger(), "Action client Posting EVENT %s",
+      demangleSymbol(typeid(ev.get()).name()).c_str());
     this->postEvent(ev);
   }
 
@@ -135,7 +136,7 @@ public:
 
     postFeedbackEvent = [this](auto msg)
     {
-      auto actionFeedbackEvent = new EvActionFeedback<Feedback, TOrthogonal>();
+      auto actionFeedbackEvent = smacc2::makeEvent<EvActionFeedback<Feedback, TOrthogonal>>();
       actionFeedbackEvent->client = this;
       actionFeedbackEvent->feedbackMessage = msg;
       this->postEvent(actionFeedbackEvent);

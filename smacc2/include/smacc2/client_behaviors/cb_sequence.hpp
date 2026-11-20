@@ -46,7 +46,7 @@ public:
       RCLCPP_INFO(
         getLogger(), "[CbSequence] then creating new sub behavior %s ",
         demangleSymbol<TBehavior>().c_str());
-      auto createdBh = std::shared_ptr<TBehavior>(new TBehavior(args...));
+      auto createdBh = std::make_shared<TBehavior>(args...);
 
       this->getCurrentState()->getOrthogonal<TOrthogonal>()->addClientBehavior(createdBh);
       createdBh->template onStateOrthogonalAllocation<TOrthogonal, TBehavior>();

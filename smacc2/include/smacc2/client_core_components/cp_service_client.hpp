@@ -294,7 +294,7 @@ public:
     // Set up event posting functions with proper template parameters
     postResponseEvent = [this](const SharedResponse & response)
     {
-      auto * ev = new EvServiceResponse<TSourceObject, TOrthogonal, Response>();
+      auto ev = smacc2::makeEvent<EvServiceResponse<TSourceObject, TOrthogonal, Response>>();
       ev->response = *response;
       this->postEvent(ev);
       RCLCPP_DEBUG(getLogger(), "[%s] SERVICE RESPONSE EVENT", this->getName().c_str());
@@ -302,14 +302,14 @@ public:
 
     postRequestSentEvent = [this]()
     {
-      auto * ev = new EvServiceRequestSent<TSourceObject, TOrthogonal>();
+      auto ev = smacc2::makeEvent<EvServiceRequestSent<TSourceObject, TOrthogonal>>();
       this->postEvent(ev);
       RCLCPP_DEBUG(getLogger(), "[%s] SERVICE REQUEST SENT EVENT", this->getName().c_str());
     };
 
     postFailureEvent = [this]()
     {
-      auto * ev = new EvServiceFailure<TSourceObject, TOrthogonal>();
+      auto ev = smacc2::makeEvent<EvServiceFailure<TSourceObject, TOrthogonal>>();
       this->postEvent(ev);
       RCLCPP_DEBUG(getLogger(), "[%s] SERVICE FAILURE EVENT", this->getName().c_str());
     };

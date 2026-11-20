@@ -43,8 +43,7 @@ void StateReactor::setOutputEvent()
   {
     RCLCPP_INFO_STREAM(
       this->getLogger(), "[State Reactor Base] postingfn posting event: " << demangleSymbol<TEv>());
-    auto * ev = new TEv();
-    this->ownerState->getStateMachine().postEvent(ev);
+    this->ownerState->getStateMachine().postEvent(makeEvent<TEv>());
   };
 }
 

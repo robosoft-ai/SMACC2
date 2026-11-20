@@ -105,7 +105,7 @@ SmaccComponentType * ISmaccClient::createNamedComponent(const std::string & name
       "new instance %s",
       this->getName().c_str(), demangledTypeName<SmaccComponentType>().c_str(), tname.c_str());
 
-    ret = std::shared_ptr<SmaccComponentType>(new SmaccComponentType(targs...));
+    ret = std::make_shared<SmaccComponentType>(targs...);
     ret->setStateMachine(this->getStateMachine());
     ret->owner_ = this;
     ret->initialize(this);
