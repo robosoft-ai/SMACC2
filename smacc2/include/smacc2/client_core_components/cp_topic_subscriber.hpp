@@ -81,14 +81,15 @@ public:
   {
     this->postMessageEvent = [=](auto msg)
     {
-      auto event = new EvTopicMessage<TSourceObject, TOrthogonal, MessageType>();
+      auto event = smacc2::makeEvent<EvTopicMessage<TSourceObject, TOrthogonal, MessageType>>();
       event->msgData = msg;
       this->postEvent(event);
     };
 
     this->postInitialMessageEvent = [=](auto msg)
     {
-      auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal, MessageType>();
+      auto event =
+        smacc2::makeEvent<EvTopicInitialMessage<TSourceObject, TOrthogonal, MessageType>>();
       event->msgData = msg;
       this->postEvent(event);
     };

@@ -260,7 +260,7 @@ public:
 
     postFeedbackEvent = [this](const Feedback & feedback)
     {
-      auto actionFeedbackEvent = new EvActionFeedback<Feedback, TOrthogonal>();
+      auto actionFeedbackEvent = smacc2::makeEvent<EvActionFeedback<Feedback, TOrthogonal>>();
       actionFeedbackEvent->feedbackMessage = feedback;
       this->postEvent(actionFeedbackEvent);
       RCLCPP_DEBUG(getLogger(), "[%s] FEEDBACK EVENT", this->getName().c_str());
@@ -349,11 +349,11 @@ private:
   template <typename EvType>
   void postResultEvent(const WrappedResult & result)
   {
-    auto * ev = new EvType();
+    auto ev = smacc2::makeEvent<EvType>();
     ev->resultMessage = result;
     RCLCPP_INFO(
       getLogger(), "[%s] Posting event: %s", this->getName().c_str(),
-      smacc2::demangleSymbol(typeid(ev).name()).c_str());
+      smacc2::demangleSymbol(typeid(ev.get()).name()).c_str());
     this->postEvent(ev);
   }
 };

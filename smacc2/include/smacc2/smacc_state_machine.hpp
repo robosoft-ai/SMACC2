@@ -119,6 +119,12 @@ public:
   template <typename EventType>
   void postEvent(EventType * ev, EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
 
+  // The same for an event created with makeEvent(); the caller may keep its pointer.
+  template <typename EventType>
+  void postEvent(
+    const boost::intrusive_ptr<EventType> & evHolder,
+    EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
+
   template <typename EventType>
   void postEvent(EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
 

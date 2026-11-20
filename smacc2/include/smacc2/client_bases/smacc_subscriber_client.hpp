@@ -79,7 +79,7 @@ public:
     // ros topic message received smacc event callback
     this->postMessageEvent = [this](auto msg)
     {
-      auto event = new EvTopicMessage<TSourceObject, TOrthogonal>();
+      auto event = smacc2::makeEvent<EvTopicMessage<TSourceObject, TOrthogonal>>();
       event->msgData = msg;
       this->postEvent(event);
     };
@@ -87,7 +87,7 @@ public:
     // initial ros topic message received smacc event callback
     this->postInitialMessageEvent = [this](auto msg)
     {
-      auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal>();
+      auto event = smacc2::makeEvent<EvTopicInitialMessage<TSourceObject, TOrthogonal>>();
       event->msgData = msg;
       this->postEvent(event);
     };

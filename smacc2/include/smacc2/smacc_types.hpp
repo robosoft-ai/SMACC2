@@ -20,10 +20,21 @@
 
 #pragma once
 
+#include <boost/intrusive_ptr.hpp>
 #include <boost/statechart/transition.hpp>
+
+#include <utility>
 
 namespace smacc2
 {
+// Creates an event owned from its first line; pass the result to postEvent().
+template <typename EventType, typename... Args>
+boost::intrusive_ptr<EventType> makeEvent(Args &&... args)
+{
+  // The one hand-written new for events: they count their own references (MISRA C++:2023 21.6.2 deviation).
+  return boost::intrusive_ptr<EventType>(new EventType(std::forward<Args>(args)...));
+}
+
 class ISmaccState;
 class ISmaccStateMachine;
 class ISmaccClient;

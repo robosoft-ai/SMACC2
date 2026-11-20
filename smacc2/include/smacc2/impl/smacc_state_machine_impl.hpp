@@ -177,12 +177,19 @@ void ISmaccStateMachine::requiresComponent(
 template <typename EventType>
 void ISmaccStateMachine::postEvent(EventType * ev, EventLifeTime evlifetime)
 {
+  // Own the event from here on so the discard return and any exception in the overload below free it.
+  this->postEvent(boost::intrusive_ptr<EventType>(ev), evlifetime);
+}
+
+template <typename EventType>
+void ISmaccStateMachine::postEvent(
+  const boost::intrusive_ptr<EventType> & evHolder, EventLifeTime evlifetime)
+{
   std::lock_guard<std::recursive_mutex> guard(eventQueueMutex_);
 
-  // Own the event from here on so the discard return below and any exception free it. The
-  // refcount lives inside the event, so the scheduler's intrusive_ptr created later in
-  // SignalDetector::postEvent shares ownership; on the normal path nothing changes.
-  boost::intrusive_ptr<EventType> evHolder(ev);
+  // The refcount lives inside the event, so the scheduler's intrusive_ptr created later in
+  // SignalDetector::postEvent shares ownership with evHolder.
+  EventType * ev = evHolder.get();
 
 #define eventtypename demangleSymbol<EventType>().c_str()
 
@@ -258,8 +265,7 @@ void ISmaccStateMachine::postEvent(EventLifeTime evlifetime)
 {
   auto evname = smacc2::introspection::demangleSymbol<EventType>();
   RCLCPP_INFO_STREAM(getLogger(), "Event: " << evname);
-  auto * ev = new EventType();
-  this->postEvent(ev, evlifetime);
+  this->postEvent(makeEvent<EventType>(), evlifetime);
 }
 
 template <typename T>

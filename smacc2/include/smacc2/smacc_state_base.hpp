@@ -37,7 +37,7 @@ template <typename TAddressee>
 void postStInitializationFailure(
   ISmaccStateMachine * stateMachine, const std::string & stateName, const std::string & what)
 {
-  auto * ev = new default_events::EvStInitializationFailure<TAddressee>();
+  auto ev = makeEvent<default_events::EvStInitializationFailure<TAddressee>>();
   ev->stateName = stateName;
   ev->what = what;
   using TContainer = typename TAddressee::context_type;
@@ -92,8 +92,8 @@ public:
       "The context must be a different state or state machine "
       "than the current state");
 
-    logger_.reset(new rclcpp::Logger(
-      rclcpp::get_logger(smacc2::utils::cleanShortTypeName(typeid(MostDerived)))));
+    logger_ = std::make_shared<rclcpp::Logger>(
+      rclcpp::get_logger(smacc2::utils::cleanShortTypeName(typeid(MostDerived))));
 
     RCLCPP_INFO(getLogger(), "[%s] Creating state ", STATE_NAME);
     this->set_context(ctx.pContext_);
@@ -379,7 +379,7 @@ public:
   static inner_context_ptr_type shallow_construct(
     const context_ptr_type & pContext, outermost_context_base_type & outermostContextBase)
   {
-    // allocating in memory
+    // Boost.Statechart's construction protocol; owned by pInnerContext below (MISRA C++:2023 21.6.2 deviation).
     auto state = new MostDerived(
       SmaccState<MostDerived, Context, InnerInitial, historyMode>::my_context(pContext));
     const inner_context_ptr_type pInnerContext(state);

@@ -41,16 +41,15 @@ std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
   TOrthogonal * orthogonal = this->getOrthogonal<TOrthogonal>();
   if (orthogonal != nullptr)
   {
-    auto clientBehavior =
-      std::shared_ptr<TBehavior>(new TBehavior(args...));  // is there an error here? are the
-                                                           // behavior constructor parameters right?
+    // A compile error here usually means the behavior's constructor parameters do not match.
+    auto clientBehavior = std::make_shared<TBehavior>(args...);
     orthogonal->addClientBehavior(clientBehavior);
     clientBehavior->template onStateOrthogonalAllocation<TOrthogonal, TBehavior>();
     // Set here and not in onStateOrthogonalAllocation, which a derived behavior may hide.
     ISmaccClientBehavior * behavior = clientBehavior.get();
     behavior->postInitializationFailureEventFn_ = [behavior](const std::string & what)
     {
-      auto * ev = new default_events::EvCbInitializationFailure<TBehavior, TOrthogonal>();
+      auto ev = makeEvent<default_events::EvCbInitializationFailure<TBehavior, TOrthogonal>>();
       ev->behaviorName = behavior->getName();
       ev->what = what;
       behavior->postEvent(ev);
