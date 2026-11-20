@@ -159,7 +159,7 @@ def main():
         except OSError:
             continue
         for n, s in enumerate(source, 1):
-            if m := re.search(r";\s*// EXPECT (.*)", s):
+            if m := re.search(r"\S\s*// EXPECT (.*)", s):
                 marked.append(((name, n), m.group(1)))
     if not marked:
         return

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Self-test for the CodeQL workflow: each line marked EXPECT breaks MISRA C++:2023 rule 21.6.2 on purpose.
-// The workflow compiles this file and codeql_misra_summary.py reports which marked lines the query found.
+// Self-test for the CodeQL workflow: each marked line breaks MISRA C++:2023 rule 21.6.2 or 21.6.3 on purpose.
+// The workflow compiles this file and codeql_misra_summary.py reports which marked lines the queries found.
 // It is part of no package and is never linked or run.
 #include <cstdlib>
 #include <functional>

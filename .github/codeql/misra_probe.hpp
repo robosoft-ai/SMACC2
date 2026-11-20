@@ -45,11 +45,11 @@ struct HeaderHolder
 // The shape of a Boost.Statechart event: the class brings its own operator new and operator delete.
 struct PooledEvent
 {
-  static void * operator new(std::size_t size)
+  static void * operator new(std::size_t size)  // EXPECT own operator new declared (rule 21.6.3)
   {
     return ::operator new(size);  // EXPECT direct call of the global operator new
   }
-  static void operator delete(void * p)
+  static void operator delete(void * p)  // EXPECT own operator delete declared (rule 21.6.3)
   {
     ::operator delete(p);  // EXPECT direct call of the global operator delete
   }
