@@ -50,6 +50,7 @@ void CbWaitForHeadingStable::onEntry()
     params_.maxDriftRadS * 180.0 / M_PI, params_.windowS,
     checkExpected ? " and match the parked heading" : "", params_.timeoutS);
 
+  // Sample the heading at 10 Hz and keep the last windowS seconds of samples.
   using clock = std::chrono::steady_clock;
   const auto start = clock::now();
   std::deque<std::pair<double, float>> samples;  // (t since start, heading)
@@ -91,6 +92,7 @@ void CbWaitForHeadingStable::onEntry()
       }
     }
 
+    // Done when a full window drifted less than the limit and matches the expected heading.
     if (windowFull && stable && aligned)
     {
       RCLCPP_INFO(
@@ -104,6 +106,7 @@ void CbWaitForHeadingStable::onEntry()
       return;
     }
 
+    // Report progress every 2 s: still collecting, or why the heading is not ready.
     if (t - lastReport >= 2.0)
     {
       lastReport = t;
@@ -127,6 +130,7 @@ void CbWaitForHeadingStable::onEntry()
       }
     }
 
+    // Give up after timeoutS and post failure, so the machine does not arm on an untrusted yaw.
     if (t > params_.timeoutS)
     {
       RCLCPP_ERROR(

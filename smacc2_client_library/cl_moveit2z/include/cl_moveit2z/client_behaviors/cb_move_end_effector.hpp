@@ -40,7 +40,7 @@ public:
 
   CbMoveEndEffector() {}
 
-  CbMoveEndEffector(geometry_msgs::msg::PoseStamped target_pose, std::string tip_link = "")
+  CbMoveEndEffector(const geometry_msgs::msg::PoseStamped & target_pose, std::string tip_link = "")
   : targetPose(target_pose), tip_link_(std::move(tip_link))
   {
   }

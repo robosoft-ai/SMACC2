@@ -71,7 +71,7 @@ public:
 
   inline void pushTrajectory(
     std::string name, const moveit_msgs::msg::RobotTrajectory & trajectory,
-    moveit_msgs::msg::MoveItErrorCodes result)
+    const moveit_msgs::msg::MoveItErrorCodes & result)
   {
     RCLCPP_INFO_STREAM(
       getLogger(), "[" << getName() << "] adding a new trajectory to the history ( "
