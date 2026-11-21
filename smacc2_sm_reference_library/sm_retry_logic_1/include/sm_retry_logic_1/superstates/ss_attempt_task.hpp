@@ -35,7 +35,9 @@ struct SsAttemptTask : smacc2::SmaccState<SsAttemptTask, SmRetryLogic1, StIdle>
   {
     static_createStateReactor<
       SrEventCountdown,
+      // Set Reactor Output Event
       EvCountdownEnd<SrEventCountdown, SsAttemptTask>,
+      // Add Reactor Input Events
       mpl::list<
         EvTimer<CbTimerCountdownOnce, OrTimer>,
         EvKeyPressF<CbDefaultKeyboardBehavior, OrKeyboard>>>(3);

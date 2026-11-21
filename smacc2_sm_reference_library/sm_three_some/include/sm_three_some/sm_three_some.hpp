@@ -35,7 +35,6 @@ using namespace sm_three_some::cl_subscriber;
 #include <sm_three_some/clients/cl_subscriber/client_behaviors/cb_default_subscriber_behavior.hpp>
 #include <sm_three_some/clients/cl_subscriber/client_behaviors/cb_watchdog_subscriber_behavior.hpp>
 
-//#include <cl_ros2_timer/client_behaviors/cb_ros_timer.hpp>
 #include <cl_ros2_timer/client_behaviors/cb_timer_countdown_once.hpp>
 
 // STATE REACTORS

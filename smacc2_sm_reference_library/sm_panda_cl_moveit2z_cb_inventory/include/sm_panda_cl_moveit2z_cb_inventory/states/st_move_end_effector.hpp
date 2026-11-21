@@ -68,19 +68,6 @@ struct StMoveEndEffector : smacc2::SmaccState<StMoveEndEffector, SmPandaClMoveit
 
     target_pose.pose.orientation.w = 0.924;  // cos(45°/2)
 
-    //target_pose.pose.position.z = 0.579;
-
-  // random valid
-  // - Translation: [0.137, -0.730, 0.267]
-  // - Rotation: in Quaternion [0.498, 0.470, 0.715, 0.141]
-
-
-    //0.8939967, 0, 0, -0.4480736 ]
-    // target_pose.pose.orientation.x = 0.8939967;
-    // target_pose.pose.orientation.y = 0;
-    // target_pose.pose.orientation.z = 0;
-    // target_pose.pose.orientation.w = -0.4480736 ;
-
     configure_orthogonal<OrArm, CbMoveEndEffector>(target_pose, "panda_link8");
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }

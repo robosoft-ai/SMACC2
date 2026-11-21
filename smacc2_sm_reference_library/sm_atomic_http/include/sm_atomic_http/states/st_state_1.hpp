@@ -29,7 +29,6 @@ struct State1 : smacc2::SmaccState<State1, SmAtomicHttp> {
 
   // STATE FUNCTIONS
   static void staticConfigure() {
-    // configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3s);
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5s);
   }
 
