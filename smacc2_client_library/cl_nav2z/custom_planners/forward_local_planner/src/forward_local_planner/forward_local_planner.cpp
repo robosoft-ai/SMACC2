@@ -437,8 +437,8 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
   double alpha_error = angles::shortest_angular_distance(alpha, theta);
   double betta_error = angles::shortest_angular_distance(betta, theta);
 
-  double vetta = 0;  // = k_rho_ * rho_error;
-  double gamma = 0;  //= k_alpha_ * alpha_error + k_betta_ * betta_error;
+  double vetta = 0;
+  double gamma = 0;
 
   if (
     rho_error >
@@ -543,11 +543,7 @@ geometry_msgs::msg::TwistStamped ForwardLocalPlanner::computeVelocityCommands(
     // RCLCPP_INFO(nh_->get_logger(), "checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i, p[0], p[1], mx, my, cost);
     // RCLCPP_INFO_STREAM(nh_->get_logger(), "cost: " << cost);
 
-    // static const unsigned char NO_INFORMATION = 255;
-    // static const unsigned char LETHAL_OBSTACLE = 254;
-    // static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
-    // static const unsigned char FREE_SPACE = 0;
-
+    // Costmap values: 255 no information, 254 lethal obstacle, 253 inscribed inflated obstacle, 0 free space.
     if (costmap2d->getCost(mx, my) >= nav2_costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
     {
       aceptedplan = false;

@@ -160,8 +160,6 @@ public:
       tf2::Quaternion localquat;
       localquat.setEuler(currentAngle, 0, 0);
 
-      //relativeCurrentPose.orientation = relativeInitialPose_.orientation;
-      //tf2::toMsg(localquat, relativeCurrentPose.orientation);
       relativeCurrentPose.orientation.w = 1;
 
       tf2::Transform tfRelativeCurrentPose;
@@ -296,11 +294,6 @@ private:
             << "] Exception in computeCurrentEndEffectorPoseRelativeToPivot: " << e.what());
       return;
     }
-
-    // tf2::Transform endEffectorInBaseLinkFrame;
-    // tf2::fromMsg(currentRobotEndEffectorPose.pose, endEffectorInBaseLinkFrame);
-
-    // tf2::Transform endEffectorInPivotFrame = globalBaseLink * endEffectorInBaseLinkFrame; // pose composition
 
     // now pivot and EndEffector share a common reference frame (let say map)
     // now get the current pose from the pivot reference frame with inverse composition

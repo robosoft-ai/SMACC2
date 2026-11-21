@@ -58,7 +58,6 @@ enum class ComputeJointTrajectoryErrorCode
 class CbMoveEndEffectorTrajectory : public CbMoveit2zClientBehaviorBase
 {
 public:
-  // std::string tip_link_;
   std::optional<std::string> group_;
 
   std::optional<std::string> tipLink_;
@@ -554,7 +553,6 @@ protected:
 
       tf2::Transform basetransform;
       tf2::fromMsg(pose.pose, basetransform);
-      // tf2::Transform endarrow = localdirection * basetransform;
 
       end.x = localdirection.getOrigin().x();
       end.y = localdirection.getOrigin().y();

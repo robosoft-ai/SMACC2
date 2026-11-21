@@ -73,7 +73,6 @@ private:
   std::function<void(const TResponse &)> onResponse;
 
   boost::asio::ip::tcp::resolver resolver_;
-  // boost::beast::tcp_stream stream_;
   boost::beast::ssl_stream<boost::beast::tcp_stream> stream_;
   boost::beast::flat_buffer buffer_;  // (Must persist between reads)
   boost::beast::http::request<boost::beast::http::string_body> req_;

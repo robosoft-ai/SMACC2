@@ -50,7 +50,6 @@ private:
 #define HAVE_NEW_YAMLCPP
   std::map<std::string, double> loadJointStatesFromFile(std::string pkg, std::string filepath)
   {
-    //auto pkgpath = ros::package::getPath(pkg);
     std::string pkgpath = ament_index_cpp::get_package_share_directory(pkg);
 
     std::map<std::string, double> jointStates;
