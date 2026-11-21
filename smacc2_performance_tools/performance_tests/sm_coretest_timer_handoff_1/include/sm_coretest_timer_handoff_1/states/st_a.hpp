@@ -29,7 +29,10 @@ struct StA : smacc2::SmaccState<StA, SmCoretestTimerHandoff1>
     configure_orthogonal<OrSleep, CbSleepFor>(rclcpp::Duration(30s));
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(100ms);
     static_createStateReactor<
-      SrEventCountdown, EvCountdownEnd<SrEventCountdown, StA>,
+      SrEventCountdown,
+      // Set Reactor Output Event
+      EvCountdownEnd<SrEventCountdown, StA>,
+      // Add Reactor Input Events
       mpl::list<EvTimer<CbTimerCountdownOnce, OrTimer>>>(1);
   }
 

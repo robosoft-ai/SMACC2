@@ -29,7 +29,10 @@ struct StChurnA : smacc2::SmaccState<StChurnA, SmCoretestObjectChurn1>
     configure_orthogonal<OrAsync, CbFinish>();
     static_createEventGenerator<EgConditionalGenerator>(ConditionalGeneratorMode::ON_UPDATE);
     static_createStateReactor<
-      SrAllEventsGo, EvAllGo<SrAllEventsGo, StChurnA>,
+      SrAllEventsGo,
+      // Set Reactor Output Event
+      EvAllGo<SrAllEventsGo, StChurnA>,
+      // Add Reactor Input Events
       mpl::list<EvCbSuccess<CbFinish, OrAsync>, EvTrue<EgConditionalGenerator, StChurnA>>>();
   }
 

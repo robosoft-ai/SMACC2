@@ -29,7 +29,11 @@ struct StA : smacc2::SmaccState<StA, SmCoretestReactorOrder1>
   static void staticConfigure()
   {
     static_createStateReactor<
-      SrEventCountdown, EvCountdownEnd<SrEventCountdown, StA>, mpl::list<EvX>>(1);
+      SrEventCountdown,
+      // Set Reactor Output Event
+      EvCountdownEnd<SrEventCountdown, StA>,
+      // Add Reactor Input Events
+      mpl::list<EvX>>(1);
   }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "[StA] Entered."); }
