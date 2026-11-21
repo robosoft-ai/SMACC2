@@ -39,25 +39,6 @@ using namespace std::chrono_literals;
 
 /**
 ******************************************************************************************************************
-* SmExecution singleton implementation
-******************************************************************************************************************
-*/
-SmExecution::SmExecution()
-: schedulerThread(nullptr),
-  signalDetectorLoop(nullptr),
-  signalDetector(nullptr),
-  scheduler1(nullptr)
-{
-}
-
-SmExecution & SmExecution::getInstance()
-{
-  static SmExecution instance;
-  return instance;
-}
-
-/**
-******************************************************************************************************************
 * SignalDetector()
 ******************************************************************************************************************
 */
@@ -141,7 +122,7 @@ void SignalDetector::findUpdatableClientsAndComponents()
 
 /**
  ******************************************************************************************************************
- * findUpdatableClientBehaviors()
+ * findUpdatableStateElements()
  ******************************************************************************************************************
  */
 void SignalDetector::findUpdatableStateElements(ISmaccState * currentState)
@@ -203,6 +184,11 @@ void SignalDetector::findUpdatableStateElements(ISmaccState * currentState)
   }
 }
 
+/**
+ ******************************************************************************************************************
+ * Updateable State Notifications
+ ******************************************************************************************************************
+ */
 void SignalDetector::notifyStateConfigured(ISmaccState * currentState)
 {
   this->findUpdatableStateElements(currentState);
@@ -218,6 +204,11 @@ void SignalDetector::notifyStateInitializationFailed()
   if (!this->updatableStateElements_.empty()) this->updatableStateElements_.back().clear();
 }
 
+/**
+ ******************************************************************************************************************
+ * notifyRosInitialized()
+ ******************************************************************************************************************
+ */
 void SignalDetector::notifyRosInitialized()
 {
   RCLCPP_INFO(getLogger(), "[SignalDetector] ROS initialization complete, enabling polling loop");
@@ -258,6 +249,11 @@ void SignalDetector::join() { signalDetectorThread_.join(); }
  */
 void SignalDetector::stop() { end_ = true; }
 
+/**
+ ******************************************************************************************************************
+ * joinAsyncClientBehaviorThreads()
+ ******************************************************************************************************************
+ */
 void SignalDetector::joinAsyncClientBehaviorThreads()
 {
   if (smaccStateMachine_ != nullptr)
@@ -282,7 +278,7 @@ void SignalDetector::terminateScheduler()
 
 /**
  ******************************************************************************************************************
- * poll()
+ * pollOnce()
  ******************************************************************************************************************
  */
 void SignalDetector::pollOnce()
@@ -527,6 +523,11 @@ void SignalDetector::pollingLoop()
   }
 }
 
+/**
+ ******************************************************************************************************************
+ * onSigQuit()
+ ******************************************************************************************************************
+ */
 // Hard escape hatch. Only async-signal-safe calls: no logging (takes a mutex), no exit()
 // (runs static destructors and atexit handlers in signal context).
 void onSigQuit(int)
