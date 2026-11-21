@@ -90,7 +90,7 @@ struct TunnelCenteringParams
 class CpTunnelCentering : public smacc2::ISmaccComponent
 {
 public:
-  explicit CpTunnelCentering(TunnelCenteringParams params = {});
+  explicit CpTunnelCentering(const TunnelCenteringParams & params = {});
   ~CpTunnelCentering() override;
 
   void onInitialize() override;

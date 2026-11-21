@@ -54,7 +54,7 @@ int64_t nowNs()
 }
 }  // namespace
 
-CpTunnelCentering::CpTunnelCentering(TunnelCenteringParams params) : params_(params) {}
+CpTunnelCentering::CpTunnelCentering(const TunnelCenteringParams & params) : params_(params) {}
 
 CpTunnelCentering::~CpTunnelCentering() {}
 

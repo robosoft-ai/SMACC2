@@ -88,14 +88,14 @@ public:
 
     CbMoveit2zClientBehaviorBase::onStateOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
-    postJointDiscontinuityEvent = [this](auto traj)
+    postJointDiscontinuityEvent = [this](const auto & traj)
     {
       auto ev = smacc2::makeEvent<EvJointDiscontinuity<TSourceObject, TOrthogonal>>();
       ev->trajectory = traj;
       this->postEvent(ev);
     };
 
-    postIncorrectInitialStateEvent = [this](auto traj)
+    postIncorrectInitialStateEvent = [this](const auto & traj)
     {
       auto ev = smacc2::makeEvent<EvIncorrectInitialPosition<TSourceObject, TOrthogonal>>();
       ev->trajectory = traj;

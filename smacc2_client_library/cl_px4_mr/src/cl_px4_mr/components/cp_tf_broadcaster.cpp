@@ -41,7 +41,7 @@ const tf2::Quaternion kNedEnuQ(0.70710678118654752, 0.70710678118654752, 0.0, 0.
 const tf2::Quaternion kFrdFluQ(1.0, 0.0, 0.0, 0.0);
 }  // namespace
 
-CpTfBroadcaster::CpTfBroadcaster(TfBroadcasterParams params) : params_(params) {}
+CpTfBroadcaster::CpTfBroadcaster(const TfBroadcasterParams & params) : params_(params) {}
 
 CpTfBroadcaster::~CpTfBroadcaster() {}
 

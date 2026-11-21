@@ -72,7 +72,7 @@ struct TfBroadcasterParams
 class CpTfBroadcaster : public smacc2::ISmaccComponent
 {
 public:
-  explicit CpTfBroadcaster(TfBroadcasterParams params = {});
+  explicit CpTfBroadcaster(const TfBroadcasterParams & params = {});
   ~CpTfBroadcaster() override;
 
   void onInitialize() override;
