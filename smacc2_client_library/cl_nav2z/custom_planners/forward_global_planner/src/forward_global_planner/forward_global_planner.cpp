@@ -148,11 +148,7 @@ nav_msgs::msg::Path ForwardGlobalPlanner::createPlan(
     costmap2d->worldToMap(p.pose.position.x, p.pose.position.y, mx, my);
     auto cost = costmap2d->getCost(mx, my);
 
-    // static const unsigned char NO_INFORMATION = 255;
-    // static const unsigned char LETHAL_OBSTACLE = 254;
-    // static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
-    // static const unsigned char FREE_SPACE = 0;
-
+    // Costmap values: 255 no information, 254 lethal obstacle, 253 inscribed inflated obstacle, 0 free space.
     if (cost >= nav2_costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
     {
       RCLCPP_INFO_STREAM(

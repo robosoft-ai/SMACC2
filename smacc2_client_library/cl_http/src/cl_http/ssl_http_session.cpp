@@ -155,7 +155,6 @@ void ssl_http_session::on_shutdown(boost::beast::error_code ec)
     // http://stackoverflow.com/questions/25587403/boost-asio-ssl-async-shutdown-always-finishes-with-an-error
     ec = {};
   }
-  // if (ec) return fail(ec, "shutdown");
 
   // If we get here then the connection is closed gracefully
   onResponse(res_);

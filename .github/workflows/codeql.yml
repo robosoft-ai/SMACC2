@@ -176,11 +176,14 @@ jobs:
           CODEQL="${{ steps.init.outputs.codeql-path }}"
           RES="$RUNNER_TEMP/codeql_databases/cpp/results"
           mkdir -p sarif-results/raw_all
+          set +e +o pipefail   # a search root that does not exist, or a query with no file, is not an error here
+          find "$(dirname "$CODEQL")" "$HOME/.codeql" /root/.codeql /github/home/.codeql -name '*.ql' > /tmp/ql_files.txt 2>/dev/null
+          echo "$(wc -l < /tmp/ql_files.txt) query files found"
           done_n=0; skipped=0
           while read -r b; do
             rel=${b#"$RES"/}; rel=${rel%.bqrs}
             pack=$(echo "$rel" | cut -d/ -f1-2); sub=${rel#"$pack"/}
-            ql=$(find "$(dirname "$CODEQL")" "$HOME/.codeql" /root/.codeql /github/home/.codeql -path "*/$pack/*/$sub.ql" 2>/dev/null | head -1)
+            ql=$(grep -F "/$sub.ql" /tmp/ql_files.txt | grep -F "/$pack/" | head -1)
             id=$(sed -n 's/^ *\* *@id  *\([^ ]*\).*$/\1/p' "$ql" 2>/dev/null | head -1 | tr -d '\r')
             kind=$(sed -n 's/^ *\* *@kind  *\([^ ]*\).*$/\1/p' "$ql" 2>/dev/null | head -1 | tr -d '\r')
             if [ -z "$id" ]; then echo "no query file or id for $rel"; skipped=$((skipped + 1)); continue; fi
