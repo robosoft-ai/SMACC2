@@ -131,31 +131,6 @@ private:
 
 void onSigQuit(int sig);
 
-// Singleton class managing SMACC execution lifecycle
-// Replaces global g_signal_detector for signal handler access
-class SmExecution
-{
-public:
-  // Get singleton instance
-  static SmExecution & getInstance();
-
-  // Delete copy and move constructors/operators
-  SmExecution(const SmExecution &) = delete;
-  SmExecution & operator=(const SmExecution &) = delete;
-  SmExecution(SmExecution &&) = delete;
-  SmExecution & operator=(SmExecution &&) = delete;
-
-  boost::thread * schedulerThread;
-  boost::thread * signalDetectorLoop;
-  SignalDetector * signalDetector;
-  SmaccFifoScheduler * scheduler1;
-  SmaccFifoScheduler::processor_handle sm;
-
-private:
-  // Private constructor for singleton
-  SmExecution();
-};
-
 // Main entry point for any SMACC state machine
 // It instantiates and starts the specified state machine type
 // it uses two threads: a new thread and the current one.
@@ -171,18 +146,11 @@ void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
   // rclcpp::shutdown() directly ran DDS teardown inside the signal context.
   ::signal(SIGQUIT, onSigQuit);
 
-  // Get singleton instance
-  SmExecution & smExecution = SmExecution::getInstance();
-
   // create the asynchronous state machine scheduler
   SmaccFifoScheduler scheduler1(true);
 
   // create the signalDetector component
   SignalDetector signalDetector(&scheduler1, executionModel);
-
-  // Store in singleton for signal handler access
-  smExecution.signalDetector = &signalDetector;
-  smExecution.scheduler1 = &scheduler1;
 
   // create the asynchronous state machine processor
   SmaccFifoScheduler::processor_handle sm =
@@ -190,13 +158,11 @@ void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
 
   // initialize the asynchronous state machine processor
   signalDetector.setProcessorHandle(sm);
-  smExecution.sm = sm;
 
   scheduler1.initiate_processor(sm);
 
   //create a thread for the asynchronous state machine processor execution
   boost::thread schedulerThread(boost::bind(&sc::fifo_scheduler<>::operator(), &scheduler1, 0));
-  smExecution.schedulerThread = &schedulerThread;
 
   // use the  main thread for the signal detector component (waiting actionclient requests)
   signalDetector.pollingLoop();
@@ -222,11 +188,6 @@ void run(ExecutionModel executionModel = ExecutionModel::SINGLE_THREAD_SPINNER)
   // destructors below would otherwise do it with both half-destroyed.
   signalDetector.joinAsyncClientBehaviorThreads();
   RCLCPP_INFO(rclcpp::get_logger("SMACC"), "Scheduler thread terminated. Shutdown complete.");
-
-  // Clear singleton references
-  smExecution.signalDetector = nullptr;
-  smExecution.scheduler1 = nullptr;
-  smExecution.schedulerThread = nullptr;
 }
 
 }  // namespace smacc2
