@@ -43,21 +43,15 @@ struct StState2 : smacc2::SmaccState<StState2, MsRun>
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
 
     // Create State Reactor
-    // auto sbAll = static_createStateReactor<SrAllEventsGo>();
-
     auto sbAll = static_createStateReactor<
-      smacc2::state_reactors::SrAllEventsGo, smacc2::state_reactors::EvAllGo<SrAllEventsGo>,
+      SrAllEventsGo,
+      // Set Reactor Output Event
+      EvAllGo<SrAllEventsGo>,
+      // Add Reactor Input Events
       mpl::list<
         EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>,
         EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>,
         EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>>>();
-
-    /*
-    sbAll->addInputEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
-    sbAll->addInputEvent<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>>();
-    sbAll->addInputEvent<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>>();
-    sbAll->setOutputEvent<EvAllGo<SrAllEventsGo>>();
-    */
   }
 
   void runtimeConfigure() {}

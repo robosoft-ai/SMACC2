@@ -58,7 +58,6 @@ struct StPause8 : smacc2::SmaccState<StPause8, SmPandaClMoveit2zCbInventory>
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    // configure_orthogonal<OrArm, CbWaitTopicMessage<sensor_msgs::msg::JointState>>("/joint_states");
     configure_orthogonal<OrArm, CbSleepFor>(15s);
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   };

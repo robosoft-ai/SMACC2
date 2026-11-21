@@ -57,9 +57,6 @@ struct StEndEffectorRotate : smacc2::SmaccState<StEndEffectorRotate, SmPandaClMo
   static void staticConfigure()
   {
       double deltaRadians = -M_PI * 0.1;
-      //std::string tipLink  = "tool0";
-      //std::string tipLink = "wrist_3_link";
-
        std::string tipLink = "panda_link8";
 
 
