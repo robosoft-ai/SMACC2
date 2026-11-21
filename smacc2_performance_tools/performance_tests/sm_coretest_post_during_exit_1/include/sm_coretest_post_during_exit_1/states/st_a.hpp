@@ -27,7 +27,11 @@ struct StA : smacc2::SmaccState<StA, SmCoretestPostDuringExit1>
   {
     configure_orthogonal<OrSleep, CbSleepFor>(50ms);
     static_createStateReactor<
-      SrEventCountdown, EvCountdownEnd<SrEventCountdown, StA>, mpl::list<EvPulse>>(1000000);
+      SrEventCountdown,
+      // Set Reactor Output Event
+      EvCountdownEnd<SrEventCountdown, StA>,
+      // Add Reactor Input Events
+      mpl::list<EvPulse>>(1000000);
   }
 
   void onEntry() { RCLCPP_INFO(getLogger(), "[StA] Entered."); }

@@ -37,7 +37,10 @@ struct StA : smacc2::SmaccState<StA, SmCoretestForcedFinish1>
     // One EvTimer ends the countdown; the reactor is disposed with the state
     // (exercises the state-reactor loop in notifyOnStateExited).
     static_createStateReactor<
-      SrEventCountdown, EvCountdownEnd<SrEventCountdown, StA>,
+      SrEventCountdown,
+      // Set Reactor Output Event
+      EvCountdownEnd<SrEventCountdown, StA>,
+      // Add Reactor Input Events
       mpl::list<EvTimer<CbTimerCountdownOnce, OrTimer>>>(1);
   }
 
