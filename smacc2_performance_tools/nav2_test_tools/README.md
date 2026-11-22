@@ -23,6 +23,16 @@ bash src/SMACC2/smacc2_performance_tools/nav2_test_tools/nav2_run.sh install /tm
 GUI=1 bash src/SMACC2/smacc2_performance_tools/nav2_test_tools/nav2_run.sh install /tmp/nav2_4 4
 ```
 
+`CTRL_C=1` tests what Ctrl-C does to a user's run. Everything is started through the machine's own
+launch file (its keyboard window opens), and at the final state one SIGINT goes to the whole process
+group, as a terminal sends it; `ros2 launch` forwards it as well, so the machine may receive two.
+The script then fails unless `ros2 launch` reports that the machine ended cleanly. The output
+directory receives `launch.log`; `sm.log` holds the machine's lines taken from it.
+
+```bash
+CTRL_C=1 bash src/SMACC2/smacc2_performance_tools/nav2_test_tools/nav2_run.sh install /tmp/nav2_1 1
+```
+
 Needs `nav2_bringup` with the TurtleBot3 simulation and Gazebo. Machine 1 takes about a minute; the
 script gives up after 20 minutes, or after 120 s without a new state. Exit status 0 when
 `StFinalState` was reached and the machine stopped without hanging.
@@ -33,6 +43,8 @@ script gives up after 20 minutes, or after 120 s without a new state. Exit statu
 |--|--|
 | `verdict` | whether the end state was reached, and after how long; `died` means the machine exited by itself, `timeout` or `stall` that it stopped progressing, `failed` that machine 4 ended in `StMissionFailed` |
 | `SM exit` | the machine's exit status after SIGINT and how long shutdown took; `SM HANG` means it was still alive 120 s later |
+| `bringup exit`, `launch exit` | the exit status of `ros2 launch`; it does not show a process the launch had to kill |
+| `== launch` | from the launch log: whether the interrupt was received, how many processes ended cleanly, and each that died with its exit code (-9 killed by the launch after 15 s, -6 aborted). The Nav2 container of Jazzy often fails to stop on SIGINT, with or without a state machine |
 | `leftover after` | simulator or node processes still running when the script ended; should be 0 |
 | `== states` | every state entered, in order |
 | `== shutdown` | the shutdown markers the core logged, in order |

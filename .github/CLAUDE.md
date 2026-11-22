@@ -139,20 +139,21 @@ process exits cleanly.
 
 | Test | What it exercises |
 |--|--|
-| `sm_coretest_forced_finish_1` | 20 state cycles, then 10 runs interrupted at random moments: async behaviors forced to finish at exit |
+| `sm_coretest_forced_finish_1` | 20 state cycles, then 10 runs interrupted at random moments and 10 interrupted twice, 10 to 200 ms apart (Ctrl-C pressed twice): async behaviors forced to finish at exit |
 | `sm_coretest_signal_key_1` | signal connections keyed by object across state changes |
 | `sm_coretest_reactor_order_1` | the order of a state reactor's output against the event that triggered it |
 | `sm_coretest_timer_handoff_1` | a timer created on the state machine thread and serviced by the executor (W) |
 | `sm_coretest_post_during_exit_1` | 200 Hz event posts from the executor thread across 50 ms state exits |
-| `sm_coretest_poll_shutdown_1` | SIGINT landing inside the polling loop's update window |
+| `sm_coretest_poll_shutdown_1` | SIGINT landing inside the polling loop's update window, 10 runs with one SIGINT and 10 with two |
 | `sm_coretest_transition_speed_1` | 20 s of back-to-back transitions with the loop at 2000 Hz |
 | `sm_coretest_exceptions_1` | user code that throws, one site per run: a state's `onExit`, a behavior's `onExit` or `update()`, a behavior's `runtimeConfigure` or `onEntry` (posts `EvCbInitializationFailure`), and a state's `runtimeConfigure` or `onEntry` (posts `EvStInitializationFailure` to the state, then to each container, then to the state machine's hook) |
 | `sm_coretest_action_client_1` | `CpActionClient` and `CbActionClientBehaviorBase` against an action server in the same process: a goal that succeeds, is rejected, is aborted, has no server, and is cancelled by a state exit while in flight, with the next state sending its own goal at once |
 | `sm_coretest_features_1` | an event generator, a `CbSequence` that completes, one aborted by a failing step and two cut short by a state exit, a behavior that posts its failure event, and an updatable with an update period |
 
 The script fails on any report with a SMACC2 frame, a crash, a hang or a broken test invariant.
-Reports with no SMACC2 frame are counted as external and do not fail the run; the known one is a
-string race inside Fast DDS.
+Reports with no SMACC2 frame are counted as external and do not fail the run. Two are known: a
+string race inside Fast DDS, and, in the runs with two SIGINTs, rclcpp's signal thread reading the
+context list while `main` destroys the global context at exit (a plain rclcpp node shows it too).
 That report needs a second participant in the domain, so the script stops the `ros2` daemon of its
 domain at the start and the end and exits with status 2 when a node is already running there; the
 scripts in `smacc2_performance_tools` do the same.

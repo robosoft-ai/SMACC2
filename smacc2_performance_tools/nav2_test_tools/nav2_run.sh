@@ -25,6 +25,8 @@
 # SMACC2 libraries are taken from the overlay prefix, built with the matching -fsanitize flags.
 # Machine 4 runs in the world of machine 2, which must be in the install prefix as well.
 # GUI=1 in the environment opens the Gazebo window and RViz instead of running headless.
+# CTRL_C=1 starts everything through the machine's own launch file, as a user does, and stops it with
+# one SIGINT to the whole process group, as Ctrl-C in a terminal does. Its keyboard window opens.
 # Exit status 0 when the final state was reached and the machine stopped without hanging.
 # Up to 20 minutes. Nothing else may be running in the domain (ROS_DOMAIN_ID, default 48).
 if [ $# -lt 3 ]; then echo "usage: $0 <install-prefix> <out-dir> <1|2|3|4> [tsan|asan <overlay-prefix>]"; exit 2; fi
@@ -68,11 +70,18 @@ if [ $N != 1 ]; then   # tests 2 and 3 bring their own world, map and parameters
 fi
 SMARGS="-p use_sim_time:=true"; [ $N = 2 ] && SMARGS="$SMARGS -p clear_point_distance_threshold:=0.1 -p clear_angular_distance_threshold:=3.14"
 [ $N = 4 ] && SMARGS="$SMARGS -p waypoints_file:=\$(pkg_share)/config/waypoints.yaml"
-( exec ros2 launch nav2_bringup tb3_simulation_launch.py $BARGS > $BL 2>&1 ) & LP=$!
+CTRL_C=${CTRL_C:-0}; SP=""
+# env --default-signal: a caller that runs this script as a background job leaves SIGINT ignored, and ros2 launch would then never stop.
+if [ $CTRL_C = 1 ]; then
+  HL=True; [ "${GUI:-0}" = 1 ] && HL=False; LOG=$OUT/launch.log; BL=$LOG
+  ( [ -n "$OVERLAY" ] && source "$OVERLAY"; exec env --default-signal=INT $PRE ros2 launch $PKG $PKG.py headless:=$HL > $LOG 2>&1 ) & LP=$!; SP=$LP
+else
+  ( exec env --default-signal=INT ros2 launch nav2_bringup tb3_simulation_launch.py $BARGS > $BL 2>&1 ) & LP=$!
+fi
 for i in $(seq 1 150); do sleep 1; grep -a -q "Managed nodes are active" $BL && { echo "nav2 active after $i s"; break; }; done
 grep -a -q "Managed nodes are active" $BL || echo "nav2 NOT active after 150 s"
 T0=$(date +%s)
-( [ -n "$OVERLAY" ] && source "$OVERLAY"; exec $PRE $BIN --ros-args -r __node:=$PKG $SMARGS --log-level INFO > $LOG 2>&1 ) & SP=$!
+[ $CTRL_C = 1 ] || { ( [ -n "$OVERLAY" ] && source "$OVERLAY"; exec $PRE $BIN --ros-args -r __node:=$PKG $SMARGS --log-level INFO > $LOG 2>&1 ) & SP=$!; }
 VERDICT=timeout; KEYSENT=0; KEYAT=0; LASTNS=0; LASTT=$(date +%s)
 CPUF=$OUT/cpu.txt; : > $CPUF
 ( sleep 2; SMP=$(pgrep -f "^[^ ]*${PKG}_node" | head -1); while kill -0 $SP 2>/dev/null; do top -b -n 2 -d 1 -p $SMP 2>/dev/null | awk -v p=$SMP '$1==p {v=$9} END{if (v!="") print v}' >> $CPUF; sleep 1; done ) &
@@ -90,15 +99,32 @@ for i in $(seq 1 1200); do sleep 1
 done
 echo "verdict: $VERDICT after $(( $(date +%s)-T0 )) s (keys sent: $KEYSENT)"
 echo "SM node CPU %: samples $(wc -l < $CPUF) mean $(awk '{s+=$1} END{if (NR) printf "%.1f", s/NR}' $CPUF) max $(sort -n $CPUF | tail -1)"
-sleep 3; HANG=no
-if kill -0 $SP 2>/dev/null; then T1=$(date +%s.%N); kill -INT $SP
+sleep 3; HANG=no; SMX=0
+if [ $CTRL_C = 1 ]; then
+  SMP=$(pgrep -u $USER -f "^[^ ]*${PKG}_node" | head -1); T1=$(date +%s.%N)
+  kill -INT -- -$LP   # the process group: ros2 launch and every process it started
+  for i in $(seq 1 300); do kill -0 "$SMP" 2>/dev/null || break; sleep 0.1; done
+  TS=$(python3 -c "print(round($(date +%s.%N)-$T1,1))")
+  for i in $(seq 1 90); do kill -0 $LP 2>/dev/null || break; sleep 1; done
+  kill -0 $LP 2>/dev/null && { echo "launch alive after 90 s; SIGKILL to the group"; kill -KILL -- -$LP; }
+  wait $LP 2>/dev/null; LX=$?
+  # ros2 launch reports how each process ended; the machine's own lines become sm.log
+  SMX=$(grep -a "\[${PKG}_node-[0-9]*\]: process has" $LOG | tail -1 | sed -n 's/.*finished cleanly.*/0/p; s/.*exit code \(-\?[0-9]*\).*/\1/p'); SMX=${SMX:-unknown}
+  grep -a -q "\[${PKG}_node-[0-9]*\]: process.* failed to terminate" $LOG && { HANG=yes; echo "SM HANG: ros2 launch had to escalate past SIGINT"; }
+  echo "SM exit $SMX after $TS s"; echo "launch exit $LX"
+  BL=$LOG; LOG=$OUT/sm.log; grep -a "^\[${PKG}_node-[0-9]*\] " $BL | sed 's/^\[[^]]*\] //' > $LOG
+elif kill -0 $SP 2>/dev/null; then T1=$(date +%s.%N); kill -INT $SP
   for i in $(seq 1 120); do kill -0 $SP 2>/dev/null || break; sleep 1; done
   if kill -0 $SP 2>/dev/null; then HANG=yes; echo "SM HANG: alive 120 s after SIGINT, SIGKILL"; kill -KILL $SP; fi
   wait $SP; echo "SM exit $? after $(python3 -c "print(round($(date +%s.%N)-$T1,1))") s"
 else wait $SP; echo "SM exit $? (ended on its own)"; fi
-kill -INT $LP; for i in $(seq 1 90); do kill -0 $LP 2>/dev/null || break; sleep 1; done
-kill -0 $LP 2>/dev/null && { echo "bringup alive after 90 s; group SIGINT"; kill -INT -- -$LP; sleep 15; kill -0 $LP 2>/dev/null && kill -KILL -- -$LP; }
-wait $LP 2>/dev/null; echo "bringup exit $?"
+if [ $CTRL_C != 1 ]; then
+  kill -INT $LP; for i in $(seq 1 90); do kill -0 $LP 2>/dev/null || break; sleep 1; done
+  kill -0 $LP 2>/dev/null && { echo "bringup alive after 90 s; group SIGINT"; kill -INT -- -$LP; sleep 15; kill -0 $LP 2>/dev/null && kill -KILL -- -$LP; }
+  wait $LP 2>/dev/null; echo "bringup exit $?"
+fi
+# The exit status of ros2 launch does not show a process it had to kill; its log does.
+echo "== launch: interrupted $(grep -a -c 'user interrupted with ctrl-c' $BL)  ended cleanly $(grep -a -c 'process has finished cleanly' $BL)  died: $(grep -a 'process has died' $BL | sed 's/.*\[\([^] ]*\)\]: process has died \[pid [0-9]*, exit code \(-\?[0-9]*\).*/\1(\2)/' | tr '\n' ' ')"
 sleep 2; echo "leftover after: $(pgrep -u $USER -c -f "$SIMPROCS")"
 echo "== states: $(grep -a -o "${PKG}::[A-Za-z0-9_]*\] State OnEntry code finished" $LOG | sed 's/.*::\(.*\)\].*/\1/' | tr '\n' ' ')"
 echo "== shutdown: $(grep -a -o 'signal_handler\|Terminating scheduler\|Polling loop exited\|Shutdown complete\|Finishing State Machine\|terminate called\|destroyed with a live\|cannot be slept' $LOG | tr '\n' ' ')"
@@ -108,4 +134,4 @@ if [ $MODE != plain ]; then
   echo "== sanitizer: ASan errors $(grep -a -c '^==[0-9]*==ERROR: AddressSanitizer' $LOG)  LSan $(grep -a -c 'LeakSanitizer' $LOG)  leak: $(grep -a -o 'SUMMARY: AddressSanitizer: [0-9]* byte(s) leaked in [0-9]* allocation' $LOG)  UBSan $(grep -a -c 'runtime error' $LOG)  TSan warnings $(cat $OUT/tsan_report.* 2>/dev/null | grep -c '^WARNING: ThreadSanitizer')"
   python3 $REPO/.github/scripts/sanitizer_reports.py $LOG $OUT/tsan_report.* 2>/dev/null | tail -3
 fi
-[ $VERDICT = final ] && [ $HANG = no ]
+[ $VERDICT = final ] && [ $HANG = no ] && { [ $CTRL_C != 1 ] || [ "$SMX" = 0 ] || [ $MODE != plain ]; }
