@@ -137,21 +137,21 @@ class ClientHandler : public TClient
 {
 public:
   template <typename... TArgs>
-  ClientHandler(TArgs... args) : TClient(args...)
+  ClientHandler(const TArgs &... args) : TClient(args...)
   {
   }
 
   ClientHandler() : TClient() {}
 
   template <typename SmaccComponentType, typename... TArgs>
-  SmaccComponentType * createComponent(TArgs... targs)
+  SmaccComponentType * createComponent(const TArgs &... targs)
   {
     return ISmaccClient::createComponent<SmaccComponentType, TOrthogonal, TClient, TArgs...>(
       targs...);
   }
 
   template <typename SmaccComponentType, typename... TArgs>
-  SmaccComponentType * createNamedComponent(const std::string & name, TArgs... targs)
+  SmaccComponentType * createNamedComponent(const std::string & name, const TArgs &... targs)
   {
     return ISmaccClient::createNamedComponent<SmaccComponentType, TOrthogonal, TClient, TArgs...>(
       name, targs...);
@@ -168,7 +168,7 @@ class Orthogonal : public ISmaccOrthogonal
 {
 public:
   template <typename TClient, typename... TArgs>
-  std::shared_ptr<ClientHandler<TOrthogonal, TClient>> createClient(TArgs... args)
+  std::shared_ptr<ClientHandler<TOrthogonal, TClient>> createClient(const TArgs &... args)
   {
     RCLCPP_INFO(
       getLogger(), "[%s] Creating client object, type:'%s' object tag: '%s'",

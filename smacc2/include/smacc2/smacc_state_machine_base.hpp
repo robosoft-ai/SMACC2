@@ -35,7 +35,7 @@ struct SmaccStateMachineBase
 public:
   SmaccStateMachineBase(
     my_context ctx, SignalDetector * signalDetector,
-    rclcpp::NodeOptions node_options = rclcpp::NodeOptions())
+    const rclcpp::NodeOptions & node_options = rclcpp::NodeOptions())
   : ISmaccStateMachine(
       smacc2::utils::cleanShortTypeName<DerivedStateMachine>(), signalDetector, node_options),
     sc::asynchronous_state_machine<

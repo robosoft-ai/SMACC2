@@ -88,7 +88,8 @@ TComponent * ISmaccClient::getComponent(const std::string & name)
 ISmaccStateMachine * ISmaccClient::getStateMachine() { return this->stateMachine_; }
 
 template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-SmaccComponentType * ISmaccClient::createNamedComponent(const std::string & name, TArgs... targs)
+SmaccComponentType * ISmaccClient::createNamedComponent(
+  const std::string & name, const TArgs &... targs)
 {
   ComponentKey componentkey(&typeid(SmaccComponentType), name);
 
@@ -129,7 +130,7 @@ SmaccComponentType * ISmaccClient::createNamedComponent(const std::string & name
 }
 
 template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-SmaccComponentType * ISmaccClient::createComponent(TArgs... targs)
+SmaccComponentType * ISmaccClient::createComponent(const TArgs &... targs)
 {
   return this->createNamedComponent<SmaccComponentType, TOrthogonal, TClient>(
     std::string(), targs...);

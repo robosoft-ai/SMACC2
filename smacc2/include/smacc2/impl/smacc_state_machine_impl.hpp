@@ -369,7 +369,7 @@ struct Bind<2>
     std::shared_ptr<CallbackCounterSemaphore> callbackCounter)
   {
     return signal.connect(
-      [=](auto a1)
+      [=](const auto & a1)
       {
         if (callbackCounter == nullptr)
         {
@@ -393,7 +393,7 @@ struct Bind<3>
     std::shared_ptr<CallbackCounterSemaphore> callbackCounter)
   {
     return signal.connect(
-      [=](auto a1, auto a2)
+      [=](const auto & a1, const auto & a2)
       {
         if (callbackCounter == nullptr)
         {
@@ -417,7 +417,7 @@ struct Bind<4>
     std::shared_ptr<CallbackCounterSemaphore> callbackCounter)
   {
     return signal.connect(
-      [=](auto a1, auto a2, auto a3)
+      [=](const auto & a1, const auto & a2, const auto & a3)
       {
         if (callbackCounter == nullptr)
         {

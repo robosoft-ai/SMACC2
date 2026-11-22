@@ -36,7 +36,8 @@ thread_local int ISmaccStateMachine::reactorWalkDepth_ = 0;
 using namespace std::chrono_literals;
 using namespace smacc2::introspection;
 ISmaccStateMachine::ISmaccStateMachine(
-  std::string stateMachineName, SignalDetector * signalDetector, rclcpp::NodeOptions nodeOptions)
+  std::string stateMachineName, SignalDetector * signalDetector,
+  const rclcpp::NodeOptions & nodeOptions)
 : nh_(rclcpp::Node::make_shared(stateMachineName, nodeOptions))
 {
   RCLCPP_INFO_STREAM(

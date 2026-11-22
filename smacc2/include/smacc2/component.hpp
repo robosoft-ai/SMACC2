@@ -77,10 +77,11 @@ protected:
   void requiresClient(TClient *& requiredClientStorage);
 
   template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-  SmaccComponentType * createSiblingComponent(TArgs... targs);
+  SmaccComponentType * createSiblingComponent(const TArgs &... targs);
 
   template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-  SmaccComponentType * createSiblingNamedComponent(const std::string & name, TArgs... targs);
+  SmaccComponentType * createSiblingNamedComponent(
+    const std::string & name, const TArgs &... targs);
 
   rclcpp::Node::SharedPtr getNode();
 

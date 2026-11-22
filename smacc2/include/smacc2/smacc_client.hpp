@@ -108,10 +108,10 @@ protected:
   std::map<ComponentKey, std::shared_ptr<smacc2::ISmaccComponent>> components_;
 
   template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-  SmaccComponentType * createComponent(TArgs... targs);
+  SmaccComponentType * createComponent(const TArgs &... targs);
 
   template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-  SmaccComponentType * createNamedComponent(const std::string & name, TArgs... targs);
+  SmaccComponentType * createNamedComponent(const std::string & name, const TArgs &... targs);
 
   rclcpp::Node::SharedPtr getNode();
 

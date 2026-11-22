@@ -32,6 +32,8 @@ using namespace boost::signals2::detail;
 
 typedef boost::signals2::connection SmaccSignalConnection;
 
+// Slots receive the arguments by reference: keep them valid and unchanged until the call returns.
+// Fire with a parameter or a local variable, or while holding the lock that guards the object.
 template <
   typename Signature,
   typename Combiner = optional_last_value<typename boost::function_traits<Signature>::result_type>,
