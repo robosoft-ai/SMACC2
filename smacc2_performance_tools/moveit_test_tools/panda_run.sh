@@ -59,7 +59,8 @@ SIMPROCS='[m]ove_group|[r]os2_control_node|[r]obot_state_publisher|[_]node --ros
 echo "leftover: $(pgrep -u $USER -c -f "$SIMPROCS")"
 export PYTHONDONTWRITEBYTECODE=1   # keeps ros2 launch from leaving a __pycache__ beside the launch file
 set -m
-( exec ros2 launch "$HERE/panda_infra.launch.py" > $IL 2>&1 ) & LP=$!
+# env --default-signal: a caller that runs this script as a background job leaves SIGINT ignored, and ros2 launch would then never stop.
+( exec env --default-signal=INT ros2 launch "$HERE/panda_infra.launch.py" > $IL 2>&1 ) & LP=$!
 for i in $(seq 1 90); do sleep 1; grep -a -q "You can start planning now" $IL && { echo "move_group ready after $i s"; break; }; done
 grep -a -q "You can start planning now" $IL || echo "move_group NOT ready after 90 s"
 sleep 3

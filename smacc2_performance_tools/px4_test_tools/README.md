@@ -23,6 +23,7 @@ bash src/SMACC2/smacc2_performance_tools/px4_test_tools/px4_run.sh install /tmp/
 | `END_STATE` | `StLanded` | the state at which the machine is stopped |
 | `MAX_WAIT` | 420 | seconds to wait for that state |
 | `OWN_AGENT` | 0 | 1 starts no agent, for a machine that launches its own (tests 2, 4, 5); the report then counts agent processes the machine left behind |
+| `CTRL_C` | 0 | 1 starts the machine through its own launch file and stops it with one SIGINT to the launch's process group, as Ctrl-C in its terminal does (`ros2 launch` forwards it, so the machine receives two); the script then fails unless `ros2 launch` reports that the machine ended cleanly. The output directory receives `launch.log` as well |
 
 **Start QGroundControl first.** PX4 refuses to arm without a ground station connected, and the
 machine then waits forever in its first state. The script warns when it does not see one. The run

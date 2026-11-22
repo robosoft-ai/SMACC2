@@ -58,9 +58,13 @@ bin() { echo "$INST/$1/lib/$1/$1_node"; }
 # wait_pattern <log> <pattern> <tenths> : poll the log until the pattern appears
 wait_pattern() { for _ in $(seq 1 "$3"); do grep -a -q "$2" "$1" && return 0; sleep 0.1; done; return 1; }
 # stop <pid> <log> <label> : SIGINT, wait up to 20 s, SIGKILL on a hang; checks the exit status
+# With SECOND_SIGINT set to a number of seconds, a second SIGINT follows after a random 10 ms to that time.
 stop() {
   local pid=$1 log=$2 label=$3 hang=no status
   kill -INT "$pid" 2>/dev/null
+  if [ -n "${SECOND_SIGINT:-}" ]; then
+    sleep "$(awk -v r=$RANDOM -v m="$SECOND_SIGINT" 'BEGIN{printf "%.3f", 0.01 + (m - 0.01) * r / 32767}')"; kill -INT "$pid" 2>/dev/null
+  fi
   for _ in $(seq 1 200); do kill -0 "$pid" 2>/dev/null || break; sleep 0.1; done
   if kill -0 "$pid" 2>/dev/null; then hang=yes; kill -KILL "$pid" 2>/dev/null; fi
   wait "$pid" 2>/dev/null; status=$?
@@ -166,6 +170,11 @@ section "poll shutdown: 10 interrupts at the 75 % window (5 Hz loop, 150 ms upda
 sweep sm_coretest_poll_shutdown_1 poll_shutdown 10 -p signal_detector_loop_freq:=5.0
 section "forced finish: 10 random interrupts" sm_coretest_forced_finish_1
 sweep sm_coretest_forced_finish_1 forced_finish_sweep 10
+# Ctrl-C pressed twice: the second SIGINT arrives while the first is being served, or just after.
+section "poll shutdown: 10 double interrupts, 10 to 200 ms apart (5 Hz loop, 150 ms update)" sm_coretest_poll_shutdown_1
+SECOND_SIGINT=0.2 sweep sm_coretest_poll_shutdown_1 poll_shutdown_double 10 -p signal_detector_loop_freq:=5.0
+section "forced finish: 10 double interrupts at random times, 10 to 200 ms apart" sm_coretest_forced_finish_1
+SECOND_SIGINT=0.2 sweep sm_coretest_forced_finish_1 forced_finish_double 10
 
 section "transition speed: 20 s at 2000 Hz" sm_coretest_transition_speed_1
 LOG=$OUT/transition_speed.log
