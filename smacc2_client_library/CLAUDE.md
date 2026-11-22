@@ -668,6 +668,26 @@ Key facts:
 6. **Thread Safety:** Use `std::mutex` for shared data
 7. **Real-Time:** Inherit from `ISmaccUpdatable` for periodic updates
 
+## Signal Arguments
+
+The callbacks connected to a signal receive its arguments by reference, with no copy in between.
+
+1. **The rule:** the arguments of a signal must stay valid and unchanged until the call returns. Fire a signal with a parameter or a local variable of the firing function, or while holding the lock that guards the object.
+2. **Data shared between threads:** pass an immutable snapshot, taken once under the lock:
+   ```cpp
+   smacc2::SmaccSignal<void(const std::shared_ptr<const Status> &)> onStatus_;
+
+   std::shared_ptr<const Status> snapshot;
+   {
+     std::lock_guard<std::mutex> lock(mutex_);
+     snapshot = std::make_shared<const Status>(current_);
+   }
+   onStatus_(snapshot);
+   ```
+   A callback may keep the pointer for as long as it needs.
+3. **Callbacks:** take each argument by value or by const reference. To keep the data after returning, copy it; never store a pointer or a reference to the argument.
+4. **Check:** a signal fired with an unguarded shared object is a data race. Run the state machine under ThreadSanitizer after adding a signal.
+
 
 //////////////////////////////////////////////////////////////////////////////
 
