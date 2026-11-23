@@ -244,6 +244,9 @@ with their simulators; only the state machine node is instrumented.
   2026-11-19 were fixed by 2026-11-20. Of the 64: 12 in the core, 10 in `cl_nav2z`, 32 in
   `cl_px4_mr`, 3 in the `main` of three machines, 5 in `cl_http` and `cl_gcalcli`, and 2 in the
   `cl_moveit2z` headers, none a defect.
+- A baseline entry whose finding is gone is stale: the gate prints it and still passes, but the entry
+  would let the same finding back in. Regenerate the baseline in the commit that removes a finding
+  (21 stale entries, 17 of them from the memory checks, were removed on 2026-11-22).
   - The 5 (added 2026-11-18 with the five libraries that have source files): 4
     `easily-swappable-parameters` and one `unused-return-value` in `http_session.cpp` that is a false
     positive. `cl_modbus_tcp_relay`, `cl_keyboard`, `cl_generic_sensor`, `cl_foundation_pose` and
