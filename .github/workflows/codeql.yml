@@ -240,6 +240,19 @@ jobs:
                                         .get('uri', '')
                   for loc in result.get('locations', [])
               )
+          def is_parameter_pack(result):
+              """Suppress unused-variable results on a parameter pack: CodeQL reports the
+              instantiation with no arguments, where the pack is empty."""
+              if result.get('ruleId', '') != 'cpp/unused-local-variable':
+                  return False
+              m = re.match(r'Variable (\w+) is not used', result.get('message', {}).get('text', ''))
+              phys = (result.get('locations') or [{}])[0].get('physicalLocation', {})
+              try:
+                  with open(phys.get('artifactLocation', {}).get('uri', '')) as src:
+                      line = src.readlines()[phys.get('region', {}).get('startLine', 0) - 1]
+              except (IOError, OSError, IndexError):
+                  return False
+              return bool(m and re.search(r'\.\.\.\s*' + m.group(1) + r'\b', line))
           for path in glob.glob('sarif-results/*.sarif'):
               with open(path) as f:
                   sarif = json.load(f)
@@ -257,6 +270,7 @@ jobs:
                       if r.get('ruleId', '') not in SUPPRESSED_RULES
                       and not is_rclcpp_comment(r)
                       and not is_smacc_tracing_header_guard(r)
+                      and not is_parameter_pack(r)
                       and not any(
                           loc.get('physicalLocation', {})
                              .get('artifactLocation', {})
