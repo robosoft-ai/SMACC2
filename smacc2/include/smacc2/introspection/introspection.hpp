@@ -230,7 +230,7 @@ struct add_type_wrapper
 template <typename TTransition>
 struct CheckType
 {
-  CheckType(std::string * transitionTypeName) { this->transitionTypeName = transitionTypeName; }
+  CheckType(std::string * transitionTypeName) : transitionTypeName(transitionTypeName) {}
 
   std::string * transitionTypeName;
   template <typename T>
