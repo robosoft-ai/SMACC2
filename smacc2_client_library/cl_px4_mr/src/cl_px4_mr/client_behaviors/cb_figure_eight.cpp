@@ -58,7 +58,7 @@ void CbFigureEight::update()
   double dt = std::chrono::duration<double>(now - lastUpdateTime_).count();
   lastUpdateTime_ = now;
 
-  t_ += speed_ * dt;
+  t_ = static_cast<float>(t_ + speed_ * dt);
 
   // Lemniscate of Bernoulli parametric equations
   float sinT = std::sin(t_);
@@ -87,7 +87,7 @@ void CbFigureEight::update()
   trajectorySetpoint_->setPositionNED(x, y, z, yaw);
 
   // Check completion
-  float requiredT = numLoops_ * 2.0f * M_PI;
+  float requiredT = static_cast<float>(static_cast<float>(numLoops_) * 2.0f * M_PI);
   if (t_ >= requiredT)
   {
     RCLCPP_INFO(getLogger(), "CbFigureEight: %d loops completed - posting success", numLoops_);

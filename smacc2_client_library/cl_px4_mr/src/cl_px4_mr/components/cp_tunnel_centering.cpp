@@ -42,7 +42,7 @@ float kthSmallest(std::vector<float> & v, size_t k)
   {
     return kInf;
   }
-  std::nth_element(v.begin(), v.begin() + (k - 1), v.end());
+  std::nth_element(v.begin(), v.begin() + static_cast<std::ptrdiff_t>(k - 1), v.end());
   return v[k - 1];
 }
 
