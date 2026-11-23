@@ -33,8 +33,14 @@ struct StSpiralPattern : smacc2::SmaccState<StSpiralPattern, MsInFlight>
 
   static void staticConfigure()
   {
-    // Spiral centered at origin, 20m altitude, 15m max radius, 3m spacing, 2 m/s speed
-    configure_orthogonal<OrPx4, CbSpiralPattern>(0.0f, 0.0f, 20.0f, 15.0f, 3.0f, 2.0f);
+    SpiralPatternParams spiral;
+    spiral.centerX = 0.0f;
+    spiral.centerY = 0.0f;
+    spiral.altitude = 20.0f;
+    spiral.maxRadius = 15.0f;
+    spiral.spacing = 3.0f;
+    spiral.speed = 2.0f;
+    configure_orthogonal<OrPx4, CbSpiralPattern>(spiral);
   }
 
   void runtimeConfigure() {}

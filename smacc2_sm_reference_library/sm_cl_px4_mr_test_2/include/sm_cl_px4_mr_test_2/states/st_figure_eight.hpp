@@ -33,8 +33,14 @@ struct StFigureEight : smacc2::SmaccState<StFigureEight, MsInFlight>
 
   static void staticConfigure()
   {
-    // Figure-8 centered at (5, 5) NED, 20m altitude, 5m size, 0.5 speed, 3 loops
-    configure_orthogonal<OrPx4, CbFigureEight>(5.0f, 5.0f, 20.0f, 5.0f, 0.5f, 3);
+    FigureEightParams eight;
+    eight.centerX = 5.0f;
+    eight.centerY = 5.0f;
+    eight.altitude = 20.0f;
+    eight.size = 5.0f;
+    eight.speed = 0.5f;
+    eight.numLoops = 3;
+    configure_orthogonal<OrPx4, CbFigureEight>(eight);
   }
 
   void runtimeConfigure() {}

@@ -42,9 +42,14 @@ struct StFigureEight2 : smacc2::SmaccState<StFigureEight2, MsInFlight>
   static void staticConfigure()
   {
     const NedXY c = StFigureEight1::centre();
-    configure_orthogonal<OrPx4, CbFigureEight>(
-      c.x, c.y, kMissionAltitudeM, kFigureEightHalfLengthM,
-      kFigureEightSpeedRad, kFigureEightLoops);
+    FigureEightParams eight;
+    eight.centerX = c.x;
+    eight.centerY = c.y;
+    eight.altitude = kMissionAltitudeM;
+    eight.size = kFigureEightHalfLengthM;
+    eight.speed = kFigureEightSpeedRad;
+    eight.numLoops = kFigureEightLoops;
+    configure_orthogonal<OrPx4, CbFigureEight>(eight);
   }
 
   void runtimeConfigure()

@@ -66,11 +66,11 @@ ros2 launch sm_cl_px4_mr_test_2 sm_cl_px4_mr_test_2.launch.py
 | StHoldPosition2 | MsInFlight | CbHoldPosition(3 s) | Settle |
 | StChangeAltitude | MsInFlight | CbChangeAltitude(20) | Climb to 20 m |
 | StHoldPosition3 | MsInFlight | CbHoldPosition(3 s) | Settle |
-| StSpiralPattern | MsInFlight | CbSpiralPattern(0, 0, 20, r 15, spacing 3, 2 m/s) | Expanding spiral about the origin |
+| StSpiralPattern | MsInFlight | CbSpiralPattern (center 0, 0; 20 m up; radius 15 m; spacing 3 m; 2 m/s) | Expanding spiral about the origin |
 | StHoldPosition4 | MsInFlight | CbHoldPosition(3 s) | Settle |
 | StFollowWaypoints | MsInFlight | CbFollowWaypoints | (30,0) -> (30,-30) -> (0,-30) at 20 m |
 | StHoldPosition5 | MsInFlight | CbHoldPosition(3 s) | Settle |
-| StFigureEight | MsInFlight | CbFigureEight(5, 5, 20, size 5, 0.5 rad/s, 3 loops) | Three figure-eights |
+| StFigureEight | MsInFlight | CbFigureEight (center 5, 5; 20 m up; size 5 m; 0.5 rad/s; 3 loops) | Three figure-eights |
 | StHoldPosition6 | MsInFlight | CbHoldPosition(3 s) | Settle |
 | StReturnToHome | MsInFlight | CbReturnToHome(0, 0, -15, 0) | Back to the origin at 15 m |
 | StLand | MsLanding | CbLand | Land and wait for auto-disarm |

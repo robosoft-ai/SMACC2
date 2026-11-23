@@ -19,14 +19,13 @@
 namespace cl_px4_mr
 {
 
-CbSpiralPattern::CbSpiralPattern(
-  float centerX, float centerY, float altitude, float maxRadius, float spacing, float speed)
-: centerX_(centerX),
-  centerY_(centerY),
-  altitude_(altitude),
-  maxRadius_(maxRadius),
-  spacing_(spacing),
-  speed_(speed)
+CbSpiralPattern::CbSpiralPattern(const SpiralPatternParams & params)
+: centerX_(params.centerX),
+  centerY_(params.centerY),
+  altitude_(params.altitude),
+  maxRadius_(params.maxRadius),
+  spacing_(params.spacing),
+  speed_(params.speed)
 {
 }
 

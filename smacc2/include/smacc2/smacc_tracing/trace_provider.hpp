@@ -78,6 +78,8 @@ TRACEPOINT_EVENT(
   ros2, smacc2_state_onExit_end, TP_ARGS(const char *, state_name),
   TP_FIELDS(ctf_string(state_name, state_name)))
 
+// The lttng macros generate functions with three string parameters from the tracepoints below.
+// NOLINTBEGIN(bugprone-easily-swappable-parameters)
 TRACEPOINT_EVENT(
   ros2, smacc2_client_behavior_on_entry_start,
   TP_ARGS(
@@ -134,6 +136,7 @@ TRACEPOINT_EVENT(
     const char *, state_name, const char *, orthogonal_name, const char *, client_behavior_name),
   TP_FIELDS(ctf_string(state_name, state_name) ctf_string(orthogonal_name, orthogonal_name)
               ctf_string(client_behavior_name, client_behavior_name)))
+// NOLINTEND(bugprone-easily-swappable-parameters)
 
 #endif /* _TRACEPOINT_PROVIDER_PROVIDER_H */
 

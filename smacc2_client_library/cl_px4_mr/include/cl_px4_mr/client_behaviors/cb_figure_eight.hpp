@@ -24,12 +24,20 @@ namespace cl_px4_mr
 
 class CpTrajectorySetpoint;
 
+struct FigureEightParams
+{
+  float centerX = 0.0f;   // NED north, m
+  float centerY = 0.0f;   // NED east, m
+  float altitude = 5.0f;  // m above the NED origin
+  float size = 5.0f;      // m from the centre to a lobe tip
+  float speed = 0.5f;     // rate of the curve parameter, rad/s
+  int numLoops = 1;
+};
+
 class CbFigureEight : public CbPx4ClientBehaviorBase
 {
 public:
-  CbFigureEight(
-    float centerX, float centerY, float altitude, float size = 5.0f, float speed = 0.5f,
-    int numLoops = 1);
+  explicit CbFigureEight(const FigureEightParams & params);
 
   // Override the centre before onEntry (e.g. from the owning state's
   // runtimeConfigure when the centre is only known at runtime).

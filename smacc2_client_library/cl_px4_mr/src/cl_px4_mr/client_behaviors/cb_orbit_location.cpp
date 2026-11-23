@@ -19,14 +19,13 @@
 namespace cl_px4_mr
 {
 
-CbOrbitLocation::CbOrbitLocation(
-  float centerX, float centerY, float altitude, float radius, float angularVelocity, int numOrbits)
-: centerX_(centerX),
-  centerY_(centerY),
-  altitude_(altitude),
-  radius_(radius),
-  angularVelocity_(angularVelocity),
-  numOrbits_(numOrbits)
+CbOrbitLocation::CbOrbitLocation(const OrbitLocationParams & params)
+: centerX_(params.centerX),
+  centerY_(params.centerY),
+  altitude_(params.altitude),
+  radius_(params.radius),
+  angularVelocity_(params.angularVelocity),
+  numOrbits_(params.numOrbits)
 {
 }
 

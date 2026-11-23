@@ -22,8 +22,10 @@
 namespace cl_px4_mr
 {
 
-CbYawScan::CbYawScan(float amplitude, float period, float baseHeading)
-: amplitude_(amplitude), period_(std::max(period, 0.1f)), baseHeading_(baseHeading)
+CbYawScan::CbYawScan(const YawScanParams & params)
+: amplitude_(params.amplitude),
+  period_(std::max(params.period, 0.1f)),
+  baseHeading_(params.baseHeading)
 {
 }
 

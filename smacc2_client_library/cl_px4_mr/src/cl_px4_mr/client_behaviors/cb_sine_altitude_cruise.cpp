@@ -22,12 +22,11 @@
 namespace cl_px4_mr
 {
 
-CbSineAltitudeCruise::CbSineAltitudeCruise(
-  float groundSpeed, float amplitude, float wavelength, float heading)
-: groundSpeed_(groundSpeed),
-  amplitude_(amplitude),
-  wavelength_(std::max(wavelength, 0.1f)),
-  heading_(heading)
+CbSineAltitudeCruise::CbSineAltitudeCruise(const SineAltitudeCruiseParams & params)
+: groundSpeed_(params.groundSpeed),
+  amplitude_(params.amplitude),
+  wavelength_(std::max(params.wavelength, 0.1f)),
+  heading_(params.heading)
 {
 }
 

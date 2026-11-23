@@ -40,7 +40,10 @@ struct StYawScan : smacc2::SmaccState<StYawScan, MsInFlight>
   {
     // +/-0.6 rad (~35 deg) sweep around the entry heading, 6 s period:
     // 30 s = 5 full sweep cycles
-    configure_orthogonal<OrPx4, CbYawScan>(0.6f, 6.0f);
+    YawScanParams scan;
+    scan.amplitude = 0.6f;
+    scan.period = 6.0f;
+    configure_orthogonal<OrPx4, CbYawScan>(scan);
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(30s);
   }
 

@@ -40,7 +40,11 @@ struct StSineAltitudeCruise : smacc2::SmaccState<StSineAltitudeCruise, MsInFligh
   {
     // 2 m/s along the entry heading, +/-1.5 m sine around the entry altitude,
     // 20 m wavelength: 30 s = 60 m of track = 3 full sine cycles
-    configure_orthogonal<OrPx4, CbSineAltitudeCruise>(2.0f, 1.5f, 20.0f);
+    SineAltitudeCruiseParams cruise;
+    cruise.groundSpeed = 2.0f;
+    cruise.amplitude = 1.5f;
+    cruise.wavelength = 20.0f;
+    configure_orthogonal<OrPx4, CbSineAltitudeCruise>(cruise);
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(30s);
   }
 

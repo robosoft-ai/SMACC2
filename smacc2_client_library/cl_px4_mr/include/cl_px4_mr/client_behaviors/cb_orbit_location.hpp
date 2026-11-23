@@ -26,12 +26,20 @@ namespace cl_px4_mr
 class CpTrajectorySetpoint;
 class CpVehicleLocalPosition;
 
+struct OrbitLocationParams
+{
+  float centerX = 0.0f;          // NED north, m
+  float centerY = 0.0f;          // NED east, m
+  float altitude = 5.0f;         // m above the NED origin
+  float radius = 5.0f;           // m
+  float angularVelocity = 0.5f;  // rad/s
+  int numOrbits = 3;
+};
+
 class CbOrbitLocation : public CbPx4ClientBehaviorBase
 {
 public:
-  CbOrbitLocation(
-    float centerX, float centerY, float altitude, float radius = 5.0f, float angularVelocity = 0.5f,
-    int numOrbits = 3);
+  explicit CbOrbitLocation(const OrbitLocationParams & params);
 
   void onEntry() override;
   void onExit() override;

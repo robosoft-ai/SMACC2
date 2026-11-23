@@ -37,8 +37,14 @@ struct StOrbitAtTop : smacc2::SmaccState<StOrbitAtTop, SsCaveMission>
   static void staticConfigure()
   {
     const NedPoint c = baseStationTentNed();
-    configure_orthogonal<OrPx4, CbOrbitLocation>(
-      c.x, c.y, kFinaleTopAltitudeM, kFinaleRadiusM, kFinaleAngularRateRadS, kFinaleOrbitsTop);
+    OrbitLocationParams orbit;
+    orbit.centerX = c.x;
+    orbit.centerY = c.y;
+    orbit.altitude = kFinaleTopAltitudeM;
+    orbit.radius = kFinaleRadiusM;
+    orbit.angularVelocity = kFinaleAngularRateRadS;
+    orbit.numOrbits = kFinaleOrbitsTop;
+    configure_orthogonal<OrPx4, CbOrbitLocation>(orbit);
   }
 
   void runtimeConfigure()

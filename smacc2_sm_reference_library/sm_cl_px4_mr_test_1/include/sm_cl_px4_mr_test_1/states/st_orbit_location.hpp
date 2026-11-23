@@ -33,8 +33,14 @@ struct StOrbitLocation : smacc2::SmaccState<StOrbitLocation, MsInFlight>
 
   static void staticConfigure()
   {
-    // Orbit center (10, 0) at 5m altitude, 5m radius, 0.5 rad/s, 3 orbits
-    configure_orthogonal<OrPx4, CbOrbitLocation>(10.0f, 0.0f, 5.0f, 5.0f, 0.5f, 3);
+    OrbitLocationParams orbit;
+    orbit.centerX = 10.0f;
+    orbit.centerY = 0.0f;
+    orbit.altitude = 5.0f;
+    orbit.radius = 5.0f;
+    orbit.angularVelocity = 0.5f;
+    orbit.numOrbits = 3;
+    configure_orthogonal<OrPx4, CbOrbitLocation>(orbit);
   }
 
   void runtimeConfigure() {}
