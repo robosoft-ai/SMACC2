@@ -688,6 +688,40 @@ The callbacks connected to a signal receive its arguments by reference, with no 
 3. **Callbacks:** take each argument by value or by const reference. To keep the data after returning, copy it; never store a pointer or a reference to the argument.
 4. **Check:** a signal fired with an unguarded shared object is a data race. Run the state machine under ThreadSanitizer after adding a signal.
 
+## Constructor Parameters
+
+A behavior, component or function that takes several values of one type takes a parameter struct, not a row of positional arguments.
+
+1. **The rule:** three or more adjacent parameters of the same type (or of types that convert to each other, such as `float` and `int`) go into a struct named `<Name>Params`. Two swapped positional arguments compile and fly; a field set by name cannot be swapped. A pair of two different quantities of one type, such as a distance and a speed, takes a struct as well; the gate does not report pairs, so this part of the rule is the author's to keep.
+2. **The struct:** every field has a default and a comment with its unit. The constructor is `explicit` and takes the struct by const reference:
+   ```cpp
+   struct OrbitLocationParams
+   {
+     float centerX = 0.0f;          // NED north, m
+     float centerY = 0.0f;          // NED east, m
+     float altitude = 5.0f;         // m above the NED origin
+     float radius = 5.0f;           // m
+     float angularVelocity = 0.5f;  // rad/s
+     int numOrbits = 3;
+   };
+
+   explicit CbOrbitLocation(const OrbitLocationParams & params);
+   ```
+3. **The caller:** fill a local struct field by field and pass it. C++17 has no designated initializers, so each field is its own line:
+   ```cpp
+   static void staticConfigure()
+   {
+     OrbitLocationParams orbit;
+     orbit.centerX = 10.0f;
+     orbit.radius = 5.0f;
+     orbit.numOrbits = 3;
+     configure_orthogonal<OrPx4, CbOrbitLocation>(orbit);
+   }
+   ```
+4. **Exceptions:** a coordinate pair `(x, y)` stays positional. Two existing signatures in `cl_nav2z` are kept as they are for compatibility and are not a pattern for new code: `CbNavigateGlobalPosition(x, y, yaw)` and `Pose2D(x, y, yaw)`.
+5. **Check:** the clang-tidy gate reports three or more adjacent parameters of one type (`bugprone-easily-swappable-parameters`); a new one is to be fixed before it is added.
+6. **Examples:** `OrbitLocationParams`, `FigureEightParams`, `SpiralUpParams` and `YawScanParams` in `cl_px4_mr`.
+
 
 //////////////////////////////////////////////////////////////////////////////
 
