@@ -46,9 +46,16 @@ def source_line(place, line):
         return ""
 
 
-def suppressed(rule, place, line):
+def suppressed(rule, place, line, text):
     if rule in SUPPRESSED_RULES:
         return True
+    pack = (
+        re.match(r"Variable (\w+) is not used", text)
+        if rule == "cpp/unused-local-variable"
+        else None
+    )
+    if pack and re.search(r"\.\.\.\s*" + pack.group(1) + r"\b", source_line(place, line)):
+        return True  # a parameter pack, reported for the instantiation with no arguments
     if "header" in rule and "smacc_tracing" in place:
         return True  # the lttng headers are included more than once on purpose
     return rule == "cpp/commented-out-code" and bool(
@@ -72,9 +79,11 @@ def read_raw(directory):
             if not m:
                 continue
             place, line = source_path(m.group(1), index), int(m.group(2))
-            if place.startswith((PROBE, "build/", "install/")) or suppressed(rule, place, line):
-                continue
             text = next((c for c in row[1:] if c and not c.startswith("file:")), "")
+            if place.startswith((PROBE, "build/", "install/")) or suppressed(
+                rule, place, line, text
+            ):
+                continue
             found[rule].setdefault((place, line), " ".join(text.split()))
     return found
 
