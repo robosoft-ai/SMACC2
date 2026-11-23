@@ -101,14 +101,11 @@ SmaccComponentType * ISmaccClient::createNamedComponent(
   {
     auto tname = demangledTypeName<SmaccComponentType>();
     RCLCPP_INFO(
-      getLogger(),
-      "Creating a new component of type: %s smacc component is required by client '%s'. Creating a "
-      "new instance %s",
-      this->getName().c_str(), demangledTypeName<SmaccComponentType>().c_str(), tname.c_str());
+      getLogger(), "Creating a new component of type: %s, required by client '%s'.", tname.c_str(),
+      this->getName().c_str());
 
     ret = std::make_shared<SmaccComponentType>(targs...);
     ret->setStateMachine(this->getStateMachine());
-    ret->owner_ = this;
     ret->initialize(this);
 
     ret->template onComponentInitialization<TOrthogonal, TClient>();
