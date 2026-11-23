@@ -31,6 +31,8 @@ PACKAGES="smacc2 cl_ros2_timer cl_lifecycle_node cl_nav2z cl_px4_mr cl_moveit2z 
 # core study: uninitialized members and C-style casts. The rest of cppcoreguidelines-* stays out: it is a
 # style guide, most of its lines here are public members, and silencing it would change public signatures.
 CHECKS='-*,bugprone-*,concurrency-*,clang-analyzer-*,cppcoreguidelines-pro-type-member-init,cppcoreguidelines-pro-type-cstyle-cast,cppcoreguidelines-owning-memory,cppcoreguidelines-no-malloc,modernize-make-unique,modernize-make-shared,misc-new-delete-overloads'
+# Three or more adjacent parameters of one type are reported, not pairs: a pair is mostly (x, y) (2026-11-22).
+CONFIG='{CheckOptions: {bugprone-easily-swappable-parameters.MinimumLength: 3}}'
 # Only diagnostics located in this repository's own source directories count, wherever the repository
 # is checked out. Headers reached through build/ or install/ copies are not matched, so a header is
 # counted from its own package's translation units and not again from every dependent's.
@@ -44,7 +46,7 @@ for p in $PACKAGES; do
   [ -f "$DB" ] || { echo "FAIL: no compile database for $p at $DB"; exit 1; }
   FILES=$(python3 -c "import json,sys; print(' '.join(e['file'] for e in json.load(open(sys.argv[1]))))" "$DB")
   echo "### clang-tidy $p ($(echo $FILES | wc -w) translation units)"
-  run-clang-tidy -p "$BUILD/$p" -j "$JOBS" -quiet -checks="$CHECKS" -header-filter="$HEADER_FILTER" $FILES > "$OUT/raw_$p.txt" 2>&1 || true
+  run-clang-tidy -p "$BUILD/$p" -j "$JOBS" -quiet -checks="$CHECKS" -config="$CONFIG" -header-filter="$HEADER_FILTER" $FILES > "$OUT/raw_$p.txt" 2>&1 || true
   RAW+=("$OUT/raw_$p.txt")
 done
 grep -h "Found compiler error" "${RAW[@]}" | head -3
