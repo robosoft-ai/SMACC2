@@ -98,7 +98,15 @@ echo "== PX4 SITL: model $MODEL at gz pose $SPAWN (airframe 4013 = x500 params)"
   PX4_PARAM_NAV_DLL_ACT=0 \
   PX4_PARAM_COM_DISARM_PRFLT=30 \
   PX4_PARAM_EKF2_GPS_DELAY=0 \
+  PX4_PARAM_SENS_MAG_AUTOCAL=0 PX4_PARAM_SENS_IMU_AUTOCAL=0 \
+  PX4_PARAM_EKF2_GBIAS_INIT=0.01 \
+  PX4_PARAM_CAL_MAG0_XOFF=0 PX4_PARAM_CAL_MAG0_YOFF=0 PX4_PARAM_CAL_MAG0_ZOFF=0 \
+  PX4_PARAM_CAL_ACC0_XOFF=0 PX4_PARAM_CAL_ACC0_YOFF=0 PX4_PARAM_CAL_ACC0_ZOFF=0 \
   exec ../bin/px4 -d -i 0
+  # The AUTOCAL and CAL lines: PX4 saves sensor offsets it learns in flight into rootfs/0, and they
+  # add up over runs until the heading is wrong on the pad. The simulated sensors need none.
+  # EKF2_GBIAS_INIT: with the default of 0.1 rad/s the estimator invents a gyro bias on the pad at
+  # start and then a magnetometer bias to match, which leaves the heading up to 30 degrees off.
   # COM_DISARM_PRFLT: seconds armed without takeoff before PX4 disarms itself (default 10);
   # -d: no pxh shell (its prompt redraws flood a piped log)
 ) &
