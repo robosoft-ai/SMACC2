@@ -104,7 +104,7 @@ void CpTunnelCentering::onCloud(const sensor_msgs::msg::PointCloud2 & msg)
   bool level = false;
   if (params_.levelFrame)
   {
-    std::array<float, 4> q;
+    std::array<float, 4> q{};
     {
       std::lock_guard<std::mutex> lock(attitudeMutex_);
       level = haveAttitude_;

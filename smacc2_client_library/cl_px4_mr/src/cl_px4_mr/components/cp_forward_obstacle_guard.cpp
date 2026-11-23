@@ -102,7 +102,7 @@ void CpForwardObstacleGuard::onAttitude(const px4_msgs::msg::VehicleAttitude::Sh
 
 bool CpForwardObstacleGuard::levelRotation(std::array<float, 9> & r) const
 {
-  std::array<float, 4> q;
+  std::array<float, 4> q{};
   {
     std::lock_guard<std::mutex> lock(attitudeMutex_);
     if (!haveAttitude_)

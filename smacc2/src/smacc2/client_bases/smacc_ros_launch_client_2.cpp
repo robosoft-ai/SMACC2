@@ -73,7 +73,7 @@ std::future<std::string> ClRosLaunch2::executeRosLaunch(
 
       std::stringstream cmd;
       cmd << "ros2 launch " << packageName << " " << launchFileName;
-      std::array<char, 128> buffer;
+      std::array<char, 128> buffer{};
       std::string result;
 
       auto child = runProcess(cmd.str().c_str());
