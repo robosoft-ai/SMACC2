@@ -134,7 +134,7 @@ PX4 SITL (via XRCE-DDS)
 | CbDisarmPX4 | SmaccAsyncClientBehavior | Disarm vehicle | None (3 retries) |
 | CbTakeOff | SmaccAsyncClientBehavior | Enter offboard mode and climb to altitude | `targetAltitude` (default 5.0m) |
 | CbGoToLocation | SmaccAsyncClientBehavior | Fly to NED position | `targetX`, `targetY`, `targetZ`, `yaw` (optional) |
-| CbOrbitLocation | SmaccAsyncClientBehavior + ISmaccUpdatable | Orbit a center point | `centerX`, `centerY`, `altitude`, `radius`, `angularVelocity`, `numOrbits` |
+| CbOrbitLocation | SmaccAsyncClientBehavior + ISmaccUpdatable | Orbit a center point | `OrbitLocationParams`: `centerX` (0.0), `centerY` (0.0), `altitude` (5.0), `radius` (5.0), `angularVelocity` (0.5), `numOrbits` (3) |
 | CbLand | SmaccAsyncClientBehavior | Disable offboard and land | None (detects landing via disarm signal) |
 | CbHoldPosition | SmaccAsyncClientBehavior + ISmaccUpdatable | Hold current position for a duration | `durationSeconds` (default 5.0) |
 | CbYawRotate | SmaccAsyncClientBehavior + ISmaccUpdatable | Rotate to a target heading | `targetYawRad`, `relative` (default false) |
@@ -142,11 +142,11 @@ PX4 SITL (via XRCE-DDS)
 | CbWaitForHeadingStable | SmaccAsyncClientBehavior | Preflight gate: EKF heading must hold still (and match the parked heading) | `HeadingStableParams` |
 | CbChangeAltitude | SmaccAsyncClientBehavior | Ascend or descend to a target altitude | `targetAltitude` (positive meters above ground) |
 | CbFollowWaypoints | SmaccAsyncClientBehavior | Visit a sequence of NED waypoints | `waypoints` (vector of {x,y,z,yaw}), `xyTol` (0.5), `zTol` (0.3) |
-| CbFigureEight | SmaccAsyncClientBehavior + ISmaccUpdatable | Fly a lemniscate figure-8 pattern | `centerX`, `centerY`, `altitude`, `size` (5.0), `speed` (0.5), `numLoops` (1) |
+| CbFigureEight | SmaccAsyncClientBehavior + ISmaccUpdatable | Fly a lemniscate figure-8 pattern | `FigureEightParams`: `centerX` (0.0), `centerY` (0.0), `altitude` (5.0), `size` (5.0), `speed` (0.5), `numLoops` (1) |
 | CbReturnToHome | SmaccAsyncClientBehavior | Return to a specified home position | `homeX`, `homeY`, `homeZ`, `homeYaw` |
-| CbSpiralPattern | SmaccAsyncClientBehavior + ISmaccUpdatable | Fly an expanding Archimedean spiral (search & rescue) | `centerX`, `centerY`, `altitude`, `maxRadius` (20.0), `spacing` (3.0), `speed` (2.0) |
-| CbSineAltitudeCruise | SmaccAsyncClientBehavior + ISmaccUpdatable | **Continuous**: cruise along a heading with sinusoidal altitude around the entry altitude; never posts success — the state machine must provide the exit event; ground track is unbounded (use a timer/mission exit + geofence backstop). On exit, settles at the entry altitude. | `groundSpeed` (2.0), `amplitude` (1.5), `wavelength` (20.0), `heading` (NaN = current) |
-| CbYawScan | SmaccAsyncClientBehavior + ISmaccUpdatable | **Continuous**: hold the entry position while heading sweeps sinusoidally around a base heading; never posts success — the state machine must provide the exit event. On exit, restores the base heading. | `amplitude` (0.6 rad), `period` (6.0 s), `baseHeading` (NaN = current) |
+| CbSpiralPattern | SmaccAsyncClientBehavior + ISmaccUpdatable | Fly an expanding Archimedean spiral (search & rescue) | `SpiralPatternParams`: `centerX` (0.0), `centerY` (0.0), `altitude` (5.0), `maxRadius` (20.0), `spacing` (3.0), `speed` (2.0) |
+| CbSineAltitudeCruise | SmaccAsyncClientBehavior + ISmaccUpdatable | **Continuous**: cruise along a heading with sinusoidal altitude around the entry altitude; never posts success — the state machine must provide the exit event; ground track is unbounded (use a timer/mission exit + geofence backstop). On exit, settles at the entry altitude. | `SineAltitudeCruiseParams`: `groundSpeed` (2.0), `amplitude` (1.5), `wavelength` (20.0), `heading` (NaN = current) |
+| CbYawScan | SmaccAsyncClientBehavior + ISmaccUpdatable | **Continuous**: hold the entry position while heading sweeps sinusoidally around a base heading; never posts success — the state machine must provide the exit event. On exit, restores the base heading. | `YawScanParams`: `amplitude` (0.6 rad), `period` (6.0 s), `baseHeading` (NaN = current) |
 
 ### CbConnectMicroRosAgent
 

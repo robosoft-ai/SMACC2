@@ -18,14 +18,13 @@
 namespace cl_px4_mr
 {
 
-CbFigureEight::CbFigureEight(
-  float centerX, float centerY, float altitude, float size, float speed, int numLoops)
-: centerX_(centerX),
-  centerY_(centerY),
-  altitude_(altitude),
-  size_(size),
-  speed_(speed),
-  numLoops_(numLoops)
+CbFigureEight::CbFigureEight(const FigureEightParams & params)
+: centerX_(params.centerX),
+  centerY_(params.centerY),
+  altitude_(params.altitude),
+  size_(params.size),
+  speed_(params.speed),
+  numLoops_(params.numLoops)
 {
 }
 

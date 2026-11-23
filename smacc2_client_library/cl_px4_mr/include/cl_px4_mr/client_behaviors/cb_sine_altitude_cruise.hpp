@@ -19,6 +19,7 @@
 #include <atomic>
 #include <chrono>
 #include <cmath>
+#include <limits>
 #include <smacc2/smacc.hpp>
 
 namespace cl_px4_mr
@@ -34,12 +35,18 @@ class CpVehicleLocalPosition;
 // construction and rely on the PX4 geofence as the independent backstop.
 // On exit, one final setpoint settles the vehicle at the entry altitude at the last
 // commanded ground position. Posts failure only if local position is invalid at entry.
+struct SineAltitudeCruiseParams
+{
+  float groundSpeed = 2.0f;                                 // m/s
+  float amplitude = 1.5f;                                   // m around the entry altitude
+  float wavelength = 20.0f;                                 // m of ground track per cycle
+  float heading = std::numeric_limits<float>::quiet_NaN();  // NED yaw, rad; NaN = the entry heading
+};
+
 class CbSineAltitudeCruise : public CbPx4ClientBehaviorBase
 {
 public:
-  CbSineAltitudeCruise(
-    float groundSpeed = 2.0f, float amplitude = 1.5f, float wavelength = 20.0f,
-    float heading = std::numeric_limits<float>::quiet_NaN());
+  explicit CbSineAltitudeCruise(const SineAltitudeCruiseParams & params = {});
 
   void onEntry() override;
   void onExit() override;

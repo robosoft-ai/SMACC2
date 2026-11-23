@@ -26,12 +26,20 @@ namespace cl_px4_mr
 class CpTrajectorySetpoint;
 class CpVehicleLocalPosition;
 
+struct SpiralPatternParams
+{
+  float centerX = 0.0f;     // NED north, m
+  float centerY = 0.0f;     // NED east, m
+  float altitude = 5.0f;    // m above the NED origin
+  float maxRadius = 20.0f;  // m
+  float spacing = 3.0f;     // m of radius gained per revolution
+  float speed = 2.0f;       // m/s along the path
+};
+
 class CbSpiralPattern : public CbPx4ClientBehaviorBase
 {
 public:
-  CbSpiralPattern(
-    float centerX, float centerY, float altitude, float maxRadius = 20.0f, float spacing = 3.0f,
-    float speed = 2.0f);
+  explicit CbSpiralPattern(const SpiralPatternParams & params);
 
   void onEntry() override;
   void onExit() override;

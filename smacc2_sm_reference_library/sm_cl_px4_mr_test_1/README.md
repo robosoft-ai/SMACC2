@@ -59,7 +59,7 @@ ros2 launch sm_cl_px4_mr_test_1 sm_cl_px4_mr_test_1.launch.py
 | StArmPx4 | MsArmedOnGround | CbArmPX4 | Arm vehicle (5 retries, force-arm after 2) |
 | StTakeoff | MsTakeoff | CbTakeOff(5.0) | Enable offboard mode, climb to 5m |
 | StGoToWaypoint1 | MsInFlight | CbGoToLocation(10, 0, -5) | Fly to waypoint at (10, 0) NED |
-| StOrbitLocation | MsInFlight | CbOrbitLocation(10, 0, 5, 5, 0.5, 3) | Orbit 3x around waypoint, r=5m |
+| StOrbitLocation | MsInFlight | CbOrbitLocation (center 10, 0; 5 m up; radius 5 m; 0.5 rad/s; 3 orbits) | Orbit 3x around waypoint, r=5m |
 | StReturnToBase | MsInFlight | CbGoToLocation(0, 0, -5) | Return to origin |
 | StLand | MsLanding | CbLand | Land and wait for auto-disarm |
 | StLanded | MsLanded | (none) | Mission complete |

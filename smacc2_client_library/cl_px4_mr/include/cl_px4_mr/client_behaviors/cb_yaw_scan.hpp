@@ -19,6 +19,7 @@
 #include <atomic>
 #include <chrono>
 #include <cmath>
+#include <limits>
 #include <smacc2/smacc.hpp>
 
 namespace cl_px4_mr
@@ -33,12 +34,17 @@ class CpVehicleLocalPosition;
 // On exit, one final setpoint restores the base heading, so the vehicle always
 // returns to it regardless of where in the sweep the state change lands.
 // Posts failure only if local position is invalid at entry.
+struct YawScanParams
+{
+  float amplitude = 0.6f;                                       // rad each side of the base heading
+  float period = 6.0f;                                          // s per sweep cycle
+  float baseHeading = std::numeric_limits<float>::quiet_NaN();  // NED yaw, rad; NaN = entry heading
+};
+
 class CbYawScan : public CbPx4ClientBehaviorBase
 {
 public:
-  CbYawScan(
-    float amplitude = 0.6f, float period = 6.0f,
-    float baseHeading = std::numeric_limits<float>::quiet_NaN());
+  explicit CbYawScan(const YawScanParams & params = {});
 
   void onEntry() override;
   void onExit() override;

@@ -59,8 +59,8 @@ ros2 launch sm_cl_px4_mr_test_3 sm_cl_px4_mr_test_3.launch.py
 | StWaitForReady | MsDisarmedOnGround | CbTimerCountdownOnce(5 s) | Wait for system readiness |
 | StArmPx4 | MsArmedOnGround | CbArmPX4 | Arm vehicle (5 retries, force-arm after 2) |
 | StTakeoff | MsTakeoff | CbTakeOff(5) | Enable offboard mode, climb to 5 m |
-| StSineAltitudeCruise | MsInFlight | CbSineAltitudeCruise(2 m/s, +-1.5 m, 20 m) + CbTimerCountdownOnce(30 s) | Cruise along the entry heading with sinusoidal altitude for 30 s (3 cycles); timer exits |
-| StYawScan | MsInFlight | CbYawScan(+-0.6 rad, 6 s) + CbTimerCountdownOnce(30 s) | Hold position, sweep heading sinusoidally for 30 s (5 sweeps); timer exits |
+| StSineAltitudeCruise | MsInFlight | CbSineAltitudeCruise (2 m/s, +-1.5 m, wavelength 20 m) + CbTimerCountdownOnce(30 s) | Cruise along the entry heading with sinusoidal altitude for 30 s (3 cycles); timer exits |
+| StYawScan | MsInFlight | CbYawScan (+-0.6 rad, period 6 s) + CbTimerCountdownOnce(30 s) | Hold position, sweep heading sinusoidally for 30 s (5 sweeps); timer exits |
 | StReturnToBase | MsInFlight | CbGoToLocation(0, 0, -5) | Return to origin |
 | StLand | MsLanding | CbLand | Land and wait for auto-disarm |
 | StLanded | MsLanded | (none) | Mission complete |
