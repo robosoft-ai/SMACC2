@@ -59,7 +59,7 @@ void CbSpiralPattern::update()
 
   // Archimedean spiral: r(theta) = a * theta
   // where a = spacing / (2*PI) so each revolution adds 'spacing' meters of radius
-  float a = spacing_ / (2.0f * M_PI);
+  float a = static_cast<float>(spacing_ / (2.0f * M_PI));
 
   // Current radius
   float r = a * theta_;
@@ -70,7 +70,7 @@ void CbSpiralPattern::update()
   float omega = speed_ / std::sqrt(r * r + a * a);
 
   // Advance angle
-  theta_ += omega * dt;
+  theta_ = static_cast<float>(theta_ + omega * dt);
 
   // Compute new position
   float r_new = a * theta_;

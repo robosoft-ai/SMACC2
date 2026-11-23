@@ -42,8 +42,8 @@ void CbOrbitLocation::onEntry()
   // Command initial orbit position
   float x = centerX_ + radius_ * std::cos(currentAngle_);
   float y = centerY_ + radius_ * std::sin(currentAngle_);
-  float z = -altitude_;              // NED: up is negative
-  float yaw = currentAngle_ + M_PI;  // Face toward center
+  float z = -altitude_;                                  // NED: up is negative
+  float yaw = static_cast<float>(currentAngle_ + M_PI);  // Face toward center
 
   RCLCPP_INFO(
     getLogger(), "CbOrbitLocation: starting orbit center=[%.2f, %.2f] r=%.2f alt=%.2f orbits=%d",
@@ -63,19 +63,19 @@ void CbOrbitLocation::update()
   lastUpdateTime_ = now;
 
   // Advance angle
-  currentAngle_ += angularVelocity_ * dt;
+  currentAngle_ = static_cast<float>(currentAngle_ + angularVelocity_ * dt);
 
   // Compute new position on circle
   float x = centerX_ + radius_ * std::cos(currentAngle_);
   float y = centerY_ + radius_ * std::sin(currentAngle_);
-  float z = -altitude_;              // NED
-  float yaw = currentAngle_ + M_PI;  // Face toward center
+  float z = -altitude_;                                  // NED
+  float yaw = static_cast<float>(currentAngle_ + M_PI);  // Face toward center
 
   trajectorySetpoint_->setPositionNED(x, y, z, yaw);
 
   // Check if we've completed the required number of orbits
   float totalAngle = currentAngle_ - startAngle_;
-  float requiredAngle = numOrbits_ * 2.0f * M_PI;
+  float requiredAngle = static_cast<float>(static_cast<float>(numOrbits_) * 2.0f * M_PI);
 
   if (totalAngle >= requiredAngle)
   {

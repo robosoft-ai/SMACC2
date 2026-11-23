@@ -76,10 +76,11 @@ std::vector<NedPoint> generateFlightPatternLoiter(
     std::hypot(dx, dy) > 0.1f ? std::atan2(dy, dx) : (std::isnan(current.yaw) ? 0.0f : current.yaw);
 
   std::vector<NedPoint> path;
-  path.reserve(static_cast<size_t>(count * n + 1));
+  path.reserve(static_cast<size_t>(count) * static_cast<size_t>(n) + 1);
   for (int k = 0; k <= count * n; ++k)
   {
-    const float theta = theta0 + sign * 2.0f * static_cast<float>(M_PI) * k / n;
+    const float theta = theta0 + sign * 2.0f * static_cast<float>(M_PI) * static_cast<float>(k) /
+                                   static_cast<float>(n);
     NedPoint v;
     v.x = cx + r * std::cos(theta);
     v.y = cy + r * std::sin(theta);
@@ -144,7 +145,8 @@ std::vector<NedPoint> generateFlightPatternFigureEight(
   loop.reserve(static_cast<size_t>(n));
   for (int k = 0; k < n; ++k)
   {
-    const float t = sign * 2.0f * static_cast<float>(M_PI) * k / n;
+    const float t =
+      sign * 2.0f * static_cast<float>(M_PI) * static_cast<float>(k) / static_cast<float>(n);
     const float st = std::sin(t);
     const float ct = std::cos(t);
     const float denom = 1.0f + st * st;
@@ -172,7 +174,7 @@ std::vector<NedPoint> generateFlightPatternFigureEight(
   }
 
   std::vector<NedPoint> path;
-  path.reserve(static_cast<size_t>(p.count * n + 1));
+  path.reserve(static_cast<size_t>(p.count) * static_cast<size_t>(n) + 1);
   for (int k = 0; k <= p.count * n; ++k)
   {
     path.push_back(loop[static_cast<size_t>((start + k) % n)]);
@@ -183,7 +185,7 @@ std::vector<NedPoint> generateFlightPatternFigureEight(
 float flightPatternFigureEightLength(const FlightPatternFigureEightParams & p)
 {
   // perimeter of the lemniscate of Bernoulli = 5.2441 a
-  return 5.2441f * std::max(p.size, 0.5f) * std::max(p.count, 0);
+  return 5.2441f * std::max(p.size, 0.5f) * static_cast<float>(std::max(p.count, 0));
 }
 
 std::vector<NedPoint> generateFlightPatternSineWaveVertical(
@@ -204,10 +206,10 @@ std::vector<NedPoint> generateFlightPatternSineWaveVertical(
   }
 
   const int n = static_cast<int>(std::floor(leg.length / spacing));
-  path.reserve(static_cast<size_t>(n + 2));
+  path.reserve(static_cast<size_t>(n) + 2);
   for (int k = 0; k < n; ++k)
   {
-    const float s = k * spacing;
+    const float s = static_cast<float>(k) * spacing;
     NedPoint v;
     v.x = current.x + s * leg.ux;
     v.y = current.y + s * leg.uy;
@@ -240,10 +242,10 @@ std::vector<NedPoint> generateFlightPatternSineWaveHorizontal(
   const float ny = -leg.ux;
 
   const int n = static_cast<int>(std::floor(leg.length / spacing));
-  path.reserve(static_cast<size_t>(n + 2));
+  path.reserve(static_cast<size_t>(n) + 2);
   for (int k = 0; k < n; ++k)
   {
-    const float s = k * spacing;
+    const float s = static_cast<float>(k) * spacing;
     const float offset = p.amplitude * std::sin(2.0f * static_cast<float>(M_PI) * s / lambda);
     NedPoint v;
     v.x = current.x + s * leg.ux + offset * nx;
@@ -266,7 +268,7 @@ std::vector<NedPoint> generateFlightPatternSquareSpiral(
   float heading = pick(p.initialHeading, std::isnan(current.yaw) ? 0.0f : current.yaw);
 
   std::vector<NedPoint> path;
-  path.reserve(static_cast<size_t>(std::max(p.numLegs, 0) + 1));
+  path.reserve(static_cast<size_t>(std::max(p.numLegs, 0)) + 1);
   NedPoint v;
   v.x = ox;
   v.y = oy;
@@ -369,7 +371,8 @@ int flightPatternLawnmowerLaneCount(const FlightPatternLawnmowerParams & p)
 float flightPatternLawnmowerLength(const FlightPatternLawnmowerParams & p)
 {
   const int lanes = flightPatternLawnmowerLaneCount(p);
-  return lanes * std::max(p.laneLength, 0.0f) + (lanes - 1) * std::max(p.laneSpacing, 0.5f);
+  return static_cast<float>(lanes) * std::max(p.laneLength, 0.0f) +
+         static_cast<float>(lanes - 1) * std::max(p.laneSpacing, 0.5f);
 }
 
 std::vector<NedPoint> generateFlightPatternLawnmower(
@@ -387,7 +390,7 @@ std::vector<NedPoint> generateFlightPatternLawnmower(
   const int lanes = flightPatternLawnmowerLaneCount(p);
   const float spacing = std::max(p.laneSpacing, 0.5f);
   const float length = std::max(p.laneLength, 0.0f);
-  const float coveredWidth = (lanes - 1) * spacing;
+  const float coveredWidth = static_cast<float>(lanes - 1) * spacing;
 
   float ox = pick(p.originX, current.x);
   float oy = pick(p.originY, current.y);
@@ -398,12 +401,12 @@ std::vector<NedPoint> generateFlightPatternLawnmower(
   }
 
   std::vector<NedPoint> path;
-  path.reserve(static_cast<size_t>(2 * lanes));
+  path.reserve(2 * static_cast<size_t>(lanes));
   for (int i = 0; i < lanes; ++i)
   {
     NedPoint a;
-    a.x = ox + i * spacing * nx;
-    a.y = oy + i * spacing * ny;
+    a.x = ox + static_cast<float>(i) * spacing * nx;
+    a.y = oy + static_cast<float>(i) * spacing * ny;
     a.z = z;
     NedPoint b;
     b.x = a.x + length * ux;
@@ -499,7 +502,7 @@ std::vector<NedPoint> generateFlightPatternVSSearch(
   const float third = 2.0f * static_cast<float>(M_PI) / 3.0f;
 
   std::vector<NedPoint> path;
-  path.reserve(static_cast<size_t>(9 * cycles + 1));
+  path.reserve(9 * static_cast<size_t>(cycles) + 1);
   NedPoint v;
   v.x = dx;
   v.y = dy;
