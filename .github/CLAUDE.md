@@ -39,6 +39,7 @@ Figures are as of 2026-11-13 and should be refreshed when a check changes.
 | Heap attribution (`core_test_tools/memory_tests/heap_attribution.sh <install-prefix> <test>`) | developer machine | on demand, when a memory test fails or to see what the transition path allocates | no | 1 to 2 min | a report, not a pass or fail: the call sites whose live memory grew between a short and a long run under `heaptrack`, and heap allocations per transition, message or goal by SMACC2 function; needs `heaptrack` |
 | Coverage (`core_test_tools/coverage.sh`) | developer machine | on demand | no | about 12 min | which lines, functions and branches of the core the core tests and the regression suite reach |
 | Simulator runs (`smacc2_performance_tools/nav2_test_tools/nav2_run.sh`, `px4_test_tools/px4_run.sh`, `moveit_test_tools/panda_run.sh`) | developer machine | on demand, after a change to a client library or to shutdown | no | 1 to 7 min each | a reference machine completes its mission against Nav2, PX4 SITL or MoveIt and shuts down cleanly; each also runs under TSan or ASan |
+| Launch file check (no tool yet: by hand, or `CTRL_C=1` with `nav2_run.sh` and `px4_run.sh`) | developer machine | on demand: after a change to a launch file, to a machine's node name or parameter file, or to shutdown, and before a release | no | under 1 min per machine without a simulator | the launch file a README tells the user to run is not stale: `ros2 launch` starts the machine under the node name and parameters the launch file gives, the machine enters its first state, and one Ctrl-C ends it with `ros2 launch` reporting a clean exit. Not a mission; the simulator runs above start the node binary directly and do not exercise the launch file |
 | ABI comparison (`.github/scripts/abi_compare.sh <old-ref> <new-ref> <work-dir>`) | developer machine | on demand, before a release | no | about 5 min | which exported functions were removed, added or changed since the last tag, which classes changed size and which virtual tables moved, for the release notes and the version number; needs `abigail-tools` |
 | ROS Lint (`ci-ros-lint.yaml`) | GitHub | **disabled** | no | | `ament_copyright`, `ament_cppcheck`, `ament_lint_cmake` per package; duplicates pre-commit |
 | Doxygen Deployment, bloom release | GitHub | push to `jazzy` | no | about 10 min | publishing |
@@ -251,9 +252,8 @@ with their simulators; only the state machine node is instrumented.
   speed of `CbBackUp`, is no longer reported; that is the price. Of the 17 it then gave, 13 were removed on
   2026-11-23: the five `cl_px4_mr` pattern behaviors take a parameter struct, and the 8 functions the
   lttng macros generate are suppressed in `trace_provider.hpp` with a `NOLINTBEGIN` / `NOLINTEND` pair
-  for this check. The 4 left: `createGraspableBox` (to be changed in the `cl_moveit2z` rework), and
-  three accepted as conventions, (x, y, yaw) and (r, g, b, a): `CbNavigateGlobalPosition`, `Pose2D`
-  and `setColor`.
+  for this check. The 4 left: `createGraspableBox` and `setColor` (to be changed in the `cl_moveit2z` rework), and
+  `CbNavigateGlobalPosition` and `Pose2D` in `cl_nav2z`, which keep (x, y, yaw) for compatibility.
   - The 1 in `cl_http` (added 2026-11-18 with the five libraries that have source files): an
     `unused-return-value` in `http_session.cpp` that is a false positive. `cl_modbus_tcp_relay`, `cl_keyboard`, `cl_generic_sensor`, `cl_foundation_pose` and
     `cl_mission_tracker` have none. Two
@@ -386,3 +386,7 @@ is the floor on reaction time for any event that originates outside the state ma
    `smacc2_client_behavior_async_on_entry_*` and `_async_on_exit_*`, emitted on the behavior's thread.
 4. Add a `perf` flame-graph recipe. Coverage, the memory soak and the ABI comparison are in place:
    `core_test_tools/coverage.sh`, `core_test_tools/memory_tests/`, `.github/scripts/abi_compare.sh`.
+5. Launch file check (added to the procedures 2026-11-23): write the tool. It should run every
+   machine's launch file (31 on that day), without a simulator where the machine reaches its first
+   state without one. Open: how far a simulator machine must get, a `CTRL_C` mode for `panda_run.sh`,
+   an in-repository runner for the cave machine, and whether the standalone machines run in CI.
