@@ -116,13 +116,25 @@ void ISmaccStateMachine::createOrthogonal()
 //-------------------------------------------------------------------------------------------------------
 template <typename SmaccComponentType>
 void ISmaccStateMachine::requiresComponent(
-  SmaccComponentType *& storage, ComponentRequirement requirementType)
+  SmaccComponentType *& storage, ComponentRequirement requirementType, ISmaccOrthogonal * first)
 {
   bool throwsException = requirementType == ComponentRequirement::HARD;
   RCLCPP_DEBUG(
     getLogger(), "component %s is required",
     demangleSymbol(typeid(SmaccComponentType).name()).c_str());
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+
+  if (first != nullptr)
+  {
+    for (auto & client : first->clients_)
+    {
+      storage = client->getComponent<SmaccComponentType>();
+      if (storage != nullptr)
+      {
+        return;
+      }
+    }
+  }
 
   for (auto ortho : this->orthogonals_)
   {
@@ -146,13 +158,26 @@ void ISmaccStateMachine::requiresComponent(
 //-------------------------------------------------------------------------------------------------------
 template <typename SmaccComponentType>
 void ISmaccStateMachine::requiresComponent(
-  const std::string & name, SmaccComponentType *& storage, ComponentRequirement requirementType)
+  const std::string & name, SmaccComponentType *& storage, ComponentRequirement requirementType,
+  ISmaccOrthogonal * first)
 {
   bool throwsException = requirementType == ComponentRequirement::HARD;
   RCLCPP_DEBUG(
     getLogger(), "component %s (named '%s') is required",
     demangleSymbol(typeid(SmaccComponentType).name()).c_str(), name.c_str());
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+
+  if (first != nullptr)
+  {
+    for (auto & client : first->clients_)
+    {
+      storage = client->getComponent<SmaccComponentType>(name);
+      if (storage != nullptr)
+      {
+        return;
+      }
+    }
+  }
 
   for (auto ortho : this->orthogonals_)
   {

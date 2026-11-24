@@ -75,7 +75,7 @@ void ISmaccOrthogonal::requiresComponent(SmaccComponentType *& storage)
   }
   else
   {
-    stateMachine_->requiresComponent(storage);
+    stateMachine_->requiresComponent(storage, ComponentRequirement::SOFT, this);
   }
 }
 
