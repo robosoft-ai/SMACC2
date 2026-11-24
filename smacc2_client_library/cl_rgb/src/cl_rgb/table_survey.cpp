@@ -206,14 +206,16 @@ std::vector<Blob> findBlobs(
           continue;
         }
         const cv::Vec3f here = lab.at<cv::Vec3f>(r, c);
-        const int neighbours[2][2] = {{r, c + 2}, {r + 2, c}};
-        for (const auto & n : neighbours)
+        // the pixel two to the right, and the pixel two below
+        for (int k = 0; k < 2; ++k)
         {
-          if (n[0] >= lab.rows || n[1] >= lab.cols || !foreground.at<uchar>(n[0], n[1]))
+          const int nr = k == 0 ? r : r + 2;
+          const int nc = k == 0 ? c + 2 : c;
+          if (nr >= lab.rows || nc >= lab.cols || !foreground.at<uchar>(nr, nc))
           {
             continue;
           }
-          const cv::Vec3f there = lab.at<cv::Vec3f>(n[0], n[1]);
+          const cv::Vec3f there = lab.at<cv::Vec3f>(nr, nc);
           if (
             std::hypot(here[1], here[2]) < params.colourEdgeMinChroma ||
             std::hypot(there[1], there[2]) < params.colourEdgeMinChroma)
@@ -225,7 +227,7 @@ std::vector<Blob> findBlobs(
           if (turn * 180.0 / CV_PI > params.colourEdgeHueDeg)
           {
             // the pixel between the two is the seam
-            regions.at<uchar>((r + n[0]) / 2, (c + n[1]) / 2) = 0;
+            regions.at<uchar>((r + nr) / 2, (c + nc) / 2) = 0;
           }
         }
       }
