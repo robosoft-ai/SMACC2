@@ -89,7 +89,7 @@ void ISmaccClientBehavior::requiresComponent(
   }
   else
   {
-    stateMachine_->requiresComponent(storage, requirementType);
+    stateMachine_->requiresComponent(storage, requirementType, currentOrthogonal);
   }
 }
 
@@ -106,7 +106,7 @@ void ISmaccClientBehavior::requiresComponent(
   }
   else
   {
-    stateMachine_->requiresComponent(name, storage, requirementType);
+    stateMachine_->requiresComponent(name, storage, requirementType, currentOrthogonal);
   }
 }
 

@@ -107,12 +107,17 @@ public:
 
   const std::map<std::string, std::shared_ptr<smacc2::ISmaccOrthogonal>> & getOrthogonals() const;
 
+  // The clients of `first`, when given, are searched before those of the other orthogonals:
+  // a behavior passes its own orthogonal, so that with two clients of one type it gets its own.
   template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *& storage, ComponentRequirement requirementType);
+  void requiresComponent(
+    SmaccComponentType *& storage, ComponentRequirement requirementType,
+    ISmaccOrthogonal * first = nullptr);
 
   template <typename SmaccComponentType>
   void requiresComponent(
-    const std::string & name, SmaccComponentType *& storage, ComponentRequirement requirementType);
+    const std::string & name, SmaccComponentType *& storage, ComponentRequirement requirementType,
+    ISmaccOrthogonal * first = nullptr);
 
   // Takes ownership of `ev` (must be allocated with `new`); the caller must not use it after
   // this call. Released by the scheduler after dispatch, or here if discarded or on exception.
