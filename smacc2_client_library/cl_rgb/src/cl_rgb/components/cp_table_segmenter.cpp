@@ -14,6 +14,8 @@
 
 #include <cl_rgb/components/cp_table_segmenter.hpp>
 
+#include <opencv2/imgproc.hpp>
+
 #include <opencv2/imgcodecs.hpp>
 
 namespace cl_rgb
@@ -69,7 +71,23 @@ SegmenterParams CpTableSegmenter::params() const
   return params_;
 }
 
-cv::Mat CpTableSegmenter::foreground(const cv::Mat & bgr, const cv::Mat & tableMask) const
+cv::Mat CpTableSegmenter::fixtures(const cv::Mat & tableMask) const
+{
+  cv::Mat reference;
+  {
+    std::lock_guard<std::mutex> lock(mutex_);
+    reference = reference_;
+  }
+  if (reference.empty() || reference.size() != tableMask.size())
+  {
+    return cv::Mat();
+  }
+  cv::Mat fixtures = referenceFixtures(reference, tableMask);
+  return fixtures;
+}
+
+cv::Mat CpTableSegmenter::foreground(
+  const cv::Mat & bgr, const cv::Mat & tableMask, cv::Mat * shadow) const
 {
   cv::Mat reference;
   {
@@ -78,7 +96,11 @@ cv::Mat CpTableSegmenter::foreground(const cv::Mat & bgr, const cv::Mat & tableM
   }
   if (!reference.empty() && reference.size() == bgr.size())
   {
-    return segmentAgainstReference(bgr, reference, tableMask, this->params());
+    return segmentAgainstReference(bgr, reference, tableMask, this->params(), shadow);
+  }
+  if (shadow != nullptr)
+  {
+    *shadow = cv::Mat::zeros(bgr.size(), CV_8UC1);
   }
   return segmentForeground(bgr, tableMask, this->params());
 }

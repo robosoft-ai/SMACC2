@@ -128,8 +128,12 @@ cv::Mat segmentForeground(
 
 cv::Mat segmentAgainstReference(
   const cv::Mat & bgr, const cv::Mat & referenceBgr, const cv::Mat & tableMask,
-  const SegmenterParams & params)
+  const SegmenterParams & params, cv::Mat * shadow)
 {
+  if (shadow != nullptr)
+  {
+    *shadow = cv::Mat::zeros(bgr.size(), CV_8UC1);
+  }
   cv::Mat image, reference, imageLab, referenceLab;
   bgr.convertTo(image, CV_32FC3, 1.0 / 255.0);
   referenceBgr.convertTo(reference, CV_32FC3, 1.0 / 255.0);
@@ -154,18 +158,28 @@ cv::Mat segmentAgainstReference(
         {
           continue;
         }
-        const cv::Vec3f seen = image.at<cv::Vec3f>(r, c);
-        const cv::Vec3f empty = reference.at<cv::Vec3f>(r, c);
-        float least = 10.0F, most = 0.0F;
-        for (int k = 0; k < 3; ++k)
+        const cv::Vec3f seen = imageLab.at<cv::Vec3f>(r, c);
+        const cv::Vec3f empty = referenceLab.at<cv::Vec3f>(r, c);
+        if (empty[0] < 1.0F || seen[0] >= empty[0] || seen[0] < params.shadowDarkest * empty[0])
         {
-          const float ratio = (seen[k] + 0.004F) / (empty[k] + 0.004F);
-          least = std::min(least, ratio);
-          most = std::max(most, ratio);
+          continue;
         }
-        if (most <= 1.03F && least >= params.shadowDarkest && most - least <= params.shadowSpread)
+        const double emptyChroma = std::hypot(empty[1], empty[2]);
+        // the reference's chroma, had it this pixel's lightness
+        const double expected = emptyChroma * seen[0] / empty[0];
+        const double chroma = std::hypot(seen[1], seen[2]);
+        double turn = std::abs(std::atan2(seen[2], seen[1]) - std::atan2(empty[2], empty[1]));
+        turn = turn > CV_PI ? 2.0 * CV_PI - turn : turn;
+        if (
+          turn * 180.0 / CV_PI <= params.shadowHueDeg &&
+          chroma >= params.shadowChromaLow * expected &&
+          chroma <= params.shadowChromaHigh * emptyChroma)
         {
           foreground.at<uchar>(r, c) = 0;
+          if (shadow != nullptr)
+          {
+            shadow->at<uchar>(r, c) = 255;
+          }
         }
       }
     }
@@ -185,9 +199,47 @@ cv::Mat segmentAgainstReference(
   return foreground;
 }
 
+cv::Mat referenceFixtures(
+  const cv::Mat & referenceBgr, const cv::Mat & tableMask, double chromaFraction, double hueDeg)
+{
+  cv::Mat floatImage, lab;
+  referenceBgr.convertTo(floatImage, CV_32FC3, 1.0 / 255.0);
+  cv::cvtColor(floatImage, lab, cv::COLOR_BGR2Lab);
+  std::vector<cv::Mat> channels;
+  cv::split(lab, channels);
+  double a = 0.0, b = 0.0, spread = 1.0;
+  robustStats(channels[1], tableMask, a, spread);
+  robustStats(channels[2], tableMask, b, spread);
+  const double tableChroma = std::hypot(a, b);
+  const double tableHue = std::atan2(b, a);
+
+  cv::Mat fixtures = cv::Mat::zeros(referenceBgr.size(), CV_8UC1);
+  for (int r = 0; r < lab.rows; ++r)
+  {
+    for (int c = 0; c < lab.cols; ++c)
+    {
+      if (!tableMask.at<uchar>(r, c))
+      {
+        continue;
+      }
+      const cv::Vec3f v = lab.at<cv::Vec3f>(r, c);
+      double turn = std::abs(std::atan2(v[2], v[1]) - tableHue);
+      turn = turn > CV_PI ? 2.0 * CV_PI - turn : turn;
+      if (std::hypot(v[1], v[2]) < chromaFraction * tableChroma || turn * 180.0 / CV_PI > hueDeg)
+      {
+        fixtures.at<uchar>(r, c) = 255;
+      }
+    }
+  }
+  cv::morphologyEx(
+    fixtures, fixtures, cv::MORPH_OPEN, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3)));
+  cv::dilate(fixtures, fixtures, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
+  return fixtures;
+}
+
 std::vector<Blob> findBlobs(
   const cv::Mat & bgr, const cv::Mat & foreground, const PinholeCamera & camera,
-  const TableParams & table, const BlobParams & params)
+  const TableParams & table, const BlobParams & params, const cv::Mat & hidden)
 {
   cv::Mat floatImage, lab;
   bgr.convertTo(floatImage, CV_32FC3, 1.0 / 255.0);
@@ -255,6 +307,16 @@ std::vector<Blob> findBlobs(
     blob.centroidPx = cv::Point2d(centroids.at<double>(i, 0), centroids.at<double>(i, 1));
     blob.mask = (labels(blob.box) == i);
     blob.crop = bgr(blob.box).clone();
+    if (hidden.size() == bgr.size())
+    {
+      blob.hidden = hidden(blob.box).clone();
+      // A blob that lies mostly on a fixture is the fixture itself, moved or lit differently
+      // than in the reference picture, and no object on the table.
+      if (2 * cv::countNonZero(blob.mask & blob.hidden) > area)
+      {
+        continue;
+      }
+    }
     const cv::Scalar meanBgr = cv::mean(bgr(blob.box), blob.mask);
     const cv::Scalar meanLab = cv::mean(lab(blob.box), blob.mask);
     blob.meanBgr = cv::Vec3d(meanBgr[0], meanBgr[1], meanBgr[2]);

@@ -43,6 +43,9 @@ struct Blob
   cv::Vec3d meanLab{0.0, 0.0, 0.0};  // L 0 to 100, a and b around 0
   cv::Vec3d meanBgr{0.0, 0.0, 0.0};
   cv::Mat mask;  // box-sized, 255 on the blob
+  // box-sized, 255 where something of the empty scene stands in front of the table (the robot,
+  // a fixture): the object may go on behind it. Empty when that is not known.
+  cv::Mat hidden;
   cv::Mat crop;  // box-sized copy of the image
 };
 
@@ -54,10 +57,17 @@ struct SegmenterParams
   // with a reference image of the empty scene: distance from that image, pixel by pixel
   std::string referenceImagePath;    // empty: no reference
   double referenceThreshold = 14.0;  // in Lab units
-  // Against a reference picture: a pixel that is the reference dimmed, alike in blue, green and
-  // red, to no less than this fraction is a shadow and not an object; 0 keeps shadows.
+  // Against a reference picture: a shadow is the table darker but of the table's own hue. A
+  // pixel is shadow when its lightness is below the reference's but not below this fraction of
+  // it, its hue is within shadowHueDeg of the reference's, and its chroma is at least
+  // shadowChromaLow of what the reference would have at that lightness and at most
+  // shadowChromaHigh times the reference's own (a deep shadow is more saturated for its
+  // lightness than the lit table). A black object has no colour and a strongly coloured one
+  // too much, so neither is taken for shadow. 0 keeps shadows.
   double shadowDarkest = 0.0;
-  double shadowSpread = 0.25;  // how far the three channels' dimming may differ in a shadow
+  double shadowHueDeg = 15.0;
+  double shadowChromaLow = 0.5;
+  double shadowChromaHigh = 2.2;
   double referenceLightnessWeight = 1.3;  // shading changes lightness more than colour
   int openPx = 3;                         // removes specks smaller than this
   int closePx = 5;                        // closes gaps smaller than this
@@ -86,13 +96,25 @@ cv::Mat segmentForeground(
 // The pixels of the table region that differ from a reference image of the empty scene, taken
 // by the same camera from the same place. Whatever the reference shows besides the table (a
 // fixture, the robot at rest) is no foreground as long as it has not moved.
+// `shadow`, when given, receives the pixels taken for shadow: no foreground, but not known to be
+// empty table either, since a dark object of the table's own hue looks the same.
 cv::Mat segmentAgainstReference(
   const cv::Mat & bgr, const cv::Mat & referenceBgr, const cv::Mat & tableMask,
-  const SegmenterParams & params);
+  const SegmenterParams & params, cv::Mat * shadow = nullptr);
 
-// Groups the foreground into blobs and places each on the table.
+// What stands in the empty scene in front of the table (a robot at rest, a fixture): the pixels
+// of the table's region in the reference picture that are much duller than the table (chroma
+// below chromaFraction of the table's middle chroma) or of another hue (more than hueDeg away).
+// Brightness is left out, so the table's own shading is not a fixture. For a coloured table.
+cv::Mat referenceFixtures(
+  const cv::Mat & referenceBgr, const cv::Mat & tableMask, double chromaFraction = 0.45,
+  double hueDeg = 40.0);
+
+// Groups the foreground into blobs and places each on the table. With `hidden` (see
+// referenceFixtures) each blob learns what may hide part of it, and a blob lying mostly on a
+// fixture is left out.
 std::vector<Blob> findBlobs(
   const cv::Mat & bgr, const cv::Mat & foreground, const PinholeCamera & camera,
-  const TableParams & table, const BlobParams & params);
+  const TableParams & table, const BlobParams & params, const cv::Mat & hidden = cv::Mat());
 
 }  // namespace cl_rgb

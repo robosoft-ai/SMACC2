@@ -43,7 +43,13 @@ public:
   bool hasReference() const;
 
   // 255 where the image shows something on the table, within tableMask
-  cv::Mat foreground(const cv::Mat & bgr, const cv::Mat & tableMask) const;
+  // `shadow`, when given, receives the pixels taken for shadow (see segmentAgainstReference)
+  cv::Mat foreground(
+    const cv::Mat & bgr, const cv::Mat & tableMask, cv::Mat * shadow = nullptr) const;
+
+  // 255 where the reference image itself shows something that is not table, within tableMask:
+  // what stands in the empty scene and may hide part of an object. Empty without a reference.
+  cv::Mat fixtures(const cv::Mat & tableMask) const;
 
 private:
   mutable std::mutex mutex_;

@@ -33,6 +33,9 @@ set(SOURCES
   src/cl_rgb/geometry.cpp
   src/cl_rgb/colour.cpp
   src/cl_rgb/box_fit.cpp
+  src/cl_rgb/box_edge_search.cpp
+  src/cl_rgb/mesh_silhouette.cpp
+  src/cl_rgb/rim_edge_search.cpp
   src/cl_rgb/table_survey.cpp
   src/cl_rgb/components/cp_transforms.cpp
   src/cl_rgb/components/cp_camera.cpp

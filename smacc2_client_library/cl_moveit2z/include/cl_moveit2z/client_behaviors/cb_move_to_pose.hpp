@@ -36,9 +36,13 @@ struct MoveToPoseParams
   double velocityScaling = 1.0;          // fraction of the joint velocity limits
   double accelerationScaling = 1.0;      // fraction of the joint acceleration limits
   double planningTime = 1.0;             // s
+  // true: the tip link goes there along a straight line, turning evenly on the way (a Cartesian
+  // path, failing when less than 95% of it can be followed); false: along whatever path is found
+  bool straightLine = false;
 };
 
 // Moves the tip link of its client's planning group to a pose: one plan, then its execution.
+// The plan is a free path or, on request, a straight line.
 // Without parameters it does nothing and posts no event, so one can stand idle on an orthogonal.
 class CbMoveToPose : public CbMoveit2zClientBehaviorBase
 {
@@ -70,7 +74,26 @@ public:
     const std::optional<std::string> tipLink =
       params_->tipLink.empty() ? std::nullopt : std::optional<std::string>(params_->tipLink);
 
-    const auto planned = cpMotionPlanner_->planToPose(params_->pose, tipLink, options);
+    PlanningResult planned;
+    if (params_->straightLine)
+    {
+      auto & moveGroup = *cpMoveGroup_->moveGroupClientInterface;
+      moveGroup.setMaxVelocityScalingFactor(params_->velocityScaling);
+      moveGroup.setMaxAccelerationScalingFactor(params_->accelerationScaling);
+      if (tipLink)
+      {
+        moveGroup.setEndEffectorLink(*tipLink);
+      }
+      if (!params_->pose.header.frame_id.empty())
+      {
+        moveGroup.setPoseReferenceFrame(params_->pose.header.frame_id);
+      }
+      planned = cpMotionPlanner_->planCartesianPath({params_->pose.pose}, kStraightStepM);
+    }
+    else
+    {
+      planned = cpMotionPlanner_->planToPose(params_->pose, tipLink, options);
+    }
     if (!planned.success)
     {
       RCLCPP_WARN(getLogger(), "[CbMoveToPose] no plan: %s", planned.errorMessage.c_str());
@@ -103,6 +126,8 @@ public:
   }
 
 private:
+  static constexpr double kStraightStepM = 0.005;  // between the points of a straight path
+
   std::optional<MoveToPoseParams> params_;
 };
 

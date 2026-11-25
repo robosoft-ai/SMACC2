@@ -111,6 +111,10 @@ Blob strongColourPart(const Blob & whole, double minChromaFraction)
   }
   std::sort(chromas.begin(), chromas.end());
   const float strong = chromas[static_cast<size_t>(0.9 * (chromas.size() - 1))];
+  if (strong < 20.0F)
+  {
+    return whole;  // a white, gray or black box has no strong colour to tell it from its shadow
+  }
   Blob part = whole;
   std::sort(lightnesses.begin(), lightnesses.end());
   const float middle = lightnesses[lightnesses.size() / 2];
@@ -146,6 +150,14 @@ std::optional<BoxFit> fitBoxOnTable(
   const double yawEnd = square ? CV_PI / 2.0 : CV_PI;
   const int steps = static_cast<int>(std::round(params.searchM / params.stepM));
 
+  cv::Mat visible;
+  double seenArea = blob.areaPx;
+  if (blob.hidden.size() == blob.mask.size() && cv::countNonZero(blob.hidden) > 0)
+  {
+    cv::bitwise_not(blob.hidden, visible);
+    seenArea = cv::countNonZero(blob.mask & visible);
+  }
+
   BoxFit best;
   best.overlap = -1.0;
   for (const bool topOnly : {false, true})
@@ -175,14 +187,28 @@ std::optional<BoxFit> fitBoxOnTable(
           {
             continue;
           }
-          const double both = cv::countNonZero(drawn & blob.mask);
-          // the outline's full area, so that a box partly outside the window is not favoured
-          const double whole =
-            std::max(hullArea(camera, x, y, yaw, tableZ, params.sizeM, topOnly), 1.0);
-          const double overlap = both / (whole + blob.areaPx - both);
+          // The outline's area in pixels as drawn; what of it lies outside the window is
+          // added from the polygon's area, so that a box partly outside is not favoured.
+          const double drawnPx = cv::countNonZero(drawn);
+          const double outside =
+            std::max(hullArea(camera, x, y, yaw, tableZ, params.sizeM, topOnly) - drawnPx, 0.0);
+          double whole = drawnPx + outside;
+          double both = 0.0;
+          if (visible.empty())
+          {
+            both = cv::countNonZero(drawn & blob.mask);
+          }
+          else
+          {
+            // what a fixture hides counts neither for nor against the box
+            both = cv::countNonZero(drawn & blob.mask & visible);
+            whole = cv::countNonZero(drawn & visible) + outside;
+          }
+          whole = std::max(whole, 1.0);
+          const double overlap = both / (whole + seenArea - both);
           if (overlap > best.overlap)
           {
-            best = BoxFit{x, y, yaw, overlap, topOnly};
+            best = BoxFit{x, y, yaw, overlap, topOnly, whole, seenArea};
           }
         }
       }

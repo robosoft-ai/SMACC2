@@ -32,6 +32,10 @@ struct BoxFit
   double yawRad = 0.0;   // of the box's x side about the vertical, in [0, pi/2) for a square box
   double overlap = 0.0;  // of the box's outline with the blob, 0 to 1 (intersection over union)
   bool topOnly = false;  // fitted to the top face alone: the sides were not part of the blob
+  // The areas that were compared, in pixels, leaving out what a fixture hides. A box of the
+  // right size with rounded edges has a blob somewhat smaller than its sharp outline.
+  double outlineAreaPx = 0.0;
+  double blobAreaPx = 0.0;
 };
 
 struct BoxFitParams
@@ -47,7 +51,8 @@ struct BoxFitParams
   // For a box of one strong colour: blob pixels that are darker than the blob's middle
   // lightness and have less than this fraction of its strong chroma (the 90th percentile) are
   // left out of the fit. They are shadow, which near a coloured box takes on some of its colour.
-  // A pale but bright face of the box is kept. 0 uses the whole blob.
+  // A pale but bright face of the box is kept, and so is the whole of a blob without strong
+  // colour (white, gray, black). 0 uses the whole blob.
   double minChromaFraction = 0.0;
 };
 

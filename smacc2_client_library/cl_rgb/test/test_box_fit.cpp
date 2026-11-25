@@ -166,3 +166,25 @@ TEST(BoxFit, APaleBrightFaceStaysInTheFit)
   EXPECT_NEAR(fit->x, -0.28, 0.004);
   EXPECT_NEAR(fit->y, -0.03, 0.004);
 }
+
+// At rest the robot's grippers stand in front of part of the table: a block behind a finger
+// shows only in part, and its outline was not found.
+TEST(BoxFit, WhatAFixtureHidesCountsNeitherForNorAgainst)
+{
+  const PinholeCamera camera = headCamera();
+  Blob blob = cubeBlob(camera, 0.378, -0.169, 0.0);
+  // the left third of the window is hidden, and the blob is missing there
+  blob.hidden = cv::Mat::zeros(blob.box.size(), CV_8UC1);
+  blob.hidden(cv::Rect(0, 0, blob.box.width / 3, blob.box.height)) = 255;
+  blob.mask.setTo(0, blob.hidden);
+  blob.areaPx = cv::countNonZero(blob.mask);
+  const cv::Moments m = cv::moments(blob.mask, true);
+  blob.centroidPx = cv::Point2d(blob.box.x + m.m10 / m.m00, blob.box.y + m.m01 / m.m00);
+
+  const auto fit = cl_rgb::fitBoxOnTable(blob, camera, kTableZ, cl_rgb::BoxFitParams());
+  ASSERT_TRUE(fit.has_value());
+  EXPECT_NEAR(fit->x, 0.378, 0.004);
+  EXPECT_NEAR(fit->y, -0.169, 0.004);
+  EXPECT_GT(fit->overlap, 0.9);
+  EXPECT_NEAR(fit->blobAreaPx / fit->outlineAreaPx, 1.0, 0.1);
+}

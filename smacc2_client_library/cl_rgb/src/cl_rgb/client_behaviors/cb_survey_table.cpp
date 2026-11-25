@@ -73,13 +73,22 @@ void CbSurveyTable::onEntry()
 
   const auto start = std::chrono::steady_clock::now();
   const cv::Mat region = table_->regionMask(*model, frame->image.size());
-  const cv::Mat foreground = segmenter_->foreground(frame->image, region);
+  // What a fixture covers and what was taken for shadow is not known to be empty table: an
+  // object may go on there, so a fit must count those pixels neither for nor against it.
+  cv::Mat unknown;
+  const cv::Mat foreground = segmenter_->foreground(frame->image, region, &unknown);
+  const cv::Mat fixtures = segmenter_->fixtures(region);
+  if (fixtures.size() == unknown.size())
+  {
+    unknown |= fixtures;
+  }
   auto survey = std::make_shared<Survey>();
   survey->stamp = frame->stamp;
   survey->camera = params_.camera;
   survey->model = *model;
   survey->sequence = frame->sequence;
-  survey->blobs = findBlobs(frame->image, foreground, *model, table_->params(), params_.blobs);
+  survey->blobs =
+    findBlobs(frame->image, foreground, *model, table_->params(), params_.blobs, unknown);
   const double ms =
     std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - start).count();
 
