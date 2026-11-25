@@ -43,7 +43,8 @@ Drawn draw(const PinholeCamera & camera, double tableZ, double x, double y, doub
   for (int i = 0; i < 8; ++i)
   {
     corner[i] = cv::Vec3d(
-      x + c * dx[i % 4] - s * dy[i % 4], y + s * dx[i % 4] + c * dy[i % 4], tableZ + (i < 4 ? 0.0 : side));
+      x + c * dx[i % 4] - s * dy[i % 4], y + s * dx[i % 4] + c * dy[i % 4],
+      tableZ + (i < 4 ? 0.0 : side));
     const auto pixel = camera.project(corner[i]);
     drawn.inImage = drawn.inImage && pixel.has_value();
     drawn.pixel[i] = pixel.value_or(cv::Point2d(0.0, 0.0));
@@ -73,7 +74,8 @@ struct EdgeCount
 };
 
 EdgeCount countEdges(
-  const Drawn & drawn, const Gradients & image, const cv::Mat & hidden, const BoxEdgeSearchParams & params)
+  const Drawn & drawn, const Gradients & image, const cv::Mat & hidden,
+  const BoxEdgeSearchParams & params)
 {
   bool used[8][8] = {};
   int hit = 0, compared = 0, total = 0;
@@ -154,7 +156,8 @@ EdgeCount countEdges(
 
 // density of image edges inside the seen faces, a few pixels away from the box's own edges
 double innerEdges(
-  const Drawn & drawn, const Gradients & image, const cv::Mat & hidden, const BoxEdgeSearchParams & params)
+  const Drawn & drawn, const Gradients & image, const cv::Mat & hidden,
+  const BoxEdgeSearchParams & params)
 {
   cv::Rect window(
     static_cast<int>(drawn.pixel[0].x) - 40, static_cast<int>(drawn.pixel[0].y) - 50, 80, 80);
@@ -289,14 +292,16 @@ double contrast(const Drawn & drawn, const Gradients & image, const cv::Mat & hi
   cv::Vec3d around;
   for (int c = 0; c < 3; ++c)
   {
-    std::nth_element(channel[c].begin(), channel[c].begin() + channel[c].size() / 2, channel[c].end());
+    std::nth_element(
+      channel[c].begin(), channel[c].begin() + channel[c].size() / 2, channel[c].end());
     around[c] = channel[c][channel[c].size() / 2];
   }
   double largest = 0.0;
   for (const auto & face : faces)
   {
     const cv::Scalar mean = cv::mean(image.lab(window), face);
-    const double dl = 0.5 * (mean[0] - around[0]), da = mean[1] - around[1], db = mean[2] - around[2];
+    const double dl = 0.5 * (mean[0] - around[0]), da = mean[1] - around[1],
+                 db = mean[2] - around[2];
     largest = std::max(largest, std::sqrt(dl * dl + da * da + db * db));
   }
   return largest;
@@ -320,8 +325,8 @@ cv::Mat colourEdges(const cv::Mat & bgr, double cannyLow, double cannyHigh)
 }
 
 double clutterAt(
-  const cv::Mat & edges, const cv::Mat & hidden, const PinholeCamera & camera, double tableZ, double x,
-  double y, double radiusM, double heightM)
+  const cv::Mat & edges, const cv::Mat & hidden, const PinholeCamera & camera, double tableZ,
+  double x, double y, double radiusM, double heightM)
 {
   std::vector<cv::Point> rim;
   for (const double z : {tableZ, tableZ + heightM})
@@ -453,14 +458,15 @@ std::vector<BoxEdgeMatch> findBoxesByEdges(
     match.score -= params.innerEdgeCost * match.innerEdges;
     match.contrast = contrast(drawn, image, hidden);
     match.score += params.weakestEdgeBonus * match.weakestEdge;
-    match.score += params.contrastBonus * std::min(match.contrast, params.contrastFull) / params.contrastFull;
+    match.score +=
+      params.contrastBonus * std::min(match.contrast, params.contrastFull) / params.contrastFull;
   }
   if (params.minWeakestEdge > 0.0)
   {
     matches.erase(
       std::remove_if(
-        matches.begin(), matches.end(),
-        [&params](const BoxEdgeMatch & match) { return match.weakestEdge < params.minWeakestEdge; }),
+        matches.begin(), matches.end(), [&params](const BoxEdgeMatch & match)
+        { return match.weakestEdge < params.minWeakestEdge; }),
       matches.end());
   }
   if (params.minContrast > 0.0)

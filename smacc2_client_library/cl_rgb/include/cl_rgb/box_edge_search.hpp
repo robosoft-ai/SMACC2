@@ -64,8 +64,8 @@ struct BoxEdgeSearchParams
   double innerMinGradient = 0.0;
   double oneWayDiscount = 0.0;
   double hiddenCost = 0.3;
-  double maxHidden = 0.4;     // more of the edges than this behind a fixture: not considered
-  double apartM = 0.032;      // two matches are at least this far apart
+  double maxHidden = 0.4;  // more of the edges than this behind a fixture: not considered
+  double apartM = 0.032;   // two matches are at least this far apart
   double cannyLow = 25.0;
   double cannyHigh = 60.0;
   // A match none of whose faces differs from its surroundings by this much is left out; 0
@@ -87,8 +87,8 @@ cv::Mat colourEdges(const cv::Mat & bgr, double cannyLow = 25.0, double cannyHig
 // How much stands at a place on the table, by the image alone: the fraction of edge pixels (and
 // of hidden ones) among the pixels a cylinder of this radius and height at (x, y) would cover.
 double clutterAt(
-  const cv::Mat & edges, const cv::Mat & hidden, const PinholeCamera & camera, double tableZ, double x,
-  double y, double radiusM, double heightM);
+  const cv::Mat & edges, const cv::Mat & hidden, const PinholeCamera & camera, double tableZ,
+  double x, double y, double radiusM, double heightM);
 
 // Looks for boxes by drawing their visible edges at every place, turn and size and comparing
 // them with the edges of the image: needs no picture of the empty table and no table colour.

@@ -29,7 +29,9 @@ std::optional<Mesh> loadStl(const std::string & path)
   std::ifstream file(path, std::ios::binary);
   char header[80];
   uint32_t triangles = 0;
-  if (!file.read(header, sizeof(header)) || !file.read(reinterpret_cast<char *>(&triangles), sizeof(triangles)))
+  if (
+    !file.read(header, sizeof(header)) ||
+    !file.read(reinterpret_cast<char *>(&triangles), sizeof(triangles)))
   {
     return std::nullopt;
   }
@@ -89,7 +91,8 @@ void drawMesh(
       {
         // a vertex beside the lens lands far outside the picture: kept within what can be drawn
         triangle[v] = cv::Point(
-          static_cast<int>(std::clamp(pixel->x, -8000.0, 8000.0)), static_cast<int>(std::clamp(pixel->y, -8000.0, 8000.0)));
+          static_cast<int>(std::clamp(pixel->x, -8000.0, 8000.0)),
+          static_cast<int>(std::clamp(pixel->y, -8000.0, 8000.0)));
       }
     }
     if (seen)

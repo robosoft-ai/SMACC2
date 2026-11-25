@@ -51,8 +51,8 @@ struct RimEdgeSearchParams
   double xMax = 0.5;
   double yMin = -0.5;
   double yMax = 0.5;
-  double stepM = 0.004;        // first pass; good places are then refined to 1 mm
-  double radiusSlackM = 0.003; // the radius may differ from the shape's by this much
+  double stepM = 0.004;         // first pass; good places are then refined to 1 mm
+  double radiusSlackM = 0.003;  // the radius may differ from the shape's by this much
   double minGradient = 6.0;
   double minEdgeFraction = 0.6;
   double hiddenCost = 0.3;
@@ -77,6 +77,7 @@ std::vector<RimEdgeMatch> findRimsByEdges(
 // circle fits inside a larger bowl about as well). Returns those matches; empty when no shape
 // has that many.
 std::vector<RimEdgeMatch> sameShapeRims(
-  const std::vector<RimEdgeMatch> & matches, const std::vector<RimShape> & shapes, int count, double tie = 0.15);
+  const std::vector<RimEdgeMatch> & matches, const std::vector<RimShape> & shapes, int count,
+  double tie = 0.15);
 
 }  // namespace cl_rgb

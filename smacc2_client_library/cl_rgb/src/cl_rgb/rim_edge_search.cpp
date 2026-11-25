@@ -29,15 +29,16 @@ struct Gradients
 };
 
 bool drawRim(
-  const PinholeCamera & camera, double tableZ, const RimEdgeMatch & match, double height, int points,
-  std::vector<cv::Point2d> & pixels)
+  const PinholeCamera & camera, double tableZ, const RimEdgeMatch & match, double height,
+  int points, std::vector<cv::Point2d> & pixels)
 {
   pixels.resize(static_cast<size_t>(points));
   for (int i = 0; i < points; ++i)
   {
     const double angle = 2.0 * M_PI * i / points;
-    const auto pixel = camera.project(
-      cv::Vec3d(match.x + match.radiusM * std::cos(angle), match.y + match.radiusM * std::sin(angle), tableZ + height));
+    const auto pixel = camera.project(cv::Vec3d(
+      match.x + match.radiusM * std::cos(angle), match.y + match.radiusM * std::sin(angle),
+      tableZ + height));
     if (!pixel)
     {
       return false;
@@ -48,8 +49,8 @@ bool drawRim(
 }
 
 void scoreRim(
-  RimEdgeMatch & match, double height, const PinholeCamera & camera, double tableZ, const Gradients & image,
-  const cv::Mat & hidden, const RimEdgeSearchParams & params)
+  RimEdgeMatch & match, double height, const PinholeCamera & camera, double tableZ,
+  const Gradients & image, const cv::Mat & hidden, const RimEdgeSearchParams & params)
 {
   std::vector<cv::Point2d> pixels;
   match.edgeFraction = 0.0;
@@ -64,7 +65,8 @@ void scoreRim(
   int partHit[4] = {0, 0, 0, 0}, partSeen[4] = {0, 0, 0, 0};
   for (int i = 0; i < n; ++i)
   {
-    const cv::Point2d along = pixels[static_cast<size_t>((i + 1) % n)] - pixels[static_cast<size_t>((i + n - 1) % n)];
+    const cv::Point2d along =
+      pixels[static_cast<size_t>((i + 1) % n)] - pixels[static_cast<size_t>((i + n - 1) % n)];
     const double length = cv::norm(along);
     const cv::Point2d & on = pixels[static_cast<size_t>(i)];
     const cv::Point at(static_cast<int>(on.x + 0.5), static_cast<int>(on.y + 0.5));
@@ -86,7 +88,8 @@ void scoreRim(
       const float magnitude = image.magnitude.at<float>(p);
       if (
         magnitude >= params.minGradient &&
-        std::fabs(image.x.at<float>(p) * across.x + image.y.at<float>(p) * across.y) > 0.85 * magnitude)
+        std::fabs(image.x.at<float>(p) * across.x + image.y.at<float>(p) * across.y) >
+          0.85 * magnitude)
       {
         ++hit;
         ++partHit[i * 4 / n];
@@ -105,15 +108,16 @@ void scoreRim(
   {
     if (partSeen[q] >= 3)
     {
-      match.weakestPart = std::min(match.weakestPart, static_cast<double>(partHit[q]) / partSeen[q]);
+      match.weakestPart =
+        std::min(match.weakestPart, static_cast<double>(partHit[q]) / partSeen[q]);
     }
   }
   match.score = match.edgeFraction - params.hiddenCost * match.hidden;
 }
 
 double rimContrast(
-  const RimEdgeMatch & match, double height, const PinholeCamera & camera, double tableZ, const Gradients & image,
-  const RimEdgeSearchParams & params)
+  const RimEdgeMatch & match, double height, const PinholeCamera & camera, double tableZ,
+  const Gradients & image, const RimEdgeSearchParams & params)
 {
   std::vector<cv::Point2d> pixels;
   if (!drawRim(camera, tableZ, match, height, params.points, pixels))
@@ -226,7 +230,8 @@ std::vector<RimEdgeMatch> findRimsByEdges(
       }
       match = best;
       match.contrast = rimContrast(match, shape.heightM, camera, tableZ, image, params);
-      match.score += params.weakestPartBonus * match.weakestPart +
+      match.score +=
+        params.weakestPartBonus * match.weakestPart +
         params.contrastBonus * std::min(match.contrast, params.contrastFull) / params.contrastFull;
     }
     std::sort(
@@ -236,8 +241,12 @@ std::vector<RimEdgeMatch> findRimsByEdges(
     for (const auto & match : matches)
     {
       const bool taken = std::any_of(
-        apart.begin(), apart.end(), [&](const RimEdgeMatch & other)
-        { return std::hypot(match.x - other.x, match.y - other.y) < shape.radiusM + other.radiusM - 0.05; });
+        apart.begin(), apart.end(),
+        [&](const RimEdgeMatch & other)
+        {
+          return std::hypot(match.x - other.x, match.y - other.y) <
+                 shape.radiusM + other.radiusM - 0.05;
+        });
       if (!taken && static_cast<int>(apart.size()) < params.maxMatchesPerShape)
       {
         apart.push_back(match);
@@ -246,12 +255,14 @@ std::vector<RimEdgeMatch> findRimsByEdges(
     all.insert(all.end(), apart.begin(), apart.end());
   }
   std::stable_sort(
-    all.begin(), all.end(), [](const RimEdgeMatch & a, const RimEdgeMatch & b) { return a.score > b.score; });
+    all.begin(), all.end(),
+    [](const RimEdgeMatch & a, const RimEdgeMatch & b) { return a.score > b.score; });
   return all;
 }
 
 std::vector<RimEdgeMatch> sameShapeRims(
-  const std::vector<RimEdgeMatch> & matches, const std::vector<RimShape> & shapes, int count, double tie)
+  const std::vector<RimEdgeMatch> & matches, const std::vector<RimShape> & shapes, int count,
+  double tie)
 {
   std::vector<RimEdgeMatch> chosen;
   double best = -1.0;
@@ -261,7 +272,9 @@ std::vector<RimEdgeMatch> sameShapeRims(
   {
     order[i] = i;
   }
-  std::sort(order.begin(), order.end(), [&](size_t a, size_t b) { return shapes[a].radiusM < shapes[b].radiusM; });
+  std::sort(
+    order.begin(), order.end(),
+    [&](size_t a, size_t b) { return shapes[a].radiusM < shapes[b].radiusM; });
   for (const size_t s : order)
   {
     std::vector<RimEdgeMatch> ofShape;
